@@ -21,7 +21,7 @@ class ExternalCommand implements LocatorInterface
      * @param        $baseDir
      * @param string $binDir
      */
-    public function __construct($baseDir, $binDir = 'bin')
+    public function __construct($baseDir, $binDir = 'vendor/bin')
     {
         $this->baseDir = $baseDir;
         $this->binDir = $binDir;
