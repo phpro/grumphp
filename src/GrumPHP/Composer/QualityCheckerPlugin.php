@@ -9,6 +9,7 @@ use Composer\Installer\InstallerEvent;
 use Composer\IO\IOInterface;
 use Composer\Package\LinkConstraint\VersionConstraint;
 use Composer\Plugin\PluginInterface;
+use Composer\Script\Event;
 use GrumPHP\Composer\Listener\InstallGitHooks;
 use GrumPHP\Configuration\GrumPHP;
 
@@ -25,6 +26,11 @@ class QualityCheckerPlugin implements PluginInterface, EventSubscriberInterface
     private $io;
 
     /**
+     * @var GrumPHP
+     */
+    private $config;
+
+    /**
      * {@inheritdoc}
      */
     public function activate(Composer $composer, IOInterface $io)
@@ -33,11 +39,8 @@ class QualityCheckerPlugin implements PluginInterface, EventSubscriberInterface
         $this->io = $io;
 
         $config = $composer->getConfig();
-
-        $binDir = $config->get('bin-dir');
         $grumphp = $config->get('grumphp');
-
-        $config = new GrumPHP($grumphp);
+        $this->config = new GrumPHP($grumphp);
 
         /*
          * TODO: check if tools are available
@@ -57,10 +60,15 @@ class QualityCheckerPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            'post-install' => array(new InstallGitHooks(), 'initializeGitHooks'),
-            'post-update' => array(new InstallGitHooks(), 'initializeGitHooks'),
+            'post-install' => 'initializeGitHooks',
+            'post-update' => 'initializeGitHooks',
             'pre-dependencies-solving' => 'appendQualityCheckerOperations',
         );
+    }
+
+    public function initializeGitHooks(Event $event)
+    {
+        $config = $event->getComposer()->getConfig();
     }
 
     public function appendQualityCheckerOperations(InstallerEvent $installerEvent)
