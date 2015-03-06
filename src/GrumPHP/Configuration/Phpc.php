@@ -15,7 +15,7 @@ class Phpcs extends AbstractOptions
     /**
      * @var string
      */
-    protected $standard = 'PSR-2';
+    protected $standard = 'PSR2';
 
     /**
      * @return string

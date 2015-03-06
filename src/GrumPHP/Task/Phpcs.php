@@ -49,6 +49,10 @@ class Phpcs implements ExternalTaskInterface
             $builder->add($file);
             $process = $builder->getProcess();
             $process->run();
+
+            if (!$process->isSuccessful()) {
+                throw new \RuntimeException($process->getOutput());
+            }
         }
     }
 

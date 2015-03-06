@@ -45,8 +45,15 @@ class PreCommitCommand extends Command
         $config = GrumPHP::loadFromComposerFile($baseDir);
         $taskManager = new TaskManager($config);
 
-        $files = $this->getCommitedFiles($config->getGitDir());
-        $taskManager->run($files);
+        try {
+            $files = $this->getCommitedFiles($config->getGitDir());
+            $taskManager->run($files);
+        } catch (\Exception $e) {
+            $output->writeln('<fg=red>' . $e->getMessage() . '</fg=red>');
+            return 1;
+        }
+
+        return 0;
     }
 
     /**

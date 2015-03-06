@@ -61,6 +61,7 @@ class InitCommand extends Command
 
             $content = $this->parseHookBody($config, $hook, $hookTemplate);
             file_put_contents($gitHook, $content);
+            $filesystem->chmod($gitHook, 0775);
         }
     }
 
