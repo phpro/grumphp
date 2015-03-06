@@ -12,6 +12,7 @@ use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use GrumPHP\Composer\Listener\InstallGitHooks;
 use GrumPHP\Configuration\GrumPHP;
+use Symfony\Component\Process\ProcessBuilder;
 
 class QualityCheckerPlugin implements PluginInterface, EventSubscriberInterface
 {
@@ -26,21 +27,12 @@ class QualityCheckerPlugin implements PluginInterface, EventSubscriberInterface
     private $io;
 
     /**
-     * @var GrumPHP
-     */
-    private $config;
-
-    /**
      * {@inheritdoc}
      */
     public function activate(Composer $composer, IOInterface $io)
     {
         $this->composer = $composer;
         $this->io = $io;
-
-        $config = $composer->getConfig();
-        $grumphp = $config->get('grumphp');
-        $this->config = new GrumPHP($grumphp);
 
         /*
          * TODO: check if tools are available
@@ -55,6 +47,18 @@ class QualityCheckerPlugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
+     * @param Composer $composer
+     *
+     * @return GrumPHP
+     */
+    protected function getConfig(Composer $composer)
+    {
+        $config = $composer->getConfig();
+        $grumphp = $config->get('grumphp');
+        return new GrumPHP($grumphp);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
@@ -66,9 +70,27 @@ class QualityCheckerPlugin implements PluginInterface, EventSubscriberInterface
         );
     }
 
+    /**
+     * @param Event $event
+     */
     public function initializeGitHooks(Event $event)
     {
-        $config = $event->getComposer()->getConfig();
+        $composer = $event->getComposer();
+        $config = $this->getConfig($composer);
+        $binDir = $composer->getConfig()->get('bin-dir');
+        $executable = $binDir . '/grumphp';
+
+        $builder = new ProcessBuilder(array('php', $executable, 'git:init'));
+        $builder->add('base-dir', $config->getBaseDir());
+        $process = $builder->getProcess();
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            $event->getIO()->writeError('GrumPHP can not sniff your commits. Did you specify the correct git-dir?');
+            return;
+        }
+
+        $event->getIO()->write('Watch out! GrumPHP is sniffing your commits!');
     }
 
     public function appendQualityCheckerOperations(InstallerEvent $installerEvent)
