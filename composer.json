@@ -35,7 +35,7 @@
     },
     "autoload": {
         "psr-0": {
-            "GrumPHP": "src/"
+            "GrumPHP\\": "src/"
         }
     },
     "config": {
