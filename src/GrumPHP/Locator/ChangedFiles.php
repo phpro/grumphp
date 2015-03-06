@@ -2,9 +2,9 @@
 
 namespace GrumPHP\Locator;
 
-use GitElephant\Objects\Diff\Diff;
-use GitElephant\Objects\Diff\DiffObject;
 use GitElephant\Repository;
+use GitElephant\Status\Status;
+use GitElephant\Status\StatusFile;
 
 /**
  * Class Git
@@ -23,9 +23,9 @@ class ChangedFiles implements LocatorInterface
     protected $gitDir;
 
     /**
-     * @var Diff
+     * @var Status
      */
-    protected $diff;
+    protected $status;
 
     /**
      * @param $gitDir
@@ -36,15 +36,15 @@ class ChangedFiles implements LocatorInterface
     }
 
     /**
-     * @return Diff
+     * @return Status
      */
-    public function getDiff()
+    public function getStatus()
     {
-        if (!$this->diff) {
+        if (!$this->status) {
             $repository = Repository::open($this->gitDir);
-            $this->diff = $repository->getDiff();
+            $this->status = $repository->getStatus();
         }
-        return $this->diff;
+        return $this->status;
     }
 
     /**
@@ -54,13 +54,19 @@ class ChangedFiles implements LocatorInterface
      */
     public function locate($pattern = self::PATTERN_ALL)
     {
-        $diff = $this->getDiff();
-        $files = array();
+        $status = $this->getStatus();
+        $status->all();
 
-        /** @var DiffObject $change */
-        foreach ($diff as $change) {
+        /** @var StatusFile $file */
+        foreach ($status->all() as $file) {
 
-            $path = $change->hasPathChanged() ? $change->getDestinationPath() : $change->getOriginalPath();
+            // Skip untracked and deleted files:
+            if (in_array($file->getType(), [StatusFile::UNTRACKED, StatusFile::DELETED])) {
+                continue;
+            }
+
+            // Validate path with a pattern.
+            $path = $file->getName();
             if (!preg_match($pattern, $path)) {
                 continue;
             }
