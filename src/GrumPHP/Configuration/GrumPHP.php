@@ -19,12 +19,12 @@ class GrumPHP extends AbstractOptions
     /**
      * @var string
      */
-    protected $baseDir = '/.';
+    protected $baseDir = '.';
 
     /**
      * @var string
      */
-    protected $gitDir = '/.';
+    protected $gitDir = '.';
 
     /**
      * @var Phpcs

@@ -35,7 +35,7 @@ class InitCommand extends Command
         $this
             ->setName(self::COMMAND_NAME)
             ->setDefinition(array(
-                new InputOption('base-dir', 'b', InputOption::VALUE_OPTIONAL, '/.', getcwd()),
+                new InputOption('base-dir', 'b', InputOption::VALUE_OPTIONAL, '.', getcwd()),
             ));
     }
 
@@ -52,8 +52,8 @@ class InitCommand extends Command
 
         $filesystem = new Filesystem();
         foreach (self::$hooks as $hook) {
-            $gitHook = $config->getGitDir() . '/hooks/' . $hook;
-            $hookTemplate = GRUMPHP_PATH . '/hooks/' . $hook;
+            $gitHook = $config->getGitDir() . '/.git/hooks/' . $hook;
+            $hookTemplate = GRUMPHP_PATH . '/resources/hooks/' . $hook;
 
             if (!$filesystem->exists($hookTemplate)) {
                 throw new \RuntimeException(sprintf('Could not find hook template for %s at %s.', $hook, $hookTemplate));
@@ -66,12 +66,12 @@ class InitCommand extends Command
 
     /**
      * @param $config
-     * @param $templateFile
      * @param $hook
+     * @param $templateFile
      *
      * @return mixed
      */
-    protected function parseHookBody($config, $templateFile, $hook)
+    protected function parseHookBody($config, $hook, $templateFile)
     {
         $content = file_get_contents($templateFile);
         $replacements = array(
@@ -89,7 +89,7 @@ class InitCommand extends Command
      */
     protected function generateHookCommand($config, $command)
     {
-        $executable = $config->getBaseDir() . '/bin/grumphp';
+        $executable = $config->getBaseDir() . '/vendor/bin/grumphp';
         $builder = new ProcessBuilder(array('php', $executable, $command));
         $builder->add('--base-dir=' . $config->getBaseDir());
 
