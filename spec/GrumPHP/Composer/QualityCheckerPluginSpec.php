@@ -21,4 +21,9 @@ class QualityCheckerPluginSpec extends ObjectBehavior
     {
         $this->shouldHaveType('Composer\EventDispatcher\EventSubscriberInterface');
     }
+
+    function it_subscribes_to_the_post_install_event()
+    {
+        $this->getSubscribedEvents()->shouldEqual(array('post-install-cmd' => 'onPostInstall'));
+    }
 }
