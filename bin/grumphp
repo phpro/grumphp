@@ -2,7 +2,7 @@
 <?php
 
 define('GRUMPHP_VERSION', '0.1.0');
-define('GRUMPHP_PATH', __DIR__ . '/..');
+define('GRUMPHP_PATH', realpath(__DIR__ . '/..'));
 
 if (is_file($autoload = getcwd() . '/vendor/autoload.php')) {
     require $autoload;

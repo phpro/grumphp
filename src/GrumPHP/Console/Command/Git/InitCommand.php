@@ -56,7 +56,7 @@ class InitCommand extends Command
             $hookTemplate = GRUMPHP_PATH . '/hooks/' . $hook;
 
             if (!$filesystem->exists($hookTemplate)) {
-                throw new \RuntimeException(sprintf('Could not find hook template for %s.', $hook));
+                throw new \RuntimeException(sprintf('Could not find hook template for %s at %s.', $hook, $hookTemplate));
             }
 
             $content = $this->parseHookBody($config, $hook, $hookTemplate);
