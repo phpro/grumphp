@@ -83,9 +83,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         $builder->add('--base-dir=' . $config->getBaseDir());
         $process = $builder->getProcess();
 
-        $event->getIO()->write($process->getCommandLine());
         $process->run();
-
         if (!$process->isSuccessful()) {
             $event->getIO()->write('GrumPHP can not sniff your commits. Did you specify the correct git-dir?');
             $event->getIO()->write($process->getErrorOutput());
