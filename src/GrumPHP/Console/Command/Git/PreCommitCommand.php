@@ -49,10 +49,12 @@ class PreCommitCommand extends Command
             $files = $this->getCommitedFiles($config->getGitDir());
             $taskManager->run($files);
         } catch (\Exception $e) {
+            $output->writeln('<fg=red>' . $this->getAsciiResource('failed') . '</fg=red>');
             $output->writeln('<fg=red>' . $e->getMessage() . '</fg=red>');
             return 1;
         }
 
+        $output->write('<fg=green>' . $this->getAsciiResource('succeeded') . '</fg=green>');
         return 0;
     }
 
@@ -65,5 +67,15 @@ class PreCommitCommand extends Command
     {
         $locator = new ChangedFiles($gitDir);
         return $locator->locate(ChangedFiles::PATTERN_PHP);
+    }
+
+    /**
+     * @param $name
+     *
+     * @return string
+     */
+    protected function getAsciiResource($name)
+    {
+        return file_get_contents(sprintf('%s/ascii/%s.txt', GRUMPHP_PATH, $name));
     }
 }
