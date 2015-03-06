@@ -10,6 +10,7 @@ use Composer\IO\IOInterface;
 use Composer\Package\LinkConstraint\VersionConstraint;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
+use Composer\Script\ScriptEvents;
 use GrumPHP\Composer\Listener\InstallGitHooks;
 use GrumPHP\Configuration\GrumPHP;
 use Symfony\Component\Process\ProcessBuilder;
@@ -64,9 +65,9 @@ class QualityCheckerPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            'post-install' => 'initializeGitHooks',
-            'post-update' => 'initializeGitHooks',
-            'pre-dependencies-solving' => 'appendQualityCheckerOperations',
+            ScriptEvents::POST_UPDATE_CMD => 'initializeGitHooks',
+            ScriptEvents::POST_INSTALL_CMD => 'initializeGitHooks',
+            Installer\InstallerEvents::PRE_DEPENDENCIES_SOLVING => 'appendQualityCheckerOperations',
         );
     }
 
