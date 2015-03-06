@@ -63,24 +63,34 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            ScriptEvents::POST_UPDATE_CMD => 'initializeGitHooks',
-            ScriptEvents::POST_INSTALL_CMD => 'initializeGitHooks',
+            Installer\PackageEvents::POST_PACKAGE_INSTALL => 'initializeGitHooks',
+            Installer\PackageEvents::POST_PACKAGE_UPDATE => 'initializeGitHooks',
+            Installer\PackageEvents::POST_PACKAGE_UNINSTALL => 'removeGitHooks',
             Installer\InstallerEvents::PRE_DEPENDENCIES_SOLVING => 'appendQualityCheckerOperations',
         );
     }
 
     /**
-     * @param Event $event
+     * @param Installer\PackageEvent $event
      */
-    public function initializeGitHooks(Event $event)
+    public function initializeGitHooks(Installer\PackageEvent $event)
     {
+        $repo = $event->getInstalledRepo();
+
+        var_dump($event->getName());
+        var_dump($event->getArguments());
+        var_dump($event->getFlags());
+
+        return;
+
+
         $composer = $event->getComposer();
         $config = $this->getConfig($composer);
         $binDir = $composer->getConfig()->get('bin-dir');
         $executable = $binDir . '/grumphp';
 
         $builder = new ProcessBuilder(array('php', $executable, 'git:init'));
-        $builder->add('base-dir', $config->getBaseDir());
+        $builder->add('--base-dir=' . $config->getBaseDir());
         $process = $builder->getProcess();
 
         $event->getIO()->write($process->getCommandLine());
