@@ -35,7 +35,7 @@ class InitCommand extends Command
         $this
             ->setName(self::COMMAND_NAME)
             ->setDefinition(array(
-                new InputOption('base-dir', 'b', InputOption::VALUE_OPTIONAL, '', getcwd()),
+                new InputOption('base-dir', 'b', InputOption::VALUE_OPTIONAL, '/.', getcwd()),
             ));
     }
 
