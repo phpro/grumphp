@@ -1,5 +1,5 @@
 {
-    "name": "grumphp/grumphp",
+    "name": "phpro/grumphp",
     "description": "A composer plugin that enables source code quality checks.",
     "type": "composer-plugin",
     "license": "proprietary",
