@@ -31,7 +31,7 @@
         }
     ],
     "extra": {
-        "class": "GrumPHP\\Composer\\QualityCheckerPlugin"
+        "class": "GrumPHP\\Composer\\GrumPHPPlugin"
     },
     "autoload": {
         "psr-0": {

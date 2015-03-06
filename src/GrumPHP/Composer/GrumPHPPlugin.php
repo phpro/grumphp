@@ -7,15 +7,13 @@ use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Installer;
 use Composer\Installer\InstallerEvent;
 use Composer\IO\IOInterface;
-use Composer\Package\LinkConstraint\VersionConstraint;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
-use GrumPHP\Composer\Listener\InstallGitHooks;
 use GrumPHP\Configuration\GrumPHP;
 use Symfony\Component\Process\ProcessBuilder;
 
-class QualityCheckerPlugin implements PluginInterface, EventSubscriberInterface
+class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 {
     /**
      * @var Composer
@@ -87,7 +85,8 @@ class QualityCheckerPlugin implements PluginInterface, EventSubscriberInterface
         $process->run();
 
         if (!$process->isSuccessful()) {
-            $event->getIO()->writeError('GrumPHP can not sniff your commits. Did you specify the correct git-dir?');
+            $event->getIO()->write('GrumPHP can not sniff your commits. Did you specify the correct git-dir?');
+            $event->getIO()->write($process->getOutput());
             return;
         }
 
