@@ -63,27 +63,17 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            Installer\PackageEvents::POST_PACKAGE_INSTALL => 'initializeGitHooks',
-            Installer\PackageEvents::POST_PACKAGE_UPDATE => 'initializeGitHooks',
-            Installer\PackageEvents::POST_PACKAGE_UNINSTALL => 'removeGitHooks',
+            ScriptEvents::POST_UPDATE_CMD => 'initializeGitHooks',
+            ScriptEvents::POST_INSTALL_CMD => 'initializeGitHooks',
             Installer\InstallerEvents::PRE_DEPENDENCIES_SOLVING => 'appendQualityCheckerOperations',
         );
     }
 
     /**
-     * @param Installer\PackageEvent $event
+     * @param Event $event
      */
-    public function initializeGitHooks(Installer\PackageEvent $event)
+    public function initializeGitHooks(Event $event)
     {
-        $repo = $event->getInstalledRepo();
-
-        var_dump($event->getName());
-        var_dump($event->getArguments());
-        var_dump($event->getFlags());
-
-        return;
-
-
         $composer = $event->getComposer();
         $config = $this->getConfig($composer);
         $binDir = $composer->getConfig()->get('bin-dir');
@@ -98,7 +88,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 
         if (!$process->isSuccessful()) {
             $event->getIO()->write('GrumPHP can not sniff your commits. Did you specify the correct git-dir?');
-            $event->getIO()->write($process->getOutput());
+            $event->getIO()->write($process->getErrorOutput());
             return;
         }
 
