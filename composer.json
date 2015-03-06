@@ -1,0 +1,35 @@
+{
+    "name": "grumphp/grumphp",
+    "description": "A composer plugin that enables source code quality checks.",
+    "type": "composer-plugin",
+    "license": "proprietary",
+    "require": {
+        "php": ">=5.3",
+        "composer-plugin-api": "~1.0"
+    },
+    "require-dev": {
+        "composer/composer": "~1.0@dev",
+        "phpspec/phpspec": "~2.1"
+    },
+    "authors": [
+        {
+            "name": "Alexander Deruwe",
+            "email": "alexander.deruwe@phpro.be"
+        },
+        {
+            "name": "Toon Verwerft",
+            "email": "toon.verwerft@phpro.be"
+        }
+    ],
+    "extra": {
+        "class": "GrumPHP/Composer/QualityCheckerPlugin"
+    },
+    "autoload": {
+        "psr-0": {
+            "": "src/"
+        }
+    },
+    "config": {
+        "bin-dir": "bin"
+    }
+}
