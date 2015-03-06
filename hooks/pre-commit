@@ -1,0 +1,10 @@
+#!/bin/sh
+
+#
+# Run the hook command.
+# Note: this will be replaced by the real command during copy.
+#
+$(HOOK_COMMAND)
+
+# Clean exit:
+exit 0;

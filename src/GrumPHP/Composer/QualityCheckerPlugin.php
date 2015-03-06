@@ -9,6 +9,8 @@ use Composer\Installer\InstallerEvent;
 use Composer\IO\IOInterface;
 use Composer\Package\LinkConstraint\VersionConstraint;
 use Composer\Plugin\PluginInterface;
+use GrumPHP\Composer\Listener\InstallGitHooks;
+use GrumPHP\Configuration\GrumPHP;
 
 class QualityCheckerPlugin implements PluginInterface, EventSubscriberInterface
 {
@@ -35,13 +37,18 @@ class QualityCheckerPlugin implements PluginInterface, EventSubscriberInterface
         $binDir = $config->get('bin-dir');
         $grumphp = $config->get('grumphp');
 
-        foreach (array_keys($grumphp) as $tool) {
+        $config = new GrumPHP($grumphp);
+
+        /*
+         * TODO: check if tools are available
+         *
+         * foreach (array_keys($grumphp) as $tool) {
             if (file_exists($binDir . '/' . $tool)) {
                 $this->io->write('Would create hook for ' . $tool);
             } else {
                 $this->io->writeError($tool . ' binary not found');
             }
-        }
+        }*/
     }
 
     /**
@@ -50,6 +57,8 @@ class QualityCheckerPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
+            'post-install' => array(new InstallGitHooks(), 'initializeGitHooks'),
+            'post-update' => array(new InstallGitHooks(), 'initializeGitHooks'),
             'pre-dependencies-solving' => 'appendQualityCheckerOperations',
         );
     }

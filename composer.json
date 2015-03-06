@@ -5,11 +5,20 @@
     "license": "proprietary",
     "require": {
         "php": ">=5.3",
-        "composer-plugin-api": "~1.0"
+        "composer-plugin-api": "~1.0",
+        "symfony/console": "~2.6",
+        "symfony/process": "~2.6",
+        "symfony/filesystem": "~2.6",
+        "cypresslab/gitelephant": "~1.0",
+        "zendframework/zend-stdlib": "~2.3"
     },
     "require-dev": {
         "composer/composer": "~1.0@dev",
-        "phpspec/phpspec": "~2.1"
+        "phpspec/phpspec": "~2.1",
+        "squizlabs/php_codesniffer": "~2.3"
+    },
+    "suggest": {
+      "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code."
     },
     "authors": [
         {
@@ -26,10 +35,11 @@
     },
     "autoload": {
         "psr-0": {
-            "": "src/"
+            "GrumPHP": "src/"
         }
     },
     "config": {
         "bin-dir": "bin"
-    }
+    },
+    "bin": ["bin/grumphp"]
 }
