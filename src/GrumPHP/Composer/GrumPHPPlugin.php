@@ -82,6 +82,8 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         $builder = new ProcessBuilder(array('php', $executable, 'git:init'));
         $builder->add('base-dir', $config->getBaseDir());
         $process = $builder->getProcess();
+
+        $event->getIO()->write($process->getCommandLine());
         $process->run();
 
         if (!$process->isSuccessful()) {
