@@ -7,32 +7,16 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
-use Zend\Stdlib\AbstractOptions;
 
 /**
  * Class GrumPHP
  *
  * @package GrumPHP\Configuration
  */
-class GrumPHP extends AbstractOptions
+class GrumPHP
 {
 
     const CONFIG_NAMESPACE = 'grumphp';
-
-    /**
-     * @var string
-     */
-    protected $baseDir = '.';
-
-    /**
-     * @var string
-     */
-    protected $binDir;
-
-    /**
-     * @var string
-     */
-    protected $gitDir = '.';
 
     /**
      * @var Phpcs
@@ -45,13 +29,24 @@ class GrumPHP extends AbstractOptions
     protected $container;
 
     /**
+     * Configuration defaults
+     *
+     * @var array
+     */
+    private $defaults = array(
+        'base_dir' => '.',
+        'bin_dir' => './vendor/bin',
+        'git_dir' => '.',
+    );
+
+    /**
      * {@inheritdoc}
      */
-    public function __construct($options = null)
+    public function __construct(array $options)
     {
-        parent::__construct($options);
+        // TODO: there should probably be some validation here...
 
-        $this->buildContainer();
+        $this->buildContainer(array_merge($this->defaults, $options));
     }
 
     /**
@@ -59,15 +54,7 @@ class GrumPHP extends AbstractOptions
      */
     public function getBaseDir()
     {
-        return $this->baseDir;
-    }
-
-    /**
-     * @param string $baseDir
-     */
-    public function setBaseDir($baseDir)
-    {
-        $this->baseDir = $baseDir;
+        return $this->container->getParameter('base_dir');
     }
 
     /**
@@ -75,15 +62,7 @@ class GrumPHP extends AbstractOptions
      */
     public function getBinDir()
     {
-        return $this->binDir;
-    }
-
-    /**
-     * @param string $binDir
-     */
-    public function setBinDir($binDir)
-    {
-        $this->binDir = $binDir;
+        return $this->container->getParameter('bin_dir');
     }
 
     /**
@@ -91,32 +70,7 @@ class GrumPHP extends AbstractOptions
      */
     public function getGitDir()
     {
-        return $this->gitDir;
-    }
-
-    /**
-     * @param string $gitDir
-     */
-    public function setGitDir($gitDir)
-    {
-        $this->gitDir = $gitDir;
-    }
-
-    /**
-     * @return Phpcs
-     */
-    public function getPhpcs()
-    {
-        return $this->phpcs;
-    }
-
-    /**
-     * @param array $phpcs
-     */
-    public function setPhpcs($phpcs)
-    {
-        $phpcs = ($phpcs instanceof Phpcs) ?: new Phpcs($phpcs);
-        $this->phpcs = $phpcs;
+        return $this->container->getParameter('git_dir');
     }
 
     /**
@@ -124,7 +78,15 @@ class GrumPHP extends AbstractOptions
      */
     public function hasPhpcs()
     {
-        return ($this->phpcs instanceof Phpcs);
+        return $this->container->has('phpcs');
+    }
+
+    /**
+     * @return Phpcs
+     */
+    public function getPhpcs()
+    {
+        return $this->container->get('phpcs');
     }
 
     /**
@@ -133,27 +95,6 @@ class GrumPHP extends AbstractOptions
     public function getContainer()
     {
         return $this->container;
-    }
-
-    /**
-     * @param $baseDir
-     *
-     * @return GrumPHP
-     */
-    public static function loadFromComposerFile($baseDir)
-    {
-        $filesystem = new Filesystem();
-        $composerFile = $baseDir . '/composer.json';
-        if (!$filesystem->exists($composerFile)) {
-            throw new RuntimeException(sprintf('The composer.json file could not be found at %s.', $baseDir));
-        }
-
-        $composerData = json_decode(file_get_contents($composerFile), true);
-        if (!isset($composerData['extra'][self::CONFIG_NAMESPACE])) {
-            throw new RuntimeException(sprintf('No configuration could be found. There is no %s key in the composer.json file', self::CONFIG_NAMESPACE));
-        }
-
-        return new self($composerData['extra'][self::CONFIG_NAMESPACE]);
     }
 
     /**
@@ -172,9 +113,25 @@ class GrumPHP extends AbstractOptions
         return new self(Yaml::parse($path));
     }
 
-    private function buildContainer()
+    /**
+     * Build the DI container for GrumPHP.
+     *
+     * @todo move this to an internal config file somehow?
+     *
+     * @param array $options
+     */
+    private function buildContainer(array $options)
     {
         $this->container = new ContainerBuilder();
+
+        $this->container->setParameter('base_dir', $options['base_dir']);
+        $this->container->setParameter('bin_dir', $options['bin_dir']);
+        $this->container->setParameter('git_dir', $options['git_dir']);
+        $this->container->setParameter('phpcs.standard', $options['phpcs']['standard']);
+
+        $this->container->register('phpcs', 'GrumPHP\Configuration\Phpcs')
+            ->addArgument(array('standard' => '%phpcs.standard%')); // TODO: change this strangeness when Phpcs doesn't extend AbstractOptions anymore
+
         $this->container->register('filesystem', 'Symfony\Component\Filesystem\Filesystem');
     }
 
