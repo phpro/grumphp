@@ -1,0 +1,6 @@
+phpcs:
+    standard: "PSR2"
+
+bin_dir: "./bin"
+base_dir: "."
+git_dir: "."

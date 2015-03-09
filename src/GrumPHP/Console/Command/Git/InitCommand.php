@@ -7,7 +7,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
@@ -26,6 +25,21 @@ class InitCommand extends Command
     protected static $hooks = array(
         'pre-commit',
     );
+
+    /**
+     * @var GrumPHP
+     */
+    protected $grumPHP;
+
+    /**
+     * @param GrumPHP $grumPHP
+     */
+    public function __construct(GrumPHP $grumPHP)
+    {
+        parent::__construct(null);
+
+        $this->grumPHP = $grumPHP;
+    }
 
     /**
      * Configure command
@@ -47,52 +61,47 @@ class InitCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $baseDir = $input->getOption('base-dir');
-        $config = GrumPHP::loadFromComposerFile($baseDir);
-
-        $filesystem = new Filesystem();
+        $filesystem = $this->grumPHP->getContainer()->get('filesystem');
         foreach (self::$hooks as $hook) {
-            $gitHook = $config->getGitDir() . '/.git/hooks/' . $hook;
+            $gitHook = $this->grumPHP->getGitDir() . '/.git/hooks/' . $hook;
             $hookTemplate = GRUMPHP_PATH . '/resources/hooks/' . $hook;
 
             if (!$filesystem->exists($hookTemplate)) {
                 throw new \RuntimeException(sprintf('Could not find hook template for %s at %s.', $hook, $hookTemplate));
             }
 
-            $content = $this->parseHookBody($config, $hook, $hookTemplate);
+            $content = $this->parseHookBody($hook, $hookTemplate);
             file_put_contents($gitHook, $content);
             $filesystem->chmod($gitHook, 0775);
         }
     }
 
     /**
-     * @param $config
      * @param $hook
      * @param $templateFile
      *
      * @return mixed
      */
-    protected function parseHookBody($config, $hook, $templateFile)
+    protected function parseHookBody($hook, $templateFile)
     {
         $content = file_get_contents($templateFile);
         $replacements = array(
-          '$(HOOK_COMMAND)' => $this->generateHookCommand($config, 'git:' . $hook),
+          '$(HOOK_COMMAND)' => $this->generateHookCommand('git:' . $hook),
         );
 
         return str_replace(array_keys($replacements), array_values($replacements), $content);
     }
 
     /**
-     * @param GrumPHP $config
      * @param $command
      *
      * @return string
      */
-    protected function generateHookCommand($config, $command)
+    protected function generateHookCommand($command)
     {
-        $executable = $config->getBaseDir() . '/vendor/bin/grumphp';
+        $executable = $this->grumPHP->getBaseDir() . '/vendor/bin/grumphp';
         $builder = new ProcessBuilder(array('php', $executable, $command));
-        $builder->add('--base-dir=' . $config->getBaseDir());
+        $builder->add('--base-dir=' . $this->grumPHP->getBaseDir());
 
         return $builder->getProcess()->getCommandLine();
     }

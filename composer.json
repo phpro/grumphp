@@ -9,6 +9,8 @@
         "symfony/console": "~2.6",
         "symfony/process": "~2.6",
         "symfony/filesystem": "~2.6",
+        "symfony/yaml": "~2.6",
+        "symfony/dependency-injection": "~2.6",
         "cypresslab/gitelephant": "~1.0",
         "zendframework/zend-stdlib": "~2.3"
     },

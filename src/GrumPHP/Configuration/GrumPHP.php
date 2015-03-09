@@ -3,7 +3,10 @@
 namespace GrumPHP\Configuration;
 
 use RuntimeException;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Yaml\Yaml;
 use Zend\Stdlib\AbstractOptions;
 
 /**
@@ -24,12 +27,32 @@ class GrumPHP extends AbstractOptions
     /**
      * @var string
      */
+    protected $binDir;
+
+    /**
+     * @var string
+     */
     protected $gitDir = '.';
 
     /**
      * @var Phpcs
      */
     protected $phpcs;
+
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($options = null)
+    {
+        parent::__construct($options);
+
+        $this->buildContainer();
+    }
 
     /**
      * @return string
@@ -45,6 +68,22 @@ class GrumPHP extends AbstractOptions
     public function setBaseDir($baseDir)
     {
         $this->baseDir = $baseDir;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBinDir()
+    {
+        return $this->binDir;
+    }
+
+    /**
+     * @param string $binDir
+     */
+    public function setBinDir($binDir)
+    {
+        $this->binDir = $binDir;
     }
 
     /**
@@ -89,6 +128,14 @@ class GrumPHP extends AbstractOptions
     }
 
     /**
+     * @return ContainerInterface
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
+    /**
      * @param $baseDir
      *
      * @return GrumPHP
@@ -107,6 +154,28 @@ class GrumPHP extends AbstractOptions
         }
 
         return new self($composerData['extra'][self::CONFIG_NAMESPACE]);
+    }
+
+    /**
+     * @param string $path path to grumphp.yml
+     *
+     * @return GrumPHP
+     */
+    public static function loadFromConfig($path)
+    {
+        $filesystem = new Filesystem();
+
+        if (!$filesystem->exists($path)) {
+            throw new RuntimeException(sprintf('The configuration file could not be found at "%s".', $path));
+        }
+
+        return new self(Yaml::parse($path));
+    }
+
+    private function buildContainer()
+    {
+        $this->container = new ContainerBuilder();
+        $this->container->register('filesystem', 'Symfony\Component\Filesystem\Filesystem');
     }
 
 }

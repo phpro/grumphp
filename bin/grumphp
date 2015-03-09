@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+define('GRUMPHP_NAME', 'GrumPHP');
 define('GRUMPHP_VERSION', '0.1.0');
 define('GRUMPHP_PATH', realpath(__DIR__ . '/..'));
 
@@ -23,5 +24,7 @@ if (is_file($autoload = __DIR__ . '/../vendor/autoload.php')) {
     exit(1);
 }
 
-$app = new GrumPHP\Console\Application(GRUMPHP_VERSION);
+$grumphp = GrumPHP\Configuration\GrumPHP::loadFromConfig(GRUMPHP_PATH . '/grumphp.yml');
+
+$app = new GrumPHP\Console\Application(GRUMPHP_NAME, GRUMPHP_VERSION, $grumphp);
 $app->run();

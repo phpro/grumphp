@@ -21,6 +21,21 @@ class PreCommitCommand extends Command
     const COMMAND_NAME = 'git:pre-commit';
 
     /**
+     * @var GrumPHP
+     */
+    protected $grumPHP;
+
+    /**
+     * @param GrumPHP $grumPHP
+     */
+    public function __construct(GrumPHP $grumPHP)
+    {
+        parent::__construct(null);
+
+        $this->grumPHP = $grumPHP;
+    }
+
+    /**
      * Configure command
      */
     protected function configure()
@@ -40,13 +55,10 @@ class PreCommitCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $baseDir = $input->getOption('base-dir');
-
-        $config = GrumPHP::loadFromComposerFile($baseDir);
-        $taskManager = new TaskManager($config);
+        $taskManager = new TaskManager($this->grumPHP);
 
         try {
-            $files = $this->getCommitedFiles($config->getGitDir());
+            $files = $this->getCommitedFiles($this->grumPHP->getGitDir());
             $taskManager->run($files);
         } catch (\Exception $e) {
             $output->writeln('<fg=red>' . $this->getAsciiResource('failed') . '</fg=red>');

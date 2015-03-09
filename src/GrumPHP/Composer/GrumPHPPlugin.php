@@ -5,7 +5,6 @@ namespace GrumPHP\Composer;
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Installer;
-use Composer\Installer\InstallerEvent;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
@@ -65,7 +64,6 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         return array(
             ScriptEvents::POST_UPDATE_CMD => 'initializeGitHooks',
             ScriptEvents::POST_INSTALL_CMD => 'initializeGitHooks',
-            Installer\InstallerEvents::PRE_DEPENDENCIES_SOLVING => 'appendQualityCheckerOperations',
         );
     }
 
@@ -91,10 +89,5 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         }
 
         $event->getIO()->write('<fg=yellow>Watch out! GrumPHP is sniffing your commits!<fg=yellow>');
-    }
-
-    public function appendQualityCheckerOperations(InstallerEvent $installerEvent)
-    {
-//        $installerEvent->getRequest()->install('squizlabs/php_codesniffer', new VersionConstraint('=', '2.3.0.0'));
     }
 }
