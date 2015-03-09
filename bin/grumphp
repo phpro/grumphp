@@ -24,7 +24,9 @@ if (is_file($autoload = __DIR__ . '/../vendor/autoload.php')) {
     exit(1);
 }
 
-$grumphp = GrumPHP\Configuration\GrumPHP::loadFromConfig(GRUMPHP_PATH . '/grumphp.yml');
+$container = GrumPHP\Configuration\ContainerFactory::buildFromConfiguration(GRUMPHP_PATH . '/grumphp.yml');
+
+$grumphp = new GrumPHP\Configuration\GrumPHP($container);
 
 $app = new GrumPHP\Console\Application(GRUMPHP_NAME, GRUMPHP_VERSION, $grumphp);
 $app->run();
