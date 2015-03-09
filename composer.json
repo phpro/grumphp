@@ -12,7 +12,8 @@
         "symfony/yaml": "~2.6",
         "symfony/dependency-injection": "~2.6",
         "cypresslab/gitelephant": "~1.0",
-        "zendframework/zend-stdlib": "~2.3"
+        "zendframework/zend-stdlib": "~2.3",
+        "roave/security-advisories": "dev-master"
     },
     "require-dev": {
         "composer/composer": "~1.0@dev",
