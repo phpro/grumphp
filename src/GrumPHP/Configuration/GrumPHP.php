@@ -63,12 +63,4 @@ class GrumPHP
     {
         return $this->container->get('phpcs');
     }
-
-    /**
-     * @return ContainerInterface
-     */
-    public function getContainer()
-    {
-        return $this->container;
-    }
 }

@@ -4,6 +4,7 @@ namespace GrumPHP\Configuration;
 
 use RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
@@ -37,6 +38,8 @@ final class ContainerFactory
     }
 
     /**
+     * @todo use symfony/config so we can define the services in yaml, as this already looks very messy
+     *
      * @param array $options
      *
      * @return ContainerBuilder
@@ -57,6 +60,10 @@ final class ContainerFactory
             ->addArgument(array('standard' => '%phpcs.standard%'));
 
         $container->register('filesystem', 'Symfony\Component\Filesystem\Filesystem');
+
+        $definition = new Definition('Symfony\Component\Process\ProcessBuilder');
+        $definition->setFactory(array('Symfony\Component\Process\ProcessBuilder', 'create'));
+        $container->setDefinition('process_builder', $definition);
 
         return $container;
     }

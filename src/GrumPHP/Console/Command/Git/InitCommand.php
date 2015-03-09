@@ -7,6 +7,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
@@ -32,13 +33,27 @@ class InitCommand extends Command
     protected $grumPHP;
 
     /**
-     * @param GrumPHP $grumPHP
+     * @var Filesystem
      */
-    public function __construct(GrumPHP $grumPHP)
+    protected $filesystem;
+
+    /**
+     * @var ProcessBuilder
+     */
+    protected $processBuilder;
+
+    /**
+     * @param GrumPHP $grumPHP
+     * @param Filesystem $filesystem
+     * @param ProcessBuilder $processBuilder
+     */
+    public function __construct(GrumPHP $grumPHP, Filesystem $filesystem, ProcessBuilder $processBuilder)
     {
-        parent::__construct(null);
+        parent::__construct();
 
         $this->grumPHP = $grumPHP;
+        $this->filesystem = $filesystem;
+        $this->processBuilder = $processBuilder;
     }
 
     /**
@@ -61,18 +76,17 @@ class InitCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $filesystem = $this->grumPHP->getContainer()->get('filesystem');
         foreach (self::$hooks as $hook) {
             $gitHook = $this->grumPHP->getGitDir() . '/.git/hooks/' . $hook;
             $hookTemplate = GRUMPHP_PATH . '/resources/hooks/' . $hook;
 
-            if (!$filesystem->exists($hookTemplate)) {
+            if (!$this->filesystem->exists($hookTemplate)) {
                 throw new \RuntimeException(sprintf('Could not find hook template for %s at %s.', $hook, $hookTemplate));
             }
 
             $content = $this->parseHookBody($hook, $hookTemplate);
             file_put_contents($gitHook, $content);
-            $filesystem->chmod($gitHook, 0775);
+            $this->filesystem->chmod($gitHook, 0775);
         }
     }
 
@@ -99,10 +113,13 @@ class InitCommand extends Command
      */
     protected function generateHookCommand($command)
     {
-        $executable = $this->grumPHP->getBaseDir() . '/vendor/bin/grumphp';
-        $builder = new ProcessBuilder(array('php', $executable, $command));
-        $builder->add('--base-dir=' . $this->grumPHP->getBaseDir());
+        $this->processBuilder->setArguments(array(
+            'php',
+            $this->grumPHP->getBinDir() . '/grumphp',
+            $command,
+            '--base-dir=' . $this->grumPHP->getBaseDir(),
+        ));
 
-        return $builder->getProcess()->getCommandLine();
+        return $this->processBuilder->getProcess()->getCommandLine();
     }
 }
