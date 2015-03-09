@@ -13,8 +13,8 @@ composer require phpro/grumphp
     },
     "extra": {
       "grumphp": {
-        "base-dir": ".",
-        "git-dir": ".",
+        "base_dir": ".",
+        "git_dir": ".",
         "phpcs": {
           "standard": "PSR2"
         }

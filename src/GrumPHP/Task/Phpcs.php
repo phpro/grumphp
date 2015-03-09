@@ -16,7 +16,7 @@ class Phpcs implements ExternalTaskInterface
     const COMMAND_NAME = 'phpcs';
 
     /**
-     * @var GrumpPHP
+     * @var GrumPHP
      */
     private $config;
 
