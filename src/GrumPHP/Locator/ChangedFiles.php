@@ -15,6 +15,8 @@ class ChangedFiles implements LocatorInterface
 {
 
     const PATTERN_ALL = '/(.*)/';
+
+    // TODO: this pattern must exclude specs and tests as we don't really want to force anything for those
     const PATTERN_PHP = '/(.*)\.php$/i';
 
     /**
