@@ -22,7 +22,6 @@ class Phpcs extends AbstractExternalTask
      */
     public function run(array $files)
     {
-        $phpcsConfig = $this->grumPHP->getConfiguration('phpcs'); // TODO: task should have access to config
         foreach ($files as $file) {
             $suffix = substr($file, strlen($file) - 8);
 
@@ -33,7 +32,7 @@ class Phpcs extends AbstractExternalTask
             $this->processBuilder->setArguments(array(
                 'php',
                 $this->getCommandLocation(),
-                '--standard=' . $phpcsConfig->getStandard(),
+                '--standard=' . $this->getConfiguration()->getStandard(),
                 $file,
             ));
 

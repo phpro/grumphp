@@ -34,6 +34,6 @@ abstract class AbstractConfiguration extends AbstractOptions implements Configur
      */
     public function buildTaskInstance(GrumPHP $grumPHP, LocatorInterface $externalCommandLocator, ProcessBuilder $processBuilder)
     {
-        return new $this->taskClass($grumPHP, $externalCommandLocator, $processBuilder);
+        return new $this->taskClass($grumPHP, $this, $externalCommandLocator, $processBuilder);
     }
 }
