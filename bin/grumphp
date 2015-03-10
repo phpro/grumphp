@@ -22,7 +22,7 @@ if (is_file($autoload = __DIR__ . '/../vendor/autoload.php')) {
     exit(1);
 }
 
-$container = GrumPHP\Configuration\ContainerFactory::buildFromConfiguration(GRUMPHP_PATH . '/grumphp.yml');
+$container = GrumPHP\Configuration\ContainerFactory::buildFromConfiguration(getcwd() . '/grumphp.yml');
 
 $grumphp = new GrumPHP\Configuration\GrumPHP($container);
 
