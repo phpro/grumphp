@@ -32,6 +32,7 @@ class Phpcs extends AbstractExternalTask
             'php',
             $this->getCommandLocation(),
             '--standard=' . $this->getConfiguration()->getStandard(),
+            '--warning-severity=0', // TODO: caring about warnings should be configurable, but for now it's just annoying
         ));
 
         foreach ($files as $file) {
