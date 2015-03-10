@@ -14,5 +14,4 @@ interface ExternalTaskInterface extends TaskInterface
      * @return string
      */
     public function getCommandLocation();
-
 }

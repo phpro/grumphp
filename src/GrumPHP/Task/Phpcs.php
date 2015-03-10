@@ -46,5 +46,4 @@ class Phpcs extends AbstractExternalTask
             throw new RuntimeException($process->getOutput());
         }
     }
-
 }

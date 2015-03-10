@@ -58,7 +58,6 @@ class ChangedFiles implements LocatorInterface
         /** @var StatusFile $file */
         $files = array();
         foreach ($this->getStatus()->all() as $file) {
-
             // Skip untracked and deleted files:
             if (in_array($file->getType(), $ignoredStatuses)) {
                 continue;

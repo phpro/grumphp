@@ -14,5 +14,4 @@ interface LocatorInterface
      * @return mixed
      */
     public function locate();
-
 }
