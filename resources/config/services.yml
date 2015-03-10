@@ -10,8 +10,8 @@ services:
         class: GitElephant\Repository
         arguments: [%git_dir%]
 
-    task_manager:
-        class: GrumPHP\TaskManager
+    task_runner:
+        class: GrumPHP\TaskRunner
 
     locator.external_command:
         class: GrumPHP\Locator\ExternalCommand

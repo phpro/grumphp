@@ -5,7 +5,7 @@ namespace GrumPHP\Console\Command\Git;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Locator\ChangedFiles;
 use GrumPHP\Locator\LocatorInterface;
-use GrumPHP\TaskManager;
+use GrumPHP\TaskRunner;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,9 +27,9 @@ class PreCommitCommand extends Command
     protected $grumPHP;
 
     /**
-     * @var TaskManager
+     * @var TaskRunner
      */
-    protected $taskManager;
+    protected $taskRunner;
 
     /**
      * @var LocatorInterface
@@ -48,17 +48,17 @@ class PreCommitCommand extends Command
 
     /**
      * @param GrumPHP $grumPHP
-     * @param TaskManager $taskManager
+     * @param TaskRunner $taskRunner
      * @param LocatorInterface $changedFilesLocator
      * @param LocatorInterface $externalCommandLocator
      * @param ProcessBuilder $processBuilder
      */
-    public function __construct(GrumPHP $grumPHP, TaskManager $taskManager, LocatorInterface $changedFilesLocator, LocatorInterface $externalCommandLocator, ProcessBuilder $processBuilder)
+    public function __construct(GrumPHP $grumPHP, TaskRunner $taskRunner, LocatorInterface $changedFilesLocator, LocatorInterface $externalCommandLocator, ProcessBuilder $processBuilder)
     {
         parent::__construct();
 
         $this->grumPHP = $grumPHP;
-        $this->taskManager = $taskManager;
+        $this->taskRunner = $taskRunner;
         $this->changedFilesLocator = $changedFilesLocator;
         $this->externalCommandLocator = $externalCommandLocator;
         $this->processBuilder = $processBuilder;
@@ -92,11 +92,11 @@ class PreCommitCommand extends Command
             $configuration = $this->grumPHP->getConfiguration($taskName);
             $task = $configuration->buildTaskInstance($this->grumPHP, $this->externalCommandLocator, $this->processBuilder);
 
-            $this->taskManager->addTask($task);
+            $this->taskRunner->addTask($task);
         }
 
         try {
-            $this->taskManager->run($this->getCommittedFiles());
+            $this->taskRunner->run($this->getCommittedFiles());
         } catch (\Exception $e) {
             $output->writeln('<fg=red>' . $this->getAsciiResource('failed') . '</fg=red>');
             $output->writeln('<fg=red>' . $e->getMessage() . '</fg=red>');

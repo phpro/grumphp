@@ -32,7 +32,7 @@ class Application extends SymfonyConsole
             ),
             new Command\Git\PreCommitCommand(
                 $grumPHP,
-                $container->get('task_manager'),
+                $container->get('task_runner'),
                 $container->get('locator.changed_files'),
                 $container->get('locator.external_command'),
                 $container->get('process_builder')

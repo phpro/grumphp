@@ -5,11 +5,11 @@ namespace GrumPHP;
 use GrumPHP\Task\TaskInterface;
 
 /**
- * Class TaskManager
+ * Class TaskRunner
  *
  * @package GrumPHP
  */
-class TaskManager
+class TaskRunner
 {
 
     /**
