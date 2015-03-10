@@ -22,6 +22,10 @@ class Phpcs extends AbstractExternalTask
      */
     public function run(array $files)
     {
+        if (0 === count($files)) {
+            return;
+        }
+
         $this->processBuilder->setArguments(array(
             'php',
             $this->getCommandLocation(),
