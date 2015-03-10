@@ -1,12 +1,10 @@
 services:
-    phpcs:
-        class: GrumPHP\Configuration\Phpcs
-        calls:
-            - [setStandard, ["%phpcs.standard%"]]
-
     filesystem:
         class: Symfony\Component\Filesystem\Filesystem
 
     process_builder:
         class: Symfony\Component\Process\ProcessBuilder
         prototype: true
+
+    task_manager:
+        class: GrumPHP\TaskManager

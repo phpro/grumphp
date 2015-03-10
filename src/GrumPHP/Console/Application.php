@@ -26,7 +26,7 @@ class Application extends SymfonyConsole
 
         $this->addCommands(array(
             new Command\Git\InitCommand($grumPHP, $container->get('filesystem'), $container->get('process_builder')),
-            new Command\Git\PreCommitCommand($grumPHP),
+            new Command\Git\PreCommitCommand($grumPHP, $container->get('task_manager')),
         ));
     }
 }

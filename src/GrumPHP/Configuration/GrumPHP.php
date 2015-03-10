@@ -5,9 +5,7 @@ namespace GrumPHP\Configuration;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class GrumPHP
- *
- * @package GrumPHP\Configuration
+ * The code representation of our grumphp.yml file.
  */
 class GrumPHP
 {
@@ -49,18 +47,30 @@ class GrumPHP
     }
 
     /**
-     * @return bool
+     * @return array
      */
-    public function hasPhpcs()
+    public function getActiveTasks()
     {
-        return $this->container->has('phpcs');
+        return $this->container->getParameter('active_tasks');
     }
 
     /**
-     * @return Phpcs
+     * @param string $name
+     *
+     * @return bool
      */
-    public function getPhpcs()
+    public function hasConfiguration($name)
     {
-        return $this->container->get('phpcs');
+        return $this->container->has($name);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return ConfigurationInterface
+     */
+    public function getConfiguration($name)
+    {
+        return $this->container->get($name);
     }
 }

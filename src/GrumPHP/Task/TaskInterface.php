@@ -17,9 +17,4 @@ interface TaskInterface
      */
     public function run(array $files);
 
-    /**
-     * @return bool
-     */
-    public function isActive();
-
 }

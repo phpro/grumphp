@@ -43,8 +43,14 @@ class Phpcs implements ExternalTaskInterface
      */
     public function run(array $files)
     {
-        $phpcsConfig = $this->config->getPhpcs();
+        $phpcsConfig = $this->config->getConfiguration('phpcs'); // TODO: task should have access to config
         foreach ($files as $file) {
+            $suffix = substr($file, strlen($file) - 8);
+
+            if ('Spec.php' === $suffix || 'Test.php' === $suffix) {
+                continue;
+            }
+
             $builder = new ProcessBuilder(array('php', $this->getCommandLocation()));
             $builder->add('--standard=' . $phpcsConfig->getStandard());
             $builder->add($file);
@@ -55,14 +61,6 @@ class Phpcs implements ExternalTaskInterface
                 throw new \RuntimeException($process->getOutput());
             }
         }
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive()
-    {
-        return $this->config->hasPhpcs();
     }
 
 }

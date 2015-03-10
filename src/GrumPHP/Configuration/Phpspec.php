@@ -5,36 +5,14 @@ namespace GrumPHP\Configuration;
 use Zend\Stdlib\AbstractOptions;
 
 /**
- * Phpcs configuration
+ * Phpspec configuration
  */
-class Phpcs extends AbstractOptions implements ConfigurationInterface
+class Phpspec extends AbstractOptions implements ConfigurationInterface
 {
     /**
      * @var string
      */
-    protected $standard;
-
-    /**
-     * @var string
-     */
     protected $taskClass;
-
-    /**
-     * @return string
-     */
-    public function getStandard()
-    {
-        return $this->standard;
-    }
-
-    /**
-     * @param string $standard
-     */
-    public function setStandard($standard)
-    {
-        // TODO: add validation of standard
-        $this->standard = $standard;
-    }
 
     /**
      * @return string
@@ -59,5 +37,4 @@ class Phpcs extends AbstractOptions implements ConfigurationInterface
     {
         return new $this->taskClass($grumPHP);
     }
-
 }

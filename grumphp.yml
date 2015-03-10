@@ -1,5 +1,7 @@
-phpcs:
-    standard: "PSR2"
+tasks:
+    phpcs:
+        standard: "PSR2"
+    phpspec: ~
 
 bin_dir: "./bin"
 base_dir: "."

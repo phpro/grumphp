@@ -5,15 +5,14 @@ namespace GrumPHP\Console\Command\Git;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Locator\ChangedFiles;
 use GrumPHP\TaskManager;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class InitCommand
- *
- * @package GrumPHP\Console\Command
+ * This command runs the git pre-commit hook.
  */
 class PreCommitCommand extends Command
 {
@@ -26,13 +25,20 @@ class PreCommitCommand extends Command
     protected $grumPHP;
 
     /**
-     * @param GrumPHP $grumPHP
+     * @var TaskManager
      */
-    public function __construct(GrumPHP $grumPHP)
+    protected $taskManager;
+
+    /**
+     * @param GrumPHP $grumPHP
+     * @param TaskManager $taskManager
+     */
+    public function __construct(GrumPHP $grumPHP, TaskManager $taskManager)
     {
         parent::__construct();
 
         $this->grumPHP = $grumPHP;
+        $this->taskManager = $taskManager;
     }
 
     /**
@@ -55,18 +61,29 @@ class PreCommitCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $taskManager = new TaskManager($this->grumPHP);
+        foreach ($this->grumPHP->getActiveTasks() as $taskName) {
+            if (!$this->grumPHP->hasConfiguration($taskName)) {
+                throw new RuntimeException(sprintf('The "%s" configuration is active, but its configuration was not found.', $taskName));
+            }
+
+            $configuration = $this->grumPHP->getConfiguration($taskName);
+            $task = $configuration->buildTaskInstance($this->grumPHP);
+
+            $this->taskManager->addTask($task);
+        }
 
         try {
             $files = $this->getCommittedFiles($this->grumPHP->getGitDir());
-            $taskManager->run($files);
+            $this->taskManager->run($files);
         } catch (\Exception $e) {
             $output->writeln('<fg=red>' . $this->getAsciiResource('failed') . '</fg=red>');
             $output->writeln('<fg=red>' . $e->getMessage() . '</fg=red>');
+
             return 1;
         }
 
         $output->write('<fg=green>' . $this->getAsciiResource('succeeded') . '</fg=green>');
+
         return 0;
     }
 
@@ -88,6 +105,6 @@ class PreCommitCommand extends Command
      */
     protected function getAsciiResource($name)
     {
-        return file_get_contents(sprintf('%s/resources/ascii/%s.txt', GRUMPHP_PATH, $name));
+        return file_get_contents(sprintf('%s/resources/ascii/%s.txt', $this->grumPHP->getBaseDir(), $name));
     }
 }

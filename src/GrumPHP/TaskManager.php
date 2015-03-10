@@ -2,7 +2,6 @@
 
 namespace GrumPHP;
 
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Task\TaskInterface;
 
 /**
@@ -14,39 +13,9 @@ class TaskManager
 {
 
     /**
-     * @var GrumPHP
-     */
-    protected $config;
-
-    /**
      * @var array
      */
     protected $tasks = array();
-
-    /**
-     * @param GrumPHP $config
-     */
-    public function __construct(GrumPHP $config)
-    {
-        $this->config = $config;
-        $this->addTask($this->createTask('GrumPHP\Task\Phpcs'));
-    }
-
-    /**
-     * @param       $class
-     *
-     * @return TaskInterface
-     */
-    public function createTask($class)
-    {
-        if (!class_exists($class)) {
-            throw new \RuntimeException('Invalid task class: ' . $class);
-        }
-
-        $rc = new \ReflectionClass($class);
-        return $rc->newInstance($this->config);
-    }
-
 
     /**
      * @param TaskInterface $task
@@ -60,6 +29,7 @@ class TaskManager
         }
 
         $this->tasks[] = $task;
+
         return $this;
     }
 
@@ -77,9 +47,6 @@ class TaskManager
     public function run($files)
     {
         foreach ($this->getTasks() as $task) {
-            if (!$task->isActive()) {
-                continue;
-            }
             $task->run($files);
         }
     }
