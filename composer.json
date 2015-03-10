@@ -41,5 +41,8 @@
             "GrumPHP\\": "src/"
         }
     },
-    "bin": ["bin/grumphp"]
+    "bin": ["bin/grumphp"],
+    "config": {
+        "bin-dir": "bin"
+    }
 }

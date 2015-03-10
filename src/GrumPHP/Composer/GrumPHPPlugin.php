@@ -9,7 +9,6 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
-use GrumPHP\Configuration\GrumPHP;
 use Symfony\Component\Process\ProcessBuilder;
 
 class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface

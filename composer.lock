@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9baa48c33158899b7b43e2bf1ca87ec5",
+    "hash": "b42574ef8a860765d6aed24b94fe15f1",
     "packages": [
         {
             "name": "cypresslab/gitelephant",
@@ -568,12 +568,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "b296e654eb3e136ca6fa08fa3bcb1d4782c13f8b"
+                "reference": "d57187446151ef84b28cb9f6b3ed38cc2cffc597"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/b296e654eb3e136ca6fa08fa3bcb1d4782c13f8b",
-                "reference": "b296e654eb3e136ca6fa08fa3bcb1d4782c13f8b",
+                "url": "https://api.github.com/repos/composer/composer/zipball/d57187446151ef84b28cb9f6b3ed38cc2cffc597",
+                "reference": "d57187446151ef84b28cb9f6b3ed38cc2cffc597",
                 "shasum": ""
             },
             "require": {
@@ -628,7 +628,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2015-03-09 11:13:01"
+            "time": "2015-03-09 23:06:06"
         },
         {
             "name": "doctrine/instantiator",
