@@ -9,4 +9,4 @@ services:
 
     process_builder:
         class: Symfony\Component\Process\ProcessBuilder
-        factory: [Symfony\Component\Process\ProcessBuilder, create]
+        prototype: true
