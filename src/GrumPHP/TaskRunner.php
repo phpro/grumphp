@@ -2,6 +2,7 @@
 
 namespace GrumPHP;
 
+use GrumPHP\Exception\FailureException;
 use GrumPHP\Task\TaskInterface;
 
 /**
@@ -43,11 +44,25 @@ class TaskRunner
 
     /**
      * @param array $files
+     *
+     * @throws FailureException if any of the tasks fail
      */
     public function run($files)
     {
+        $failures = false;
+        $messages = array();
+
         foreach ($this->getTasks() as $task) {
-            $task->run($files);
+            try {
+                $task->run($files);
+            } catch (\RuntimeException $e) {
+                $failures = true;
+                $messages[] = $e->getMessage();
+            }
+        }
+
+        if ($failures) {
+            throw new FailureException(implode("\n", $messages));
         }
     }
 }

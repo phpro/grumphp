@@ -3,6 +3,7 @@
 namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Exception\ExceptionInterface;
 use GrumPHP\Locator\ChangedFiles;
 use GrumPHP\Locator\LocatorInterface;
 use GrumPHP\TaskRunner;
@@ -86,7 +87,7 @@ class PreCommitCommand extends Command
     {
         foreach ($this->grumPHP->getActiveTasks() as $taskName) {
             if (!$this->grumPHP->hasConfiguration($taskName)) {
-                throw new RuntimeException(sprintf('The "%s" configuration is active, but its configuration was not found.', $taskName));
+                throw new RuntimeException(sprintf('The "%s" task is active, but its configuration was not found.', $taskName));
             }
 
             $configuration = $this->grumPHP->getConfiguration($taskName);
@@ -97,7 +98,9 @@ class PreCommitCommand extends Command
 
         try {
             $this->taskRunner->run($this->getCommittedFiles());
-        } catch (\Exception $e) {
+        } catch (ExceptionInterface $e) {
+            // We'll fail hard on any exception not generated in GrumPHP
+
             $output->writeln('<fg=red>' . $this->getAsciiResource('failed') . '</fg=red>');
             $output->writeln('<fg=red>' . $e->getMessage() . '</fg=red>');
 

@@ -2,6 +2,8 @@
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Exception\RuntimeException;
+
 /**
  * Phpspec task
  */
@@ -35,7 +37,7 @@ class Phpspec extends AbstractExternalTask
         $process->run();
 
         if (!$process->isSuccessful()) {
-            throw new \RuntimeException($process->getOutput());
+            throw new RuntimeException($process->getOutput());
         }
     }
 }

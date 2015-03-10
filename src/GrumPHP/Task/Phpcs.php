@@ -2,6 +2,8 @@
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Exception\RuntimeException;
+
 /**
  * Phpcs task
  */
@@ -40,7 +42,7 @@ class Phpcs extends AbstractExternalTask
         $process->run();
 
         if (!$process->isSuccessful()) {
-            throw new \RuntimeException($process->getOutput());
+            throw new RuntimeException($process->getOutput());
         }
     }
 
