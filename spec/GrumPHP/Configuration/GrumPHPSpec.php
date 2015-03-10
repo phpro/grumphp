@@ -42,9 +42,15 @@ class GrumPHPSpec extends ObjectBehavior
         $this->getActiveTasks();
     }
 
-    function it_retrieves_the_configuration_of_active_tasks_only(ContainerInterface $container)
+    function it_can_check_if_a_particular_configuration_exists(ContainerInterface $container)
     {
-        $container->getParameter('active_tasks')->shouldBeCalled()->willReturn(array('phpcs' => array()));
-        // TODO: here
+        $container->has('name')->shouldBeCalled();
+        $this->hasConfiguration('name');
+    }
+
+    function it_can_return_a_particular_configuration(ContainerInterface $container)
+    {
+        $container->get('name')->shouldBeCalled();
+        $this->getConfiguration('name');
     }
 }
