@@ -1,0 +1,12 @@
+services:
+    phpcs:
+        class: GrumPHP\Configuration\Phpcs
+        calls:
+            - [setStandard, ["%phpcs.standard%"]]
+
+    filesystem:
+        class: Symfony\Component\Filesystem\Filesystem
+
+    process_builder:
+        class: Symfony\Component\Process\ProcessBuilder
+        factory: [Symfony\Component\Process\ProcessBuilder, create]
