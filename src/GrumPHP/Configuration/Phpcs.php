@@ -2,22 +2,15 @@
 
 namespace GrumPHP\Configuration;
 
-use Zend\Stdlib\AbstractOptions;
-
 /**
  * Phpcs configuration
  */
-class Phpcs extends AbstractOptions implements ConfigurationInterface
+class Phpcs extends AbstractConfiguration
 {
     /**
      * @var string
      */
     protected $standard;
-
-    /**
-     * @var string
-     */
-    protected $taskClass;
 
     /**
      * @return string
@@ -35,29 +28,4 @@ class Phpcs extends AbstractOptions implements ConfigurationInterface
         // TODO: add validation of standard
         $this->standard = $standard;
     }
-
-    /**
-     * @return string
-     */
-    public function getTaskClass()
-    {
-        return $this->taskClass;
-    }
-
-    /**
-     * @param string $taskClass
-     */
-    public function setTaskClass($taskClass)
-    {
-        $this->taskClass = $taskClass;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildTaskInstance(GrumPHP $grumPHP)
-    {
-        return new $this->taskClass($grumPHP);
-    }
-
 }

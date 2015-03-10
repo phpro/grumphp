@@ -3,6 +3,6 @@ tasks:
         standard: "PSR2"
     phpspec: ~
 
-bin_dir: "./bin"
+bin_dir: "./vendor/bin"
 base_dir: "."
 git_dir: "."

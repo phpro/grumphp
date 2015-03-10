@@ -6,7 +6,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ExternalCommand implements LocatorInterface
 {
-
     /**
      * @var string
      */
@@ -18,10 +17,10 @@ class ExternalCommand implements LocatorInterface
     protected $binDir;
 
     /**
-     * @param        $baseDir
+     * @param string $baseDir
      * @param string $binDir
      */
-    public function __construct($baseDir, $binDir = 'vendor/bin')
+    public function __construct($baseDir, $binDir)
     {
         $this->baseDir = $baseDir;
         $this->binDir = $binDir;
@@ -35,7 +34,7 @@ class ExternalCommand implements LocatorInterface
     public function locate($command = '')
     {
         $filesystem = new Filesystem();
-        $location = $this->baseDir . DIRECTORY_SEPARATOR . $this->binDir . DIRECTORY_SEPARATOR . $command;
+        $location = $this->binDir . DIRECTORY_SEPARATOR . $command;
 
         if (!$filesystem->exists($location)) {
             throw new \RuntimeException(sprintf('The executable for %s could not be found at: %s', $command, $location));

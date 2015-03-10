@@ -4,12 +4,14 @@ namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Locator\ChangedFiles;
+use GrumPHP\Locator\LocatorInterface;
 use GrumPHP\TaskManager;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\ProcessBuilder;
 
 /**
  * This command runs the git pre-commit hook.
@@ -30,15 +32,36 @@ class PreCommitCommand extends Command
     protected $taskManager;
 
     /**
+     * @var LocatorInterface
+     */
+    protected $changedFilesLocator;
+
+    /**
+     * @var LocatorInterface
+     */
+    protected $externalCommandLocator;
+
+    /**
+     * @var ProcessBuilder
+     */
+    protected $processBuilder;
+
+    /**
      * @param GrumPHP $grumPHP
      * @param TaskManager $taskManager
+     * @param LocatorInterface $changedFilesLocator
+     * @param LocatorInterface $externalCommandLocator
+     * @param ProcessBuilder $processBuilder
      */
-    public function __construct(GrumPHP $grumPHP, TaskManager $taskManager)
+    public function __construct(GrumPHP $grumPHP, TaskManager $taskManager, LocatorInterface $changedFilesLocator, LocatorInterface $externalCommandLocator, ProcessBuilder $processBuilder)
     {
         parent::__construct();
 
         $this->grumPHP = $grumPHP;
         $this->taskManager = $taskManager;
+        $this->changedFilesLocator = $changedFilesLocator;
+        $this->externalCommandLocator = $externalCommandLocator;
+        $this->processBuilder = $processBuilder;
     }
 
     /**
@@ -67,14 +90,13 @@ class PreCommitCommand extends Command
             }
 
             $configuration = $this->grumPHP->getConfiguration($taskName);
-            $task = $configuration->buildTaskInstance($this->grumPHP);
+            $task = $configuration->buildTaskInstance($this->grumPHP, $this->externalCommandLocator, $this->processBuilder);
 
             $this->taskManager->addTask($task);
         }
 
         try {
-            $files = $this->getCommittedFiles($this->grumPHP->getGitDir());
-            $this->taskManager->run($files);
+            $this->taskManager->run($this->getCommittedFiles());
         } catch (\Exception $e) {
             $output->writeln('<fg=red>' . $this->getAsciiResource('failed') . '</fg=red>');
             $output->writeln('<fg=red>' . $e->getMessage() . '</fg=red>');
@@ -88,14 +110,11 @@ class PreCommitCommand extends Command
     }
 
     /**
-     * @param $gitDir
-     *
      * @return array
      */
-    protected function getCommittedFiles($gitDir)
+    protected function getCommittedFiles()
     {
-        $locator = new ChangedFiles($gitDir);
-        return $locator->locate(ChangedFiles::PATTERN_PHP);
+        return $this->changedFilesLocator->locate(ChangedFiles::PATTERN_PHP);
     }
 
     /**

@@ -8,3 +8,11 @@ services:
 
     task_manager:
         class: GrumPHP\TaskManager
+
+    locator.external_command:
+        class: GrumPHP\Locator\ExternalCommand
+        arguments: [%base_dir%, %bin_dir%]
+
+    locator.changed_files:
+        class: GrumPHP\Locator\ChangedFiles
+        arguments: [%git_dir%]
