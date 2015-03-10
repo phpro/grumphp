@@ -31,29 +31,6 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     {
         $this->composer = $composer;
         $this->io = $io;
-
-        /*
-         * TODO: check if tools are available
-         *
-         * foreach (array_keys($grumphp) as $tool) {
-            if (file_exists($binDir . '/' . $tool)) {
-                $this->io->write('Would create hook for ' . $tool);
-            } else {
-                $this->io->writeError($tool . ' binary not found');
-            }
-        }*/
-    }
-
-    /**
-     * @param Composer $composer
-     *
-     * @return GrumPHP
-     */
-    protected function getConfig(Composer $composer)
-    {
-        $config = $composer->getConfig();
-        $grumphp = $config->get('grumphp');
-        return new GrumPHP($grumphp);
     }
 
     /**
@@ -73,12 +50,10 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     public function initializeGitHooks(Event $event)
     {
         $composer = $event->getComposer();
-        $config = $this->getConfig($composer);
         $binDir = $composer->getConfig()->get('bin-dir');
         $executable = $binDir . '/grumphp';
 
         $builder = new ProcessBuilder(array('php', $executable, 'git:init'));
-        $builder->add('--base-dir=' . $config->getBaseDir());
         $process = $builder->getProcess();
 
         $process->run();
