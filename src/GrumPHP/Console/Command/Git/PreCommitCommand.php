@@ -127,6 +127,6 @@ class PreCommitCommand extends Command
      */
     protected function getAsciiResource($name)
     {
-        return file_get_contents(sprintf('%s/resources/ascii/%s.txt', $this->grumPHP->getBaseDir(), $name));
+        return file_get_contents(sprintf(__DIR__ . '/../../../../../resources/ascii/%s.txt', $name));
     }
 }

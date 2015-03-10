@@ -52,7 +52,7 @@ final class ContainerFactory
         $options = array_merge(self::$defaults, $options);
 
         $container = new ContainerBuilder();
-        $loader = new YamlFileLoader($container, new FileLocator($options['base_dir'] . '/resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../../resources/config'));
         $loader->load('services.yml');
 
         $container->setParameter('base_dir', $options['base_dir']);

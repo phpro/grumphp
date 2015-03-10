@@ -75,7 +75,7 @@ class InitCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $gitHooksPath = $this->grumPHP->getGitDir() . '/.git/hooks/';
-        $resourceHooksPath = $this->grumPHP->getBaseDir() . '/resources/hooks/';
+        $resourceHooksPath = __DIR__ . '/../../../../../resources/hooks/';
 
         foreach (self::$hooks as $hook) {
             $gitHook = $gitHooksPath . $hook;
