@@ -3,17 +3,14 @@
 namespace GrumPHP\Task;
 
 /**
- * Class Phpspec
- *
- * @package GrumPHP\Task
+ * Phpspec task
  */
 class Phpspec extends AbstractExternalTask
 {
-
     const COMMAND_NAME = 'phpspec';
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getCommandLocation()
     {
@@ -21,7 +18,7 @@ class Phpspec extends AbstractExternalTask
     }
 
     /**
-     * @param array $files
+     * {@inheritdoc}
      */
     public function run(array $files)
     {
@@ -41,5 +38,4 @@ class Phpspec extends AbstractExternalTask
             throw new \RuntimeException($process->getOutput());
         }
     }
-
 }

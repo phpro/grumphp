@@ -18,9 +18,9 @@ class ChangedFiles implements LocatorInterface
     const PATTERN_PHP = '/(.*)\.php$/i';
 
     /**
-     * @var string
+     * @var Repository
      */
-    protected $gitDir;
+    protected $repository;
 
     /**
      * @var Status
@@ -28,11 +28,12 @@ class ChangedFiles implements LocatorInterface
     protected $status;
 
     /**
-     * @param $gitDir
+     * @param Repository $repository
      */
-    public function __construct($gitDir)
+    public function __construct(Repository $repository)
     {
-        $this->gitDir = $gitDir;
+        $this->repository = $repository;
+        $this->status = $this->repository->getStatus();
     }
 
     /**
@@ -40,29 +41,27 @@ class ChangedFiles implements LocatorInterface
      */
     public function getStatus()
     {
-        if (!$this->status) {
-            $repository = Repository::open($this->gitDir);
-            $this->status = $repository->getStatus();
-        }
         return $this->status;
     }
 
     /**
      * @param $pattern
      *
-     * @return array|void
+     * @return array
      */
     public function locate($pattern = self::PATTERN_ALL)
     {
         $status = $this->getStatus();
         $status->all();
 
+        $ignoredStatuses = array(StatusFile::UNTRACKED, StatusFile::DELETED);
+
         /** @var StatusFile $file */
         $files = array();
         foreach ($status->all() as $file) {
 
             // Skip untracked and deleted files:
-            if (in_array($file->getType(), [StatusFile::UNTRACKED, StatusFile::DELETED])) {
+            if (in_array($file->getType(), $ignoredStatuses)) {
                 continue;
             }
 

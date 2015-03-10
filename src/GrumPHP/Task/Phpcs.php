@@ -3,17 +3,14 @@
 namespace GrumPHP\Task;
 
 /**
- * Class Phpcs
- *
- * @package GrumPHP\Task
+ * Phpcs task
  */
 class Phpcs extends AbstractExternalTask
 {
-
     const COMMAND_NAME = 'phpcs';
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getCommandLocation()
     {
@@ -21,7 +18,7 @@ class Phpcs extends AbstractExternalTask
     }
 
     /**
-     * @param array $files
+     * {@inheritdoc}
      */
     public function run(array $files)
     {
@@ -48,5 +45,4 @@ class Phpcs extends AbstractExternalTask
             }
         }
     }
-
 }

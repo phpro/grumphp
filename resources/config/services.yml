@@ -6,13 +6,17 @@ services:
         class: Symfony\Component\Process\ProcessBuilder
         prototype: true
 
+    git.repository:
+        class: GitElephant\Repository
+        arguments: [%git_dir%]
+
     task_manager:
         class: GrumPHP\TaskManager
 
     locator.external_command:
         class: GrumPHP\Locator\ExternalCommand
-        arguments: [%base_dir%, %bin_dir%]
+        arguments: [%base_dir%, %bin_dir%, @filesystem]
 
     locator.changed_files:
         class: GrumPHP\Locator\ChangedFiles
-        arguments: [%git_dir%]
+        arguments: [@git.repository]
