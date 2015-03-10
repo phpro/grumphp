@@ -3,6 +3,7 @@
 namespace GrumPHP;
 
 use GrumPHP\Exception\FailureException;
+use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\TaskInterface;
 
 /**
@@ -55,14 +56,14 @@ class TaskRunner
         foreach ($this->getTasks() as $task) {
             try {
                 $task->run($files);
-            } catch (\RuntimeException $e) {
+            } catch (RuntimeException $e) {
                 $failures = true;
                 $messages[] = $e->getMessage();
             }
         }
 
         if ($failures) {
-            throw new FailureException(implode("\n", $messages));
+            throw new FailureException(implode(PHP_EOL, $messages));
         }
     }
 }
