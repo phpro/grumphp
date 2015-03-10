@@ -22,26 +22,22 @@ class Phpcs extends AbstractExternalTask
      */
     public function run(array $files)
     {
+        $this->processBuilder->setArguments(array(
+            'php',
+            $this->getCommandLocation(),
+            '--standard=' . $this->getConfiguration()->getStandard(),
+        ));
+
         foreach ($files as $file) {
-            $suffix = substr($file, strlen($file) - 8);
+            $this->processBuilder->add($file);
+        }
 
-            if ('Spec.php' === $suffix || 'Test.php' === $suffix) {
-                continue;
-            }
+        $process = $this->processBuilder->getProcess();
+        $process->run();
 
-            $this->processBuilder->setArguments(array(
-                'php',
-                $this->getCommandLocation(),
-                '--standard=' . $this->getConfiguration()->getStandard(),
-                $file,
-            ));
-
-            $process = $this->processBuilder->getProcess();
-            $process->run();
-
-            if (!$process->isSuccessful()) {
-                throw new \RuntimeException($process->getOutput());
-            }
+        if (!$process->isSuccessful()) {
+            throw new \RuntimeException($process->getOutput());
         }
     }
+
 }
