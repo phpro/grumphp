@@ -1,6 +1,7 @@
 <?php
 
 namespace GrumPHP\Task;
+
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Locator\ExternalCommand;
 use Symfony\Component\Process\ProcessBuilder;

@@ -11,9 +11,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
- * Class InitCommand
- *
- * @package GrumPHP\Console\Command
+ * This command is responsible for enabling all the configured hooks.
  */
 class InitCommand extends Command
 {
@@ -76,9 +74,12 @@ class InitCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $gitHooksPath = $this->grumPHP->getGitDir() . '/.git/hooks/';
+        $resourceHooksPath = $this->grumPHP->getBaseDir() . '/resources/hooks/';
+
         foreach (self::$hooks as $hook) {
-            $gitHook = $this->grumPHP->getGitDir() . '/.git/hooks/' . $hook;
-            $hookTemplate = GRUMPHP_PATH . '/resources/hooks/' . $hook;
+            $gitHook = $gitHooksPath . $hook;
+            $hookTemplate = $resourceHooksPath . $hook;
 
             if (!$this->filesystem->exists($hookTemplate)) {
                 throw new \RuntimeException(sprintf('Could not find hook template for %s at %s.', $hook, $hookTemplate));

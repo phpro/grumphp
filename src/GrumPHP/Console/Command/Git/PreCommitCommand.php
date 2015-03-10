@@ -30,7 +30,7 @@ class PreCommitCommand extends Command
      */
     public function __construct(GrumPHP $grumPHP)
     {
-        parent::__construct(null);
+        parent::__construct();
 
         $this->grumPHP = $grumPHP;
     }
@@ -58,7 +58,7 @@ class PreCommitCommand extends Command
         $taskManager = new TaskManager($this->grumPHP);
 
         try {
-            $files = $this->getCommitedFiles($this->grumPHP->getGitDir());
+            $files = $this->getCommittedFiles($this->grumPHP->getGitDir());
             $taskManager->run($files);
         } catch (\Exception $e) {
             $output->writeln('<fg=red>' . $this->getAsciiResource('failed') . '</fg=red>');
@@ -75,7 +75,7 @@ class PreCommitCommand extends Command
      *
      * @return array
      */
-    protected function getCommitedFiles($gitDir)
+    protected function getCommittedFiles($gitDir)
     {
         $locator = new ChangedFiles($gitDir);
         return $locator->locate(ChangedFiles::PATTERN_PHP);

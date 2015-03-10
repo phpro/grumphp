@@ -30,7 +30,6 @@ final class ContainerFactory
     public static function buildFromConfiguration($path)
     {
         $filesystem = new Filesystem();
-
         if (!$filesystem->exists($path)) {
             throw new RuntimeException(sprintf('The configuration file could not be found at "%s".', $path));
         }
@@ -48,7 +47,6 @@ final class ContainerFactory
         $options = array_merge(self::$defaults, $options);
 
         $container = new ContainerBuilder();
-
         $loader = new YamlFileLoader($container, new FileLocator($options['base_dir'] . '/resources/config'));
         $loader->load('services.yml');
 
