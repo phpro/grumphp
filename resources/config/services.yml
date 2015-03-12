@@ -15,7 +15,7 @@ services:
 
     locator.external_command:
         class: GrumPHP\Locator\ExternalCommand
-        arguments: [%base_dir%, %bin_dir%, @filesystem]
+        arguments: [%bin_dir%, @filesystem]
 
     locator.changed_files:
         class: GrumPHP\Locator\ChangedFiles
