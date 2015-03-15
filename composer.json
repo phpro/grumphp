@@ -13,7 +13,8 @@
         "symfony/dependency-injection": "~2.6",
         "symfony/config": "~2.6",
         "cypresslab/gitelephant": "~1.0",
-        "zendframework/zend-stdlib": "~2.3"
+        "zendframework/zend-stdlib": "~2.3",
+        "roave/security-advisories": "dev-master@dev"
     },
     "require-dev": {
         "composer/composer": "~1.0@dev",
@@ -21,7 +22,8 @@
         "squizlabs/php_codesniffer": "~2.3"
     },
     "suggest": {
-      "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code."
+      "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",
+      "phpspec/phpspec": "Lets GrumPHP spec your code."
     },
     "authors": [
         {
