@@ -40,7 +40,7 @@ services:
           - @locator.external_command
           - @process_builder
         tags:
-          - {name: grumphp.task, command: phpcs}
+          - {name: grumphp.task, config: phpcs}
 
     task.phpspec:
         class: GrumPHP\Task\Phpspec
@@ -50,4 +50,4 @@ services:
           - @locator.external_command
           - @process_builder
         tags:
-          - {name: grumphp.task, command: phpspec}
+          - {name: grumphp.task, config: phpspec}

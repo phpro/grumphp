@@ -24,7 +24,7 @@ class TaskCompilerPass implements CompilerPassInterface
 
         foreach ($taggedServices as $id => $tags) {
 
-            $configKey = $this->locateCommandKey($tags);
+            $configKey = $this->locateConfigKey($tags);
             if (!array_key_exists($configKey, $configuration)) {
                 continue;
             }
@@ -38,11 +38,11 @@ class TaskCompilerPass implements CompilerPassInterface
      *
      * @return null|string
      */
-    protected function locateCommandKey($tags)
+    protected function locateConfigKey($tags)
     {
         foreach ($tags as $data) {
-            if (isset($data['command'])) {
-                return $data['command'];
+            if (isset($data['config'])) {
+                return $data['config'];
             }
         }
         return null;
