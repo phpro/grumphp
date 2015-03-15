@@ -52,8 +52,10 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     public function initializeGitHooks(Event $event)
     {
         $composer = $event->getComposer();
+        $package = $composer->getPackage();
         $config = $composer->getConfig();
-        $binDir = $config->get('name') === self::PACKAGE_NAME ? 'bin' : $composer->getConfig()->get('bin-dir');
+
+        $binDir = ($package->getName() === self::PACKAGE_NAME) ? 'bin' : $config->get('bin-dir');
         $executable = $binDir . '/grumphp';
 
         $builder = new ProcessBuilder(array('php', $executable, 'git:init'));
