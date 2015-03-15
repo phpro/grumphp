@@ -5,7 +5,6 @@ namespace GrumPHP\Console\Command\Git;
 use GrumPHP\Configuration\GrumPHP;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ProcessBuilder;
@@ -41,6 +40,11 @@ class InitCommand extends Command
     protected $processBuilder;
 
     /**
+     * @var InputInterface
+     */
+    protected $input;
+
+    /**
      * @param GrumPHP $grumPHP
      * @param Filesystem $filesystem
      * @param ProcessBuilder $processBuilder
@@ -59,11 +63,7 @@ class InitCommand extends Command
      */
     protected function configure()
     {
-        $this
-            ->setName(self::COMMAND_NAME)
-            ->setDefinition(array(
-                new InputOption('base-dir', 'b', InputOption::VALUE_OPTIONAL, '.', getcwd()),
-            ));
+        $this->setName(self::COMMAND_NAME);
     }
 
     /**
@@ -74,6 +74,7 @@ class InitCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->input = $input;
         $gitHooksPath = $this->grumPHP->getGitDir() . '/.git/hooks/';
         $resourceHooksPath = __DIR__ . '/../../../../../resources/hooks/';
 
@@ -118,7 +119,7 @@ class InitCommand extends Command
             'php',
             $this->grumPHP->getBinDir() . '/grumphp',
             $command,
-            '--base-dir=' . $this->grumPHP->getBaseDir(),
+            '--config=' . $this->input->getOption('config'),
         ));
 
         return $this->processBuilder->getProcess()->getCommandLine();

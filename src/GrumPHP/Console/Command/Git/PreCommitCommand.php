@@ -9,7 +9,6 @@ use GrumPHP\Locator\LocatorInterface;
 use GrumPHP\Runner\TaskRunner;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -54,11 +53,7 @@ class PreCommitCommand extends Command
      */
     protected function configure()
     {
-        $this
-            ->setName(self::COMMAND_NAME)
-            ->setDefinition(array(
-                new InputOption('base-dir', 'b', InputOption::VALUE_OPTIONAL, '.', getcwd()),
-            ));
+        $this->setName(self::COMMAND_NAME);
     }
 
     /**
