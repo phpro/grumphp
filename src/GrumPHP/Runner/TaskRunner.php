@@ -1,6 +1,6 @@
 <?php
 
-namespace GrumPHP;
+namespace GrumPHP\Runner;
 
 use GrumPHP\Exception\FailureException;
 use GrumPHP\Exception\RuntimeException;
@@ -9,7 +9,7 @@ use GrumPHP\Task\TaskInterface;
 /**
  * Class TaskRunner
  *
- * @package GrumPHP
+ * @package GrumPHP\Runner
  */
 class TaskRunner
 {

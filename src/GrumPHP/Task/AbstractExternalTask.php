@@ -16,7 +16,7 @@ abstract class AbstractExternalTask implements ExternalTaskInterface
     protected $grumPHP;
 
     /**
-     * @var ConfigurationInterface
+     * @var array
      */
     protected $configuration;
 
@@ -32,14 +32,14 @@ abstract class AbstractExternalTask implements ExternalTaskInterface
 
     /**
      * @param GrumPHP $grumPHP
-     * @param ConfigurationInterface $configuration
+     * @param array $configuration
      * @param LocatorInterface $externalCommandLocator
      * @param ProcessBuilder $processBuilder
      */
-    public function __construct(GrumPHP $grumPHP, ConfigurationInterface $configuration, LocatorInterface $externalCommandLocator, ProcessBuilder $processBuilder)
+    public function __construct(GrumPHP $grumPHP, array $configuration, LocatorInterface $externalCommandLocator, ProcessBuilder $processBuilder)
     {
         $this->grumPHP = $grumPHP;
-        $this->configuration = $configuration;
+        $this->configuration = array_merge($this->getDefaultConfiguration(), $configuration);
         $this->externalCommandLocator = $externalCommandLocator;
         $this->processBuilder = $processBuilder;
     }
@@ -51,4 +51,9 @@ abstract class AbstractExternalTask implements ExternalTaskInterface
     {
         return $this->configuration;
     }
+
+    /**
+     * @return array
+     */
+    abstract protected function getDefaultConfiguration();
 }

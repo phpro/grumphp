@@ -12,6 +12,16 @@ class Phpcs extends AbstractExternalTask
     const COMMAND_NAME = 'phpcs';
 
     /**
+     * @return array
+     */
+    protected function getDefaultConfiguration()
+    {
+        return array(
+            'standard' => 'PSR2',
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getCommandLocation()
@@ -28,10 +38,11 @@ class Phpcs extends AbstractExternalTask
             return;
         }
 
+        $config = $this->getConfiguration();
         $this->processBuilder->setArguments(array(
             'php',
             $this->getCommandLocation(),
-            '--standard=' . $this->getConfiguration()->getStandard(),
+            '--standard=' . $config['standard'],
             '--warning-severity=0', // TODO: caring about warnings should be configurable, but for now it's just annoying
         ));
 

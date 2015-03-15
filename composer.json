@@ -7,6 +7,7 @@
         "php": ">=5.3",
         "composer-plugin-api": "~1.0",
         "symfony/console": "~2.6",
+        "symfony/expression-language": "~2.6",
         "symfony/process": "~2.6",
         "symfony/filesystem": "~2.6",
         "symfony/yaml": "~2.6",

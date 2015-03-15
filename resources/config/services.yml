@@ -1,4 +1,15 @@
+parameters:
+  base_dir: .
+  bin_dir: ./vendor.bin
+  git_dir: .
+  tasks: ~
+
 services:
+
+    config:
+        class: GrumPHP\Configuration\GrumPHP
+        arguments: [@service_container]
+
     filesystem:
         class: Symfony\Component\Filesystem\Filesystem
 
@@ -11,7 +22,7 @@ services:
         arguments: [%git_dir%]
 
     task_runner:
-        class: GrumPHP\TaskRunner
+        class: GrumPHP\Runner\TaskRunner
 
     locator.external_command:
         class: GrumPHP\Locator\ExternalCommand
@@ -20,3 +31,23 @@ services:
     locator.changed_files:
         class: GrumPHP\Locator\ChangedFiles
         arguments: [@git.repository]
+
+    task.phpcs:
+        class: GrumPHP\Task\Phpcs
+        arguments:
+          - @config
+          - "@=parameter('tasks')['phpcs'] ? parameter('tasks')['phpcs'] : []"
+          - @locator.external_command
+          - @process_builder
+        tags:
+          - {name: grumphp.task, command: phpcs}
+
+    task.phpspec:
+        class: GrumPHP\Task\Phpspec
+        arguments:
+          - @config
+          - "@=parameter('tasks')['phpspec'] ? parameter('tasks')['phpspec'] : []"
+          - @locator.external_command
+          - @process_builder
+        tags:
+          - {name: grumphp.task, command: phpspec}

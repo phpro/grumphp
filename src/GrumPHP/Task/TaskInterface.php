@@ -2,8 +2,6 @@
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Configuration\ConfigurationInterface;
-
 /**
  * Interface TaskInterface
  *
@@ -12,7 +10,7 @@ use GrumPHP\Configuration\ConfigurationInterface;
 interface TaskInterface
 {
     /**
-     * @return ConfigurationInterface
+     * @return array
      */
     public function getConfiguration();
 

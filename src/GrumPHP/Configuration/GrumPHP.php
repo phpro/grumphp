@@ -47,30 +47,16 @@ class GrumPHP
     }
 
     /**
+     * @param string|null $taskName
+     *
      * @return array
      */
-    public function getActiveTasks()
+    public function getTaskConfig($taskName = null)
     {
-        return $this->container->getParameter('active_tasks');
+        if (!$taskName) {
+            return $this->container->getParameter('tasks');
+        }
+        return $this->container->getParameter('tasks.' . $taskName);
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function hasConfiguration($name)
-    {
-        return $this->container->has($name);
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return ConfigurationInterface
-     */
-    public function getConfiguration($name)
-    {
-        return $this->container->get($name);
-    }
 }

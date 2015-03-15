@@ -6,13 +6,11 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Exception\ExceptionInterface;
 use GrumPHP\Locator\ChangedFiles;
 use GrumPHP\Locator\LocatorInterface;
-use GrumPHP\TaskRunner;
-use RuntimeException;
+use GrumPHP\Runner\TaskRunner;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\ProcessBuilder;
 
 /**
  * This command runs the git pre-commit hook.
@@ -38,31 +36,17 @@ class PreCommitCommand extends Command
     protected $changedFilesLocator;
 
     /**
-     * @var LocatorInterface
-     */
-    protected $externalCommandLocator;
-
-    /**
-     * @var ProcessBuilder
-     */
-    protected $processBuilder;
-
-    /**
      * @param GrumPHP $grumPHP
      * @param TaskRunner $taskRunner
      * @param LocatorInterface $changedFilesLocator
-     * @param LocatorInterface $externalCommandLocator
-     * @param ProcessBuilder $processBuilder
      */
-    public function __construct(GrumPHP $grumPHP, TaskRunner $taskRunner, LocatorInterface $changedFilesLocator, LocatorInterface $externalCommandLocator, ProcessBuilder $processBuilder)
+    public function __construct(GrumPHP $grumPHP, TaskRunner $taskRunner, LocatorInterface $changedFilesLocator)
     {
         parent::__construct();
 
         $this->grumPHP = $grumPHP;
         $this->taskRunner = $taskRunner;
         $this->changedFilesLocator = $changedFilesLocator;
-        $this->externalCommandLocator = $externalCommandLocator;
-        $this->processBuilder = $processBuilder;
     }
 
     /**
@@ -85,17 +69,6 @@ class PreCommitCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        foreach ($this->grumPHP->getActiveTasks() as $taskName) {
-            if (!$this->grumPHP->hasConfiguration($taskName)) {
-                throw new RuntimeException(sprintf('The "%s" task is active, but its configuration was not found.', $taskName));
-            }
-
-            $configuration = $this->grumPHP->getConfiguration($taskName);
-            $task = $configuration->buildTaskInstance($this->grumPHP, $this->externalCommandLocator, $this->processBuilder);
-
-            $this->taskRunner->addTask($task);
-        }
-
         try {
             $this->taskRunner->run($this->getCommittedFiles());
         } catch (ExceptionInterface $e) {

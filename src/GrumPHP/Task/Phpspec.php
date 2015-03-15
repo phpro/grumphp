@@ -20,6 +20,14 @@ class Phpspec extends AbstractExternalTask
     }
 
     /**
+     * @return array
+     */
+    protected function getDefaultConfiguration()
+    {
+        return array();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function run(array $files)
