@@ -13,6 +13,9 @@ use Symfony\Component\Process\ProcessBuilder;
 
 class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 {
+
+    const PACKAGE_NAME = 'phpro/grumphp';
+
     /**
      * @var Composer
      */
@@ -49,7 +52,8 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     public function initializeGitHooks(Event $event)
     {
         $composer = $event->getComposer();
-        $binDir = $composer->getConfig()->get('bin-dir');
+        $config = $composer->getConfig();
+        $binDir = $config->get('name') === self::PACKAGE_NAME ? 'bin' : $composer->getConfig()->get('bin-dir');
         $executable = $binDir . '/grumphp';
 
         $builder = new ProcessBuilder(array('php', $executable, 'git:init'));
