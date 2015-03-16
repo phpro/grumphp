@@ -13,15 +13,16 @@
         "symfony/yaml": "~2.6",
         "symfony/dependency-injection": "~2.6",
         "symfony/config": "~2.6",
-        "cypresslab/gitelephant": "~1.0",
-        "roave/security-advisories": "dev-master@dev"
+        "cypresslab/gitelephant": "~1.0"
     },
     "require-dev": {
         "composer/composer": "~1.0@dev",
         "phpspec/phpspec": "~2.1",
-        "squizlabs/php_codesniffer": "~2.3"
+        "squizlabs/php_codesniffer": "~2.3",
+        "roave/security-advisories": "dev-master@dev"
     },
     "suggest": {
+      "roave/security-advisories": "Lets GrumPHP be sure that there are no known security issues.",
       "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",
       "phpspec/phpspec": "Lets GrumPHP spec your code."
     },
