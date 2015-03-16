@@ -2,7 +2,6 @@
 
 namespace spec\GrumPHP\Task;
 
-use GrumPHP\Configuration\ConfigurationInterface;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Locator\LocatorInterface;
 use PhpSpec\ObjectBehavior;
@@ -12,9 +11,9 @@ use Symfony\Component\Process\ProcessBuilder;
 
 class PhpspecSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, ConfigurationInterface $configuration, LocatorInterface $externalCommandLocator, ProcessBuilder $processBuilder)
+    function let(GrumPHP $grumPHP, LocatorInterface $externalCommandLocator, ProcessBuilder $processBuilder)
     {
-        $this->beConstructedWith($grumPHP, $configuration, $externalCommandLocator, $processBuilder);
+        $this->beConstructedWith($grumPHP, array(), $externalCommandLocator, $processBuilder);
     }
 
     function it_is_initializable()

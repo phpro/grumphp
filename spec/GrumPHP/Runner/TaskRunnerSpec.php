@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\GrumPHP;
+namespace spec\GrumPHP\Runner;
 
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
@@ -10,7 +10,7 @@ class TaskRunnerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\TaskRunner');
+        $this->shouldHaveType('GrumPHP\Runner\TaskRunner');
     }
 
     function it_holds_tasks(TaskInterface $task1, TaskInterface $task2)
