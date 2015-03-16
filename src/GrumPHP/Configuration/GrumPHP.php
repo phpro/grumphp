@@ -25,14 +25,6 @@ class GrumPHP
     /**
      * @return string
      */
-    public function getBaseDir()
-    {
-        return $this->container->getParameter('base_dir');
-    }
-
-    /**
-     * @return string
-     */
     public function getBinDir()
     {
         return $this->container->getParameter('bin_dir');
@@ -53,10 +45,16 @@ class GrumPHP
      */
     public function getTaskConfig($taskName = null)
     {
+        $tasksConfig = $this->container->getParameter('tasks');
         if (!$taskName) {
-            return $this->container->getParameter('tasks');
+            return $tasksConfig;
         }
-        return $this->container->getParameter('tasks.' . $taskName);
+
+        if (!array_key_exists($taskName, $tasksConfig)) {
+            return array();
+        }
+
+        return $tasksConfig[$taskName];
     }
 
 }

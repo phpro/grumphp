@@ -1,5 +1,4 @@
 parameters:
-  base_dir: .
   bin_dir: ./vendor/bin
   git_dir: .
   tasks: ~
