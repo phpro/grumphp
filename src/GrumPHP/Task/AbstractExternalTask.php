@@ -51,8 +51,4 @@ abstract class AbstractExternalTask implements ExternalTaskInterface
         return $this->configuration;
     }
 
-    /**
-     * @return array
-     */
-    abstract protected function getDefaultConfiguration();
 }

@@ -18,33 +18,27 @@ class GrumPHPSpec extends ObjectBehavior
         $this->shouldHaveType('GrumPHP\Configuration\GrumPHP');
     }
 
-    function it_knows_the_base_dir(ContainerInterface $container)
-    {
-        $container->getParameter('base_dir')->shouldBeCalled();
-        $this->getBaseDir();
-    }
-
     function it_knows_the_bin_dir(ContainerInterface $container)
     {
-        $container->getParameter('bin_dir')->shouldBeCalled();
-        $this->getBinDir();
+        $container->getParameter('bin_dir')->willReturn('./vendor/bin');
+        $this->getBinDir()->shouldReturn('./vendor/bin');
     }
 
     function it_knows_the_git_dir(ContainerInterface $container)
     {
-        $container->getParameter('git_dir')->shouldBeCalled();
-        $this->getGitDir();
+        $container->getParameter('git_dir')->willReturn('.');
+        $this->getGitDir()->shouldReturn('.');
     }
 
     function it_provides_a_list_of_active_task_configurations(ContainerInterface $container)
     {
-        $container->getParameter('tasks')->shouldBeCalled();
-        $this->getTaskConfig();
+        $container->getParameter('tasks')->willReturn([]);
+        $this->getTaskConfig()->shouldReturn([]);
     }
 
     function it_can_return_a_particular_task_configuration(ContainerInterface $container)
     {
-        $container->getParameter('tasks.name')->shouldBeCalled();
-        $this->getTaskConfig('name');
+        $container->getParameter('tasks')->willReturn(['name' => []]);
+        $this->getTaskConfig('name')->shouldReturn(array());
     }
 }

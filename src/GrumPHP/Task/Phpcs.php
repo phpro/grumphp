@@ -14,7 +14,7 @@ class Phpcs extends AbstractExternalTask
     /**
      * @return array
      */
-    protected function getDefaultConfiguration()
+    public function getDefaultConfiguration()
     {
         return array(
             'standard' => 'PSR2',
