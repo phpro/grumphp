@@ -36,21 +36,15 @@ class GrumPHPSpec extends ObjectBehavior
         $this->getGitDir();
     }
 
-    function it_provides_a_list_of_active_tasks(ContainerInterface $container)
+    function it_provides_a_list_of_active_task_configurations(ContainerInterface $container)
     {
-        $container->getParameter('active_tasks')->shouldBeCalled();
-        $this->getActiveTasks();
+        $container->getParameter('tasks')->shouldBeCalled();
+        $this->getTaskConfig();
     }
 
-    function it_can_check_if_a_particular_configuration_exists(ContainerInterface $container)
+    function it_can_return_a_particular_task_configuration(ContainerInterface $container)
     {
-        $container->has('name')->shouldBeCalled();
-        $this->hasConfiguration('name');
-    }
-
-    function it_can_return_a_particular_configuration(ContainerInterface $container)
-    {
-        $container->get('name')->shouldBeCalled();
-        $this->getConfiguration('name');
+        $container->getParameter('tasks.name')->shouldBeCalled();
+        $this->getTaskConfig('name');
     }
 }

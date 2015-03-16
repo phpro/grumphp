@@ -3,7 +3,6 @@
 namespace spec\GrumPHP\Task;
 
 use GrumPHP\Configuration\GrumPHP;
-use GrumPHP\Configuration\Phpcs;
 use GrumPHP\Locator\LocatorInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -12,9 +11,9 @@ use Symfony\Component\Process\ProcessBuilder;
 
 class PhpcsSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, Phpcs $configuration, LocatorInterface $externalCommandLocator, ProcessBuilder $processBuilder)
+    function let(GrumPHP $grumPHP, LocatorInterface $externalCommandLocator, ProcessBuilder $processBuilder)
     {
-        $this->beConstructedWith($grumPHP, $configuration, $externalCommandLocator, $processBuilder);
+        $this->beConstructedWith($grumPHP, array(), $externalCommandLocator, $processBuilder);
     }
 
     function it_is_initializable()
@@ -33,9 +32,8 @@ class PhpcsSpec extends ObjectBehavior
         $this->getCommandLocation();
     }
 
-    function it_does_not_do_anything_if_there_are_no_files(Phpcs $configuration, ProcessBuilder $processBuilder)
+    function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder)
     {
-        $configuration->getStandard()->shouldNotBeCalled();
         $processBuilder->add(Argument::any())->shouldNotBeCalled();
         $processBuilder->setArguments(Argument::any())->shouldNotBeCalled();
         $processBuilder->getProcess()->shouldNotBeCalled();
@@ -43,10 +41,8 @@ class PhpcsSpec extends ObjectBehavior
         $this->run(array())->shouldBeNull();
     }
 
-    function it_runs_the_suite(Phpcs $configuration, ProcessBuilder $processBuilder, Process $process)
+    function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process)
     {
-        $configuration->getStandard()->shouldBeCalled();
-
         $processBuilder->add('file1')->shouldBeCalled();
         $processBuilder->add('file2')->shouldBeCalled();
         $processBuilder->setArguments(Argument::type('array'))->shouldBeCalled();
