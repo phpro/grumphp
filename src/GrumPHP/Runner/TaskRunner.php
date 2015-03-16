@@ -4,8 +4,8 @@ namespace GrumPHP\Runner;
 
 use GrumPHP\Exception\FailureException;
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Finder\Finder;
 use GrumPHP\Task\TaskInterface;
-use Symfony\Component\Finder\Finder;
 
 /**
  * Class TaskRunner
@@ -16,9 +16,22 @@ class TaskRunner
 {
 
     /**
+     * @var Finder
+     */
+    protected $finder;
+
+    /**
      * @var array
      */
     protected $tasks = array();
+
+    /**
+     * @param $finder
+     */
+    public function __construct(Finder $finder)
+    {
+        $this->finder = $finder;
+    }
 
     /**
      * @param TaskInterface $task
@@ -45,19 +58,19 @@ class TaskRunner
     }
 
     /**
-     * @param Finder $files
+     * @param array $files
      *
      * @throws FailureException if any of the tasks fail
      */
-    public function run(Finder $files)
+    public function run(array $files)
     {
         $failures = false;
         $messages = array();
 
         foreach ($this->getTasks() as $task) {
             try {
-                $filesCopy = $files->create()->append($files->getIterator());
-                $task->run($filesCopy);
+                $finder = $this->finder->create($files);
+                $task->run($finder);
             } catch (RuntimeException $e) {
                 $failures = true;
                 $messages[] = $e->getMessage();

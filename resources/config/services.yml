@@ -13,8 +13,7 @@ services:
         class: Symfony\Component\Filesystem\Filesystem
 
     finder:
-        class: Symfony\Component\Finder\Finder
-        prototype: true
+        class: GrumPHP\Finder\Finder
 
     process_builder:
         class: Symfony\Component\Process\ProcessBuilder
@@ -26,6 +25,7 @@ services:
 
     task_runner:
         class: GrumPHP\Runner\TaskRunner
+        arguments: [@finder]
 
     locator.external_command:
         class: GrumPHP\Locator\ExternalCommand
@@ -33,7 +33,7 @@ services:
 
     locator.changed_files:
         class: GrumPHP\Locator\ChangedFiles
-        arguments: [@git.repository, @finder]
+        arguments: [@git.repository]
 
     task.phpcs:
         class: GrumPHP\Task\Phpcs

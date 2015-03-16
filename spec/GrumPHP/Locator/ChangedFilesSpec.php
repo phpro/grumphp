@@ -31,16 +31,6 @@ class ChangedFilesSpec extends ObjectBehavior
         $this->getStatus()->shouldEqual($status);
     }
 
-    function it_matches_files_on_pattern(Status $status, StatusFile $file1, StatusFile $file2)
-    {
-        $file1->getName()->willReturn('test');
-        $file1->getType()->willReturn(StatusFile::MODIFIED);
-        $file2->getName()->willReturn('match');
-        $file2->getType()->willReturn(StatusFile::MODIFIED);
-        $status->all()->willReturn(array($file1, $file2));
-        $this->locate('/^match.*/')->shouldEqual(array('match'));
-    }
-
     function it_excludes_untracked_files(Status $status, StatusFile $file1, StatusFile $file2)
     {
         $file1->getName()->willReturn('match1');
@@ -48,7 +38,7 @@ class ChangedFilesSpec extends ObjectBehavior
         $file2->getName()->willReturn('match2');
         $file2->getType()->willReturn(StatusFile::MODIFIED);
         $status->all()->willReturn(array($file1, $file2));
-        $this->locate('/^match.*/')->shouldEqual(array('match2'));
+        $this->locate()->shouldEqual(array('match2'));
     }
 
     function it_excludes_deleted_files(Status $status, StatusFile $file1, StatusFile $file2)
@@ -58,6 +48,6 @@ class ChangedFilesSpec extends ObjectBehavior
         $file2->getName()->willReturn('match2');
         $file2->getType()->willReturn(StatusFile::DELETED);
         $status->all()->willReturn(array($file1, $file2));
-        $this->locate('/^match.*/')->shouldEqual(array('match1'));
+        $this->locate()->shouldEqual(array('match1'));
     }
 }

@@ -2,12 +2,25 @@
 
 namespace spec\GrumPHP\Runner;
 
+use GrumPHP\Finder\Finder;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class TaskRunnerSpec extends ObjectBehavior
 {
+    /**
+     * @var \Symfony\Component\Finder\Finder
+     */
+    protected $finder;
+
+    public function let(Finder $finder)
+    {
+        $this->beConstructedWith($finder);
+        $this->finder = new \Symfony\Component\Finder\Finder();
+        $finder->create(Argument::type('array'))->willReturn($this->finder);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType('GrumPHP\Runner\TaskRunner');
@@ -35,8 +48,8 @@ class TaskRunnerSpec extends ObjectBehavior
         $this->addTask($task1);
         $this->addTask($task2);
 
-        $task1->run(array('file1'))->shouldBeCalled();
-        $task2->run(array('file1'))->shouldBeCalled();
+        $task1->run($this->finder)->shouldBeCalled();
+        $task2->run($this->finder)->shouldBeCalled();
 
         $this->run(array('file1'));
     }
@@ -45,7 +58,7 @@ class TaskRunnerSpec extends ObjectBehavior
     {
         $this->addTask($task1);
 
-        $task1->run(array('file1'))->willThrow('GrumPHP\Exception\RuntimeException');
+        $task1->run($this->finder)->willThrow('GrumPHP\Exception\RuntimeException');
 
         $this->shouldThrow('GrumPHP\Exception\FailureException')->duringRun(array('file1'));
     }
@@ -55,8 +68,8 @@ class TaskRunnerSpec extends ObjectBehavior
         $this->addTask($task1);
         $this->addTask($task2);
 
-        $task1->run(array('file1'))->willThrow('GrumPHP\Exception\RuntimeException');
-        $task2->run(array('file1'))->shouldBeCalled();
+        $task1->run($this->finder)->willThrow('GrumPHP\Exception\RuntimeException');
+        $task2->run($this->finder)->shouldBeCalled();
 
         $this->shouldThrow('GrumPHP\Exception\FailureException')->duringRun(array('file1'));
     }

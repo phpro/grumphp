@@ -26,19 +26,12 @@ class ChangedFiles implements LocatorInterface
     protected $status;
 
     /**
-     * @var Finder
-     */
-    protected $finder;
-
-    /**
      * @param Repository $repository
-     * @param Finder $finder
      */
-    public function __construct(Repository $repository, Finder $finder)
+    public function __construct(Repository $repository)
     {
         $this->repository = $repository;
         $this->status = $this->repository->getStatus();
-        $this->finder = $finder;
     }
 
     /**
@@ -50,7 +43,7 @@ class ChangedFiles implements LocatorInterface
     }
 
     /**
-     * @return Finder
+     * @return array
      */
     public function locate()
     {
@@ -67,7 +60,6 @@ class ChangedFiles implements LocatorInterface
             $files[] = $file->getName();
         }
 
-        // Return a new finder object to make it stateless:
-        return $this->finder->create()->append($files);
+        return $files;
     }
 }
