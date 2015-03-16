@@ -45,11 +45,16 @@ parameters:
 
 ## Parameters
 **bin_dir**
+
 *Default: ./bin/vendor*
+
 This parameter will tell GrumPHP where it can locate external commando's like phpcs and phpspec. It defaults to the default composer bin directory.
 
+
 **git_dir**
+
 *Default: .*
+
 This parameter will tell GrumPHP in which folder it can find the .git folder. This parameter is used to create the git hooks at the correct location. It defaults to the working directory.
 
 ## Tasks
@@ -71,8 +76,11 @@ Every task has it's own default configuration. It is possible to overwrite the p
 The Phpcs task will sniff your code for bad coding standards. It lives under the `phpcs` namespace and has following configurable parameters:
 
 **standard**
+
 *Default: PSR2*
+
 This parameter will describe which standard is being used to validate your code for bad conding standards.
+
 
 ### Phpspec
 
