@@ -3,6 +3,7 @@
 namespace GrumPHP\Task;
 
 use GrumPHP\Exception\RuntimeException;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Phpspec task
@@ -30,10 +31,14 @@ class Phpspec extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function run(array $files)
+    public function run(Finder $files)
     {
-        // We don't care about changed files here, we want to run the entire suit every time
+        $files->name('*.php');
+        if (0 === count($files)) {
+            return;
+        }
 
+        // We don't care about changed files here, we want to run the entire suit every time
         $this->processBuilder->setArguments(array(
             'php',
             $this->getCommandLocation(),

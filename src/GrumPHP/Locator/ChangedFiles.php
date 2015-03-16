@@ -5,6 +5,7 @@ namespace GrumPHP\Locator;
 use GitElephant\Repository;
 use GitElephant\Status\Status;
 use GitElephant\Status\StatusFile;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Class Git
@@ -13,11 +14,6 @@ use GitElephant\Status\StatusFile;
  */
 class ChangedFiles implements LocatorInterface
 {
-
-    const PATTERN_ALL = '/(.*)/';
-
-    // TODO: this pattern must exclude specs and tests as we don't really want to force anything for those
-    const PATTERN_PHP = '/(.*)\.php$/i';
 
     /**
      * @var Repository
@@ -30,12 +26,19 @@ class ChangedFiles implements LocatorInterface
     protected $status;
 
     /**
-     * @param Repository $repository
+     * @var Finder
      */
-    public function __construct(Repository $repository)
+    protected $finder;
+
+    /**
+     * @param Repository $repository
+     * @param Finder $finder
+     */
+    public function __construct(Repository $repository, Finder $finder)
     {
         $this->repository = $repository;
         $this->status = $this->repository->getStatus();
+        $this->finder = $finder;
     }
 
     /**
@@ -47,11 +50,9 @@ class ChangedFiles implements LocatorInterface
     }
 
     /**
-     * @param $pattern
-     *
-     * @return array
+     * @return Finder
      */
-    public function locate($pattern = self::PATTERN_ALL)
+    public function locate()
     {
         $ignoredStatuses = array(StatusFile::UNTRACKED, StatusFile::DELETED);
 
@@ -63,15 +64,10 @@ class ChangedFiles implements LocatorInterface
                 continue;
             }
 
-            // Validate path with a pattern.
-            $path = $file->getName();
-            if (!preg_match($pattern, $path)) {
-                continue;
-            }
-
-            $files[] = $path;
+            $files[] = $file->getName();
         }
 
-        return $files;
+        // Return a new finder object to make it stateless:
+        return $this->finder->create()->append($files);
     }
 }

@@ -10,6 +10,7 @@
         "symfony/expression-language": "~2.6",
         "symfony/process": "~2.6",
         "symfony/filesystem": "~2.6",
+        "symfony/finder": "~2.6",
         "symfony/yaml": "~2.6",
         "symfony/dependency-injection": "~2.6",
         "symfony/config": "~2.6",

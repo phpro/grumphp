@@ -1,7 +1,9 @@
 <?php
 
 namespace GrumPHP\Task;
+
 use GrumPHP\Exception\RuntimeException;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Interface TaskInterface
@@ -21,10 +23,10 @@ interface TaskInterface
     public function getDefaultConfiguration();
 
     /**
-     * @param array $files
+     * @param Finder $files
      *
      * @return void
      * @throws RuntimeException
      */
-    public function run(array $files);
+    public function run(Finder $files);
 }
