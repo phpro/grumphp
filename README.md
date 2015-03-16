@@ -84,7 +84,7 @@ This parameter will describe which standard is being used to validate your code 
 
 ### Phpspec
 
-The Phpspec task will spec your code with Phpspec. It lives under `the phpspec` namespace and has following configurable parameters:
+The Phpspec task will spec your code with Phpspec. It lives under the `phpspec` namespace and has following configurable parameters:
 
 *No parameters available yet*
 
