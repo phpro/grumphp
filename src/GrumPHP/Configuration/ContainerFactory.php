@@ -18,18 +18,18 @@ final class ContainerFactory
      */
     public static function buildFromConfiguration($path)
     {
-        $filesystem = new Filesystem();
-        if (!$filesystem->exists($path)) {
-            throw new RuntimeException(sprintf('The configuration file could not be found at "%s".', $path));
-        }
-
         $container = new ContainerBuilder();
         $container->addCompilerPass(new TaskCompilerPass());
 
         // Load basic service file + custom user configuration
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../../resources/config'));
         $loader->load('services.yml');
-        $loader->load($path);
+
+        // Load grumphp.yml file:
+        $filesystem = new Filesystem();
+        if ($filesystem->exists($path)) {
+            $loader->load($path);
+        }
 
         // Compile configuration to make sure that tasks are added to the taskrunner
         $container->compile();
