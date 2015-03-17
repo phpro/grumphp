@@ -33,7 +33,7 @@ class Phpspec extends AbstractExternalTask
      */
     public function run(FilesCollection $files)
     {
-        $files = $files->name('/\.php$/');
+        $files = $files->name('*.php');
         if (0 === count($files)) {
             return;
         }
