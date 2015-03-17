@@ -75,11 +75,6 @@ class ChangedFiles implements LocatorInterface
                 continue;
             }
 
-            if ($file->getType() === StatusFile::RENAMED) {
-                die('renamed');
-                var_dump($file);exit;
-            }
-
             $files[] = $file->getName();
         }
 
