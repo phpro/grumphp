@@ -2,23 +2,24 @@
 
 namespace spec\GrumPHP\Runner;
 
-use GrumPHP\Finder\Finder;
+use GrumPHP\Finder\FinderFactory;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Finder\Finder;
 
 class TaskRunnerSpec extends ObjectBehavior
 {
     /**
-     * @var \Symfony\Component\Finder\Finder
+     * @var Finder
      */
     protected $finder;
 
-    public function let(Finder $finder)
+    public function let(FinderFactory $finderFactory)
     {
-        $this->beConstructedWith($finder);
-        $this->finder = new \Symfony\Component\Finder\Finder();
-        $finder->create(Argument::type('array'))->willReturn($this->finder);
+        $this->beConstructedWith($finderFactory);
+        $this->finder = Finder::create();
+        $finderFactory->create(Argument::type('Symfony\Component\Finder\Finder'))->willReturn($this->finder);
     }
 
     function it_is_initializable()
@@ -51,7 +52,7 @@ class TaskRunnerSpec extends ObjectBehavior
         $task1->run($this->finder)->shouldBeCalled();
         $task2->run($this->finder)->shouldBeCalled();
 
-        $this->run(array('file1'));
+        $this->run(Finder::create());
     }
 
     function it_throws_exception_if_task_fails(TaskInterface $task1)
@@ -60,7 +61,7 @@ class TaskRunnerSpec extends ObjectBehavior
 
         $task1->run($this->finder)->willThrow('GrumPHP\Exception\RuntimeException');
 
-        $this->shouldThrow('GrumPHP\Exception\FailureException')->duringRun(array('file1'));
+        $this->shouldThrow('GrumPHP\Exception\FailureException')->duringRun(Finder::create());
     }
 
     function it_runs_subsequent_tasks_if_one_fails(TaskInterface $task1, TaskInterface $task2)
@@ -71,6 +72,6 @@ class TaskRunnerSpec extends ObjectBehavior
         $task1->run($this->finder)->willThrow('GrumPHP\Exception\RuntimeException');
         $task2->run($this->finder)->shouldBeCalled();
 
-        $this->shouldThrow('GrumPHP\Exception\FailureException')->duringRun(array('file1'));
+        $this->shouldThrow('GrumPHP\Exception\FailureException')->duringRun(Finder::create());
     }
 }
