@@ -35,7 +35,7 @@ class Phpcs extends AbstractExternalTask
      */
     public function run(FilesCollection $files)
     {
-        $files = $files->filterByName('/\.php$/');
+        $files = $files->name('/\.php$/')->notName('composer.json');
         if (0 === count($files)) {
             return;
         }

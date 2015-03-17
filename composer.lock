@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a056cc5f59cdd71e7e5f9d105d685e05",
+    "hash": "1fc62f212588a405a8fe8ef6573acde9",
     "packages": [
         {
             "name": "cypresslab/gitelephant",
