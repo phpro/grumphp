@@ -6,6 +6,7 @@ use GitElephant\Repository;
 use GitElephant\Status\Status;
 use GitElephant\Status\StatusFile;
 use GrumPHP\Collection\FilesCollection;
+use SplFileInfo;
 
 /**
  * Class Git
@@ -65,7 +66,7 @@ class ChangedFiles implements LocatorInterface
                 continue;
             }
 
-            $files[] = new \SplFileInfo($file->getName());
+            $files[] = new SplFileInfo($file->getName());
         }
 
         return new FilesCollection($files);
