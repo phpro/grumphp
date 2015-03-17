@@ -5,8 +5,7 @@ namespace GrumPHP\Locator;
 use GitElephant\Repository;
 use GitElephant\Status\Status;
 use GitElephant\Status\StatusFile;
-use GrumPHP\Finder\FinderFactory;
-use Symfony\Component\Finder\Finder;
+use GrumPHP\Collection\FilesCollection;
 
 /**
  * Class Git
@@ -27,11 +26,6 @@ class ChangedFiles implements LocatorInterface
     protected $status;
 
     /**
-     * @var FinderFactory
-     */
-    protected $finderFactory;
-
-    /**
      * Statuses that won't be located:
      *
      * @var array
@@ -43,13 +37,11 @@ class ChangedFiles implements LocatorInterface
 
     /**
      * @param Repository $repository
-     * @param FinderFactory $finderFactory
      */
-    public function __construct(Repository $repository, FinderFactory $finderFactory)
+    public function __construct(Repository $repository)
     {
         $this->repository = $repository;
         $this->status = $this->repository->getStatus();
-        $this->finderFactory = $finderFactory;
     }
 
     /**
@@ -61,12 +53,10 @@ class ChangedFiles implements LocatorInterface
     }
 
     /**
-     * @return Finder
+     * @return FilesCollection
      */
     public function locate()
     {
-
-
         /** @var StatusFile $file */
         $files = array();
         foreach ($this->getStatus()->all() as $file) {
@@ -75,9 +65,9 @@ class ChangedFiles implements LocatorInterface
                 continue;
             }
 
-            $files[] = $file->getName();
+            $files[] = new \SplFileInfo($file->getName());
         }
 
-        return $this->finderFactory->create($files);
+        return new FilesCollection($files);
     }
 }

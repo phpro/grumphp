@@ -2,8 +2,8 @@
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Exception\RuntimeException;
-use Symfony\Component\Finder\Finder;
 
 /**
  * Phpcs task
@@ -33,9 +33,9 @@ class Phpcs extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function run(Finder $files)
+    public function run(FilesCollection $files)
     {
-        $files->name('*.php');
+        $files = $files->filterByName('/\.php$/');
         if (0 === count($files)) {
             return;
         }

@@ -2,27 +2,17 @@
 
 namespace spec\GrumPHP\Task;
 
+use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Locator\LocatorInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
+use SplFileInfo;
 
 class PhpspecSpec extends ObjectBehavior
 {
-    /**
-     * @param array $files
-     *
-     * @return Finder
-     */
-    protected function mockFinder(array $files)
-    {
-        $finder = new Finder();
-        $finder->append($files);
-        return $finder;
-    }
 
     function let(GrumPHP $grumPHP, LocatorInterface $externalCommandLocator, ProcessBuilder $processBuilder)
     {
@@ -53,8 +43,10 @@ class PhpspecSpec extends ObjectBehavior
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
-        $finder = $this->mockFinder(array('test.php'));
-        $this->run($finder);
+        $files = new FilesCollection(array(
+            new SplFileInfo('test.php')
+        ));
+        $this->run($files);
     }
 
     function it_throws_exception_if_the_process_fails(ProcessBuilder $processBuilder, Process $process)
@@ -66,7 +58,9 @@ class PhpspecSpec extends ObjectBehavior
         $process->isSuccessful()->willReturn(false);
         $process->getOutput()->shouldBeCalled();
 
-        $finder = $this->mockFinder(array('test.php'));
-        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($finder);
+        $files = new FilesCollection(array(
+            new SplFileInfo('test.php')
+        ));
+        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($files);
     }
 }

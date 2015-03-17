@@ -5,16 +5,14 @@ namespace spec\GrumPHP\Locator;
 use GitElephant\Repository;
 use GitElephant\Status\Status;
 use GitElephant\Status\StatusFile;
-use GrumPHP\Finder\FinderFactory;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Finder\Finder;
 
 class ChangedFilesSpec extends ObjectBehavior
 {
-    function let(Repository $repository, FinderFactory $finderFactory, Status $status)
+    function let(Repository $repository, Status $status)
     {
-        $this->beConstructedWith($repository, $finderFactory);
+        $this->beConstructedWith($repository);
         $repository->getStatus()->shouldBeCalled()->willReturn($status);
     }
 
@@ -33,7 +31,7 @@ class ChangedFilesSpec extends ObjectBehavior
         $this->getStatus()->shouldEqual($status);
     }
 
-    function it_excludes_untracked_files(FinderFactory $finderFactory, Status $status, StatusFile $file1, StatusFile $file2)
+    function it_excludes_untracked_files(Status $status, StatusFile $file1, StatusFile $file2)
     {
         $file1->getName()->willReturn('match1');
         $file1->getType()->willReturn(StatusFile::UNTRACKED);
@@ -41,12 +39,14 @@ class ChangedFilesSpec extends ObjectBehavior
         $file2->getType()->willReturn(StatusFile::MODIFIED);
         $status->all()->willReturn(array($file1, $file2));
 
-        $finder = Finder::create();
-        $finderFactory->create(array('match2'))->willReturn($finder);
-        $this->locate()->shouldBe($finder);
+        $result = $this->locate();
+        $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
+        $result[0]->getPathname()->shouldBe('match2');
+        $result->getIterator()->count()->shouldBe(1);
+
     }
 
-    function it_excludes_deleted_files(FinderFactory $finderFactory, Status $status, StatusFile $file1, StatusFile $file2)
+    function it_excludes_deleted_files(Status $status, StatusFile $file1, StatusFile $file2)
     {
         $file1->getName()->willReturn('match1');
         $file1->getType()->willReturn(StatusFile::MODIFIED);
@@ -54,8 +54,9 @@ class ChangedFilesSpec extends ObjectBehavior
         $file2->getType()->willReturn(StatusFile::DELETED);
         $status->all()->willReturn(array($file1, $file2));
 
-        $finder = Finder::create();
-        $finderFactory->create(array('match1'))->willReturn($finder);
-        $this->locate()->shouldBe($finder);
+        $result = $this->locate();
+        $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
+        $result[0]->getPathname()->shouldBe('match1');
+        $result->getIterator()->count()->shouldBe(1);
     }
 }

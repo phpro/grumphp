@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Console\Command\Git;
 
+use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Exception\ExceptionInterface;
 use GrumPHP\Locator\LocatorInterface;
@@ -9,7 +10,6 @@ use GrumPHP\Runner\TaskRunner;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Finder\Finder;
 
 /**
  * This command runs the git pre-commit hook.
@@ -81,7 +81,7 @@ class PreCommitCommand extends Command
     }
 
     /**
-     * @return Finder
+     * @return FilesCollection
      */
     protected function getCommittedFiles()
     {

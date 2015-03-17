@@ -2,27 +2,17 @@
 
 namespace spec\GrumPHP\Task;
 
+use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Locator\LocatorInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
+use SplFileInfo;
 
 class PhpcsSpec extends ObjectBehavior
 {
-    /**
-     * @param array $files
-     *
-     * @return Finder
-     */
-    protected function mockFinder(array $files)
-    {
-        $finder = new Finder();
-        $finder->append($files);
-        return $finder;
-    }
 
     function let(GrumPHP $grumPHP, LocatorInterface $externalCommandLocator, ProcessBuilder $processBuilder)
     {
@@ -51,27 +41,30 @@ class PhpcsSpec extends ObjectBehavior
         $processBuilder->setArguments(Argument::any())->shouldNotBeCalled();
         $processBuilder->getProcess()->shouldNotBeCalled();
 
-        $finder = $this->mockFinder(array());
-        $this->run($finder)->shouldBeNull();
+        $files = new FilesCollection();
+        $this->run($files)->shouldBeNull();
     }
 
     function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process)
     {
-        $processBuilder->add('file1')->shouldBeCalled();
-        $processBuilder->add('file2')->shouldBeCalled();
+        $processBuilder->add('file1.php')->shouldBeCalled();
+        $processBuilder->add('file2.php')->shouldBeCalled();
         $processBuilder->setArguments(Argument::type('array'))->shouldBeCalled();
         $processBuilder->getProcess()->willReturn($process);
 
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
-        $finder = $this->mockFinder(array('file1', 'file2'));
-        $this->run($finder);
+        $files = new FilesCollection(array(
+            new SplFileInfo('file1.php'),
+            new SplFileInfo('file2.php'),
+        ));
+        $this->run($files);
     }
 
     function it_throws_exception_if_the_process_fails(ProcessBuilder $processBuilder, Process $process)
     {
-        $processBuilder->add('file1')->shouldBeCalled();
+        $processBuilder->add('file1.php')->shouldBeCalled();
         $processBuilder->setArguments(Argument::type('array'))->shouldBeCalled();
         $processBuilder->getProcess()->willReturn($process);
 
@@ -79,7 +72,9 @@ class PhpcsSpec extends ObjectBehavior
         $process->isSuccessful()->willReturn(false);
         $process->getOutput()->shouldBeCalled();
 
-        $finder = $this->mockFinder(array('file1'));
-        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($finder);
+        $files = new FilesCollection(array(
+            new SplFileInfo('file1.php'),
+        ));
+        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($files);
     }
 }
