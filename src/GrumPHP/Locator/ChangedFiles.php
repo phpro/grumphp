@@ -5,7 +5,6 @@ namespace GrumPHP\Locator;
 use GitElephant\Repository;
 use GitElephant\Status\Status;
 use GitElephant\Status\StatusFile;
-use Symfony\Component\Finder\Finder;
 
 /**
  * Class Git
