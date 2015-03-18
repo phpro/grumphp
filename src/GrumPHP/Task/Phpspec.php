@@ -25,7 +25,10 @@ class Phpspec extends AbstractExternalTask
      */
     public function getDefaultConfiguration()
     {
-        return array();
+        return array(
+            'config_file' => null,
+            'stop_on_failure' => false,
+        );
     }
 
     /**
@@ -39,12 +42,21 @@ class Phpspec extends AbstractExternalTask
         }
 
         // We don't care about changed files here, we want to run the entire suit every time
+        $config = $this->getConfiguration();
         $this->processBuilder->setArguments(array(
             'php',
             $this->getCommandLocation(),
             'run',
             '--no-interaction'
         ));
+
+        if ($config['config_file']) {
+            $this->processBuilder->add('--config=' . $config['config_file']);
+        }
+
+        if ($config['stop_on_failure']) {
+            $this->processBuilder->add('--stop-on-failure');
+        }
 
         $process = $this->processBuilder->getProcess();
         $process->run();

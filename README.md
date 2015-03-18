@@ -88,12 +88,52 @@ It lives under the `phpcs` namespace and has following configurable parameters:
 This parameter will describe which standard is being used to validate your code for bad coding standards.
 
 
+**show_warnings**
+
+*Default: true*
+
+Triggers an error when there are warnings.
+
+
+**tab_width**
+
+*Default: null*
+
+By default, the standard will specify the optimal tab-width of the code. If you want to overwrite this option, you can use this configuration option.
+
+
+**ignore_patterns**
+
+*Default: []*
+
+This is a list of patterns that will be ignored by phpcs. With this option you can skip files like tests. Leave this option blank to run phpcs for every php file.
+
+
+**sniffs**
+
+*Default: []*
+
+This is a list of sniffs that need to be executed. Leave this option blank to run all configured sniffs for the selected standard.
+
+
 #### Phpspec
 
 The Phpspec task will spec your code with Phpspec. 
 It lives under the `phpspec` namespace and has following configurable parameters:
 
-*No parameters available yet*
+**config_file**
+
+*Default: null*
+
+If your phpspec.yml file is located at an exotic location, you can specify your custom config file location with this option.
+
+
+**stop_on_failure**
+
+*Default: false*
+
+When this option is enabled, phpspec will stop at the first error. This means that it will not run your full test suite when an error occurs.
+
 
 #### Custom tasks
 

@@ -19,6 +19,10 @@ class Phpcs extends AbstractExternalTask
     {
         return array(
             'standard' => 'PSR2',
+            'show_warnings' => true,
+            'tab_width' => null,
+            'ignore_patterns' => [],
+            'sniffs' => [],
         );
     }
 
@@ -45,8 +49,23 @@ class Phpcs extends AbstractExternalTask
             'php',
             $this->getCommandLocation(),
             '--standard=' . $config['standard'],
-            '--warning-severity=0', // TODO: caring about warnings should be configurable, but for now it's just annoying
         ));
+
+        if (!$config['show_warnings']) {
+            $this->processBuilder->add('--warning-severity=0');
+        }
+
+        if ($config['tab_width']) {
+            $this->processBuilder->add('--tab-width=' . $config['tab_width']);
+        }
+
+        if (count($config['sniffs'])) {
+            $this->processBuilder->add('--sniffs=' . implode(',', $config['sniffs']));
+        }
+
+        if (count($config['ignore_patterns'])) {
+            $this->processBuilder->add('--ignore=' . implode(',', $config['ignore_patterns']));
+        }
 
         foreach ($files as $file) {
             $this->processBuilder->add($file);
