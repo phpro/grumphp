@@ -52,6 +52,10 @@ class Application extends SymfonyConsole
         $container = $this->createContainer();
         $commands = parent::getDefaultCommands();
 
+        $commands[] = new Command\Git\DeInitCommand(
+            $container->get('config'),
+            $container->get('filesystem')
+        );
         $commands[] = new Command\Git\InitCommand(
             $container->get('config'),
             $container->get('filesystem'),

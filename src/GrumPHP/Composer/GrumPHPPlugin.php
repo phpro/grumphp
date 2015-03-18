@@ -70,6 +70,6 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
             return;
         }
 
-        $event->getIO()->write('<fg=yellow>Watch out! GrumPHP is sniffing your commits!<fg=yellow>');
+        $event->getIO()->write($process->getOutput());
     }
 }

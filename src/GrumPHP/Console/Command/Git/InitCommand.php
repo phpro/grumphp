@@ -17,10 +17,12 @@ class InitCommand extends Command
 
     const COMMAND_NAME = 'git:init';
 
+    const HOOKS_FOLDER = '/.git/hooks';
+
     /**
      * @var array
      */
-    protected static $hooks = array(
+    public static $hooks = array(
         'pre-commit',
     );
 
@@ -75,12 +77,12 @@ class InitCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
-        $gitHooksPath = $this->grumPHP->getGitDir() . '/.git/hooks/';
-        $resourceHooksPath = __DIR__ . '/../../../../../resources/hooks/';
+        $gitHooksPath = $this->grumPHP->getGitDir() . self::HOOKS_FOLDER;
+        $resourceHooksPath = __DIR__ . '/../../../../../resources/hooks';
 
         foreach (self::$hooks as $hook) {
-            $gitHook = $gitHooksPath . $hook;
-            $hookTemplate = $resourceHooksPath . $hook;
+            $gitHook = $gitHooksPath . DIRECTORY_SEPARATOR . $hook;
+            $hookTemplate = $resourceHooksPath . DIRECTORY_SEPARATOR . $hook;
 
             if (!$this->filesystem->exists($hookTemplate)) {
                 throw new \RuntimeException(
@@ -92,6 +94,8 @@ class InitCommand extends Command
             file_put_contents($gitHook, $content);
             $this->filesystem->chmod($gitHook, 0775);
         }
+
+        $output->writeln('<fg=yellow>Watch out! GrumPHP is sniffing your commits!<fg=yellow>');
     }
 
     /**
