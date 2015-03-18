@@ -170,3 +170,15 @@ Following tasks are still on the roadmap:
 - behat
 - composer.json and composer.lock need to be committed at the same time
 - ...
+
+# Compatibility
+
+This package has been tested with following git clients:
+
+- CLI unix
+- Phpstorm GIT
+
+Todo:
+
+- CLI Windows
+- other popular git clients
