@@ -5,10 +5,11 @@ namespace GrumPHP\Composer;
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Installer;
+use Composer\Installer\PackageEvents;
+use Composer\Installer\PackageEvent;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
-use Composer\Script\ScriptEvents;
 use Symfony\Component\Process\ProcessBuilder;
 
 class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
@@ -41,16 +42,31 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            ScriptEvents::POST_UPDATE_CMD => 'initializeGitHooks',
-            ScriptEvents::POST_INSTALL_CMD => 'initializeGitHooks',
+            PackageEvents::POST_PACKAGE_INSTALL => 'initializeGitHooks',
+            PackageEvents::POST_PACKAGE_INSTALL => 'initializeGitHooks',
+            PackageEvents::PRE_PACKAGE_UNINSTALL => 'deInitializeGitHooks',
         );
     }
 
-    /**
-     * @param Event $event
-     */
-    public function initializeGitHooks(Event $event)
+    public function deInitializeGitHooks(PackageEvent $event)
     {
+        var_dump($event);exit;
+        $package = $event->getOperation()->getPackage();
+
+
+
+    }
+    
+    
+    
+    
+    /**
+     * @param PackageEvent $event
+     */
+    public function initializeGitHooks(PackageEvent $event)
+    {
+        var_dump($event);exit;
+
         $composer = $event->getComposer();
         $package = $composer->getPackage();
         $config = $composer->getConfig();
