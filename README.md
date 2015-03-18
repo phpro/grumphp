@@ -32,11 +32,20 @@ To make GrumPHP even more awesome, it will suggest installing some extra package
 GrumPHP will never push you into using a specific task. You can choose the tasks that fit your needs, and activate or 
 deactivate any task in no time!
 
+### Installation whit an exotic configuration path:
+
+It is possible to place your configuration file at another location then your composer.json file.
+The only downfall is that you will have to initialize the git hook manually:
+
+```php
+php ./vendor/bin git:init --config=path/to/grumphp.yml
+```
+
 ## Configuration
 
 Sample `grumphp.yml`:
 
-```
+```yml
 parameters:
     bin_dir: "./vendor/bin"
     git_dir: "."
@@ -67,7 +76,7 @@ It is easy to configure and activate tasks in GrumPHP.
 Tasks live under their own namespace in the parameters part.
 To activate a task, it is sufficient to add an empty task configuration:
 
-```
+```yml
 parameters:
     tasks:
         phpcs: ~
@@ -141,7 +150,7 @@ It is very easy to configure your own project specific task.
 You just have to create a class that implements the `GrumPHP\Task\TaskInterface`.
 Next register it to the service manager and add your task configuration:
 
-```
+```yml
 parameters:
     tasks:
         myConfigKey:
