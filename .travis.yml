@@ -18,7 +18,7 @@ before_install:
   - composer selfupdate
 
 install:
-  - composer update --prefer-dist
+  - composer update --prefer-dist  --no-scripts
 
 script:
    - php bin/grumphp git:pre-commit
