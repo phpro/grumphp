@@ -14,7 +14,7 @@ We don't want to bore you with all the details, so quick: install it yourself an
 
 This package is composer plugin and should be installed to your project's dev dependency using composer:
 
-```
+```sh
 composer require --dev phpro/grumphp:~0.1
 ```
 
@@ -37,7 +37,7 @@ deactivate any task in no time!
 It is possible to place your configuration file at another location then your composer.json file.
 The only downfall is that you will have to initialize the git hook manually:
 
-```php
+```sh
 php ./vendor/bin git:init --config=path/to/grumphp.yml
 ```
 
