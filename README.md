@@ -1,3 +1,5 @@
+[![Build status](https://api.travis-ci.org/phpro/grumphp.svg)](http://travis-ci.org/phpro/grumphp)
+
 # GrumPHP
 
 Sick and tired of complaining about your co-workers' code? GrumPHP will do it for you!
@@ -179,6 +181,16 @@ Following tasks are still on the roadmap:
 - behat
 - composer.json and composer.lock need to be committed at the same time
 - ...
+
+# Execution
+
+GrumPHP will be triggered with GIT hooks. However, you can execute the trigger at the command line:
+
+
+```sh
+php ./vendor/bin git:pre-commit
+```
+
 
 # Compatibility
 
