@@ -56,5 +56,4 @@ class GrumPHP
 
         return $tasksConfig[$taskName];
     }
-
 }

@@ -39,7 +39,9 @@ class ExternalCommand implements LocatorInterface
         $location = $this->binDir . DIRECTORY_SEPARATOR . $command;
 
         if (!$this->filesystem->exists($location)) {
-            throw new RuntimeException(sprintf('The executable for "%s" could not be found at: "%s".', $command, $location));
+            throw new RuntimeException(
+                sprintf('The executable for "%s" could not be found at: "%s".', $command, $location)
+            );
         }
 
         return $location;

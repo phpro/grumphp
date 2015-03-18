@@ -32,7 +32,15 @@ class Application extends SymfonyConsole
     protected function getDefaultInputDefinition()
     {
         $definition = parent::getDefaultInputDefinition();
-        $definition->addOption(new InputOption('config', 'c', InputOption::VALUE_OPTIONAL, '.', getcwd() . DIRECTORY_SEPARATOR . self::APP_CONFIG_FILE));
+        $definition->addOption(
+            new InputOption(
+                'config',
+                'c',
+                InputOption::VALUE_OPTIONAL,
+                '.',
+                getcwd() . DIRECTORY_SEPARATOR . self::APP_CONFIG_FILE
+            )
+        );
         return $definition;
     }
 

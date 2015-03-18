@@ -87,6 +87,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
         $result->toArray()[0]->shouldBe($file1);
         $result->count()->shouldBe(1);
+        // Test
     }
 
 }

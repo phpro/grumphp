@@ -63,7 +63,9 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 
         $process->run();
         if (!$process->isSuccessful()) {
-            $event->getIO()->write('<fg=red>GrumPHP can not sniff your commits. Did you specify the correct git-dir?</fg=red>');
+            $event->getIO()->write(
+                '<fg=red>GrumPHP can not sniff your commits. Did you specify the correct git-dir?</fg=red>'
+            );
             $event->getIO()->write($process->getErrorOutput());
             return;
         }

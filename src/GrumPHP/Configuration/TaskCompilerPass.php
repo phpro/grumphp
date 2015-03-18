@@ -23,7 +23,6 @@ class TaskCompilerPass implements CompilerPassInterface
         $configuration = $container->getParameter('tasks');
 
         foreach ($taggedServices as $id => $tags) {
-
             $configKey = $this->locateConfigKey($tags);
             if (!array_key_exists($configKey, $configuration)) {
                 continue;
