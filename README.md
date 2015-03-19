@@ -34,9 +34,11 @@ To make GrumPHP even more awesome, it will suggest installing some extra package
 GrumPHP will never push you into using a specific task. You can choose the tasks that fit your needs, and activate or 
 deactivate any task in no time!
 
-### Installation with an exotic configuration path:
+### Installation with an exotic project structure:
+When your application has a project structure that is not covered by the default configuration settings, 
+you will have to create a `grumphp.yml` file at the same location as `composer.json` *before* installing the package.
 
-It is possible to place your configuration file at another location then your composer.json file.
+It is possible to place your configuration file at another location or change the configuration after installation.
 The only downfall is that you will have to initialize the git hook manually:
 
 ```sh
