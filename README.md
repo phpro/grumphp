@@ -34,7 +34,7 @@ To make GrumPHP even more awesome, it will suggest installing some extra package
 GrumPHP will never push you into using a specific task. You can choose the tasks that fit your needs, and activate or 
 deactivate any task in no time!
 
-### Installation whit an exotic configuration path:
+### Installation with an exotic configuration path:
 
 It is possible to place your configuration file at another location then your composer.json file.
 The only downfall is that you will have to initialize the git hook manually:
@@ -198,6 +198,7 @@ This package has been tested with following git clients:
 
 - CLI unix
 - Phpstorm GIT
+- Atlassian SourceTree
 
 Todo:
 
