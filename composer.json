@@ -2,7 +2,7 @@
     "name": "phpro/grumphp",
     "description": "A composer plugin that enables source code quality checks.",
     "type": "composer-plugin",
-    "license": "proprietary",
+    "license": "MIT",
     "require": {
         "php": ">=5.3",
         "composer-plugin-api": "~1.0",
