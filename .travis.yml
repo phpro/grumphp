@@ -15,6 +15,7 @@ matrix:
   fast_finish: true
 
 before_install:
+  - echo 'date.timezone = "Europe/Brussels"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - composer selfupdate
 
 install:

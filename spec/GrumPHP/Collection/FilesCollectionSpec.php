@@ -30,8 +30,9 @@ class FilesCollectionSpec extends ObjectBehavior
 
         $result = $this->name('*.php');
         $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
-        $result->toArray()[0]->shouldBe($file1);
         $result->count()->shouldBe(1);
+        $files = $result->toArray();
+        $files[0]->shouldBe($file1);
     }
 
     function it_should_filter_by_not_name(SplFileInfo $file1, SplFileInfo $file2)
@@ -41,8 +42,9 @@ class FilesCollectionSpec extends ObjectBehavior
 
         $result = $this->notName('*.png');
         $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
-        $result->toArray()[0]->shouldBe($file1);
         $result->count()->shouldBe(1);
+        $files = $result->toArray();
+        $files[0]->shouldBe($file1);
     }
 
     function it_should_filter_by_path(SplFileInfo $file1, SplFileInfo $file2)
@@ -52,8 +54,9 @@ class FilesCollectionSpec extends ObjectBehavior
 
         $result = $this->path('path1/*');
         $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
-        $result->toArray()[0]->shouldBe($file1);
         $result->count()->shouldBe(1);
+        $files = $result->toArray();
+        $files[0]->shouldBe($file1);
     }
 
     function it_should_filter_by_not_path(SplFileInfo $file1, SplFileInfo $file2)
@@ -63,8 +66,9 @@ class FilesCollectionSpec extends ObjectBehavior
 
         $result = $this->notPath('path2/*');
         $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
-        $result->toArray()[0]->shouldBe($file1);
         $result->count()->shouldBe(1);
+        $files = $result->toArray();
+        $files[0]->shouldBe($file1);
     }
 
     function it_should_filter_by_size(SplFileInfo $file1, SplFileInfo $file2)
@@ -74,8 +78,9 @@ class FilesCollectionSpec extends ObjectBehavior
 
         $result = $this->size('>= 4K')->size('<= 10K');
         $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
-        $result->toArray()[0]->shouldBe($file1);
         $result->count()->shouldBe(1);
+        $files = $result->toArray();
+        $files[0]->shouldBe($file1);
     }
 
     function it_should_filter_by_date(SplFileInfo $file1, SplFileInfo $file2)
@@ -85,9 +90,9 @@ class FilesCollectionSpec extends ObjectBehavior
 
         $result = $this->date('since yesterday');
         $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
-        $result->toArray()[0]->shouldBe($file1);
         $result->count()->shouldBe(1);
-        // Test
+        $files = $result->toArray();
+        $files[0]->shouldBe($file1);
     }
 
 }

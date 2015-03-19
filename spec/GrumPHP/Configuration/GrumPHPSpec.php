@@ -33,12 +33,12 @@ class GrumPHPSpec extends ObjectBehavior
     function it_provides_a_list_of_active_task_configurations(ContainerInterface $container)
     {
         $container->getParameter('tasks')->willReturn(array());
-        $this->getTaskConfig()->shouldReturn([]);
+        $this->getTaskConfig()->shouldReturn(array());
     }
 
     function it_can_return_a_particular_task_configuration(ContainerInterface $container)
     {
-        $container->getParameter('tasks')->willReturn(['name' => array()]);
+        $container->getParameter('tasks')->willReturn(array('name' => array()));
         $this->getTaskConfig('name')->shouldReturn(array());
     }
 }
