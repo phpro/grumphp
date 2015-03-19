@@ -3,6 +3,7 @@
 namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Console\Helper\PathsHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,8 +17,6 @@ class InitCommand extends Command
 {
 
     const COMMAND_NAME = 'git:init';
-
-    const HOOKS_FOLDER = '/.git/hooks';
 
     /**
      * @var array
@@ -77,12 +76,12 @@ class InitCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
-        $gitHooksPath = $this->grumPHP->getGitDir() . self::HOOKS_FOLDER;
-        $resourceHooksPath = __DIR__ . '/../../../../../resources/hooks';
+        $gitHooksPath = $this->paths()->getGitHooksDir();
+        $resourceHooksPath =$this->paths()->getGitHookTemplatesDir();
 
         foreach (self::$hooks as $hook) {
-            $gitHook = $gitHooksPath . DIRECTORY_SEPARATOR . $hook;
-            $hookTemplate = $resourceHooksPath . DIRECTORY_SEPARATOR . $hook;
+            $gitHook = $gitHooksPath . $hook;
+            $hookTemplate = $resourceHooksPath . $hook;
 
             if (!$this->filesystem->exists($hookTemplate)) {
                 throw new \RuntimeException(
@@ -108,7 +107,8 @@ class InitCommand extends Command
     {
         $content = file_get_contents($templateFile);
         $replacements = array(
-          '$(HOOK_COMMAND)' => $this->generateHookCommand('git:' . $hook),
+            '${HOOK_EXEC_PATH}' => $this->paths()->getGitHookExecutionPath(),
+            '$(HOOK_COMMAND)' => $this->generateHookCommand('git:' . $hook),
         );
 
         return str_replace(array_keys($replacements), array_values($replacements), $content);
@@ -123,11 +123,19 @@ class InitCommand extends Command
     {
         $this->processBuilder->setArguments(array(
             'php',
-            $this->grumPHP->getBinDir() . '/grumphp',
+            $this->paths()->getBinCommand('grumphp'),
             $command,
             '--config=' . $this->input->getOption('config'),
         ));
 
         return $this->processBuilder->getProcess()->getCommandLine();
+    }
+
+    /**
+     * @return PathsHelper
+     */
+    protected function paths()
+    {
+        return $this->getHelper(PathsHelper::HELPER_NAME);
     }
 }

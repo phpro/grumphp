@@ -4,6 +4,7 @@ namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Exception\ExceptionInterface;
 use GrumPHP\Locator\LocatorInterface;
 use GrumPHP\Runner\TaskRunner;
@@ -68,14 +69,13 @@ class PreCommitCommand extends Command
             $this->taskRunner->run($this->getCommittedFiles());
         } catch (ExceptionInterface $e) {
             // We'll fail hard on any exception not generated in GrumPHP
-
-            $output->writeln('<fg=red>' . $this->getAsciiResource('failed') . '</fg=red>');
+            $output->writeln('<fg=red>' . $this->paths()->getAsciiContent('failed') . '</fg=red>');
             $output->writeln('<fg=red>' . $e->getMessage() . '</fg=red>');
 
             return 1;
         }
 
-        $output->write('<fg=green>' . $this->getAsciiResource('succeeded') . '</fg=green>');
+        $output->write('<fg=green>' . $this->paths()->getAsciiContent('succeeded') . '</fg=green>');
 
         return 0;
     }
@@ -89,12 +89,10 @@ class PreCommitCommand extends Command
     }
 
     /**
-     * @param $name
-     *
-     * @return string
+     * @return PathsHelper
      */
-    protected function getAsciiResource($name)
+    protected function paths()
     {
-        return file_get_contents(sprintf(__DIR__ . '/../../../../../resources/ascii/%s.txt', $name));
+        return $this->getHelper(PathsHelper::HELPER_NAME);
     }
 }

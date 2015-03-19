@@ -3,6 +3,7 @@
 namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Console\Helper\PathsHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -61,10 +62,10 @@ class DeInitCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $gitHooksPath = $this->grumPHP->getGitDir() . InitCommand::HOOKS_FOLDER;
+        $gitHooksPath = $this->paths()->getGitHooksDir();
 
         foreach (InitCommand::$hooks as $hook) {
-            $hookPath = $gitHooksPath . DIRECTORY_SEPARATOR . $hook;
+            $hookPath = $gitHooksPath . $hook;
             if (!$this->filesystem->exists($hookPath)) {
                 continue;
             }
@@ -73,5 +74,13 @@ class DeInitCommand extends Command
         }
 
         $output->writeln('<fg=yellow>GrumPHP stopped sniffing your commits! Too bad ...<fg=yellow>');
+    }
+
+    /**
+     * @return PathsHelper
+     */
+    protected function paths()
+    {
+        return $this->getHelper(PathsHelper::HELPER_NAME);
     }
 }

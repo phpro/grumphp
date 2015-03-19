@@ -6,6 +6,7 @@ use GrumPHP\Configuration\ContainerFactory;
 use Symfony\Component\Console\Application as SymfonyConsole;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Class Application
@@ -17,6 +18,11 @@ class Application extends SymfonyConsole
     const APP_NAME = 'GrumPHP';
     const APP_VERSION = '0.1.0';
     const APP_CONFIG_FILE = 'grumphp.yml';
+
+    /**
+     * @var ContainerBuilder
+     */
+    protected $container;
 
     /**
      * Set up application:
@@ -49,7 +55,7 @@ class Application extends SymfonyConsole
      */
     protected function getDefaultCommands()
     {
-        $container = $this->createContainer();
+        $container = $this->getContainer();
         $commands = parent::getDefaultCommands();
 
         $commands[] = new Command\Git\DeInitCommand(
@@ -72,16 +78,34 @@ class Application extends SymfonyConsole
         return $commands;
     }
 
+    protected function getDefaultHelperSet()
+    {
+        $container = $this->getContainer();
+
+        $helperSet = parent::getDefaultHelperSet();
+        $helperSet->set(new Helper\PathsHelper(
+            $container->get('config'),
+            $container->get('filesystem')
+        ));
+
+        return $helperSet;
+    }
+
+
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerBuilder
      */
-    protected function createContainer()
+    protected function getContainer()
     {
+        if ($this->container) {
+            return $this->container;
+        }
+
         $input = new ArgvInput();
         $input->bind($this->getDefaultInputDefinition());
         $configPath = $input->getOption('config');
 
-        $container = ContainerFactory::buildFromConfiguration($configPath);
-        return $container;
+        $this->container = ContainerFactory::buildFromConfiguration($configPath);
+        return $this->container;
     }
 }
