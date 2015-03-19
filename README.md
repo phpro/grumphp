@@ -198,6 +198,7 @@ This package has been tested with following git clients:
 
 - CLI unix
 - Phpstorm GIT
+- Atlassian SourceTree
 
 Todo:
 
