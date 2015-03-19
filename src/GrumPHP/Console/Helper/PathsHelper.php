@@ -82,7 +82,7 @@ class PathsHelper extends Helper
             throw new RuntimeException(sprintf('ASCII file %s could not be found.', $resource));
         }
 
-        return file_get_contents($resource);
+        return file_get_contents($file);
     }
 
     /**
