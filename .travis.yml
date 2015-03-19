@@ -21,5 +21,6 @@ install:
   - composer update --prefer-dist  --no-scripts
 
 script:
-   - php bin/grumphp git:pre-commit
+   - php ./vendor/bin/phpcs --standard=PSR2 src
+   - php ./vendor/bin/phpspec run
 

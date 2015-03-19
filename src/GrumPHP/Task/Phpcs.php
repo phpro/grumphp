@@ -21,8 +21,8 @@ class Phpcs extends AbstractExternalTask
             'standard' => 'PSR2',
             'show_warnings' => true,
             'tab_width' => null,
-            'ignore_patterns' => [],
-            'sniffs' => [],
+            'ignore_patterns' => array(),
+            'sniffs' => array(),
         );
     }
 
