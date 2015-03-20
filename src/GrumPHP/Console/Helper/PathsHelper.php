@@ -175,6 +175,16 @@ class PathsHelper extends Helper
     }
 
     /**
+     * @param $path
+     *
+     * @return string
+     */
+    public function getRelativePath($path)
+    {
+        return $this->fileSystem->makePathRelative(realpath($path), $this->getWorkingDir());
+    }
+
+    /**
      * Returns the canonical name of this helper.
      *
      * @return string The canonical name
