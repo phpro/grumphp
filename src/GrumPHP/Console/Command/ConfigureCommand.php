@@ -140,7 +140,8 @@ class ConfigureCommand extends Command
         // Search tasks
         $question = new ChoiceQuestion(
             'Which tasks do you want to run?',
-            $this->getAvailableTasks()
+            $this->getAvailableTasks(),
+            array()
         );
         $question->setMultiselect(true);
         $tasks = $helper->ask($input, $output, $question);

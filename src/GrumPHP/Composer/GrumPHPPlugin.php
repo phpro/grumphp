@@ -43,6 +43,11 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * @var bool
      */
+    protected $configureScheduled = false;
+
+    /**
+     * @var bool
+     */
     protected $initScheduled = false;
 
     /**
@@ -86,6 +91,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         }
 
         // Schedule init when command is completed
+        $this->configureScheduled = true;
         $this->initScheduled = true;
     }
 
@@ -132,12 +138,12 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
      */
     public function runScheduledTasks(Event $event)
     {
-        if (!$this->initScheduled) {
-            return;
+        if ($this->initScheduled) {
+            $this->runGrumPhpCommand(ConfigureCommand::COMMAND_NAME);
         }
-
-        $this->runGrumPhpCommand(ConfigureCommand::COMMAND_NAME);
-        $this->initGitHook();
+        if ($this->initScheduled) {
+            $this->initGitHook();
+        }
     }
 
     /**
