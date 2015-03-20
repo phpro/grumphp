@@ -114,7 +114,10 @@ class ConfigureCommand extends Command
         /** @var QuestionHelper $helper */
         $helper = $this->getHelper('question');
 
-        $questionString = $this->createQuestionString('No grumphp.yml file could be found. Do you want to create one?', 'Yes');
+        $questionString = $this->createQuestionString(
+            'No grumphp.yml file could be found. Do you want to create one?',
+            'Yes'
+        );
         $question = new ConfirmationQuestion($questionString, true);
         if (!$helper->ask($input, $output, $question)) {
             return array();
@@ -144,10 +147,13 @@ class ConfigureCommand extends Command
 
         // Build configuration
         return array(
-            'parameters' => array(
+            'parameters' => array
+            (
                 'git_dir' => $gitDir,
                 'bin_dir' => $binDir,
-                'tasks' => array_map(function ($task) { return null; }, array_flip($tasks)),
+                'tasks' => array_map(function ($task) {
+                    return null;
+                }, array_flip($tasks)),
             )
         );
     }
@@ -159,7 +165,7 @@ class ConfigureCommand extends Command
      *
      * @return string
      */
-    protected function createQuestionString($question, $default = null, $separator=':')
+    protected function createQuestionString($question, $default = null, $separator = ':')
     {
         return $default !== null ?
             sprintf('<info>%s</info> [<comment>%s</comment>]%s ', $question, $default, $separator) :
@@ -230,7 +236,7 @@ class ConfigureCommand extends Command
      */
     public function pathValidator($path)
     {
-        if(!$this->filesystem->exists($path)) {
+        if (!$this->filesystem->exists($path)) {
             throw new \RuntimeException(sprintf('The path %s could not be found!', $path));
         }
         return $path;

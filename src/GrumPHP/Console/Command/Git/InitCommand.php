@@ -79,6 +79,13 @@ class InitCommand extends Command
         $gitHooksPath = $this->paths()->getGitHooksDir();
         $resourceHooksPath =$this->paths()->getGitHookTemplatesDir();
 
+        // Some git clients to not automatically create a git hooks folder.
+        if (!$this->filesystem->exists($gitHooksPath)) {
+            throw new \RuntimeException(
+                sprintf('<fg=red>The git hooks folder could not be found at: %s</fg=red>', $gitHooksPath)
+            );
+        }
+
         foreach (self::$hooks as $hook) {
             $gitHook = $gitHooksPath . $hook;
             $hookTemplate = $resourceHooksPath . $hook;
