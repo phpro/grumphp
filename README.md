@@ -60,6 +60,15 @@ parameters:
         phpspec: ~
 ```
 
+### Set up basic configuration
+GrumPHP comes shipped with a configuration tool. Run following command to create a configuration file:
+```
+php ./vendor/bin configure
+```
+
+This command is also invoked during installation. 
+It wil not ask you for anything, but it will try to guess the best possible configuration.
+
 ### Parameters
 
 **bin_dir**
