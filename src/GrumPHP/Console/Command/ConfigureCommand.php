@@ -74,12 +74,9 @@ class ConfigureCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         if ($this->filesystem->exists(Application::APP_CONFIG_FILE)) {
-            $output->writeln('<fg=yellow>GrumPHP is already configured!</fg=yellow>');
-            return;
-        }
-
-        // Skip configuration in interactive mode
-        if (!$input->isInteractive()) {
+            if ($input->isInteractive()) {
+                $output->writeln('<fg=yellow>GrumPHP is already configured!</fg=yellow>');
+            }
             return;
         }
 
@@ -97,7 +94,9 @@ class ConfigureCommand extends Command
             return;
         }
 
-        $output->writeln('<fg=green>GrumPHP is configured and ready to kick ass!</fg=green>');
+        if ($input->isInteractive()) {
+            $output->writeln('<fg=green>GrumPHP is configured and ready to kick ass!</fg=green>');
+        }
     }
 
     /**
