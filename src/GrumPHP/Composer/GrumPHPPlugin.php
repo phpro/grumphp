@@ -15,6 +15,7 @@ use Composer\Package\PackageInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
+use GrumPHP\Console\Command\ConfigureCommand;
 use GrumPHP\Console\Command\Git\DeInitCommand;
 use GrumPHP\Console\Command\Git\InitCommand;
 use Symfony\Component\Process\ProcessBuilder;
@@ -42,6 +43,11 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * @var bool
      */
+    protected $configureScheduled = false;
+
+    /**
+     * @var bool
+     */
     protected $initScheduled = false;
 
     /**
@@ -64,8 +70,8 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
             PackageEvents::POST_PACKAGE_INSTALL => 'postPackageInstall',
             PackageEvents::POST_PACKAGE_UPDATE => 'postPackageUpdate',
             PackageEvents::PRE_PACKAGE_UNINSTALL => 'prePackageUninstall',
-            ScriptEvents::POST_INSTALL_CMD => 'runScheduledInit',
-            ScriptEvents::POST_UPDATE_CMD => 'runScheduledInit',
+            ScriptEvents::POST_INSTALL_CMD => 'runScheduledTasks',
+            ScriptEvents::POST_UPDATE_CMD => 'runScheduledTasks',
         );
     }
 
@@ -85,6 +91,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         }
 
         // Schedule init when command is completed
+        $this->configureScheduled = true;
         $this->initScheduled = true;
     }
 
@@ -129,12 +136,15 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * @param Event $event
      */
-    public function runScheduledInit(Event $event)
+    public function runScheduledTasks(Event $event)
     {
-        if (!$this->initScheduled) {
-            return;
+        if ($this->initScheduled) {
+            $this->runGrumPhpCommand(ConfigureCommand::COMMAND_NAME);
         }
-        $this->initGitHook();
+
+        if ($this->initScheduled) {
+            $this->initGitHook();
+        }
     }
 
     /**

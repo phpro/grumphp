@@ -18,7 +18,7 @@ before_install:
   - composer selfupdate
 
 install:
-  - composer update --prefer-dist  --no-scripts
+  - composer update --prefer-dist  --no-scripts  --no-interaction
 
 script:
    - ./vendor/bin/phpcs --standard=PSR2 src
