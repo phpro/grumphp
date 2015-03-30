@@ -13,7 +13,6 @@ use SplFileInfo;
 
 class PhpunitSpec extends ObjectBehavior
 {
-
     function let(GrumPHP $grumPHP, LocatorInterface $externalCommandLocator, ProcessBuilder $processBuilder)
     {
         $this->beConstructedWith($grumPHP, array(), $externalCommandLocator, $processBuilder);
