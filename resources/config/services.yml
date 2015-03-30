@@ -50,3 +50,13 @@ services:
           - @process_builder
         tags:
           - {name: grumphp.task, config: phpspec}
+
+    task.phpunit:
+        class: GrumPHP\Task\Phpunit
+        arguments:
+            - @config
+            - "@=parameter('tasks')['phpunit'] ? parameter('tasks')['phpunit'] : []"
+            - @locator.external_command
+            - @process_builder
+        tags:
+            - {name: grumphp.task, config: phpunit}

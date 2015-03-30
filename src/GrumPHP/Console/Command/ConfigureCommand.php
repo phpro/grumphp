@@ -253,7 +253,8 @@ class ConfigureCommand extends Command
     {
         $tasks = array(
             '1' => 'phpcs',
-            '2' => 'phpspec'
+            '2' => 'phpspec',
+            '3' => 'phpunit',
         );
         return $tasks;
     }
