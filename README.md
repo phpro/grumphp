@@ -58,6 +58,7 @@ parameters:
         phpcs:
             standard: "PSR2"
         phpspec: ~
+        phpunit: ~
 ```
 
 ### Parameters
@@ -86,6 +87,7 @@ parameters:
     tasks:
         phpcs: ~
         phpspec: ~
+        phpunit: ~
 ```
 
 Every task has it's own default configuration. It is possible to overwrite the parameters per task.
@@ -192,7 +194,6 @@ You just registered your custom task in no time! Pretty cool right?!
 
 Following tasks are still on the roadmap:
 
-- phpunit
 - behat
 - composer.json and composer.lock need to be committed at the same time
 - ...
