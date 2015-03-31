@@ -26,7 +26,8 @@
     "suggest": {
       "roave/security-advisories": "Lets GrumPHP be sure that there are no known security issues.",
       "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",
-      "phpspec/phpspec": "Lets GrumPHP spec your code."
+      "phpspec/phpspec": "Lets GrumPHP spec your code.",
+      "phpunit/phpunit": "Lets GrumPHP run your unit tests."
     },
     "authors": [
         {
