@@ -30,6 +30,7 @@ To make GrumPHP even more awesome, it will suggest installing some extra package
 
 - squizlabs/php_codesniffer : ~2.3
 - phpspec/phpspec : ~2.1
+- phpunit/phpunit : ~4.5
 - roave/security-advisors : dev-master@dev
 
 GrumPHP will never push you into using a specific task. You can choose the tasks that fit your needs, and activate or 
