@@ -149,6 +149,18 @@ If your phpspec.yml file is located at an exotic location, you can specify your 
 When this option is enabled, phpspec will stop at the first error. This means that it will not run your full test suite when an error occurs.
 
 
+#### Phpunit
+
+The Phpunit task will run your unit tests. 
+It lives under the `phpunit` namespace and has following configurable parameters:
+
+**config_file**
+
+*Default: phpunit.xml*
+
+If your phpunit.xml file is located at an exotic location, you can specify your custom config file location with this option.
+
+
 #### Custom tasks
 
 It is very easy to configure your own project specific task. 
