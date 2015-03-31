@@ -196,7 +196,12 @@ Following tasks are still on the roadmap:
 
 - behat
 - composer.json and composer.lock need to be committed at the same time
+- phpmd
+- phpcpd
+- phpdcd
 - ...
+
+In a future version, it will also be possible to use GrumPHP as a Continious Integration tool.
 
 # Execution
 
