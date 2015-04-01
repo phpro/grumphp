@@ -2,9 +2,8 @@
 
 namespace GrumPHP\Locator;
 
-use GitElephant\Repository;
-use GitElephant\Status\Status;
-use GitElephant\Status\StatusFile;
+use Gitonomy\Git\Diff\File;
+use Gitonomy\Git\Repository;
 use GrumPHP\Collection\FilesCollection;
 use SplFileInfo;
 
@@ -22,35 +21,12 @@ class ChangedFiles implements LocatorInterface
     protected $repository;
 
     /**
-     * @var Status
-     */
-    protected $status;
-
-    /**
-     * Statuses that won't be located:
-     *
-     * @var array
-     */
-    protected static $ignoredStatuses = array(
-        StatusFile::UNTRACKED,
-        StatusFile::DELETED
-    );
-
-    /**
      * @param Repository $repository
      */
     public function __construct(Repository $repository)
     {
         $this->repository = $repository;
-        $this->status = $this->repository->getStatus();
-    }
 
-    /**
-     * @return Status
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 
     /**
@@ -58,15 +34,16 @@ class ChangedFiles implements LocatorInterface
      */
     public function locate()
     {
-        /** @var StatusFile $file */
+        $diff = $this->repository->getDiff('HEAD');
         $files = array();
-        foreach ($this->getStatus()->all() as $file) {
-            // Skip untracked and deleted files:
-            if (in_array($file->getType(), self::$ignoredStatuses)) {
+        /** @var File $file */
+        foreach ($diff->getFiles() as $file) {
+            if ($file->isDeletion()) {
                 continue;
             }
 
-            $files[] = new SplFileInfo($file->getName());
+            $fileName = $file->isRename() ? $file->getNewName() : $file->getName();
+            $files[] = new SplFileInfo($fileName);
         }
 
         return new FilesCollection($files);

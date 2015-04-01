@@ -3,8 +3,7 @@
 namespace GrumPHP\Console\Command;
 
 use Exception;
-use GitElephant\Command\RevParseCommand;
-use GitElephant\Repository;
+use Gitonomy\Git\Repository;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Application;
 use GrumPHP\Console\Helper\PathsHelper;
@@ -217,16 +216,12 @@ class ConfigureCommand extends Command
     {
         $defaultGitDir = $this->config->getGitDir();
         try {
-            $results = $this->repository->revParse(RevParseCommand::OPTION_SHOW_TOPLEVEL);
+            $topLevel = $this->repository->run('rev-parse', array('--show-toplevel'));
         } catch (Exception $e) {
             return $defaultGitDir;
         }
 
-        if (!count($results)) {
-            return $defaultGitDir;
-        }
-
-        return rtrim($this->paths()->getRelativePath(current($results)), '/');
+        return rtrim($this->paths()->getRelativePath($topLevel), '/');
     }
 
     /**

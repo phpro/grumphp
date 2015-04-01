@@ -2,18 +2,18 @@
 
 namespace spec\GrumPHP\Locator;
 
-use GitElephant\Repository;
-use GitElephant\Status\Status;
-use GitElephant\Status\StatusFile;
+use Gitonomy\Git\Diff\Diff;
+use Gitonomy\Git\Diff\File;
+use Gitonomy\Git\Repository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Prophecy\Prophet;
 
 class ChangedFilesSpec extends ObjectBehavior
 {
-    function let(Repository $repository, Status $status)
+    function let(Repository $repository)
     {
         $this->beConstructedWith($repository);
-        $repository->getStatus()->shouldBeCalled()->willReturn($status);
     }
 
     function it_is_initializable()
@@ -26,37 +26,30 @@ class ChangedFilesSpec extends ObjectBehavior
         $this->shouldHaveType('GrumPHP\Locator\LocatorInterface');
     }
 
-    function it_gets_the_status_from_the_repository(Status $status)
+    protected function mockFile($name, $isRename = false, $isDelete = false)
     {
-        $this->getStatus()->shouldEqual($status);
+        $prophet = new Prophet();
+        $file = $prophet->prophesize('Gitonomy\Git\Diff\File');
+        $file->getName()->willReturn($name);
+        $file->getNewName()->willReturn($name);
+        $file->isRename()->willReturn($isRename);
+        $file->isDeletion()->willReturn($isDelete);
+        return $file->reveal();
     }
 
-    function it_excludes_untracked_files(Status $status, StatusFile $file1, StatusFile $file2)
+    function it_will_list_all_diffed_files(Repository $repository, Diff $diff)
     {
-        $file1->getName()->willReturn('match1');
-        $file1->getType()->willReturn(StatusFile::UNTRACKED);
-        $file2->getName()->willReturn('match2');
-        $file2->getType()->willReturn(StatusFile::MODIFIED);
-        $status->all()->willReturn(array($file1, $file2));
+        $changedFile = $this->mockFile('file1.txt');
+        $movedFile = $this->mockFile('file2.txt', true);
+        $deletedFile = $this->mockFile('file3.txt', false, true);
+
+        $repository->getDiff('HEAD')->willReturn($diff);
+        $diff->getFiles()->willReturn([$changedFile, $movedFile, $deletedFile]);
 
         $result = $this->locate();
         $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
-        $result[0]->getPathname()->shouldBe('match2');
-        $result->getIterator()->count()->shouldBe(1);
-
-    }
-
-    function it_excludes_deleted_files(Status $status, StatusFile $file1, StatusFile $file2)
-    {
-        $file1->getName()->willReturn('match1');
-        $file1->getType()->willReturn(StatusFile::MODIFIED);
-        $file2->getName()->willReturn('match2');
-        $file2->getType()->willReturn(StatusFile::DELETED);
-        $status->all()->willReturn(array($file1, $file2));
-
-        $result = $this->locate();
-        $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
-        $result[0]->getPathname()->shouldBe('match1');
-        $result->getIterator()->count()->shouldBe(1);
+        $result[0]->getPathname()->shouldBe('file1.txt');
+        $result[1]->getPathname()->shouldBe('file2.txt');
+        $result->getIterator()->count()->shouldBe(2);
     }
 }
