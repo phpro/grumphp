@@ -46,7 +46,6 @@ class Phpcs extends AbstractExternalTask
 
         $config = $this->getConfiguration();
         $this->processBuilder->setArguments(array(
-            'php',
             $this->getCommandLocation(),
             '--standard=' . $config['standard'],
         ));

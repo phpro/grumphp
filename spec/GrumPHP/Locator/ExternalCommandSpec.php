@@ -4,13 +4,13 @@ namespace spec\GrumPHP\Locator;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\ExecutableFinder;
 
 class ExternalCommandSpec extends ObjectBehavior
 {
-    function let(Filesystem $filesystem)
+    function let(ExecutableFinder $executableFinder)
     {
-        $this->beConstructedWith('bin', $filesystem);
+        $this->beConstructedWith('bin', $executableFinder);
     }
 
     function it_is_initializable()
@@ -23,15 +23,15 @@ class ExternalCommandSpec extends ObjectBehavior
         $this->shouldHaveType('GrumPHP\Locator\LocatorInterface');
     }
 
-    function it_throws_exception_when_external_command_is_not_found(Filesystem $filesystem)
+    function it_throws_exception_when_external_command_is_not_found(ExecutableFinder $executableFinder)
     {
-        $filesystem->exists('bin/test')->willReturn(false);
+        $executableFinder->find('test', null, ['bin'])->willReturn(false);
         $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringLocate('test');
     }
 
-    function it_locates_external_commands(Filesystem $filesystem)
+    function it_locates_external_commands(ExecutableFinder $executableFinder)
     {
-        $filesystem->exists('bin/test')->willReturn(true);
+        $executableFinder->find('test', null, ['bin'])->willReturn('bin/test');
         $this->locate('test')->shouldEqual('bin/test');
     }
 }

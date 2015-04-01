@@ -43,7 +43,6 @@ class Phpunit extends AbstractExternalTask
         // We don't care about changed files here, we want to run the entire suit every time
         $config = $this->getConfiguration();
         $this->processBuilder->setArguments(array(
-            'php',
             $this->getCommandLocation(),
         ));
 
