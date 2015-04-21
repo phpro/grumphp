@@ -15,7 +15,7 @@
         "symfony/dependency-injection": "~2.6",
         "symfony/config": "~2.6",
         "doctrine/collections": "~1.2",
-        "gitonomy/gitlib": "0.1.7"
+        "gitonomy/gitlib": "~0.1.7"
     },
     "require-dev": {
         "composer/composer": "~1.0@dev",
