@@ -44,7 +44,7 @@ class ChangedFilesSpec extends ObjectBehavior
         $deletedFile = $this->mockFile('file3.txt', false, true);
 
         $repository->getDiff('HEAD')->willReturn($diff);
-        $diff->getFiles()->willReturn([$changedFile, $movedFile, $deletedFile]);
+        $diff->getFiles()->willReturn(array($changedFile, $movedFile, $deletedFile));
 
         $result = $this->locate();
         $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
