@@ -128,11 +128,11 @@ class InitCommand extends Command
      */
     protected function generateHookCommand($command)
     {
+        $configPath = rtrim($this->paths()->getRelativePath($this->input->getOption('config')), '/\\');
         $this->processBuilder->setArguments(array(
-            'php',
-            $this->paths()->getBinCommand('grumphp'),
+            $this->paths()->getBinCommand('grumphp', true),
             $command,
-            '--config=' . $this->input->getOption('config'),
+            '--config=' . $configPath,
         ));
 
         return $this->processBuilder->getProcess()->getCommandLine();

@@ -4,6 +4,7 @@ namespace GrumPHP\Console\Helper;
 
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Locator\ExternalCommand;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -28,10 +29,11 @@ class PathsHelper extends Helper
     protected $fileSystem;
 
     /**
-     * @param $config
-     * @param $fileSystem
+     * @param GrumPHP         $config
+     * @param Filesystem      $fileSystem
+     * @param ExternalCommand $commandLocator
      */
-    public function __construct($config, $fileSystem)
+    public function __construct(GrumPHP $config, Filesystem $fileSystem)
     {
         $this->config = $config;
         $this->fileSystem = $fileSystem;
@@ -45,7 +47,7 @@ class PathsHelper extends Helper
     public function getGrumPHPPath()
     {
         $path = __DIR__ . '/../../../../';
-        return $this->fileSystem->makePathRelative(realpath($path), $this->getWorkingDir());
+        return $this->getRelativePath($path);
     }
 
     /**
@@ -108,7 +110,7 @@ class PathsHelper extends Helper
             throw new RuntimeException('The configured GIT directory could not be found.');
         }
 
-        return $this->fileSystem->makePathRelative(realpath($gitDir), $this->getWorkingDir());
+        return $this->getRelativePath($gitDir);
     }
 
     /**
@@ -154,24 +156,22 @@ class PathsHelper extends Helper
             throw new RuntimeException('The configured BIN directory could not be found.');
         }
 
-        return $this->fileSystem->makePathRelative(realpath($binDir), $this->getWorkingDir());
+        return $this->getRelativePath($binDir);
     }
 
     /**
      * Search a command in the bin folder
+     * Note: the command locator is not injected because it needs the relative bin path
      *
      * @param $command
+     * @param $forceUnix
      *
      * @return string
      */
-    public function getBinCommand($command)
+    public function getBinCommand($command, $forceUnix = false)
     {
-        $location = $this->getBinDir() . $command;
-        if (!$this->fileSystem->exists($location)) {
-            throw new RuntimeException(sprintf('The BIN command %s could not be found.', $command));
-        }
-
-        return $this->getBinDir() . $command;
+        $commandLocator = new ExternalCommand($this->getBinDir(), $this->fileSystem);
+        return $commandLocator->locate($command, $forceUnix);
     }
 
     /**
@@ -181,6 +181,7 @@ class PathsHelper extends Helper
      */
     public function getRelativePath($path)
     {
+        $path = trim($path);
         return $this->fileSystem->makePathRelative(realpath($path), $this->getWorkingDir());
     }
 

@@ -16,16 +16,20 @@ services:
         class: Symfony\Component\Process\ProcessBuilder
         prototype: true
 
+    executable_finder:
+        class: Symfony\Component\Process\ExecutableFinder
+
     git.repository:
-        class: GitElephant\Repository
-        arguments: [%git_dir%]
+        class: Gitonomy\Git\Repository
+        arguments:
+          - %git_dir%
 
     task_runner:
         class: GrumPHP\Runner\TaskRunner
 
     locator.external_command:
         class: GrumPHP\Locator\ExternalCommand
-        arguments: [%bin_dir%, @filesystem]
+        arguments: [%bin_dir%, @executable_finder]
 
     locator.changed_files:
         class: GrumPHP\Locator\ChangedFiles

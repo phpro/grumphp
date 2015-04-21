@@ -7,6 +7,7 @@ use Symfony\Component\Console\Application as SymfonyConsole;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class Application
@@ -98,7 +99,6 @@ class Application extends SymfonyConsole
         return $helperSet;
     }
 
-
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerBuilder
      */
@@ -108,10 +108,19 @@ class Application extends SymfonyConsole
             return $this->container;
         }
 
+        // Load cli options:
         $input = new ArgvInput();
         $input->bind($this->getDefaultInputDefinition());
         $configPath = $input->getOption('config');
 
+        // Make sure to set the full path when it is declared relative
+        // This will fix some issues in windows.
+        $filesystem = new Filesystem();
+        if (!$filesystem->isAbsolutePath($configPath)) {
+            $configPath = getcwd() . DIRECTORY_SEPARATOR . $configPath;
+        }
+
+        // Build the service container:
         $this->container = ContainerFactory::buildFromConfiguration($configPath);
         return $this->container;
     }

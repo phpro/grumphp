@@ -3,7 +3,7 @@
 namespace GrumPHP\Locator;
 
 use GrumPHP\Exception\RuntimeException;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\ExecutableFinder;
 
 class ExternalCommand implements LocatorInterface
 {
@@ -13,37 +13,46 @@ class ExternalCommand implements LocatorInterface
     protected $binDir;
 
     /**
-     * @var Filesystem
+     * @var ExecutableFinder
      */
-    protected $filesystem;
+    protected $executableFinder;
 
     /**
      * @param string $binDir
-     * @param Filesystem $filesystem
+     * @param ExecutableFinder $executableFinder
      */
-    public function __construct($binDir, Filesystem $filesystem)
+    public function __construct($binDir, ExecutableFinder $executableFinder)
     {
-        $this->binDir = $binDir;
-        $this->filesystem = $filesystem;
+        $this->binDir = rtrim($binDir, '/\\');
+        $this->executableFinder = $executableFinder;
     }
 
     /**
      * @param string $command
+     * @param boolean $forceUnix This parameter makes it possible to force unix style commands
+     *                           on a windows environment.
+     *                           This can be useful in git hooks.
      *
      * @return string
      *
      * @throws RuntimeException if the command can not be found
      */
-    public function locate($command = '')
+    public function locate($command = '', $forceUnix = false)
     {
-        $location = $this->binDir . DIRECTORY_SEPARATOR . $command;
-
-        if (!$this->filesystem->exists($location)) {
+        // Search executable:
+        $executable = $this->executableFinder->find($command, null, array($this->binDir));
+        if (!$executable) {
             throw new RuntimeException(
-                sprintf('The executable for "%s" could not be found at: "%s".', $command, $location)
+                sprintf('The executable for "%s" could not be found.', $command)
             );
         }
 
-        return $location;
+        // Make sure to add unix-style directory separators if unix-mode is enforced
+        if ($forceUnix) {
+            $parts = pathinfo($executable);
+            $executable = $parts['dirname'] . '/' . $parts['filename'];
+        }
+
+        return $executable;
     }
 }

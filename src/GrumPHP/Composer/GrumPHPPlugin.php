@@ -18,6 +18,8 @@ use Composer\Script\ScriptEvents;
 use GrumPHP\Console\Command\ConfigureCommand;
 use GrumPHP\Console\Command\Git\DeInitCommand;
 use GrumPHP\Console\Command\Git\InitCommand;
+use GrumPHP\Locator\ExternalCommand;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
@@ -180,10 +182,16 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     protected function runGrumPhpCommand($command)
     {
         $config = $this->composer->getConfig();
-        $executable = $config->get('bin-dir') . '/grumphp';
+        $commandLocator = new ExternalCommand($config->get('bin-dir'), new Filesystem());
+        $executable = $commandLocator->locate('grumphp');
 
-        $builder = new ProcessBuilder(array('php', $executable, $command));
+        $builder = new ProcessBuilder(array($executable, $command, '--no-interaction'));
         $process = $builder->getProcess();
+
+        // Check executable which is running:
+        if ($this->io->isVeryVerbose()) {
+            $this->io->write('Running process : ' . $process->getCommandLine());
+        }
 
         $process->run();
         if (!$process->isSuccessful()) {
