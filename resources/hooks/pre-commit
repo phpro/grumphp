@@ -8,7 +8,7 @@
 
 # Validate exit code of above command
 RC=$?
-if [[ $RC != 0 ]]; then
+if [ "$RC" != 0 ]; then
     exit $RC;
 fi
 
