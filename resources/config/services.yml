@@ -64,3 +64,13 @@ services:
             - @process_builder
         tags:
             - {name: grumphp.task, config: phpunit}
+
+    task.behat:
+        class: GrumPHP\Task\Phpunit
+        arguments:
+            - @config
+            - "@=parameter('tasks')['behat'] ? parameter('tasks')['behat'] : []"
+            - @locator.external_command
+            - @process_builder
+        tags:
+            - {name: grumphp.task, config: behat}
