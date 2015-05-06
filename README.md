@@ -62,7 +62,8 @@ php ./vendor/bin git:init --config=path/to/grumphp.yml
 
 Sample `grumphp.yml`:
 
-```yml
+``` yaml
+# grumphp.yml
 parameters:
     bin_dir: "./vendor/bin"
     git_dir: "."
@@ -103,7 +104,8 @@ It is easy to configure and activate tasks in GrumPHP.
 Tasks live under their own namespace in the parameters part.
 To activate a task, it is sufficient to add an empty task configuration:
 
-```yml
+``` yaml
+# grumphp.yml
 parameters:
     tasks:
         phpcs: ~
@@ -190,7 +192,8 @@ It is very easy to configure your own project specific task.
 You just have to create a class that implements the `GrumPHP\Task\TaskInterface`.
 Next register it to the service manager and add your task configuration:
 
-```yml
+``` yaml
+# resources/config/services.yml
 parameters:
     tasks:
         myConfigKey:
