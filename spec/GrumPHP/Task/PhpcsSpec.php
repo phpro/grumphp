@@ -29,6 +29,11 @@ class PhpcsSpec extends ObjectBehavior
         $this->shouldHaveType('GrumPHP\Task\ExternalTaskInterface');
     }
 
+    function it_is_enabled_by_default()
+    {
+        $this->isEnabled()->shouldBe(true);
+    }
+
     function it_uses_its_external_command_locator_to_find_correct_command(LocatorInterface $externalCommandLocator)
     {
         $externalCommandLocator->locate('phpcs')->shouldBeCalled();
