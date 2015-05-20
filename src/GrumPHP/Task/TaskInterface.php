@@ -23,6 +23,11 @@ interface TaskInterface
     public function getDefaultConfiguration();
 
     /**
+     * @return boolean
+     */
+    public function isEnabled();
+
+    /**
      * @param FilesCollection $files
      *
      * @return void

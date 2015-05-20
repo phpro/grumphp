@@ -1,10 +1,9 @@
 parameters:
-
-  bin_dir: "./vendor/bin"
-  git_dir: "."
-  tasks:
-      phpcs:
-        standard: PSR2
-        ignore_patterns:
-          - "*Spec.php"
-      phpspec: ~
+    bin_dir: "./vendor/bin"
+    git_dir: "."
+    tasks:
+        phpcs:
+            standard: PSR2
+            ignore_patterns:
+                - "*Spec.php"
+        phpspec: ~

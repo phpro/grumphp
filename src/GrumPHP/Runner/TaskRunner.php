@@ -55,11 +55,13 @@ class TaskRunner
         $messages = array();
 
         foreach ($this->getTasks() as $task) {
-            try {
-                $task->run($files);
-            } catch (RuntimeException $e) {
-                $failures = true;
-                $messages[] = $e->getMessage();
+            if ($task->isEnabled()) {
+                try {
+                    $task->run($files);
+                } catch (RuntimeException $e) {
+                    $failures = true;
+                    $messages[] = $e->getMessage();
+                }
             }
         }
 

@@ -73,6 +73,8 @@ parameters:
         phpunit: ~
 ```
 
+Every task supports an `enabled` option which defaults to `true`. Set it to `false` to (temporarily) skip that task.
+
 ### Set up basic configuration
 GrumPHP comes shipped with a configuration tool. Run following command to create a configuration file:
 ```

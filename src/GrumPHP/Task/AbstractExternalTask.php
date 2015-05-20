@@ -54,4 +54,16 @@ abstract class AbstractExternalTask implements ExternalTaskInterface
     {
         return $this->configuration;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEnabled()
+    {
+        if (isset($this->configuration['enabled'])) {
+            return $this->configuration['enabled'];
+        }
+
+        return true;
+    }
 }

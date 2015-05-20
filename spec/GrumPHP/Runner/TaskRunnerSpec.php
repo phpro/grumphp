@@ -39,19 +39,24 @@ class TaskRunnerSpec extends ObjectBehavior
         $this->getTasks()->shouldEqual(array($task1, $task2));
     }
 
-    function it_runs_all_tasks(TaskInterface $task1, TaskInterface $task2)
+    function it_runs_all_enabled_tasks(TaskInterface $task1, TaskInterface $task2)
     {
+        $task1->isEnabled()->willReturn(true);
+        $task2->isEnabled()->willReturn(false);
+
         $this->addTask($task1);
         $this->addTask($task2);
 
         $task1->run($this->files)->shouldBeCalled();
-        $task2->run($this->files)->shouldBeCalled();
+        $task2->run($this->files)->shouldNotBeCalled();
 
         $this->run($this->files);
     }
 
     function it_throws_exception_if_task_fails(TaskInterface $task1)
     {
+        $task1->isEnabled()->willReturn(true);
+
         $this->addTask($task1);
 
         $task1->run($this->files)->willThrow('GrumPHP\Exception\RuntimeException');
@@ -61,6 +66,9 @@ class TaskRunnerSpec extends ObjectBehavior
 
     function it_runs_subsequent_tasks_if_one_fails(TaskInterface $task1, TaskInterface $task2)
     {
+        $task1->isEnabled()->willReturn(true);
+        $task2->isEnabled()->willReturn(true);
+
         $this->addTask($task1);
         $this->addTask($task2);
 
