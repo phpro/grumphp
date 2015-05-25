@@ -4,7 +4,7 @@
     "type": "composer-plugin",
     "license": "MIT",
     "require": {
-        "php": ">=5.3",
+        "php": ">=5.3.6",
         "composer-plugin-api": "~1.0",
         "symfony/console": "^2.3",
         "symfony/expression-language": "^2.3",

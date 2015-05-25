@@ -86,9 +86,18 @@ class Phpcsfixer extends AbstractExternalTask
                 $json = json_decode($output, true);
                 if ($json) {
                     if (isset($json['files'][0]['name']) && isset($json['files'][0]['appliedFixers'])) {
-                        $messages[] = sprintf('%s) %s (%s)', ++$errorCount, $json['files'][0]['name'], implode(',', $json['files'][0]['appliedFixers']));
+                        $messages[] = sprintf(
+                            '%s) %s (%s)',
+                            ++$errorCount,
+                            $json['files'][0]['name'],
+                            implode(',', $json['files'][0]['appliedFixers'])
+                        );
                     } elseif (isset($json['files'][0]['name'])) {
-                        $messages[] = sprintf('%s) %s', ++$errorCount, $json['files'][0]['name']);
+                        $messages[] = sprintf(
+                            '%s) %s',
+                            ++$errorCount,
+                            $json['files'][0]['name']
+                        );
                     }
 
                     $suggest[] = str_replace(array("'--dry-run' ", "'--format=json' "), '', $process->getCommandLine());
