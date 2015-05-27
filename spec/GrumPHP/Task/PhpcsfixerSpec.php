@@ -47,7 +47,6 @@ class PhpcsfixerSpec extends ObjectBehavior
 
     function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process)
     {
-        $processBuilder->add('--dry-run')->shouldBeCalled();
         $processBuilder->add('--config=default')->shouldBeCalled();
         $processBuilder->add('--verbose')->shouldBeCalled();
         $processBuilder->add('fix')->shouldBeCalled();
@@ -68,7 +67,6 @@ class PhpcsfixerSpec extends ObjectBehavior
 
     function it_throws_exception_if_the_process_fails(ProcessBuilder $processBuilder, Process $process)
     {
-        $processBuilder->add('--dry-run')->shouldBeCalled();
         $processBuilder->add('--config=default')->shouldBeCalled();
         $processBuilder->add('--verbose')->shouldBeCalled();
         $processBuilder->add('fix')->shouldBeCalled();

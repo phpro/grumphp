@@ -223,16 +223,16 @@ The PHP-CS-Fixer task will run codestyle checks.
 It lives under the `phpcsfixer` namespace and has following configurable parameters:
 
 
-**auto_fix**
+**config_file**
 
-*Default: false*
+*Default: null*
 
-If you want to fix codestyle automatically specify it with this option.
+You can specify the path to the .php_cs file.
 
 
 **config**
 
-*Default: `default`*
+*Default: 'default'*
 
 There such predefined configs for codestyle checks: `default`, `magento`, `sf23`.
 If you want to run a particular config, specify it with this option.

@@ -18,8 +18,8 @@ class Phpcsfixer extends AbstractExternalTask
     public function getDefaultConfiguration()
     {
         return array(
-            'auto_fix' => false,
             'config' => 'default',
+            'config_file' => null,
             'fixers' => array(),
             'level' => '',
             'verbose' => true,
@@ -49,6 +49,7 @@ class Phpcsfixer extends AbstractExternalTask
         $this->processBuilder->setArguments(array(
             $this->getCommandLocation(),
             '--format=json',
+            '--dry-run',
         ));
 
         if ($config['level']) {
@@ -59,8 +60,8 @@ class Phpcsfixer extends AbstractExternalTask
             $this->processBuilder->add('--config=' . $config['config']);
         }
 
-        if (!$config['auto_fix']) {
-            $this->processBuilder->add('--dry-run');
+        if ($config['config_file']) {
+            $this->processBuilder->add('--config-file' . $config['config-file']);
         }
 
         if ($config['verbose']) {
@@ -108,7 +109,7 @@ class Phpcsfixer extends AbstractExternalTask
             }
         }
 
-        if (count($messages) && !$config['auto_fix']) {
+        if (count($messages)) {
             throw new RuntimeException(implode("\n", $messages) . "\n" . "\n" . implode("\n", $suggest));
         }
     }
