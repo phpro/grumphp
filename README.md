@@ -98,6 +98,20 @@ It defaults to the default composer bin directory.
 This parameter will tell GrumPHP in which folder it can find the .git folder. 
 This parameter is used to create the git hooks at the correct location. It defaults to the working directory.
 
+**ascii**
+
+*Default: null*
+
+This parameter will tell GrumPHP where it can locate ascii images used in pre-commit hook.
+Currently there are only two images `failed` and `succeeded`. If path is not specified default image from 
+`resources/ascii/` folder are used.
+```
+ascii:
+  failed: resource/failed.txt
+  succeeded: ~
+```
+To disable banner set ascii images path to `~`.
+
 ### Tasks
 It is easy to configure and activate tasks in GrumPHP.
 Tasks live under their own namespace in the parameters part.

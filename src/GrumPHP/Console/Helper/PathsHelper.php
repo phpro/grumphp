@@ -80,9 +80,16 @@ class PathsHelper extends Helper
      */
     public function getAsciiContent($resource)
     {
-        $file = $this->getAsciiPath() . $resource . '.txt';
-        if (!$this->fileSystem->exists($file)) {
-            return sprintf('ASCII file %s could not be found.', $resource);
+        $file = $this->config->getAsciiContentPath($resource);
+        if (is_null($file)) {
+            return '';
+        }
+
+        if (empty($file) || !$this->fileSystem->exists($file)) {
+            $file = $this->getAsciiPath() . $resource . '.txt';
+            if (!$this->fileSystem->exists($file)) {
+                return sprintf('ASCII file %s could not be found.', $resource);
+            }
         }
 
         return file_get_contents($file);
