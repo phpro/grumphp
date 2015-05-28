@@ -32,7 +32,6 @@ class PathsHelper extends Helper
     /**
      * @param GrumPHP         $config
      * @param Filesystem      $fileSystem
-     * @param ExternalCommand $commandLocator
      */
     public function __construct(GrumPHP $config, Filesystem $fileSystem)
     {
@@ -48,6 +47,7 @@ class PathsHelper extends Helper
     public function getGrumPHPPath()
     {
         $path = __DIR__ . '/../../../../';
+
         return $this->getRelativePath($path);
     }
 
@@ -82,7 +82,7 @@ class PathsHelper extends Helper
     {
         $file = $this->getAsciiPath() . $resource . '.txt';
         if (!$this->fileSystem->exists($file)) {
-            throw new RuntimeException(sprintf('ASCII file %s could not be found.', $resource));
+            return sprintf('ASCII file %s could not be found.', $resource);
         }
 
         return file_get_contents($file);
@@ -122,6 +122,7 @@ class PathsHelper extends Helper
     public function getGitHookExecutionPath()
     {
         $gitPath = $this->getGitDir();
+
         return $this->fileSystem->makePathRelative($this->getWorkingDir(), realpath($gitPath));
     }
 
@@ -172,6 +173,7 @@ class PathsHelper extends Helper
     public function getBinCommand($command, $forceUnix = false)
     {
         $commandLocator = new ExternalCommand($this->getBinDir(), new ExecutableFinder());
+
         return $commandLocator->locate($command, $forceUnix);
     }
 
@@ -183,6 +185,7 @@ class PathsHelper extends Helper
     public function getRelativePath($path)
     {
         $path = trim($path);
+
         return $this->fileSystem->makePathRelative(realpath($path), $this->getWorkingDir());
     }
 

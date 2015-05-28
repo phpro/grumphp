@@ -77,7 +77,7 @@ class InitCommand extends Command
     {
         $this->input = $input;
         $gitHooksPath = $this->paths()->getGitHooksDir();
-        $resourceHooksPath =$this->paths()->getGitHookTemplatesDir();
+        $resourceHooksPath = $this->paths()->getGitHookTemplatesDir();
 
         // Some git clients to not automatically create a git hooks folder.
         if (!$this->filesystem->exists($gitHooksPath)) {
