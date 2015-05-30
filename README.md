@@ -124,82 +124,14 @@ To activate a task, it is sufficient to add an empty task configuration:
 # grumphp.yml
 parameters:
     tasks:
+        behat: ~
+        phpcsfixer: ~
         phpcs: ~
         phpspec: ~
         phpunit: ~
 ```
 
 Every task has it's own default configuration. It is possible to overwrite the parameters per task.
-
-#### Phpcs
-
-The Phpcs task will sniff your code for bad coding standards. 
-It lives under the `phpcs` namespace and has following configurable parameters:
-
-**standard**
-
-*Default: PSR2*
-
-This parameter will describe which standard is being used to validate your code for bad coding standards.
-
-
-**show_warnings**
-
-*Default: true*
-
-Triggers an error when there are warnings.
-
-
-**tab_width**
-
-*Default: null*
-
-By default, the standard will specify the optimal tab-width of the code. If you want to overwrite this option, you can use this configuration option.
-
-
-**ignore_patterns**
-
-*Default: []*
-
-This is a list of patterns that will be ignored by phpcs. With this option you can skip files like tests. Leave this option blank to run phpcs for every php file.
-
-
-**sniffs**
-
-*Default: []*
-
-This is a list of sniffs that need to be executed. Leave this option blank to run all configured sniffs for the selected standard.
-
-
-#### Phpspec
-
-The Phpspec task will spec your code with Phpspec. 
-It lives under the `phpspec` namespace and has following configurable parameters:
-
-**config_file**
-
-*Default: null*
-
-If your phpspec.yml file is located at an exotic location, you can specify your custom config file location with this option.
-
-
-**stop_on_failure**
-
-*Default: false*
-
-When this option is enabled, phpspec will stop at the first error. This means that it will not run your full test suite when an error occurs.
-
-
-#### Phpunit
-
-The Phpunit task will run your unit tests. 
-It lives under the `phpunit` namespace and has following configurable parameters:
-
-**config_file**
-
-*Default: phpunit.xml*
-
-If your phpunit.xml file is located at an exotic location, you can specify your custom config file location with this option.
 
 
 #### Behat
@@ -276,6 +208,77 @@ Fixers are grouped by levels: `psr0`, `psr1`, `psr2` you can specify a group ins
 *Default: true*
 
 Show applied fixers.
+
+
+#### Phpcs
+
+The Phpcs task will sniff your code for bad coding standards. 
+It lives under the `phpcs` namespace and has following configurable parameters:
+
+**standard**
+
+*Default: PSR2*
+
+This parameter will describe which standard is being used to validate your code for bad coding standards.
+
+
+**show_warnings**
+
+*Default: true*
+
+Triggers an error when there are warnings.
+
+
+**tab_width**
+
+*Default: null*
+
+By default, the standard will specify the optimal tab-width of the code. If you want to overwrite this option, you can use this configuration option.
+
+
+**ignore_patterns**
+
+*Default: []*
+
+This is a list of patterns that will be ignored by phpcs. With this option you can skip files like tests. Leave this option blank to run phpcs for every php file.
+
+
+**sniffs**
+
+*Default: []*
+
+This is a list of sniffs that need to be executed. Leave this option blank to run all configured sniffs for the selected standard.
+
+
+#### Phpspec
+
+The Phpspec task will spec your code with Phpspec. 
+It lives under the `phpspec` namespace and has following configurable parameters:
+
+**config_file**
+
+*Default: null*
+
+If your phpspec.yml file is located at an exotic location, you can specify your custom config file location with this option.
+
+
+**stop_on_failure**
+
+*Default: false*
+
+When this option is enabled, phpspec will stop at the first error. This means that it will not run your full test suite when an error occurs.
+
+
+#### Phpunit
+
+The Phpunit task will run your unit tests. 
+It lives under the `phpunit` namespace and has following configurable parameters:
+
+**config_file**
+
+*Default: phpunit.xml*
+
+If your phpunit.xml file is located at an exotic location, you can specify your custom config file location with this option.
 
 
 #### Custom tasks
