@@ -44,13 +44,13 @@ class GrumPHPSpec extends ObjectBehavior
 
     function it_should_return_empty_ascii_location_for_unknown_resources(ContainerInterface $container)
     {
-        $container->getParameter('ascii')->willReturn([]);
+        $container->getParameter('ascii')->willReturn(array());
         $this->getAsciiContentPath('success')->shouldReturn(null);
     }
 
     function it_should_return_the_ascii_location_for_known_resources(ContainerInterface $container)
     {
-        $container->getParameter('ascii')->willReturn(['success' => 'success']);
+        $container->getParameter('ascii')->willReturn(array('success' => 'success'));
         $this->getAsciiContentPath('success')->shouldReturn('success');
     }
 }
