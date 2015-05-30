@@ -99,7 +99,7 @@ class PathsHelper extends Helper
         }
 
         // Error:
-        return sprintf('ASCII file %s could not be found.', $resource);
+        return sprintf('ASCII file %s could not be found.', $file);
     }
 
     /**
