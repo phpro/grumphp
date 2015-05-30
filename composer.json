@@ -42,7 +42,11 @@
         }
     ],
     "extra": {
-        "class": "GrumPHP\\Composer\\GrumPHPPlugin"
+      "class": "GrumPHP\\Composer\\GrumPHPPlugin",
+      "branch-alias": {
+        "dev-master": "0.2-dev",
+        "dev-develop": "0.3-dev"
+      }
     },
     "autoload": {
         "psr-0": {
