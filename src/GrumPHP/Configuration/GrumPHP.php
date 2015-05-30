@@ -56,4 +56,25 @@ class GrumPHP
 
         return $tasksConfig[$taskName];
     }
+
+    /**
+     * Get ascii content path from grumphp.yml file
+     *
+     * @param $resource
+     *
+     * @return mixed
+     */
+    public function getAsciiContentPath($resource)
+    {
+        if (!$this->container->hasParameter('ascii')) {
+            return '';
+        }
+
+        $paths = $this->container->getParameter('ascii');
+        if (!array_key_exists($resource, $paths)) {
+            return '';
+        }
+
+        return $paths[$resource];
+    }
 }

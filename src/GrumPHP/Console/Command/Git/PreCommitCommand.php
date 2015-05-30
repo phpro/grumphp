@@ -69,13 +69,21 @@ class PreCommitCommand extends Command
             $this->taskRunner->run($this->getCommittedFiles());
         } catch (ExceptionInterface $e) {
             // We'll fail hard on any exception not generated in GrumPHP
-            $output->writeln('<fg=red>' . $this->paths()->getAsciiContent('failed') . '</fg=red>');
+            $failed = $this->paths()->getAsciiContent('failed');
+            if ($failed) {
+                $output->writeln('<fg=red>' . $failed . '</fg=red>');
+            }
+
             $output->writeln('<fg=red>' . $e->getMessage() . '</fg=red>');
+            $output->writeln('<fg=yellow>To skip commit checks, add -n or --no-verify flag to commit command</fg=yellow>');
 
             return 1;
         }
 
-        $output->write('<fg=green>' . $this->paths()->getAsciiContent('succeeded') . '</fg=green>');
+        $succeeded = $this->paths()->getAsciiContent('succeeded');
+        if ($succeeded) {
+            $output->write('<fg=green>' . $succeeded . '</fg=green>');
+        }
 
         return 0;
     }
