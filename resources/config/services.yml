@@ -2,6 +2,9 @@ parameters:
   bin_dir: ./vendor/bin
   git_dir: .
   tasks: []
+  ascii:
+    failed: failed.txt
+    succeeded: succeeded.txt
 
 services:
 

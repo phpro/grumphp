@@ -81,18 +81,25 @@ class PathsHelper extends Helper
     public function getAsciiContent($resource)
     {
         $file = $this->config->getAsciiContentPath($resource);
+
+        // Disabled:
         if (is_null($file)) {
             return '';
         }
 
-        if (empty($file) || !$this->fileSystem->exists($file)) {
-            $file = $this->getAsciiPath() . $resource . '.txt';
-            if (!$this->fileSystem->exists($file)) {
-                return sprintf('ASCII file %s could not be found.', $resource);
-            }
+        // Specified by user:
+        if ($this->fileSystem->exists($file)) {
+            return file_get_contents($file);
         }
 
-        return file_get_contents($file);
+        // Embedded ASCII art:
+        $embeddedFile = $this->getAsciiPath() . $file;
+        if ($this->fileSystem->exists($embeddedFile)) {
+            return file_get_contents($embeddedFile);
+        }
+
+        // Error:
+        return sprintf('ASCII file %s could not be found.', $resource);
     }
 
     /**

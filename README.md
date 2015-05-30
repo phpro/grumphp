@@ -101,7 +101,7 @@ This parameter is used to create the git hooks at the correct location. It defau
 
 **ascii**
 
-*Default: null*
+*Default: {failed: "failed.txt", succeeded: "succeeded.txt"}*
 
 This parameter will tell GrumPHP where it can locate ascii images used in pre-commit hook.
 Currently there are only two images `failed` and `succeeded`. If path is not specified default image from 

@@ -41,4 +41,16 @@ class GrumPHPSpec extends ObjectBehavior
         $container->getParameter('tasks')->willReturn(array('name' => array()));
         $this->getTaskConfig('name')->shouldReturn(array());
     }
+
+    function it_should_return_empty_ascii_location_for_unknown_resources(ContainerInterface $container)
+    {
+        $container->getParameter('ascii')->willReturn([]);
+        $this->getAsciiContentPath('success')->shouldReturn(null);
+    }
+
+    function it_should_return_the_ascii_location_for_known_resources(ContainerInterface $container)
+    {
+        $container->getParameter('ascii')->willReturn(['success' => 'success']);
+        $this->getAsciiContentPath('success')->shouldReturn('success');
+    }
 }

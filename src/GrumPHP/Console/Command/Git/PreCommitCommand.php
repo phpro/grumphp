@@ -75,7 +75,9 @@ class PreCommitCommand extends Command
             }
 
             $output->writeln('<fg=red>' . $e->getMessage() . '</fg=red>');
-            $output->writeln('<fg=yellow>To skip commit checks, add -n or --no-verify flag to commit command</fg=yellow>');
+            $output->writeln(
+                '<fg=yellow>To skip commit checks, add -n or --no-verify flag to commit command</fg=yellow>'
+            );
 
             return 1;
         }
