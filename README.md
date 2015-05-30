@@ -67,6 +67,9 @@ Sample `grumphp.yml`:
 parameters:
     bin_dir: "./vendor/bin"
     git_dir: "."
+    ascii:
+        failed: failed.txt
+        succeeded: succeeded.txt
     tasks:
         behat: ~
         phpcsfixer: ~
@@ -103,7 +106,7 @@ This parameter is used to create the git hooks at the correct location. It defau
 
 **ascii**
 
-*Default: {failed: "failed.txt", succeeded: "succeeded.txt"}*
+*Default: {failed: failed.txt, succeeded: succeeded.txt}*
 
 This parameter will tell GrumPHP where it can locate ascii images used in pre-commit hook.
 Currently there are only two images `failed` and `succeeded`. If path is not specified default image from 
