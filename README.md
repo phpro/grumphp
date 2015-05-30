@@ -68,6 +68,8 @@ parameters:
     bin_dir: "./vendor/bin"
     git_dir: "."
     tasks:
+        behat: ~
+        phpcsfixer: ~
         phpcs:
             standard: "PSR2"
         phpspec: ~
@@ -308,7 +310,6 @@ You just registered your custom task in no time! Pretty cool right?!
 
 Following tasks are still on the roadmap:
 
-- behat
 - composer.json and composer.lock need to be committed at the same time
 - phpmd
 - phpcpd
