@@ -45,6 +45,16 @@ services:
         tags:
           - {name: grumphp.task, config: phpcs}
 
+    task.phpcsfixer:
+        class: GrumPHP\Task\Phpcsfixer
+        arguments:
+          - @config
+          - "@=parameter('tasks')['phpcsfixer'] ? parameter('tasks')['phpcsfixer'] : []"
+          - @locator.external_command
+          - @process_builder
+        tags:
+          - {name: grumphp.task, config: phpcsfixer}
+
     task.phpspec:
         class: GrumPHP\Task\Phpspec
         arguments:
