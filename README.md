@@ -82,11 +82,25 @@ parameters:
 ### Set up basic configuration
 GrumPHP comes shipped with a configuration tool. Run following command to create a configuration file:
 ```
-php ./vendor/bin configure
+php ./vendor/bin/grumphp configure
 ```
 
 This command is also invoked during installation. 
 It wil not ask you for anything, but it will try to guess the best possible configuration.
+
+### Auto config via composer
+
+* Install GrumPHP as a composer dependency
+* Add `grumphp.yml` in your project
+* Add setup script to composer.json in `post-install-cmd` section
+
+```
+"scripts": {
+    "post-install-cmd": [
+        "php ./vendor/bin/grumphp git:init"
+    ]
+}
+```
 
 ### Parameters
 
