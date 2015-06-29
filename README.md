@@ -1,5 +1,7 @@
 [![Build status](https://api.travis-ci.org/phpro/grumphp.svg)](http://travis-ci.org/phpro/grumphp)
 
+![GrumPHP logo](resources/logo/grumphp-grumpy.png)
+
 # GrumPHP
 
 Sick and tired of complaining about your co-workers' code? GrumPHP will do it for you!
