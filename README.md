@@ -25,7 +25,7 @@ composer self-update
 composer require --dev phpro/grumphp:~0.1
 ```
 
-When the package is installed, GrumPHP will attach itself to the git hooks of your project. 
+When the package is installed, GrumPHP will attach itself to the git hooks of your project.
 You will see following message in the composer logs:
 
 *Watch out! GrumPHP is sniffing your commits!*
@@ -37,7 +37,7 @@ To make GrumPHP even more awesome, it will suggest installing some extra package
 - phpunit/phpunit : ~4.5
 - roave/security-advisories : dev-master@dev
 
-GrumPHP will never push you into using a specific task. You can choose the tasks that fit your needs, and activate or 
+GrumPHP will never push you into using a specific task. You can choose the tasks that fit your needs, and activate or
 deactivate any task in no time!
 
 ### Windows Pre-Install
@@ -50,7 +50,7 @@ You will have to make sure that following items are available on the command lin
 
 
 ### Installation with an exotic project structure:
-When your application has a project structure that is not covered by the default configuration settings, 
+When your application has a project structure that is not covered by the default configuration settings,
 you will have to create a `grumphp.yml` file at the same location as `composer.json` *before* installing the package.
 
 It is possible to place your configuration file at another location or change the configuration after installation.
@@ -87,7 +87,7 @@ GrumPHP comes shipped with a configuration tool. Run following command to create
 php ./vendor/bin configure
 ```
 
-This command is also invoked during installation. 
+This command is also invoked during installation.
 It wil not ask you for anything, but it will try to guess the best possible configuration.
 
 ### Parameters
@@ -96,14 +96,14 @@ It wil not ask you for anything, but it will try to guess the best possible conf
 
 *Default: ./bin/vendor*
 
-This parameter will tell GrumPHP where it can locate external commands like phpcs and phpspec. 
+This parameter will tell GrumPHP where it can locate external commands like phpcs and phpspec.
 It defaults to the default composer bin directory.
 
 **git_dir**
 
 *Default: .*
 
-This parameter will tell GrumPHP in which folder it can find the .git folder. 
+This parameter will tell GrumPHP in which folder it can find the .git folder.
 This parameter is used to create the git hooks at the correct location. It defaults to the working directory.
 
 **ascii**
@@ -111,7 +111,7 @@ This parameter is used to create the git hooks at the correct location. It defau
 *Default: {failed: failed.txt, succeeded: succeeded.txt}*
 
 This parameter will tell GrumPHP where it can locate ascii images used in pre-commit hook.
-Currently there are only two images `failed` and `succeeded`. If path is not specified default image from 
+Currently there are only two images `failed` and `succeeded`. If path is not specified default image from
 `resources/ascii/` folder are used.
 ```
 ascii:
@@ -141,7 +141,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 
 #### Behat
 
-The Behat task will run your Behat tests. 
+The Behat task will run your Behat tests.
 It lives under the `behat` namespace and has following configurable parameters:
 
 **config**
@@ -198,7 +198,7 @@ If you want to run a particular config, specify it with this option.
 *Default: array()*
 
 There are a lot of fixers which you can apply to your code. You can specify an array of them in this config.
-The full list of fixers you can find [here](https://github.com/FriendsOfPHP/PHP-CS-Fixer#usage). 
+The full list of fixers you can find [here](https://github.com/FriendsOfPHP/PHP-CS-Fixer#usage).
 
 
 **level**
@@ -217,7 +217,7 @@ Show applied fixers.
 
 #### Phpcs
 
-The Phpcs task will sniff your code for bad coding standards. 
+The Phpcs task will sniff your code for bad coding standards.
 It lives under the `phpcs` namespace and has following configurable parameters:
 
 **standard**
@@ -257,7 +257,7 @@ This is a list of sniffs that need to be executed. Leave this option blank to ru
 
 #### Phpspec
 
-The Phpspec task will spec your code with Phpspec. 
+The Phpspec task will spec your code with Phpspec.
 It lives under the `phpspec` namespace and has following configurable parameters:
 
 **config_file**
@@ -276,7 +276,7 @@ When this option is enabled, phpspec will stop at the first error. This means th
 
 #### Phpunit
 
-The Phpunit task will run your unit tests. 
+The Phpunit task will run your unit tests.
 It lives under the `phpunit` namespace and has following configurable parameters:
 
 **config_file**
@@ -288,7 +288,7 @@ If your phpunit.xml file is located at an exotic location, you can specify your 
 
 #### Custom tasks
 
-It is very easy to configure your own project specific task. 
+It is very easy to configure your own project specific task.
 You just have to create a class that implements the `GrumPHP\Task\TaskInterface`.
 Next register it to the service manager and add your task configuration:
 
@@ -298,7 +298,7 @@ parameters:
     tasks:
         myConfigKey:
             config1: config-value
-            
+
 services:
     task.myCustomTask:
         class: My\Custom\Task
@@ -309,7 +309,7 @@ services:
           - {name: grumphp.task, config: myConfigKey}
 ```
 
-**Note:** You do NOT have to add the main and task configuration. This example just shows you how to do it. 
+**Note:** You do NOT have to add the main and task configuration. This example just shows you how to do it.
 You're welcome!
 
 You just registered your custom task in no time! Pretty cool right?!
