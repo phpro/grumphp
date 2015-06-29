@@ -2,7 +2,7 @@
 
 # GrumPHP
 
-![GrumPHP logo](resources/logo/grumphp-grumpy.png =250x)
+![GrumPHP logo](resources/logo/grumphp-grumpy.png|width=250px)
 
 Sick and tired of complaining about your co-workers' code? GrumPHP will do it for you!
 This composer plugin will register some git hooks in your package repository.
