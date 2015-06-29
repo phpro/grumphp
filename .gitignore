@@ -1,6 +1,4 @@
-.idea
 bin
+!bin/grumphp
 vendor
-atlassian-ide-plugin.xml
 composer.lock
-.DS_Store
