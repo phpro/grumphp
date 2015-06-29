@@ -70,8 +70,8 @@ parameters:
     bin_dir: "./vendor/bin"
     git_dir: "."
     ascii:
-        failed: failed.txt
-        succeeded: succeeded.txt
+        failed: grumphp-grumpy.txt
+        succeeded: grumphp-happy.txt
     tasks:
         behat: ~
         phpcsfixer: ~
@@ -108,14 +108,14 @@ This parameter is used to create the git hooks at the correct location. It defau
 
 **ascii**
 
-*Default: {failed: failed.txt, succeeded: succeeded.txt}*
+*Default: {failed: grumphp-grumpy.txt, succeeded: grumphp-happy.txt}*
 
 This parameter will tell GrumPHP where it can locate ascii images used in pre-commit hook.
 Currently there are only two images `failed` and `succeeded`. If path is not specified default image from
 `resources/ascii/` folder are used.
 ```
 ascii:
-  failed: resource/failed.txt
+  failed: resource/grumphp-grumpy.txt
   succeeded: ~
 ```
 To disable banner set ascii images path to `~`.
