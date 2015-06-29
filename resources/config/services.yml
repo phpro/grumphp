@@ -3,8 +3,8 @@ parameters:
   git_dir: .
   tasks: []
   ascii:
-    failed: failed.txt
-    succeeded: succeeded.txt
+    failed: grumphp-grumpy.txt
+    succeeded: grumphp-happy.txt
 
 services:
 

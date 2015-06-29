@@ -3,3 +3,4 @@ bin
 vendor
 atlassian-ide-plugin.xml
 composer.lock
+.DS_Store
