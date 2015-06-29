@@ -1,8 +1,8 @@
 [![Build status](https://api.travis-ci.org/phpro/grumphp.svg)](http://travis-ci.org/phpro/grumphp)
 
-![GrumPHP logo](resources/logo/grumphp-grumpy.png)
-
 # GrumPHP
+
+![GrumPHP logo](resources/logo/grumphp-grumpy.png =250x)
 
 Sick and tired of complaining about your co-workers' code? GrumPHP will do it for you!
 This composer plugin will register some git hooks in your package repository.
