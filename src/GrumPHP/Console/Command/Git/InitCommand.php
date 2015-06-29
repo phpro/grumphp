@@ -81,9 +81,11 @@ class InitCommand extends Command
 
         // Some git clients to not automatically create a git hooks folder.
         if (!$this->filesystem->exists($gitHooksPath)) {
-            throw new \RuntimeException(
-                sprintf('<fg=red>The git hooks folder could not be found at: %s</fg=red>', $gitHooksPath)
-            );
+            $this->filesystem->mkdir($gitHooksPath);
+            $output->writeln(sprintf(
+                '<fg=yellow>Created git hooks folder at: %s</fg=yellow>',
+                $gitHooksPath
+            ));
         }
 
         foreach (self::$hooks as $hook) {
