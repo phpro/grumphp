@@ -256,7 +256,7 @@ This is a list of sniffs that need to be executed. Leave this option blank to ru
 
 **Magento**
 
-If you want to use Phpcs for your Magento projects, you can require the magento-egc repo.
+If you want to use Phpcs for your Magento projects, you can require the magento-ecg repo.
 
 ```sh
 composer require --dev magento-ecg/coding-standard
