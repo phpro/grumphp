@@ -262,7 +262,7 @@ If you want to use Phpcs for your Magento projects, you can require the magento-
 composer require --dev magento-ecg/coding-standard
 ```
 
-Following this, you can add the path to your phpcs path.
+Following this, you can add the path to your phpcs task.
 
 ```yml
     tasks:
