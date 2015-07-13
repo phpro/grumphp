@@ -254,6 +254,22 @@ This is a list of patterns that will be ignored by phpcs. With this option you c
 
 This is a list of sniffs that need to be executed. Leave this option blank to run all configured sniffs for the selected standard.
 
+**Magento**
+
+If you want to use Phpcs for your Magento projects, you can require the magento-ecg repo.
+
+```sh
+composer require --dev magento-ecg/coding-standard
+```
+
+Following this, you can add the path to your phpcs task.
+
+```yml
+    tasks:
+      phpcs:
+        standard: "vendor/magento-ecg/coding-standard/Ecg/"
+        show_warnings: false
+```
 
 #### Phpspec
 
@@ -345,3 +361,12 @@ This package has been tested with following git clients:
 - Phpstorm GIT
 - Atlassian SourceTree
 - Syntevo SmartGit
+
+# Solving issues
+
+## GrumPHP does not work with submodules.
+When you use a submodule, GrumPHP will throw differrors.
+This is because the plugin uses Gitlib which does not support submodules.
+If you do not need to update your submodule, you can just remove all references to it.
+If the changed .gitmodules is not commited nothing will change in your repo.
+Ref.: https://github.com/gitonomy/gitlib/issues/12
