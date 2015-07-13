@@ -266,7 +266,7 @@ composer require --dev leaphub/phpcs-symfony2-standard
 
 Following this, you can add the path to your phpcs task.
 
-```
+```yml
 parameters:
     tasks:
         phpcs:
@@ -284,10 +284,11 @@ composer require --dev magento-ecg/coding-standard
 Following this, you can add the path to your phpcs task.
 
 ```yml
+parameters:
     tasks:
-      phpcs:
-        standard: "vendor/magento-ecg/coding-standard/Ecg/"
-        show_warnings: false
+        phpcs:
+            standard: "vendor/magento-ecg/coding-standard/Ecg/"
+            show_warnings: false
 ```
 
 #### Phpspec
