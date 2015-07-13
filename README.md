@@ -386,8 +386,20 @@ This package has been tested with following git clients:
 # Solving issues
 
 ## GrumPHP does not work with submodules.
-When you use a submodule, GrumPHP will throw differrors.
+When you use a submodule, GrumPHP will throw diff errors.
 This is because the plugin uses Gitlib which does not support submodules.
+
 If you do not need to update your submodule, you can just remove all references to it.
 If the changed .gitmodules is not commited nothing will change in your repo.
+
 Ref.: https://github.com/gitonomy/gitlib/issues/12
+
+## GrumPHP does not work on first commit.
+When you added GrumPHP before your first commit, GrumPHP wil throw diff errors.
+This is because the plugin uses Gitlib which does not show a diff of the first commit.
+
+You can run the tasks manually through the CLI commands of the configured tasks.
+When all tasks pass, you will have to commit with the `-n` option. 
+Be careful with using this option. The changes will be commited withouth any GrumPHP checks.
+
+Ref.: https://github.com/gitonomy/gitlib/issues/79
