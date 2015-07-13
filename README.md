@@ -254,6 +254,25 @@ This is a list of patterns that will be ignored by phpcs. With this option you c
 
 This is a list of sniffs that need to be executed. Leave this option blank to run all configured sniffs for the selected standard.
 
+##### PHPCS framework presets
+
+**Symfony 2**
+
+If you want to use Phpcs for your Symfony2 projects, you can require the leanpub phpcs repo.
+
+```sh
+composer require --dev leaphub/phpcs-symfony2-standard
+```
+
+Following this, you can add the path to your phpcs task.
+
+```
+parameters:
+    tasks:
+        phpcs:
+            standard: "vendor/leaphub/phpcs-symfony2-standard/leaphub/phpcs/Symfony2/"
+```
+
 **Magento**
 
 If you want to use Phpcs for your Magento projects, you can require the magento-ecg repo.
@@ -357,6 +376,7 @@ php ./vendor/bin git:pre-commit
 This package has been tested with following git clients:
 
 - CLI unix
+- CLI Mac
 - CLI Windows
 - Phpstorm GIT
 - Atlassian SourceTree
