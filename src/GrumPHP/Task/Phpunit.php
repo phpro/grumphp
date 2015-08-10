@@ -26,7 +26,7 @@ class Phpunit extends AbstractExternalTask
     public function getDefaultConfiguration()
     {
         return array(
-            'config_file' => 'phpunit.xml',
+            'config_file' => null,
         );
     }
 
