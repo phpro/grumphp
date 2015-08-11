@@ -37,7 +37,6 @@ class PhpunitSpec extends ObjectBehavior
     function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process)
     {
         $processBuilder->setArguments(Argument::type('array'))->shouldBeCalled();
-        $processBuilder->add('-cphpunit.xml')->shouldBeCalled();
         $processBuilder->getProcess()->willReturn($process);
 
         $process->run()->shouldBeCalled();
@@ -52,7 +51,6 @@ class PhpunitSpec extends ObjectBehavior
     function it_throws_exception_if_the_process_fails(ProcessBuilder $processBuilder, Process $process)
     {
         $processBuilder->setArguments(Argument::type('array'))->shouldBeCalled();
-        $processBuilder->add('-cphpunit.xml')->shouldBeCalled();
         $processBuilder->getProcess()->willReturn($process);
 
         $process->run()->shouldBeCalled();
