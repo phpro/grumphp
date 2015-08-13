@@ -57,7 +57,7 @@ It is possible to place your configuration file at another location or change th
 The only downfall is that you will have to initialize the git hook manually:
 
 ```sh
-php ./vendor/bin git:init --config=path/to/grumphp.yml
+php ./vendor/bin/grumphp git:init --config=path/to/grumphp.yml
 ```
 
 ## Configuration
@@ -84,7 +84,7 @@ parameters:
 ### Set up basic configuration
 GrumPHP comes shipped with a configuration tool. Run following command to create a configuration file:
 ```
-php ./vendor/bin configure
+php ./vendor/bin/grumphp configure
 ```
 
 This command is also invoked during installation.
@@ -370,7 +370,7 @@ GrumPHP will be triggered with GIT hooks. However, you can execute the trigger a
 
 
 ```sh
-php ./vendor/bin git:pre-commit
+php ./vendor/bin/grumphp git:pre-commit
 ```
 
 
