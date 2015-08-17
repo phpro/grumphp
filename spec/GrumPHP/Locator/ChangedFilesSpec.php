@@ -4,6 +4,7 @@ namespace spec\GrumPHP\Locator;
 
 use Gitonomy\Git\Diff\Diff;
 use Gitonomy\Git\Diff\File;
+use Gitonomy\Git\WorkingCopy;
 use Gitonomy\Git\Repository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -37,13 +38,14 @@ class ChangedFilesSpec extends ObjectBehavior
         return $file->reveal();
     }
 
-    function it_will_list_all_diffed_files(Repository $repository, Diff $diff)
+    function it_will_list_all_diffed_files(Repository $repository, Diff $diff, WorkingCopy $workingCopy)
     {
         $changedFile = $this->mockFile('file1.txt');
         $movedFile = $this->mockFile('file2.txt', true);
         $deletedFile = $this->mockFile('file3.txt', false, true);
 
-        $repository->getDiff('HEAD')->willReturn($diff);
+        $repository->getWorkingCopy()->willReturn($workingCopy);
+        $workingCopy->getDiffStaged()->willReturn($diff);
         $diff->getFiles()->willReturn(array($changedFile, $movedFile, $deletedFile));
 
         $result = $this->locate();
