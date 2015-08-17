@@ -34,7 +34,7 @@ class ChangedFiles implements LocatorInterface
      */
     public function locate()
     {
-        $diff = $this->repository->getDiff('HEAD');
+        $diff = $this->repository->getWorkingCopy()->getDiffStaged();
         $files = array();
         /** @var File $file */
         foreach ($diff->getFiles() as $file) {
