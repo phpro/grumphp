@@ -57,8 +57,7 @@ class Blacklist extends AbstractExternalTask
             '-n'
         ));
 
-        foreach($config['keywords'] as $keyword)
-        {
+        foreach ($config['keywords'] as $keyword) {
             $this->processBuilder->add(sprintf('-e %s', $keyword));
         }
 
@@ -71,10 +70,9 @@ class Blacklist extends AbstractExternalTask
 
         if ($process->isSuccessful()) {
             throw new RuntimeException(sprintf(
-                "You have blacklisted keywords in your commit:\n%s", 
+                "You have blacklisted keywords in your commit:\n%s",
                 $process->getOutput()
             ));
         }
     }
-
 }
