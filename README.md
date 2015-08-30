@@ -180,9 +180,18 @@ It lives under the `blacklist` namespace and has following configurable paramete
 
 **keywords**
 
-*Default: array("die(", "var_dump(")*
+*Default: null*
 
-Use this parameter if you want specify your blacklisted keywords list.
+Use this parameter to specify your blacklisted keywords list.
+For example:
+
+```
+blacklist:
+    keywords:
+        - "die("
+        - "var_dump("
+        - "exit;"
+```
 
 #### PHP-CS-Fixer
 

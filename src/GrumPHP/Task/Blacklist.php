@@ -20,10 +20,7 @@ class Blacklist extends AbstractExternalTask
     public function getDefaultConfiguration()
     {
         return array(
-            'keywords' => array(
-                'var_dump(',
-                'die('
-            ),
+            'keywords' => null,
         );
     }
 
@@ -47,9 +44,7 @@ class Blacklist extends AbstractExternalTask
 
         $config = $this->getConfiguration();
         if (empty($config['keywords'])) {
-            throw new RuntimeException(
-                "Your grumphp config file misconfigued. You have empty keywords list under blacklist task."
-            );
+            return;
         }
 
         $this->processBuilder->setArguments(array(
