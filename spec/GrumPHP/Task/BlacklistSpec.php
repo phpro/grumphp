@@ -70,7 +70,7 @@ class BlacklistSpec extends ObjectBehavior
 
         $process->run()->shouldBeCalled();
 
-        # Assume that blacklisted keywords was not found by `git grep` process
+        // Assume that blacklisted keywords was not found by `git grep` process
         $process->isSuccessful()->willReturn(false); 
 
         $files = new FilesCollection(array(
@@ -79,7 +79,7 @@ class BlacklistSpec extends ObjectBehavior
         $this->run($files);
     }
 
-    function it_throws_exception_if_the_process_successfull(GrumPHP $grumPHP, LocatorInterface $externalCommandLocator, ProcessBuilder $processBuilder, Process $process)
+    function it_throws_exception_if_the_process_is_successfull(GrumPHP $grumPHP, LocatorInterface $externalCommandLocator, ProcessBuilder $processBuilder, Process $process)
     {
         $this->beConstructedWith($grumPHP, array('keywords'=>array('var_dump(')), $externalCommandLocator, $processBuilder);
 

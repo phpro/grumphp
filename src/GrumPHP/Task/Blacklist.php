@@ -48,7 +48,7 @@ class Blacklist extends AbstractExternalTask
         }
 
         $this->processBuilder->setArguments(array(
-            'git',
+            $this->getCommandLocation(),
             'grep',
             '--cached',
             '-n'
