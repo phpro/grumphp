@@ -87,3 +87,13 @@ services:
             - @process_builder
         tags:
             - {name: grumphp.task, config: behat}
+
+    task.blacklist:
+        class: GrumPHP\Task\Blacklist
+        arguments:
+            - @config
+            - "@=parameter('tasks')['blacklist'] ? parameter('tasks')['blacklist'] : []"
+            - @locator.external_command
+            - @process_builder
+        tags:
+            - {name: grumphp.task, config: blacklist}

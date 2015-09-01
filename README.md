@@ -74,6 +74,7 @@ parameters:
         succeeded: grumphp-happy.txt
     tasks:
         behat: ~
+        blacklist: ~
         phpcsfixer: ~
         phpcs:
             standard: "PSR2"
@@ -130,6 +131,7 @@ To activate a task, it is sufficient to add an empty task configuration:
 parameters:
     tasks:
         behat: ~
+        blacklist: ~
         phpcsfixer: ~
         phpcs: ~
         phpspec: ~
@@ -171,6 +173,25 @@ If you want to run a particular suite only, specify it with this option.
 
 When this option is enabled, behat will stop at the first error. This means that it will not run your full test suite when an error occurs.
 
+#### Blacklist
+
+The Blacklist task will test your changes for blacklisted keywords, such as `die(`, `var_dump(` etc.
+It lives under the `blacklist` namespace and has following configurable parameters:
+
+**keywords**
+
+*Default: null*
+
+Use this parameter to specify your blacklisted keywords list.
+For example:
+
+```
+blacklist:
+    keywords:
+        - "die("
+        - "var_dump("
+        - "exit;"
+```
 
 #### PHP-CS-Fixer
 
