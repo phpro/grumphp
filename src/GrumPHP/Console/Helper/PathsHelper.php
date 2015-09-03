@@ -4,6 +4,7 @@ namespace GrumPHP\Console\Helper;
 
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Exception\FileNotFoundException;
 use GrumPHP\Locator\ExternalCommand;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Filesystem\Filesystem;
@@ -199,8 +200,11 @@ class PathsHelper extends Helper
     public function getRelativePath($path)
     {
         $path = trim($path);
-
-        return $this->fileSystem->makePathRelative(realpath($path), $this->getWorkingDir());
+        $realpath = realpath($path);
+        if (false === $realpath) {
+            throw new FileNotFoundException($path);
+        }
+        return $this->fileSystem->makePathRelative($realpath, $this->getWorkingDir());
     }
 
     /**
