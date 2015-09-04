@@ -14,7 +14,6 @@ use SplFileInfo;
  */
 class ChangedFiles implements LocatorInterface
 {
-
     /**
      * @var Repository
      */

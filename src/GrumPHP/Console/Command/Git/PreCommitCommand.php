@@ -17,7 +17,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PreCommitCommand extends Command
 {
-
     const COMMAND_NAME = 'git:pre-commit';
 
     /**

@@ -9,7 +9,6 @@ namespace GrumPHP\Task;
  */
 interface ExternalTaskInterface extends TaskInterface
 {
-
     /**
      * @return string
      */

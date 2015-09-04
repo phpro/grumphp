@@ -14,7 +14,6 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class DeInitCommand extends Command
 {
-
     const COMMAND_NAME = 'git:deinit';
 
     /**

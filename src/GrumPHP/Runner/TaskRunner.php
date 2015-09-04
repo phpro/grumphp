@@ -14,7 +14,6 @@ use GrumPHP\Task\TaskInterface;
  */
 class TaskRunner
 {
-
     /**
      * @var TaskInterface[]
      */

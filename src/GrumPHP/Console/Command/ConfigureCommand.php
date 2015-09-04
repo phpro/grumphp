@@ -24,7 +24,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ConfigureCommand extends Command
 {
-
     const COMMAND_NAME = 'configure';
 
     /**

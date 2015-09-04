@@ -29,7 +29,6 @@ use Symfony\Component\Process\ProcessBuilder;
  */
 class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 {
-
     const PACKAGE_NAME = 'phpro/grumphp';
 
     /**

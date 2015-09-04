@@ -10,7 +10,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class ContainerFactory
 {
-
     /**
      * @param string $path path to grumphp.yml
      *

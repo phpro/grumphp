@@ -16,7 +16,6 @@ use Symfony\Component\Process\ExecutableFinder;
  */
 class PathsHelper extends Helper
 {
-
     const HELPER_NAME = 'paths';
 
     /**

@@ -48,6 +48,7 @@ class Application extends SymfonyConsole
                 getcwd() . DIRECTORY_SEPARATOR . self::APP_CONFIG_FILE
             )
         );
+
         return $definition;
     }
 
@@ -122,6 +123,7 @@ class Application extends SymfonyConsole
 
         // Build the service container:
         $this->container = ContainerFactory::buildFromConfiguration($configPath);
+
         return $this->container;
     }
 }

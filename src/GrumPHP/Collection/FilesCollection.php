@@ -15,7 +15,6 @@ use Symfony\Component\Finder\Expression\Expression;
  */
 class FilesCollection extends ArrayCollection
 {
-
     /**
      * Adds rules that files must match.
      *

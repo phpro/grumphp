@@ -44,6 +44,7 @@ class TaskCompilerPass implements CompilerPassInterface
                 return $data['config'];
             }
         }
+
         return null;
     }
 }

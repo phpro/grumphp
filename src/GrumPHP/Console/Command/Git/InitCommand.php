@@ -15,7 +15,6 @@ use Symfony\Component\Process\ProcessBuilder;
  */
 class InitCommand extends Command
 {
-
     const COMMAND_NAME = 'git:init';
 
     /**

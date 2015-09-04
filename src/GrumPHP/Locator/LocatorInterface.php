@@ -9,7 +9,6 @@ namespace GrumPHP\Locator;
  */
 interface LocatorInterface
 {
-
     /**
      * @return mixed
      */
