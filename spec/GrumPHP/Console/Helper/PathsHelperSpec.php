@@ -14,11 +14,6 @@ class PathsHelperSpec extends ObjectBehavior
         $this->beConstructedWith($config, $fileSystem);
     }
 
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('GrumPHP\Console\Helper\PathsHelper');
-    }
-
     function it_throws_exception_during_get_relative_path_when_file_is_not_found()
     {
         $path = '/non/existent/path/config.yml';
