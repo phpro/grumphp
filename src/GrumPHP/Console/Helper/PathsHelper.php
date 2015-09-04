@@ -196,6 +196,7 @@ class PathsHelper extends Helper
      * @param $path
      *
      * @return string
+     * @throws FileNotFoundException If file doesn't exists
      */
     public function getRelativePath($path)
     {
@@ -204,6 +205,7 @@ class PathsHelper extends Helper
         if (false === $realpath) {
             throw new FileNotFoundException($path);
         }
+
         return $this->fileSystem->makePathRelative($realpath, $this->getWorkingDir());
     }
 
