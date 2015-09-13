@@ -49,7 +49,8 @@ You will have to make sure that following items are available on the command lin
 - git
 
 
-### Installation with an exotic project structure:
+### Installation with an exotic project structure
+
 When your application has a project structure that is not covered by the default configuration settings,
 you will have to create a `grumphp.yml` *before* installing the package 
 and add next config into your application's `composer.json`:
@@ -79,7 +80,7 @@ how to build your own conventions checker.
 
 Sample `grumphp.yml`:
 
-``` yaml
+```yaml
 # grumphp.yml
 parameters:
     bin_dir: "./vendor/bin"
@@ -98,8 +99,10 @@ parameters:
 ```
 
 ### Set up basic configuration
+
 GrumPHP comes shipped with a configuration tool. Run following command to create a configuration file:
-```
+
+```sh
 php ./vendor/bin/grumphp configure
 ```
 
@@ -129,11 +132,15 @@ This parameter is used to create the git hooks at the correct location. It defau
 This parameter will tell GrumPHP where it can locate ascii images used in pre-commit hook.
 Currently there are only two images `failed` and `succeeded`. If path is not specified default image from
 `resources/ascii/` folder are used.
+
+```yaml
+# grumphp.yml
+parameters:
+    ascii:
+        failed: resource/grumphp-grumpy.txt
+        succeeded: ~
 ```
-ascii:
-  failed: resource/grumphp-grumpy.txt
-  succeeded: ~
-```
+
 To disable banner set ascii images path to `~`.
 
 ### Tasks
@@ -141,7 +148,7 @@ It is easy to configure and activate tasks in GrumPHP.
 Tasks live under their own namespace in the parameters part.
 To activate a task, it is sufficient to add an empty task configuration:
 
-``` yaml
+```yaml
 # grumphp.yml
 parameters:
     tasks:
@@ -200,12 +207,15 @@ It lives under the `blacklist` namespace and has following configurable paramete
 Use this parameter to specify your blacklisted keywords list.
 For example:
 
-```
-blacklist:
-    keywords:
-        - "die("
-        - "var_dump("
-        - "exit;"
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        blacklist:
+            keywords:
+                - "die("
+                - "var_dump("
+                - "exit;"
 ```
 
 #### PHP-CS-Fixer
@@ -319,7 +329,8 @@ composer require --dev magento-ecg/coding-standard
 
 Following this, you can add the path to your phpcs task.
 
-```yml
+```yaml
+# grumphp.yml
 parameters:
     tasks:
         phpcs:
@@ -366,7 +377,7 @@ It is very easy to configure your own project specific task.
 You just have to create a class that implements the `GrumPHP\Task\TaskInterface`.
 Next register it to the service manager and add your task configuration:
 
-``` yaml
+```yaml
 # resources/config/services.yml
 parameters:
     tasks:
