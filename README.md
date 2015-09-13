@@ -51,14 +51,29 @@ You will have to make sure that following items are available on the command lin
 
 ### Installation with an exotic project structure:
 When your application has a project structure that is not covered by the default configuration settings,
-you will have to create a `grumphp.yml` file at the same location as `composer.json` *before* installing the package.
+you will have to create a `grumphp.yml` *before* installing the package 
+and add next config into your application's `composer.json`:
 
-It is possible to place your configuration file at another location or change the configuration after installation.
+```
+# composer.json
+"extra": {
+    "grumphp": {
+        "config-default-path": "path/to/grumphp.yml"
+    }
+}
+```
+
+You can also change the configuration after installation.
 The only downfall is that you will have to initialize the git hook manually:
 
 ```sh
 php ./vendor/bin/grumphp git:init --config=path/to/grumphp.yml
 ```
+
+## Build your own conventions checker
+
+You can see [example](https://github.com/linkorb/conventions-checker) 
+how to build your own conventions checker.
 
 ## Configuration
 
