@@ -246,9 +246,12 @@ class ConfigureCommand extends Command
     protected function getAvailableTasks()
     {
         $tasks = array(
-            '1' => 'phpcs',
-            '2' => 'phpspec',
-            '3' => 'phpunit',
+            '1' => 'behat',
+            '2' => 'blacklist',
+            '3' => 'phpcs',
+            '4' => 'phpcsfixer',
+            '5' => 'phpspec',
+            '6' => 'phpunit',
         );
         return $tasks;
     }
