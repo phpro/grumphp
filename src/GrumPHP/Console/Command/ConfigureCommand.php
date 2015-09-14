@@ -42,6 +42,11 @@ class ConfigureCommand extends Command
     protected $repository;
 
     /**
+     * @var InputInterface
+     */
+    protected $input;
+
+    /**
      * @param GrumPHP    $config
      * @param Filesystem $filesystem
      * @param Repository $repository
@@ -71,7 +76,10 @@ class ConfigureCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($this->filesystem->exists(Application::APP_CONFIG_FILE)) {
+        $this->input = $input;
+
+        $grumphpConfigName = $this->input->getOption('config');
+        if ($this->filesystem->exists($grumphpConfigName)) {
             if ($input->isInteractive()) {
                 $output->writeln('<fg=yellow>GrumPHP is already configured!</fg=yellow>');
             }
@@ -179,7 +187,8 @@ class ConfigureCommand extends Command
     {
         try {
             $yaml = Yaml::dump($configuration);
-            return file_put_contents(Application::APP_CONFIG_FILE, $yaml);
+            $grumphpConfigName = $this->input->getOption('config');
+            return file_put_contents($grumphpConfigName, $yaml);
         } catch (Exception $e) {
             // Fail silently and return false!
         }
@@ -200,7 +209,7 @@ class ConfigureCommand extends Command
             return $defaultBinDir;
         }
 
-        $composer = json_decode(file_get_contents('composer.json'), true);
+        $composer = json_decode(file_get_contents($composerFile), true);
         if (isset($composer['config']['bin-dir'])) {
             return $composer['config']['bin-dir'];
         }
