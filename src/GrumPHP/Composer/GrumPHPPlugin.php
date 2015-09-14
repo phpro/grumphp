@@ -21,7 +21,6 @@ use GrumPHP\Console\Command\Git\InitCommand;
 use GrumPHP\Locator\ExternalCommand;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\ProcessBuilder;
-use GrumPHP\Console\Application;
 
 /**
  * Class GrumPHPPlugin
@@ -184,9 +183,8 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         $config = $this->composer->getConfig();
         $commandLocator = new ExternalCommand($config->get('bin-dir'), new ExecutableFinder());
         $executable = $commandLocator->locate('grumphp');
-        $grumphpConfigPath = sprintf("--config=%s", $this->getGrumphpConfigPath());
 
-        $builder = new ProcessBuilder(array($executable, $command, '--no-interaction', $grumphpConfigPath));
+        $builder = new ProcessBuilder(array($executable, $command, '--no-interaction'));
         $process = $builder->getProcess();
 
         // Check executable which is running:
@@ -204,19 +202,5 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         }
 
         $this->io->write('<fg=yellow>' . $process->getOutput() . '</fg=yellow>');
-    }
-
-    /**
-     * Returns grumphp's config path.
-     *
-     * @return string
-     */
-    protected function getGrumphpConfigPath()
-    {
-        $extra = $this->composer->getPackage()->getExtra();
-        if (isset($extra['grumphp']['config-default-path'])) {
-            return $extra['grumphp']['config-default-path'];
-        }
-        return Application::APP_CONFIG_FILE;
     }
 }

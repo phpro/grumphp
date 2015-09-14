@@ -44,12 +44,32 @@ class Application extends SymfonyConsole
                 'config',
                 'c',
                 InputOption::VALUE_OPTIONAL,
-                '.',
-                getcwd() . DIRECTORY_SEPARATOR . self::APP_CONFIG_FILE
+                'Path to config',
+                $this->getConfigDefaultPath()
             )
         );
 
         return $definition;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getConfigDefaultPath()
+    {
+        $defaultConfigName = getcwd() . DIRECTORY_SEPARATOR . self::APP_CONFIG_FILE;
+        $composerFile = 'composer.json';
+
+        if (!file_exists($composerFile)) {
+            return $defaultConfigName;
+        }
+
+        $composer = json_decode(file_get_contents($composerFile), true);
+        if (isset($composer['extra']['grumphp']['config-default-path'])) {
+            return $composer['extra']['grumphp']['config-default-path'];
+        }
+
+        return $defaultConfigName;
     }
 
     /**
