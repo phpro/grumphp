@@ -98,10 +98,7 @@ class Application extends SymfonyConsole
         );
         $commands[] = new Command\Git\PreCommitCommand(
             $container->get('config'),
-            $container->get('task_runner'),
-            $container->get('locator.changed_files'),
-            $container->get('locator.external_command'),
-            $container->get('process_builder')
+            $container->get('locator.changed_files')
         );
 
         return $commands;

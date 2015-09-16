@@ -7,7 +7,6 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\Locator\LocatorInterface;
-use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,26 +25,19 @@ class PreCommitCommand extends Command
     protected $grumPHP;
 
     /**
-     * @var TaskRunner
-     */
-    protected $taskRunner;
-
-    /**
      * @var LocatorInterface
      */
     protected $changedFilesLocator;
 
     /**
      * @param GrumPHP $grumPHP
-     * @param TaskRunner $taskRunner
      * @param LocatorInterface $changedFilesLocator
      */
-    public function __construct(GrumPHP $grumPHP, TaskRunner $taskRunner, LocatorInterface $changedFilesLocator)
+    public function __construct(GrumPHP $grumPHP, LocatorInterface $changedFilesLocator)
     {
         parent::__construct();
 
         $this->grumPHP = $grumPHP;
-        $this->taskRunner = $taskRunner;
         $this->changedFilesLocator = $changedFilesLocator;
     }
 
@@ -65,11 +57,10 @@ class PreCommitCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-
         $files = $this->getCommittedFiles();
         $context = new GitPreCommitContext($files);
 
-        $this->taskRunner()->run($output, $context);
+        return $this->taskRunner()->run($output, $context);
     }
 
     /**
