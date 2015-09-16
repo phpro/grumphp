@@ -6,6 +6,7 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Locator\LocatorInterface;
 use GrumPHP\Task\Context\ContextInterface;
+use GrumPHP\Task\Context\GitPreCommitContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Process\Process;
@@ -34,6 +35,11 @@ class BlacklistSpec extends ObjectBehavior
     {
         $externalCommandLocator->locate('git')->shouldBeCalled();
         $this->getCommandLocation();
+    }
+
+    function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
+    {
+        $this->canRunInContext($context)->shouldReturn(true);
     }
 
     function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)

@@ -6,6 +6,7 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Locator\LocatorInterface;
 use GrumPHP\Task\Context\ContextInterface;
+use GrumPHP\Task\Context\GitPreCommitContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Process\Process;
@@ -44,6 +45,11 @@ class PhpcsfixerSpec extends ObjectBehavior
 
         $context->getFiles()->willReturn(new FilesCollection());
         $this->run($context)->shouldBeNull();
+    }
+
+    function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
+    {
+        $this->canRunInContext($context)->shouldReturn(true);
     }
 
     function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
