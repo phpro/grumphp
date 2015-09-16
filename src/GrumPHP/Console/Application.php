@@ -116,6 +116,9 @@ class Application extends SymfonyConsole
             $container->get('config'),
             $container->get('filesystem')
         ));
+        $helperSet->set(new Helper\TaskRunnerHelper(
+            $container->get('task_runner')
+        ));
 
         return $helperSet;
     }

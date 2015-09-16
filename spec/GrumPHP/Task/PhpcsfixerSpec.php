@@ -5,6 +5,7 @@ namespace spec\GrumPHP\Task;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Locator\LocatorInterface;
+use GrumPHP\Task\Context\ContextInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Process\Process;
@@ -35,17 +36,17 @@ class PhpcsfixerSpec extends ObjectBehavior
         $this->getCommandLocation();
     }
 
-    function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder)
+    function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
     {
         $processBuilder->add(Argument::any())->shouldNotBeCalled();
         $processBuilder->setArguments(Argument::any())->shouldNotBeCalled();
         $processBuilder->getProcess()->shouldNotBeCalled();
 
-        $files = new FilesCollection();
-        $this->run($files)->shouldBeNull();
+        $context->getFiles()->willReturn(new FilesCollection());
+        $this->run($context)->shouldBeNull();
     }
 
-    function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process)
+    function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
         $processBuilder->add('--config=default')->shouldBeCalled();
         $processBuilder->add('--verbose')->shouldBeCalled();
@@ -58,15 +59,18 @@ class PhpcsfixerSpec extends ObjectBehavior
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
-        $files = new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection(array(
             new SplFileInfo('file1.php'),
             new SplFileInfo('file2.php'),
-        ));
-        $this->run($files);
+        )));
+        $this->run($context);
     }
 
-    function it_throws_exception_if_the_process_fails(ProcessBuilder $processBuilder, Process $process)
-    {
+    function it_throws_exception_if_the_process_fails(
+        ProcessBuilder $processBuilder,
+        Process $process,
+        ContextInterface $context
+    ) {
         $processBuilder->add('--config=default')->shouldBeCalled();
         $processBuilder->add('--verbose')->shouldBeCalled();
         $processBuilder->add('fix')->shouldBeCalled();
@@ -78,9 +82,9 @@ class PhpcsfixerSpec extends ObjectBehavior
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(false);
 
-        $files = new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection(array(
             new SplFileInfo('file1.php'),
-        ));
-        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($files);
+        )));
+        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($context);
     }
 }
