@@ -219,11 +219,11 @@ parameters:
                 - "exit;"
 ```
 
-#### Git commit message
+#### Git commit message (git_commit_message)
 
 The git comit message can be used in combination with the git hook `git:commit-msg`.
 It can be used to enforce patterns in a commit message.
-For example: if you are working with JIRA, it is possible to add a pattern for the JIRA issue numer.
+For example: if you are working with JIRA, it is possible to add a pattern for the JIRA issue number.
 
 **matchers**
 
