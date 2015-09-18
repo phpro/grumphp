@@ -5,9 +5,9 @@ namespace GrumPHP\Console\Command\Git;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
-use GrumPHP\Exception\ExceptionInterface;
+use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\Locator\LocatorInterface;
-use GrumPHP\Runner\TaskRunner;
+use GrumPHP\Task\Context\GitPreCommitContext;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,26 +25,19 @@ class PreCommitCommand extends Command
     protected $grumPHP;
 
     /**
-     * @var TaskRunner
-     */
-    protected $taskRunner;
-
-    /**
      * @var LocatorInterface
      */
     protected $changedFilesLocator;
 
     /**
      * @param GrumPHP $grumPHP
-     * @param TaskRunner $taskRunner
      * @param LocatorInterface $changedFilesLocator
      */
-    public function __construct(GrumPHP $grumPHP, TaskRunner $taskRunner, LocatorInterface $changedFilesLocator)
+    public function __construct(GrumPHP $grumPHP, LocatorInterface $changedFilesLocator)
     {
         parent::__construct();
 
         $this->grumPHP = $grumPHP;
-        $this->taskRunner = $taskRunner;
         $this->changedFilesLocator = $changedFilesLocator;
     }
 
@@ -64,29 +57,10 @@ class PreCommitCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        try {
-            $this->taskRunner->run($this->getCommittedFiles());
-        } catch (ExceptionInterface $e) {
-            // We'll fail hard on any exception not generated in GrumPHP
-            $failed = $this->paths()->getAsciiContent('failed');
-            if ($failed) {
-                $output->writeln('<fg=red>' . $failed . '</fg=red>');
-            }
+        $files = $this->getCommittedFiles();
+        $context = new GitPreCommitContext($files);
 
-            $output->writeln('<fg=red>' . $e->getMessage() . '</fg=red>');
-            $output->writeln(
-                '<fg=yellow>To skip commit checks, add -n or --no-verify flag to commit command</fg=yellow>'
-            );
-
-            return 1;
-        }
-
-        $succeeded = $this->paths()->getAsciiContent('succeeded');
-        if ($succeeded) {
-            $output->write('<fg=green>' . $succeeded . '</fg=green>');
-        }
-
-        return 0;
+        return $this->taskRunner()->run($output, $context);
     }
 
     /**
@@ -95,6 +69,14 @@ class PreCommitCommand extends Command
     protected function getCommittedFiles()
     {
         return $this->changedFilesLocator->locate();
+    }
+
+    /**
+     * @return TaskRunnerHelper
+     */
+    protected function taskRunner()
+    {
+        return $this->getHelper(TaskRunnerHelper::HELPER_NAME);
     }
 
     /**

@@ -5,6 +5,8 @@ namespace spec\GrumPHP\Task;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Locator\LocatorInterface;
+use GrumPHP\Task\Context\ContextInterface;
+use GrumPHP\Task\Context\GitPreCommitContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Process\Process;
@@ -35,7 +37,12 @@ class PhpspecSpec extends ObjectBehavior
         $this->getCommandLocation();
     }
 
-    function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process)
+    function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
+    {
+        $this->canRunInContext($context)->shouldReturn(true);
+    }
+
+    function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
         $processBuilder->setArguments(Argument::type('array'))->shouldBeCalled();
         $processBuilder->getProcess()->willReturn($process);
@@ -43,13 +50,13 @@ class PhpspecSpec extends ObjectBehavior
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
-        $files = new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection(array(
             new SplFileInfo('test.php')
-        ));
-        $this->run($files);
+        )));
+        $this->run($context);
     }
 
-    function it_throws_exception_if_the_process_fails(ProcessBuilder $processBuilder, Process $process)
+    function it_throws_exception_if_the_process_fails(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
         $processBuilder->setArguments(Argument::type('array'))->shouldBeCalled();
         $processBuilder->getProcess()->willReturn($process);
@@ -58,9 +65,9 @@ class PhpspecSpec extends ObjectBehavior
         $process->isSuccessful()->willReturn(false);
         $process->getOutput()->shouldBeCalled();
 
-        $files = new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection(array(
             new SplFileInfo('test.php')
-        ));
-        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($files);
+        )));
+        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($context);
     }
 }

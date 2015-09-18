@@ -3,6 +3,7 @@
 namespace spec\GrumPHP\Runner;
 
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -10,11 +11,13 @@ use Prophecy\Argument;
 class TaskRunnerSpec extends ObjectBehavior
 {
 
-    protected $files;
-
-    public function let()
+    public function let(TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
     {
-        $this->files = new FilesCollection();
+        $task1->canRunInContext($context)->willReturn(true);
+        $task2->canRunInContext($context)->willReturn(true);
+
+        $this->addTask($task1);
+        $this->addTask($task2);
     }
 
     function it_is_initializable()
@@ -24,49 +27,40 @@ class TaskRunnerSpec extends ObjectBehavior
 
     function it_holds_tasks(TaskInterface $task1, TaskInterface $task2)
     {
-        $this->addTask($task1);
-        $this->addTask($task2);
-
-        $this->getTasks()->shouldEqual(array($task1, $task2));
+        $this->getTasks()->toArray()->shouldEqual(array($task1, $task2));
     }
 
     function it_does_not_add_the_same_task_twice(TaskInterface $task1, TaskInterface $task2)
     {
         $this->addTask($task1);
-        $this->addTask($task1);
-        $this->addTask($task2);
 
-        $this->getTasks()->shouldEqual(array($task1, $task2));
+        $this->getTasks()->toArray()->shouldEqual(array($task1, $task2));
     }
 
-    function it_runs_all_tasks(TaskInterface $task1, TaskInterface $task2)
+    function it_runs_all_tasks(TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
     {
-        $this->addTask($task1);
-        $this->addTask($task2);
+        $task1->run($context)->shouldBeCalled();
+        $task2->run($context)->shouldBeCalled();
 
-        $task1->run($this->files)->shouldBeCalled();
-        $task2->run($this->files)->shouldBeCalled();
-
-        $this->run($this->files);
+        $this->run($context);
     }
 
-    function it_throws_exception_if_task_fails(TaskInterface $task1)
+    function it_throws_exception_if_task_fails(TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
     {
-        $this->addTask($task1);
+        $task1->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
+        $task2->run($context)->shouldBeCalled();
 
-        $task1->run($this->files)->willThrow('GrumPHP\Exception\RuntimeException');
-
-        $this->shouldThrow('GrumPHP\Exception\FailureException')->duringRun($this->files);
+        $this->shouldThrow('GrumPHP\Exception\FailureException')->duringRun($context);
     }
 
-    function it_runs_subsequent_tasks_if_one_fails(TaskInterface $task1, TaskInterface $task2)
-    {
-        $this->addTask($task1);
-        $this->addTask($task2);
+    function it_runs_subsequent_tasks_if_one_fails(
+        TaskInterface $task1,
+        TaskInterface $task2,
+        ContextInterface $context
+    ) {
+        $task1->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
+        $task2->run($context)->shouldBeCalled();
 
-        $task1->run($this->files)->willThrow('GrumPHP\Exception\RuntimeException');
-        $task2->run($this->files)->shouldBeCalled();
-
-        $this->shouldThrow('GrumPHP\Exception\FailureException')->duringRun($this->files);
+        $this->shouldThrow('GrumPHP\Exception\FailureException')->duringRun($context);
     }
 }

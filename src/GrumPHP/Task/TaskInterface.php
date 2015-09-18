@@ -2,8 +2,8 @@
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Task\Context\ContextInterface;
 
 /**
  * Interface TaskInterface
@@ -23,10 +23,19 @@ interface TaskInterface
     public function getDefaultConfiguration();
 
     /**
-     * @param FilesCollection $files
+     * This methods specifies if a task can run in a specific context.
+     *
+     * @param ContextInterface $context
+     *
+     * @return bool
+     */
+    public function canRunInContext(ContextInterface $context);
+
+    /**
+     * @param ContextInterface $context
      *
      * @return void
      * @throws RuntimeException
      */
-    public function run(FilesCollection $files);
+    public function run(ContextInterface $context);
 }

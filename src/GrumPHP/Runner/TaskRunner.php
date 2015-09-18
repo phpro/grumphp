@@ -3,8 +3,10 @@
 namespace GrumPHP\Runner;
 
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Exception\FailureException;
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 
 /**
@@ -15,28 +17,32 @@ use GrumPHP\Task\TaskInterface;
 class TaskRunner
 {
     /**
-     * @var TaskInterface[]
+     * @var TasksCollection|TaskInterface[]
      */
-    protected $tasks = array();
+    protected $tasks;
 
     /**
-     * @param TaskInterface $task
-     *
-     * @return $this
+     * @constructor
      */
-    public function addTask(TaskInterface $task)
+    public function __construct()
     {
-        if (in_array($task, $this->tasks)) {
-            return $this;
-        }
-
-        $this->tasks[] = $task;
-
-        return $this;
+        $this->tasks = new TasksCollection();
     }
 
     /**
-     * @return TaskInterface[]
+     * @param TaskInterface $task
+     */
+    public function addTask(TaskInterface $task)
+    {
+        if ($this->tasks->contains($task)) {
+            return;
+        }
+
+        $this->tasks->add($task);
+    }
+
+    /**
+     * @return TasksCollection|TaskInterface[]
      */
     public function getTasks()
     {
@@ -44,18 +50,19 @@ class TaskRunner
     }
 
     /**
-     * @param FilesCollection $files
+     * @param ContextInterface $context
      *
      * @throws FailureException if any of the tasks fail
      */
-    public function run(FilesCollection $files)
+    public function run(ContextInterface $context)
     {
         $failures = false;
         $messages = array();
 
-        foreach ($this->getTasks() as $task) {
+        $tasks = $this->tasks->filterByContext($context);
+        foreach ($tasks as $task) {
             try {
-                $task->run($files);
+                $task->run($context);
             } catch (RuntimeException $e) {
                 $failures = true;
                 $messages[] = $e->getMessage();

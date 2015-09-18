@@ -4,6 +4,8 @@ namespace GrumPHP\Task;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Task\Context\ContextInterface;
+use GrumPHP\Task\Context\GitPreCommitContext;
 
 /**
  * Blacklist task
@@ -35,9 +37,17 @@ class Blacklist extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function run(FilesCollection $files)
+    public function canRunInContext(ContextInterface $context)
     {
-        $files = $files->name('*.php');
+        return ($context instanceof GitPreCommitContext);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function run(ContextInterface $context)
+    {
+        $files = $context->getFiles()->name('*.php');
         if (0 === count($files)) {
             return;
         }
