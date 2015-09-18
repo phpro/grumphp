@@ -144,7 +144,7 @@ class Application extends SymfonyConsole
 
         // Load cli options:
         $input = new ArgvInput();
-        $configPath = $input->getParameterOption(['--config', '-c'], $this->getConfigDefaultPath());
+        $configPath = $input->getParameterOption(array('--config', '-c'), $this->getConfigDefaultPath());
 
         // Make sure to set the full path when it is declared relative
         // This will fix some issues in windows.

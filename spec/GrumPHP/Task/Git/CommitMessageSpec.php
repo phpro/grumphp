@@ -12,7 +12,7 @@ class CommitMessageSpec extends ObjectBehavior
     function let(GrumPHP $grumPHP)
     {
         $this->beConstructedWith($grumPHP, array(
-            'matchers' => ['test', '*es*', 'te[s][t]', '/^te(.*)/', '/(.*)st$/', '/t(e|a)st/', 'TEST']
+            'matchers' => array('test', '*es*', 'te[s][t]', '/^te(.*)/', '/(.*)st$/', '/t(e|a)st/', 'TEST')
         ));
     }
 

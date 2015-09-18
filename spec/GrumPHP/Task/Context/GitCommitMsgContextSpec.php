@@ -33,23 +33,6 @@ class GitCommitMsgContextSpec extends ObjectBehavior
         $this->getFiles()->shouldBe($files);
     }
 
-    function it_should_know_the_commit_msg(\SplFileInfo $fileInfo)
-    {
-        $message = 'message';
-        $messageSize = strlen($message);
-
-        $stream = new \SplFileObject('php://memory', 'w');
-        $stream->fwrite($message);
-        $stream->rewind();
-        $fileInfo->openFile('r')->shouldBeCalledTimes(1)->willReturn($stream);
-        $fileInfo->getSize()->willReturn($messageSize);
-
-        $this->getCommitMessage()->shouldReturn('message');
-
-        // Ask the message again to make sure it is not read twice:
-        $this->getCommitMessage()->shouldReturn('message');
-    }
-
     function it_should_know_the_git_user()
     {
         $this->getUserName()->shouldBe('user');

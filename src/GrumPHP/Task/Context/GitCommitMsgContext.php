@@ -58,9 +58,7 @@ class GitCommitMsgContext implements ContextInterface
     public function getCommitMessage()
     {
         if (is_null($this->commitMessage)) {
-            $file = $this->commitMessageFile;
-            $stream = $file->openFile('r');
-            $this->commitMessage = $stream->fread($file->getSize());
+            $this->commitMessage = file_get_contents($this->commitMessageFile->getPathname());
         }
 
         return $this->commitMessage;
