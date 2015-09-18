@@ -26,6 +26,11 @@ class Application extends SymfonyConsole
     protected $container;
 
     /**
+     * @var string
+     */
+    protected $configDefaultPath;
+
+    /**
      * Set up application:
      */
     public function __construct()
@@ -57,19 +62,23 @@ class Application extends SymfonyConsole
      */
     protected function getConfigDefaultPath()
     {
-        $defaultConfigName = getcwd() . DIRECTORY_SEPARATOR . self::APP_CONFIG_FILE;
+        if ($this->configDefaultPath) {
+            return $this->configDefaultPath;
+        }
+
+        $this->configDefaultPath = getcwd() . DIRECTORY_SEPARATOR . self::APP_CONFIG_FILE;
         $composerFile = 'composer.json';
 
         if (!file_exists($composerFile)) {
-            return $defaultConfigName;
+            return $this->configDefaultPath;
         }
 
         $composer = json_decode(file_get_contents($composerFile), true);
         if (isset($composer['extra']['grumphp']['config-default-path'])) {
-            return $composer['extra']['grumphp']['config-default-path'];
+            $this->configDefaultPath = $composer['extra']['grumphp']['config-default-path'];
         }
 
-        return $defaultConfigName;
+        return $this->configDefaultPath;
     }
 
     /**
@@ -87,6 +96,10 @@ class Application extends SymfonyConsole
             $container->get('task_runner')
         );
 
+        $commands[] = new Command\Git\CommitMsgCommand(
+            $container->get('config'),
+            $container->get('locator.changed_files')
+        );
         $commands[] = new Command\Git\DeInitCommand(
             $container->get('config'),
             $container->get('filesystem')
@@ -131,8 +144,7 @@ class Application extends SymfonyConsole
 
         // Load cli options:
         $input = new ArgvInput();
-        $input->bind($this->getDefaultInputDefinition());
-        $configPath = $input->getOption('config');
+        $configPath = $input->getParameterOption(['--config', '-c'], $this->getConfigDefaultPath());
 
         // Make sure to set the full path when it is declared relative
         // This will fix some issues in windows.

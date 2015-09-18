@@ -22,6 +22,7 @@ class InitCommand extends Command
      */
     public static $hooks = array(
         'pre-commit',
+        'commit-msg',
     );
 
     /**
