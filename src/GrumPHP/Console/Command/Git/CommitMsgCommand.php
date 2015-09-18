@@ -8,6 +8,7 @@ use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\Locator\LocatorInterface;
 use GrumPHP\Task\Context\GitCommitMsgContext;
+use SplFileInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -65,7 +66,8 @@ class CommitMsgCommand extends Command
         $files = $this->getCommittedFiles();
         $gitUser = $input->getOption('git-user');
         $gitEmail = $input->getOption('git-email');
-        $commitMsgFile = $input->getArgument('commit-msg-file');
+        $commitMsgPath = $input->getArgument('commit-msg-file');
+        $commitMsgFile = new SplFileInfo($commitMsgPath);
 
         $context = new GitCommitMsgContext($files, $commitMsgFile, $gitUser, $gitEmail);
         return $this->taskRunner()->run($output, $context);

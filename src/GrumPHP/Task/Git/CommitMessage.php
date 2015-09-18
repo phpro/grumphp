@@ -6,6 +6,7 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitCommitMsgContext;
+use GrumPHP\Task\TaskInterface;
 use Symfony\Component\Finder\Expression\Expression;
 
 /**
