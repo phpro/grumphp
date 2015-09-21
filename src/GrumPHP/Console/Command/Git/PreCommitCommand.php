@@ -10,6 +10,7 @@ use GrumPHP\Locator\LocatorInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -47,6 +48,12 @@ class PreCommitCommand extends Command
     protected function configure()
     {
         $this->setName(self::COMMAND_NAME);
+        $this->addOption(
+            'skip-success-output',
+            null,
+            InputOption::VALUE_NONE,
+            'Skips the success output. This will be shown by another command in the git commit hook chain.'
+        );
     }
 
     /**
@@ -59,8 +66,9 @@ class PreCommitCommand extends Command
     {
         $files = $this->getCommittedFiles();
         $context = new GitPreCommitContext($files);
+        $skipSuccessOutput = (bool) $input->getOption('skip-success-output');
 
-        return $this->taskRunner()->run($output, $context, true);
+        return $this->taskRunner()->run($output, $context, $skipSuccessOutput);
     }
 
     /**
