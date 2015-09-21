@@ -232,7 +232,7 @@ For example: if you are working with JIRA, it is possible to add a pattern for t
 Use this parameter to specify one or multiple patterns. The value can be in regex or glob style.
 Here are some example matchers:
 
-- /JR-([0-9]*)/
+- /JIRA-([0-9]*)/
 - pre-fix*
 - *suffix
 - ...
