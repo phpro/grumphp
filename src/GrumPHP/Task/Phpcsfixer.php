@@ -71,7 +71,7 @@ class Phpcsfixer extends AbstractExternalTask
         }
 
         if ($config['config_file']) {
-            $this->processBuilder->add('--config-file' . $config['config-file']);
+            $this->processBuilder->add('--config-file=' . $config['config-file']);
         }
 
         if ($config['verbose']) {
