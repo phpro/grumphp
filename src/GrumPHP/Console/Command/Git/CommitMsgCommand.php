@@ -7,18 +7,20 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\Locator\LocatorInterface;
-use GrumPHP\Task\Context\GitPreCommitContext;
+use GrumPHP\Task\Context\GitCommitMsgContext;
+use SplFileInfo;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * This command runs the git pre-commit hook.
+ * This command runs the git commit-msg hook.
  */
-class PreCommitCommand extends Command
+class CommitMsgCommand extends Command
 {
-    const COMMAND_NAME = 'git:pre-commit';
+    const COMMAND_NAME = 'git:commit-msg';
 
     /**
      * @var GrumPHP
@@ -48,12 +50,9 @@ class PreCommitCommand extends Command
     protected function configure()
     {
         $this->setName(self::COMMAND_NAME);
-        $this->addOption(
-            'skip-success-output',
-            null,
-            InputOption::VALUE_NONE,
-            'Skips the success output. This will be shown by another command in the git commit hook chain.'
-        );
+        $this->addOption('git-user', null, InputOption::VALUE_REQUIRED, 'The configured git user name.', '');
+        $this->addOption('git-email', null, InputOption::VALUE_REQUIRED, 'The configured git email.', '');
+        $this->addArgument('commit-msg-file', InputArgument::REQUIRED, 'The configured commit message file.');
     }
 
     /**
@@ -65,10 +64,13 @@ class PreCommitCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $files = $this->getCommittedFiles();
-        $context = new GitPreCommitContext($files);
-        $skipSuccessOutput = (bool) $input->getOption('skip-success-output');
+        $gitUser = $input->getOption('git-user');
+        $gitEmail = $input->getOption('git-email');
+        $commitMsgPath = $input->getArgument('commit-msg-file');
+        $commitMsgFile = new SplFileInfo($commitMsgPath);
 
-        return $this->taskRunner()->run($output, $context, $skipSuccessOutput);
+        $context = new GitCommitMsgContext($files, $commitMsgFile, $gitUser, $gitEmail);
+        return $this->taskRunner()->run($output, $context);
     }
 
     /**

@@ -4,7 +4,7 @@
 # Run the hook command.
 # Note: this will be replaced by the real command during copy.
 #
-(cd "${HOOK_EXEC_PATH}" && exec $(HOOK_COMMAND))
+(cd "${HOOK_EXEC_PATH}" && exec $(HOOK_COMMAND) '--skip-success-output')
 
 # Validate exit code of above command
 RC=$?

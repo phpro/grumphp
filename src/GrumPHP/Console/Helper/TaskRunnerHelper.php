@@ -42,11 +42,13 @@ class TaskRunnerHelper extends Helper
     }
 
     /**
+     * @param OutputInterface  $output
      * @param ContextInterface $context
+     * @param bool|false       $skipSuccessOutput
      *
      * @return int
      */
-    public function run(OutputInterface $output, ContextInterface $context)
+    public function run(OutputInterface $output, ContextInterface $context, $skipSuccessOutput = false)
     {
         try {
             $this->taskRunner->run($context);
@@ -54,6 +56,11 @@ class TaskRunnerHelper extends Helper
             // We'll fail hard on any exception not generated in GrumPHP
 
             return $this->returnErrorMessage($output, $e->getMessage());
+        }
+
+        // Skip before returning any messages
+        if ($skipSuccessOutput) {
+            return self::CODE_SUCCESS;
         }
 
         return $this->returnSuccessMessage($output);

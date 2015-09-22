@@ -97,3 +97,11 @@ services:
             - @process_builder
         tags:
             - {name: grumphp.task, config: blacklist}
+
+    task.git.commitmessage:
+        class: GrumPHP\Task\Git\CommitMessage
+        arguments:
+            - @config
+            - "@=parameter('tasks')['git_commit_message'] ? parameter('tasks')['git_commit_message'] : []"
+        tags:
+            - {name: grumphp.task, config: git_commit_message}
