@@ -57,7 +57,7 @@ class Phpunit extends AbstractExternalTask
         ));
 
         if ($config['config_file']) {
-            $this->processBuilder->add('-c' . $config['config_file']);
+            $this->processBuilder->add('--configuration=' . $config['config_file']);
         }
 
         $process = $this->processBuilder->getProcess();
