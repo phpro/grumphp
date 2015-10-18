@@ -21,8 +21,7 @@ We don't want to bore you with all the details, so quick: install it yourself an
 This package is composer plugin and should be installed to your project's dev dependency using composer:
 
 ```sh
-composer self-update
-composer require --dev phpro/grumphp:~0.1
+composer require phpro/grumphp
 ```
 
 When the package is installed, GrumPHP will attach itself to the git hooks of your project.
