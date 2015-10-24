@@ -346,6 +346,7 @@ composer require --dev leaphub/phpcs-symfony2-standard
 Following this, you can add the path to your phpcs task.
 
 ```yml
+# grumphp.yml
 parameters:
     tasks:
         phpcs:
@@ -411,7 +412,7 @@ You just have to create a class that implements the `GrumPHP\Task\TaskInterface`
 Next register it to the service manager and add your task configuration:
 
 ```yaml
-# resources/config/services.yml
+# grumphp.yml
 parameters:
     tasks:
         myConfigKey:
@@ -432,6 +433,38 @@ You're welcome!
 
 You just registered your custom task in no time! Pretty cool right?!
 
+## Events
+
+It is possible to hook in to GrumPHP with events.
+Internally the Symfony event dispatcher is being used. 
+This means it can be configured just like you would in Symfony: 
+
+```sh
+# grumphp.yml
+services:
+    listener.some_listener:
+        class: MyNamespace\EventListener\MyListener
+        tags:
+            - { name: grumphp.event_listener, event: grumphp.runner.run }
+            - { name: grumphp.event_listener, event: grumphp.runner.run, method: customMethod, priority: 10 }
+    listener.some_subscriber:
+        class: MyNamespace\EventSubscriber\MySubscriber
+        tags:
+            - { name: grumphp.event_subscriber }
+```
+
+Following events are triggered during execution:
+
+| Event name              | Event class       | Triggered
+| ----------------------- | ----------------- | ----------
+| grumphp.task.run        | TaskEvent         | Triggered before a task is executed.
+| grumphp.task.failed     | TaskFailedEvent   | Triggered when a task fails.
+| grumphp.task.complete   | TaskEvent         | Triggered when a task succeeds.
+| grumphp.runner.run      | RunnerEvent       | Triggered before the tasks are executed.
+| grumphp.runner.failed   | RunnerFailedEvent | Triggered when one task failed.
+| grumphp.runner.complete | RunnerEvent       | Triggered when all tasks succeed.
+
+
 ## Roadmap
 
 Following tasks are still on the roadmap:
@@ -451,8 +484,13 @@ GrumPHP will be triggered with GIT hooks. However, you can execute the trigger a
 
 ```sh
 php ./vendor/bin/grumphp git:pre-commit
+php ./vendor/bin/grumphp git:commit-msg
 ```
 
+If you want to run the tests on the full codebase, you can run the command:
+```sh
+php ./vendor/bin/grumphp run
+```
 
 # Compatibility
 

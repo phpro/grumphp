@@ -69,6 +69,7 @@ class CommitMsgCommand extends Command
         $commitMsgPath = $input->getArgument('commit-msg-file');
         $commitMsgFile = new SplFileInfo($commitMsgPath);
 
+        $output->writeln('<fg=yellow>GrumPHP detected a commit-msg command.</fg=yellow>');
         $context = new GitCommitMsgContext($files, $commitMsgFile, $gitUser, $gitEmail);
         return $this->taskRunner()->run($output, $context);
     }
