@@ -90,8 +90,9 @@ export PATH="$HOME/.composer/vendor/bin:$PATH"
 
 That's all! The `grumphp` command will be available on your CLI and will be used by default.
 
-*Note:* that you might want to re-initialize your project git hooks to make sure the system-wide executable is being used. Run the `grumphp git:init` command in the project directory.
-*Note:* When you globally installed 3rd party tools like e.g. `phpunit`, those will also be used instead of the composer executables. 
+**Note:** that you might want to re-initialize your project git hooks to make sure the system-wide executable is being used. Run the `grumphp git:init` command in the project directory.
+
+**Note:** When you globally installed 3rd party tools like e.g. `phpunit`, those will also be used instead of the composer executables. 
 
 ## Build your own conventions checker
 
