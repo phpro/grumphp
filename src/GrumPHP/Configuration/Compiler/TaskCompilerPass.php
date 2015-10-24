@@ -1,6 +1,6 @@
 <?php
 
-namespace GrumPHP\Configuration;
+namespace GrumPHP\Configuration\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * Class TaskCompilerPass
  *
- * @package GrumPHP\Configuration
+ * @package GrumPHP\Configuration\Compiler
  */
 class TaskCompilerPass implements CompilerPassInterface
 {

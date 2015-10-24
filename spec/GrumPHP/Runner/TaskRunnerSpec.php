@@ -3,16 +3,25 @@
 namespace spec\GrumPHP\Runner;
 
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Event\RunnerEvents;
+use GrumPHP\Event\TaskEvents;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class TaskRunnerSpec extends ObjectBehavior
 {
 
-    public function let(TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
-    {
+    public function let(
+        EventDispatcherInterface $eventDispatcher,
+        TaskInterface $task1,
+        TaskInterface $task2,
+        ContextInterface $context
+    ) {
+        $this->beConstructedWith($eventDispatcher);
+
         $task1->canRunInContext($context)->willReturn(true);
         $task2->canRunInContext($context)->willReturn(true);
 
@@ -60,6 +69,41 @@ class TaskRunnerSpec extends ObjectBehavior
     ) {
         $task1->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
         $task2->run($context)->shouldBeCalled();
+
+        $this->shouldThrow('GrumPHP\Exception\FailureException')->duringRun($context);
+    }
+
+    function it_triggers_events_during_happy_flow(
+        EventDispatcherInterface $eventDispatcher,
+        TaskInterface $task1,
+        TaskInterface $task2,
+        ContextInterface $context
+    ) {
+        $task1->run($context)->shouldBeCalled();
+        $task2->run($context)->shouldBeCalled();
+
+        $eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, Argument::type('GrumPHP\Event\RunnerEvent'))->shouldBeCalled();
+        $eventDispatcher->dispatch(TaskEvents::TASK_RUN, Argument::type('GrumPHP\Event\TaskEvent'))->shouldBeCalled();
+        $eventDispatcher->dispatch(TaskEvents::TASK_COMPLETE, Argument::type('GrumPHP\Event\TaskEvent'))->shouldBeCalled();
+        $eventDispatcher->dispatch(RunnerEvents::RUNNER_COMPLETE, Argument::type('GrumPHP\Event\RunnerEvent'))->shouldBeCalled();
+
+        $this->run($context);
+    }
+
+    function it_triggers_events_during_error_flow(
+        EventDispatcherInterface $eventDispatcher,
+        TaskInterface $task1,
+        TaskInterface $task2,
+        ContextInterface $context
+    ) {
+        $task1->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
+        $task2->run($context)->shouldBeCalled();
+
+        $eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, Argument::type('GrumPHP\Event\RunnerEvent'))->shouldBeCalled();
+        $eventDispatcher->dispatch(TaskEvents::TASK_RUN, Argument::type('GrumPHP\Event\TaskEvent'))->shouldBeCalled();
+        $eventDispatcher->dispatch(TaskEvents::TASK_COMPLETE, Argument::type('GrumPHP\Event\TaskEvent'))->shouldBeCalled();
+        $eventDispatcher->dispatch(TaskEvents::TASK_FAILED, Argument::type('GrumPHP\Event\TaskFailedEvent'))->shouldBeCalled();
+        $eventDispatcher->dispatch(RunnerEvents::RUNNER_FAILED, Argument::type('GrumPHP\Event\RunnerFailedEvent'))->shouldBeCalled();
 
         $this->shouldThrow('GrumPHP\Exception\FailureException')->duringRun($context);
     }

@@ -12,6 +12,9 @@ services:
         class: GrumPHP\Configuration\GrumPHP
         arguments: [@service_container]
 
+    event_dispatcher:
+        class: Symfony\Component\EventDispatcher\EventDispatcher
+
     filesystem:
         class: Symfony\Component\Filesystem\Filesystem
 
@@ -29,6 +32,8 @@ services:
 
     task_runner:
         class: GrumPHP\Runner\TaskRunner
+        arguments:
+          - @event_dispatcher
 
     locator.external_command:
         class: GrumPHP\Locator\ExternalCommand
@@ -36,6 +41,10 @@ services:
 
     locator.changed_files:
         class: GrumPHP\Locator\ChangedFiles
+        arguments: [@git.repository]
+
+    locator.registered_files:
+        class: GrumPHP\Locator\RegisteredFiles
         arguments: [@git.repository]
 
     task.phpcs:

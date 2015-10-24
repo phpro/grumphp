@@ -7,6 +7,7 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Locator\LocatorInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
+use GrumPHP\Task\Context\RunContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Process\Process;
@@ -48,6 +49,11 @@ class PhpcsfixerSpec extends ObjectBehavior
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
+    {
+        $this->canRunInContext($context)->shouldReturn(true);
+    }
+
+    function it_should_run_in_run_context(RunContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
     }
