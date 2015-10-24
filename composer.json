@@ -26,11 +26,12 @@
         "fabpot/php-cs-fixer": "~1.0"
     },
     "suggest": {
-      "roave/security-advisories": "Lets GrumPHP be sure that there are no known security issues.",
-      "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",
-      "phpspec/phpspec": "Lets GrumPHP spec your code.",
-      "phpunit/phpunit": "Lets GrumPHP run your unit tests.",
-      "fabpot/php-cs-fixer": "Lets GrumPHP automatically fix your codestyle."
+        "behat/behat": "Lets GrumPHP validate your project features.",
+        "fabpot/php-cs-fixer": "Lets GrumPHP automatically fix your codestyle.",
+        "phpspec/phpspec": "Lets GrumPHP spec your code.",
+        "phpunit/phpunit": "Lets GrumPHP run your unit tests.",
+        "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",
+        "roave/security-advisories": "Lets GrumPHP be sure that there are no known security issues."
     },
     "authors": [
         {

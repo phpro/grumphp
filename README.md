@@ -32,10 +32,12 @@ You will see following message in the composer logs:
 
 To make GrumPHP even more awesome, it will suggest installing some extra packages:
 
-- squizlabs/php_codesniffer : ~2.3
+- behat/behat : ~3.0
+- fabpot/php-cs-fixer: ~1.10
 - phpspec/phpspec : ~2.1
 - phpunit/phpunit : ~4.5
 - roave/security-advisories : dev-master@dev
+- squizlabs/php_codesniffer : ~2.3
 
 GrumPHP will never push you into using a specific task. You can choose the tasks that fit your needs, and activate or
 deactivate any task in no time!
