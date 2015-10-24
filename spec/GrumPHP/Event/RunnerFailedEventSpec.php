@@ -10,7 +10,7 @@ class RunnerFailedEventSpec extends ObjectBehavior
 {
     function let(TasksCollection $tasks)
     {
-        $this->beConstructedWith($tasks, []);
+        $this->beConstructedWith($tasks, array());
     }
 
     function it_is_initializable()
@@ -30,6 +30,6 @@ class RunnerFailedEventSpec extends ObjectBehavior
 
     function it_should_contain_the_error_messages()
     {
-        $this->getMessages()->shouldBe([]);
+        $this->getMessages()->shouldBe(array());
     }
 }

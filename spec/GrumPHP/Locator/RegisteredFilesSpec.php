@@ -25,7 +25,7 @@ class RegisteredFilesSpec extends ObjectBehavior
 
     function it_will_list_all_diffed_files(Repository $repository)
     {
-        $files = ['file1.txt', 'file2.txt'];
+        $files = array('file1.txt', 'file2.txt');
         $repository->run('ls-files')->willReturn(implode(PHP_EOL, $files));
 
         $result = $this->locate();
