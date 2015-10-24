@@ -97,11 +97,10 @@ class TaskRunnerSpec extends ObjectBehavior
         ContextInterface $context
     ) {
         $task1->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
-        $task2->run($context)->shouldBeCalled();
+        $task2->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
 
         $eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, Argument::type('GrumPHP\Event\RunnerEvent'))->shouldBeCalled();
         $eventDispatcher->dispatch(TaskEvents::TASK_RUN, Argument::type('GrumPHP\Event\TaskEvent'))->shouldBeCalled();
-        $eventDispatcher->dispatch(TaskEvents::TASK_COMPLETE, Argument::type('GrumPHP\Event\TaskEvent'))->shouldBeCalled();
         $eventDispatcher->dispatch(TaskEvents::TASK_FAILED, Argument::type('GrumPHP\Event\TaskFailedEvent'))->shouldBeCalled();
         $eventDispatcher->dispatch(RunnerEvents::RUNNER_FAILED, Argument::type('GrumPHP\Event\RunnerFailedEvent'))->shouldBeCalled();
 

@@ -80,12 +80,12 @@ class TaskRunner
             try {
                 $this->eventDispatcher->dispatch(TaskEvents::TASK_RUN, new TaskEvent($task));
                 $task->run($context);
+                $this->eventDispatcher->dispatch(TaskEvents::TASK_COMPLETE, new TaskEvent($task));
             } catch (RuntimeException $e) {
                 $this->eventDispatcher->dispatch(TaskEvents::TASK_FAILED, new TaskFailedEvent($task, $e));
                 $messages[] = $e->getMessage();
                 $failures = true;
             }
-            $this->eventDispatcher->dispatch(TaskEvents::TASK_COMPLETE, new TaskEvent($task));
         }
 
         if ($failures) {
