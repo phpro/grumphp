@@ -439,7 +439,7 @@ It is possible to hook in to GrumPHP with events.
 Internally the Symfony event dispatcher is being used. 
 This means it can be configured just like you would in Symfony: 
 
-```sh
+```yml
 # grumphp.yml
 services:
     listener.some_listener:
@@ -457,12 +457,12 @@ Following events are triggered during execution:
 
 | Event name              | Event class       | Triggered
 | ----------------------- | ----------------- | ----------
-| grumphp.task.run        | TaskEvent         | Triggered before a task is executed.
-| grumphp.task.failed     | TaskFailedEvent   | Triggered when a task fails.
-| grumphp.task.complete   | TaskEvent         | Triggered when a task succeeds.
-| grumphp.runner.run      | RunnerEvent       | Triggered before the tasks are executed.
-| grumphp.runner.failed   | RunnerFailedEvent | Triggered when one task failed.
-| grumphp.runner.complete | RunnerEvent       | Triggered when all tasks succeed.
+| grumphp.task.run        | TaskEvent         | before a task is executed
+| grumphp.task.failed     | TaskFailedEvent   | when a task fails
+| grumphp.task.complete   | TaskEvent         | when a task succeeds
+| grumphp.runner.run      | RunnerEvent       | before the tasks are executed
+| grumphp.runner.failed   | RunnerFailedEvent | when one task failed
+| grumphp.runner.complete | RunnerEvent       | when all tasks succeed
 
 
 ## Roadmap
