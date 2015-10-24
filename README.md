@@ -494,13 +494,22 @@ Following events are triggered during execution:
 
 Following tasks are still on the roadmap:
 
-- composer.json and composer.lock need to be committed at the same time
+- composer validate command
 - phpmd
 - phpcpd
 - phpdcd
+- twig lint
+- json lint
+- yaml lint
+- xml lint / dtd validation
+- grunt tests
+- gulp tests
+- npm test tests
 - ...
 
-In a future version, it will also be possible to use GrumPHP as a Continious Integration tool.
+New features or bugfixes can be logged at the [https://github.com/phpro/grumphp/issues](issues list).
+Want to help out? Feel free to contact us!
+
 
 # Execution
 
