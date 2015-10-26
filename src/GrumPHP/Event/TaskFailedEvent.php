@@ -12,7 +12,6 @@ use GrumPHP\Task\TaskInterface;
  */
 class TaskFailedEvent extends TaskEvent
 {
-
     /**
      * @var Exception
      */
