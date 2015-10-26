@@ -2,10 +2,11 @@
 
 namespace GrumPHP\Configuration;
 
-use RuntimeException;
+use GrumPHP\Configuration\Compiler\TaskCompilerPass;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 use Symfony\Component\Filesystem\Filesystem;
 
 final class ContainerFactory
@@ -19,6 +20,9 @@ final class ContainerFactory
     {
         $container = new ContainerBuilder();
         $container->addCompilerPass(new TaskCompilerPass());
+        $container->addCompilerPass(
+            new RegisterListenersPass('event_dispatcher', 'grumphp.event_listener', 'grumphp.event_subscriber')
+        );
 
         // Load basic service file + custom user configuration
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../../resources/config'));

@@ -20,6 +20,4 @@ install:
   - composer update --prefer-dist  --no-scripts  --no-interaction
 
 script:
-   - ./vendor/bin/phpcs --standard=PSR2 src
-   - ./vendor/bin/phpspec run
-
+   - ./bin/grumphp run

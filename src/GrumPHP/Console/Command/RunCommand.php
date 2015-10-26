@@ -1,24 +1,25 @@
 <?php
 
-namespace GrumPHP\Console\Command\Git;
+namespace GrumPHP\Console\Command;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\Locator\LocatorInterface;
-use GrumPHP\Task\Context\GitPreCommitContext;
+use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * This command runs the git pre-commit hook.
+ * Class RunCommand
+ *
+ * @package GrumPHP\Console\Command
  */
-class PreCommitCommand extends Command
+class RunCommand extends Command
 {
-    const COMMAND_NAME = 'git:pre-commit';
+    const COMMAND_NAME = 'run';
 
     /**
      * @var GrumPHP
@@ -28,18 +29,18 @@ class PreCommitCommand extends Command
     /**
      * @var LocatorInterface
      */
-    protected $changedFilesLocator;
+    protected $registeredFilesLocator;
 
     /**
      * @param GrumPHP $grumPHP
-     * @param LocatorInterface $changedFilesLocator
+     * @param LocatorInterface $registeredFilesLocator
      */
-    public function __construct(GrumPHP $grumPHP, LocatorInterface $changedFilesLocator)
+    public function __construct(GrumPHP $grumPHP, LocatorInterface $registeredFilesLocator)
     {
         parent::__construct();
 
         $this->grumPHP = $grumPHP;
-        $this->changedFilesLocator = $changedFilesLocator;
+        $this->registeredFilesLocator = $registeredFilesLocator;
     }
 
     /**
@@ -48,12 +49,6 @@ class PreCommitCommand extends Command
     protected function configure()
     {
         $this->setName(self::COMMAND_NAME);
-        $this->addOption(
-            'skip-success-output',
-            null,
-            InputOption::VALUE_NONE,
-            'Skips the success output. This will be shown by another command in the git commit hook chain.'
-        );
     }
 
     /**
@@ -64,20 +59,18 @@ class PreCommitCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $files = $this->getCommittedFiles();
-        $context = new GitPreCommitContext($files);
-        $skipSuccessOutput = (bool) $input->getOption('skip-success-output');
+        $files = $this->getRegisteredFiles();
+        $context = new RunContext($files);
 
-        $output->writeln('<fg=yellow>GrumPHP detected a pre-commit command.</fg=yellow>');
-        return $this->taskRunner()->run($output, $context, $skipSuccessOutput);
+        return $this->taskRunner()->run($output, $context);
     }
 
     /**
      * @return FilesCollection
      */
-    protected function getCommittedFiles()
+    protected function getRegisteredFiles()
     {
-        return $this->changedFilesLocator->locate();
+        return $this->registeredFilesLocator->locate();
     }
 
     /**

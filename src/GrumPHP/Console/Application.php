@@ -95,6 +95,10 @@ class Application extends SymfonyConsole
             $container->get('git.repository'),
             $container->get('task_runner')
         );
+        $commands[] = new Command\RunCommand(
+            $container->get('config'),
+            $container->get('locator.registered_files')
+        );
 
         $commands[] = new Command\Git\CommitMsgCommand(
             $container->get('config'),
@@ -127,7 +131,8 @@ class Application extends SymfonyConsole
             $container->get('filesystem')
         ));
         $helperSet->set(new Helper\TaskRunnerHelper(
-            $container->get('task_runner')
+            $container->get('task_runner'),
+            $container->get('event_dispatcher')
         ));
 
         return $helperSet;

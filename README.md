@@ -31,10 +31,12 @@ You will see following message in the composer logs:
 
 To make GrumPHP even more awesome, it will suggest installing some extra packages:
 
-- squizlabs/php_codesniffer : ~2.3
+- behat/behat : ~3.0
+- fabpot/php-cs-fixer: ~1.10
 - phpspec/phpspec : ~2.1
 - phpunit/phpunit : ~4.5
 - roave/security-advisories : dev-master@dev
+- squizlabs/php_codesniffer : ~2.3
 
 GrumPHP will never push you into using a specific task. You can choose the tasks that fit your needs, and activate or
 deactivate any task in no time!
@@ -69,6 +71,29 @@ The only downfall is that you will have to initialize the git hook manually:
 ```sh
 php ./vendor/bin/grumphp git:init --config=path/to/grumphp.yml
 ```
+
+### Global installation
+
+It is possible to install or update GrumPHP on your system with following commands:
+
+```sh
+composer global require phpro/grumphp
+composer global update phpro/grumphp
+```
+
+This will install the `grumphp` executable in the `~/.composer/vendor/bin` folder.
+Make sure to add this folder to your system `$PATH` variable:
+
+```
+# .zshrc or .bashrc
+export PATH="$HOME/.composer/vendor/bin:$PATH"
+```
+
+That's all! The `grumphp` command will be available on your CLI and will be used by default.
+
+**Note:** that you might want to re-initialize your project git hooks to make sure the system-wide executable is being used. Run the `grumphp git:init` command in the project directory.
+
+**Note:** When you globally installed 3rd party tools like e.g. `phpunit`, those will also be used instead of the composer executables. 
 
 ## Build your own conventions checker
 
@@ -345,6 +370,7 @@ composer require --dev leaphub/phpcs-symfony2-standard
 Following this, you can add the path to your phpcs task.
 
 ```yml
+# grumphp.yml
 parameters:
     tasks:
         phpcs:
@@ -410,7 +436,7 @@ You just have to create a class that implements the `GrumPHP\Task\TaskInterface`
 Next register it to the service manager and add your task configuration:
 
 ```yaml
-# resources/config/services.yml
+# grumphp.yml
 parameters:
     tasks:
         myConfigKey:
@@ -431,17 +457,58 @@ You're welcome!
 
 You just registered your custom task in no time! Pretty cool right?!
 
+## Events
+
+It is possible to hook in to GrumPHP with events.
+Internally the Symfony event dispatcher is being used. 
+This means it can be configured just like you would in Symfony: 
+
+```yml
+# grumphp.yml
+services:
+    listener.some_listener:
+        class: MyNamespace\EventListener\MyListener
+        tags:
+            - { name: grumphp.event_listener, event: grumphp.runner.run }
+            - { name: grumphp.event_listener, event: grumphp.runner.run, method: customMethod, priority: 10 }
+    listener.some_subscriber:
+        class: MyNamespace\EventSubscriber\MySubscriber
+        tags:
+            - { name: grumphp.event_subscriber }
+```
+
+Following events are triggered during execution:
+
+| Event name              | Event class       | Triggered
+| ----------------------- | ----------------- | ----------
+| grumphp.task.run        | TaskEvent         | before a task is executed
+| grumphp.task.failed     | TaskFailedEvent   | when a task fails
+| grumphp.task.complete   | TaskEvent         | when a task succeeds
+| grumphp.runner.run      | RunnerEvent       | before the tasks are executed
+| grumphp.runner.failed   | RunnerFailedEvent | when one task failed
+| grumphp.runner.complete | RunnerEvent       | when all tasks succeed
+
+
 ## Roadmap
 
 Following tasks are still on the roadmap:
 
-- composer.json and composer.lock need to be committed at the same time
+- composer validate command
 - phpmd
 - phpcpd
 - phpdcd
+- twig lint
+- json lint
+- yaml lint
+- xml lint / dtd validation
+- grunt tests
+- gulp tests
+- npm test tests
 - ...
 
-In a future version, it will also be possible to use GrumPHP as a Continious Integration tool.
+New features or bugfixes can be logged at the [https://github.com/phpro/grumphp/issues](issues list).
+Want to help out? Feel free to contact us!
+
 
 # Execution
 
@@ -450,8 +517,13 @@ GrumPHP will be triggered with GIT hooks. However, you can execute the trigger a
 
 ```sh
 php ./vendor/bin/grumphp git:pre-commit
+php ./vendor/bin/grumphp git:commit-msg
 ```
 
+If you want to run the tests on the full codebase, you can run the command:
+```sh
+php ./vendor/bin/grumphp run
+```
 
 # Compatibility
 

@@ -2,11 +2,14 @@
 
 namespace GrumPHP\Console\Helper;
 
+use GrumPHP\Event\Subscriber\ProgressSubscriber;
 use GrumPHP\Exception\ExceptionInterface;
 use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Task\Context\ContextInterface;
 use Symfony\Component\Console\Helper\Helper;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class TaskRunnerHelper
@@ -26,11 +29,18 @@ class TaskRunnerHelper extends Helper
     private $taskRunner;
 
     /**
-     * @param TaskRunner $taskRunner
+     * @var EventDispatcherInterface
      */
-    public function __construct(TaskRunner $taskRunner)
+    private $eventDispatcher;
+
+    /**
+     * @param TaskRunner               $taskRunner
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(TaskRunner $taskRunner, EventDispatcherInterface $eventDispatcher)
     {
         $this->taskRunner = $taskRunner;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -50,6 +60,9 @@ class TaskRunnerHelper extends Helper
      */
     public function run(OutputInterface $output, ContextInterface $context, $skipSuccessOutput = false)
     {
+        // Make sure to add some default event listeners before running.
+        $this->registerEventListeners($output, $context);
+
         try {
             $this->taskRunner->run($context);
         } catch (ExceptionInterface $e) {
@@ -64,7 +77,15 @@ class TaskRunnerHelper extends Helper
         }
 
         return $this->returnSuccessMessage($output);
+    }
 
+    /**
+     * @param OutputInterface  $output
+     * @param ContextInterface $context
+     */
+    private function registerEventListeners(OutputInterface $output, ContextInterface $context)
+    {
+        $this->eventDispatcher->addSubscriber(new ProgressSubscriber($output, new ProgressBar($output)));
     }
 
     /**

@@ -6,6 +6,7 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
+use GrumPHP\Task\Context\RunContext;
 
 /**
  * Phpunit task
@@ -37,7 +38,7 @@ class Phpunit extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context)
     {
-        return ($context instanceof GitPreCommitContext);
+        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
     }
 
     /**

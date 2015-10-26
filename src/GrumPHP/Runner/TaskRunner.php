@@ -4,10 +4,17 @@ namespace GrumPHP\Runner;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\TasksCollection;
+use GrumPHP\Event\RunnerEvent;
+use GrumPHP\Event\RunnerEvents;
+use GrumPHP\Event\RunnerFailedEvent;
+use GrumPHP\Event\TaskEvent;
+use GrumPHP\Event\TaskEvents;
+use GrumPHP\Event\TaskFailedEvent;
 use GrumPHP\Exception\FailureException;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class TaskRunner
@@ -19,14 +26,22 @@ class TaskRunner
     /**
      * @var TasksCollection|TaskInterface[]
      */
-    protected $tasks;
+    private $tasks;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
     /**
      * @constructor
+     *
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct()
+    public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->tasks = new TasksCollection();
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -58,19 +73,26 @@ class TaskRunner
     {
         $failures = false;
         $messages = array();
-
         $tasks = $this->tasks->filterByContext($context);
+
+        $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, new RunnerEvent($tasks));
         foreach ($tasks as $task) {
             try {
+                $this->eventDispatcher->dispatch(TaskEvents::TASK_RUN, new TaskEvent($task));
                 $task->run($context);
+                $this->eventDispatcher->dispatch(TaskEvents::TASK_COMPLETE, new TaskEvent($task));
             } catch (RuntimeException $e) {
-                $failures = true;
+                $this->eventDispatcher->dispatch(TaskEvents::TASK_FAILED, new TaskFailedEvent($task, $e));
                 $messages[] = $e->getMessage();
+                $failures = true;
             }
         }
 
         if ($failures) {
+            $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_FAILED, new RunnerFailedEvent($tasks, $messages));
             throw new FailureException(implode(PHP_EOL, $messages));
         }
+
+        $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_COMPLETE, new RunnerEvent($tasks));
     }
 }
