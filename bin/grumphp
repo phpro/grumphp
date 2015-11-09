@@ -13,9 +13,8 @@ $autoloadLocations = array(
 $loaded = false;
 foreach ($autoloadLocations as $autoload) {
     if (is_file($autoload)) {
-        require($autoload);
+        require_once($autoload);
         $loaded = true;
-        break;
     }
 }
 
