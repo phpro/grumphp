@@ -6,11 +6,11 @@
 
 <img src="https://raw.githubusercontent.com/phpro/grumphp/master/resources/logo/grumphp-grumpy.png" align="right" width="250"/>
 
-Sick and tired of complaining about your co-workers' code? GrumPHP will do it for you!
+Sick and tired of defending code quality over and over again? GrumPHP will do it for you!
 This composer plugin will register some git hooks in your package repository.
 When somebody commits changes, GrumPHP will run some tests on the committed code.
 If the tests fail, you won't be able to commit your changes.
-This handy tool will make your co-workers care about their code.
+This handy tool will not only improve your codebase, it will also learn your co-workers to write better code following the best practices you've determined as a team.
 
 GrumPHP has a set of common tasks built-in. You will be able to use GrumPHP with a minimum of configuration.
 
