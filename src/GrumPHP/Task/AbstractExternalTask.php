@@ -2,7 +2,6 @@
 
 namespace GrumPHP\Task;
 
-use Composer\Config;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Locator\LocatorInterface;
 use Symfony\Component\Process\ProcessBuilder;

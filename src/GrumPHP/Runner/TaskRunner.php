@@ -2,7 +2,6 @@
 
 namespace GrumPHP\Runner;
 
-use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Event\RunnerEvents;

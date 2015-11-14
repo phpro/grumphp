@@ -5,7 +5,6 @@ namespace GrumPHP\Console\Command;
 use Exception;
 use Gitonomy\Git\Repository;
 use GrumPHP\Configuration\GrumPHP;
-use GrumPHP\Console\Application;
 use GrumPHP\Console\Helper\PathsHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
