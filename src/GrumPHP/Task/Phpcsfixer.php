@@ -74,7 +74,8 @@ class Phpcsfixer extends AbstractExternalTask
         $suggest = array('You can fix all errors by running following commands:');
         $errorCount = 0;
         foreach ($files as $file) {
-            $processBuilder = ProcessBuilder::create($arguments->toArray());
+            $processBuilder = clone $this->processBuilder;
+            $processBuilder->setArguments($arguments->getValues());
             $processBuilder->add($file);
             $process = $processBuilder->getProcess();
             $process->run();

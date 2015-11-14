@@ -19,7 +19,7 @@ class ProcessArgumentsCollection extends ArrayCollection
      */
     public static function forExecutable($executable)
     {
-        return new ProcessArgumentsCollection([$executable]);
+        return new ProcessArgumentsCollection(array($executable));
     }
 
     /**

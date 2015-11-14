@@ -51,7 +51,6 @@ class PhpcsSpec extends ObjectBehavior
 
     function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
     {
-        $processBuilder->add(Argument::any())->shouldNotBeCalled();
         $processBuilder->setArguments(Argument::any())->shouldNotBeCalled();
         $processBuilder->getProcess()->shouldNotBeCalled();
 
@@ -61,8 +60,6 @@ class PhpcsSpec extends ObjectBehavior
 
     function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
-        $processBuilder->add('file1.php')->shouldBeCalled();
-        $processBuilder->add('file2.php')->shouldBeCalled();
         $processBuilder->setArguments(Argument::type('array'))->shouldBeCalled();
         $processBuilder->getProcess()->willReturn($process);
 
@@ -81,7 +78,6 @@ class PhpcsSpec extends ObjectBehavior
         Process $process,
         ContextInterface $context
     ) {
-        $processBuilder->add('file1.php')->shouldBeCalled();
         $processBuilder->setArguments(Argument::type('array'))->shouldBeCalled();
         $processBuilder->getProcess()->willReturn($process);
 
