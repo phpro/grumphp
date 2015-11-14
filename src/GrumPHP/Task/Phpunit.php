@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -46,20 +47,17 @@ class Phpunit extends AbstractExternalTask
     public function run(ContextInterface $context)
     {
         $files = $context->getFiles()->name('*.php');
+        // We don't care about changed files here, we want to run the entire suit every time
         if (0 === count($files)) {
             return;
         }
 
-        // We don't care about changed files here, we want to run the entire suit every time
         $config = $this->getConfiguration();
-        $this->processBuilder->setArguments(array(
-            $this->getCommandLocation(),
-        ));
 
-        if ($config['config_file']) {
-            $this->processBuilder->add('--configuration=' . $config['config_file']);
-        }
+        $arguments = ProcessArgumentsCollection::forExecutable($this->getCommandLocation());
+        $arguments->addOptionalArgument('--configuration=%s', $config['config_file']);
 
+        $this->processBuilder->setArguments($arguments->getValues());
         $process = $this->processBuilder->getProcess();
         $process->run();
 

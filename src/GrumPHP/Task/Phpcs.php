@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -55,31 +56,16 @@ class Phpcs extends AbstractExternalTask
         }
 
         $config = $this->getConfiguration();
-        $this->processBuilder->setArguments(array(
-            $this->getCommandLocation(),
-            '--standard=' . $config['standard'],
-        ));
 
-        if (!$config['show_warnings']) {
-            $this->processBuilder->add('--warning-severity=0');
-        }
+        $arguments = ProcessArgumentsCollection::forExecutable($this->getCommandLocation());
+        $arguments->addRequiredArgument('--standard=%s', $config['standard']);
+        $arguments->addOptionalArgument('--warning-severity=0', !$config['show_warnings']);
+        $arguments->addOptionalArgument('--tab-width=%s', $config['tab_width']);
+        $arguments->addOptionalCommaSeparatedArgument('--sniffs=%s', $config['sniffs']);
+        $arguments->addOptionalCommaSeparatedArgument('--ignore=%s', $config['ignore_patterns']);
+        $arguments->addFiles($files);
 
-        if ($config['tab_width']) {
-            $this->processBuilder->add('--tab-width=' . $config['tab_width']);
-        }
-
-        if (count($config['sniffs'])) {
-            $this->processBuilder->add('--sniffs=' . implode(',', $config['sniffs']));
-        }
-
-        if (count($config['ignore_patterns'])) {
-            $this->processBuilder->add('--ignore=' . implode(',', $config['ignore_patterns']));
-        }
-
-        foreach ($files as $file) {
-            $this->processBuilder->add($file);
-        }
-
+        $this->processBuilder->setArguments($arguments->getValues());
         $process = $this->processBuilder->getProcess();
         $process->run();
 

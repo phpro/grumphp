@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\GrumPHP\Task;
+namespace spec\GrumPHP\Task\Git;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
@@ -23,7 +23,7 @@ class BlacklistSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\Blacklist');
+        $this->shouldHaveType('GrumPHP\Task\Git\Blacklist');
     }
 
     function it_is_a_grumphp_external_task()
@@ -72,12 +72,9 @@ class BlacklistSpec extends ObjectBehavior
         Process $process,
         ContextInterface $context
     ) {
-        $this->beConstructedWith($grumPHP, array('keywords'=>array('var_dump(', 'die(')), $externalCommandLocator, $processBuilder);
+        $this->beConstructedWith($grumPHP, array('keywords'=>array('var_dump(')), $externalCommandLocator, $processBuilder);
 
         $processBuilder->setArguments(Argument::type('array'))->shouldBeCalled();
-        $processBuilder->add('-e var_dump(')->shouldBeCalled();
-        $processBuilder->add('-e die(')->shouldBeCalled();
-        $processBuilder->add('file1.php')->shouldBeCalled();
         $processBuilder->getProcess()->willReturn($process);
 
         $process->run()->shouldBeCalled();
@@ -101,8 +98,6 @@ class BlacklistSpec extends ObjectBehavior
         $this->beConstructedWith($grumPHP, array('keywords'=>array('var_dump(')), $externalCommandLocator, $processBuilder);
 
         $processBuilder->setArguments(Argument::type('array'))->shouldBeCalled();
-        $processBuilder->add('-e var_dump(')->shouldBeCalled();
-        $processBuilder->add('file1.php')->shouldBeCalled();
         $processBuilder->getProcess()->willReturn($process);
 
         $process->run()->shouldBeCalled();

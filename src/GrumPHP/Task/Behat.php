@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -49,31 +50,19 @@ class Behat extends AbstractExternalTask
     public function run(ContextInterface $context)
     {
         $files = $context->getFiles()->name('*.php');
+        // We don't care about changed files here, we want to run the entire suit every time
         if (0 === count($files)) {
             return;
         }
 
-        // We don't care about changed files here, we want to run the entire suit every time
         $config = $this->getConfiguration();
-        $this->processBuilder->setArguments(array(
-            $this->getCommandLocation(),
-        ));
 
-        if ($config['config']) {
-            $this->processBuilder->add('--config=' . $config['config']);
-        }
-
-        if ($config['format']) {
-            $this->processBuilder->add('--format=' . $config['format']);
-        }
-
-        if ($config['suite']) {
-            $this->processBuilder->add('--suite=' . $config['suite']);
-        }
-
-        if ($config['stop_on_failure']) {
-            $this->processBuilder->add('--stop-on-failure');
-        }
+        $arguments = ProcessArgumentsCollection::forExecutable($this->getCommandLocation());
+        $arguments->addOptionalArgument('--config=%s', $config['config']);
+        $arguments->addOptionalArgument('--format=%s', $config['format']);
+        $arguments->addOptionalArgument('--suite=%s', $config['suite']);
+        $arguments->addOptionalArgument('--stop_on_failure', $config['stop_on_failure']);
+        $this->processBuilder->setArguments($arguments->getValues());
 
         $process = $this->processBuilder->getProcess();
         $process->run();

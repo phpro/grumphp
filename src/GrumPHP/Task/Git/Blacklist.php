@@ -1,8 +1,10 @@
 <?php
 
-namespace GrumPHP\Task;
+namespace GrumPHP\Task\Git;
 
+use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Task\AbstractExternalTask;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 
@@ -56,21 +58,14 @@ class Blacklist extends AbstractExternalTask
             return;
         }
 
-        $this->processBuilder->setArguments(array(
-            $this->getCommandLocation(),
-            'grep',
-            '--cached',
-            '-n'
-        ));
+        $arguments = ProcessArgumentsCollection::forExecutable($this->getCommandLocation());
+        $arguments->add('grep');
+        $arguments->add('--cached');
+        $arguments->add('-n');
+        $arguments->addArgumentArray('-e %s', $config['keywords']);
+        $arguments->addFiles($files);
 
-        foreach ($config['keywords'] as $keyword) {
-            $this->processBuilder->add(sprintf('-e %s', $keyword));
-        }
-
-        foreach ($files as $file) {
-            $this->processBuilder->add($file);
-        }
-
+        $this->processBuilder->setArguments($arguments->getValues());
         $process = $this->processBuilder->getProcess();
         $process->run();
 
