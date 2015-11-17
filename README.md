@@ -100,8 +100,8 @@ That's all! The `grumphp` command will be available on your CLI and will be used
 
 ## Build your own conventions checker
 
-You can see [example](https://github.com/linkorb/conventions-checker) 
-how to build your own conventions checker.
+You can see an [example](https://github.com/linkorb/conventions-checker) 
+of how to build your own conventions checker.
 
 ## Configuration
 
