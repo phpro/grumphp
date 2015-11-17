@@ -144,7 +144,7 @@ class ConfigureCommand extends Command
         // Search tasks
         $question = new ChoiceQuestion(
             'Which tasks do you want to run?',
-            $this->getAvailableTasks(),
+            $this->getAvailableTasks($this->config),
             array()
         );
         $question->setMultiselect(true);
@@ -247,20 +247,11 @@ class ConfigureCommand extends Command
     /**
      * Return a list of all available tasks
      *
-     * TODO: find a way to load this from the service container.
-     *
      * @return array
      */
-    protected function getAvailableTasks()
+    protected function getAvailableTasks(GrumPHP $config)
     {
-        $tasks = array(
-            '1' => 'behat',
-            '2' => 'blacklist',
-            '3' => 'phpcs',
-            '4' => 'phpcsfixer',
-            '5' => 'phpspec',
-            '6' => 'phpunit',
-        );
+        $tasks = $config->getTasks();
         return $tasks;
     }
 

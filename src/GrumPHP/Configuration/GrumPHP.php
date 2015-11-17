@@ -39,6 +39,40 @@ class GrumPHP
     }
 
     /**
+     * Get defined tasks
+     *
+     * @return array
+     */
+    public function getTasks()
+    {
+        $tasks = array();
+        $tags = $this->container->findTaggedServiceIds('grumphp.task');
+
+        foreach ($tags as $id => $tags) {
+            $tasks[] = $this->locateConfigKey($tags);
+        }
+
+        return $tasks;
+    }
+
+    /**
+     * Check config key is set
+     *
+     * @param $tags
+     * @return null|array
+     */
+    public function locateConfigKey($tags)
+    {
+        foreach ($tags as $data) {
+            if (isset($data['config'])) {
+                return $data['config'];
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @param string|null $taskName
      *
      * @return array
