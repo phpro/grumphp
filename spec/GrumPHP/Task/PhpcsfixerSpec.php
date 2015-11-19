@@ -60,7 +60,6 @@ class PhpcsfixerSpec extends ObjectBehavior
 
     function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
-        $processBuilder->add('--config=default')->shouldBeCalled();
         $processBuilder->add('--verbose')->shouldBeCalled();
         $processBuilder->add('fix')->shouldBeCalled();
         $processBuilder->add('file1.php')->shouldBeCalled();
@@ -83,7 +82,6 @@ class PhpcsfixerSpec extends ObjectBehavior
         Process $process,
         ContextInterface $context
     ) {
-        $processBuilder->add('--config=default')->shouldBeCalled();
         $processBuilder->add('--verbose')->shouldBeCalled();
         $processBuilder->add('fix')->shouldBeCalled();
         $processBuilder->add('file1.php')->shouldBeCalled();
