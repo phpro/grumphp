@@ -50,7 +50,6 @@ class Behat extends AbstractExternalTask
     public function run(ContextInterface $context)
     {
         $files = $context->getFiles()->name('*.php');
-        // We don't care about changed files here, we want to run the entire suit every time
         if (0 === count($files)) {
             return;
         }
