@@ -21,7 +21,7 @@ class Phpcsfixer extends AbstractExternalTask
     public function getDefaultConfiguration()
     {
         return array(
-            'config' => 'default',
+            'config' => null,
             'config_file' => null,
             'fixers' => array(),
             'level' => '',
