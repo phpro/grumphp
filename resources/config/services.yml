@@ -88,7 +88,7 @@ services:
             - {name: grumphp.task, config: phpunit}
 
     task.behat:
-        class: GrumPHP\Task\Phpunit
+        class: GrumPHP\Task\Behat
         arguments:
             - @config
             - "@=parameter('tasks')['behat'] ? parameter('tasks')['behat'] : []"
