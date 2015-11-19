@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -51,22 +52,15 @@ class Phpspec extends AbstractExternalTask
             return;
         }
 
-        // We don't care about changed files here, we want to run the entire suit every time
         $config = $this->getConfiguration();
-        $this->processBuilder->setArguments(array(
-            $this->getCommandLocation(),
-            'run',
-            '--no-interaction'
-        ));
 
-        if ($config['config_file']) {
-            $this->processBuilder->add('--config=' . $config['config_file']);
-        }
+        $arguments = ProcessArgumentsCollection::forExecutable($this->getCommandLocation());
+        $arguments->add('run');
+        $arguments->add('--no-interaction');
+        $arguments->addOptionalArgument('--config=%s', $config['config_file']);
+        $arguments->addOptionalArgument('--stop-on-failure', $config['stop_on_failure']);
 
-        if ($config['stop_on_failure']) {
-            $this->processBuilder->add('--stop-on-failure');
-        }
-
+        $this->processBuilder->setArguments($arguments->getValues());
         $process = $this->processBuilder->getProcess();
         $process->run();
 

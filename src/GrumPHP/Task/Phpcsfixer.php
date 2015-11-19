@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -56,39 +57,24 @@ class Phpcsfixer extends AbstractExternalTask
 
         $config = $this->getConfiguration();
 
-        $this->processBuilder->setArguments(array(
-            $this->getCommandLocation(),
-            '--format=json',
-            '--dry-run',
-        ));
+        $arguments = ProcessArgumentsCollection::forExecutable($this->getCommandLocation());
+        $arguments->add('--format=json');
+        $arguments->add('--dry-run');
+        $arguments->addOptionalArgument('--level=%s', $config['level']);
+        $arguments->addOptionalArgument('--config=%s', $config['config']);
+        $arguments->addOptionalArgument('--config-file=%s', $config['config_file']);
+        $arguments->addOptionalArgument('--verbose', $config['verbose']);
+        $arguments->addOptionalCommaSeparatedArgument('--fixers=%s', $config['fixers']);
+        $arguments->add('fix');
 
-        if ($config['level']) {
-            $this->processBuilder->add('--level=' . $config['level']);
-        }
-
-        if ($config['config']) {
-            $this->processBuilder->add('--config=' . $config['config']);
-        }
-
-        if ($config['config_file']) {
-            $this->processBuilder->add('--config-file=' . $config['config_file']);
-        }
-
-        if ($config['verbose']) {
-            $this->processBuilder->add('--verbose');
-        }
-
-        if (count($config['fixers'])) {
-            $this->processBuilder->add('--fixers=' . implode(',', $config['fixers']));
-        }
-
-        $this->processBuilder->add('fix');
+        $this->processBuilder->setArguments($arguments->getValues());
 
         $messages = array();
         $suggest = array('You can fix all errors by running following commands:');
         $errorCount = 0;
         foreach ($files as $file) {
             $processBuilder = clone $this->processBuilder;
+            $processBuilder->setArguments($arguments->getValues());
             $processBuilder->add($file);
             $process = $processBuilder->getProcess();
             $process->run();

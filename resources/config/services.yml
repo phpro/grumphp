@@ -97,8 +97,8 @@ services:
         tags:
             - {name: grumphp.task, config: behat}
 
-    task.blacklist:
-        class: GrumPHP\Task\Blacklist
+    task.git.blacklist:
+        class: GrumPHP\Task\Git\Blacklist
         arguments:
             - @config
             - "@=parameter('tasks')['blacklist'] ? parameter('tasks')['blacklist'] : []"

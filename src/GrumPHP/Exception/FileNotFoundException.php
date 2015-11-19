@@ -3,7 +3,9 @@
 namespace GrumPHP\Exception;
 
 /**
- * @author Igor Mukhin <igor.mukhin@gmail.com>
+ * Class FileNotFoundException
+ *
+ * @package GrumPHP\Exception
  */
 class FileNotFoundException extends RuntimeException
 {

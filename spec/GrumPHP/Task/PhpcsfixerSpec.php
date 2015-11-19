@@ -60,12 +60,9 @@ class PhpcsfixerSpec extends ObjectBehavior
 
     function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
-        $processBuilder->add('--config=default')->shouldBeCalled();
-        $processBuilder->add('--verbose')->shouldBeCalled();
-        $processBuilder->add('fix')->shouldBeCalled();
+        $processBuilder->setArguments(Argument::type('array'))->shouldBeCalled();
         $processBuilder->add('file1.php')->shouldBeCalled();
         $processBuilder->add('file2.php')->shouldBeCalled();
-        $processBuilder->setArguments(Argument::type('array'))->shouldBeCalled();
         $processBuilder->getProcess()->willReturn($process);
 
         $process->run()->shouldBeCalled();
@@ -83,11 +80,8 @@ class PhpcsfixerSpec extends ObjectBehavior
         Process $process,
         ContextInterface $context
     ) {
-        $processBuilder->add('--config=default')->shouldBeCalled();
-        $processBuilder->add('--verbose')->shouldBeCalled();
-        $processBuilder->add('fix')->shouldBeCalled();
-        $processBuilder->add('file1.php')->shouldBeCalled();
         $processBuilder->setArguments(Argument::type('array'))->shouldBeCalled();
+        $processBuilder->add('file1.php')->shouldBeCalled();
         $processBuilder->getProcess()->willReturn($process);
 
         $process->getOutput()->shouldBeCalled();
