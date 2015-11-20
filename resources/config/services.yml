@@ -114,3 +114,13 @@ services:
             - "@=parameter('tasks')['git_commit_message'] ? parameter('tasks')['git_commit_message'] : []"
         tags:
             - {name: grumphp.task, config: git_commit_message}
+
+    task.codeception:
+        class: GrumPHP\Task\Codeception
+        arguments:
+            - @config
+            - "@=parameter('tasks')['codeception'] ? parameter('tasks')['codeception'] : []"
+            - @locator.external_command
+            - @process_builder
+        tags:
+            - {name: grumphp.task, config: codeception}
