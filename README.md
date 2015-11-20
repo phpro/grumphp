@@ -40,6 +40,7 @@ To make GrumPHP even more awesome, it will suggest installing some extra package
 - phpunit/phpunit : ~4.5
 - roave/security-advisories : dev-master@dev
 - squizlabs/php_codesniffer : ~2.3
+- codeception/codeception : ~2.1
 
 GrumPHP will never push you into using a specific task. You can choose the tasks that fit your needs, and activate or
 deactivate any task in no time!
@@ -56,7 +57,7 @@ You will have to make sure that following items are available on the command lin
 ### Installation with an exotic project structure
 
 When your application has a project structure that is not covered by the default configuration settings,
-you will have to create a `grumphp.yml` *before* installing the package 
+you will have to create a `grumphp.yml` *before* installing the package
 and add next config into your application's `composer.json`:
 
 ```
@@ -96,11 +97,11 @@ That's all! The `grumphp` command will be available on your CLI and will be used
 
 **Note:** that you might want to re-initialize your project git hooks to make sure the system-wide executable is being used. Run the `grumphp git:init` command in the project directory.
 
-**Note:** When you globally installed 3rd party tools like e.g. `phpunit`, those will also be used instead of the composer executables. 
+**Note:** When you globally installed 3rd party tools like e.g. `phpunit`, those will also be used instead of the composer executables.
 
 ## Build your own conventions checker
 
-You can see an [example](https://github.com/linkorb/conventions-checker) 
+You can see an [example](https://github.com/linkorb/conventions-checker)
 of how to build your own conventions checker.
 
 ## Configuration
@@ -124,6 +125,7 @@ parameters:
             standard: "PSR2"
         phpspec: ~
         phpunit: ~
+        codeception: ~
 ```
 
 ### Set up basic configuration
@@ -186,6 +188,8 @@ parameters:
         phpcs: ~
         phpspec: ~
         phpunit: ~
+        codeception:
+            suite: TestSuite
 ```
 
 Every task has it's own default configuration. It is possible to overwrite the parameters per task.
@@ -428,9 +432,35 @@ It lives under the `phpunit` namespace and has following configurable parameters
 *Default: null*
 
 If your phpunit.xml file is located at an exotic location, you can specify your custom config file location with this option.
-This option is set to `null` by default. 
+This option is set to `null` by default.
 This means that `phpunit.xml` or `phpunit.xml.dist` are automatically loaded if one of them exist in the current directory.
 
+#### Codeception
+The Codeception task will run your full-stack tests. It live under the `codecept` namespace and has the following configurable parameters:
+
+**config_file**
+
+*Default: null*
+
+If your `codeception.yml` file is located in an exotic location, you can specify your custom config file location with this option. This option is set to `null` by default. This means that `codeception.yml` is automatically located if it exists in the current directory.
+
+**fail-fast**
+
+*Default: false*
+
+When this option is enabled, Codeception will stop at the first error. This means that it will not run your full test suite when an error occurs.
+
+**suite**
+
+*Default: null*
+
+When this option is specified it will only run tests for the given suite. If left `null` Codeception will run tests for your full test suite.
+
+**test**
+
+*Default: null*
+
+When this option is specified it will only run the given test. If left `null` Codeception will run all tests within the suite.
 
 #### Custom tasks
 
