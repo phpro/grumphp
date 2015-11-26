@@ -279,7 +279,7 @@ Mark the matchers as case sensitive.
 
 *Default:true*
 
-Markt he matchers as multiline.
+Mark the matchers as multiline.
 
 
 
