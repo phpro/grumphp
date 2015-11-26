@@ -12,7 +12,7 @@ Sick and tired of defending code quality over and over again? GrumPHP will do it
 This composer plugin will register some git hooks in your package repository.
 When somebody commits changes, GrumPHP will run some tests on the committed code.
 If the tests fail, you won't be able to commit your changes.
-This handy tool will not only improve your codebase, it will also learn your co-workers to write better code following the best practices you've determined as a team.
+This handy tool will not only improve your codebase, it will also teach your co-workers to write better code following the best practices you've determined as a team.
 
 GrumPHP has a set of common tasks built-in. You will be able to use GrumPHP with a minimum of configuration.
 
@@ -563,10 +563,10 @@ php ./vendor/bin/grumphp run
 
 This package has been tested with following git clients:
 
-- CLI unix
+- CLI Unix
 - CLI Mac
 - CLI Windows
-- Phpstorm GIT
+- PhpStorm Git
 - Atlassian SourceTree
 - Syntevo SmartGit
 
