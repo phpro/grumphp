@@ -2,20 +2,25 @@
 
 namespace GrumPHP\Task\Git;
 
-use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\AbstractExternalTask;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 
 /**
- * Blacklist task
+ * Git Blacklist Task
  *
- * @author  Igor Mukhin <igor.mukhin@gmail.com>
+ * @package GrumPHP\Task\Git
  */
 class Blacklist extends AbstractExternalTask
 {
-    const COMMAND_NAME = 'git';
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'git_blacklist';
+    }
 
     /**
      * @return array
@@ -25,14 +30,6 @@ class Blacklist extends AbstractExternalTask
         return array(
             'keywords' => null,
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCommandLocation()
-    {
-        return $this->externalCommandLocator->locate(self::COMMAND_NAME);
     }
 
     /**
@@ -58,15 +55,14 @@ class Blacklist extends AbstractExternalTask
             return;
         }
 
-        $arguments = ProcessArgumentsCollection::forExecutable($this->getCommandLocation());
+        $arguments = $this->processBuilder->createArgumentsForCommand('git');
         $arguments->add('grep');
         $arguments->add('--cached');
         $arguments->add('-n');
         $arguments->addArgumentArray('-e %s', $config['keywords']);
         $arguments->addFiles($files);
 
-        $this->processBuilder->setArguments($arguments->getValues());
-        $process = $this->processBuilder->getProcess();
+        $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
 
         if ($process->isSuccessful()) {

@@ -12,6 +12,12 @@ use GrumPHP\Task\Context\ContextInterface;
  */
 interface TaskInterface
 {
+
+    /**
+     * @return string
+     */
+    public function getName();
+
     /**
      * @return array
      */

@@ -22,11 +22,6 @@ class ChangedFilesSpec extends ObjectBehavior
         $this->shouldHaveType('GrumPHP\Locator\ChangedFiles');
     }
 
-    function it_is_a_grumphp_locator()
-    {
-        $this->shouldHaveType('GrumPHP\Locator\LocatorInterface');
-    }
-
     protected function mockFile($name, $isRename = false, $isDelete = false)
     {
         $prophet = new Prophet();

@@ -2,7 +2,6 @@
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -13,7 +12,13 @@ use GrumPHP\Task\Context\RunContext;
  */
 class Phpcs extends AbstractExternalTask
 {
-    const COMMAND_NAME = 'phpcs';
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'phpcs';
+    }
 
     /**
      * @return array
@@ -27,14 +32,6 @@ class Phpcs extends AbstractExternalTask
             'ignore_patterns' => array(),
             'sniffs' => array(),
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCommandLocation()
-    {
-        return $this->externalCommandLocator->locate(self::COMMAND_NAME);
     }
 
     /**
@@ -57,7 +54,7 @@ class Phpcs extends AbstractExternalTask
 
         $config = $this->getConfiguration();
 
-        $arguments = ProcessArgumentsCollection::forExecutable($this->getCommandLocation());
+        $arguments = $this->processBuilder->createArgumentsForCommand('phpcs');
         $arguments->addRequiredArgument('--standard=%s', $config['standard']);
         $arguments->addOptionalArgument('--warning-severity=0', !$config['show_warnings']);
         $arguments->addOptionalArgument('--tab-width=%s', $config['tab_width']);
@@ -65,8 +62,7 @@ class Phpcs extends AbstractExternalTask
         $arguments->addOptionalCommaSeparatedArgument('--ignore=%s', $config['ignore_patterns']);
         $arguments->addFiles($files);
 
-        $this->processBuilder->setArguments($arguments->getValues());
-        $process = $this->processBuilder->getProcess();
+        $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
 
         if (!$process->isSuccessful()) {

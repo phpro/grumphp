@@ -34,18 +34,6 @@ class GrumPHPSpec extends ObjectBehavior
         $this->getGitDir()->shouldReturn('.');
     }
 
-    function it_provides_a_list_of_active_task_configurations(ContainerInterface $container)
-    {
-        $container->getParameter('tasks')->willReturn(array());
-        $this->getTaskConfig()->shouldReturn(array());
-    }
-
-    function it_can_return_a_particular_task_configuration(ContainerInterface $container)
-    {
-        $container->getParameter('tasks')->willReturn(array('name' => array()));
-        $this->getTaskConfig('name')->shouldReturn(array());
-    }
-
     function it_should_return_empty_ascii_location_for_unknown_resources(ContainerInterface $container)
     {
         $container->getParameter('ascii')->willReturn(array());
@@ -58,11 +46,26 @@ class GrumPHPSpec extends ObjectBehavior
         $this->getAsciiContentPath('success')->shouldReturn('success');
     }
 
-    function it_should_load_available_tasks_from_the_service_container(ContainerBuilder $container, TaskCompilerPass $taskCompiler)
+    function it_should_know_all_registered_tasks(ContainerInterface $container)
     {
-        $container = ContainerFactory::buildFromConfiguration(__DIR__.'/../../../resources/config/services.yml');
-        $taskCompiler->process($container);
-        $this->beConstructedWith($container);
-        $this->getTasks()->shouldBeArray();
+        $container->getParameter('grumphp.tasks.registered')->willReturn(array('phpspec'));
+
+        $this->getRegisteredTasks()->shouldBe(array('phpspec'));
+    }
+
+    function it_should_know_task_configuration(ContainerInterface $container)
+    {
+        $container->getParameter('grumphp.tasks.configuration')->willReturn(array('phpspec' => array()));
+
+        $this->getTaskConfiguration('phpspec')->shouldReturn(array());
+        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringGetTaskConfiguration('phpunit');
+    }
+
+    function it_should_know_task_metadata(ContainerInterface $container)
+    {
+        $container->getParameter('grumphp.tasks.metadata')->willReturn(array('phpspec' => array()));
+
+        $this->getTaskMetadata('phpspec')->shouldReturn(array());
+        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringGetTaskMetadata('phpunit');
     }
 }

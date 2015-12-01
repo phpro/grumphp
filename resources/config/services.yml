@@ -18,12 +18,13 @@ services:
     filesystem:
         class: Symfony\Component\Filesystem\Filesystem
 
-    process_builder:
-        class: Symfony\Component\Process\ProcessBuilder
-        prototype: true
-
     executable_finder:
         class: Symfony\Component\Process\ExecutableFinder
+
+    process_builder:
+      class: GrumPHP\Process\ProcessBuilder
+      arguments:
+        - @locator.external_command
 
     git.repository:
         class: Gitonomy\Git\Repository
@@ -51,8 +52,6 @@ services:
         class: GrumPHP\Task\Phpcs
         arguments:
           - @config
-          - "@=parameter('tasks')['phpcs'] ? parameter('tasks')['phpcs'] : []"
-          - @locator.external_command
           - @process_builder
         tags:
           - {name: grumphp.task, config: phpcs}
@@ -61,8 +60,6 @@ services:
         class: GrumPHP\Task\Phpcsfixer
         arguments:
           - @config
-          - "@=parameter('tasks')['phpcsfixer'] ? parameter('tasks')['phpcsfixer'] : []"
-          - @locator.external_command
           - @process_builder
         tags:
           - {name: grumphp.task, config: phpcsfixer}
@@ -71,8 +68,6 @@ services:
         class: GrumPHP\Task\Phpspec
         arguments:
           - @config
-          - "@=parameter('tasks')['phpspec'] ? parameter('tasks')['phpspec'] : []"
-          - @locator.external_command
           - @process_builder
         tags:
           - {name: grumphp.task, config: phpspec}
@@ -81,8 +76,6 @@ services:
         class: GrumPHP\Task\Phpunit
         arguments:
             - @config
-            - "@=parameter('tasks')['phpunit'] ? parameter('tasks')['phpunit'] : []"
-            - @locator.external_command
             - @process_builder
         tags:
             - {name: grumphp.task, config: phpunit}
@@ -91,8 +84,6 @@ services:
         class: GrumPHP\Task\Behat
         arguments:
             - @config
-            - "@=parameter('tasks')['behat'] ? parameter('tasks')['behat'] : []"
-            - @locator.external_command
             - @process_builder
         tags:
             - {name: grumphp.task, config: behat}
@@ -101,17 +92,14 @@ services:
         class: GrumPHP\Task\Git\Blacklist
         arguments:
             - @config
-            - "@=parameter('tasks')['blacklist'] ? parameter('tasks')['blacklist'] : []"
-            - @locator.external_command
             - @process_builder
         tags:
-            - {name: grumphp.task, config: blacklist}
+            - {name: grumphp.task, config: git_blacklist}
 
     task.git.commitmessage:
         class: GrumPHP\Task\Git\CommitMessage
         arguments:
             - @config
-            - "@=parameter('tasks')['git_commit_message'] ? parameter('tasks')['git_commit_message'] : []"
         tags:
             - {name: grumphp.task, config: git_commit_message}
 
@@ -119,8 +107,6 @@ services:
         class: GrumPHP\Task\Codeception
         arguments:
             - @config
-            - "@=parameter('tasks')['codeception'] ? parameter('tasks')['codeception'] : []"
-            - @locator.external_command
             - @process_builder
         tags:
             - {name: grumphp.task, config: codeception}

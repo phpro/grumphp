@@ -12,7 +12,7 @@ use SplFileInfo;
  *
  * @package GrumPHP\Locator
  */
-class ChangedFiles implements LocatorInterface
+class ChangedFiles
 {
     /**
      * @var Repository

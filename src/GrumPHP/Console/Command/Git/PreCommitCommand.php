@@ -6,7 +6,7 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
-use GrumPHP\Locator\LocatorInterface;
+use GrumPHP\Locator\ChangedFiles;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,15 +26,15 @@ class PreCommitCommand extends Command
     protected $grumPHP;
 
     /**
-     * @var LocatorInterface
+     * @var ChangedFiles
      */
     protected $changedFilesLocator;
 
     /**
      * @param GrumPHP $grumPHP
-     * @param LocatorInterface $changedFilesLocator
+     * @param ChangedFiles $changedFilesLocator
      */
-    public function __construct(GrumPHP $grumPHP, LocatorInterface $changedFilesLocator)
+    public function __construct(GrumPHP $grumPHP, ChangedFiles $changedFilesLocator)
     {
         parent::__construct();
 

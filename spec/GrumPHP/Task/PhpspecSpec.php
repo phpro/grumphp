@@ -3,23 +3,24 @@
 namespace spec\GrumPHP\Task;
 
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Configuration\GrumPHP;
-use GrumPHP\Locator\LocatorInterface;
+use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\ProcessBuilder;
 use SplFileInfo;
 
 class PhpspecSpec extends ObjectBehavior
 {
 
-    function let(GrumPHP $grumPHP, LocatorInterface $externalCommandLocator, ProcessBuilder $processBuilder)
+    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder)
     {
-        $this->beConstructedWith($grumPHP, array(), $externalCommandLocator, $processBuilder);
+        $grumPHP->getTaskConfiguration('phpspec')->willReturn(array());
+        $this->beConstructedWith($grumPHP, $processBuilder);
     }
 
     function it_is_initializable()
@@ -27,15 +28,9 @@ class PhpspecSpec extends ObjectBehavior
         $this->shouldHaveType('GrumPHP\Task\Phpspec');
     }
 
-    function it_is_a_grumphp_external_task()
+    function it_should_have_a_name()
     {
-        $this->shouldHaveType('GrumPHP\Task\ExternalTaskInterface');
-    }
-
-    function it_uses_its_external_command_locator_to_find_correct_command(LocatorInterface $externalCommandLocator)
-    {
-        $externalCommandLocator->locate('phpspec')->shouldBeCalled();
-        $this->getCommandLocation();
+        $this->getName()->shouldBe('phpspec');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
@@ -50,8 +45,9 @@ class PhpspecSpec extends ObjectBehavior
 
     function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
-        $processBuilder->setArguments(Argument::type('array'))->shouldBeCalled();
-        $processBuilder->getProcess()->willReturn($process);
+        $arguments = new ProcessArgumentsCollection();
+        $processBuilder->createArgumentsForCommand('phpspec')->willReturn($arguments);
+        $processBuilder->buildProcess($arguments)->willReturn($process);
 
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
@@ -64,8 +60,9 @@ class PhpspecSpec extends ObjectBehavior
 
     function it_throws_exception_if_the_process_fails(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
-        $processBuilder->setArguments(Argument::type('array'))->shouldBeCalled();
-        $processBuilder->getProcess()->willReturn($process);
+        $arguments = new ProcessArgumentsCollection();
+        $processBuilder->createArgumentsForCommand('phpspec')->willReturn($arguments);
+        $processBuilder->buildProcess($arguments)->willReturn($process);
 
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(false);

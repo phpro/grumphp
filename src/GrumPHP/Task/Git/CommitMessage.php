@@ -10,7 +10,7 @@ use GrumPHP\Task\TaskInterface;
 use Symfony\Component\Finder\Expression\Expression;
 
 /**
- * Class CommitMessage
+ * Git CommitMessage Task
  *
  * @package GrumPHP\Task
  */
@@ -18,14 +18,18 @@ class CommitMessage implements TaskInterface
 {
     /**
      * @param GrumPHP $grumPHP
-     * @param array $configuration
      */
-    public function __construct(
-        GrumPHP $grumPHP,
-        array $configuration
-    ) {
+    public function __construct(GrumPHP $grumPHP)
+    {
         $this->grumPHP = $grumPHP;
-        $this->configuration = array_merge($this->getDefaultConfiguration(), $configuration);
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'git_commit_message';
     }
 
     /**
@@ -33,7 +37,10 @@ class CommitMessage implements TaskInterface
      */
     public function getConfiguration()
     {
-        return $this->configuration;
+        return array_merge(
+            $this->getDefaultConfiguration(),
+            $this->grumPHP->getTaskConfiguration($this->getName())
+        );
     }
 
     /**

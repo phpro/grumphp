@@ -251,7 +251,7 @@ class ConfigureCommand extends Command
      */
     protected function getAvailableTasks(GrumPHP $config)
     {
-        $tasks = $config->getTasks();
+        $tasks = $config->getRegisteredTasks();
         return $tasks;
     }
 

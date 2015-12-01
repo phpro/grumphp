@@ -6,7 +6,7 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
-use GrumPHP\Locator\LocatorInterface;
+use GrumPHP\Locator\RegisteredFiles;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,15 +27,15 @@ class RunCommand extends Command
     protected $grumPHP;
 
     /**
-     * @var LocatorInterface
+     * @var RegisteredFiles
      */
     protected $registeredFilesLocator;
 
     /**
      * @param GrumPHP $grumPHP
-     * @param LocatorInterface $registeredFilesLocator
+     * @param RegisteredFiles $registeredFilesLocator
      */
-    public function __construct(GrumPHP $grumPHP, LocatorInterface $registeredFilesLocator)
+    public function __construct(GrumPHP $grumPHP, RegisteredFiles $registeredFilesLocator)
     {
         parent::__construct();
 

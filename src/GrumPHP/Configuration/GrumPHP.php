@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Configuration;
 
+use GrumPHP\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -39,56 +40,41 @@ class GrumPHP
     }
 
     /**
-     * Get defined tasks
-     *
      * @return array
      */
-    public function getTasks()
+    public function getRegisteredTasks()
     {
-        $tasks = array();
-        $tags = $this->container->findTaggedServiceIds('grumphp.task');
-
-        foreach ($tags as $id => $tags) {
-            $tasks[] = $this->locateConfigKey($tags);
-        }
-
-        return $tasks;
+        return $this->container->getParameter('grumphp.tasks.registered');
     }
 
     /**
-     * Check config key is set
-     *
-     * @param $tags
-     * @return null|array
-     */
-    public function locateConfigKey($tags)
-    {
-        foreach ($tags as $data) {
-            if (isset($data['config'])) {
-                return $data['config'];
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @param string|null $taskName
+     * @param string $taskName
      *
      * @return array
      */
-    public function getTaskConfig($taskName = null)
+    public function getTaskConfiguration($taskName)
     {
-        $tasksConfig = $this->container->getParameter('tasks');
-        if (!$taskName) {
-            return $tasksConfig;
+        $tasksConfiguration = $this->container->getParameter('grumphp.tasks.configuration');
+        if (!array_key_exists($taskName, $tasksConfiguration)) {
+            throw new RuntimeException('Could not find task configuration. Invalid task: ' . $taskName);
         }
 
-        if (!array_key_exists($taskName, $tasksConfig)) {
-            return array();
+        return $tasksConfiguration[$taskName];
+    }
+
+    /**
+     * @param $taskName
+     *
+     * @return array
+     */
+    public function getTaskMetadata($taskName)
+    {
+        $tasksMetadata = $this->container->getParameter('grumphp.tasks.metadata');
+        if (!array_key_exists($taskName, $tasksMetadata)) {
+            throw new RuntimeException('Could not find task metadata. Invalid task: ' . $taskName);
         }
 
-        return $tasksConfig[$taskName];
+        return $tasksMetadata[$taskName];
     }
 
     /**

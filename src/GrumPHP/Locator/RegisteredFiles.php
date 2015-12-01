@@ -11,7 +11,7 @@ use SplFileInfo;
  *
  * @package GrumPHP\Locator
  */
-class RegisteredFiles implements LocatorInterface
+class RegisteredFiles
 {
     /**
      * @var Repository

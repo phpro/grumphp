@@ -2,7 +2,6 @@
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -13,14 +12,12 @@ use GrumPHP\Task\Context\RunContext;
  */
 class Behat extends AbstractExternalTask
 {
-    const COMMAND_NAME = 'behat';
-
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getCommandLocation()
+    public function getName()
     {
-        return $this->externalCommandLocator->locate(self::COMMAND_NAME);
+        return 'behat';
     }
 
     /**
@@ -56,14 +53,13 @@ class Behat extends AbstractExternalTask
 
         $config = $this->getConfiguration();
 
-        $arguments = ProcessArgumentsCollection::forExecutable($this->getCommandLocation());
+        $arguments = $this->processBuilder->createArgumentsForCommand('behat');
         $arguments->addOptionalArgument('--config=%s', $config['config']);
         $arguments->addOptionalArgument('--format=%s', $config['format']);
         $arguments->addOptionalArgument('--suite=%s', $config['suite']);
         $arguments->addOptionalArgument('--stop_on_failure', $config['stop_on_failure']);
-        $this->processBuilder->setArguments($arguments->getValues());
 
-        $process = $this->processBuilder->getProcess();
+        $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
 
         if (!$process->isSuccessful()) {

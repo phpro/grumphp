@@ -13,7 +13,13 @@ use GrumPHP\Task\Context\RunContext;
  */
 class Phpcsfixer extends AbstractExternalTask
 {
-    const COMMAND_NAME = 'php-cs-fixer';
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'phpcsfixer';
+    }
 
     /**
      * @return array
@@ -27,14 +33,6 @@ class Phpcsfixer extends AbstractExternalTask
             'level' => '',
             'verbose' => true,
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCommandLocation()
-    {
-        return $this->externalCommandLocator->locate(self::COMMAND_NAME);
     }
 
     /**
@@ -57,7 +55,7 @@ class Phpcsfixer extends AbstractExternalTask
 
         $config = $this->getConfiguration();
 
-        $arguments = ProcessArgumentsCollection::forExecutable($this->getCommandLocation());
+        $arguments = $this->processBuilder->createArgumentsForCommand('php-cs-fixer');
         $arguments->add('--format=json');
         $arguments->add('--dry-run');
         $arguments->addOptionalArgument('--level=%s', $config['level']);
@@ -67,17 +65,15 @@ class Phpcsfixer extends AbstractExternalTask
         $arguments->addOptionalCommaSeparatedArgument('--fixers=%s', $config['fixers']);
         $arguments->add('fix');
 
-        $this->processBuilder->setArguments($arguments->getValues());
-
         $messages = array();
         $suggest = array('You can fix all errors by running following commands:');
         $errorCount = 0;
         foreach ($files as $file) {
-            $processBuilder = clone $this->processBuilder;
-            $processBuilder->setArguments($arguments->getValues());
-            $processBuilder->add($file);
-            $process = $processBuilder->getProcess();
+            $fileArguments = new ProcessArgumentsCollection($arguments->getValues());
+            $fileArguments->add($file);
+            $process = $this->processBuilder->buildProcess($fileArguments);
             $process->run();
+
             if (!$process->isSuccessful()) {
                 $output = $process->getOutput();
                 $json = json_decode($output, true);
