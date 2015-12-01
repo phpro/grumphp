@@ -2,7 +2,7 @@
 
 namespace GrumPHP\Configuration;
 
-use GrumPHP\Configuration\Compiler\TaskCompilerPass;
+use GrumPHP\Configuration\Compiler;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -19,7 +19,8 @@ final class ContainerFactory
     public static function buildFromConfiguration($path)
     {
         $container = new ContainerBuilder();
-        $container->addCompilerPass(new TaskCompilerPass());
+        $container->addCompilerPass(new Compiler\TaskCompilerPass());
+        $container->addCompilerPass(new Compiler\ExtensionCompilerPass());
         $container->addCompilerPass(
             new RegisterListenersPass('event_dispatcher', 'grumphp.event_listener', 'grumphp.event_subscriber')
         );

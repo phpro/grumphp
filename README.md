@@ -127,6 +127,7 @@ parameters:
         phpspec: ~
         phpunit: ~
         codeception: ~
+    extensions: []
 ```
 
 ### Set up basic configuration
@@ -183,14 +184,14 @@ To activate a task, it is sufficient to add an empty task configuration:
 # grumphp.yml
 parameters:
     tasks:
+        codeception: ~
         behat: ~
         git_blacklist: ~
+        git_commit_message: ~
         phpcsfixer: ~
         phpcs: ~
         phpspec: ~
         phpunit: ~
-        codeception:
-            suite: TestSuite
 ```
 
 Every task has it's own default configuration. It is possible to overwrite the parameters per task.
@@ -521,6 +522,41 @@ Following events are triggered during execution:
 | grumphp.runner.failed   | RunnerFailedEvent | when one task failed
 | grumphp.runner.complete | RunnerEvent       | when all tasks succeed
 
+
+## Extensions
+
+You will propably have some custom tasks or event listeners that are not included in the default GrumPHP project.
+It is possible to group this additional GrumPHP configuration in an extension. 
+This way you can easily create your own extension package and load it whenever you need it.
+
+The configuration looks like this:
+
+```yaml
+# grumphp.yml
+parameters:
+    extensions:
+        - My\Project\GrumPHPExtension
+```
+
+The configured extension class needs to implement `ExtensionInterface`. 
+Now you can register the tasks and events from your own package in the service container of GrumPHP.
+For example:
+
+```
+<?php
+namespace My\Project;
+
+use GrumPHP\Extension\ExtensionInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+class GrumPHPExtension implements ExtensionInterface
+{
+    public function load(ContainerInterface $container)
+    {
+        // Register your own stuff to the container!
+    }
+}
+```
 
 ## Roadmap
 
