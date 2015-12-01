@@ -19,8 +19,8 @@ final class ContainerFactory
     public static function buildFromConfiguration($path)
     {
         $container = new ContainerBuilder();
-        $container->addCompilerPass(new Compiler\TaskCompilerPass());
         $container->addCompilerPass(new Compiler\ExtensionCompilerPass());
+        $container->addCompilerPass(new Compiler\TaskCompilerPass());
         $container->addCompilerPass(
             new RegisterListenersPass('event_dispatcher', 'grumphp.event_listener', 'grumphp.event_subscriber')
         );
