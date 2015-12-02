@@ -4,7 +4,7 @@ namespace GrumPHP\Locator;
 
 use Gitonomy\Git\Repository;
 use GrumPHP\Collection\FilesCollection;
-use SplFileInfo;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Class RegisteredFiles
@@ -36,8 +36,7 @@ class RegisteredFiles
 
         $files = array();
         foreach ($filePaths as $file) {
-            $files[] = new SplFileInfo($file);
-
+            $files[] = new SplFileInfo($file, dirname($file), $file);
         }
 
         return new FilesCollection($files);

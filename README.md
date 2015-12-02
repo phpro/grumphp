@@ -480,7 +480,7 @@ services:
     task.myCustomTask:
         class: My\Custom\Task
         arguments:
-          - @config
+          - '@config'
         tags:
           - {name: grumphp.task, config: myConfigKey}
 ```

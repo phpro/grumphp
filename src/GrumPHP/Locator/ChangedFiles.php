@@ -5,7 +5,7 @@ namespace GrumPHP\Locator;
 use Gitonomy\Git\Diff\File;
 use Gitonomy\Git\Repository;
 use GrumPHP\Collection\FilesCollection;
-use SplFileInfo;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Class Git
@@ -42,7 +42,7 @@ class ChangedFiles
             }
 
             $fileName = $file->isRename() ? $file->getNewName() : $file->getName();
-            $files[] = new SplFileInfo($fileName);
+            $files[] = new SplFileInfo($fileName, dirname($fileName), $file);
         }
 
         return new FilesCollection($files);

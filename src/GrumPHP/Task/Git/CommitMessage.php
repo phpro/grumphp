@@ -7,7 +7,7 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use GrumPHP\Task\TaskInterface;
-use Symfony\Component\Finder\Expression\Expression;
+use GrumPHP\Util\Regex;
 
 /**
  * Git CommitMessage Task
@@ -74,18 +74,17 @@ class CommitMessage implements TaskInterface
         $commitMessage = $context->getCommitMessage();
 
         foreach ($config['matchers'] as $rule) {
-            $expression = Expression::create($rule);
-            $regex = $expression->getRegex();
+            $regex = new Regex($rule);
 
             if ((bool) $config['case_insensitive']) {
-                $regex->addOption('i');
+                $regex->addPatternModifier('i');
             }
 
             if ((bool) $config['multiline']) {
-                $regex->addOption('m');
+                $regex->addPatternModifier('m');
             }
 
-            if (!preg_match($regex->render(), $commitMessage)) {
+            if (!preg_match($regex->__toString(), $commitMessage)) {
                 throw new RuntimeException(
                     sprintf('The commit message does not match the rule: %s', $rule)
                 );
