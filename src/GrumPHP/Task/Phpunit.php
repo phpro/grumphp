@@ -2,7 +2,6 @@
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -13,14 +12,12 @@ use GrumPHP\Task\Context\RunContext;
  */
 class Phpunit extends AbstractExternalTask
 {
-    const COMMAND_NAME = 'phpunit';
-
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getCommandLocation()
+    public function getName()
     {
-        return $this->externalCommandLocator->locate(self::COMMAND_NAME);
+        return 'phpunit';
     }
 
     /**
@@ -53,11 +50,10 @@ class Phpunit extends AbstractExternalTask
 
         $config = $this->getConfiguration();
 
-        $arguments = ProcessArgumentsCollection::forExecutable($this->getCommandLocation());
+        $arguments = $this->processBuilder->createArgumentsForCommand('phpunit');
         $arguments->addOptionalArgument('--configuration=%s', $config['config_file']);
 
-        $this->processBuilder->setArguments($arguments->getValues());
-        $process = $this->processBuilder->getProcess();
+        $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
 
         if (!$process->isSuccessful()) {

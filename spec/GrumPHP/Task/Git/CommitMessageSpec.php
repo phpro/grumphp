@@ -11,9 +11,15 @@ class CommitMessageSpec extends ObjectBehavior
 {
     function let(GrumPHP $grumPHP)
     {
-        $this->beConstructedWith($grumPHP, array(
+        $this->beConstructedWith($grumPHP);
+        $grumPHP->getTaskConfiguration('git_commit_message')->willReturn(array(
             'matchers' => array('test', '*es*', 'te[s][t]', '/^te(.*)/', '/(.*)st$/', '/t(e|a)st/', 'TEST')
         ));
+    }
+
+    function it_should_have_a_name()
+    {
+        $this->getName()->shouldBe('git_commit_message');
     }
 
     function it_is_initializable()

@@ -5,7 +5,7 @@ namespace GrumPHP\Locator;
 use GrumPHP\Exception\RuntimeException;
 use Symfony\Component\Process\ExecutableFinder;
 
-class ExternalCommand implements LocatorInterface
+class ExternalCommand
 {
     /**
      * @var string
@@ -37,7 +37,7 @@ class ExternalCommand implements LocatorInterface
      *
      * @throws RuntimeException if the command can not be found
      */
-    public function locate($command = '', $forceUnix = false)
+    public function locate($command, $forceUnix = false)
     {
         // Search executable:
         $executable = $this->executableFinder->find($command, null, array($this->binDir));

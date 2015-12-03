@@ -7,10 +7,10 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use GrumPHP\Task\TaskInterface;
-use Symfony\Component\Finder\Expression\Expression;
+use GrumPHP\Util\Regex;
 
 /**
- * Class CommitMessage
+ * Git CommitMessage Task
  *
  * @package GrumPHP\Task
  */
@@ -18,14 +18,18 @@ class CommitMessage implements TaskInterface
 {
     /**
      * @param GrumPHP $grumPHP
-     * @param array $configuration
      */
-    public function __construct(
-        GrumPHP $grumPHP,
-        array $configuration
-    ) {
+    public function __construct(GrumPHP $grumPHP)
+    {
         $this->grumPHP = $grumPHP;
-        $this->configuration = array_merge($this->getDefaultConfiguration(), $configuration);
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'git_commit_message';
     }
 
     /**
@@ -33,7 +37,10 @@ class CommitMessage implements TaskInterface
      */
     public function getConfiguration()
     {
-        return $this->configuration;
+        return array_merge(
+            $this->getDefaultConfiguration(),
+            $this->grumPHP->getTaskConfiguration($this->getName())
+        );
     }
 
     /**
@@ -67,18 +74,17 @@ class CommitMessage implements TaskInterface
         $commitMessage = $context->getCommitMessage();
 
         foreach ($config['matchers'] as $rule) {
-            $expression = Expression::create($rule);
-            $regex = $expression->getRegex();
+            $regex = new Regex($rule);
 
             if ((bool) $config['case_insensitive']) {
-                $regex->addOption('i');
+                $regex->addPatternModifier('i');
             }
 
             if ((bool) $config['multiline']) {
-                $regex->addOption('m');
+                $regex->addPatternModifier('m');
             }
 
-            if (!preg_match($regex->render(), $commitMessage)) {
+            if (!preg_match($regex->__toString(), $commitMessage)) {
                 throw new RuntimeException(
                     sprintf('The commit message does not match the rule: %s', $rule)
                 );

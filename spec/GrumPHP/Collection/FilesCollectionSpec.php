@@ -4,13 +4,24 @@ namespace spec\GrumPHP\Collection;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use SplFileInfo;
+use Symfony\Component\Finder\SplFileInfo;
 
 class FilesCollectionSpec extends ObjectBehavior
 {
-    public function let(SplFileInfo $file1, SplFileInfo $file2)
+    /**
+     * @var string
+     */
+    protected $tempFile;
+
+    function let(SplFileInfo $file1, SplFileInfo $file2)
     {
+        $this->tempFile = tempnam(sys_get_temp_dir(), 'phpspec');
         $this->beConstructedWith(array($file1, $file2));
+    }
+
+    function letgo()
+    {
+        unlink($this->tempFile);
     }
 
     function it_is_initializable()
@@ -49,10 +60,10 @@ class FilesCollectionSpec extends ObjectBehavior
 
     function it_should_filter_by_path(SplFileInfo $file1, SplFileInfo $file2)
     {
-        $file1->getPath()->willReturn('path1/file.php');
-        $file2->getPath()->willReturn('path2/file.png');
+        $file1->getRelativePathname()->willReturn('path1/file.php');
+        $file2->getRelativePathname()->willReturn('path2/file.png');
 
-        $result = $this->path('path1/*');
+        $result = $this->path('path1');
         $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
         $result->count()->shouldBe(1);
         $files = $result->toArray();
@@ -61,10 +72,10 @@ class FilesCollectionSpec extends ObjectBehavior
 
     function it_should_filter_by_not_path(SplFileInfo $file1, SplFileInfo $file2)
     {
-        $file1->getPath()->willReturn('path1/file.php');
-        $file2->getPath()->willReturn('path2/file.png');
+        $file1->getRelativePathname()->willReturn('path1/file.php');
+        $file2->getRelativePathname()->willReturn('path2/file.png');
 
-        $result = $this->notPath('path2/*');
+        $result = $this->notPath('path2');
         $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
         $result->count()->shouldBe(1);
         $files = $result->toArray();
@@ -73,6 +84,10 @@ class FilesCollectionSpec extends ObjectBehavior
 
     function it_should_filter_by_size(SplFileInfo $file1, SplFileInfo $file2)
     {
+        $file1->isFile()->willReturn(true);
+        $file2->isFile()->willReturn(true);
+        $file1->getRealPath()->willReturn($this->tempFile);
+        $file2->getRealPath()->willReturn($this->tempFile);
         $file1->getSize()->willReturn(8 * 1024);
         $file2->getSize()->willReturn(16 * 1024);
 
@@ -85,6 +100,10 @@ class FilesCollectionSpec extends ObjectBehavior
 
     function it_should_filter_by_date(SplFileInfo $file1, SplFileInfo $file2)
     {
+        $file1->isFile()->willReturn(true);
+        $file2->isFile()->willReturn(true);
+        $file1->getRealPath()->willReturn($this->tempFile);
+        $file2->getRealPath()->willReturn($this->tempFile);
         $file1->getMTime()->willReturn(strtotime('-4 hours'));
         $file2->getMTime()->willReturn(strtotime('-5 days'));
 

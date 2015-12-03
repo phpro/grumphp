@@ -18,11 +18,6 @@ class RegisteredFilesSpec extends ObjectBehavior
         $this->shouldHaveType('GrumPHP\Locator\RegisteredFiles');
     }
 
-    function it_is_a_grumphp_locator()
-    {
-        $this->shouldHaveType('GrumPHP\Locator\LocatorInterface');
-    }
-
     function it_will_list_all_diffed_files(Repository $repository)
     {
         $files = array('file1.txt', 'file2.txt');

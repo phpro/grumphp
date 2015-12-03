@@ -3,25 +3,19 @@
 namespace GrumPHP\Task;
 
 use GrumPHP\Configuration\GrumPHP;
-use GrumPHP\Locator\LocatorInterface;
-use Symfony\Component\Process\ProcessBuilder;
+use GrumPHP\Process\ProcessBuilder;
 
-abstract class AbstractExternalTask implements ExternalTaskInterface
+/**
+ * Class AbstractExternalTask
+ *
+ * @package GrumPHP\Task
+ */
+abstract class AbstractExternalTask implements TaskInterface
 {
     /**
      * @var GrumPHP
      */
     protected $grumPHP;
-
-    /**
-     * @var array
-     */
-    protected $configuration;
-
-    /**
-     * @var LocatorInterface
-     */
-    protected $externalCommandLocator;
 
     /**
      * @var ProcessBuilder
@@ -30,19 +24,11 @@ abstract class AbstractExternalTask implements ExternalTaskInterface
 
     /**
      * @param GrumPHP $grumPHP
-     * @param array $configuration
-     * @param LocatorInterface $externalCommandLocator
      * @param ProcessBuilder $processBuilder
      */
-    public function __construct(
-        GrumPHP $grumPHP,
-        array $configuration,
-        LocatorInterface $externalCommandLocator,
-        ProcessBuilder $processBuilder
-    ) {
+    public function __construct(GrumPHP $grumPHP, ProcessBuilder $processBuilder)
+    {
         $this->grumPHP = $grumPHP;
-        $this->configuration = array_merge($this->getDefaultConfiguration(), $configuration);
-        $this->externalCommandLocator = $externalCommandLocator;
         $this->processBuilder = $processBuilder;
     }
 
@@ -51,6 +37,9 @@ abstract class AbstractExternalTask implements ExternalTaskInterface
      */
     public function getConfiguration()
     {
-        return $this->configuration;
+        return array_merge(
+            $this->getDefaultConfiguration(),
+            $this->grumPHP->getTaskConfiguration($this->getName())
+        );
     }
 }

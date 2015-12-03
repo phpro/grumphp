@@ -3,23 +3,24 @@
 namespace spec\GrumPHP\Task;
 
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Configuration\GrumPHP;
-use GrumPHP\Locator\LocatorInterface;
+use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\ProcessBuilder;
 use SplFileInfo;
 
 class PhpcsfixerSpec extends ObjectBehavior
 {
 
-    function let(GrumPHP $grumPHP, LocatorInterface $externalCommandLocator, ProcessBuilder $processBuilder)
+    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder)
     {
-        $this->beConstructedWith($grumPHP, array(), $externalCommandLocator, $processBuilder);
+        $grumPHP->getTaskConfiguration('phpcsfixer')->willReturn(array());
+        $this->beConstructedWith($grumPHP, $processBuilder);
     }
 
     function it_is_initializable()
@@ -27,22 +28,15 @@ class PhpcsfixerSpec extends ObjectBehavior
         $this->shouldHaveType('GrumPHP\Task\Phpcsfixer');
     }
 
-    function it_is_a_grumphp_external_task()
+    function it_should_have_a_name()
     {
-        $this->shouldHaveType('GrumPHP\Task\ExternalTaskInterface');
-    }
-
-    function it_uses_its_external_command_locator_to_find_correct_command(LocatorInterface $externalCommandLocator)
-    {
-        $externalCommandLocator->locate('php-cs-fixer')->shouldBeCalled();
-        $this->getCommandLocation();
+        $this->getName()->shouldBe('phpcsfixer');
     }
 
     function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
     {
-        $processBuilder->add(Argument::any())->shouldNotBeCalled();
-        $processBuilder->setArguments(Argument::any())->shouldNotBeCalled();
-        $processBuilder->getProcess()->shouldNotBeCalled();
+        $processBuilder->createArgumentsForCommand('php-cs-fixer')->shouldNotBeCalled();
+        $processBuilder->buildProcess()->shouldNotBeCalled();
 
         $context->getFiles()->willReturn(new FilesCollection());
         $this->run($context)->shouldBeNull();
@@ -60,10 +54,9 @@ class PhpcsfixerSpec extends ObjectBehavior
 
     function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
-        $processBuilder->setArguments(Argument::type('array'))->shouldBeCalled();
-        $processBuilder->add('file1.php')->shouldBeCalled();
-        $processBuilder->add('file2.php')->shouldBeCalled();
-        $processBuilder->getProcess()->willReturn($process);
+        $arguments = new ProcessArgumentsCollection();
+        $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn($arguments);
+        $processBuilder->buildProcess(Argument::type('GrumPHP\Collection\ProcessArgumentsCollection'))->willReturn($process);
 
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
@@ -80,9 +73,9 @@ class PhpcsfixerSpec extends ObjectBehavior
         Process $process,
         ContextInterface $context
     ) {
-        $processBuilder->setArguments(Argument::type('array'))->shouldBeCalled();
-        $processBuilder->add('file1.php')->shouldBeCalled();
-        $processBuilder->getProcess()->willReturn($process);
+        $arguments = new ProcessArgumentsCollection();
+        $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn($arguments);
+        $processBuilder->buildProcess(Argument::type('GrumPHP\Collection\ProcessArgumentsCollection'))->willReturn($process);
 
         $process->getOutput()->shouldBeCalled();
         $process->run()->shouldBeCalled();

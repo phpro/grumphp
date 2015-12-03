@@ -3,10 +3,8 @@
 namespace GrumPHP\Collection;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use SplFileInfo;
-use Symfony\Component\Finder\Comparator\DateComparator;
-use Symfony\Component\Finder\Comparator\NumberComparator;
-use Symfony\Component\Finder\Expression\Expression;
+use Symfony\Component\Finder\Comparator;
+use Symfony\Component\Finder\Iterator;
 
 /**
  * Class FileSequence
@@ -30,10 +28,9 @@ class FilesCollection extends ArrayCollection
      */
     public function name($pattern)
     {
-        $regex = Expression::create($pattern)->getRegex()->render();
-        return $this->filter(function (SplFileInfo $file) use ($regex) {
-            return preg_match($regex, $file->getFilename());
-        });
+        $filter = new Iterator\FilenameFilterIterator($this->getIterator(), array($pattern), array());
+
+        return new FilesCollection(iterator_to_array($filter));
     }
 
     /**
@@ -51,10 +48,9 @@ class FilesCollection extends ArrayCollection
      */
     public function notName($pattern)
     {
-        $regex = Expression::create($pattern)->getRegex()->render();
-        return $this->filter(function (SplFileInfo $file) use ($regex) {
-            return !preg_match($regex, $file->getFilename());
-        });
+        $filter = new Iterator\FilenameFilterIterator($this->getIterator(), array(), array($pattern));
+
+        return new FilesCollection(iterator_to_array($filter));
     }
 
     /**
@@ -68,10 +64,9 @@ class FilesCollection extends ArrayCollection
      */
     public function path($pattern)
     {
-        $regex = Expression::create($pattern)->getRegex()->render();
-        return $this->filter(function (SplFileInfo $file) use ($regex) {
-            return preg_match($regex, $file->getPath());
-        });
+        $filter = new Iterator\PathFilterIterator($this->getIterator(), array($pattern), array());
+
+        return new FilesCollection(iterator_to_array($filter));
     }
 
     /**
@@ -87,10 +82,9 @@ class FilesCollection extends ArrayCollection
      */
     public function notPath($pattern)
     {
-        $regex = Expression::create($pattern)->getRegex()->render();
-        return $this->filter(function (SplFileInfo $file) use ($regex) {
-            return !preg_match($regex, $file->getPath());
-        });
+        $filter = new Iterator\PathFilterIterator($this->getIterator(), array(), array($pattern));
+
+        return new FilesCollection(iterator_to_array($filter));
     }
 
     /**
@@ -108,10 +102,10 @@ class FilesCollection extends ArrayCollection
      */
     public function size($size)
     {
-        $comparator = new NumberComparator($size);
-        return $this->filter(function (SplFileInfo $file) use ($comparator) {
-            return $comparator->test($file->getSize());
-        });
+        $comparator = new Comparator\NumberComparator($size);
+        $filter = new Iterator\SizeRangeFilterIterator($this->getIterator(), array($comparator));
+
+        return new FilesCollection(iterator_to_array($filter));
     }
 
     /**
@@ -132,9 +126,9 @@ class FilesCollection extends ArrayCollection
      */
     public function date($date)
     {
-        $comparator = new DateComparator($date);
-        return $this->filter(function (SplFileInfo $file) use ($comparator) {
-            return $comparator->test($file->getMTime());
-        });
+        $comparator = new Comparator\DateComparator($date);
+        $filter = new Iterator\DateRangeFilterIterator($this->getIterator(), array($comparator));
+
+        return new FilesCollection(iterator_to_array($filter));
     }
 }

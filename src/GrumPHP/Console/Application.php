@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\ProcessBuilder;
 
 /**
  * Class Application
@@ -111,7 +112,7 @@ class Application extends SymfonyConsole
         $commands[] = new Command\Git\InitCommand(
             $container->get('config'),
             $container->get('filesystem'),
-            $container->get('process_builder')
+            ProcessBuilder::create()
         );
         $commands[] = new Command\Git\PreCommitCommand(
             $container->get('config'),

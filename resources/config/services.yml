@@ -7,10 +7,10 @@ parameters:
     succeeded: grumphp-happy.txt
 
 services:
-
     config:
         class: GrumPHP\Configuration\GrumPHP
-        arguments: [@service_container]
+        arguments:
+          - '@service_container'
 
     event_dispatcher:
         class: Symfony\Component\EventDispatcher\EventDispatcher
@@ -18,109 +18,99 @@ services:
     filesystem:
         class: Symfony\Component\Filesystem\Filesystem
 
-    process_builder:
-        class: Symfony\Component\Process\ProcessBuilder
-        prototype: true
-
     executable_finder:
         class: Symfony\Component\Process\ExecutableFinder
+
+    process_builder:
+      class: GrumPHP\Process\ProcessBuilder
+      arguments:
+        - '@locator.external_command'
 
     git.repository:
         class: Gitonomy\Git\Repository
         arguments:
-          - %git_dir%
+          - '%git_dir%'
 
     task_runner:
         class: GrumPHP\Runner\TaskRunner
         arguments:
-          - @event_dispatcher
+          - '@event_dispatcher'
 
     locator.external_command:
         class: GrumPHP\Locator\ExternalCommand
-        arguments: [%bin_dir%, @executable_finder]
+        arguments:
+          - '%bin_dir%'
+          - '@executable_finder'
 
     locator.changed_files:
         class: GrumPHP\Locator\ChangedFiles
-        arguments: [@git.repository]
+        arguments:
+          - '@git.repository'
 
     locator.registered_files:
         class: GrumPHP\Locator\RegisteredFiles
-        arguments: [@git.repository]
+        arguments:
+          - '@git.repository'
 
     task.phpcs:
         class: GrumPHP\Task\Phpcs
         arguments:
-          - @config
-          - "@=parameter('tasks')['phpcs'] ? parameter('tasks')['phpcs'] : []"
-          - @locator.external_command
-          - @process_builder
+          - '@config'
+          - '@process_builder'
         tags:
           - {name: grumphp.task, config: phpcs}
 
     task.phpcsfixer:
         class: GrumPHP\Task\Phpcsfixer
         arguments:
-          - @config
-          - "@=parameter('tasks')['phpcsfixer'] ? parameter('tasks')['phpcsfixer'] : []"
-          - @locator.external_command
-          - @process_builder
+          - '@config'
+          - '@process_builder'
         tags:
           - {name: grumphp.task, config: phpcsfixer}
 
     task.phpspec:
         class: GrumPHP\Task\Phpspec
         arguments:
-          - @config
-          - "@=parameter('tasks')['phpspec'] ? parameter('tasks')['phpspec'] : []"
-          - @locator.external_command
-          - @process_builder
+          - '@config'
+          - '@process_builder'
         tags:
           - {name: grumphp.task, config: phpspec}
 
     task.phpunit:
         class: GrumPHP\Task\Phpunit
         arguments:
-            - @config
-            - "@=parameter('tasks')['phpunit'] ? parameter('tasks')['phpunit'] : []"
-            - @locator.external_command
-            - @process_builder
+            - '@config'
+            - '@process_builder'
         tags:
             - {name: grumphp.task, config: phpunit}
 
     task.behat:
         class: GrumPHP\Task\Behat
         arguments:
-            - @config
-            - "@=parameter('tasks')['behat'] ? parameter('tasks')['behat'] : []"
-            - @locator.external_command
-            - @process_builder
+            - '@config'
+            - '@process_builder'
         tags:
             - {name: grumphp.task, config: behat}
 
     task.git.blacklist:
         class: GrumPHP\Task\Git\Blacklist
         arguments:
-            - @config
-            - "@=parameter('tasks')['blacklist'] ? parameter('tasks')['blacklist'] : []"
-            - @locator.external_command
-            - @process_builder
+            - '@config'
+            - '@process_builder'
         tags:
-            - {name: grumphp.task, config: blacklist}
+            - {name: grumphp.task, config: git_blacklist}
 
     task.git.commitmessage:
         class: GrumPHP\Task\Git\CommitMessage
         arguments:
-            - @config
-            - "@=parameter('tasks')['git_commit_message'] ? parameter('tasks')['git_commit_message'] : []"
+            - '@config'
         tags:
             - {name: grumphp.task, config: git_commit_message}
 
     task.codeception:
         class: GrumPHP\Task\Codeception
         arguments:
-            - @config
-            - "@=parameter('tasks')['codeception'] ? parameter('tasks')['codeception'] : []"
-            - @locator.external_command
-            - @process_builder
+            - '@config'
+            - '@process_builder'
         tags:
             - {name: grumphp.task, config: codeception}

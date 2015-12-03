@@ -2,7 +2,6 @@
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -13,14 +12,12 @@ use GrumPHP\Task\Context\RunContext;
  */
 class Phpspec extends AbstractExternalTask
 {
-    const COMMAND_NAME = 'phpspec';
-
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getCommandLocation()
+    public function getName()
     {
-        return $this->externalCommandLocator->locate(self::COMMAND_NAME);
+        return 'phpspec';
     }
 
     /**
@@ -54,14 +51,13 @@ class Phpspec extends AbstractExternalTask
 
         $config = $this->getConfiguration();
 
-        $arguments = ProcessArgumentsCollection::forExecutable($this->getCommandLocation());
+        $arguments = $this->processBuilder->createArgumentsForCommand('phpspec');
         $arguments->add('run');
         $arguments->add('--no-interaction');
         $arguments->addOptionalArgument('--config=%s', $config['config_file']);
         $arguments->addOptionalArgument('--stop-on-failure', $config['stop_on_failure']);
 
-        $this->processBuilder->setArguments($arguments->getValues());
-        $process = $this->processBuilder->getProcess();
+        $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
 
         if (!$process->isSuccessful()) {

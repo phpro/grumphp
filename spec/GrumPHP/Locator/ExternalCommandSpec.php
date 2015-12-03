@@ -18,11 +18,6 @@ class ExternalCommandSpec extends ObjectBehavior
         $this->shouldHaveType('GrumPHP\Locator\ExternalCommand');
     }
 
-    function it_is_a_grumphp_locator()
-    {
-        $this->shouldHaveType('GrumPHP\Locator\LocatorInterface');
-    }
-
     function it_throws_exception_when_external_command_is_not_found(ExecutableFinder $executableFinder)
     {
         $executableFinder->find('test', null, array('bin'))->willReturn(false);
