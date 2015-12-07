@@ -2,6 +2,7 @@ parameters:
   bin_dir: ./vendor/bin
   git_dir: .
   tasks: []
+  extensions: []
   ascii:
     failed: grumphp-grumpy.txt
     succeeded: grumphp-happy.txt
