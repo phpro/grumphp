@@ -542,7 +542,7 @@ The configured extension class needs to implement `ExtensionInterface`.
 Now you can register the tasks and events from your own package in the service container of GrumPHP.
 For example:
 
-```
+```php
 <?php
 namespace My\Project;
 
