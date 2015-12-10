@@ -32,6 +32,16 @@ class CodeceptionSpec extends ObjectBehavior
         $this->getName()->shouldBe('codeception');
     }
 
+    function it_should_have_configurable_options()
+    {
+        $options = $this->getConfigurableOptions();
+        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->getDefinedOptions()->shouldContain('config_file');
+        $options->getDefinedOptions()->shouldContain('suite');
+        $options->getDefinedOptions()->shouldContain('test');
+        $options->getDefinedOptions()->shouldContain('fail-fast');
+    }
+
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);

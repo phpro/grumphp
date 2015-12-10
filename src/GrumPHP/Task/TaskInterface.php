@@ -4,6 +4,7 @@ namespace GrumPHP\Task;
 
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Interface TaskInterface
@@ -24,9 +25,9 @@ interface TaskInterface
     public function getConfiguration();
 
     /**
-     * @return array
+     * @return OptionsResolver
      */
-    public function getDefaultConfiguration();
+    public function getConfigurableOptions();
 
     /**
      * This methods specifies if a task can run in a specific context.

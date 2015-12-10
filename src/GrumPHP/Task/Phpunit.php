@@ -6,6 +6,7 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Phpunit task
@@ -21,13 +22,18 @@ class Phpunit extends AbstractExternalTask
     }
 
     /**
-     * @return array
+     * @return OptionsResolver
      */
-    public function getDefaultConfiguration()
+    public function getConfigurableOptions()
     {
-        return array(
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(array(
             'config_file' => null,
-        );
+        ));
+
+        $resolver->addAllowedTypes('config_file', array('null', 'string'));
+
+        return $resolver;
     }
 
     /**

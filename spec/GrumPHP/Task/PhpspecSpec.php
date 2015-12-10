@@ -33,6 +33,14 @@ class PhpspecSpec extends ObjectBehavior
         $this->getName()->shouldBe('phpspec');
     }
 
+    function it_should_have_configurable_options()
+    {
+        $options = $this->getConfigurableOptions();
+        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->getDefinedOptions()->shouldContain('config_file');
+        $options->getDefinedOptions()->shouldContain('stop_on_failure');
+    }
+
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);

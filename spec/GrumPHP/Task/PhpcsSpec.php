@@ -33,6 +33,17 @@ class PhpcsSpec extends ObjectBehavior
         $this->getName()->shouldBe('phpcs');
     }
 
+    function it_should_have_configurable_options()
+    {
+        $options = $this->getConfigurableOptions();
+        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->getDefinedOptions()->shouldContain('standard');
+        $options->getDefinedOptions()->shouldContain('show_warnings');
+        $options->getDefinedOptions()->shouldContain('tab_width');
+        $options->getDefinedOptions()->shouldContain('ignore_patterns');
+        $options->getDefinedOptions()->shouldContain('sniffs');
+    }
+
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);

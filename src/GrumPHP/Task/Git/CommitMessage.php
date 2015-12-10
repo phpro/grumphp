@@ -8,6 +8,7 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\Util\Regex;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Git CommitMessage Task
@@ -37,22 +38,28 @@ class CommitMessage implements TaskInterface
      */
     public function getConfiguration()
     {
-        return array_merge(
-            $this->getDefaultConfiguration(),
-            $this->grumPHP->getTaskConfiguration($this->getName())
-        );
+        $configured = $this->grumPHP->getTaskConfiguration($this->getName());
+
+        return $this->getConfigurableOptions()->resolve($configured);
     }
 
     /**
-     * @return array
+     * @return OptionsResolver
      */
-    public function getDefaultConfiguration()
+    public function getConfigurableOptions()
     {
-        return array(
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(array(
             'case_insensitive' => true,
             'multiline' => true,
             'matchers' => array(),
-        );
+        ));
+
+        $resolver->addAllowedTypes('case_insensitive', array('boolean'));
+        $resolver->addAllowedTypes('multiline', array('boolean'));
+        $resolver->addAllowedTypes('matchers', array('array'));
+
+        return $resolver;
     }
 
     /**

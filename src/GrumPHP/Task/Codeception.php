@@ -6,6 +6,7 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Codeception task
@@ -23,18 +24,24 @@ class Codeception extends AbstractExternalTask
     }
 
     /**
-     * Default command configuration
-     *
-     * @return array
+     * @return OptionsResolver
      */
-    public function getDefaultConfiguration()
+    public function getConfigurableOptions()
     {
-        return array(
-            'config_file'   => null,
-            'suite'         => null,
-            'test'          => null,
-            'fail-fast'     => null
-        );
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(array(
+            'config_file' => null,
+            'suite' => null,
+            'test'  => null,
+            'fail-fast' => false
+        ));
+
+        $resolver->addAllowedTypes('config_file', array('null', 'string'));
+        $resolver->addAllowedTypes('suite', array('null', 'string'));
+        $resolver->addAllowedTypes('test', array('null', 'string'));
+        $resolver->addAllowedTypes('fail-fast', array('boolean'));
+
+        return $resolver;
     }
 
     /**
@@ -60,9 +67,9 @@ class Codeception extends AbstractExternalTask
         $arguments = $this->processBuilder->createArgumentsForCommand('codecept');
         $arguments->add('run');
         $arguments->addOptionalArgument('--config=%s', $config['config_file']);
-        $arguments->addOptionalArgument('--fail-fast=%s', $config['fail-fast']);
-        $arguments->addOptionalArgument('suite', $config['suite']);
-        $arguments->addOptionalArgument('test', $config['test']);
+        $arguments->addOptionalArgument('--fail-fast', $config['fail-fast']);
+        $arguments->addOptionalArgument('%s', $config['suite']);
+        $arguments->addOptionalArgument('%s', $config['test']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();

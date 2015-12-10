@@ -7,6 +7,7 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Php-cs-fixer task
@@ -22,17 +23,26 @@ class Phpcsfixer extends AbstractExternalTask
     }
 
     /**
-     * @return array
+     * @return OptionsResolver
      */
-    public function getDefaultConfiguration()
+    public function getConfigurableOptions()
     {
-        return array(
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(array(
             'config' => null,
             'config_file' => null,
             'fixers' => array(),
-            'level' => '',
+            'level' => null,
             'verbose' => true,
-        );
+        ));
+
+        $resolver->addAllowedTypes('config', array('null', 'string'));
+        $resolver->addAllowedTypes('config_file', array('null', 'string'));
+        $resolver->addAllowedTypes('fixers', array('array'));
+        $resolver->addAllowedTypes('level', array('null', 'string'));
+        $resolver->addAllowedTypes('verbose', array('boolean'));
+
+        return $resolver;
     }
 
     /**

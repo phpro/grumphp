@@ -32,6 +32,13 @@ class BlacklistSpec extends ObjectBehavior
         $this->getName()->shouldBe('git_blacklist');
     }
 
+    function it_should_have_configurable_options()
+    {
+        $options = $this->getConfigurableOptions();
+        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->getDefinedOptions()->shouldContain('keywords');
+    }
+
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
