@@ -14,7 +14,7 @@
         "symfony/event-dispatcher": "~2.5|~3.0",
         "symfony/filesystem": "~2.4|~3.0",
         "symfony/finder": "~2.4|~3.0",
-        "symfony/options-resolver": "~2.3|~3.0",
+        "symfony/options-resolver": "~2.6|~3.0",
         "symfony/process": "~2.4|~3.0",
         "symfony/yaml": "~2.4|~3.0"
     },
