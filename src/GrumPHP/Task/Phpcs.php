@@ -36,7 +36,7 @@ class Phpcs extends AbstractExternalTask
         ));
 
         $resolver->addAllowedTypes('standard', array('string'));
-        $resolver->addAllowedTypes('show_warnings', array('boolean'));
+        $resolver->addAllowedTypes('show_warnings', array('bool'));
         $resolver->addAllowedTypes('tab_width', array('null', 'int'));
         $resolver->addAllowedTypes('ignore_patterns', array('array'));
         $resolver->addAllowedTypes('sniffs', array('array'));

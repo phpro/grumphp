@@ -39,7 +39,7 @@ class Codeception extends AbstractExternalTask
         $resolver->addAllowedTypes('config_file', array('null', 'string'));
         $resolver->addAllowedTypes('suite', array('null', 'string'));
         $resolver->addAllowedTypes('test', array('null', 'string'));
-        $resolver->addAllowedTypes('fail-fast', array('boolean'));
+        $resolver->addAllowedTypes('fail-fast', array('bool'));
 
         return $resolver;
     }

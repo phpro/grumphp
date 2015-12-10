@@ -40,7 +40,7 @@ class Phpcsfixer extends AbstractExternalTask
         $resolver->addAllowedTypes('config_file', array('null', 'string'));
         $resolver->addAllowedTypes('fixers', array('array'));
         $resolver->addAllowedTypes('level', array('null', 'string'));
-        $resolver->addAllowedTypes('verbose', array('boolean'));
+        $resolver->addAllowedTypes('verbose', array('bool'));
 
         return $resolver;
     }

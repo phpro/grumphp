@@ -55,8 +55,8 @@ class CommitMessage implements TaskInterface
             'matchers' => array(),
         ));
 
-        $resolver->addAllowedTypes('case_insensitive', array('boolean'));
-        $resolver->addAllowedTypes('multiline', array('boolean'));
+        $resolver->addAllowedTypes('case_insensitive', array('bool'));
+        $resolver->addAllowedTypes('multiline', array('bool'));
         $resolver->addAllowedTypes('matchers', array('array'));
 
         return $resolver;

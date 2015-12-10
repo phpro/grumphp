@@ -33,7 +33,7 @@ class Phpspec extends AbstractExternalTask
         ));
 
         $resolver->addAllowedTypes('config_file', array('null', 'string'));
-        $resolver->addAllowedTypes('stop_on_failure', array('boolean'));
+        $resolver->addAllowedTypes('stop_on_failure', array('bool'));
 
         return $resolver;
     }

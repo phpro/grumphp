@@ -37,7 +37,7 @@ class Behat extends AbstractExternalTask
         $resolver->addAllowedTypes('config', array('null', 'string'));
         $resolver->addAllowedTypes('format', array('null', 'string'));
         $resolver->addAllowedTypes('suite', array('null', 'string'));
-        $resolver->addAllowedTypes('stop_on_failure', array('boolean'));
+        $resolver->addAllowedTypes('stop_on_failure', array('bool'));
 
         return $resolver;
     }
