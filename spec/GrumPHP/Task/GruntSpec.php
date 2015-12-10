@@ -32,6 +32,15 @@ class GruntSpec extends ObjectBehavior
         $this->getName()->shouldBe('grunt');
     }
 
+    function it_should_have_configurable_options()
+    {
+        $options = $this->getConfigurableOptions();
+        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->getDefinedOptions()->shouldContain('grunt_file');
+        $options->getDefinedOptions()->shouldContain('task');
+        $options->getDefinedOptions()->shouldContain('triggered_by');
+    }
+
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
