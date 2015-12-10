@@ -570,7 +570,6 @@ Following tasks are still on the roadmap:
 - json lint
 - yaml lint
 - xml lint / dtd validation
-- grunt tests
 - gulp tests
 - npm test tests
 - ...

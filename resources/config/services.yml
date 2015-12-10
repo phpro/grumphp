@@ -115,3 +115,11 @@ services:
             - '@process_builder'
         tags:
             - {name: grumphp.task, config: codeception}
+
+    task.grunt:
+        class: GrumPHP\Task\Grunt
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: grunt}
