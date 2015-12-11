@@ -1,5 +1,17 @@
 # Codeception
-The Codeception task will run your full-stack tests. It live under the `codecept` namespace and has the following configurable parameters:
+The Codeception task will run your full-stack tests. It live under the `codeception` namespace and has the following configurable parameters:
+
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        codeception:
+            config_file: ~
+            fail-fast: false
+            suite: ~
+            test: ~
+```
+
 
 **config_file**
 
@@ -24,3 +36,4 @@ When this option is specified it will only run tests for the given suite. If lef
 *Default: null*
 
 When this option is specified it will only run the given test. If left `null` Codeception will run all tests within the suite.
+This option can only be used in combination with a suite.

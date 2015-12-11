@@ -4,6 +4,17 @@ The git comit message can be used in combination with the git hook `git:commit-m
 It can be used to enforce patterns in a commit message.
 For example: if you are working with JIRA, it is possible to add a pattern for the JIRA issue number.
 
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        git_commit_message:
+            matchers:
+                - /JIRA-([0-9]*)/
+            case_insensitive: true
+            multiline: true
+```
+
 **matchers**
 
 *Default: []*

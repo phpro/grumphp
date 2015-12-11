@@ -3,6 +3,14 @@
 The Phpunit task will run your unit tests.
 It lives under the `phpunit` namespace and has following configurable parameters:
 
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        phpunit:
+            config_file: ~
+```
+
 **config_file**
 
 *Default: null*

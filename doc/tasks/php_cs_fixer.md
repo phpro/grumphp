@@ -3,6 +3,17 @@
 The PHP-CS-Fixer task will run codestyle checks.
 It lives under the `phpcsfixer` namespace and has following configurable parameters:
 
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        php_cs_fixer:
+            config_file: ~
+            config: ~
+            filters: []
+            level: ~
+            verbose: true
+```
 
 **config_file**
 
@@ -29,7 +40,7 @@ The full list of fixers you can find [here](https://github.com/FriendsOfPHP/PHP-
 
 **level**
 
-*Default: ''*
+*Default: null*
 
 Fixers are grouped by levels: `psr0`, `psr1`, `psr2` you can specify a group instead of applying them separately.
 

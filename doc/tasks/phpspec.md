@@ -3,6 +3,15 @@
 The Phpspec task will spec your code with Phpspec.
 It lives under the `phpspec` namespace and has following configurable parameters:
 
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        phpspec:
+            config_file: ~
+            stop_on_failure: false
+```
+
 **config_file**
 
 *Default: null*

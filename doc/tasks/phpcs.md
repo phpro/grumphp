@@ -3,6 +3,19 @@
 The Phpcs task will sniff your code for bad coding standards.
 It lives under the `phpcs` namespace and has following configurable parameters:
 
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        phpcs:
+            standard: PSR2
+            show_warnings: true
+            tab_width: ~
+            ignore_patterns: []
+            sniffs: []
+            
+```
+
 **standard**
 
 *Default: PSR2*

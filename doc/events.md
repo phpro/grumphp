@@ -1,5 +1,16 @@
 # Events
 
+Following events are triggered during execution:
+
+| Event name              | Event class       | Triggered
+| ----------------------- | ----------------- | ----------
+| grumphp.task.run        | TaskEvent         | before a task is executed
+| grumphp.task.failed     | TaskFailedEvent   | when a task fails
+| grumphp.task.complete   | TaskEvent         | when a task succeeds
+| grumphp.runner.run      | RunnerEvent       | before the tasks are executed
+| grumphp.runner.failed   | RunnerFailedEvent | when one task failed
+| grumphp.runner.complete | RunnerEvent       | when all tasks succeed
+
 Configured events just like you would in Symfony: 
 
 ```yml
@@ -15,14 +26,3 @@ services:
         tags:
             - { name: grumphp.event_subscriber }
 ```
-
-Following events are triggered during execution:
-
-| Event name              | Event class       | Triggered
-| ----------------------- | ----------------- | ----------
-| grumphp.task.run        | TaskEvent         | before a task is executed
-| grumphp.task.failed     | TaskFailedEvent   | when a task fails
-| grumphp.task.complete   | TaskEvent         | when a task succeeds
-| grumphp.runner.run      | RunnerEvent       | before the tasks are executed
-| grumphp.runner.failed   | RunnerFailedEvent | when one task failed
-| grumphp.runner.complete | RunnerEvent       | when all tasks succeed

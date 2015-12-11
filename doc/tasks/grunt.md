@@ -3,6 +3,16 @@
 The Grunt task will run your automated frontend tasks.
 It lives under the `grunt` namespace and has following configurable parameters:
 
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        grunt:
+            grunt_file: ~
+            task: ~
+            triggered_by: [js, jsx, coffee, ts, less, sass, scss]
+```
+
 **grunt_file**
 
 *Default: null*

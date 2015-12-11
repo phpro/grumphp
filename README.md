@@ -121,6 +121,7 @@ parameters:
         behat: ~
         git_blacklist: ~
         git_commit_message: ~
+        grunt: ~
         phpcsfixer: ~
         phpcs:
             standard: "PSR2"
@@ -180,12 +181,13 @@ It is easy to configure and activate tasks in GrumPHP.
 Tasks live under their own namespace in the parameters part.
 To activate a task, it is sufficient to add an empty task configuration:
 
-```yaml
+```yaml~
 # grumphp.yml
 parameters:
     tasks:
         codeception: ~
         behat: ~
+        grunt: 
         git_blacklist: ~
         git_commit_message: ~
         phpcsfixer: ~

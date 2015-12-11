@@ -3,6 +3,16 @@
 The Behat task will run your Behat tests.
 It lives under the `behat` namespace and has following configurable parameters:
 
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        behat:
+            config: ~
+            format: ~
+            stop_on_failure: false
+```
+
 **config**
 
 *Default: null*
