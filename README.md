@@ -209,6 +209,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Codeception](doc/tasks/codeception.md)
 
 **Creating a custom  task**
+
 It is also very easy to configure your own [Custom tasks](doc/tasks/custom_tasks.md).
 
 ## Events
