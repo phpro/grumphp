@@ -200,14 +200,16 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Behat](doc/tasks/behat.md)
 - [Git blacklist](doc/tasks/git_blacklist.md)
 - [Git commit message](doc/tasks/git_commit_message.md)
+- [Grunt](doc/tasks/grunt.md)
 - [PHP-CS-Fixer](doc/tasks/php_cs_fixer.md)
 - [PHP-CS-Fixer](doc/tasks/php_cs_fixer.md)
 - [Phpcs](doc/tasks/phpcs.md)
 - [Phpspec](doc/tasks/phpspec.md)
 - [Phpunit](doc/tasks/phpunit.md)
 - [Codeception](doc/tasks/codeception.md)
-- [Grunt](doc/tasks/grunt.md)
-- [Custom tasks](doc/tasks/custom_tasks.md)
+
+**Creating a custom  task**
+It is also very easy to configure your own [Custom tasks](doc/tasks/custom_tasks.md).
 
 ## Events
 
@@ -233,7 +235,9 @@ Following tasks are still on the roadmap:
 - phpmd
 - phpcpd
 - phpdcd
+- robo
 - twig lint
+- symfony validation
 - json lint
 - yaml lint
 - xml lint / dtd validation
