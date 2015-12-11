@@ -249,13 +249,13 @@ Following tasks are still on the roadmap:
 - npm test tests
 - ...
 
-New features or bugfixes can be logged at the [https://github.com/phpro/grumphp/issues](issues list).
+New features or bugfixes can be logged at the [issue tracker](https://github.com/phpro/grumphp/issues).
 Want to help out? Feel free to contact us!
 
 
 # Execution
 
-GrumPHP will be triggered with GIT hooks. [However, you can execute the trigger at the command line](doc/execution.md)
+GrumPHP will be triggered with GIT hooks. However, you can [execute the trigger on the command line](doc/execution.md).
 
 # Compatibility
 
