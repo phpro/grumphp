@@ -61,11 +61,13 @@ When your application has a project structure that is not covered by the default
 you will have to create a `grumphp.yml` *before* installing the package
 and add next config into your application's `composer.json`:
 
-```
+```json
 # composer.json
-"extra": {
-    "grumphp": {
-        "config-default-path": "path/to/grumphp.yml"
+{
+    "extra": {
+        "grumphp": {
+            "config-default-path": "path/to/grumphp.yml"
+        }
     }
 }
 ```
@@ -89,7 +91,7 @@ composer global update phpro/grumphp
 This will install the `grumphp` executable in the `~/.composer/vendor/bin` folder.
 Make sure to add this folder to your system `$PATH` variable:
 
-```
+```sh
 # .zshrc or .bashrc
 export PATH="$HOME/.composer/vendor/bin:$PATH"
 ```
@@ -181,7 +183,7 @@ It is easy to configure and activate tasks in GrumPHP.
 Tasks live under their own namespace in the parameters part.
 To activate a task, it is sufficient to add an empty task configuration:
 
-```yaml~
+```yaml
 # grumphp.yml
 parameters:
     tasks:
@@ -203,7 +205,6 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Git blacklist](doc/tasks/git_blacklist.md)
 - [Git commit message](doc/tasks/git_commit_message.md)
 - [Grunt](doc/tasks/grunt.md)
-- [PHP-CS-Fixer](doc/tasks/php_cs_fixer.md)
 - [PHP-CS-Fixer](doc/tasks/php_cs_fixer.md)
 - [Phpcs](doc/tasks/phpcs.md)
 - [Phpspec](doc/tasks/phpspec.md)
