@@ -33,6 +33,17 @@ class PhpcsfixerSpec extends ObjectBehavior
         $this->getName()->shouldBe('phpcsfixer');
     }
 
+    function it_should_have_configurable_options()
+    {
+        $options = $this->getConfigurableOptions();
+        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->getDefinedOptions()->shouldContain('config');
+        $options->getDefinedOptions()->shouldContain('config_file');
+        $options->getDefinedOptions()->shouldContain('fixers');
+        $options->getDefinedOptions()->shouldContain('level');
+        $options->getDefinedOptions()->shouldContain('verbose');
+    }
+
     function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
     {
         $processBuilder->createArgumentsForCommand('php-cs-fixer')->shouldNotBeCalled();

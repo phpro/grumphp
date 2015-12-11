@@ -22,6 +22,15 @@ class CommitMessageSpec extends ObjectBehavior
         $this->getName()->shouldBe('git_commit_message');
     }
 
+    function it_should_have_configurable_options()
+    {
+        $options = $this->getConfigurableOptions();
+        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->getDefinedOptions()->shouldContain('case_insensitive');
+        $options->getDefinedOptions()->shouldContain('multiline');
+        $options->getDefinedOptions()->shouldContain('matchers');
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType('GrumPHP\Task\Git\CommitMessage');

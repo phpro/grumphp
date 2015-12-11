@@ -37,9 +37,8 @@ abstract class AbstractExternalTask implements TaskInterface
      */
     public function getConfiguration()
     {
-        return array_merge(
-            $this->getDefaultConfiguration(),
-            $this->grumPHP->getTaskConfiguration($this->getName())
-        );
+        $configured = $this->grumPHP->getTaskConfiguration($this->getName());
+
+        return $this->getConfigurableOptions()->resolve($configured);
     }
 }

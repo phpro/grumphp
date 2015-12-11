@@ -6,6 +6,7 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Grunt task
@@ -21,15 +22,22 @@ class Grunt extends AbstractExternalTask
     }
 
     /**
-     * @return array
+     * @return OptionsResolver
      */
-    public function getDefaultConfiguration()
+    public function getConfigurableOptions()
     {
-        return array(
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(array(
             'grunt_file' => null,
             'task' => null,
             'triggered_by' => array('js', 'jsx', 'coffee', 'ts', 'less', 'sass', 'scss')
-        );
+        ));
+
+        $resolver->addAllowedTypes('grunt_file', array('null', 'string'));
+        $resolver->addAllowedTypes('task', array('null', 'string'));
+        $resolver->addAllowedTypes('triggered_by', array('array'));
+
+        return $resolver;
     }
 
     /**

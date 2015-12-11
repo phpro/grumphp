@@ -6,6 +6,7 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Behat task
@@ -21,16 +22,24 @@ class Behat extends AbstractExternalTask
     }
 
     /**
-     * @return array
+     * @return OptionsResolver
      */
-    public function getDefaultConfiguration()
+    public function getConfigurableOptions()
     {
-        return array(
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(array(
             'config' => null,
             'format' => null,
             'suite' => null,
             'stop_on_failure' => false,
-        );
+        ));
+
+        $resolver->addAllowedTypes('config', array('null', 'string'));
+        $resolver->addAllowedTypes('format', array('null', 'string'));
+        $resolver->addAllowedTypes('suite', array('null', 'string'));
+        $resolver->addAllowedTypes('stop_on_failure', array('bool'));
+
+        return $resolver;
     }
 
     /**

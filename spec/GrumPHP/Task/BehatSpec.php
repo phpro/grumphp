@@ -32,6 +32,16 @@ class BehatSpec extends ObjectBehavior
         $this->getName()->shouldBe('behat');
     }
 
+    function it_should_have_configurable_options()
+    {
+        $options = $this->getConfigurableOptions();
+        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->getDefinedOptions()->shouldContain('config');
+        $options->getDefinedOptions()->shouldContain('format');
+        $options->getDefinedOptions()->shouldContain('suite');
+        $options->getDefinedOptions()->shouldContain('stop_on_failure');
+    }
+
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);

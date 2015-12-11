@@ -6,6 +6,7 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Phpcs task
@@ -21,17 +22,26 @@ class Phpcs extends AbstractExternalTask
     }
 
     /**
-     * @return array
+     * @return OptionsResolver
      */
-    public function getDefaultConfiguration()
+    public function getConfigurableOptions()
     {
-        return array(
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(array(
             'standard' => 'PSR2',
             'show_warnings' => true,
             'tab_width' => null,
             'ignore_patterns' => array(),
             'sniffs' => array(),
-        );
+        ));
+
+        $resolver->addAllowedTypes('standard', array('string'));
+        $resolver->addAllowedTypes('show_warnings', array('bool'));
+        $resolver->addAllowedTypes('tab_width', array('null', 'int'));
+        $resolver->addAllowedTypes('ignore_patterns', array('array'));
+        $resolver->addAllowedTypes('sniffs', array('array'));
+
+        return $resolver;
     }
 
     /**

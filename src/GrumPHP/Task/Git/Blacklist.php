@@ -6,6 +6,7 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\AbstractExternalTask;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Git Blacklist Task
@@ -23,13 +24,18 @@ class Blacklist extends AbstractExternalTask
     }
 
     /**
-     * @return array
+     * @return OptionsResolver
      */
-    public function getDefaultConfiguration()
+    public function getConfigurableOptions()
     {
-        return array(
-            'keywords' => null,
-        );
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(array(
+            'keywords' => array(),
+        ));
+
+        $resolver->addAllowedTypes('keywords', array('array'));
+
+        return $resolver;
     }
 
     /**
