@@ -218,7 +218,7 @@ It is also very easy to configure your own [Custom tasks](doc/tasks/custom_tasks
 
 It is possible to hook in to GrumPHP with events.
 Internally the Symfony event dispatcher is being used. 
-[List of available events](docs/events.md)
+[List of available events](doc/events.md)
 
 
 
@@ -228,7 +228,7 @@ You will probably have some custom tasks or event listeners that are not include
 It is possible to group this additional GrumPHP configuration in an extension. 
 This way you can easily create your own extension package and load it whenever you need it.
 
-[Create your own extension](docs/extensions.md)
+[Create your own extension](doc/extensions.md)
 
 ## Roadmap
 
@@ -254,7 +254,7 @@ Want to help out? Feel free to contact us!
 
 # Execution
 
-GrumPHP will be triggered with GIT hooks. [However, you can execute the trigger at the command line](docs/execution.md)
+GrumPHP will be triggered with GIT hooks. [However, you can execute the trigger at the command line](doc/execution.md)
 
 # Compatibility
 
