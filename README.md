@@ -196,331 +196,25 @@ parameters:
 
 Every task has it's own default configuration. It is possible to overwrite the parameters per task.
 
-
-#### Behat
-
-The Behat task will run your Behat tests.
-It lives under the `behat` namespace and has following configurable parameters:
-
-**config**
-
-*Default: null*
-
-If you want to use a different config file than the default behat.yml, you can specify your custom config file location with this option.
-
-
-**format**
-
-*Default: null*
-
-If you want to use a different formatter than the default one, specify it with this option.
-
-
-**suite**
-
-*Default: null*
-
-If you want to run a particular suite only, specify it with this option.
-
-
-**stop_on_failure**
-
-*Default: false*
-
-When this option is enabled, behat will stop at the first error. This means that it will not run your full test suite when an error occurs.
-
-#### Git Blacklist
-
-The Git Blacklist task will test your changes for blacklisted keywords, such as `die(`, `var_dump(` etc.
-It lives under the `git_blacklist` namespace and has following configurable parameters:
-
-**keywords**
-
-*Default: null*
-
-Use this parameter to specify your blacklisted keywords list.
-For example:
-
-```yaml
-# grumphp.yml
-parameters:
-    tasks:
-        git_blacklist:
-            keywords:
-                - "die("
-                - "var_dump("
-                - "exit;"
-```
-
-#### Git commit message
-
-The git comit message can be used in combination with the git hook `git:commit-msg`.
-It can be used to enforce patterns in a commit message.
-For example: if you are working with JIRA, it is possible to add a pattern for the JIRA issue number.
-
-**matchers**
-
-*Default: []*
-
-Use this parameter to specify one or multiple patterns. The value can be in regex or glob style.
-Here are some example matchers:
-
-- /JIRA-([0-9]*)/
-- pre-fix*
-- *suffix
-- ...
-
-**case_insensitive**
-
-*Default: true*
-
-Mark the matchers as case sensitive.
-
-**multiline**
-
-*Default:true*
-
-Mark the matchers as multiline.
-
-
-
-#### PHP-CS-Fixer
-
-The PHP-CS-Fixer task will run codestyle checks.
-It lives under the `phpcsfixer` namespace and has following configurable parameters:
-
-
-**config_file**
-
-*Default: null*
-
-You can specify the path to the .php_cs file.
-
-
-**config**
-
-*Default: 'default'*
-
-There such predefined configs for codestyle checks: `default`, `magento`, `sf23`.
-If you want to run a particular config, specify it with this option.
-
-
-**filters**
-
-*Default: array()*
-
-There are a lot of fixers which you can apply to your code. You can specify an array of them in this config.
-The full list of fixers you can find [here](https://github.com/FriendsOfPHP/PHP-CS-Fixer#usage).
-
-
-**level**
-
-*Default: ''*
-
-Fixers are grouped by levels: `psr0`, `psr1`, `psr2` you can specify a group instead of applying them separately.
-
-
-**verbose**
-
-*Default: true*
-
-Show applied fixers.
-
-
-#### Phpcs
-
-The Phpcs task will sniff your code for bad coding standards.
-It lives under the `phpcs` namespace and has following configurable parameters:
-
-**standard**
-
-*Default: PSR2*
-
-This parameter will describe which standard is being used to validate your code for bad coding standards.
-
-
-**show_warnings**
-
-*Default: true*
-
-Triggers an error when there are warnings.
-
-
-**tab_width**
-
-*Default: null*
-
-By default, the standard will specify the optimal tab-width of the code. If you want to overwrite this option, you can use this configuration option.
-
-
-**ignore_patterns**
-
-*Default: []*
-
-This is a list of patterns that will be ignored by phpcs. With this option you can skip files like tests. Leave this option blank to run phpcs for every php file.
-
-
-**sniffs**
-
-*Default: []*
-
-This is a list of sniffs that need to be executed. Leave this option blank to run all configured sniffs for the selected standard.
-
-##### PHPCS framework presets
-
-**Symfony 2**
-
-If you want to use Phpcs for your Symfony2 projects, you can require the leanpub phpcs repo.
-
-```sh
-composer require --dev leaphub/phpcs-symfony2-standard
-```
-
-Following this, you can add the path to your phpcs task.
-
-```yml
-# grumphp.yml
-parameters:
-    tasks:
-        phpcs:
-            standard: "vendor/leaphub/phpcs-symfony2-standard/leaphub/phpcs/Symfony2/"
-```
-
-**Magento**
-
-If you want to use Phpcs for your Magento projects, you can require the magento-ecg repo.
-
-```sh
-composer require --dev magento-ecg/coding-standard
-```
-
-Following this, you can add the path to your phpcs task.
-
-```yaml
-# grumphp.yml
-parameters:
-    tasks:
-        phpcs:
-            standard: "vendor/magento-ecg/coding-standard/Ecg/"
-            show_warnings: false
-```
-
-#### Phpspec
-
-The Phpspec task will spec your code with Phpspec.
-It lives under the `phpspec` namespace and has following configurable parameters:
-
-**config_file**
-
-*Default: null*
-
-If your phpspec.yml file is located at an exotic location, you can specify your custom config file location with this option.
-
-
-**stop_on_failure**
-
-*Default: false*
-
-When this option is enabled, phpspec will stop at the first error. This means that it will not run your full test suite when an error occurs.
-
-
-#### Phpunit
-
-The Phpunit task will run your unit tests.
-It lives under the `phpunit` namespace and has following configurable parameters:
-
-**config_file**
-
-*Default: null*
-
-If your phpunit.xml file is located at an exotic location, you can specify your custom config file location with this option.
-This option is set to `null` by default.
-This means that `phpunit.xml` or `phpunit.xml.dist` are automatically loaded if one of them exist in the current directory.
-
-#### Codeception
-The Codeception task will run your full-stack tests. It live under the `codecept` namespace and has the following configurable parameters:
-
-**config_file**
-
-*Default: null*
-
-If your `codeception.yml` file is located in an exotic location, you can specify your custom config file location with this option. This option is set to `null` by default. This means that `codeception.yml` is automatically located if it exists in the current directory.
-
-**fail-fast**
-
-*Default: false*
-
-When this option is enabled, Codeception will stop at the first error. This means that it will not run your full test suite when an error occurs.
-
-**suite**
-
-*Default: null*
-
-When this option is specified it will only run tests for the given suite. If left `null` Codeception will run tests for your full test suite.
-
-**test**
-
-*Default: null*
-
-When this option is specified it will only run the given test. If left `null` Codeception will run all tests within the suite.
-
-#### Custom tasks
-
-It is very easy to configure your own project specific task.
-You just have to create a class that implements the `GrumPHP\Task\TaskInterface`.
-Next register it to the service manager and add your task configuration:
-
-```yaml
-# grumphp.yml
-parameters:
-    tasks:
-        myConfigKey:
-            config1: config-value
-
-services:
-    task.myCustomTask:
-        class: My\Custom\Task
-        arguments:
-          - '@config'
-        tags:
-          - {name: grumphp.task, config: myConfigKey}
-```
-
-**Note:** You do NOT have to add the main and task configuration. This example just shows you how to do it.
-You're welcome!
-
-You just registered your custom task in no time! Pretty cool right?!
+**Tasks**
+- [Behat](doc/tasks/behat.md)
+- [Git blacklist](doc/tasks/git_blacklist.md)
+- [Git commit message](doc/tasks/git_commit_message.md)
+- [PHP-CS-Fixer](doc/tasks/php_cs_fixer.md)
+- [PHP-CS-Fixer](doc/tasks/php_cs_fixer.md)
+- [Phpcs](doc/tasks/phpcs.md)
+- [Phpspec](doc/tasks/phpspec.md)
+- [Phpunit](doc/tasks/phpunit.md)
+- [Codeception](doc/tasks/codeception.md)
+- [Grunt](doc/tasks/grunt.md)
+- [Custom tasks](doc/tasks/custom_tasks.md)
 
 ## Events
 
 It is possible to hook in to GrumPHP with events.
 Internally the Symfony event dispatcher is being used. 
-This means it can be configured just like you would in Symfony: 
+[List of available events](docs/events.md)
 
-```yml
-# grumphp.yml
-services:
-    listener.some_listener:
-        class: MyNamespace\EventListener\MyListener
-        tags:
-            - { name: grumphp.event_listener, event: grumphp.runner.run }
-            - { name: grumphp.event_listener, event: grumphp.runner.run, method: customMethod, priority: 10 }
-    listener.some_subscriber:
-        class: MyNamespace\EventSubscriber\MySubscriber
-        tags:
-            - { name: grumphp.event_subscriber }
-```
-
-Following events are triggered during execution:
-
-| Event name              | Event class       | Triggered
-| ----------------------- | ----------------- | ----------
-| grumphp.task.run        | TaskEvent         | before a task is executed
-| grumphp.task.failed     | TaskFailedEvent   | when a task fails
-| grumphp.task.complete   | TaskEvent         | when a task succeeds
-| grumphp.runner.run      | RunnerEvent       | before the tasks are executed
-| grumphp.runner.failed   | RunnerFailedEvent | when one task failed
-| grumphp.runner.complete | RunnerEvent       | when all tasks succeed
 
 
 ## Extensions
@@ -529,34 +223,7 @@ You will probably have some custom tasks or event listeners that are not include
 It is possible to group this additional GrumPHP configuration in an extension. 
 This way you can easily create your own extension package and load it whenever you need it.
 
-The configuration looks like this:
-
-```yaml
-# grumphp.yml
-parameters:
-    extensions:
-        - My\Project\GrumPHPExtension
-```
-
-The configured extension class needs to implement `ExtensionInterface`. 
-Now you can register the tasks and events from your own package in the service container of GrumPHP.
-For example:
-
-```php
-<?php
-namespace My\Project;
-
-use GrumPHP\Extension\ExtensionInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
-class GrumPHPExtension implements ExtensionInterface
-{
-    public function load(ContainerInterface $container)
-    {
-        // Register your own stuff to the container!
-    }
-}
-```
+[Create your own extension](docs/extensions.md)
 
 ## Roadmap
 
@@ -580,18 +247,7 @@ Want to help out? Feel free to contact us!
 
 # Execution
 
-GrumPHP will be triggered with GIT hooks. However, you can execute the trigger at the command line:
-
-
-```sh
-php ./vendor/bin/grumphp git:pre-commit
-php ./vendor/bin/grumphp git:commit-msg
-```
-
-If you want to run the tests on the full codebase, you can run the command:
-```sh
-php ./vendor/bin/grumphp run
-```
+GrumPHP will be triggered with GIT hooks. [However, you can execute the trigger at the command line](docs/execution.md)
 
 # Compatibility
 
