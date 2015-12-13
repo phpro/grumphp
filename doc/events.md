@@ -1,5 +1,8 @@
 # Events
 
+It is possible to hook in to GrumPHP with events.
+Internally the Symfony event dispatcher is being used. 
+
 Following events are triggered during execution:
 
 | Event name              | Event class       | Triggered
