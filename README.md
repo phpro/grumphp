@@ -25,7 +25,7 @@ We don't want to bore you with all the details, so quick: install it yourself an
 This package is composer plugin and should be installed to your project's dev dependency using composer:
 
 ```sh
-composer require phpro/grumphp
+composer require --dev phpro/grumphp
 ```
 
 When the package is installed, GrumPHP will attach itself to the git hooks of your project.
@@ -46,70 +46,13 @@ To make GrumPHP even more awesome, it will suggest installing some extra package
 GrumPHP will never push you into using a specific task. You can choose the tasks that fit your needs, and activate or
 deactivate any task in no time!
 
-### Windows Pre-Install
-So you are running windows but still want to unleash the power of GrumPHP? No problem: everything is possible!
-You will have to make sure that following items are available on the command line:
+Having trouble installing GrumPHP? Try one of the following options:
 
-- php
-- composer
-- git
-
-
-### Installation with an exotic project structure
-
-When your application has a project structure that is not covered by the default configuration settings,
-you will have to create a `grumphp.yml` *before* installing the package
-and add next config into your application's `composer.json`:
-
-```json
-# composer.json
-{
-    "extra": {
-        "grumphp": {
-            "config-default-path": "path/to/grumphp.yml"
-        }
-    }
-}
-```
-
-You can also change the configuration after installation.
-The only downfall is that you will have to initialize the git hook manually:
-
-```sh
-php ./vendor/bin/grumphp git:init --config=path/to/grumphp.yml
-```
-
-### Global installation
-
-It is possible to install or update GrumPHP on your system with following commands:
-
-```sh
-composer global require phpro/grumphp
-composer global update phpro/grumphp
-```
-
-This will install the `grumphp` executable in the `~/.composer/vendor/bin` folder.
-Make sure to add this folder to your system `$PATH` variable:
-
-```sh
-# .zshrc or .bashrc
-export PATH="$HOME/.composer/vendor/bin:$PATH"
-```
-
-That's all! The `grumphp` command will be available on your CLI and will be used by default.
-
-**Note:** that you might want to re-initialize your project git hooks to make sure the system-wide executable is being used. Run the `grumphp git:init` command in the project directory.
-
-**Note:** When you globally installed 3rd party tools like e.g. `phpunit`, those will also be used instead of the composer executables.
-
-## Build your own conventions checker
-
-You can see an [example](https://github.com/linkorb/conventions-checker)
-of how to build your own conventions checker.
+- [Installation on Windows](doc/installation/windows.md)
+- [Global installation](doc/installation/global.md)
+- [Installation in an exotic project structure](doc/installation/exotic.md)
 
 ## Configuration
-
-Sample `grumphp.yml`:
 
 ```yaml
 # grumphp.yml
@@ -121,115 +64,47 @@ parameters:
         succeeded: grumphp-happy.txt
     tasks:
         behat: ~
+        codeception: ~
         git_blacklist: ~
         git_commit_message: ~
         grunt: ~
+        phpcs: ~
         phpcsfixer: ~
-        phpcs:
-            standard: "PSR2"
         phpspec: ~
         phpunit: ~
-        codeception: ~
     extensions: []
 ```
 
-### Set up basic configuration
+You can find a detailed overview of the configurable options in these sections:
 
-GrumPHP comes shipped with a configuration tool. Run following command to create a configuration file:
+- [Parameters](doc/parameters.md)
+- [Tasks](doc/tasks.md)
+- [Events](doc/events.md)
+- [Extensions](doc/extensions.md)
 
-```sh
-php ./vendor/bin/grumphp configure
-```
+## Commands
 
-This command is also invoked during installation.
-It wil not ask you for anything, but it will try to guess the best possible configuration.
+Since GrumPHP is just a CLI tool, these commands can be triggered:
 
-### Parameters
+- [configure](doc/commands.md#installation)
+- [git:init](doc/commands.md#installation)
+- [git:deinit](doc/commands.md#installation)
+- [git:pre-commit](doc/commands.md#git-hooks)
+- [git:commit-msg](doc/commands.md#git-hooks)
+- [run](doc/commands.md#run)
 
-**bin_dir**
+## Compatibility
 
-*Default: ./bin/vendor*
+GrumPHP works with PHP 5.3 or above, and is also tested to work with HHVM.
 
-This parameter will tell GrumPHP where it can locate external commands like phpcs and phpspec.
-It defaults to the default composer bin directory.
+This package has been tested with following git clients:
 
-**git_dir**
-
-*Default: .*
-
-This parameter will tell GrumPHP in which folder it can find the .git folder.
-This parameter is used to create the git hooks at the correct location. It defaults to the working directory.
-
-**ascii**
-
-*Default: {failed: grumphp-grumpy.txt, succeeded: grumphp-happy.txt}*
-
-This parameter will tell GrumPHP where it can locate ascii images used in pre-commit hook.
-Currently there are only two images `failed` and `succeeded`. If path is not specified default image from
-`resources/ascii/` folder are used.
-
-```yaml
-# grumphp.yml
-parameters:
-    ascii:
-        failed: resource/grumphp-grumpy.txt
-        succeeded: ~
-```
-
-To disable banner set ascii images path to `~`.
-
-### Tasks
-It is easy to configure and activate tasks in GrumPHP.
-Tasks live under their own namespace in the parameters part.
-To activate a task, it is sufficient to add an empty task configuration:
-
-```yaml
-# grumphp.yml
-parameters:
-    tasks:
-        codeception: ~
-        behat: ~
-        grunt: 
-        git_blacklist: ~
-        git_commit_message: ~
-        phpcsfixer: ~
-        phpcs: ~
-        phpspec: ~
-        phpunit: ~
-```
-
-Every task has it's own default configuration. It is possible to overwrite the parameters per task.
-
-**Tasks**
-- [Behat](doc/tasks/behat.md)
-- [Git blacklist](doc/tasks/git_blacklist.md)
-- [Git commit message](doc/tasks/git_commit_message.md)
-- [Grunt](doc/tasks/grunt.md)
-- [PHP-CS-Fixer](doc/tasks/php_cs_fixer.md)
-- [Phpcs](doc/tasks/phpcs.md)
-- [Phpspec](doc/tasks/phpspec.md)
-- [Phpunit](doc/tasks/phpunit.md)
-- [Codeception](doc/tasks/codeception.md)
-
-**Creating a custom  task**
-
-It is also very easy to configure your own [Custom tasks](doc/tasks/custom_tasks.md).
-
-## Events
-
-It is possible to hook in to GrumPHP with events.
-Internally the Symfony event dispatcher is being used. 
-[List of available events](doc/events.md)
-
-
-
-## Extensions
-
-You will probably have some custom tasks or event listeners that are not included in the default GrumPHP project.
-It is possible to group this additional GrumPHP configuration in an extension. 
-This way you can easily create your own extension package and load it whenever you need it.
-
-[Create your own extension](doc/extensions.md)
+- CLI Unix
+- CLI Mac
+- CLI Windows
+- PhpStorm Git
+- Atlassian SourceTree
+- Syntevo SmartGit
 
 ## Roadmap
 
@@ -252,30 +127,22 @@ Following tasks are still on the roadmap:
 New features or bugfixes can be logged at the [issue tracker](https://github.com/phpro/grumphp/issues).
 Want to help out? Feel free to contact us!
 
+## Build your own conventions checker
 
-# Execution
+You can see an [example](https://github.com/linkorb/conventions-checker)
+of how to build your own conventions checker.
 
-GrumPHP will be triggered with GIT hooks. However, you can [execute the trigger on the command line](doc/execution.md).
+## Solving issues
 
-# Compatibility
+- [GrumPHP does not work with submodules](doc/issues/grumphp-is-not-working-with-submodules.md)
 
-This package has been tested with following git clients:
+## About
 
-- CLI Unix
-- CLI Mac
-- CLI Windows
-- PhpStorm Git
-- Atlassian SourceTree
-- Syntevo SmartGit
+### Submitting bugs and feature requests
 
-# Solving issues
+Bugs and feature request are tracked on [GitHub](https://github.com/phpro/grumphp/issues).
+Please take a look at our rules before [contributing your code](CONTRIBUTING.md).
 
-## GrumPHP does not work with submodules.
-When you use a submodule, GrumPHP will throw diff errors.
-This is because the plugin uses Gitlib which does not support submodules.
+### License
 
-If you do not need to update your submodule, you can just remove all references to it.
-If the changed .gitmodules is not commited nothing will change in your repo.
-
-Ref.: https://github.com/gitonomy/gitlib/issues/12
-
+GrumPHP is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
