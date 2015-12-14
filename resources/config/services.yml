@@ -123,3 +123,11 @@ services:
             - '@process_builder'
         tags:
             - {name: grumphp.task, config: grunt}
+
+    task.composer:
+        class: GrumPHP\Task\Composer
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: composer}
