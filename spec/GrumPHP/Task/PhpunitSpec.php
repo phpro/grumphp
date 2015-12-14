@@ -11,8 +11,8 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
-use SplFileInfo;
 
 class PhpunitSpec extends ObjectBehavior
 {
@@ -59,7 +59,7 @@ class PhpunitSpec extends ObjectBehavior
         $process->isSuccessful()->willReturn(true);
 
         $context->getFiles()->willReturn(new FilesCollection(array(
-            new SplFileInfo('test.php')
+            new SplFileInfo('test.php', '.', 'test.php')
         )));
         $this->run($context);
     }
@@ -75,7 +75,7 @@ class PhpunitSpec extends ObjectBehavior
         $process->getOutput()->shouldBeCalled();
 
         $context->getFiles()->willReturn(new FilesCollection(array(
-            new SplFileInfo('test.php')
+            new SplFileInfo('test.php', '.', 'test.php')
         )));
         $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($context);
     }

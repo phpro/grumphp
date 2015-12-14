@@ -11,7 +11,7 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use SplFileInfo;
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 
 class GruntSpec extends ObjectBehavior
@@ -53,7 +53,7 @@ class GruntSpec extends ObjectBehavior
 
     function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
     {
-        $processBuilder->createArgumentsForCommand('codecept')->shouldNotBeCalled();
+        $processBuilder->createArgumentsForCommand('grunt')->shouldNotBeCalled();
         $processBuilder->buildProcess()->shouldNotBeCalled();
 
         $context->getFiles()->willReturn(new FilesCollection());
@@ -70,7 +70,7 @@ class GruntSpec extends ObjectBehavior
         $process->isSuccessful()->willReturn(true);
 
         $context->getFiles()->willReturn(new FilesCollection(array(
-            new SplFileInfo('test.js')
+            new SplFileInfo('test.js', '.', 'test.js')
         )));
         $this->run($context);
     }
@@ -89,7 +89,7 @@ class GruntSpec extends ObjectBehavior
         $process->getOutput()->shouldBeCalled();
 
         $context->getFiles()->willReturn(new FilesCollection(array(
-            new SplFileInfo('test.js')
+            new SplFileInfo('test.js', '.', 'test.js')
         )));
         $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($context);
     }

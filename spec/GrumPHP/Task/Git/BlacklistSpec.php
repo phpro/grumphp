@@ -10,8 +10,8 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
-use SplFileInfo;
 
 class BlacklistSpec extends ObjectBehavior
 {
@@ -59,7 +59,7 @@ class BlacklistSpec extends ObjectBehavior
         $processBuilder->buildProcess()->shouldNotBeCalled();
 
         $context->getFiles()->willReturn(new FilesCollection(array(
-            new SplFileInfo('file1.php'),
+            new SplFileInfo('file1.php', '.', 'file1.php'),
         )));
 
         $this->run($context)->shouldBeNull();
@@ -85,7 +85,7 @@ class BlacklistSpec extends ObjectBehavior
         $process->isSuccessful()->willReturn(false); 
 
         $context->getFiles()->willReturn(new FilesCollection(array(
-            new SplFileInfo('file1.php'),
+            new SplFileInfo('file1.php', '.', 'file1.php'),
         )));
         $this->run($context);
     }
@@ -109,7 +109,7 @@ class BlacklistSpec extends ObjectBehavior
         $process->getOutput()->shouldBeCalled();
 
         $context->getFiles()->willReturn(new FilesCollection(array(
-            new SplFileInfo('file1.php'),
+            new SplFileInfo('file1.php', '.', 'file1.php'),
         )));
         $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($context);
     }

@@ -55,7 +55,7 @@ class Grunt extends AbstractExternalTask
     {
         $config = $this->getConfiguration();
 
-        $files = $context->getFiles()->name(sprintf('/.(%s)$/i', implode('|', $config['triggered_by'])));
+        $files = $context->getFiles()->name(sprintf('/\.(%s)$/i', implode('|', $config['triggered_by'])));
         if (0 === count($config['triggered_by']) || 0 === count($files)) {
             return;
         }

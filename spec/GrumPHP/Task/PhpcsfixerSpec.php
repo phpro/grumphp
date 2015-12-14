@@ -11,8 +11,8 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
-use SplFileInfo;
 
 class PhpcsfixerSpec extends ObjectBehavior
 {
@@ -73,8 +73,8 @@ class PhpcsfixerSpec extends ObjectBehavior
         $process->isSuccessful()->willReturn(true);
 
         $context->getFiles()->willReturn(new FilesCollection(array(
-            new SplFileInfo('file1.php'),
-            new SplFileInfo('file2.php'),
+            new SplFileInfo('file1.php', '.', 'file1.php'),
+            new SplFileInfo('file2.php', '.', 'file2.php'),
         )));
         $this->run($context);
     }
@@ -93,7 +93,7 @@ class PhpcsfixerSpec extends ObjectBehavior
         $process->isSuccessful()->willReturn(false);
 
         $context->getFiles()->willReturn(new FilesCollection(array(
-            new SplFileInfo('file1.php'),
+            new SplFileInfo('file1.php', '.', 'file1.php'),
         )));
         $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($context);
     }
