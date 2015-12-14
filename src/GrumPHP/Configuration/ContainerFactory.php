@@ -27,7 +27,9 @@ final class ContainerFactory
 
         // Load basic service file + custom user configuration
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../../resources/config'));
+        $loader->load('parameters.yml');
         $loader->load('services.yml');
+        $loader->load('tasks.yml');
 
         // Load grumphp.yml file:
         $filesystem = new Filesystem();

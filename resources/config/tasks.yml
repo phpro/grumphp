@@ -1,0 +1,79 @@
+services:
+    task.behat:
+        class: GrumPHP\Task\Behat
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: behat}
+
+    task.codeception:
+        class: GrumPHP\Task\Codeception
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: codeception}
+
+    task.composer:
+        class: GrumPHP\Task\Composer
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: composer}
+
+    task.git.blacklist:
+        class: GrumPHP\Task\Git\Blacklist
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: git_blacklist}
+
+    task.git.commitmessage:
+        class: GrumPHP\Task\Git\CommitMessage
+        arguments:
+            - '@config'
+        tags:
+            - {name: grumphp.task, config: git_commit_message}
+
+    task.grunt:
+        class: GrumPHP\Task\Grunt
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: grunt}
+
+    task.phpcs:
+        class: GrumPHP\Task\Phpcs
+        arguments:
+          - '@config'
+          - '@process_builder'
+        tags:
+          - {name: grumphp.task, config: phpcs}
+
+    task.phpcsfixer:
+        class: GrumPHP\Task\Phpcsfixer
+        arguments:
+          - '@config'
+          - '@process_builder'
+        tags:
+          - {name: grumphp.task, config: phpcsfixer}
+
+    task.phpspec:
+        class: GrumPHP\Task\Phpspec
+        arguments:
+          - '@config'
+          - '@process_builder'
+        tags:
+          - {name: grumphp.task, config: phpspec}
+
+    task.phpunit:
+        class: GrumPHP\Task\Phpunit
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: phpunit}

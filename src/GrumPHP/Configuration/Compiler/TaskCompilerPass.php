@@ -57,6 +57,8 @@ class TaskCompilerPass implements CompilerPassInterface
             $definition->addMethodCall('addTask', array(new Reference($id)));
         }
 
+        sort($tasksRegistered);
+
         $container->setParameter('grumphp.tasks.registered', $tasksRegistered);
         $container->setParameter('grumphp.tasks.configuration', $tasksConfiguration);
         $container->setParameter('grumphp.tasks.metadata', $tasksMetadata);
