@@ -44,9 +44,16 @@ class TaskCompilerPass implements CompilerPassInterface
                 continue;
             }
 
+            // Load configuration and metadata:
             $taskConfig = is_array($configuration[$configKey]) ? $configuration[$configKey] : array();
-            $tasksConfiguration[$configKey] = $taskConfig;
             $tasksMetadata[$configKey] = $this->parseTaskMetadata($taskConfig);
+
+            // The metadata can't be part of the actual configuration.
+            // This will throw exceptions during options resolving.
+            unset($taskConfig['metadata']);
+            $tasksConfiguration[$configKey] = $taskConfig;
+
+            // Add the task to the task runner:
             $definition->addMethodCall('addTask', array(new Reference($id)));
         }
 

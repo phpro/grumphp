@@ -32,6 +32,38 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Phpspec](tasks/phpspec.md)
 - [Phpunit](tasks/phpunit.md)
 
+## Metadata
+
+Every task has a pre-defined `metadata` key on which application specific options can be configured. 
+For example:
+
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        anytask:
+            metadata:
+                blocking: true
+                priority: 0
+```
+
+**priority** (Not Implemented Yet!!)
+
+*Default: 0*
+
+This option can be used to specify the order in which the tasks will be executed.
+The higher the priority, the sooner the task will be executed.
+
+
+**blocking** (Not Implemented Yet!!)
+
+*Default: true*
+
+This option can be used to make a failing task non-blocking. 
+By default all tasks will be marked as blocking.
+When a task is non-blocking, the errors will be displayed but the tests will pass.
+
+
 ## Creating a custom task
 
 It is very easy to configure your own project specific task.
