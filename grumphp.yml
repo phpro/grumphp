@@ -8,3 +8,6 @@ parameters:
         ignore_patterns:
           - "*Spec.php"
       phpspec: ~
+      composer:
+        no_check_lock: true
+        strict: true

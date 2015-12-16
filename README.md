@@ -65,6 +65,7 @@ parameters:
     tasks:
         behat: ~
         codeception: ~
+        composer: ~
         git_blacklist: ~
         git_commit_message: ~
         grunt: ~
