@@ -9,6 +9,7 @@ use GrumPHP\Console\Helper\PathsHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
@@ -65,6 +66,12 @@ class ConfigureCommand extends Command
     protected function configure()
     {
         $this->setName(self::COMMAND_NAME);
+        $this->addOption(
+            'force',
+            null,
+            InputOption::VALUE_NONE,
+            'Forces overwriting the configuration file when it already exists.'
+        );
     }
 
     /**
@@ -78,7 +85,8 @@ class ConfigureCommand extends Command
         $this->input = $input;
 
         $grumphpConfigName = $this->input->getOption('config');
-        if ($this->filesystem->exists($grumphpConfigName)) {
+        $force = $input->getOption('force');
+        if ($this->filesystem->exists($grumphpConfigName) && !$force) {
             if ($input->isInteractive()) {
                 $output->writeln('<fg=yellow>GrumPHP is already configured!</fg=yellow>');
             }
@@ -114,12 +122,11 @@ class ConfigureCommand extends Command
      */
     protected function buildConfiguration(InputInterface $input, OutputInterface $output)
     {
-
         /** @var QuestionHelper $helper */
         $helper = $this->getHelper('question');
 
         $questionString = $this->createQuestionString(
-            'No grumphp.yml file could be found. Do you want to create one?',
+            'Do you want to create a grumphp.yml file?',
             'Yes'
         );
         $question = new ConfirmationQuestion($questionString, true);
