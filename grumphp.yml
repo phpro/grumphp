@@ -6,8 +6,10 @@ parameters:
       phpcs:
         standard: PSR2
         ignore_patterns:
-          - "*Spec.php"
+          - "spec/*Spec.php"
+          - "test/*.php"
       phpspec: ~
+      phpunit: ~
       composer:
         no_check_lock: true
         strict: true

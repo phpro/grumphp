@@ -73,6 +73,7 @@ parameters:
         phpcsfixer: ~
         phpspec: ~
         phpunit: ~
+        xmllint: ~
     extensions: []
 ```
 

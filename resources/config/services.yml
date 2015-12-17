@@ -43,3 +43,7 @@ services:
         class: GrumPHP\Locator\RegisteredFiles
         arguments:
           - '@git.repository'
+
+    linter.xmllint:
+        class: GrumPHP\Linter\Xml\Xmllinter
+        arguments: []
