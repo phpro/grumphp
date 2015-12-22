@@ -42,7 +42,7 @@ class ChangedFiles
             }
 
             $fileName = $file->isRename() ? $file->getNewName() : $file->getName();
-            $files[] = new SplFileInfo($fileName, dirname($fileName), $file);
+            $files[] = new SplFileInfo($fileName, dirname($fileName), $fileName);
         }
 
         return new FilesCollection($files);
