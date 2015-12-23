@@ -5,7 +5,6 @@ namespace GrumPHP\Task;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Linter\LinterInterface;
-use GrumPHP\Process\ProcessBuilder;
 
 /**
  * Class AbstractLinter
