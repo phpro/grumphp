@@ -210,10 +210,11 @@ class XmlLinter implements LinterInterface
 
         if ($schemaLocation = $attributes->getNamedItemNS(self::XSI_NAMESPACE, 'schemaLocation')) {
             $parts = preg_split('/\s{1,}/', trim($schemaLocation->textContent));
-            $found = array_filter($parts, function ($key) {
-                return ($key & 1);
-            }, ARRAY_FILTER_USE_KEY);
-            $schemas = array_merge($schemas, $found);
+            foreach ($parts as $key => $value) {
+                if ($key & 1) {
+                    $schemas[] = $value;
+                }
+            }
         }
 
         if ($schemaLocNoNamespace = $attributes->getNamedItemNS(self::XSI_NAMESPACE, 'noNamespaceSchemaLocation')) {
