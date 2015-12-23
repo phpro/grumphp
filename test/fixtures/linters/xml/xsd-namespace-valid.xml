@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<note xmlns="http://www.grumphp.com"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.grumphp.com note-namespace.xsd">
+
+    <to>Tove</to>
+    <from>Jani</from>
+    <heading>Reminder</heading>
+    <body>Don't forget me this weekend!</body>
+</note>

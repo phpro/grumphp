@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xi:include
+        href="xsd-nonamespace-valid.xml"
+        xmlns:xi="http://www.w3.org/2003/XInclude">
+    <xi:fallback>
+        <error>xinclude: xml not found not found</error>
+    </xi:fallback>
+</xi:include>

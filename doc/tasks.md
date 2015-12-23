@@ -17,6 +17,7 @@ parameters:
         phpcsfixer: ~
         phpspec: ~
         phpunit: ~
+        xmllint: ~
 ```
 
 Every task has it's own default configuration. It is possible to overwrite the parameters per task.
@@ -33,6 +34,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [PHP-CS-Fixer](tasks/php_cs_fixer.md)
 - [Phpspec](tasks/phpspec.md)
 - [Phpunit](tasks/phpunit.md)
+- [XmlLint](tasks/xmllint.md)
 
 ## Metadata
 

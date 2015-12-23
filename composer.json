@@ -23,7 +23,8 @@
         "phpspec/phpspec": "~2.4",
         "squizlabs/php_codesniffer": "~2.3",
         "roave/security-advisories": "dev-master@dev",
-        "fabpot/php-cs-fixer": "~1.0"
+        "fabpot/php-cs-fixer": "~1.0",
+        "phpunit/phpunit": "^4.8"
     },
     "suggest": {
         "behat/behat": "Lets GrumPHP validate your project features.",
@@ -50,6 +51,11 @@
     "autoload": {
         "psr-0": {
             "GrumPHP\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-0": {
+            "GrumPHPTest\\": "test/src/"
         }
     },
     "bin": ["bin/grumphp"]

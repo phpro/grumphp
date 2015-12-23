@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE note [
+    <!ELEMENT note (to,from,heading,body)>
+    <!ELEMENT to (#PCDATA)>
+    <!ELEMENT from (#PCDATA)>
+    <!ELEMENT heading (#PCDATA)>
+    <!ELEMENT body (#PCDATA)>
+    <!ATTLIST note xmlns:xsi CDATA #REQUIRED>
+    <!ATTLIST note xsi:noNamespaceSchemaLocation CDATA #REQUIRED>
+    <!ENTITY nbsp "&#xA0;">
+    <!ENTITY writer "Writer: Donald Duck.">
+]>
+<notes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="note-nonamespace.xsd">
+
+    <to>Tove</to>
+    <from>Jani</from>
+    <heading>Reminder</heading>
+    <body>Don't forget me this weekend!</body>
+</notes>

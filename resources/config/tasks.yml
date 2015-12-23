@@ -77,3 +77,11 @@ services:
             - '@process_builder'
         tags:
             - {name: grumphp.task, config: phpunit}
+
+    task.xmllint:
+        class: GrumPHP\Task\XmlLint
+        arguments:
+            - '@config'
+            - '@linter.xmllint'
+        tags:
+            - {name: grumphp.task, config: xmllint}
