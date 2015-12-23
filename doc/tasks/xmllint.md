@@ -8,11 +8,20 @@ It lives under the `xmllint` namespace and has following configurable parameters
 parameters:
     tasks:
         xmllint:
+            ignore_patterns: []
             load_from_net: false
             x_include: false
             dtd_validation: false
             scheme_validation: false
 ```
+
+**ignore_patterns**
+
+*Default: []*
+
+This is a list of patterns that will be ignored by the linter. 
+With this option you can skip files like test fixtures. Leave this option blank to run the linter for every xml file.
+
 
 **load_from_net**
 

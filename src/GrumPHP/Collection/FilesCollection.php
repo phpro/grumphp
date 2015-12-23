@@ -3,6 +3,8 @@
 namespace GrumPHP\Collection;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use GrumPHP\Util\Regex;
+use SplFileInfo;
 use Symfony\Component\Finder\Comparator;
 use Symfony\Component\Finder\Iterator;
 
@@ -22,7 +24,7 @@ class FilesCollection extends ArrayCollection
      * $collection->name('/\.php$/') // same as above
      * $collection->name('test.php')
      *
-     * @param string $pattern A pattern (a regexp, a glob, or a string)
+     * @param string|Regex $pattern A pattern (a regexp, a glob, or a string)
      *
      * @return FilesCollection
      */
@@ -58,7 +60,7 @@ class FilesCollection extends ArrayCollection
      *
      * $collection->path('/^spec\/')
      *
-     * @param $pattern
+     * @param string $pattern
      *
      * @return FilesCollection
      */
@@ -76,7 +78,7 @@ class FilesCollection extends ArrayCollection
      *
      * $collection->notPath('/^spec\/')
      *
-     * @param $pattern
+     * @param string $pattern
      *
      * @return FilesCollection
      */
@@ -128,6 +130,25 @@ class FilesCollection extends ArrayCollection
     {
         $comparator = new Comparator\DateComparator($date);
         $filter = new Iterator\DateRangeFilterIterator($this->getIterator(), array($comparator));
+
+        return new FilesCollection(iterator_to_array($filter));
+    }
+
+    /**
+     * Filters the iterator with an anonymous function.
+     *
+     * The anonymous function receives a \SplFileInfo and must return false
+     * to remove files.
+     *
+     * @param \Closure $closure An anonymous function
+     *
+     * @return FilesCollection The current Finder instance
+     *
+     * @see CustomFilterIterator
+     */
+    public function filter(\Closure $closure)
+    {
+        $filter = new Iterator\CustomFilterIterator($this->getIterator(), array($closure));
 
         return new FilesCollection(iterator_to_array($filter));
     }

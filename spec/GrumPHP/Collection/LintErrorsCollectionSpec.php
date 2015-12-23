@@ -11,7 +11,7 @@ class LintErrorsCollectionSpec extends ObjectBehavior
     function let()
     {
         $this->beConstructedWith(array(
-            new LintError(LintError::TYPE_ERROR, 0, 'error', 'file.txt', 1, 1),
+            new LintError(LintError::TYPE_ERROR, 'error', 'file.txt', 1),
         ));
     }
 
@@ -27,6 +27,6 @@ class LintErrorsCollectionSpec extends ObjectBehavior
 
     function it_should_be_parsed_as_string()
     {
-        $this->__toString()->shouldBe('[ERROR] file.txt: error (0) on line 1,1');
+        $this->__toString()->shouldBe('[ERROR] file.txt: error on line 1');
     }
 }

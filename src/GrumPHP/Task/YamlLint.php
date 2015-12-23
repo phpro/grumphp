@@ -4,21 +4,21 @@ namespace GrumPHP\Task;
 
 use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Exception\RuntimeException;
-use GrumPHP\Linter\Xml\XmlLinter;
+use GrumPHP\Linter\Yaml\YamlLinter;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class XmlLint
+ * Class YamlLint
  *
  * @package GrumPHP\Task
  */
-class XmlLint extends AbstractLinterTask
+class YamlLint extends AbstractLinterTask
 {
     /**
-     * @var XmlLinter
+     * @var YamlLinter
      */
     protected $linter;
 
@@ -27,7 +27,7 @@ class XmlLint extends AbstractLinterTask
      */
     public function getName()
     {
-        return 'xmllint';
+        return 'yamllint';
     }
 
     /**
@@ -37,16 +37,12 @@ class XmlLint extends AbstractLinterTask
     {
         $resolver = parent::getConfigurableOptions();
         $resolver->setDefaults(array(
-            'load_from_net' => false,
-            'x_include' => false,
-            'dtd_validation' => false,
-            'scheme_validation' => false,
+            'object_support' => false,
+            'exception_on_invalid_type' => false,
         ));
 
-        $resolver->addAllowedTypes('load_from_net', array('bool'));
-        $resolver->addAllowedTypes('x_include', array('bool'));
-        $resolver->addAllowedTypes('dtd_validation', array('bool'));
-        $resolver->addAllowedTypes('scheme_validation', array('bool'));
+        $resolver->addAllowedTypes('object_support', array('bool'));
+        $resolver->addAllowedTypes('exception_on_invalid_type', array('bool'));
 
         return $resolver;
     }
@@ -64,17 +60,15 @@ class XmlLint extends AbstractLinterTask
      */
     public function run(ContextInterface $context)
     {
-        $files = $context->getFiles()->name('*.xml');
+        $files = $context->getFiles()->name('/\.(yaml|yml)$/i');
         if (0 === count($files)) {
             return;
         }
 
         $config = $this->getConfiguration();
 
-        $this->linter->setLoadFromNet($config['load_from_net']);
-        $this->linter->setXInclude($config['x_include']);
-        $this->linter->setDtdValidation($config['dtd_validation']);
-        $this->linter->setSchemeValidation($config['scheme_validation']);
+        $this->linter->setObjectSupport($config['object_support']);
+        $this->linter->setExceptionOnInvalidType($config['exception_on_invalid_type']);
 
         $lintErrors = $this->lint($files);
         if ($lintErrors->count()) {

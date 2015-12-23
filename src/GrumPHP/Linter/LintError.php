@@ -20,11 +20,6 @@ class LintError
     private $type;
 
     /**
-     * @var int
-     */
-    private $code;
-
-    /**
      * @var string
      */
     private $error;
@@ -40,28 +35,19 @@ class LintError
     private $line;
 
     /**
-     * @var int
-     */
-    private $column;
-
-    /**
      * LintError constructor.
      *
      * @param string $type
-     * @param int    $code
      * @param string $error
      * @param string $file
      * @param int    $line
-     * @param int    $column
      */
-    public function __construct($type, $code, $error, $file, $line, $column)
+    public function __construct($type, $error, $file, $line)
     {
         $this->type = $type;
-        $this->code = $code;
         $this->error = $error;
         $this->file = $file;
         $this->line = $line;
-        $this->column = $column;
     }
 
     /**
@@ -70,14 +56,6 @@ class LintError
     public function getType()
     {
         return $this->type;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCode()
-    {
-        return $this->code;
     }
 
     /**
@@ -105,26 +83,16 @@ class LintError
     }
 
     /**
-     * @return int
-     */
-    public function getColumn()
-    {
-        return $this->column;
-    }
-
-    /**
      * @return string
      */
     public function __toString()
     {
         return sprintf(
-            '[%s] %s: %s (%s) on line %s,%s',
+            '[%s] %s: %s on line %s',
             strtoupper($this->getType()),
             $this->getFile(),
             $this->getError(),
-            $this->getCode() ?: 0,
-            $this->getLine(),
-            $this->getColumn() ?: 0
+            $this->getLine()
         );
     }
 }
