@@ -103,7 +103,6 @@ class XmlLinterTest extends \PHPUnit_Framework_TestCase
     function it_can_handle_xincludes($fixture, $errors)
     {
         $this->linter->setXInclude(true);
-        $this->linter->setSchemeValidation(true);
 
         $this->validateFixture($fixture, $errors);
     }
@@ -172,7 +171,7 @@ class XmlLinterTest extends \PHPUnit_Framework_TestCase
         return array(
             array('fixture' => 'xml-valid.xml', 'errors' => 0),
             array('fixture' => 'xinclude-valid.xml', 'errors' => 0),
-            array('fixture' => 'xinclude-invalid.xml', 'errors' => 1),
+            array('fixture' => 'xinclude-invalid.xml', 'errors' => 2),
         );
     }
 }
