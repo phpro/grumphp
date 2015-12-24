@@ -85,3 +85,12 @@ services:
             - '@linter.xmllint'
         tags:
             - {name: grumphp.task, config: xmllint}
+
+
+    task.yamllint:
+        class: GrumPHP\Task\YamlLint
+        arguments:
+            - '@config'
+            - '@linter.yamllint'
+        tags:
+            - {name: grumphp.task, config: yamllint}

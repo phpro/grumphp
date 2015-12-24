@@ -10,7 +10,7 @@ class LintErrorSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(LintError::TYPE_ERROR, 0, 'error', 'file.txt', 1, 1);
+        $this->beConstructedWith(LintError::TYPE_ERROR, 'error', 'file.txt', 1);
     }
 
     function it_is_initializable()
@@ -21,11 +21,6 @@ class LintErrorSpec extends ObjectBehavior
     function it_has_an_error_type()
     {
         $this->getType()->shouldBe(LintError::TYPE_ERROR);
-    }
-
-    function it_has_an_error_code()
-    {
-        $this->getCode()->shouldBe(0);
     }
 
     function it_has_an_error_message()
@@ -43,13 +38,8 @@ class LintErrorSpec extends ObjectBehavior
         $this->getLine()->shouldBe(1);
     }
 
-    function it_has_a_column_number()
-    {
-        $this->getColumn()->shouldBe(1);
-    }
-
     function it_can_be_parsed_as_string()
     {
-        $this->__toString()->shouldBe('[ERROR] file.txt: error (0) on line 1,1');
+        $this->__toString()->shouldBe('[ERROR] file.txt: error on line 1');
     }
 }

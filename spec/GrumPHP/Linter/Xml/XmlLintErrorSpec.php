@@ -22,4 +22,20 @@ class XmlLintErrorSpec extends ObjectBehavior
     {
         $this->shouldHaveType('GrumPHP\Linter\LintError');
     }
+
+
+    function it_has_an_error_code()
+    {
+        $this->getCode()->shouldBe(0);
+    }
+
+    function it_has_a_column_number()
+    {
+        $this->getColumn()->shouldBe(1);
+    }
+
+    function it_can_be_parsed_as_string()
+    {
+        $this->__toString()->shouldBe('[ERROR] file.txt: error (0) on line 1,1');
+    }
 }

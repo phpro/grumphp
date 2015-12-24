@@ -18,6 +18,7 @@ parameters:
         phpspec: ~
         phpunit: ~
         xmllint: ~
+        yamllint: ~
 ```
 
 Every task has it's own default configuration. It is possible to overwrite the parameters per task.
@@ -35,6 +36,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Phpspec](tasks/phpspec.md)
 - [Phpunit](tasks/phpunit.md)
 - [XmlLint](tasks/xmllint.md)
+- [YamlLint](tasks/yamllint.md)
 
 ## Metadata
 

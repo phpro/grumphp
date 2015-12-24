@@ -74,6 +74,7 @@ parameters:
         phpspec: ~
         phpunit: ~
         xmllint: ~
+        yamllint: ~
     extensions: []
 ```
 

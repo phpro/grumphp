@@ -2,9 +2,13 @@
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Linter\LinterInterface;
+use GrumPHP\Util\Regex;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class AbstractLinter
@@ -34,6 +38,21 @@ abstract class AbstractLinterTask implements TaskInterface
     }
 
     /**
+     * @return OptionsResolver
+     */
+    public function getConfigurableOptions()
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(array(
+            'ignore_patterns' => array(),
+        ));
+
+        $resolver->addAllowedTypes('ignore_patterns', array('array'));
+
+        return $resolver;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getConfiguration()
@@ -48,12 +67,38 @@ abstract class AbstractLinterTask implements TaskInterface
      *
      * @throws RuntimeException
      */
-    public function guardLinterIsInstalled()
+    protected function guardLinterIsInstalled()
     {
         if (!$this->linter->isInstalled()) {
             throw new RuntimeException(
                 sprintf('The %s can\'t run on your system. Please install all dependencies.', $this->getName())
             );
         }
+    }
+
+    /**
+     * @param FilesCollection $files
+     *
+     * @return LintErrorsCollection
+     */
+    protected function lint(FilesCollection $files)
+    {
+        $this->guardLinterIsInstalled();
+
+        // Skip ignored patterns:
+        $configuration = $this->getConfiguration();
+        foreach ($configuration['ignore_patterns'] as $pattern) {
+            $files = $files->notPath($pattern);
+        }
+
+        // Lint every file:
+        $lintErrors = new LintErrorsCollection();
+        foreach ($files as $file) {
+            foreach ($this->linter->lint($file) as $error) {
+                $lintErrors->add($error);
+            }
+        }
+
+        return $lintErrors;
     }
 }
