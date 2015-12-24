@@ -2,7 +2,6 @@
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Linter\Xml\XmlLinter;
 use GrumPHP\Task\Context\ContextInterface;

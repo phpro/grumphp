@@ -7,7 +7,6 @@ use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Linter\LinterInterface;
-use GrumPHP\Util\Regex;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

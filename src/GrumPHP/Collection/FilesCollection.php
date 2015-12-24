@@ -4,7 +4,6 @@ namespace GrumPHP\Collection;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use GrumPHP\Util\Regex;
-use SplFileInfo;
 use Symfony\Component\Finder\Comparator;
 use Symfony\Component\Finder\Iterator;
 
