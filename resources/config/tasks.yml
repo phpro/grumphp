@@ -46,6 +46,14 @@ services:
         tags:
             - {name: grumphp.task, config: grunt}
 
+    task.jsonlint:
+        class: GrumPHP\Task\JsonLint
+        arguments:
+            - '@config'
+            - '@linter.jsonlint'
+        tags:
+            - {name: grumphp.task, config: jsonlint}
+
     task.phpcs:
         class: GrumPHP\Task\Phpcs
         arguments:
@@ -85,7 +93,6 @@ services:
             - '@linter.xmllint'
         tags:
             - {name: grumphp.task, config: xmllint}
-
 
     task.yamllint:
         class: GrumPHP\Task\YamlLint
