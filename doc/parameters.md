@@ -3,7 +3,7 @@
 ```yaml
 # grumphp.yml
 parameters:
-    bin_dir: ./bin/vendor
+    bin_dir: ./vendor/bin
     git_dir: .
     ascii:
         failed: resource/grumphp-grumpy.txt
@@ -12,7 +12,7 @@ parameters:
 
 **bin_dir**
 
-*Default: ./bin/vendor*
+*Default: ./vendor/bin*
 
 This parameter will tell GrumPHP where it can locate external commands like phpcs and phpspec.
 It defaults to the default composer bin directory.
@@ -40,5 +40,3 @@ parameters:
     ascii:
         succeeded: ~
 ```
-
-
