@@ -1,4 +1,8 @@
 services:
+    linter.jsonlint:
+        class: GrumPHP\Linter\Json\JsonLinter
+        arguments: []
+
     linter.xmllint:
         class: GrumPHP\Linter\Xml\XmlLinter
         arguments: []

@@ -13,6 +13,7 @@ parameters:
         git_blacklist: ~
         git_commit_message: ~
         grunt: ~
+        jsonlint: ~
         phpcs: ~
         phpcsfixer: ~
         phpspec: ~
@@ -31,6 +32,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Git blacklist](tasks/git_blacklist.md)
 - [Git commit message](tasks/git_commit_message.md)
 - [Grunt](tasks/grunt.md)
+- [JsonLint](tasks/jsonlint.md)
 - [Phpcs](tasks/phpcs.md)
 - [PHP-CS-Fixer](tasks/php_cs_fixer.md)
 - [Phpspec](tasks/phpspec.md)

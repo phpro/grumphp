@@ -69,6 +69,7 @@ parameters:
         git_blacklist: ~
         git_commit_message: ~
         grunt: ~
+        jsonlint: ~
         phpcs: ~
         phpcsfixer: ~
         phpspec: ~
@@ -120,9 +121,6 @@ Following tasks are still on the roadmap:
 - robo
 - twig lint
 - symfony validation
-- json lint
-- yaml lint
-- xml lint / dtd validation
 - gulp tests
 - npm test tests
 - ...
