@@ -1,5 +1,9 @@
 language: php
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 matrix:
   include:
     - php: 5.3
@@ -18,9 +22,8 @@ before_install:
   - composer selfupdate
 
 install:
-  - if [ "$DEPENDENCIES" != "low" ]; then composer update --prefer-dist --no-scripts --no-interaction; fi;
-  - if [ "$DEPENDENCIES" == "low" ]; then composer update --prefer-lowest --no-scripts --no-interaction; fi;
-
+  - if [ "$DEPENDENCIES" != "low" ]; then travis_retry composer update --prefer-dist --no-scripts --no-interaction; fi;
+  - if [ "$DEPENDENCIES" == "low" ]; then travis_retry composer update --prefer-lowest --no-scripts --no-interaction; fi;
 
 script:
    - ./bin/grumphp run
