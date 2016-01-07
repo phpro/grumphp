@@ -7,10 +7,10 @@ It lives under the `phpcsfixer` namespace and has following configurable paramet
 # grumphp.yml
 parameters:
     tasks:
-        php_cs_fixer:
+        phpcsfixer:
             config_file: ~
             config: ~
-            filters: []
+            fixers: []
             level: ~
             verbose: true
 ```
@@ -30,7 +30,7 @@ There such predefined configs for codestyle checks: `default`, `magento`, `sf23`
 If you want to run a particular config, specify it with this option.
 
 
-**filters**
+**fixers**
 
 *Default: array()*
 
