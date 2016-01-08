@@ -115,7 +115,6 @@ This package has been tested with following git clients:
 
 Following tasks are still on the roadmap:
 
-- composer validate command
 - phpmd
 - phpcpd
 - phpdcd
@@ -123,7 +122,7 @@ Following tasks are still on the roadmap:
 - twig lint
 - symfony validation
 - gulp tests
-- npm test tests
+- npm tests
 - ...
 
 New features or bugfixes can be logged at the [issue tracker](https://github.com/phpro/grumphp/issues).
