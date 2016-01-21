@@ -27,3 +27,8 @@ install:
 
 script:
    - ./bin/grumphp run
+
+notifications:
+  irc:
+    channels:
+      - "chat.freenode.net#grumphp"
