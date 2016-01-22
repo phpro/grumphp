@@ -60,6 +60,7 @@ Having trouble installing GrumPHP? Try one of the following options:
 parameters:
     bin_dir: "./vendor/bin"
     git_dir: "."
+    stop_on_failure: false
     ascii:
         failed: grumphp-grumpy.txt
         succeeded: grumphp-happy.txt

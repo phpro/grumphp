@@ -40,6 +40,14 @@ class GrumPHP
     }
 
     /**
+     * @return bool
+     */
+    public function stopOnFailure()
+    {
+        return (bool) $this->container->getParameter('stop_on_failure');
+    }
+
+    /**
      * @return array
      */
     public function getRegisteredTasks()

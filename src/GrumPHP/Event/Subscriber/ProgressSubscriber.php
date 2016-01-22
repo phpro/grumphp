@@ -87,6 +87,11 @@ class ProgressSubscriber implements EventSubscriberInterface
      */
     public function finishProgress(RunnerEvent $runnerEvent)
     {
+        if ($this->progressBar->getProgress() != $this->progressBar->getMaxSteps()) {
+            $this->progressBar->setFormat('<fg=red>%message%</fg=red>');
+            $this->progressBar->setMessage('Aborted ...');
+        }
+
         $this->progressBar->finish();
         $this->output->writeln('');
     }

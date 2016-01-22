@@ -3,6 +3,7 @@
 namespace GrumPHP\Runner;
 
 use GrumPHP\Collection\TasksCollection;
+use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Event\RunnerEvents;
 use GrumPHP\Event\RunnerFailedEvent;
@@ -33,14 +34,21 @@ class TaskRunner
     private $eventDispatcher;
 
     /**
+     * @var GrumPHP
+     */
+    private $grumPHP;
+
+    /**
      * @constructor
      *
+     * @param GrumPHP                  $grumPHP
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    public function __construct(GrumPHP $grumPHP, EventDispatcherInterface $eventDispatcher)
     {
         $this->tasks = new TasksCollection();
         $this->eventDispatcher = $eventDispatcher;
+        $this->grumPHP = $grumPHP;
     }
 
     /**
@@ -72,7 +80,7 @@ class TaskRunner
     {
         $failures = false;
         $messages = array();
-        $tasks = $this->tasks->filterByContext($context);
+        $tasks = $this->tasks->filterByContext($context)->sortByPriority($this->grumPHP);
 
         $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, new RunnerEvent($tasks));
         foreach ($tasks as $task) {
@@ -84,6 +92,10 @@ class TaskRunner
                 $this->eventDispatcher->dispatch(TaskEvents::TASK_FAILED, new TaskFailedEvent($task, $e));
                 $messages[] = $e->getMessage();
                 $failures = true;
+
+                if ($this->grumPHP->stopOnFailure()) {
+                    break;
+                }
             }
         }
 

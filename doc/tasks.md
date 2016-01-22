@@ -55,7 +55,7 @@ parameters:
                 priority: 0
 ```
 
-**priority** (Not Implemented Yet!!)
+**priority**
 
 *Default: 0*
 

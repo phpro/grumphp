@@ -3,6 +3,7 @@
 namespace spec\GrumPHP\Runner;
 
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\RunnerEvents;
 use GrumPHP\Event\TaskEvents;
 use GrumPHP\Task\Context\ContextInterface;
@@ -15,15 +16,23 @@ class TaskRunnerSpec extends ObjectBehavior
 {
 
     public function let(
+        GrumPHP $grumPHP,
         EventDispatcherInterface $eventDispatcher,
         TaskInterface $task1,
         TaskInterface $task2,
         ContextInterface $context
     ) {
-        $this->beConstructedWith($eventDispatcher);
+        $this->beConstructedWith($grumPHP, $eventDispatcher);
 
+
+        $task1->getName()->willReturn('task1');
         $task1->canRunInContext($context)->willReturn(true);
+        $task2->getName()->willReturn('task2');
         $task2->canRunInContext($context)->willReturn(true);
+
+        $grumPHP->stopOnFailure()->willReturn(false);
+        $grumPHP->getTaskMetadata('task1')->willReturn(array('priority' => 0));
+        $grumPHP->getTaskMetadata('task2')->willReturn(array('priority' => 0));
 
         $this->addTask($task1);
         $this->addTask($task2);
