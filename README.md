@@ -43,6 +43,7 @@ To make GrumPHP even more awesome, it will suggest installing some extra package
 - roave/security-advisories : dev-master@dev
 - squizlabs/php_codesniffer : ~2.3
 - codeception/codeception : ~2.1
+- sensiolabs/security-checker : ~3.0
 
 GrumPHP will never push you into using a specific task. You can choose the tasks that fit your needs, and activate or
 deactivate any task in no time!
@@ -75,6 +76,7 @@ parameters:
         phpcsfixer: ~
         phpspec: ~
         phpunit: ~
+        securitychecker: ~
         xmllint: ~
         yamllint: ~
     extensions: []
