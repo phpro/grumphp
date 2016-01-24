@@ -59,9 +59,7 @@ class SecurityChecker extends AbstractExternalTask
 
         $arguments = $this->processBuilder->createArgumentsForCommand('security-checker');
         $arguments->add('security:check');
-        if ($config['lockfile']) {
-            $arguments->add($config['lockfile']);
-        }
+        $arguments->addOptionalArgument('%s', $config['lockfile']);
         $arguments->addOptionalArgument('--format=%s', $config['format']);
         $arguments->addOptionalArgument('--end-point=%s', $config['end_point']);
         $arguments->addOptionalArgument('--timeout=%s', $config['timeout']);
