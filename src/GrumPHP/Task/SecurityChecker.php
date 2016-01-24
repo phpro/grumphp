@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class SecurityChecker extends AbstractExternalTask
 {
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -22,7 +22,7 @@ class SecurityChecker extends AbstractExternalTask
     }
 
     /**
-     * @return OptionsResolver
+     * {@inheritdoc}
      */
     public function getConfigurableOptions()
     {
