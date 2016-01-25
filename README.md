@@ -123,6 +123,7 @@ Following tasks are still on the roadmap:
 - symfony validation
 - gulp tests
 - npm tests
+- humbug
 - ...
 
 New features or bugfixes can be logged at the [issue tracker](https://github.com/phpro/grumphp/issues).
