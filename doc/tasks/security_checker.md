@@ -8,17 +8,18 @@ It lives under the `securitychecker` namespace and has the following configurabl
 parameters:
     tasks:
         securitychecker:
-            lockfile: ~
+            lockfile: ./composer.lock
             format: ~
             end_point: ~
             timeout: ~
+            run_always: false
 ```
 
 **lockfile**
 
-*Default: null*
+*Default: ./composer.lock*
 
-If your `composer.lock` file is located in an exotic location, you can specify the location with this option. This option is set to `null` by default. This means that the command will try to load a `composer.lock` file in the current directory.
+If your `composer.lock` file is located in an exotic location, you can specify the location with this option. By default, the task will try to load a `composer.lock` file in the current directory.
 
 **format**
 
@@ -37,3 +38,9 @@ You can use a different end point for the security checks. Grumphp will use the 
 *Default: null*
 
 You can change the timeout value for the command. By default this value is `20`.
+
+**run_always**
+
+*Default: false*
+
+When this option is set to `false`, the task will only run when the `composer.lock` file has changed. If it is set to `true`, the `composer.lock` file will be checked on every commit.
