@@ -30,5 +30,6 @@ script:
 
 notifications:
   irc:
+    skip_join: true
     channels:
       - "chat.freenode.net#grumphp"
