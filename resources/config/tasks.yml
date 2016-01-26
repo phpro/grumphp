@@ -86,6 +86,14 @@ services:
         tags:
             - {name: grumphp.task, config: phpunit}
 
+    task.securitychecker:
+        class: GrumPHP\Task\SecurityChecker
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: securitychecker}
+
     task.xmllint:
         class: GrumPHP\Task\XmlLint
         arguments:
