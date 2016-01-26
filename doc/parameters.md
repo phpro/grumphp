@@ -27,7 +27,7 @@ This parameter is used to create the git hooks at the correct location. It defau
 
 **stop_on_failure**
 
-*Default: false
+*Default: false*
 
 This parameter will tell GrumPHP to stop running tasks when one of the tasks results in an error.
 By default GrumPHP will continue running the configured tasks. 
