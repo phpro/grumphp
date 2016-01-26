@@ -26,6 +26,7 @@ services:
     task_runner:
         class: GrumPHP\Runner\TaskRunner
         arguments:
+          - '@config'
           - '@event_dispatcher'
 
     locator.external_command:

@@ -34,6 +34,12 @@ class GrumPHPSpec extends ObjectBehavior
         $this->getGitDir()->shouldReturn('.');
     }
 
+    function it_knows_to_stop_on_failure(ContainerInterface $container)
+    {
+        $container->getParameter('stop_on_failure')->willReturn(true);
+        $this->stopOnFailure()->shouldReturn(true);
+    }
+
     function it_should_return_empty_ascii_location_for_unknown_resources(ContainerInterface $container)
     {
         $container->getParameter('ascii')->willReturn(array());

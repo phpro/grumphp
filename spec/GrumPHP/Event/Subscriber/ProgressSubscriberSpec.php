@@ -60,6 +60,24 @@ class ProgressSubscriberSpec extends ObjectBehavior
 
     function it_finishes_progress(OutputInterface $output, ProgressBar $progressBar, RunnerEvent $event)
     {
+        $progressBar->getProgress()->willReturn(1);
+        $progressBar->getMaxSteps()->willReturn(1);
+
+        $progressBar->setOverwrite(false)->shouldBeCalled();
+        $progressBar->finish()->shouldBeCalled();
+        $output->writeln('')->shouldBeCalled();
+
+        $this->finishProgress($event);
+    }
+
+    function it_finishes_progress_early(OutputInterface $output, ProgressBar $progressBar, RunnerEvent $event)
+    {
+        $progressBar->getProgress()->willReturn(1);
+        $progressBar->getMaxSteps()->willReturn(2);
+
+        $progressBar->setFormat(Argument::type('string'))->shouldBeCalled();
+        $progressBar->setMessage(Argument::type('string'))->shouldBeCalled();
+
         $progressBar->setOverwrite(false)->shouldBeCalled();
         $progressBar->finish()->shouldBeCalled();
         $output->writeln('')->shouldBeCalled();

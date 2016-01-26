@@ -8,8 +8,14 @@ parameters:
         ignore_patterns:
           - "spec/*Spec.php"
           - "test/*.php"
-      phpspec: ~
-      phpunit: ~
+        metadata:
+          priority: 300
+      phpspec:
+        metadata:
+          priority: 200
+      phpunit:
+        metadata:
+          priority: 100
       composer:
         no_check_lock: true
         strict: true

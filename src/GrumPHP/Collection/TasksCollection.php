@@ -3,8 +3,10 @@
 namespace GrumPHP\Collection;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
+use SplPriorityQueue;
 
 /**
  * Class TasksCollection
@@ -24,5 +26,24 @@ class TasksCollection extends ArrayCollection
         return $this->filter(function (TaskInterface $task) use ($context) {
             return $task->canRunInContext($context);
         });
+    }
+
+    /**
+     * This method sorts the tasks by highest priority first.
+     *
+     * @param GrumPHP $grumPHP
+     *
+     * @return TasksCollection
+     */
+    public function sortByPriority(GrumPHP $grumPHP)
+    {
+        $priorityQueue = new SplPriorityQueue();
+        $stableSortIndex = PHP_INT_MAX;
+        foreach ($this->getIterator() as $task) {
+            $metadata = $grumPHP->getTaskMetadata($task->getName());
+            $priorityQueue->insert($task, array($metadata['priority'], $stableSortIndex--));
+        }
+
+        return new TasksCollection(array_values(iterator_to_array($priorityQueue)));
     }
 }

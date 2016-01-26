@@ -5,6 +5,7 @@
 parameters:
     bin_dir: ./vendor/bin
     git_dir: .
+    stop_on_failure: false
     ascii:
         failed: resource/grumphp-grumpy.txt
         succeeded: resource/grumphp-happy.txt
@@ -23,6 +24,13 @@ It defaults to the default composer bin directory.
 
 This parameter will tell GrumPHP in which folder it can find the .git folder.
 This parameter is used to create the git hooks at the correct location. It defaults to the working directory.
+
+**stop_on_failure**
+
+*Default: false
+
+This parameter will tell GrumPHP to stop running tasks when one of the tasks results in an error.
+By default GrumPHP will continue running the configured tasks. 
 
 **ascii**
 
