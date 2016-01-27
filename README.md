@@ -48,11 +48,11 @@ To make GrumPHP even more awesome, it will suggest installing some extra package
 GrumPHP will never push you into using a specific task. You can choose the tasks that fit your needs, and activate or
 deactivate any task in no time!
 
-Having trouble installing GrumPHP? Try one of the following how-to's:
+Having trouble installing GrumPHP? Find out how to:
 
-- [How to install globally](doc/installation/global.md)
-- [How to install in an exotic project structure](doc/installation/exotic.md)
-- [How to insttall on Windows](doc/installation/windows.md)
+- [Install globally](doc/installation/global.md)
+- [Install with an exotic project structure](doc/installation/exotic.md)
+- [Install on Windows](doc/installation/windows.md)
 
 ## Configuration
 
