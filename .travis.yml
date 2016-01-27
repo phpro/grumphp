@@ -20,7 +20,7 @@ matrix:
 
 before_install:
   - composer selfupdate
-  - if [ $(phpenv version-name) != "5.3" ]; composer global require hirak/prestissimo; fi;
+  - if [ $(phpenv version-name) != "5.3" ]; then composer global require hirak/prestissimo; fi;
 
 install:
   - if [ "$DEPENDENCIES" != "low" ]; then travis_retry composer update --no-progress --profile --prefer-dist --no-scripts --no-interaction; fi;
