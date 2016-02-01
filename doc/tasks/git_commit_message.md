@@ -13,6 +13,7 @@ parameters:
                 - /JIRA-([0-9]*)/
             case_insensitive: true
             multiline: true
+            additional_modifiers: ''
 ```
 
 **matchers**
@@ -38,3 +39,18 @@ Mark the matchers as case sensitive.
 *Default:true*
 
 Mark the matchers as multiline.
+
+
+**additional_modifiers**
+
+*Default: ''*
+
+Add one or multiple additional modifiers like:
+
+```yaml
+additional_modifiers: 'u'
+
+# or
+
+additional_modifiers: 'xu'
+```
