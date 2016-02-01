@@ -19,6 +19,9 @@ GrumPHP has a set of common tasks built-in. You will be able to use GrumPHP with
 
 We don't want to bore you with all the details, so quick: install it yourself and unleash the power of GrumPHP!
 
+## Demo
+<img src="https://github.com/phpro/grumphp/wiki/images/demo.gif" alt="demo" />
+
 ## Installation
 
 *If you are trying to install GrumPHP on Windows: please read the windows pre-install section.*
@@ -127,6 +130,8 @@ Following tasks are still on the roadmap:
 - gulp tests
 - npm tests
 - humbug
+- phing
+- ant
 - ...
 
 New features or bugfixes can be logged at the [issue tracker](https://github.com/phpro/grumphp/issues).
