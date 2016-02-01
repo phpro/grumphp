@@ -82,7 +82,7 @@ class BlacklistSpec extends ObjectBehavior
         $process->run()->shouldBeCalled();
 
         // Assume that blacklisted keywords was not found by `git grep` process
-        $process->isSuccessful()->willReturn(false); 
+        $process->isSuccessful()->willReturn(false);
 
         $context->getFiles()->willReturn(new FilesCollection(array(
             new SplFileInfo('file1.php', '.', 'file1.php'),
