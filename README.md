@@ -20,7 +20,7 @@ GrumPHP has a set of common tasks built-in. You will be able to use GrumPHP with
 We don't want to bore you with all the details, so quick: install it yourself and unleash the power of GrumPHP!
 
 ## Demo
-<img src="https://github.com/phpro/grumphp/wiki/images/demo.gif" alt="demo" />
+<img src="https://github.com/phpro/grumphp/wiki/images/demo.gif" alt="demo" width="100%" />
 
 ## Installation
 
