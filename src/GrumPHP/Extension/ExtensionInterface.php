@@ -2,7 +2,7 @@
 
 namespace GrumPHP\Extension;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Interface ExtensionInterface is used for GrumPHP extensions to interface
@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 interface ExtensionInterface
 {
     /**
-     * @param ContainerInterface $container
+     * @param ContainerBuilder $container
      */
-    public function load(ContainerInterface $container);
+    public function load(ContainerBuilder $container);
 }
