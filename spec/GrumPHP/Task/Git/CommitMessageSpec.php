@@ -29,6 +29,7 @@ class CommitMessageSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('case_insensitive');
         $options->getDefinedOptions()->shouldContain('multiline');
         $options->getDefinedOptions()->shouldContain('matchers');
+        $options->getDefinedOptions()->shouldContain('additional_modifiers');
     }
 
     function it_is_initializable()
@@ -56,5 +57,17 @@ class CommitMessageSpec extends ObjectBehavior
     function it_throws_exception_if_the_process_fails(GitCommitMsgContext $context) {
         $context->getCommitMessage()->willReturn('invalid');
         $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($context);
+    }
+
+    function it_runs_with_additional_modifiers(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    {
+        $grumPHP->getTaskConfiguration('git_commit_message')->willReturn(array(
+            'matchers' => array('/.*ümlaut/'),
+            'additional_modifiers' => 'u',
+        ));
+
+        $context->getCommitMessage()->willReturn('message containing ümlaut');
+
+        $this->run($context);
     }
 }

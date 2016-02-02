@@ -53,11 +53,13 @@ class CommitMessage implements TaskInterface
             'case_insensitive' => true,
             'multiline' => true,
             'matchers' => array(),
+            'additional_modifiers' => ''
         ));
 
         $resolver->addAllowedTypes('case_insensitive', array('bool'));
         $resolver->addAllowedTypes('multiline', array('bool'));
         $resolver->addAllowedTypes('matchers', array('array'));
+        $resolver->addAllowedTypes('additional_modifiers', array('string'));
 
         return $resolver;
     }
@@ -90,6 +92,9 @@ class CommitMessage implements TaskInterface
             if ((bool) $config['multiline']) {
                 $regex->addPatternModifier('m');
             }
+
+            $additionalModifiersArray = array_filter(str_split((string) $config['additional_modifiers']));
+            array_map(array($regex, 'addPatternModifier'), $additionalModifiersArray);
 
             if (!preg_match($regex->__toString(), $commitMessage)) {
                 throw new RuntimeException(
