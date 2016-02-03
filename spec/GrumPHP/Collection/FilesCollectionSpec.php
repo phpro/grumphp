@@ -133,7 +133,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $file1->getPathname()->willReturn('path1/file.php');
         $file2->getPathname()->willReturn('path2/file.php');
 
-        $iterator = new \ArrayIterator([$file1->getWrappedObject()]);
+        $iterator = new \ArrayIterator(array($file1->getWrappedObject()));
         $result = $this->filterByFileList($iterator);
         $result->count()->shouldBe(1);
         $files = $result->toArray();
