@@ -48,6 +48,14 @@ class GrumPHP
     }
 
     /**
+     * @return bool
+     */
+    public function ignoreUnstagedChanges()
+    {
+        return (bool) $this->container->getParameter('ignore_unstaged_changes');
+    }
+
+    /**
      * @return array
      */
     public function getRegisteredTasks()
