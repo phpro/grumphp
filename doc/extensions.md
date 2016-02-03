@@ -22,11 +22,11 @@ For example:
 namespace My\Project;
 
 use GrumPHP\Extension\ExtensionInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class GrumPHPExtension implements ExtensionInterface
 {
-    public function load(ContainerInterface $container)
+    public function load(ContainerBuilder $container)
     {
         // Register your own stuff to the container!
     }
