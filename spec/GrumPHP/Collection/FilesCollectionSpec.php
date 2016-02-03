@@ -127,4 +127,16 @@ class FilesCollectionSpec extends ObjectBehavior
         $files = $result->toArray();
         $files[0]->shouldBe($file1);
     }
+
+    function it_should_filter_by_a_list_of_files(SplFileInfo $file1, SplFileInfo $file2)
+    {
+        $file1->getPathname()->willReturn('path1/file.php');
+        $file2->getPathname()->willReturn('path2/file.php');
+
+        $iterator = new \ArrayIterator([$file1->getWrappedObject()]);
+        $result = $this->filterByFileList($iterator);
+        $result->count()->shouldBe(1);
+        $files = $result->toArray();
+        $files[0]->shouldBe($file1);
+    }
 }

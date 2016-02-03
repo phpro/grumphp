@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use GrumPHP\Util\Regex;
 use Symfony\Component\Finder\Comparator;
 use Symfony\Component\Finder\Iterator;
+use SplFileInfo;
+use Traversable;
 
 /**
  * Class FileSequence
@@ -150,5 +152,21 @@ class FilesCollection extends ArrayCollection
         $filter = new Iterator\CustomFilterIterator($this->getIterator(), array($closure));
 
         return new FilesCollection(iterator_to_array($filter));
+    }
+
+    /**
+     * @param Traversable $fileList
+     *
+     * @return FilesCollection
+     */
+    public function filterByFileList(Traversable $fileList)
+    {
+        $allowedFiles = array_map(function (SplFileInfo $file) {
+            return $file->getPathname();
+        }, iterator_to_array($fileList));
+
+        return $this->filter(function (SplFileInfo $file) use ($allowedFiles) {
+            return in_array($file->getPathname(), $allowedFiles);
+        });
     }
 }
