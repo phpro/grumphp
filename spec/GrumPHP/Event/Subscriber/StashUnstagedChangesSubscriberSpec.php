@@ -97,4 +97,15 @@ class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
         $this->saveStash($event);
         $this->popStash($event);
     }
+
+    function it_should_pop_changes_when_an_error_occurs(Repository $repository)
+    {
+        $event = new RunnerEvent(new TasksCollection(), new GitPreCommitContext(new FilesCollection()));
+
+        $repository->run('stash', Argument::containing('save'))->shouldBeCalled();
+        $repository->run('stash', Argument::containing('pop'))->shouldBeCalled();
+
+        $this->saveStash($event);
+        $this->handleErrors();
+    }
 }

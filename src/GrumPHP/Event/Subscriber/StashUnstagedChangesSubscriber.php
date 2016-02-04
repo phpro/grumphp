@@ -11,6 +11,7 @@ use GrumPHP\Event\RunnerEvents;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
+use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -37,6 +38,11 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     private $stashIsApplied = false;
 
     /**
+     * @var bool
+     */
+    private $shutdownFunctionRegistered = false;
+
+    /**
      * @param GrumPHP    $grumPHP
      * @param Repository $repository
      */
@@ -55,6 +61,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
             RunnerEvents::RUNNER_RUN => 'saveStash',
             RunnerEvents::RUNNER_COMPLETE => 'popStash',
             RunnerEvents::RUNNER_FAILED => 'popStash',
+            ConsoleEvents::EXCEPTION => 'handleErrors',
         );
     }
 
@@ -69,14 +76,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
             return;
         }
 
-        try {
-            $this->repository->run('stash', array('save', '--quiet', '--keep-index', uniqid('grumphp')));
-        } catch (Exception $e) {
-            // No worries ...
-            return;
-        }
-
-        $this->stashIsApplied = true;
+        $this->doSaveStash();
     }
 
     /**
@@ -91,6 +91,43 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $this->doPopStash();
+    }
+
+    /**
+     * @return void
+     */
+    public function handleErrors()
+    {
+        if (!$this->stashIsApplied || !$this->grumPHP->ignoreUnstagedChanges()) {
+            return;
+        }
+
+        $this->doPopStash();
+    }
+
+    /**
+     *
+     * @reurn void
+     */
+    private function doSaveStash()
+    {
+        try {
+            $this->repository->run('stash', array('save', '--quiet', '--keep-index', uniqid('grumphp')));
+        } catch (Exception $e) {
+            // No worries ...
+            return;
+        }
+
+        $this->stashIsApplied = true;
+        $this->registerShutdownHandler();
+    }
+
+    /**
+     * @return void
+     */
+    private function doPopStash()
+    {
         try {
             $this->repository->run('stash', array('pop', '--quiet'));
         } catch (Exception $e) {
@@ -113,5 +150,28 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     private function isStashEnabled(ContextInterface $context)
     {
         return $this->grumPHP->ignoreUnstagedChanges() && $context instanceof GitPreCommitContext;
+    }
+
+    /**
+     * Make sure to fetch errors and pop the stash before crashing
+     *
+     * @return void
+     */
+    private function registerShutdownHandler()
+    {
+        if ($this->shutdownFunctionRegistered) {
+            return;
+        }
+
+        $subscriber = $this;
+        register_shutdown_function(function () use ($subscriber) {
+            if (!error_get_last()) {
+                return;
+            }
+
+            $subscriber->handleErrors();
+        });
+
+        $this->shutdownFunctionRegistered = true;
     }
 }

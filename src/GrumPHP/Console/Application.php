@@ -42,6 +42,9 @@ class Application extends SymfonyConsole
     public function __construct()
     {
         parent::__construct(self::APP_NAME, self::APP_VERSION);
+
+        $this->container = $this->getContainer();
+        $this->setDispatcher($this->container->get('event_dispatcher'));
     }
 
     /**
