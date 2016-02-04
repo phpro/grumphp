@@ -33,7 +33,7 @@ class PhpParser implements ParserInterface
         $traverser->addVisitor(new NodeVisitor($filename, $keywords, $errors));
 
         try {
-            $code = file_get_contents($filename);   
+            $code = file_get_contents($filename);
 
             // parse
             $stmts = $parser->parse($code);
