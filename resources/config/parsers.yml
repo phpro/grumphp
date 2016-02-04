@@ -1,0 +1,4 @@
+services:
+    parser.phpparser:
+        class: GrumPHP\Parser\Php\PhpParser
+        arguments: []

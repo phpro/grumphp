@@ -26,7 +26,8 @@
         "roave/security-advisories": "dev-master@dev",
         "fabpot/php-cs-fixer": "~1.0",
         "phpunit/phpunit": "^4.8",
-        "sensiolabs/security-checker": "^3.0"
+        "sensiolabs/security-checker": "^3.0",
+        "nikic/php-parser": "~1.4"
     },
     "suggest": {
         "behat/behat": "Lets GrumPHP validate your project features.",
@@ -36,7 +37,8 @@
         "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",
         "roave/security-advisories": "Lets GrumPHP be sure that there are no known security issues.",
         "sensiolabs/security-checker": "Lets GrumPHP be sure that there are no known security issues.",
-        "codeception/codeception": "Lets GrumPHP run your project's full stack tests"
+        "codeception/codeception": "Lets GrumPHP run your project's full stack tests",
+        "nikic/php-parser": "Lets GrumPHP sniff on your code for functions and methods."
     },
     "authors": [
         {
