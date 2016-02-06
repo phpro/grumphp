@@ -21,7 +21,6 @@ class NodeVisitor extends NodeVisitorAbstract
         $this->functions       = array();
 
         foreach ($keywords as $ident) {
-
             $letters = str_split($ident);
 
             if ($letters[0] == ':' && $letters[1] == ':' && end($letters) == '(') {
