@@ -59,6 +59,10 @@ class RunCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+            $this->registeredFilesLocator->setLogger();
+        }
+
         $files = $this->getRegisteredFiles();
         $context = new RunContext($files);
 

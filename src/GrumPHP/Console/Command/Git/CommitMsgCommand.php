@@ -63,6 +63,10 @@ class CommitMsgCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+            $this->changedFilesLocator->setLogger();
+        }
+
         $files = $this->getCommittedFiles();
         $gitUser = $input->getOption('git-user');
         $gitEmail = $input->getOption('git-email');

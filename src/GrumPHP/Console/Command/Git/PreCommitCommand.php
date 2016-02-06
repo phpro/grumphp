@@ -64,6 +64,10 @@ class PreCommitCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+            $this->changedFilesLocator->setLogger();
+        }
+
         $files = $this->getCommittedFiles();
         $context = new GitPreCommitContext($files);
         $skipSuccessOutput = (bool) $input->getOption('skip-success-output');
