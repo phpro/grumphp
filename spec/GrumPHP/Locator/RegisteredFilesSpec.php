@@ -5,12 +5,13 @@ namespace spec\GrumPHP\Locator;
 use Gitonomy\Git\Repository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 
 class RegisteredFilesSpec extends ObjectBehavior
 {
-    function let(Repository $repository)
+    function let(Repository $repository, LoggerInterface $logger)
     {
-        $this->beConstructedWith($repository);
+        $this->beConstructedWith($repository, $logger);
     }
 
     function it_is_initializable()

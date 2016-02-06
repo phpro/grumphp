@@ -9,12 +9,13 @@ use Gitonomy\Git\Repository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Prophecy\Prophet;
+use Psr\Log\LoggerInterface;
 
 class ChangedFilesSpec extends ObjectBehavior
 {
-    function let(Repository $repository)
+    function let(Repository $repository, LoggerInterface $logger)
     {
-        $this->beConstructedWith($repository);
+        $this->beConstructedWith($repository, $logger);
     }
 
     function it_is_initializable()
