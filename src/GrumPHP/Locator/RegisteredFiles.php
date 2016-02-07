@@ -32,7 +32,7 @@ class RegisteredFiles
     public function locate()
     {
         $allFiles = trim($this->repository->run('ls-files'));
-        $filePaths = explode(PHP_EOL, $allFiles);
+        $filePaths = preg_split("/\r\n|\n|\r/", $allFiles);
 
         $files = array();
         foreach ($filePaths as $file) {
