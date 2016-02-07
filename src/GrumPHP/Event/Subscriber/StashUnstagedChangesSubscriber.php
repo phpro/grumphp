@@ -58,10 +58,10 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            RunnerEvents::RUNNER_RUN => 'saveStash',
-            RunnerEvents::RUNNER_COMPLETE => 'popStash',
-            RunnerEvents::RUNNER_FAILED => 'popStash',
-            ConsoleEvents::EXCEPTION => 'handleErrors',
+            RunnerEvents::RUNNER_RUN => array('saveStash', 10000),
+            RunnerEvents::RUNNER_COMPLETE => array('popStash', -10000),
+            RunnerEvents::RUNNER_FAILED => array('popStash', -10000),
+            ConsoleEvents::EXCEPTION => array('handleErrors', -10000),
         );
     }
 
@@ -87,7 +87,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
      */
     public function popStash(RunnerEvent $e)
     {
-        if (!$this->isStashEnabled($e->getContext()) || !$this->stashIsApplied) {
+        if (!$this->isStashEnabled($e->getContext())) {
             return;
         }
 
@@ -99,7 +99,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
      */
     public function handleErrors()
     {
-        if (!$this->stashIsApplied || !$this->grumPHP->ignoreUnstagedChanges()) {
+        if (!$this->grumPHP->ignoreUnstagedChanges()) {
             return;
         }
 
@@ -107,11 +107,17 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * Check if there is a pending diff and stash the changes.
      *
      * @reurn void
      */
     private function doSaveStash()
     {
+        $pending = $this->repository->getWorkingCopy()->getDiffPending();
+        if (!count($pending->getFiles())) {
+             return;
+        }
+
         try {
             $this->repository->run('stash', array('save', '--quiet', '--keep-index', uniqid('grumphp')));
         } catch (Exception $e) {
@@ -128,6 +134,10 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
      */
     private function doPopStash()
     {
+        if (!$this->stashIsApplied) {
+            return;
+        }
+
         try {
             $this->repository->run('stash', array('pop', '--quiet'));
         } catch (Exception $e) {

@@ -2,7 +2,9 @@
 
 namespace spec\GrumPHP\Event\Subscriber;
 
+use Gitonomy\Git\Diff\Diff;
 use Gitonomy\Git\Repository;
+use Gitonomy\Git\WorkingCopy;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Configuration\GrumPHP;
@@ -14,9 +16,13 @@ use Prophecy\Argument;
 
 class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, Repository $repository)
+    function let(GrumPHP $grumPHP, Repository $repository, WorkingCopy $workingCopy, Diff $unstaged)
     {
         $grumPHP->ignoreUnstagedChanges()->willReturn(true);
+        $repository->getWorkingCopy()->willReturn($workingCopy);
+        $workingCopy->getDiffPending()->willReturn($unstaged);
+        $unstaged->getFiles()->willReturn(array('file1.php'));
+
         $this->beConstructedWith($grumPHP, $repository);
     }
 
@@ -49,6 +55,17 @@ class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
     function it_should_not_run_in_invalid_context(Repository $repository)
     {
         $event = new RunnerEvent(new TasksCollection(), new RunContext(new FilesCollection()));
+
+        $this->saveStash($event);
+        $this->popStash($event);
+
+        $repository->run(Argument::cetera())->shouldNotBeCalled();
+    }
+
+    function it_should_not_run_when_there_are_no_unstaged_changes(Repository $repository, Diff $unstaged)
+    {
+        $event = new RunnerEvent(new TasksCollection(), new RunContext(new FilesCollection()));
+        $unstaged->getFiles()->willReturn(array());
 
         $this->saveStash($event);
         $this->popStash($event);
