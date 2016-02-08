@@ -27,7 +27,7 @@ class Phpcpd extends AbstractExternalTask
         $resolver->setDefaults(array(
             'names' => array('*.php'),
             'names_exclude' => array(),
-            'log_pmd' => 'pmd-cpd.xml',
+            'log_pmd' => '',
             'exclude'=> array('spec'),
             'min_lines' => 5,
             'min_tokens' => 70,
