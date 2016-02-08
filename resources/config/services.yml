@@ -23,6 +23,16 @@ services:
         arguments:
           - '%git_dir%'
 
+    logger.changed_files:
+        class: Monolog\Logger
+        arguments:
+          - "ChangedFiles"
+
+    logger.registered_files:
+        class: Monolog\Logger
+        arguments:
+          - "RegisteredFiles"
+
     task_runner:
         class: GrumPHP\Runner\TaskRunner
         arguments:
@@ -39,8 +49,10 @@ services:
         class: GrumPHP\Locator\ChangedFiles
         arguments:
           - '@git.repository'
+          - '@logger.changed_files'
 
     locator.registered_files:
         class: GrumPHP\Locator\RegisteredFiles
         arguments:
           - '@git.repository'
+          - '@logger.registered_files'

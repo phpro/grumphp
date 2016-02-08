@@ -6,28 +6,15 @@ use Gitonomy\Git\Diff\File;
 use Gitonomy\Git\Repository;
 use GrumPHP\Collection\FilesCollection;
 use Symfony\Component\Finder\SplFileInfo;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Git
  *
  * @package GrumPHP\Locator
  */
-class ChangedFiles
+class ChangedFiles extends AbstractFiles
 {
-    /**
-     * @var Repository
-     */
-    protected $repository;
-
-    /**
-     * @param Repository $repository
-     */
-    public function __construct(Repository $repository)
-    {
-        $this->repository = $repository;
-
-    }
-
     /**
      * @return FilesCollection
      */

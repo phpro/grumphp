@@ -26,11 +26,13 @@
         "roave/security-advisories": "dev-master@dev",
         "fabpot/php-cs-fixer": "~1.0",
         "phpunit/phpunit": "^4.8",
-        "sensiolabs/security-checker": "^3.0"
+        "sensiolabs/security-checker": "^3.0",
+        "monolog/monolog": "~1.17"
     },
     "suggest": {
         "behat/behat": "Lets GrumPHP validate your project features.",
         "fabpot/php-cs-fixer": "Lets GrumPHP automatically fix your codestyle.",
+        "monolog/monolog": "Allow logging repository files retrieval",
         "phpspec/phpspec": "Lets GrumPHP spec your code.",
         "phpunit/phpunit": "Lets GrumPHP run your unit tests.",
         "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",
