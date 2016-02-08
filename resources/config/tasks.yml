@@ -54,6 +54,14 @@ services:
         tags:
             - {name: grumphp.task, config: jsonlint}
 
+    task.phpcpd:
+        class: GrumPHP\Task\Phpcpd
+        arguments:
+          - '@config'
+          - '@process_builder'
+        tags:
+          - {name: grumphp.task, config: phpcpd}
+
     task.phpcs:
         class: GrumPHP\Task\Phpcs
         arguments:
