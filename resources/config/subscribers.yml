@@ -4,5 +4,6 @@ services:
     arguments:
       - '@config'
       - '@git.repository'
+      - '@grumphp.io'
     tags:
       - { name: grumphp.event_subscriber }

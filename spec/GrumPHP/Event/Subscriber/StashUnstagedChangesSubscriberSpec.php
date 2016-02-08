@@ -9,6 +9,7 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\RunnerEvent;
+use GrumPHP\IO\IOInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use PhpSpec\ObjectBehavior;
@@ -16,14 +17,14 @@ use Prophecy\Argument;
 
 class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, Repository $repository, WorkingCopy $workingCopy, Diff $unstaged)
+    function let(GrumPHP $grumPHP, Repository $repository, IOInterface $io, WorkingCopy $workingCopy, Diff $unstaged)
     {
         $grumPHP->ignoreUnstagedChanges()->willReturn(true);
         $repository->getWorkingCopy()->willReturn($workingCopy);
         $workingCopy->getDiffPending()->willReturn($unstaged);
         $unstaged->getFiles()->willReturn(array('file1.php'));
 
-        $this->beConstructedWith($grumPHP, $repository);
+        $this->beConstructedWith($grumPHP, $repository, $io);
     }
 
     function it_is_initializable()

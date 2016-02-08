@@ -9,6 +9,7 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Event\RunnerEvents;
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\IO\IOInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use Symfony\Component\Console\ConsoleEvents;
@@ -33,6 +34,11 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     private $repository;
 
     /**
+     * @var IOInterface
+     */
+    private $io;
+
+    /**
      * @var bool
      */
     private $stashIsApplied = false;
@@ -43,13 +49,15 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     private $shutdownFunctionRegistered = false;
 
     /**
-     * @param GrumPHP    $grumPHP
-     * @param Repository $repository
+     * @param GrumPHP     $grumPHP
+     * @param Repository  $repository
+     * @param IOInterface $io
      */
-    public function __construct(GrumPHP $grumPHP, Repository $repository)
+    public function __construct(GrumPHP $grumPHP, Repository $repository, IOInterface $io)
     {
         $this->grumPHP = $grumPHP;
         $this->repository = $repository;
+        $this->io = $io;
     }
 
     /**
@@ -119,9 +127,11 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         }
 
         try {
+            $this->io->write('<fg=yellow>Detected unstaged changes... Stashing them!</fg=yellow>');
             $this->repository->run('stash', array('save', '--quiet', '--keep-index', uniqid('grumphp')));
         } catch (Exception $e) {
             // No worries ...
+            $this->io->write(sprintf('<fg=red>Failed stashing changes: %s</fg=red>', $e->getMessage()));
             return;
         }
 
@@ -139,6 +149,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         }
 
         try {
+            $this->io->write('<fg=yellow>Reapplying unstaged changes from stash.</fg=yellow>');
             $this->repository->run('stash', array('pop', '--quiet'));
         } catch (Exception $e) {
             throw new RuntimeException(

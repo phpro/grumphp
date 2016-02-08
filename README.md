@@ -66,7 +66,7 @@ parameters:
     bin_dir: "./vendor/bin"
     git_dir: "."
     stop_on_failure: false
-    ignore_unstaged_changes: false
+    ignore_unstaged_changes: true
     ascii:
         failed: grumphp-grumpy.txt
         succeeded: grumphp-happy.txt
