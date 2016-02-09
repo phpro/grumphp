@@ -54,9 +54,8 @@ class Grunt extends AbstractExternalTask
     public function run(ContextInterface $context)
     {
         $config = $this->getConfiguration();
-
-        $files = $context->getFiles()->name(sprintf('/\.(%s)$/i', implode('|', $config['triggered_by'])));
-        if (0 === count($config['triggered_by']) || 0 === count($files)) {
+        $files = $context->getFiles()->extensions($config['triggered_by']);
+        if (0 === count($files)) {
             return;
         }
 

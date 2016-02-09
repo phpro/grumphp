@@ -139,4 +139,24 @@ class FilesCollectionSpec extends ObjectBehavior
         $files = $result->toArray();
         $files[0]->shouldBe($file1);
     }
+
+    function it_should_filter_by_extension(SplFileInfo $file1, SplFileInfo $file2)
+    {
+        $file1->getFilename()->willReturn('file.php');
+        $file2->getFilename()->willReturn('file.jpg');
+
+        $result = $this->extensions(array('php', 'js'));
+        $result->count()->shouldBe(1);
+        $files = $result->toArray();
+        $files[0]->shouldBe($file1);
+    }
+
+    function it_should_return_an_empty_list_when_filtering_by_no_extension(SplFileInfo $file1, SplFileInfo $file2)
+    {
+        $file1->getFilename()->willReturn('file.php');
+        $file2->getFilename()->willReturn('file.jpg');
+
+        $result = $this->extensions(array());
+        $result->count()->shouldBe(0);
+    }
 }

@@ -12,6 +12,7 @@ parameters:
                 - "die("
                 - "var_dump("
                 - "exit;"
+            triggered_by: [php]
 ```
 
 **keywords**
@@ -19,3 +20,12 @@ parameters:
 *Default: null*
 
 Use this parameter to specify your blacklisted keywords list.
+
+
+**triggered_by**
+
+*Default: [php]*
+
+This option will specify which file extensions will trigger the git blacklist task.
+By default git blacklist will be triggered by altering a php file. 
+You can overwrite this option to whatever filetype you want to validate!

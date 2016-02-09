@@ -31,9 +31,11 @@ class Blacklist extends AbstractExternalTask
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array(
             'keywords' => array(),
+            'triggered_by' => array('php')
         ));
 
         $resolver->addAllowedTypes('keywords', array('array'));
+        $resolver->addAllowedTypes('triggered_by', array('array'));
 
         return $resolver;
     }
@@ -51,13 +53,9 @@ class Blacklist extends AbstractExternalTask
      */
     public function run(ContextInterface $context)
     {
-        $files = $context->getFiles()->name('*.php');
-        if (0 === count($files)) {
-            return;
-        }
-
         $config = $this->getConfiguration();
-        if (empty($config['keywords'])) {
+        $files = $context->getFiles()->extensions($config['triggered_by']);
+        if (0 === count($files) || empty($config['keywords'])) {
             return;
         }
 
