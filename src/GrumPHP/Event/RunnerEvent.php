@@ -3,6 +3,7 @@
 namespace GrumPHP\Event;
 
 use GrumPHP\Collection\TasksCollection;
+use GrumPHP\Task\Context\ContextInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -18,11 +19,18 @@ class RunnerEvent extends Event
     private $tasks;
 
     /**
-     * @param TasksCollection $tasks
+     * @var ContextInterface
      */
-    public function __construct(TasksCollection $tasks)
+    private $context;
+
+    /**
+     * @param TasksCollection  $tasks
+     * @param ContextInterface $context
+     */
+    public function __construct(TasksCollection $tasks, ContextInterface $context)
     {
         $this->tasks = $tasks;
+        $this->context = $context;
     }
 
     /**
@@ -31,5 +39,13 @@ class RunnerEvent extends Event
     public function getTasks()
     {
         return $this->tasks;
+    }
+
+    /**
+     * @return ContextInterface
+     */
+    public function getContext()
+    {
+        return $this->context;
     }
 }

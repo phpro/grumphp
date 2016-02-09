@@ -1,0 +1,9 @@
+services:
+  subscriber.stash_unstaged_changes:
+    class: GrumPHP\Event\Subscriber\StashUnstagedChangesSubscriber
+    arguments:
+      - '@config'
+      - '@git.repository'
+      - '@grumphp.io'
+    tags:
+      - { name: grumphp.event_subscriber }

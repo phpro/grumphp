@@ -30,6 +30,7 @@ final class ContainerFactory
         $loader->load('linters.yml');
         $loader->load('parameters.yml');
         $loader->load('services.yml');
+        $loader->load('subscribers.yml');
         $loader->load('tasks.yml');
 
         // Load grumphp.yml file:

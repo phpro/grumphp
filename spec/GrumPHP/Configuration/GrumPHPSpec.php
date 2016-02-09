@@ -40,6 +40,12 @@ class GrumPHPSpec extends ObjectBehavior
         $this->stopOnFailure()->shouldReturn(true);
     }
 
+    function it_knows_to_ignore_unstaged_changes(ContainerInterface $container)
+    {
+        $container->getParameter('ignore_unstaged_changes')->willReturn(true);
+        $this->ignoreUnstagedChanges()->shouldReturn(true);
+    }
+
     function it_should_return_empty_ascii_location_for_unknown_resources(ContainerInterface $container)
     {
         $container->getParameter('ascii')->willReturn(array());
