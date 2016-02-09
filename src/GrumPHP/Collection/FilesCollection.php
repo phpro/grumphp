@@ -91,6 +91,20 @@ class FilesCollection extends ArrayCollection
     }
 
     /**
+     * @param array $extensions
+     *
+     * @return FilesCollection
+     */
+    public function extensions(array $extensions)
+    {
+        if (!count($extensions)) {
+            return new FilesCollection();
+        }
+
+        return $this->name(sprintf('/\.(%s)$/i', implode('|', $extensions)));
+    }
+
+    /**
      * Adds tests for file sizes.
      *
      * $collection->filterBySize('> 10K');
