@@ -1,0 +1,41 @@
+build: false
+shallow_clone: false
+platform:
+  - x86
+  - x64
+clone_folder: c:\projects\grumphp
+
+environment:
+    matrix:
+        - php_ver: 5.6.3
+
+cache:
+    - '%APPDATA%\Composer'
+    - c:\tools\php -> appveyor.yml
+init:
+    - SET PATH=C:\Program Files\OpenSSL;c:\tools\php;%PATH%
+    - SET COMPOSER_NO_INTERACTION=1
+    - SET PHP=1
+    - SET ANSICON=121x90 (121x90)
+
+install:
+    - IF EXIST c:\tools\php (SET PHP=0)
+    - IF %PHP%==1 cinst -y OpenSSL.Light
+    - IF %PHP%==1 cinst -y php -version %php_ver%
+    - cd C:\tools\php
+    - IF %PHP%==1 copy php.ini-production php.ini
+    - IF %PHP%==1 echo date.timezone="UTC" >> php.ini
+    - IF %PHP%==1 echo memory_limit=1024M >> php.ini
+    - IF %PHP%==1 echo extension_dir=ext >> php.ini
+    - IF %PHP%==1 echo extension=php_curl.dll >> php.ini
+    - IF %PHP%==1 echo extension=php_openssl.dll >> php.ini
+    - cd C:\tools
+    - appveyor DownloadFile https://getcomposer.org/composer.phar
+
+before_test:
+    - cd C:\projects\grumphp
+    - php C:\tools\composer.phar update --no-progress --profile --prefer-dist --no-scripts --no-interaction
+
+test_script:
+    - cd c:\projects\grumphp
+    - php ./bin/grumphp run

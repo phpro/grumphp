@@ -37,6 +37,7 @@ class BlacklistSpec extends ObjectBehavior
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
         $options->getDefinedOptions()->shouldContain('keywords');
+        $options->getDefinedOptions()->shouldContain('triggered_by');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)

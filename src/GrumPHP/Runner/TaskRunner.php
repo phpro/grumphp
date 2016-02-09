@@ -82,14 +82,14 @@ class TaskRunner
         $messages = array();
         $tasks = $this->tasks->filterByContext($context)->sortByPriority($this->grumPHP);
 
-        $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, new RunnerEvent($tasks));
+        $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, new RunnerEvent($tasks, $context));
         foreach ($tasks as $task) {
             try {
-                $this->eventDispatcher->dispatch(TaskEvents::TASK_RUN, new TaskEvent($task));
+                $this->eventDispatcher->dispatch(TaskEvents::TASK_RUN, new TaskEvent($task, $context));
                 $task->run($context);
-                $this->eventDispatcher->dispatch(TaskEvents::TASK_COMPLETE, new TaskEvent($task));
+                $this->eventDispatcher->dispatch(TaskEvents::TASK_COMPLETE, new TaskEvent($task, $context));
             } catch (RuntimeException $e) {
-                $this->eventDispatcher->dispatch(TaskEvents::TASK_FAILED, new TaskFailedEvent($task, $e));
+                $this->eventDispatcher->dispatch(TaskEvents::TASK_FAILED, new TaskFailedEvent($task, $context, $e));
                 $messages[] = $e->getMessage();
                 $failures = true;
 
@@ -100,10 +100,13 @@ class TaskRunner
         }
 
         if ($failures) {
-            $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_FAILED, new RunnerFailedEvent($tasks, $messages));
+            $this->eventDispatcher->dispatch(
+                RunnerEvents::RUNNER_FAILED,
+                new RunnerFailedEvent($tasks, $context, $messages)
+            );
             throw new FailureException(implode(PHP_EOL, $messages));
         }
 
-        $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_COMPLETE, new RunnerEvent($tasks));
+        $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_COMPLETE, new RunnerEvent($tasks, $context));
     }
 }

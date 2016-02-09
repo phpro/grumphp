@@ -17,7 +17,8 @@
         "symfony/finder": "~2.4|~3.0",
         "symfony/options-resolver": "~2.6|~3.0",
         "symfony/process": "~2.4|~3.0",
-        "symfony/yaml": "~2.4|~3.0"
+        "symfony/yaml": "~2.4|~3.0",
+        "monolog/monolog": "~1.17"
     },
     "require-dev": {
         "composer/composer": "^1.0-alpha11",

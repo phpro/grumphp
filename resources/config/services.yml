@@ -5,7 +5,9 @@ services:
           - '@service_container'
 
     event_dispatcher:
-        class: Symfony\Component\EventDispatcher\EventDispatcher
+        class: Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
+        arguments:
+          - '@service_container'
 
     filesystem:
         class: Symfony\Component\Filesystem\Filesystem
@@ -22,6 +24,7 @@ services:
         class: Gitonomy\Git\Repository
         arguments:
           - '%git_dir%'
+          - { logger: '@grumphp.logger' }
 
     task_runner:
         class: GrumPHP\Runner\TaskRunner
@@ -44,3 +47,24 @@ services:
         class: GrumPHP\Locator\RegisteredFiles
         arguments:
           - '@git.repository'
+
+    grumphp.io:
+        alias: grumphp.io.null
+
+    grumphp.io.null:
+        class: GrumPHP\IO\NullIO
+        public: false
+
+    grumphp.io.console:
+        class: GrumPHP\IO\ConsoleIO
+        synthetic: true
+
+    grumphp.logger:
+        class: Monolog\Logger
+        arguments:
+          - 'GrumPHP'
+          - ['@grumphp.logger.handler.nullhandler']
+
+    grumphp.logger.handler.nullhandler:
+        class: Monolog\Handler\NullHandler
+        public: false

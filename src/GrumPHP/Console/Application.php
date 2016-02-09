@@ -3,9 +3,14 @@
 namespace GrumPHP\Console;
 
 use GrumPHP\Configuration\ContainerFactory;
+use GrumPHP\IO\ConsoleIO;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Symfony\Component\Console\Application as SymfonyConsole;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ProcessBuilder;
@@ -18,7 +23,7 @@ use Symfony\Component\Process\ProcessBuilder;
 class Application extends SymfonyConsole
 {
     const APP_NAME = 'GrumPHP';
-    const APP_VERSION = '0.7.0';
+    const APP_VERSION = '0.7.2';
     const APP_CONFIG_FILE = 'grumphp.yml';
 
     /**
@@ -37,6 +42,9 @@ class Application extends SymfonyConsole
     public function __construct()
     {
         parent::__construct(self::APP_NAME, self::APP_VERSION);
+
+        $this->container = $this->getContainer();
+        $this->setDispatcher($this->container->get('event_dispatcher'));
     }
 
     /**
@@ -163,5 +171,30 @@ class Application extends SymfonyConsole
         $this->container = ContainerFactory::buildFromConfiguration($configPath);
 
         return $this->container;
+    }
+
+    /**
+     * Configure IO of GrumPHP objects
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     */
+    protected function configureIO(InputInterface $input, OutputInterface $output)
+    {
+        parent::configureIO($input, $output);
+
+        $container = $this->getContainer();
+        $io = new ConsoleIO($input, $output);
+
+        // Overwrite the nullIO with the console IO.
+        $container->set('grumphp.io.console', $io);
+        $container->setAlias('grumphp.io', 'grumphp.io.console');
+
+        // Make sure to let the logger log to the stdout in verbose mode!
+        if ($io->isVerbose()) {
+            /** @var Logger $logger */
+            $logger = $container->get('grumphp.logger');
+            $logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
+        }
     }
 }

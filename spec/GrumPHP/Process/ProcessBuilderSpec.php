@@ -4,6 +4,7 @@ namespace spec\GrumPHP\Process;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Locator\ExternalCommand;
+use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -35,6 +36,23 @@ class ProcessBuilderSpec extends ObjectBehavior
         $process = $this->buildProcess($arguments);
 
         $process->shouldHaveType('Symfony\Component\Process\Process');
-        $process->getCommandLine()->shouldBe("'/usr/bin/grumphp'");
+        $process->getCommandLine()->shouldBeQuoted('/usr/bin/grumphp');
+    }
+
+    function getMatchers()
+    {
+        return array(
+            'beQuoted' => function ($subject, $string) {
+                $regex = sprintf('{^([\'"])%s\1$}', preg_quote($string));
+                if (!preg_match($regex, $subject)) {
+                    throw new FailureException(sprintf(
+                        'Expected a quoted version of %s, got %s.',
+                        $string, $subject
+                    ));
+                }
+
+                return true;
+            }
+        );
     }
 }

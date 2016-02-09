@@ -3,6 +3,7 @@
 namespace GrumPHP\Event;
 
 use GrumPHP\Collection\TasksCollection;
+use GrumPHP\Task\Context\ContextInterface;
 
 /**
  * Class RunnerFailedEvent
@@ -17,12 +18,13 @@ class RunnerFailedEvent extends RunnerEvent
     private $messages;
 
     /**
-     * @param TasksCollection $tasks
-     * @param array           $messages
+     * @param TasksCollection  $tasks
+     * @param ContextInterface $context
+     * @param array            $messages
      */
-    public function __construct(TasksCollection $tasks, array $messages)
+    public function __construct(TasksCollection $tasks, ContextInterface $context, array $messages)
     {
-        parent::__construct($tasks);
+        parent::__construct($tasks, $context);
         $this->messages = $messages;
     }
 

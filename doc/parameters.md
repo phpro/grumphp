@@ -6,6 +6,7 @@ parameters:
     bin_dir: ./vendor/bin
     git_dir: .
     stop_on_failure: false
+    ignore_unstaged_changes: true
     ascii:
         failed: resource/grumphp-grumpy.txt
         succeeded: resource/grumphp-happy.txt
@@ -31,6 +32,14 @@ This parameter is used to create the git hooks at the correct location. It defau
 
 This parameter will tell GrumPHP to stop running tasks when one of the tasks results in an error.
 By default GrumPHP will continue running the configured tasks. 
+
+**ignore_unstaged_changes**
+
+*Default: true*
+
+By enabling this option, GrumPHP will stash your unstaged changes in git before running the tasks.
+This way the tasks will run with the code that is actually committed without the unstaged changes.
+Note that during the commit, the unstaged changes will be stored in git stash.
 
 **ascii**
 
