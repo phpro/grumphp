@@ -2,6 +2,8 @@
 
 namespace GrumPHP\Parser;
 
+use GrumPHP\Collection\ParseErrorsCollection;
+
 /**
  * Interface ParserInterface
  *
@@ -12,7 +14,7 @@ interface ParserInterface
     /**
      * @param string $filename
      *
-     * @return GrumPHP\Collection\ParseErrorsCollection
+     * @return ParseErrorsCollection
      */
     public function parse($filename, array $keywords);
 
