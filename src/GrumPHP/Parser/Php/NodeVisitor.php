@@ -5,7 +5,6 @@ namespace GrumPHP\Parser\Php;
 use GrumPHP\Collection\ParseErrorsCollection;
 use PhpParser\NodeVisitorAbstract;
 use PhpParser\Node;
-use SplFileInfo;
 
 class NodeVisitor extends NodeVisitorAbstract
 {
