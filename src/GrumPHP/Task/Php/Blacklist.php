@@ -24,6 +24,17 @@ class Blacklist extends AbstractParserTask
     /**
      * {@inheritdoc}
      */
+    public function getConfigurableOptions()
+    {
+        $resolver = parent::getConfigurableOptions();
+        $resolver->setDefault('triggered_by', array('php'));
+
+        return $resolver;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function canRunInContext(ContextInterface $context)
     {
         return ($context instanceof GitPreCommitContext || $context instanceof RunContext);

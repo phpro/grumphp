@@ -44,7 +44,7 @@ abstract class AbstractParserTask implements TaskInterface
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array(
             'keywords'        => array(),
-            'triggered_by'    => array('php'),
+            'triggered_by'    => array(),
             'ignore_patterns' => array(),
         ));
 
