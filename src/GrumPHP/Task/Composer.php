@@ -34,6 +34,7 @@ class Composer extends AbstractExternalTask
             'no_check_all' => false,
             'no_check_lock' => false,
             'no_check_publish'  => false,
+            'no_local_repository' => false,
             'with_dependencies' => false,
             'strict' => false
         ));
@@ -42,6 +43,7 @@ class Composer extends AbstractExternalTask
         $resolver->addAllowedTypes('no_check_all', array('bool'));
         $resolver->addAllowedTypes('no_check_lock', array('bool'));
         $resolver->addAllowedTypes('no_check_publish', array('bool'));
+        $resolver->addAllowedTypes('no_local_repository', array('bool'));
         $resolver->addAllowedTypes('with_dependencies', array('bool'));
         $resolver->addAllowedTypes('strict', array('bool'));
 
@@ -84,6 +86,26 @@ class Composer extends AbstractExternalTask
 
         if (!$process->isSuccessful()) {
             throw new RuntimeException($process->getOutput());
+        }
+
+        if ($config['no_local_repository']) {
+            $this->checkLocalRepository($config['file']);
+        }
+    }
+
+    protected function checkLocalRepository($file)
+    {
+        $json = file_get_contents($file);
+
+        $composer = json_decode($json);
+
+        if (array_key_exists('repositories', $composer)) {
+
+            foreach ($composer->repositories as $repository) {
+                if ($repository->type === 'path') {
+                    throw new RuntimeException('You have at least one local repository declared.');
+                }
+            }
         }
     }
 }
