@@ -5,7 +5,7 @@ namespace GrumPHP\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Class LintErrorsCollection
+ * Class ParseErrorsCollection
  *
  * @package GrumPHP\Collection
  */
@@ -18,7 +18,7 @@ class ParseErrorsCollection extends ArrayCollection
     {
         $errors = array();
         foreach ($this->getIterator() as $error) {
-            $errors[] = (string) $error;
+            $errors[] = $error->__toString();
         }
 
         return implode(PHP_EOL, $errors);
