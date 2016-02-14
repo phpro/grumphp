@@ -23,7 +23,8 @@ class PhpParserError extends ParseError
         return new self(
             ParseError::TYPE_ERROR,
             $exception->getRawMessage(),
-            $filename
+            $filename,
+            $exception->getStartLine()
         );
     }
 }

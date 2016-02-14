@@ -42,7 +42,7 @@ class ParseError
      * @param string $file
      * @param int    $line
      */
-    public function __construct($type, $error, $file, $line)
+    public function __construct($type, $error, $file, $line = -1)
     {
         $this->type = $type;
         $this->error = $error;
