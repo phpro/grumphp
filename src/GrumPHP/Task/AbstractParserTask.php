@@ -84,7 +84,7 @@ abstract class AbstractParserTask implements TaskInterface
      *
      * @return ParseErrorsCollection
      */
-    protected function parse(FilesCollection $files, array $keywords)
+    protected function parse(FilesCollection $files)
     {
         $this->guardParserIsInstalled();
 
@@ -93,6 +93,8 @@ abstract class AbstractParserTask implements TaskInterface
         foreach ($configuration['ignore_patterns'] as $pattern) {
             $files = $files->notPath($pattern);
         }
+
+        $keywords = $configuration['keywords'];
 
         // Parse every file:
         $parseErrors = new ParseErrorsCollection();
