@@ -47,7 +47,7 @@ class Blacklist extends AbstractParserTask
     {
         $config = $this->getConfiguration();
 
-        $files = $context->getFiles()->extensions($config['triggered_by']);
+        $files = $context->getFiles(false)->extensions($config['triggered_by']);
         if (0 === count($files)) {
             return;
         }
