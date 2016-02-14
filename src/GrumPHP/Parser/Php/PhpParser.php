@@ -8,7 +8,9 @@ use PhpParser\Parser;
 use PhpParser\Lexer\Emulative;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
+use PhpParser\NodeVisitor;
 use PhpParser\Error;
+use SplFileInfo;
 
 /**
  * Class PhpParser
@@ -18,22 +20,40 @@ use PhpParser\Error;
 class PhpParser implements ParserInterface
 {
     /**
-     * @param string $filename
+     * @param SplFileInfo $filename
+     * @param array       $keywords
      *
      * @return GrumPHP\Collection\ParseErrorsCollection
      */
-    public function parse($filename, array $keywords)
+    public function parse(SplFileInfo $file, array $keywords)
     {
+        $filename  = $file->getRealPath();
+
         $errors    = new ParseErrorsCollection();
 
         $parser    = new Parser(new Emulative);
         $traverser = new NodeTraverser();
 
         $traverser->addVisitor(new NameResolver);
-        $traverser->addVisitor(new NodeVisitor($filename, $keywords, $errors));
+
+        $visitors = array(
+            'GrumPHP\Parser\Php\Visitor\FunctionCallVisitor',
+            'GrumPHP\Parser\Php\Visitor\ConcreteMethodCallVisitor',
+            'GrumPHP\Parser\Php\Visitor\StaticMethodCallVisitor',
+        );
+        foreach ($visitors as $visitor) {
+            if (!class_exists($visitor)) {
+                continue;
+            }
+            $visitor = new $visitor;
+            if ($visitor instanceof NodeVisitor) {
+                $visitor->init($filename, $keywords, $errors);
+                $traverser->addVisitor($visitor);
+            }
+        }
 
         try {
-            $code = file_get_contents($filename);
+            $code = $file->getContents();
 
             // parse
             $stmts = $parser->parse($code);
@@ -42,7 +62,7 @@ class PhpParser implements ParserInterface
             $traverser->traverse($stmts);
 
         } catch (Error $e) {
-            $errors->add($e->getMessage());
+            $errors[] = PhpParserError::fromParseException($e, $filename);
         }
 
         return $errors;
