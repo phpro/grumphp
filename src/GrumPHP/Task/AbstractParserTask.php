@@ -99,8 +99,7 @@ abstract class AbstractParserTask implements TaskInterface
         // Parse every file:
         $parseErrors = new ParseErrorsCollection();
         foreach ($files as $file) {
-            $filename = $this->grumPHP->getGitDir() . '/' . $file->getRelativePathname();
-            foreach ($this->parser->parse($filename, $keywords) as $error) {
+            foreach ($this->parser->parse($file, $keywords) as $error) {
                 $parseErrors->add($error);
             }
         }
