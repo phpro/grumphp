@@ -22,10 +22,11 @@ class PhpParser implements ParserInterface
     /**
      * @param SplFileInfo $filename
      * @param array       $keywords
+     * @param array       $visitors
      *
      * @return GrumPHP\Collection\ParseErrorsCollection
      */
-    public function parse(SplFileInfo $file, array $keywords)
+    public function parse(SplFileInfo $file, array $keywords, array $visitors)
     {
         $filename  = $file->getRealPath();
 
@@ -36,11 +37,6 @@ class PhpParser implements ParserInterface
 
         $traverser->addVisitor(new NameResolver);
 
-        $visitors = array(
-            'GrumPHP\Parser\Php\Visitor\FunctionCallVisitor',
-            'GrumPHP\Parser\Php\Visitor\ConcreteMethodCallVisitor',
-            'GrumPHP\Parser\Php\Visitor\StaticMethodCallVisitor',
-        );
         foreach ($visitors as $visitor) {
             if (!class_exists($visitor)) {
                 continue;

@@ -44,11 +44,13 @@ abstract class AbstractParserTask implements TaskInterface
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array(
             'keywords'        => array(),
+            'visitors'        => array(),
             'triggered_by'    => array(),
             'ignore_patterns' => array(),
         ));
 
         $resolver->addAllowedTypes('keywords', array('array'));
+        $resolver->addAllowedTypes('visitors', array('array'));
         $resolver->addAllowedTypes('triggered_by', array('array'));
         $resolver->addAllowedTypes('ignore_patterns', array('array'));
 
@@ -95,11 +97,12 @@ abstract class AbstractParserTask implements TaskInterface
         }
 
         $keywords = $configuration['keywords'];
+        $visitors = $configuration['visitors'];
 
         // Parse every file:
         $parseErrors = new ParseErrorsCollection();
         foreach ($files as $file) {
-            foreach ($this->parser->parse($file, $keywords) as $error) {
+            foreach ($this->parser->parse($file, $keywords, $visitors) as $error) {
                 $parseErrors->add($error);
             }
         }

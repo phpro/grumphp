@@ -15,10 +15,11 @@ interface ParserInterface
     /**
      * @param SplFileInfo $file
      * @param array       $keywords
+     * @param array       $visitors
      *
      * @return ParseErrorsCollection
      */
-    public function parse(SplFileInfo $file, array $keywords);
+    public function parse(SplFileInfo $file, array $keywords, array $visitors);
 
     /**
      * @return bool
