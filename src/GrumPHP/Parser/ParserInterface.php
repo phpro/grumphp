@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Parser;
 
+use GrumPHP\Collection\NodeVisitorsCollection;
 use GrumPHP\Collection\ParseErrorsCollection;
 use SplFileInfo;
 
@@ -15,11 +16,11 @@ interface ParserInterface
     /**
      * @param SplFileInfo $file
      * @param array       $keywords
-     * @param array       $visitors
+     * @param NodeVisitorsCollection $visitors
      *
      * @return ParseErrorsCollection
      */
-    public function parse(SplFileInfo $file, array $keywords, array $visitors);
+    public function parse(SplFileInfo $file, array $keywords, NodeVisitorsCollection $visitors);
 
     /**
      * @return bool

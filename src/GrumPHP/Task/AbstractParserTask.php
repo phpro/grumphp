@@ -3,11 +3,13 @@
 namespace GrumPHP\Task;
 
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Collection\NodeVisitorsCollection;
 use GrumPHP\Collection\ParseErrorsCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Parser\ParserInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use PhpParser\NodeVisitor;
 
 /**
  * Class AbstractParser
@@ -27,6 +29,11 @@ abstract class AbstractParserTask implements TaskInterface
     protected $parser;
 
     /**
+     * @var NodeVisitorsCollection|NodeVisitor[]
+     */
+    private $nodeVisitors;
+
+    /**
      * @param GrumPHP         $grumPHP
      * @param ParserInterface $parser
      */
@@ -34,6 +41,8 @@ abstract class AbstractParserTask implements TaskInterface
     {
         $this->grumPHP = $grumPHP;
         $this->parser  = $parser;
+
+        $this->nodeVisitors = new NodeVisitorsCollection();
     }
 
     /**
@@ -97,7 +106,7 @@ abstract class AbstractParserTask implements TaskInterface
         }
 
         $keywords = $configuration['keywords'];
-        $visitors = $configuration['visitors'];
+        $visitors = $this->getNodeVisitors();
 
         // Parse every file:
         $parseErrors = new ParseErrorsCollection();
@@ -108,5 +117,26 @@ abstract class AbstractParserTask implements TaskInterface
         }
 
         return $parseErrors;
+    }
+
+
+    /**
+     * @param NodeVisitor $visitor
+     */
+    public function addNodeVisitor(NodeVisitor $visitor)
+    {
+        if ($this->nodeVisitors->contains($visitor)) {
+            return;
+        }
+
+        $this->nodeVisitors->add($visitor);
+    }
+
+    /**
+     * @return NodeVisitorsCollection|NodeVisitor[]
+     */
+    public function getNodeVisitors()
+    {
+        return $this->nodeVisitors;
     }
 }
