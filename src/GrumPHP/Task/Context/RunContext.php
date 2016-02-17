@@ -26,7 +26,7 @@ class RunContext implements ContextInterface
     /**
      * @param FilesCollection $files
      */
-    public function __construct(FilesCollection $files, PathsHelper $paths)
+    public function __construct(FilesCollection $files, PathsHelper $paths = null)
     {
         $this->files = $files;
         $this->paths = $paths;
