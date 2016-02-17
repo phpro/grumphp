@@ -44,7 +44,7 @@ class RunContext implements ContextInterface
         }
 
         $self  = $this;
-        $files = $this->files->map(function($item) use ($self) {
+        $files = $this->files->map(function ($item) use ($self) {
             $pathName =  $this->paths->getGitDir() . $item->getPathname();
             return new SplFileInfo($pathName, $item->getRelativePath(), $item->getRelativePathname());
 
