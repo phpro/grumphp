@@ -89,20 +89,23 @@ class Composer extends AbstractExternalTask
         }
 
         if ($config['no_local_repository']) {
-            $this->checkLocalRepository($config['file']);
+            $this->checkLocalRepository($files->first());
         }
     }
 
-    protected function checkLocalRepository($file)
+    protected function checkLocalRepository($composerFile)
     {
-        $json = file_get_contents($file);
+        if (!file_exists($composerFile->getRealPath())) {
+            throw new RuntimeException(
+                'The ' . $composerFile->getRelativePathname() . ' file could not be found.'
+            );
+        }
 
-        $composer = json_decode($json);
+        $composer = json_decode($composerFile->getContents(), true);
 
         if (array_key_exists('repositories', $composer)) {
-
-            foreach ($composer->repositories as $repository) {
-                if ($repository->type === 'path') {
+            foreach ($composer['repositories'] as $repository) {
+                if ($repository['type'] === 'path') {
                     throw new RuntimeException('You have at least one local repository declared.');
                 }
             }
