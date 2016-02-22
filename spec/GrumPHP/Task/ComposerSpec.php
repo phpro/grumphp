@@ -40,6 +40,7 @@ class ComposerSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('no_check_all');
         $options->getDefinedOptions()->shouldContain('no_check_lock');
         $options->getDefinedOptions()->shouldContain('no_check_publish');
+        $options->getDefinedOptions()->shouldContain('no_local_repository');
         $options->getDefinedOptions()->shouldContain('with_dependencies');
         $options->getDefinedOptions()->shouldContain('strict');
     }
