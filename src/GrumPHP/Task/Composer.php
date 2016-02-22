@@ -7,6 +7,7 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use SplFileInfo;
 
 /**
  * Composer task
@@ -93,7 +94,15 @@ class Composer extends AbstractExternalTask
         }
     }
 
-    protected function checkLocalRepository($composerFile)
+    /**
+     * Checks if composer.local host one or more local repositories.
+     *
+     * @param SplFileInfo $composerFile File composer.json
+     *
+     * @return void
+     * @throws RuntimeException
+     */
+    private function checkLocalRepository(SplFileInfo $composerFile)
     {
         if (!file_exists($composerFile->getRealPath())) {
             throw new RuntimeException(
