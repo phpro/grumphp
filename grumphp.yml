@@ -1,5 +1,4 @@
 parameters:
-
   bin_dir: "./vendor/bin"
   git_dir: "."
   tasks:
