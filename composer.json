@@ -24,7 +24,6 @@
         "composer/composer": "^1.0-alpha11",
         "phpspec/phpspec": "~2.4",
         "squizlabs/php_codesniffer": "~2.3",
-        "roave/security-advisories": "dev-master@dev",
         "fabpot/php-cs-fixer": "~1.0",
         "phpunit/phpunit": "^4.8",
         "sensiolabs/security-checker": "^3.0"
