@@ -48,6 +48,17 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
         ));
     }
 
+    function it_should_be_able_to_add_an_argument_array_with_separated_values()
+    {
+        $this->addArgumentArrayWithSeparatedValue('--item', array(1, 2));
+        $this->getValues()->shouldBe(array(
+            '--item',
+            1,
+            '--item',
+            2,
+        ));
+    }
+
     function it_should_be_able_to_add_required_argument()
     {
         $this->shouldThrow('GrumPHP\Exception\InvalidArgumentException')->duringAddRequiredArgument('--argument=%s', false);

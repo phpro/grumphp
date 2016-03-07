@@ -63,7 +63,7 @@ class Blacklist extends AbstractExternalTask
         $arguments->add('grep');
         $arguments->add('--cached');
         $arguments->add('-n');
-        $arguments->addArgumentArray('-e %s', $config['keywords']);
+        $arguments->addArgumentArrayWithSeparatedValue('-e', $config['keywords']);
         $arguments->addFiles($files);
 
         $process = $this->processBuilder->buildProcess($arguments);
