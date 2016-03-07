@@ -42,6 +42,7 @@ class PhpcsSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('tab_width');
         $options->getDefinedOptions()->shouldContain('ignore_patterns');
         $options->getDefinedOptions()->shouldContain('sniffs');
+        $options->getDefinedOptions()->shouldContain('triggered_by');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
@@ -62,6 +63,20 @@ class PhpcsSpec extends ObjectBehavior
 
         $context->getFiles()->willReturn(new FilesCollection());
         $this->run($context)->shouldBeNull();
+    }
+
+    function it_does_not_runs_the_suite_with_invalid_extensions(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
+    {
+        $arguments = new ProcessArgumentsCollection();
+        $processBuilder->createArgumentsForCommand('phpcs')->willReturn($arguments);
+        $processBuilder->buildProcess($arguments)->willReturn($process);
+
+        $process->run()->shouldNotBeCalled();
+
+        $context->getFiles()->willReturn(new FilesCollection(array(
+          new SplFileInfo('file1.txt', '.', 'file1.txt'),
+        )));
+        $this->run($context);
     }
 
     function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)

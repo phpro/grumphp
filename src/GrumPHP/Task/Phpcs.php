@@ -33,6 +33,7 @@ class Phpcs extends AbstractExternalTask
             'tab_width' => null,
             'ignore_patterns' => array(),
             'sniffs' => array(),
+            'triggered_by' => array('php')
         ));
 
         $resolver->addAllowedTypes('standard', array('string'));
@@ -40,6 +41,7 @@ class Phpcs extends AbstractExternalTask
         $resolver->addAllowedTypes('tab_width', array('null', 'int'));
         $resolver->addAllowedTypes('ignore_patterns', array('array'));
         $resolver->addAllowedTypes('sniffs', array('array'));
+        $resolver->addAllowedTypes('triggered_by', array('array'));
 
         return $resolver;
     }
@@ -57,7 +59,8 @@ class Phpcs extends AbstractExternalTask
      */
     public function run(ContextInterface $context)
     {
-        $files = $context->getFiles()->name('*.php');
+        $config = $this->getConfiguration();
+        $files = $context->getFiles()->extensions($config['triggered_by']);
         if (0 === count($files)) {
             return;
         }
