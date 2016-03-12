@@ -10,7 +10,6 @@ use GrumPHP\Event\RunnerFailedEvent;
 use GrumPHP\Event\TaskEvent;
 use GrumPHP\Event\TaskEvents;
 use GrumPHP\Event\TaskFailedEvent;
-use GrumPHP\Exception\FailureException;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
@@ -74,24 +73,25 @@ class TaskRunner
     /**
      * @param ContextInterface $context
      *
-     * @throws FailureException if any of the tasks fail
+     * @return TaskResults
      */
     public function run(ContextInterface $context)
     {
-        $failures = false;
         $messages = array();
         $tasks = $this->tasks->filterByContext($context)->sortByPriority($this->grumPHP);
+        $taskResuls = new TaskResults();
 
         $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, new RunnerEvent($tasks, $context));
         foreach ($tasks as $task) {
             try {
                 $this->eventDispatcher->dispatch(TaskEvents::TASK_RUN, new TaskEvent($task, $context));
                 $task->run($context);
+                $taskResuls->add(TaskResult::createPassed($task, $context));
                 $this->eventDispatcher->dispatch(TaskEvents::TASK_COMPLETE, new TaskEvent($task, $context));
             } catch (RuntimeException $e) {
+                $taskResuls->add(TaskResult::createFailed($task, $context, $e->getMessage()));
                 $this->eventDispatcher->dispatch(TaskEvents::TASK_FAILED, new TaskFailedEvent($task, $context, $e));
                 $messages[] = $e->getMessage();
-                $failures = true;
 
                 if ($this->grumPHP->stopOnFailure()) {
                     break;
@@ -99,14 +99,17 @@ class TaskRunner
             }
         }
 
-        if ($failures) {
+        if (!$taskResuls->isPassed()) {
             $this->eventDispatcher->dispatch(
                 RunnerEvents::RUNNER_FAILED,
                 new RunnerFailedEvent($tasks, $context, $messages)
             );
-            throw new FailureException(implode(PHP_EOL, $messages));
+
+            return $taskResuls;
         }
 
         $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_COMPLETE, new RunnerEvent($tasks, $context));
+
+        return $taskResuls;
     }
 }

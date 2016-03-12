@@ -2,10 +2,11 @@
 
 namespace GrumPHP\Console\Helper;
 
+use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\Subscriber\ProgressSubscriber;
-use GrumPHP\Exception\ExceptionInterface;
 use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Task\Context\ContextInterface;
+use GrumPHP\Task\TaskInterface;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -32,15 +33,25 @@ class TaskRunnerHelper extends Helper
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
+    /**
+     * @var GrumPHP
+     */
+    private $grumPHP;
+    /**
+     * @var array
+     */
+    private $warningMessages = array();
 
     /**
-     * @param TaskRunner               $taskRunner
+     * @param TaskRunner $taskRunner
      * @param EventDispatcherInterface $eventDispatcher
+     * @param GrumPHP $grumPHP
      */
-    public function __construct(TaskRunner $taskRunner, EventDispatcherInterface $eventDispatcher)
+    public function __construct(TaskRunner $taskRunner, EventDispatcherInterface $eventDispatcher, GrumPHP $grumPHP)
     {
         $this->taskRunner = $taskRunner;
         $this->eventDispatcher = $eventDispatcher;
+        $this->grumPHP = $grumPHP;
     }
 
     /**
@@ -63,12 +74,18 @@ class TaskRunnerHelper extends Helper
         // Make sure to add some default event listeners before running.
         $this->registerEventListeners($output, $context);
 
-        try {
-            $this->taskRunner->run($context);
-        } catch (ExceptionInterface $e) {
-            // We'll fail hard on any exception not generated in GrumPHP
+        $taskResults = $this->taskRunner->run($context);
 
-            return $this->returnErrorMessage($output, $e->getMessage());
+        /** @var \GrumPHP\Runner\TaskResult $taskResult */
+        foreach ($taskResults as $taskResult) {
+            if ($taskResult->isPassed()) {
+                continue;
+            }
+            if ($this->isBlockingTask($taskResult->getTask())) {
+                $this->returnWarningMessages($output);
+                return $this->returnErrorMessage($output, $taskResult->getMessage());
+            }
+            $this->addWarningMessage($taskResult->getMessage());
         }
 
         // Skip before returning any messages
@@ -76,7 +93,18 @@ class TaskRunnerHelper extends Helper
             return self::CODE_SUCCESS;
         }
 
+        $this->returnWarningMessages($output);
         return $this->returnSuccessMessage($output);
+    }
+
+    /**
+     * @param \GrumPHP\Task\TaskInterface $task
+     * @return bool
+     */
+    private function isBlockingTask(TaskInterface $task)
+    {
+        $taskMetadata = $this->grumPHP->getTaskMetadata($task->getName());
+        return $taskMetadata['blocking'];
     }
 
     /**
@@ -122,6 +150,24 @@ class TaskRunnerHelper extends Helper
         }
 
         return self::CODE_SUCCESS;
+    }
+
+    /**
+     * @param OutputInterface $output
+     */
+    private function returnWarningMessages($output)
+    {
+        foreach ($this->warningMessages as $warningMessage) {
+            $output->writeln('<fg=yellow>' . $warningMessage . '</fg=yellow>');
+        }
+    }
+
+    /**
+     * @param string $message
+     */
+    private function addWarningMessage($message)
+    {
+        $this->warningMessages[] = $message;
     }
 
     /**

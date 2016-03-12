@@ -2,7 +2,6 @@
 
 namespace spec\GrumPHP\Runner;
 
-use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\RunnerEvents;
 use GrumPHP\Event\TaskEvents;
@@ -63,12 +62,22 @@ class TaskRunnerSpec extends ObjectBehavior
         $this->run($context);
     }
 
-    function it_throws_exception_if_task_fails(TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
+    function it_returns_a_passed_tasks_result_if_all_tasks_passed(TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
+    {
+        $task1->run($context)->shouldBeCalled();
+        $task2->run($context)->shouldBeCalled();
+
+        $this->run($context)->shouldReturnAnInstanceOf('GrumPHP\Runner\TaskResults');
+        $this->run($context)->shouldBePassed();
+    }
+
+    function it_returns_a_failed_tasks_result_if_a_task_fails(TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
     {
         $task1->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
         $task2->run($context)->shouldBeCalled();
 
-        $this->shouldThrow('GrumPHP\Exception\FailureException')->duringRun($context);
+        $this->run($context)->shouldReturnAnInstanceOf('GrumPHP\Runner\TaskResults');
+        $this->run($context)->shouldNotBePassed();
     }
 
     function it_runs_subsequent_tasks_if_one_fails(
@@ -79,7 +88,7 @@ class TaskRunnerSpec extends ObjectBehavior
         $task1->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
         $task2->run($context)->shouldBeCalled();
 
-        $this->shouldThrow('GrumPHP\Exception\FailureException')->duringRun($context);
+        $this->run($context);
     }
 
     function it_triggers_events_during_happy_flow(
@@ -113,6 +122,6 @@ class TaskRunnerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(TaskEvents::TASK_FAILED, Argument::type('GrumPHP\Event\TaskFailedEvent'))->shouldBeCalled();
         $eventDispatcher->dispatch(RunnerEvents::RUNNER_FAILED, Argument::type('GrumPHP\Event\RunnerFailedEvent'))->shouldBeCalled();
 
-        $this->shouldThrow('GrumPHP\Exception\FailureException')->duringRun($context);
+        $this->run($context);
     }
 }
