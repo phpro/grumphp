@@ -133,6 +133,14 @@ services:
         tags:
             - {name: grumphp.task, config: securitychecker}
 
+    task.shell:
+        class: GrumPHP\Task\Shell
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: shell}
+
     task.xmllint:
         class: GrumPHP\Task\XmlLint
         arguments:

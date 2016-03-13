@@ -89,6 +89,7 @@ parameters:
         phpunit: ~
         robo: ~
         securitychecker: ~
+        shell: ~
         xmllint: ~
         yamllint: ~
     extensions: []

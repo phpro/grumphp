@@ -24,6 +24,7 @@ parameters:
         phpunit: ~
         robo: ~
         securitychecker: ~
+        shell: ~
         xmllint: ~
         yamllint: ~
 ```
@@ -49,6 +50,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Phpunit](tasks/phpunit.md)
 - [Robo](tasks/robo.md)
 - [Security Checker](tasks/security_checker.md)
+- [Shell](tasks/shell.md)
 - [XmlLint](tasks/xmllint.md)
 - [YamlLint](tasks/yamllint.md)
 
