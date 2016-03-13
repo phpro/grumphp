@@ -133,11 +133,8 @@ Following tasks are still on the roadmap:
 - robo
 - twig lint
 - symfony validation
-- gulp tests
 - npm tests
 - humbug
-- phing
-- ant
 - ...
 
 New features or bugfixes can be logged at the [issue tracker](https://github.com/phpro/grumphp/issues).
