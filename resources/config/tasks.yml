@@ -1,4 +1,12 @@
 services:
+    task.ant:
+        class: GrumPHP\Task\Ant
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: ant}
+
     task.behat:
         class: GrumPHP\Task\Behat
         arguments:
@@ -46,6 +54,13 @@ services:
         tags:
             - {name: grumphp.task, config: grunt}
 
+    task.gulp:
+        class: GrumPHP\Task\Gulp
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: gulp}
     task.jsonlint:
         class: GrumPHP\Task\JsonLint
         arguments:
@@ -53,6 +68,22 @@ services:
             - '@linter.jsonlint'
         tags:
             - {name: grumphp.task, config: jsonlint}
+
+    task.make:
+        class: GrumPHP\Task\Make
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: make}
+
+    task.phing:
+        class: GrumPHP\Task\Phing
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: phing}
 
     task.phpcs:
         class: GrumPHP\Task\Phpcs
