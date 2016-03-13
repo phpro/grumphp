@@ -132,7 +132,6 @@ Following tasks are still on the roadmap:
 - phpmd
 - phpcpd
 - phpdcd
-- robo
 - twig lint
 - symfony validation
 - npm tests
