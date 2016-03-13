@@ -72,6 +72,7 @@ parameters:
         failed: grumphp-grumpy.txt
         succeeded: grumphp-happy.txt
     tasks:
+        ant: ~
         behat: ~
         codeception: ~
         composer: ~

@@ -7,6 +7,7 @@ To activate a task, it is sufficient to add an empty task configuration:
 # grumphp.yml
 parameters:
     tasks:
+        ant: ~
         behat: ~
         codeception: ~
         composer: ~
@@ -29,6 +30,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 
 ## Tasks
 
+- [Ant](tasks/ant.md)
 - [Behat](tasks/behat.md)
 - [Codeception](tasks/codeception.md)
 - [Composer](tasks/composer.md)
