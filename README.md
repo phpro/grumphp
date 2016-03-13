@@ -77,6 +77,7 @@ parameters:
         git_blacklist: ~
         git_commit_message: ~
         grunt: ~
+        gulp: ~
         jsonlint: ~
         phpcs: ~
         phpcsfixer: ~
