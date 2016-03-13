@@ -28,7 +28,7 @@ class Shell extends AbstractExternalTask
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array(
-            'scripts' => [],
+            'scripts' => array(),
             'triggered_by' => array('php')
         ));
 
