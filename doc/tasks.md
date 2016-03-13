@@ -22,6 +22,7 @@ parameters:
         phpcsfixer: ~
         phpspec: ~
         phpunit: ~
+        robo: ~
         securitychecker: ~
         xmllint: ~
         yamllint: ~
@@ -46,6 +47,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [PHP-CS-Fixer](tasks/php_cs_fixer.md)
 - [Phpspec](tasks/phpspec.md)
 - [Phpunit](tasks/phpunit.md)
+- [Robo](tasks/robo.md)
 - [Security Checker](tasks/security_checker.md)
 - [XmlLint](tasks/xmllint.md)
 - [YamlLint](tasks/yamllint.md)

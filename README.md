@@ -41,6 +41,7 @@ You will see following message in the composer logs:
 To make GrumPHP even more awesome, it will suggest installing some extra packages:
 
 - behat/behat : ~3.0
+- codegyre/robo : ~0.7
 - fabpot/php-cs-fixer : ~1.10
 - phing/phing : ~2.0
 - phpspec/phpspec : ~2.1
@@ -86,6 +87,7 @@ parameters:
         phpcsfixer: ~
         phpspec: ~
         phpunit: ~
+        robo: ~
         securitychecker: ~
         xmllint: ~
         yamllint: ~

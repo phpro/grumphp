@@ -117,6 +117,14 @@ services:
         tags:
             - {name: grumphp.task, config: phpunit}
 
+    task.robo:
+        class: GrumPHP\Task\Robo
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: robo}
+
     task.securitychecker:
         class: GrumPHP\Task\SecurityChecker
         arguments:
