@@ -15,6 +15,7 @@ parameters:
         grunt: ~
         gulp: ~
         jsonlint: ~
+        phing: ~
         phpcs: ~
         phpcsfixer: ~
         phpspec: ~
@@ -36,6 +37,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Grunt](tasks/grunt.md)
 - [Gulp](tasks/gulp.md)
 - [JsonLint](tasks/jsonlint.md)
+- [Phing](tasks/phing.md)
 - [Phpcs](tasks/phpcs.md)
 - [PHP-CS-Fixer](tasks/php_cs_fixer.md)
 - [Phpspec](tasks/phpspec.md)

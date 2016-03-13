@@ -41,7 +41,8 @@ You will see following message in the composer logs:
 To make GrumPHP even more awesome, it will suggest installing some extra packages:
 
 - behat/behat : ~3.0
-- fabpot/php-cs-fixer: ~1.10
+- fabpot/php-cs-fixer : ~1.10
+- phing/phing : ~2.0
 - phpspec/phpspec : ~2.1
 - phpunit/phpunit : ~4.5
 - roave/security-advisories : dev-master@dev
@@ -79,6 +80,7 @@ parameters:
         grunt: ~
         gulp: ~
         jsonlint: ~
+        phing: ~
         phpcs: ~
         phpcsfixer: ~
         phpspec: ~

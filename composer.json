@@ -31,6 +31,7 @@
     "suggest": {
         "behat/behat": "Lets GrumPHP validate your project features.",
         "fabpot/php-cs-fixer": "Lets GrumPHP automatically fix your codestyle.",
+        "phing/phing": "Lets GrumPHP run your automated PHP tasks.",
         "phpspec/phpspec": "Lets GrumPHP spec your code.",
         "phpunit/phpunit": "Lets GrumPHP run your unit tests.",
         "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",
