@@ -32,7 +32,7 @@ services:
             - {name: grumphp.task, config: composer}
 
     task.git.gherkin:
-        class: GrumPHP\Task\Git\Gherkin
+        class: GrumPHP\Task\Gherkin
         arguments:
             - '@config'
             - '@process_builder'
