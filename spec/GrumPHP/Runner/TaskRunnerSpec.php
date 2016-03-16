@@ -67,7 +67,7 @@ class TaskRunnerSpec extends ObjectBehavior
         $task1->run($context)->shouldBeCalled();
         $task2->run($context)->shouldBeCalled();
 
-        $this->run($context)->shouldReturnAnInstanceOf('GrumPHP\Runner\TaskResults');
+        $this->run($context)->shouldReturnAnInstanceOf('GrumPHP\Collection\TaskResultCollection');
         $this->run($context)->shouldBePassed();
     }
 
@@ -76,7 +76,7 @@ class TaskRunnerSpec extends ObjectBehavior
         $task1->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
         $task2->run($context)->shouldBeCalled();
 
-        $this->run($context)->shouldReturnAnInstanceOf('GrumPHP\Runner\TaskResults');
+        $this->run($context)->shouldReturnAnInstanceOf('GrumPHP\Collection\TaskResultCollection');
         $this->run($context)->shouldNotBePassed();
     }
 

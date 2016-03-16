@@ -6,7 +6,7 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\Runner\TaskResult;
-use GrumPHP\Runner\TaskResults;
+use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
@@ -43,7 +43,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         $failedTaskResult->isPassed()->willReturn(false);
         $failedTaskResult->getTask()->willReturn($anotherTask);
         $failedTaskResult->getMessage()->willReturn('failed task message');
-        $taskResults = new TaskResults();
+        $taskResults = new TaskResultCollection();
         $taskResults->add($failedTaskResult->getWrappedObject());
         $taskRunner->run($context)->willReturn($taskResults);
         $this->run($output, $context)->shouldReturn(TaskRunnerHelper::CODE_ERROR);
@@ -61,7 +61,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         $grumPHP->getTaskMetadata(Argument::any())->willReturn(array('blocking' => true));
         $succeedTaskResult->isPassed()->willReturn(true);
         $succeedTaskResult->getTask()->willReturn($task);
-        $taskResults = new TaskResults();
+        $taskResults = new TaskResultCollection();
         $taskResults->add($succeedTaskResult->getWrappedObject());
         $taskRunner->run($context)->willReturn($taskResults);
         $this->run($output, $context)->shouldReturn(TaskRunnerHelper::CODE_SUCCESS);
@@ -81,7 +81,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         $failedTaskResult->isPassed()->willReturn(false);
         $failedTaskResult->getTask()->willReturn($task);
         $failedTaskResult->getMessage()->willReturn('failed task message');
-        $testResults = new TaskResults();
+        $testResults = new TaskResultCollection();
         $testResults->add($failedTaskResult->getWrappedObject());
         $taskRunner->run($context)->willReturn($testResults);
         $this->run($output, $context)->shouldReturn(TaskRunnerHelper::CODE_SUCCESS);
@@ -93,7 +93,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         ContextInterface $context,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $taskRunner->run($context)->willReturn(new TaskResults());
+        $taskRunner->run($context)->willReturn(new TaskResultCollection());
         $eventDispatcher->addSubscriber(Argument::type('GrumPHP\Event\Subscriber\ProgressSubscriber'))->shouldBeCalled();
         $this->run($output, $context)->shouldReturn(TaskRunnerHelper::CODE_SUCCESS);
     }

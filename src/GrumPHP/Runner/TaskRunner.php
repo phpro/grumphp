@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Runner;
 
+use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\RunnerEvent;
@@ -73,13 +74,13 @@ class TaskRunner
     /**
      * @param ContextInterface $context
      *
-     * @return TaskResults
+     * @return TaskResultCollection
      */
     public function run(ContextInterface $context)
     {
         $messages = array();
         $tasks = $this->tasks->filterByContext($context)->sortByPriority($this->grumPHP);
-        $taskResuls = new TaskResults();
+        $taskResuls = new TaskResultCollection();
 
         $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, new RunnerEvent($tasks, $context));
         foreach ($tasks as $task) {

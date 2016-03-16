@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\GrumPHP\Runner;
+namespace spec\GrumPHP\Collection;
 
 use GrumPHP\Runner\TaskResult;
 use PhpSpec\ObjectBehavior;
 
-class TaskResultsSpec extends ObjectBehavior
+class TaskResultCollectionSpec extends ObjectBehavior
 {
     function let()
     {
@@ -14,7 +14,7 @@ class TaskResultsSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Runner\TaskResults');
+        $this->shouldHaveType('GrumPHP\Collection\TaskResultCollection');
     }
 
     function it_contains_task_result(TaskResult $taskResult)
