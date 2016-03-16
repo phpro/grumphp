@@ -87,10 +87,10 @@ class TaskRunner
             try {
                 $this->eventDispatcher->dispatch(TaskEvents::TASK_RUN, new TaskEvent($task, $context));
                 $task->run($context);
-                $taskResuls->add(TaskResult::createPassed($task, $context));
+                $taskResuls->add(new TaskResult(TaskResult::PASSED, $task, $context));
                 $this->eventDispatcher->dispatch(TaskEvents::TASK_COMPLETE, new TaskEvent($task, $context));
             } catch (RuntimeException $e) {
-                $taskResuls->add(TaskResult::createFailed($task, $context, $e->getMessage()));
+                $taskResuls->add(new TaskResult(TaskResult::FAILED, $task, $context, $e->getMessage()));
                 $this->eventDispatcher->dispatch(TaskEvents::TASK_FAILED, new TaskFailedEvent($task, $context, $e));
                 $messages[] = $e->getMessage();
 

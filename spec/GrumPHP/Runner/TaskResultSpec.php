@@ -13,7 +13,7 @@ class TaskResultSpec extends ObjectBehavior
 
     function it_creates_passed_task(TaskInterface $task, ContextInterface $context)
     {
-        $this->beConstructedThrough('createPassed', array($task, $context));
+        $this->beConstructedWith(TaskResult::PASSED, $task, $context);
 
         $this->getTask()->shouldBe($task);
         $this->getResultCode()->shouldBe(TaskResult::PASSED);
@@ -23,7 +23,7 @@ class TaskResultSpec extends ObjectBehavior
 
     function it_creates_failed_task(TaskInterface $task, ContextInterface $context)
     {
-        $this->beConstructedThrough('createFailed', array($task, $context, self::FAILED_TASK_MESSAGE));
+        $this->beConstructedWith(TaskResult::FAILED, $task, $context, self::FAILED_TASK_MESSAGE);
 
         $this->getTask()->shouldBe($task);
         $this->getResultCode()->shouldBe(TaskResult::FAILED);

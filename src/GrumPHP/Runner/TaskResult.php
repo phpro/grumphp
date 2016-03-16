@@ -8,6 +8,7 @@ use GrumPHP\Task\TaskInterface;
 class TaskResult
 {
     const PASSED = 0;
+    const NONBLOCKING_FAILED = 90;
     const FAILED = 99;
 
     /**
