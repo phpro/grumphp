@@ -30,4 +30,22 @@ class TaskResultSpec extends ObjectBehavior
         $this->isPassed()->shouldBe(false);
         $this->getMessage()->shouldBe(self::FAILED_TASK_MESSAGE);
     }
+
+    function it_should_be_a_blocking_task_if_it_is_a_failed_task(TaskInterface $task, ContextInterface $context)
+    {
+        $this->beConstructedWith(TaskResult::FAILED, $task, $context, self::FAILED_TASK_MESSAGE);
+        $this->isBlocking()->shouldBe(true);
+    }
+
+    function it_should_not_be_a_blocking_task_if_it_is_a_passed_task(TaskInterface $task, ContextInterface $context)
+    {
+        $this->beConstructedWith(TaskResult::PASSED, $task, $context, self::FAILED_TASK_MESSAGE);
+        $this->isBlocking()->shouldBe(false);
+    }
+
+    function it_should_not_be_a_blocking_task_if_it_is_a_non_blocking_failed_task(TaskInterface $task, ContextInterface $context)
+    {
+        $this->beConstructedWith(TaskResult::NONBLOCKING_FAILED, $task, $context, self::FAILED_TASK_MESSAGE);
+        $this->isBlocking()->shouldBe(false);
+    }
 }
