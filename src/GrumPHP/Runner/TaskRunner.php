@@ -78,11 +78,10 @@ class TaskRunner
      */
     public function run(ContextInterface $context)
     {
-        $messages = array();
         $tasks = $this->tasks->filterByContext($context)->sortByPriority($this->grumPHP);
         $taskResuls = new TaskResultCollection();
 
-        $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, new RunnerEvent($tasks, $context));
+        $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, new RunnerEvent($tasks, $context, $taskResuls));
         foreach ($tasks as $task) {
             try {
                 $this->eventDispatcher->dispatch(TaskEvents::TASK_RUN, new TaskEvent($task, $context));
@@ -99,7 +98,6 @@ class TaskRunner
                     )
                 );
                 $this->eventDispatcher->dispatch(TaskEvents::TASK_FAILED, new TaskFailedEvent($task, $context, $e));
-                $messages[] = $e->getMessage();
 
                 if ($this->grumPHP->stopOnFailure()) {
                     break;
@@ -110,13 +108,13 @@ class TaskRunner
         if (!$taskResuls->isPassed()) {
             $this->eventDispatcher->dispatch(
                 RunnerEvents::RUNNER_FAILED,
-                new RunnerFailedEvent($tasks, $context, $messages)
+                new RunnerFailedEvent($tasks, $context, $taskResuls)
             );
 
             return $taskResuls;
         }
 
-        $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_COMPLETE, new RunnerEvent($tasks, $context));
+        $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_COMPLETE, new RunnerEvent($tasks, $context, $taskResuls));
 
         return $taskResuls;
     }
