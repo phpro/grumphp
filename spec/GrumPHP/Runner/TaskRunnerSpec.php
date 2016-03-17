@@ -5,6 +5,7 @@ namespace spec\GrumPHP\Runner;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\RunnerEvents;
 use GrumPHP\Event\TaskEvents;
+use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
@@ -30,8 +31,8 @@ class TaskRunnerSpec extends ObjectBehavior
         $task2->canRunInContext($context)->willReturn(true);
 
         $grumPHP->stopOnFailure()->willReturn(false);
-        $grumPHP->getTaskMetadata('task1')->willReturn(array('priority' => 0));
-        $grumPHP->getTaskMetadata('task2')->willReturn(array('priority' => 0));
+        $grumPHP->getTaskMetadata('task1')->willReturn(array('priority' => 0, 'blocking' => true));
+        $grumPHP->getTaskMetadata('task2')->willReturn(array('priority' => 0, 'blocking' => true));
 
         $this->addTask($task1);
         $this->addTask($task2);
@@ -78,6 +79,18 @@ class TaskRunnerSpec extends ObjectBehavior
 
         $this->run($context)->shouldReturnAnInstanceOf('GrumPHP\Collection\TaskResultCollection');
         $this->run($context)->shouldNotBePassed();
+        $this->run($context)->shouldContainFailedTaskResult();
+    }
+
+    function it_returns_a_failed_tasks_result_if_a_non_blocking_task_fails(GrumPHP $grumPHP, TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
+    {
+        $grumPHP->getTaskMetadata('task1')->willReturn(array('priority' => 0, 'blocking' => false));
+        $task1->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
+        $task2->run($context)->shouldBeCalled();
+
+        $this->run($context)->shouldReturnAnInstanceOf('GrumPHP\Collection\TaskResultCollection');
+        $this->run($context)->shouldNotBePassed();
+        $this->run($context)->shouldContainNonBlockingFailedTaskResult();
     }
 
     function it_runs_subsequent_tasks_if_one_fails(
@@ -123,5 +136,21 @@ class TaskRunnerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(RunnerEvents::RUNNER_FAILED, Argument::type('GrumPHP\Event\RunnerFailedEvent'))->shouldBeCalled();
 
         $this->run($context);
+    }
+
+    public function getMatchers()
+    {
+        return array(
+            'containFailedTaskResult' => function ($taskResultCollection) {
+                return $taskResultCollection->exists(function ($key, $taskResult) {
+                    return TaskResult::FAILED === $taskResult->getResultCode();
+                });
+            },
+            'containNonBlockingFailedTaskResult' => function ($taskResultCollection) {
+                return $taskResultCollection->exists(function ($key, $taskResult) {
+                    return TaskResult::NONBLOCKING_FAILED === $taskResult->getResultCode();
+                });
+            },
+        );
     }
 }

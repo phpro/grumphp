@@ -45,27 +45,6 @@ class TaskResult
     }
 
     /**
-     * @param TaskInterface $task
-     * @param ContextInterface $context
-     * @return static
-     */
-    public static function createPassed(TaskInterface $task, ContextInterface $context)
-    {
-        return new static(self::PASSED, $task, $context);
-    }
-
-    /**
-     * @param TaskInterface $task
-     * @param ContextInterface $context
-     * @param $message
-     * @return static
-     */
-    public static function createFailed(TaskInterface $task, ContextInterface $context, $message)
-    {
-        return new static(self::FAILED, $task, $context, $message);
-    }
-
-    /**
      * @return TaskInterface
      */
     public function getTask()
