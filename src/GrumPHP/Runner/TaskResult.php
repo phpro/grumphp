@@ -69,6 +69,14 @@ class TaskResult
     }
 
     /**
+     * @return bool
+     */
+    public function isBlocking()
+    {
+        return $this->getResultCode() >= self::FAILED;
+    }
+
+    /**
      * @return null|string
      */
     public function getMessage()

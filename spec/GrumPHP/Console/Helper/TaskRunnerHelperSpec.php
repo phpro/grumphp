@@ -18,9 +18,9 @@ use Prophecy\Argument;
 
 class TaskRunnerHelperSpec extends ObjectBehavior
 {
-    function let(TaskRunner $taskRunner, EventDispatcherInterface $eventDispatcher,  GrumPHP $grumPHP, HelperSet $helperSet, PathsHelper $pathsHelper)
+    function let(TaskRunner $taskRunner, EventDispatcherInterface $eventDispatcher, HelperSet $helperSet, PathsHelper $pathsHelper)
     {
-        $this->beConstructedWith($taskRunner, $eventDispatcher, $grumPHP);
+        $this->beConstructedWith($taskRunner, $eventDispatcher);
 
         $helperSet->get(PathsHelper::HELPER_NAME)->willreturn($pathsHelper);
         $this->setHelperSet($helperSet);
@@ -30,18 +30,13 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         OutputInterface $output,
         TaskRunner $taskRunner,
         ContextInterface $context,
-        GrumPHP $grumPHP,
         TaskResult $passedTaskResult,
-        TaskResult $failedTaskResult,
-        TaskInterface $aTask,
-        TaskInterface $anotherTask
+        TaskResult $failedTaskResult
     )
     {
-        $grumPHP->getTaskMetadata(Argument::any())->willReturn(array('blocking' => true));
         $passedTaskResult->isPassed()->willReturn(true);
-        $passedTaskResult->getTask()->willReturn($aTask);
         $failedTaskResult->isPassed()->willReturn(false);
-        $failedTaskResult->getTask()->willReturn($anotherTask);
+        $failedTaskResult->isBlocking()->willReturn(true);
         $failedTaskResult->getMessage()->willReturn('failed task message');
         $taskResults = new TaskResultCollection();
         $taskResults->add($failedTaskResult->getWrappedObject());
@@ -53,14 +48,10 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         OutputInterface $output,
         TaskRunner $taskRunner,
         ContextInterface $context,
-        GrumPHP $grumPHP,
-        TaskResult $succeedTaskResult,
-        TaskInterface $task
+        TaskResult $succeedTaskResult
     )
     {
-        $grumPHP->getTaskMetadata(Argument::any())->willReturn(array('blocking' => true));
         $succeedTaskResult->isPassed()->willReturn(true);
-        $succeedTaskResult->getTask()->willReturn($task);
         $taskResults = new TaskResultCollection();
         $taskResults->add($succeedTaskResult->getWrappedObject());
         $taskRunner->run($context)->willReturn($taskResults);
@@ -71,15 +62,11 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         OutputInterface $output,
         TaskRunner $taskRunner,
         ContextInterface $context,
-        GrumPHP $grumPHP,
-        TaskResult $failedTaskResult,
-        TaskInterface $task
+        TaskResult $failedTaskResult
     )
     {
-        $grumPHP->getTaskMetadata('nonblocking_task')->willReturn(array('blocking' => false));
-        $task->getName()->willReturn('nonblocking_task');
         $failedTaskResult->isPassed()->willReturn(false);
-        $failedTaskResult->getTask()->willReturn($task);
+        $failedTaskResult->isBlocking()->willReturn(false);
         $failedTaskResult->getMessage()->willReturn('failed task message');
         $testResults = new TaskResultCollection();
         $testResults->add($failedTaskResult->getWrappedObject());

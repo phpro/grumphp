@@ -2,11 +2,9 @@
 
 namespace GrumPHP\Console\Helper;
 
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\Subscriber\ProgressSubscriber;
 use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Task\Context\ContextInterface;
-use GrumPHP\Task\TaskInterface;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -33,10 +31,7 @@ class TaskRunnerHelper extends Helper
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
-    /**
-     * @var GrumPHP
-     */
-    private $grumPHP;
+
     /**
      * @var array
      */
@@ -45,13 +40,11 @@ class TaskRunnerHelper extends Helper
     /**
      * @param TaskRunner $taskRunner
      * @param EventDispatcherInterface $eventDispatcher
-     * @param GrumPHP $grumPHP
      */
-    public function __construct(TaskRunner $taskRunner, EventDispatcherInterface $eventDispatcher, GrumPHP $grumPHP)
+    public function __construct(TaskRunner $taskRunner, EventDispatcherInterface $eventDispatcher)
     {
         $this->taskRunner = $taskRunner;
         $this->eventDispatcher = $eventDispatcher;
-        $this->grumPHP = $grumPHP;
     }
 
     /**
@@ -81,10 +74,12 @@ class TaskRunnerHelper extends Helper
             if ($taskResult->isPassed()) {
                 continue;
             }
-            if ($this->isBlockingTask($taskResult->getTask())) {
+
+            if ($taskResult->isBlocking()) {
                 $this->returnWarningMessages($output);
                 return $this->returnErrorMessage($output, $taskResult->getMessage());
             }
+
             $this->addWarningMessage($taskResult->getMessage());
         }
 
@@ -95,16 +90,6 @@ class TaskRunnerHelper extends Helper
 
         $this->returnWarningMessages($output);
         return $this->returnSuccessMessage($output);
-    }
-
-    /**
-     * @param \GrumPHP\Task\TaskInterface $task
-     * @return bool
-     */
-    private function isBlockingTask(TaskInterface $task)
-    {
-        $taskMetadata = $this->grumPHP->getTaskMetadata($task->getName());
-        return $taskMetadata['blocking'];
     }
 
     /**
