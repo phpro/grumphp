@@ -106,6 +106,25 @@ class TaskRunnerSpec extends ObjectBehavior
         $this->run($context);
     }
 
+    function it_stops_on_a_failed_task_if_stop_on_failure(GrumPHP $grumPHP, TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
+    {
+        $grumPHP->stopOnFailure()->willReturn(true);
+        $task1->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
+        $task2->run($context)->shouldNotBeCalled();
+
+        $this->run($context)->shouldHaveCount(1);
+    }
+
+    function it_does_not_stop_on_a_non_blocking_failed_task_if_stop_on_failure(GrumPHP $grumPHP, TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
+    {
+        $grumPHP->stopOnFailure()->willReturn(true);
+        $grumPHP->isBlockingTask('task1')->willReturn(false);
+        $task1->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
+        $task2->run($context)->shouldBeCalled();
+
+        $this->run($context)->shouldHaveCount(2);
+    }
+
     function it_triggers_events_during_happy_flow(
         EventDispatcherInterface $eventDispatcher,
         TaskInterface $task1,
