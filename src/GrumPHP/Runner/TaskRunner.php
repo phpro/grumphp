@@ -91,7 +91,7 @@ class TaskRunner
             } catch (RuntimeException $e) {
                 $taskResult = new TaskResult(
                     $this->grumPHP->isBlockingTask($task->getName()) ?
-                        TaskResult::FAILED : TaskResult::NONBLOCKING_FAILED,
+                    TaskResult::FAILED : TaskResult::NONBLOCKING_FAILED,
                     $task,
                     $context,
                     $e->getMessage()
