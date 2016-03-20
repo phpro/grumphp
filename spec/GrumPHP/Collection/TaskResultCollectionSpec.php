@@ -2,7 +2,10 @@
 
 namespace spec\GrumPHP\Collection;
 
+use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Task\Context\ContextInterface;
+use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 
 class TaskResultCollectionSpec extends ObjectBehavior
@@ -28,23 +31,53 @@ class TaskResultCollectionSpec extends ObjectBehavior
         $this->getIterator()->current()->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResult');
     }
 
-    function it_is_passed_if_it_contains_only_passed_task_result(TaskResult $aTaskResult, TaskResult $anotherTaskResult)
+    function it_is_passed_if_it_contains_only_passed_task_result(TaskInterface $task, ContextInterface $context)
     {
-        $aTaskResult->isPassed()->willReturn(true);
+        $aTaskResult = new TaskResult(TaskResult::PASSED, $task->getWrappedObject(), $context->getWrappedObject());
         $this->add($aTaskResult);
-        $anotherTaskResult->isPassed()->willReturn(true);
+        $anotherTaskResult = new TaskResult(TaskResult::PASSED, $task->getWrappedObject(), $context->getWrappedObject());
         $this->add($anotherTaskResult);
 
         $this->isPassed()->shouldBe(true);
     }
 
-    function it_is_failed_if_it_contains_a_failed_task_result(TaskResult $aTaskResult, TaskResult $anotherTaskResult)
+    function it_is_not_passed_if_it_contains_a_failed_task_result(TaskInterface $task, ContextInterface $context)
     {
-        $aTaskResult->isPassed()->willReturn(true);
+        $aTaskResult = new TaskResult(TaskResult::PASSED, $task->getWrappedObject(), $context->getWrappedObject());
         $this->add($aTaskResult);
-        $anotherTaskResult->isPassed()->willReturn(false);
+        $anotherTaskResult = new TaskResult(TaskResult::FAILED, $task->getWrappedObject(), $context->getWrappedObject());
         $this->add($anotherTaskResult);
 
         $this->isPassed()->shouldBe(false);
+    }
+
+    function it_is_not_passed_if_it_does_not_contains_any_task()
+    {
+        $this->isPassed()->shouldBe(false);
+    }
+
+    function it_returns_passed_code_if_it_contains_only_passed_task_result(TaskInterface $task, ContextInterface $context)
+    {
+        $aTaskResult = new TaskResult(TaskResult::PASSED, $task->getWrappedObject(), $context->getWrappedObject());
+        $this->add($aTaskResult);
+        $anotherTaskResult = new TaskResult(TaskResult::PASSED, $task->getWrappedObject(), $context->getWrappedObject());
+        $this->add($anotherTaskResult);
+
+        $this->getResultCode()->shouldBe(TaskResult::PASSED);
+    }
+
+    function it_returns_failed_code_if_it_contains_a_failed_task_result(TaskInterface $task, ContextInterface $context)
+    {
+        $aTaskResult = new TaskResult(TaskResult::PASSED, $task->getWrappedObject(), $context->getWrappedObject());
+        $this->add($aTaskResult);
+        $anotherTaskResult = new TaskResult(TaskResult::FAILED, $task->getWrappedObject(), $context->getWrappedObject());
+        $this->add($anotherTaskResult);
+
+        $this->getResultCode()->shouldBe(TaskResult::FAILED);
+    }
+
+    function it_returns_no_task_code_if_it_does_not_contains_any_task()
+    {
+        $this->getResultCode()->shouldBe(TaskResultCollection::NO_TASKS);
     }
 }
