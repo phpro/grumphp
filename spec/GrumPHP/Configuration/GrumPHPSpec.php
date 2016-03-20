@@ -80,4 +80,17 @@ class GrumPHPSpec extends ObjectBehavior
         $this->getTaskMetadata('phpspec')->shouldReturn(array());
         $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringGetTaskMetadata('phpunit');
     }
+
+    function it_should_know_if_a_task_is_a_blocking_task(ContainerInterface $container)
+    {
+        $container->getParameter('grumphp.tasks.metadata')
+            ->willReturn(
+                array(
+                    'phpspec' => array('blocking' => true),
+                    'phpunit' => array('blocking' => false),
+                )
+            );
+        $this->isBlockingTask('phpunit')->shouldReturn(false);
+        $this->isBlockingTask('phpspec')->shouldReturn(true);
+    }
 }

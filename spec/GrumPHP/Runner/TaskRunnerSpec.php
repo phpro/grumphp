@@ -31,8 +31,10 @@ class TaskRunnerSpec extends ObjectBehavior
         $task2->canRunInContext($context)->willReturn(true);
 
         $grumPHP->stopOnFailure()->willReturn(false);
-        $grumPHP->getTaskMetadata('task1')->willReturn(array('priority' => 0, 'blocking' => true));
-        $grumPHP->getTaskMetadata('task2')->willReturn(array('priority' => 0, 'blocking' => true));
+        $grumPHP->getTaskMetadata('task1')->willReturn(array('priority' => 0));
+        $grumPHP->getTaskMetadata('task2')->willReturn(array('priority' => 0));
+        $grumPHP->isBlockingTask('task1')->willReturn(true);
+        $grumPHP->isBlockingTask('task2')->willReturn(true);
 
         $this->addTask($task1);
         $this->addTask($task2);
@@ -84,7 +86,7 @@ class TaskRunnerSpec extends ObjectBehavior
 
     function it_returns_a_failed_tasks_result_if_a_non_blocking_task_fails(GrumPHP $grumPHP, TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
     {
-        $grumPHP->getTaskMetadata('task1')->willReturn(array('priority' => 0, 'blocking' => false));
+        $grumPHP->isBlockingTask('task1')->willReturn(false);
         $task1->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
         $task2->run($context)->shouldBeCalled();
 

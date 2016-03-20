@@ -90,7 +90,8 @@ class TaskRunner
                 $this->eventDispatcher->dispatch(TaskEvents::TASK_COMPLETE, new TaskEvent($task, $context));
             } catch (RuntimeException $e) {
                 $taskResult = new TaskResult(
-                    $this->isBlockingTask($task) ? TaskResult::FAILED : TaskResult::NONBLOCKING_FAILED,
+                    $this->grumPHP->isBlockingTask($task->getName()) ?
+                        TaskResult::FAILED : TaskResult::NONBLOCKING_FAILED,
                     $task,
                     $context,
                     $e->getMessage()
@@ -116,15 +117,5 @@ class TaskRunner
         $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_COMPLETE, new RunnerEvent($tasks, $context, $taskResuls));
 
         return $taskResuls;
-    }
-
-    /**
-     * @param \GrumPHP\Task\TaskInterface $task
-     * @return bool
-     */
-    private function isBlockingTask(TaskInterface $task)
-    {
-        $taskMetadata = $this->grumPHP->getTaskMetadata($task->getName());
-        return $taskMetadata['blocking'];
     }
 }

@@ -109,4 +109,14 @@ class GrumPHP
 
         return $paths[$resource];
     }
+
+    /**
+     * @param string $taskName
+     * @return bool
+     */
+    public function isBlockingTask($taskName)
+    {
+        $taskMetadata = $this->getTaskMetadata($taskName);
+        return $taskMetadata['blocking'];
+    }
 }
