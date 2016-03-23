@@ -29,4 +29,29 @@ class TaskResultCollection extends ArrayCollection
 
         return $resultCode;
     }
+
+    /**
+     * @param int $resultCode
+     * @return static
+     */
+    public function filterByResultCode($resultCode)
+    {
+        return $this->filter(function ($taskResult) use ($resultCode) {
+            return $resultCode === $taskResult->getResultCode();
+        });
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllMessages()
+    {
+        $messages = array();
+
+        foreach ($this as $taskResult) {
+            $messages[] = $taskResult->getMessage();
+        }
+
+        return $messages;
+    }
 }

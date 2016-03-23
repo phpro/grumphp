@@ -80,4 +80,32 @@ class TaskResultCollectionSpec extends ObjectBehavior
     {
         $this->getResultCode()->shouldBe(TaskResultCollection::NO_TASKS);
     }
+
+    function it_filters_by_result_code(TaskInterface $task, ContextInterface $context)
+    {
+        $aTask = $task->getWrappedObject();
+        $aContext = $context->getWrappedObject();
+        $this->add(new TaskResult(TaskResult::PASSED, $aTask, $aContext));
+        $this->add(new TaskResult(TaskResult::PASSED, $aTask, $aContext));
+        $this->add(new TaskResult(TaskResult::FAILED, $aTask, $aContext));
+
+        $this->filterByResultCode(TaskResult::PASSED)->shouldHaveCount(2);
+        $this->filterByResultCode(TaskResult::FAILED)->shouldHaveCount(1);
+        $this->filterByResultCode(TaskResult::NONBLOCKING_FAILED)->shouldHaveCount(0);
+    }
+
+    function it_returns_all_task_result_messages(TaskInterface $task, ContextInterface $context)
+    {
+        $aTask = $task->getWrappedObject();
+        $aContext = $context->getWrappedObject();
+        $this->add(new TaskResult(TaskResult::FAILED, $aTask, $aContext, 'failed message'));
+        $this->add(new TaskResult(TaskResult::PASSED, $aTask, $aContext));
+        $this->add(new TaskResult(TaskResult::FAILED, $aTask, $aContext, 'another failed message'));
+
+        $this->getAllMessages()->shouldReturn(array(
+            'failed message',
+            null,
+            'another failed message',
+        ));
+    }
 }

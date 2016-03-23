@@ -29,17 +29,17 @@ class TaskRunnerHelperSpec extends ObjectBehavior
     function it_should_return_error_code_with_a_failed_task(
         OutputInterface $output,
         TaskRunner $taskRunner,
-        ContextInterface $context,
-        TaskResult $passedTaskResult,
-        TaskResult $failedTaskResult
+        TaskInterface $task,
+        ContextInterface $context
     )
     {
-        $passedTaskResult->isPassed()->willReturn(true);
-        $failedTaskResult->isPassed()->willReturn(false);
-        $failedTaskResult->isBlocking()->willReturn(true);
-        $failedTaskResult->getMessage()->willReturn('failed task message');
+        $aTask = $task->getWrappedObject();
+        $aContext = $context->getWrappedObject();
+        $passedTaskResult = new TaskResult(TaskResult::PASSED, $aTask, $aContext);
+        $failedTaskResult = new TaskResult(TaskResult::FAILED, $aTask, $aContext, 'failed task message');
         $taskResults = new TaskResultCollection();
-        $taskResults->add($failedTaskResult->getWrappedObject());
+        $taskResults->add($passedTaskResult);
+        $taskResults->add($failedTaskResult);
         $taskRunner->run($context)->willReturn($taskResults);
         $this->run($output, $context)->shouldReturn(TaskRunnerHelper::CODE_ERROR);
     }
@@ -47,13 +47,15 @@ class TaskRunnerHelperSpec extends ObjectBehavior
     function it_should_return_success_code_with_no_failed_task(
         OutputInterface $output,
         TaskRunner $taskRunner,
-        ContextInterface $context,
-        TaskResult $succeedTaskResult
+        TaskInterface $task,
+        ContextInterface $context
     )
     {
-        $succeedTaskResult->isPassed()->willReturn(true);
+        $aTask = $task->getWrappedObject();
+        $aContext = $context->getWrappedObject();
+        $passedTaskResult = new TaskResult(TaskResult::PASSED, $aTask, $aContext);
         $taskResults = new TaskResultCollection();
-        $taskResults->add($succeedTaskResult->getWrappedObject());
+        $taskResults->add($passedTaskResult);
         $taskRunner->run($context)->willReturn($taskResults);
         $this->run($output, $context)->shouldReturn(TaskRunnerHelper::CODE_SUCCESS);
     }
@@ -61,17 +63,62 @@ class TaskRunnerHelperSpec extends ObjectBehavior
     function it_should_return_success_code_during_a_failed_of_a_nonblocking_task(
         OutputInterface $output,
         TaskRunner $taskRunner,
-        ContextInterface $context,
-        TaskResult $failedTaskResult
+        TaskInterface $task,
+        ContextInterface $context
     )
     {
-        $failedTaskResult->isPassed()->willReturn(false);
-        $failedTaskResult->isBlocking()->willReturn(false);
-        $failedTaskResult->getMessage()->willReturn('failed task message');
+        $aTask = $task->getWrappedObject();
+        $aContext = $context->getWrappedObject();
+        $nonBlockingFailedTaskResult = new TaskResult(TaskResult::NONBLOCKING_FAILED, $aTask, $aContext, 'failed task message');
         $testResults = new TaskResultCollection();
-        $testResults->add($failedTaskResult->getWrappedObject());
+        $testResults->add($nonBlockingFailedTaskResult);
         $taskRunner->run($context)->willReturn($testResults);
         $this->run($output, $context)->shouldReturn(TaskRunnerHelper::CODE_SUCCESS);
+    }
+
+    function it_should_display_all_errors_of_failed_tasks(
+        OutputInterface $output,
+        TaskRunner $taskRunner,
+        TaskInterface $task,
+        ContextInterface $context
+    )
+    {
+        $aTask = $task->getWrappedObject();
+        $aContext = $context->getWrappedObject();
+        $failedTaskResult = new TaskResult(TaskResult::FAILED, $aTask, $aContext, 'failed task message');
+        $anotherFailedTaskResult = new TaskResult(TaskResult::FAILED, $aTask, $aContext, 'another failed task message');
+        $taskResults = new TaskResultCollection();
+        $taskResults->add($failedTaskResult);
+        $taskResults->add($anotherFailedTaskResult);
+        $taskRunner->run($context)->willReturn($taskResults);
+
+        $output->isDecorated()->willReturn(false);
+        $output->writeln(Argument::containingString('failed task message'))->shouldBeCalled();
+        $output->writeln(Argument::containingString('another failed task message'))->shouldBeCalled();
+        $output->writeln(Argument::any())->shouldBeCalled();
+
+        $this->run($output, $context);
+    }
+
+    function it_should_display_warning_of_non_blocking_failed_tasks(
+        OutputInterface $output,
+        TaskRunner $taskRunner,
+        TaskInterface $task,
+        ContextInterface $context
+    )
+    {
+        $aTask = $task->getWrappedObject();
+        $aContext = $context->getWrappedObject();
+        $nonBlockingFailedTaskResult = new TaskResult(TaskResult::NONBLOCKING_FAILED, $aTask, $aContext, 'non blocking task message');
+        $taskResults = new TaskResultCollection();
+        $taskResults->add($nonBlockingFailedTaskResult);
+        $taskRunner->run($context)->willReturn($taskResults);
+
+        $output->isDecorated()->willReturn(false);
+        $output->writeln(Argument::containingString('non blocking task message'))->shouldBeCalled();
+        $output->writeln(Argument::any())->shouldBeCalled();
+
+        $this->run($output, $context);
     }
 
     function it_should_add_a_progress_listener_during_run(
