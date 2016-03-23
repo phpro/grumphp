@@ -93,6 +93,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         $taskRunner->run($context)->willReturn($taskResults);
 
         $output->isDecorated()->willReturn(false);
+        $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
         $output->writeln(Argument::containingString('failed task message'))->shouldBeCalled();
         $output->writeln(Argument::containingString('another failed task message'))->shouldBeCalled();
         $output->writeln(Argument::any())->shouldBeCalled();
@@ -115,6 +116,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         $taskRunner->run($context)->willReturn($taskResults);
 
         $output->isDecorated()->willReturn(false);
+        $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
         $output->writeln(Argument::containingString('non blocking task message'))->shouldBeCalled();
         $output->writeln(Argument::any())->shouldBeCalled();
 
