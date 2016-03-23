@@ -68,7 +68,7 @@ class TaskRunnerHelper extends Helper
         $warnings = $taskResults->filterByResultCode(TaskResult::NONBLOCKING_FAILED);
         $this->returnWarningMessages($output, $warnings->getAllMessages());
 
-        if ($taskResults->hasFailed()) {
+        if ($taskResults->isFailed()) {
             $failed = $taskResults->filterByResultCode(TaskResult::FAILED);
             return $this->returnErrorMessages($output, $failed->getAllMessages());
         }

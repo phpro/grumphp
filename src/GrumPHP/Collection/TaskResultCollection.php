@@ -20,7 +20,7 @@ class TaskResultCollection extends ArrayCollection
     /**
      * @return bool
      */
-    public function hasFailed()
+    public function isFailed()
     {
         foreach ($this as $taskResult) {
             if (TaskResult::FAILED === $taskResult->getResultCode()) {
