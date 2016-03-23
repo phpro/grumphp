@@ -18,6 +18,20 @@ class TaskResultCollection extends ArrayCollection
     }
 
     /**
+     * @return bool
+     */
+    public function hasFailed()
+    {
+        foreach ($this as $taskResult) {
+            if (TaskResult::FAILED === $taskResult->getResultCode()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @return int|mixed
      */
     public function getResultCode()

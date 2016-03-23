@@ -108,4 +108,18 @@ class TaskResultCollectionSpec extends ObjectBehavior
             'another failed message',
         ));
     }
+
+    function it_has_failed_if_it_contains_failed_task_result(TaskInterface $task, ContextInterface $context)
+    {
+        $aTask = $task->getWrappedObject();
+        $aContext = $context->getWrappedObject();
+        $this->add(new TaskResult(TaskResult::PASSED, $aTask, $aContext));
+        $this->add(new TaskResult(TaskResult::NONBLOCKING_FAILED, $aTask, $aContext, 'non blocking'));
+
+        $this->hasFailed()->shouldReturn(false);
+
+        $this->add(new TaskResult(TaskResult::FAILED, $aTask, $aContext, 'failed message'));
+
+        $this->hasFailed()->shouldReturn(true);
+    }
 }
