@@ -105,7 +105,7 @@ class TaskRunner
             }
         }
 
-        if (!$taskResuls->isPassed()) {
+        if ($taskResuls->isFailed()) {
             $this->eventDispatcher->dispatch(
                 RunnerEvents::RUNNER_FAILED,
                 new RunnerFailedEvent($tasks, $context, $taskResuls)
