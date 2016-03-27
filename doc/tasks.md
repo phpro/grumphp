@@ -11,6 +11,7 @@ parameters:
         behat: ~
         codeception: ~
         composer: ~
+        gherkin: ~
         git_blacklist: ~
         git_commit_message: ~
         grunt: ~
@@ -37,6 +38,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Behat](tasks/behat.md)
 - [Codeception](tasks/codeception.md)
 - [Composer](tasks/composer.md)
+- [Gherkin](tasks/gherkin.md)
 - [Git blacklist](tasks/git_blacklist.md)
 - [Git commit message](tasks/git_commit_message.md)
 - [Grunt](tasks/grunt.md)

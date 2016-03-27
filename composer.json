@@ -33,6 +33,7 @@
         "codegyre/robo": "Lets GrumPHP run your automated PHP tasks.",
         "fabpot/php-cs-fixer": "Lets GrumPHP automatically fix your codestyle.",
         "phing/phing": "Lets GrumPHP run your automated PHP tasks.",
+        "malukenho/kawaii-gherkin": "Lets GrumPHP lint your Gherkin files.",
         "phpspec/phpspec": "Lets GrumPHP spec your code.",
         "phpunit/phpunit": "Lets GrumPHP run your unit tests.",
         "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",
