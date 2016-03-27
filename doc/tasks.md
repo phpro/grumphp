@@ -7,18 +7,24 @@ To activate a task, it is sufficient to add an empty task configuration:
 # grumphp.yml
 parameters:
     tasks:
+        ant: ~
         behat: ~
         codeception: ~
         composer: ~
         git_blacklist: ~
         git_commit_message: ~
         grunt: ~
+        gulp: ~
         jsonlint: ~
+        make: ~
+        phing: ~
         phpcs: ~
         phpcsfixer: ~
         phpspec: ~
         phpunit: ~
+        robo: ~
         securitychecker: ~
+        shell: ~
         xmllint: ~
         yamllint: ~
 ```
@@ -27,18 +33,24 @@ Every task has it's own default configuration. It is possible to overwrite the p
 
 ## Tasks
 
+- [Ant](tasks/ant.md)
 - [Behat](tasks/behat.md)
 - [Codeception](tasks/codeception.md)
 - [Composer](tasks/composer.md)
 - [Git blacklist](tasks/git_blacklist.md)
 - [Git commit message](tasks/git_commit_message.md)
 - [Grunt](tasks/grunt.md)
+- [Gulp](tasks/gulp.md)
 - [JsonLint](tasks/jsonlint.md)
+- [Make](tasks/make.md)
+- [Phing](tasks/phing.md)
 - [Phpcs](tasks/phpcs.md)
 - [PHP-CS-Fixer](tasks/php_cs_fixer.md)
 - [Phpspec](tasks/phpspec.md)
 - [Phpunit](tasks/phpunit.md)
+- [Robo](tasks/robo.md)
 - [Security Checker](tasks/security_checker.md)
+- [Shell](tasks/shell.md)
 - [XmlLint](tasks/xmllint.md)
 - [YamlLint](tasks/yamllint.md)
 

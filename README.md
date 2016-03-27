@@ -41,7 +41,9 @@ You will see following message in the composer logs:
 To make GrumPHP even more awesome, it will suggest installing some extra packages:
 
 - behat/behat : ~3.0
-- fabpot/php-cs-fixer: ~1.10
+- codegyre/robo : ~0.7
+- fabpot/php-cs-fixer : ~1.10
+- phing/phing : ~2.0
 - phpspec/phpspec : ~2.1
 - phpunit/phpunit : ~4.5
 - roave/security-advisories : dev-master@dev
@@ -71,18 +73,23 @@ parameters:
         failed: grumphp-grumpy.txt
         succeeded: grumphp-happy.txt
     tasks:
+        ant: ~
         behat: ~
         codeception: ~
         composer: ~
         git_blacklist: ~
         git_commit_message: ~
         grunt: ~
+        gulp: ~
         jsonlint: ~
+        phing: ~
         phpcs: ~
         phpcsfixer: ~
         phpspec: ~
         phpunit: ~
+        robo: ~
         securitychecker: ~
+        shell: ~
         xmllint: ~
         yamllint: ~
     extensions: []
@@ -126,14 +133,10 @@ Following tasks are still on the roadmap:
 - phpmd
 - phpcpd
 - phpdcd
-- robo
 - twig lint
 - symfony validation
-- gulp tests
 - npm tests
 - humbug
-- phing
-- ant
 - ...
 
 New features or bugfixes can be logged at the [issue tracker](https://github.com/phpro/grumphp/issues).
