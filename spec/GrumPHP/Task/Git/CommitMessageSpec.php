@@ -51,12 +51,17 @@ class CommitMessageSpec extends ObjectBehavior
     {
         $context->getCommitMessage()->willReturn('test');
 
-        $this->run($context);
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->isPassed()->shouldBe(true);
     }
 
     function it_throws_exception_if_the_process_fails(GitCommitMsgContext $context) {
         $context->getCommitMessage()->willReturn('invalid');
-        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($context);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->isPassed()->shouldBe(false);
     }
 
     function it_runs_with_additional_modifiers(GrumPHP $grumPHP, GitCommitMsgContext $context)
@@ -68,6 +73,8 @@ class CommitMessageSpec extends ObjectBehavior
 
         $context->getCommitMessage()->willReturn('message containing ümlaut');
 
-        $this->run($context);
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->isPassed()->shouldBe(true);
     }
 }

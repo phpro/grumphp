@@ -5,8 +5,14 @@ namespace GrumPHP\Runner;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 
-class TaskResult
+/**
+ * Class TaskResult
+ *
+ * @package GrumPHP\Runner
+ */
+class TaskResult implements TaskResultInterface
 {
+    const SKIPPED = -100;
     const PASSED = 0;
     const NONBLOCKING_FAILED = 90;
     const FAILED = 99;
@@ -15,14 +21,17 @@ class TaskResult
      * @var integer
      */
     private $resultCode;
+
     /**
      * @var TaskInterface
      */
     private $task;
+
     /**
      * @var ContextInterface
      */
     private $context;
+
     /**
      * @var string|null
      */
@@ -36,12 +45,58 @@ class TaskResult
      * @param ContextInterface $context
      * @param string|null $message
      */
-    public function __construct($resultCode, TaskInterface $task, ContextInterface $context, $message = null)
+    private function __construct($resultCode, TaskInterface $task, ContextInterface $context, $message = null)
     {
         $this->resultCode = $resultCode;
         $this->task = $task;
         $this->context = $context;
         $this->message = $message;
+    }
+
+    /**
+     * @param TaskInterface    $task
+     * @param ContextInterface $context
+     *
+     * @return TaskResult
+     */
+    public static function createSkipped(TaskInterface $task, ContextInterface $context)
+    {
+        return new self(self::SKIPPED, $task, $context);
+    }
+
+    /**
+     * @param TaskInterface    $task
+     * @param ContextInterface $context
+     *
+     * @return TaskResult
+     */
+    public static function createPassed(TaskInterface $task, ContextInterface $context)
+    {
+        return new self(self::PASSED, $task, $context, null);
+    }
+
+    /**
+     * @param TaskInterface    $task
+     * @param ContextInterface $context
+     * @param string           $message
+     *
+     * @return TaskResult
+     */
+    public static function createFailed(TaskInterface $task, ContextInterface $context, $message)
+    {
+        return new self(self::FAILED, $task, $context, $message);
+    }
+
+    /**
+     * @param TaskInterface    $task
+     * @param ContextInterface $context
+     * @param string           $message
+     *
+     * @return TaskResult
+     */
+    public static function createNonBlockingFailed(TaskInterface $task, ContextInterface $context, $message)
+    {
+        return new self(self::NONBLOCKING_FAILED, $task, $context, $message);
     }
 
     /**
@@ -82,5 +137,13 @@ class TaskResult
     public function getMessage()
     {
         return $this->message;
+    }
+
+    /**
+     * @return ContextInterface
+     */
+    public function getContext()
+    {
+        return $this->context;
     }
 }

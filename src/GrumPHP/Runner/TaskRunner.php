@@ -79,43 +79,76 @@ class TaskRunner
     public function run(ContextInterface $context)
     {
         $tasks = $this->tasks->filterByContext($context)->sortByPriority($this->grumPHP);
-        $taskResuls = new TaskResultCollection();
+        $taskResults = new TaskResultCollection();
 
-        $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, new RunnerEvent($tasks, $context, $taskResuls));
+        $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, new RunnerEvent($tasks, $context, $taskResults));
         foreach ($tasks as $task) {
             try {
-                $this->eventDispatcher->dispatch(TaskEvents::TASK_RUN, new TaskEvent($task, $context));
-                $task->run($context);
-                $taskResuls->add(new TaskResult(TaskResult::PASSED, $task, $context));
-                $this->eventDispatcher->dispatch(TaskEvents::TASK_COMPLETE, new TaskEvent($task, $context));
+                $taskResult = $this->runTask($task, $context);
             } catch (RuntimeException $e) {
-                $taskResult = new TaskResult(
-                    $this->grumPHP->isBlockingTask($task->getName()) ?
-                    TaskResult::FAILED : TaskResult::NONBLOCKING_FAILED,
-                    $task,
-                    $context,
-                    $e->getMessage()
-                );
-                $taskResuls->add($taskResult);
-                $this->eventDispatcher->dispatch(TaskEvents::TASK_FAILED, new TaskFailedEvent($task, $context, $e));
+                $taskResult = TaskResult::createFailed($task, $context, $e->getMessage());
+            }
 
-                if ($taskResult->isBlocking() && $this->grumPHP->stopOnFailure()) {
-                    break;
-                }
+            $taskResults->add($taskResult);
+            if (!$taskResult->isPassed() && $taskResult->isBlocking() && $this->grumPHP->stopOnFailure()) {
+                break;
             }
         }
 
-        if ($taskResuls->isFailed()) {
+        if ($taskResults->isFailed()) {
             $this->eventDispatcher->dispatch(
                 RunnerEvents::RUNNER_FAILED,
-                new RunnerFailedEvent($tasks, $context, $taskResuls)
+                new RunnerFailedEvent($tasks, $context, $taskResults)
             );
 
-            return $taskResuls;
+            return $taskResults;
         }
 
-        $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_COMPLETE, new RunnerEvent($tasks, $context, $taskResuls));
+        $this->eventDispatcher->dispatch(
+            RunnerEvents::RUNNER_COMPLETE,
+            new RunnerEvent($tasks, $context, $taskResults)
+        );
 
-        return $taskResuls;
+        return $taskResults;
+    }
+
+    /**
+     * @param TaskInterface    $task
+     * @param ContextInterface $context
+     *
+     * @return TaskResultInterface
+     * @throws RuntimeException
+     */
+    private function runTask(TaskInterface $task, ContextInterface $context)
+    {
+        try {
+            $this->eventDispatcher->dispatch(TaskEvents::TASK_RUN, new TaskEvent($task, $context));
+            $result = $task->run($context);
+        } catch (RuntimeException $e) {
+            $result = TaskResult::createFailed($task, $context, $e->getMessage());
+        }
+        
+        if (!$result instanceof TaskResultInterface) {
+            throw RuntimeException::invalidTaskReturnType($task);
+        }
+
+        if (!$result->isPassed() && !$this->grumPHP->isBlockingTask($task->getName())) {
+            $result = TaskResult::createNonBlockingFailed(
+                $result->getTask(),
+                $result->getContext(),
+                $result->getMessage()
+            );
+        }
+        
+        if (!$result->isPassed()) {
+            $e = new RuntimeException($result->getMessage());
+            $this->eventDispatcher->dispatch(TaskEvents::TASK_FAILED, new TaskFailedEvent($task, $context, $e));
+
+            return $result;
+        }
+
+        $this->eventDispatcher->dispatch(TaskEvents::TASK_COMPLETE, new TaskEvent($task, $context));
+
+        return $result;
     }
 }

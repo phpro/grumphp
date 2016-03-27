@@ -10,11 +10,6 @@ use PhpSpec\ObjectBehavior;
 
 class TaskResultCollectionSpec extends ObjectBehavior
 {
-    function let()
-    {
-        $this->beConstructedWith();
-    }
-
     function it_is_initializable()
     {
         $this->shouldHaveType('GrumPHP\Collection\TaskResultCollection');
@@ -25,28 +20,24 @@ class TaskResultCollectionSpec extends ObjectBehavior
         $this->add($taskResult);
         $this->add($taskResult);
 
-        $this->getIterator()->shouldHaveCount(2);
-        $this->getIterator()->current()->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResult');
-        $this->getIterator()->next();
-        $this->getIterator()->current()->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResult');
+        $this->count()->shouldBe(2);
+        $result = $this->toArray();
+        $result[0]->shouldBe($taskResult);
+        $result[1]->shouldBe($taskResult);
     }
 
     function it_is_passed_if_it_contains_only_passed_task_result(TaskInterface $task, ContextInterface $context)
     {
-        $aTaskResult = new TaskResult(TaskResult::PASSED, $task->getWrappedObject(), $context->getWrappedObject());
-        $this->add($aTaskResult);
-        $anotherTaskResult = new TaskResult(TaskResult::PASSED, $task->getWrappedObject(), $context->getWrappedObject());
-        $this->add($anotherTaskResult);
+        $this->add(TaskResult::createPassed($task->getWrappedObject(), $context->getWrappedObject()));
+        $this->add(TaskResult::createPassed($task->getWrappedObject(), $context->getWrappedObject()));
 
         $this->isPassed()->shouldBe(true);
     }
 
     function it_is_not_passed_if_it_contains_a_failed_task_result(TaskInterface $task, ContextInterface $context)
     {
-        $aTaskResult = new TaskResult(TaskResult::PASSED, $task->getWrappedObject(), $context->getWrappedObject());
-        $this->add($aTaskResult);
-        $anotherTaskResult = new TaskResult(TaskResult::FAILED, $task->getWrappedObject(), $context->getWrappedObject());
-        $this->add($anotherTaskResult);
+        $this->add(TaskResult::createPassed($task->getWrappedObject(), $context->getWrappedObject()));
+        $this->add(TaskResult::createFailed($task->getWrappedObject(), $context->getWrappedObject(), ''));
 
         $this->isPassed()->shouldBe(false);
     }
@@ -58,20 +49,16 @@ class TaskResultCollectionSpec extends ObjectBehavior
 
     function it_returns_passed_code_if_it_contains_only_passed_task_result(TaskInterface $task, ContextInterface $context)
     {
-        $aTaskResult = new TaskResult(TaskResult::PASSED, $task->getWrappedObject(), $context->getWrappedObject());
-        $this->add($aTaskResult);
-        $anotherTaskResult = new TaskResult(TaskResult::PASSED, $task->getWrappedObject(), $context->getWrappedObject());
-        $this->add($anotherTaskResult);
+        $this->add(TaskResult::createPassed($task->getWrappedObject(), $context->getWrappedObject()));
+        $this->add(TaskResult::createPassed($task->getWrappedObject(), $context->getWrappedObject()));
 
         $this->getResultCode()->shouldBe(TaskResult::PASSED);
     }
 
     function it_returns_failed_code_if_it_contains_a_failed_task_result(TaskInterface $task, ContextInterface $context)
     {
-        $aTaskResult = new TaskResult(TaskResult::PASSED, $task->getWrappedObject(), $context->getWrappedObject());
-        $this->add($aTaskResult);
-        $anotherTaskResult = new TaskResult(TaskResult::FAILED, $task->getWrappedObject(), $context->getWrappedObject());
-        $this->add($anotherTaskResult);
+        $this->add(TaskResult::createPassed($task->getWrappedObject(), $context->getWrappedObject()));
+        $this->add(TaskResult::createFailed($task->getWrappedObject(), $context->getWrappedObject(), ''));
 
         $this->getResultCode()->shouldBe(TaskResult::FAILED);
     }
@@ -85,9 +72,9 @@ class TaskResultCollectionSpec extends ObjectBehavior
     {
         $aTask = $task->getWrappedObject();
         $aContext = $context->getWrappedObject();
-        $this->add(new TaskResult(TaskResult::PASSED, $aTask, $aContext));
-        $this->add(new TaskResult(TaskResult::PASSED, $aTask, $aContext));
-        $this->add(new TaskResult(TaskResult::FAILED, $aTask, $aContext));
+        $this->add(TaskResult::createPassed($aTask, $aContext));
+        $this->add(TaskResult::createPassed($aTask, $aContext));
+        $this->add(TaskResult::createFailed($aTask, $aContext, ''));
 
         $this->filterByResultCode(TaskResult::PASSED)->shouldHaveCount(2);
         $this->filterByResultCode(TaskResult::FAILED)->shouldHaveCount(1);
@@ -98,9 +85,9 @@ class TaskResultCollectionSpec extends ObjectBehavior
     {
         $aTask = $task->getWrappedObject();
         $aContext = $context->getWrappedObject();
-        $this->add(new TaskResult(TaskResult::FAILED, $aTask, $aContext, 'failed message'));
-        $this->add(new TaskResult(TaskResult::PASSED, $aTask, $aContext));
-        $this->add(new TaskResult(TaskResult::FAILED, $aTask, $aContext, 'another failed message'));
+        $this->add(TaskResult::createFailed($aTask, $aContext, 'failed message'));
+        $this->add(TaskResult::createPassed($aTask, $aContext));
+        $this->add(TaskResult::createFailed($aTask, $aContext, 'another failed message'));
 
         $this->getAllMessages()->shouldReturn(array(
             'failed message',
@@ -113,12 +100,12 @@ class TaskResultCollectionSpec extends ObjectBehavior
     {
         $aTask = $task->getWrappedObject();
         $aContext = $context->getWrappedObject();
-        $this->add(new TaskResult(TaskResult::PASSED, $aTask, $aContext));
-        $this->add(new TaskResult(TaskResult::NONBLOCKING_FAILED, $aTask, $aContext, 'non blocking'));
+        $this->add(TaskResult::createPassed($aTask, $aContext));
+        $this->add(TaskResult::createNonBlockingFailed($aTask, $aContext, 'non blocking'));
 
         $this->isFailed()->shouldReturn(false);
 
-        $this->add(new TaskResult(TaskResult::FAILED, $aTask, $aContext, 'failed message'));
+        $this->add(TaskResult::createFailed($aTask, $aContext, 'failed message'));
 
         $this->isFailed()->shouldReturn(true);
     }

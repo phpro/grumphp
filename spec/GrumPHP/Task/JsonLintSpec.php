@@ -8,6 +8,7 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Linter\LintError;
 use GrumPHP\Linter\Json\JsonLinter;
 use GrumPHP\Linter\Json\JsonLintError;
+use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -49,14 +50,15 @@ class JsonLintSpec extends AbstractLinterTaskSpec
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-
     function it_does_not_do_anything_if_there_are_no_files(JsonLinter $linter, ContextInterface $context)
     {
         $linter->isInstalled()->willReturn(true);
         $linter->lint(Argument::any())->shouldNotBeCalled();
-
         $context->getFiles()->willReturn(new FilesCollection());
-        $this->run($context)->shouldBeNull();
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
     function it_runs_the_suite(JsonLinter $linter, ContextInterface $context)
@@ -68,7 +70,10 @@ class JsonLintSpec extends AbstractLinterTaskSpec
         $context->getFiles()->willReturn(new FilesCollection(array(
             new SplFileInfo('file.json', '.', 'file.json'),
         )));
-        $this->run($context);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->isPassed()->shouldBe(true);
     }
 
     function it_throws_exception_if_the_process_fails(JsonLinter $linter, ContextInterface $context)
@@ -82,6 +87,9 @@ class JsonLintSpec extends AbstractLinterTaskSpec
         $context->getFiles()->willReturn(new FilesCollection(array(
             new SplFileInfo('file.json', '.', 'file.json'),
         )));
-        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($context);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->isPassed()->shouldBe(false);
     }
 }

@@ -13,7 +13,7 @@ class TaskResultSpec extends ObjectBehavior
 
     function it_creates_passed_task(TaskInterface $task, ContextInterface $context)
     {
-        $this->beConstructedWith(TaskResult::PASSED, $task, $context);
+        $this->beConstructedThrough('createPassed', array($task, $context));
 
         $this->getTask()->shouldBe($task);
         $this->getResultCode()->shouldBe(TaskResult::PASSED);
@@ -23,7 +23,7 @@ class TaskResultSpec extends ObjectBehavior
 
     function it_creates_failed_task(TaskInterface $task, ContextInterface $context)
     {
-        $this->beConstructedWith(TaskResult::FAILED, $task, $context, self::FAILED_TASK_MESSAGE);
+        $this->beConstructedThrough('createFailed', array($task, $context, self::FAILED_TASK_MESSAGE));
 
         $this->getTask()->shouldBe($task);
         $this->getResultCode()->shouldBe(TaskResult::FAILED);
@@ -31,21 +31,30 @@ class TaskResultSpec extends ObjectBehavior
         $this->getMessage()->shouldBe(self::FAILED_TASK_MESSAGE);
     }
 
+    function it_creates_skipped_task(TaskInterface $task, ContextInterface $context)
+    {
+        $this->beConstructedThrough('createSkipped', array($task, $context));
+
+        $this->getTask()->shouldBe($task);
+        $this->getResultCode()->shouldBe(TaskResult::SKIPPED);
+        $this->isPassed()->shouldBe(false);
+    }
+
     function it_should_be_a_blocking_task_if_it_is_a_failed_task(TaskInterface $task, ContextInterface $context)
     {
-        $this->beConstructedWith(TaskResult::FAILED, $task, $context, self::FAILED_TASK_MESSAGE);
+        $this->beConstructedThrough('createFailed', array($task, $context, self::FAILED_TASK_MESSAGE));
         $this->isBlocking()->shouldBe(true);
     }
 
     function it_should_not_be_a_blocking_task_if_it_is_a_passed_task(TaskInterface $task, ContextInterface $context)
     {
-        $this->beConstructedWith(TaskResult::PASSED, $task, $context, self::FAILED_TASK_MESSAGE);
+        $this->beConstructedThrough('createPassed', array($task, $context, self::FAILED_TASK_MESSAGE));
         $this->isBlocking()->shouldBe(false);
     }
 
     function it_should_not_be_a_blocking_task_if_it_is_a_non_blocking_failed_task(TaskInterface $task, ContextInterface $context)
     {
-        $this->beConstructedWith(TaskResult::NONBLOCKING_FAILED, $task, $context, self::FAILED_TASK_MESSAGE);
+        $this->beConstructedThrough('createNonBlockingFailed', array($task, $context, self::FAILED_TASK_MESSAGE));
         $this->isBlocking()->shouldBe(false);
     }
 }

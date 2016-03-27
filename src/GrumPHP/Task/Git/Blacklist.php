@@ -2,7 +2,7 @@
 
 namespace GrumPHP\Task\Git;
 
-use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\AbstractExternalTask;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -56,7 +56,7 @@ class Blacklist extends AbstractExternalTask
         $config = $this->getConfiguration();
         $files = $context->getFiles()->extensions($config['triggered_by']);
         if (0 === count($files) || empty($config['keywords'])) {
-            return;
+            return TaskResult::createSkipped($this, $context);
         }
 
         $arguments = $this->processBuilder->createArgumentsForCommand('git');
@@ -70,10 +70,12 @@ class Blacklist extends AbstractExternalTask
         $process->run();
 
         if ($process->isSuccessful()) {
-            throw new RuntimeException(sprintf(
+            return TaskResult::createFailed($this, $context, sprintf(
                 "You have blacklisted keywords in your commit:\n%s",
                 $process->getOutput()
             ));
         }
+
+        return TaskResult::createPassed($this, $context);
     }
 }
