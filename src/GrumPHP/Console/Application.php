@@ -4,6 +4,7 @@ namespace GrumPHP\Console;
 
 use GrumPHP\Configuration\ContainerFactory;
 use GrumPHP\IO\ConsoleIO;
+use GrumPHP\Locator\ConfigurationFile;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Symfony\Component\Console\Application as SymfonyConsole;
@@ -24,7 +25,6 @@ class Application extends SymfonyConsole
 {
     const APP_NAME = 'GrumPHP';
     const APP_VERSION = '0.8.0';
-    const APP_CONFIG_FILE = 'grumphp.yml';
 
     /**
      * @var ContainerBuilder
@@ -37,14 +37,20 @@ class Application extends SymfonyConsole
     protected $configDefaultPath;
 
     /**
+     * @var string
+     */
+    protected $filesystem;
+
+    /**
      * Set up application:
      */
     public function __construct()
     {
-        parent::__construct(self::APP_NAME, self::APP_VERSION);
-
+        $this->filesystem = new Filesystem();
         $this->container = $this->getContainer();
         $this->setDispatcher($this->container->get('event_dispatcher'));
+
+        parent::__construct(self::APP_NAME, self::APP_VERSION);
     }
 
     /**
@@ -69,23 +75,14 @@ class Application extends SymfonyConsole
     /**
      * @return string
      */
-    protected function getConfigDefaultPath()
+    public function getConfigDefaultPath()
     {
         if ($this->configDefaultPath) {
             return $this->configDefaultPath;
         }
 
-        $this->configDefaultPath = getcwd() . DIRECTORY_SEPARATOR . self::APP_CONFIG_FILE;
-        $composerFile = 'composer.json';
-
-        if (!file_exists($composerFile)) {
-            return $this->configDefaultPath;
-        }
-
-        $composer = json_decode(file_get_contents($composerFile), true);
-        if (isset($composer['extra']['grumphp']['config-default-path'])) {
-            $this->configDefaultPath = $composer['extra']['grumphp']['config-default-path'];
-        }
+        $locator = new ConfigurationFile($this->filesystem);
+        $this->configDefaultPath = $locator->locate(getcwd());
 
         return $this->configDefaultPath;
     }
@@ -159,13 +156,6 @@ class Application extends SymfonyConsole
         // Load cli options:
         $input = new ArgvInput();
         $configPath = $input->getParameterOption(array('--config', '-c'), $this->getConfigDefaultPath());
-
-        // Make sure to set the full path when it is declared relative
-        // This will fix some issues in windows.
-        $filesystem = new Filesystem();
-        if (!$filesystem->isAbsolutePath($configPath)) {
-            $configPath = getcwd() . DIRECTORY_SEPARATOR . $configPath;
-        }
 
         // Build the service container:
         $this->container = ContainerFactory::buildFromConfiguration($configPath);

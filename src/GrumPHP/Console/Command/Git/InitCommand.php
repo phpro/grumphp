@@ -4,6 +4,7 @@ namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
+use GrumPHP\Exception\FileNotFoundException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -130,14 +131,35 @@ class InitCommand extends Command
      */
     protected function generateHookCommand($command)
     {
-        $configPath = rtrim($this->paths()->getRelativePath($this->input->getOption('config')), '/\\');
         $this->processBuilder->setArguments(array(
             $this->paths()->getBinCommand('grumphp', true),
-            $command,
-            '--config=' . $configPath,
+            $command
         ));
 
+        if ($configFile = $this->useExoticConfigFile()) {
+            $this->processBuilder->add('--config=%s', $configFile);
+        }
+
         return $this->processBuilder->getProcess()->getCommandLine();
+    }
+
+    /**
+     * This method will tell you which exotic configuration file should be used.
+     *
+     * @return null|string
+     */
+    protected function useExoticConfigFile()
+    {
+        try {
+            $configPath = $this->paths()->getAbsolutePath($this->input->getOption('config'));
+            if ($configPath != $this->getApplication()->getConfigDefaultPath()) {
+                return rtrim($this->paths()->getRelativePath($configPath), '/\\');
+            }
+        } catch (FileNotFoundException $e) {
+            // no config file should be set.
+        }
+
+        return null;
     }
 
     /**

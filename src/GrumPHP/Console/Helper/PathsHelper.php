@@ -137,7 +137,7 @@ class PathsHelper extends Helper
     {
         $gitPath = $this->getGitDir();
 
-        return $this->fileSystem->makePathRelative($this->getWorkingDir(), realpath($gitPath));
+        return $this->fileSystem->makePathRelative($this->getWorkingDir(), $this->getAbsolutePath($gitPath));
     }
 
     /**
@@ -199,13 +199,24 @@ class PathsHelper extends Helper
      */
     public function getRelativePath($path)
     {
+        $realpath = $this->getAbsolutePath($path);
+        return $this->fileSystem->makePathRelative($realpath, $this->getWorkingDir());
+    }
+
+    /**
+     * @param $path
+     *
+     * @return mixed
+     */
+    public function getAbsolutePath($path)
+    {
         $path = trim($path);
         $realpath = realpath($path);
         if (false === $realpath) {
             throw new FileNotFoundException($path);
         }
 
-        return $this->fileSystem->makePathRelative($realpath, $this->getWorkingDir());
+        return $realpath;
     }
 
     /**
