@@ -1,0 +1,18 @@
+services:
+  grumphp.parser.php.visitor.function_call:
+    class: GrumPHP\Parser\Php\Visitor\FunctionCallVisitor
+    public: false
+    tags:
+      - {name: php_parser.visitor}
+
+  grumphp.parser.php.visitor.concrete_method_call:
+    class: GrumPHP\Parser\Php\Visitor\ConcreteMethodCallVisitor
+    public: false
+    tags:
+      - {name: php_parser.visitor}
+
+  grumphp.parser.php.visitor.static_method_call:
+    class: GrumPHP\Parser\Php\Visitor\StaticMethodCallVisitor
+    public: false
+    tags:
+      - {name: php_parser.visitor}

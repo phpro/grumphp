@@ -3,6 +3,8 @@
 namespace GrumPHP\Task\Context;
 
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Console\Helper\PathsHelper;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Class RunContext
@@ -17,18 +19,37 @@ class RunContext implements ContextInterface
     private $files;
 
     /**
+     * @var PathsHelper
+     */
+    private $paths;
+
+    /**
      * @param FilesCollection $files
      */
-    public function __construct(FilesCollection $files)
+    public function __construct(FilesCollection $files, PathsHelper $paths = null)
     {
         $this->files = $files;
+        $this->paths = $paths;
     }
 
     /**
+     * @param $relativePath boolean
+     *
      * @return FilesCollection
      */
-    public function getFiles()
+    public function getFiles($relativePath = true)
     {
-        return $this->files;
+        if ($relativePath) {
+            return $this->files;
+        }
+
+        $self  = $this;
+        $files = $this->files->map(function ($item) use ($self) {
+            $pathName =  $this->paths->getGitDir() . $item->getPathname();
+            return new SplFileInfo($pathName, $item->getRelativePath(), $item->getRelativePathname());
+
+        });
+
+        return $files;
     }
 }
