@@ -21,19 +21,19 @@ class ConfigurationFileSpec extends ObjectBehavior
 
     function it_should_locate_config_file(Filesystem $filesystem)
     {
-        $filesystem->exists('/composer/grumphp.yml')->willReturn(true);
-        $filesystem->isAbsolutePath('/composer/grumphp.yml')->willReturn(true);
+        $filesystem->exists($this->pathArgument('/composer/grumphp.yml'))->willReturn(true);
+        $filesystem->isAbsolutePath($this->pathArgument('/composer/grumphp.yml'))->willReturn(true);
 
-        $this->locate('/composer', null)->shouldBe('/composer/grumphp.yml');
+        $this->locate('/composer', null)->shouldMatch($this->pathRegex('/composer/grumphp.yml'));
     }
 
-    function it_should_fall_back_on_dist_fiile(Filesystem $filesystem)
+    function it_should_fall_back_on_dist_file(Filesystem $filesystem)
     {
-        $filesystem->exists('/composer/grumphp.yml')->willReturn(false);
-        $filesystem->exists('/composer/grumphp.yml.dist')->willReturn(true);
-        $filesystem->isAbsolutePath('/composer/grumphp.yml.dist')->willReturn(true);
+        $filesystem->exists($this->pathArgument('/composer/grumphp.yml'))->willReturn(false);
+        $filesystem->exists($this->pathArgument('/composer/grumphp.yml.dist'))->willReturn(true);
+        $filesystem->isAbsolutePath($this->pathArgument('/composer/grumphp.yml.dist'))->willReturn(true);
 
-        $this->locate('/composer', null)->shouldBe('/composer/grumphp.yml.dist');
+        $this->locate('/composer', null)->shouldMatch($this->pathRegex('/composer/grumphp.yml.dist'));
     }
 
     function it_should_use_the_config_file_configured_in_the_composer_file(Filesystem $filesystem, PackageInterface $package)
@@ -44,7 +44,7 @@ class ConfigurationFileSpec extends ObjectBehavior
             )
         ));
 
-        $filesystem->exists('/composer/grumphp.yml')->willReturn(true);
+        $filesystem->exists($this->pathArgument('/composer/grumphp.yml'))->willReturn(true);
         $filesystem->exists('/composer/exotic/path/grumphp.yml')->willReturn(true);
         $filesystem->isAbsolutePath('/composer/exotic/path/grumphp.yml')->willReturn(true);
 
@@ -59,7 +59,7 @@ class ConfigurationFileSpec extends ObjectBehavior
             )
         ));
 
-        $filesystem->exists('/composer/grumphp.yml')->willReturn(true);
+        $filesystem->exists($this->pathArgument('/composer/grumphp.yml'))->willReturn(true);
         $filesystem->exists('/composer/exotic/path/grumphp.yml')->willReturn(false);
         $filesystem->exists('/composer/exotic/path/grumphp.yml.dist')->willReturn(true);
         $filesystem->isAbsolutePath('/composer/exotic/path/grumphp.yml.dist')->willReturn(true);
@@ -75,20 +75,34 @@ class ConfigurationFileSpec extends ObjectBehavior
             )
         ));
 
-        $filesystem->exists('/composer/grumphp.yml')->willReturn(true);
-        $filesystem->exists('exotic/path/grumphp.yml')->willReturn(true);
-        $filesystem->isAbsolutePath('exotic/path/grumphp.yml')->willReturn(false);
+        $filesystem->exists($this->pathArgument('/composer/grumphp.yml'))->willReturn(true);
+        $filesystem->exists($this->pathArgument('exotic/path/grumphp.yml'))->willReturn(true);
+        $filesystem->isAbsolutePath($this->pathArgument('exotic/path/grumphp.yml'))->willReturn(false);
 
-        $this->locate('/composer', $package)->shouldBe('/composer/exotic/path/grumphp.yml');
+        $this->locate('/composer', $package)->shouldMatch($this->pathRegex('/composer/exotic/path/grumphp.yml'));
     }
 
     function it_should_locate_config_file_on_empty_composer_configuration(Filesystem $filesystem, PackageInterface $package)
     {
         $package->getExtra()->willReturn(array());
 
-        $filesystem->exists('/composer/grumphp.yml')->willReturn(true);
-        $filesystem->isAbsolutePath('/composer/grumphp.yml')->willReturn(true);
+        $filesystem->exists($this->pathArgument('/composer/grumphp.yml'))->willReturn(true);
+        $filesystem->isAbsolutePath($this->pathArgument('/composer/grumphp.yml'))->willReturn(true);
 
-        $this->locate('/composer', $package)->shouldBe('/composer/grumphp.yml');
+        $this->locate('/composer', $package)->shouldMatch($this->pathRegex('/composer/grumphp.yml'));
+    }
+
+    private function pathRegex($expected)
+    {
+        return '#^' . str_replace(array('.', '/'), array('\.', '[\\\/]{1}'), $expected) . '$#i';
+    }
+
+    private function pathArgument($expected)
+    {
+        $regex = $this->pathRegex($expected);
+
+        return Argument::that(function($path) use ($regex) {
+            return preg_match($regex, $path);
+        });
     }
 }
