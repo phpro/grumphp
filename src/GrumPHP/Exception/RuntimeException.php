@@ -11,4 +11,14 @@ use RuntimeException as BaseRuntimeException;
  */
 class RuntimeException extends BaseRuntimeException implements ExceptionInterface
 {
+
+    /**
+     * @param \Exception $e
+     *
+     * @return RuntimeException
+     */
+    public static function fromAnyException(\Exception $e)
+    {
+        return new self($e->getMessage(), $e->getCode(), $e);
+    }
 }

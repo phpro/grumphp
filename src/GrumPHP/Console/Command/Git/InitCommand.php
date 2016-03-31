@@ -152,7 +152,7 @@ class InitCommand extends Command
     {
         try {
             $configPath = $this->paths()->getAbsolutePath($this->input->getOption('config'));
-            if ($configPath != $this->getApplication()->getConfigDefaultPath()) {
+            if ($configPath != $this->paths()->getDefaultConfigPath()) {
                 return rtrim($this->paths()->getRelativePath($configPath), '/\\');
             }
         } catch (FileNotFoundException $e) {

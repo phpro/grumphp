@@ -5,6 +5,7 @@ namespace GrumPHP\Console\Command;
 use Exception;
 use Gitonomy\Git\Repository;
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Console\Helper\ComposerHelper;
 use GrumPHP\Console\Helper\PathsHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -210,17 +211,16 @@ class ConfigureCommand extends Command
     protected function guessBinDir()
     {
         $defaultBinDir = $this->config->getBinDir();
-        $composerFile = 'composer.json';
-        if (!$this->filesystem->exists($composerFile)) {
+        if (!$this->composer()->hasConfiguration()) {
             return $defaultBinDir;
         }
 
-        $composer = json_decode(file_get_contents($composerFile), true);
-        if (isset($composer['config']['bin-dir'])) {
-            return $composer['config']['bin-dir'];
+        $config = $this->composer()->getConfiguration();
+        if (!$config->has('bin-dir')) {
+            return $defaultBinDir;
         }
 
-        return $defaultBinDir;
+        return $config->get('bin-dir');
     }
 
     /**
@@ -268,5 +268,13 @@ class ConfigureCommand extends Command
     protected function paths()
     {
         return $this->getHelper(PathsHelper::HELPER_NAME);
+    }
+
+    /**
+     * @return ComposerHelper
+     */
+    protected function composer()
+    {
+        return $this->getHelper(ComposerHelper::HELPER_NAME);
     }
 }

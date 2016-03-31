@@ -30,13 +30,20 @@ class PathsHelper extends Helper
     protected $fileSystem;
 
     /**
-     * @param GrumPHP         $config
-     * @param Filesystem      $fileSystem
+     * @var string
      */
-    public function __construct(GrumPHP $config, Filesystem $fileSystem)
+    private $defaultConfigPath;
+
+    /**
+     * @param GrumPHP    $config
+     * @param Filesystem $fileSystem
+     * @param string     $defaultConfigPath
+     */
+    public function __construct(GrumPHP $config, Filesystem $fileSystem, $defaultConfigPath)
     {
         $this->config = $config;
         $this->fileSystem = $fileSystem;
+        $this->defaultConfigPath = $defaultConfigPath;
     }
 
     /**
@@ -217,6 +224,14 @@ class PathsHelper extends Helper
         }
 
         return $realpath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultConfigPath()
+    {
+        return $this->defaultConfigPath;
     }
 
     /**

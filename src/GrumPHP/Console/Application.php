@@ -3,8 +3,10 @@
 namespace GrumPHP\Console;
 
 use GrumPHP\Configuration\ContainerFactory;
+use GrumPHP\Exception\RuntimeException;
 use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Locator\ConfigurationFile;
+use GrumPHP\Util\Composer;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Symfony\Component\Console\Application as SymfonyConsole;
@@ -42,6 +44,11 @@ class Application extends SymfonyConsole
     protected $filesystem;
 
     /**
+     * @var Helper\ComposerHelper
+     */
+    protected $composerHelper;
+
+    /**
      * Set up application:
      */
     public function __construct()
@@ -65,26 +72,11 @@ class Application extends SymfonyConsole
                 'c',
                 InputOption::VALUE_OPTIONAL,
                 'Path to config',
-                $this->getConfigDefaultPath()
+                $this->getDefaultConfigPath()
             )
         );
 
         return $definition;
-    }
-
-    /**
-     * @return string
-     */
-    public function getConfigDefaultPath()
-    {
-        if ($this->configDefaultPath) {
-            return $this->configDefaultPath;
-        }
-
-        $locator = new ConfigurationFile($this->filesystem);
-        $this->configDefaultPath = $locator->locate(getcwd());
-
-        return $this->configDefaultPath;
     }
 
     /**
@@ -132,9 +124,11 @@ class Application extends SymfonyConsole
         $container = $this->getContainer();
 
         $helperSet = parent::getDefaultHelperSet();
+        $helperSet->set($this->initializeComposerHelper());
         $helperSet->set(new Helper\PathsHelper(
             $container->get('config'),
-            $container->get('filesystem')
+            $container->get('filesystem'),
+            $this->getDefaultConfigPath()
         ));
         $helperSet->set(new Helper\TaskRunnerHelper(
             $container->get('task_runner'),
@@ -155,7 +149,7 @@ class Application extends SymfonyConsole
 
         // Load cli options:
         $input = new ArgvInput();
-        $configPath = $input->getParameterOption(array('--config', '-c'), $this->getConfigDefaultPath());
+        $configPath = $input->getParameterOption(array('--config', '-c'), $this->getDefaultConfigPath());
 
         // Build the service container:
         $this->container = ContainerFactory::buildFromConfiguration($configPath);
@@ -186,5 +180,45 @@ class Application extends SymfonyConsole
             $logger = $container->get('grumphp.logger');
             $logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
         }
+    }
+
+    /**
+     * @return string
+     */
+    protected function getDefaultConfigPath()
+    {
+        if ($this->configDefaultPath) {
+            return $this->configDefaultPath;
+        }
+
+        $locator = new ConfigurationFile($this->filesystem);
+        $this->configDefaultPath = $locator->locate(
+            getcwd(),
+            $this->initializeComposerHelper()->getRootPackage()
+        );
+
+        return $this->configDefaultPath;
+    }
+
+    /**
+     * @return Helper\ComposerHelper
+     */
+    protected function initializeComposerHelper()
+    {
+        if ($this->composerHelper) {
+            return $this->composerHelper;
+        }
+
+        try {
+            $composerFile = getcwd() . DIRECTORY_SEPARATOR . 'composer.json';
+            $rootPackage = Composer::loadPackageFromJson($composerFile);
+            $configuration = Composer::loadConfiguration();
+        } catch (RuntimeException $e) {
+            $configuration = null;
+            $rootPackage = null;
+        }
+
+
+        return $this->composerHelper = new Helper\ComposerHelper($configuration, $rootPackage);
     }
 }

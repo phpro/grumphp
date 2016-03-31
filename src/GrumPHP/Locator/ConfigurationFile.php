@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Locator;
 
+use Composer\Package\PackageInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -29,15 +30,19 @@ class ConfigurationFile
     }
 
     /**
-     * @param string $workingDir
+     * @param string                $workingDir
+     * @param PackageInterface|null $package
      *
      * @return string
      */
-    public function locate($workingDir)
+    public function locate($workingDir, PackageInterface $package = null)
     {
         $defaultPath = $workingDir . DIRECTORY_SEPARATOR .  self::APP_CONFIG_FILE;
         $defaultPath = $this->locateConfigFileWithDistSupport($defaultPath);
-        $defaultPath = $this->useConfigPathFromComposer($workingDir, $defaultPath);
+
+        if (null !== $package) {
+            $defaultPath = $this->useConfigPathFromComposer($package, $defaultPath);
+        }
 
         // Make sure to set the full path when it is declared relative
         // This will fix some issues in windows.
@@ -49,24 +54,19 @@ class ConfigurationFile
     }
 
     /**
-     * @param $workingDir
-     * @param $defaultPath
+     * @param PackageInterface $package
+     * @param                  $defaultPath
      *
      * @return string
      */
-    private function useConfigPathFromComposer($workingDir, $defaultPath)
+    private function useConfigPathFromComposer(PackageInterface $package, $defaultPath)
     {
-        $composerFile = $workingDir . DIRECTORY_SEPARATOR . 'composer.json';
-        if (!$this->filesystem->exists($composerFile)) {
+        $extra = $package->getExtra();
+        if (!isset($extra['grumphp']['config-default-path'])) {
             return $defaultPath;
         }
 
-        $composerData = json_decode(file_get_contents($composerFile), true);
-        if (!isset($composerData['extra']['grumphp']['config-default-path'])) {
-            return $defaultPath;
-        }
-
-        $composerDefaultPath = $composerData['extra']['grumphp']['config-default-path'];
+        $composerDefaultPath = $extra['grumphp']['config-default-path'];
         return $this->locateConfigFileWithDistSupport($composerDefaultPath);
     }
 
