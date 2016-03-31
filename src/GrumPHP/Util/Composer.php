@@ -2,9 +2,13 @@
 
 namespace GrumPHP\Util;
 
+use Composer\Config;
 use Composer\Factory;
-use Composer\Package\Loader\ArrayLoader;
+use Composer\IO\NullIO;
+use Composer\Json\JsonFile;
+use Composer\Package\Loader\RootPackageLoader;
 use Composer\Package\Loader\JsonLoader;
+use Composer\Repository\RepositoryFactory;
 use Exception;
 use GrumPHP\Exception\RuntimeException;
 
@@ -15,16 +19,21 @@ use GrumPHP\Exception\RuntimeException;
  */
 class Composer
 {
+
     /**
-     * @param  string|JsonFile
+     * @param string|JsonFile $json
+     * @param Config $config
      *
-     * @return \Composer\Package\PackageInterface
-     * @throws \GrumPHP\Exception\RuntimeException
+     * @return \Composer\Package\RootPackageInterface
      */
-    public static function loadPackageFromJson($json)
+    public static function loadRootPackageFromJson($json, Config $config = null)
     {
         try {
-            $loader = new JsonLoader(new ArrayLoader());
+            $config = (null !== $config) ? $config : self::loadConfiguration();
+            $loader = new JsonLoader(new RootPackageLoader(
+                RepositoryFactory::manager(new NullIO(), $config),
+                $config
+            ));
             $package = $loader->load($json);
         } catch (Exception $e) {
             throw RuntimeException::fromAnyException($e);

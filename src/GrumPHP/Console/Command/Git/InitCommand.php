@@ -137,7 +137,7 @@ class InitCommand extends Command
         ));
 
         if ($configFile = $this->useExoticConfigFile()) {
-            $this->processBuilder->add('--config=%s', $configFile);
+            $this->processBuilder->add(sprintf('--config=%s', $configFile));
         }
 
         return $this->processBuilder->getProcess()->getCommandLine();

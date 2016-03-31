@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Console\Command;
 
+use Composer\Config;
 use Exception;
 use Gitonomy\Git\Repository;
 use GrumPHP\Configuration\GrumPHP;
@@ -220,7 +221,7 @@ class ConfigureCommand extends Command
             return $defaultBinDir;
         }
 
-        return $config->get('bin-dir');
+        return $config->get('bin-dir', Config::RELATIVE_PATHS);
     }
 
     /**
@@ -258,8 +259,7 @@ class ConfigureCommand extends Command
      */
     protected function getAvailableTasks(GrumPHP $config)
     {
-        $tasks = $config->getRegisteredTasks();
-        return $tasks;
+        return $config->getRegisteredTasks();
     }
 
     /**

@@ -211,13 +211,12 @@ class Application extends SymfonyConsole
 
         try {
             $composerFile = getcwd() . DIRECTORY_SEPARATOR . 'composer.json';
-            $rootPackage = Composer::loadPackageFromJson($composerFile);
             $configuration = Composer::loadConfiguration();
+            $rootPackage = Composer::loadRootPackageFromJson($composerFile, $configuration);
         } catch (RuntimeException $e) {
             $configuration = null;
             $rootPackage = null;
         }
-
 
         return $this->composerHelper = new Helper\ComposerHelper($configuration, $rootPackage);
     }

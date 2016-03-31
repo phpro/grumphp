@@ -3,7 +3,7 @@
 namespace GrumPHP\Console\Helper;
 
 use Composer\Config;
-use Composer\Package\RootPackage;
+use Composer\Package\RootPackageInterface;
 use Symfony\Component\Console\Helper\Helper;
 
 /**
@@ -16,7 +16,7 @@ class ComposerHelper extends Helper
     const HELPER_NAME = 'composer';
 
     /**
-     * @var RootPackage
+     * @var RootPackageInterface
      */
     private $rootPackage;
 
@@ -29,16 +29,16 @@ class ComposerHelper extends Helper
      * ComposerHelper constructor.
      *
      * @param Config|null      $configuration
-     * @param RootPackage|null $rootPackage
+     * @param RootPackageInterface|null $rootPackage
      */
-    public function __construct(Config $configuration = null, RootPackage $rootPackage = null)
+    public function __construct(Config $configuration = null, RootPackageInterface $rootPackage = null)
     {
         $this->rootPackage = $rootPackage;
         $this->configuration = $configuration;
     }
 
     /**
-     * @return RootPackage|null
+     * @return RootPackageInterface|null
      */
     public function getRootPackage()
     {
