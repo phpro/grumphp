@@ -28,7 +28,7 @@ class Phpcs extends AbstractExternalTask
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array(
-            'standard' => 'PSR2',
+            'standard' => null,
             'show_warnings' => true,
             'tab_width' => null,
             'ignore_patterns' => array(),
@@ -36,7 +36,7 @@ class Phpcs extends AbstractExternalTask
             'triggered_by' => array('php')
         ));
 
-        $resolver->addAllowedTypes('standard', array('string'));
+        $resolver->addAllowedTypes('standard', array('null', 'string'));
         $resolver->addAllowedTypes('show_warnings', array('bool'));
         $resolver->addAllowedTypes('tab_width', array('null', 'int'));
         $resolver->addAllowedTypes('ignore_patterns', array('array'));
@@ -68,7 +68,7 @@ class Phpcs extends AbstractExternalTask
         $config = $this->getConfiguration();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('phpcs');
-        $arguments->addRequiredArgument('--standard=%s', $config['standard']);
+        $arguments->addOptionalArgument('--standard=%s', $config['standard']);
         $arguments->addOptionalArgument('--warning-severity=0', !$config['show_warnings']);
         $arguments->addOptionalArgument('--tab-width=%s', $config['tab_width']);
         $arguments->addOptionalCommaSeparatedArgument('--sniffs=%s', $config['sniffs']);
