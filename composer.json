@@ -24,7 +24,6 @@
         "composer/composer": "@dev",
         "phpspec/phpspec": "~2.4",
         "squizlabs/php_codesniffer": "~2.3",
-        "roave/security-advisories": "dev-master@dev",
         "fabpot/php-cs-fixer": "~1.0",
         "phpunit/phpunit": "^4.8",
         "sensiolabs/security-checker": "^3.0",
@@ -32,7 +31,10 @@
     },
     "suggest": {
         "behat/behat": "Lets GrumPHP validate your project features.",
+        "codegyre/robo": "Lets GrumPHP run your automated PHP tasks.",
         "fabpot/php-cs-fixer": "Lets GrumPHP automatically fix your codestyle.",
+        "phing/phing": "Lets GrumPHP run your automated PHP tasks.",
+        "malukenho/kawaii-gherkin": "Lets GrumPHP lint your Gherkin files.",
         "phpspec/phpspec": "Lets GrumPHP spec your code.",
         "phpunit/phpunit": "Lets GrumPHP run your unit tests.",
         "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",

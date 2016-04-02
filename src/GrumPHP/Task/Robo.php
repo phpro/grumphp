@@ -9,16 +9,16 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Phpcs task
+ * Robo task
  */
-class Phpcs extends AbstractExternalTask
+class Robo extends AbstractExternalTask
 {
     /**
      * @return string
      */
     public function getName()
     {
-        return 'phpcs';
+        return 'robo';
     }
 
     /**
@@ -28,19 +28,13 @@ class Phpcs extends AbstractExternalTask
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array(
-            'standard' => 'PSR2',
-            'show_warnings' => true,
-            'tab_width' => null,
-            'ignore_patterns' => array(),
-            'sniffs' => array(),
+            'load_from' => null,
+            'task' => null,
             'triggered_by' => array('php')
         ));
 
-        $resolver->addAllowedTypes('standard', array('string'));
-        $resolver->addAllowedTypes('show_warnings', array('bool'));
-        $resolver->addAllowedTypes('tab_width', array('null', 'int'));
-        $resolver->addAllowedTypes('ignore_patterns', array('array'));
-        $resolver->addAllowedTypes('sniffs', array('array'));
+        $resolver->addAllowedTypes('load_from', array('null', 'string'));
+        $resolver->addAllowedTypes('task', array('null', 'string'));
         $resolver->addAllowedTypes('triggered_by', array('array'));
 
         return $resolver;
@@ -65,15 +59,9 @@ class Phpcs extends AbstractExternalTask
             return;
         }
 
-        $config = $this->getConfiguration();
-
-        $arguments = $this->processBuilder->createArgumentsForCommand('phpcs');
-        $arguments->addRequiredArgument('--standard=%s', $config['standard']);
-        $arguments->addOptionalArgument('--warning-severity=0', !$config['show_warnings']);
-        $arguments->addOptionalArgument('--tab-width=%s', $config['tab_width']);
-        $arguments->addOptionalCommaSeparatedArgument('--sniffs=%s', $config['sniffs']);
-        $arguments->addOptionalCommaSeparatedArgument('--ignore=%s', $config['ignore_patterns']);
-        $arguments->addFiles($files);
+        $arguments = $this->processBuilder->createArgumentsForCommand('robo');
+        $arguments->addOptionalArgument('--load-from=%s', $config['load_from']);
+        $arguments->addOptionalArgument('%s', $config['task']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();

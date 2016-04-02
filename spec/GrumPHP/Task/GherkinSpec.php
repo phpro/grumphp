@@ -14,42 +14,36 @@ use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 
-class PhpcsSpec extends ObjectBehavior
+class GherkinSpec extends ObjectBehavior
 {
-
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder)
     {
-        $grumPHP->getTaskConfiguration('phpcs')->willReturn(array());
+        $grumPHP->getTaskConfiguration('gherkin')->willReturn(array());
         $this->beConstructedWith($grumPHP, $processBuilder);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\Phpcs');
+        $this->shouldHaveType('GrumPHP\Task\Gherkin');
     }
 
     function it_should_have_a_name()
     {
-        $this->getName()->shouldBe('phpcs');
+        $this->getName()->shouldBe('gherkin');
     }
 
     function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
-        $options->getDefinedOptions()->shouldContain('standard');
-        $options->getDefinedOptions()->shouldContain('show_warnings');
-        $options->getDefinedOptions()->shouldContain('tab_width');
-        $options->getDefinedOptions()->shouldContain('ignore_patterns');
-        $options->getDefinedOptions()->shouldContain('sniffs');
-        $options->getDefinedOptions()->shouldContain('triggered_by');
+        $options->getDefinedOptions()->shouldContain('align');
+        $options->getDefinedOptions()->shouldContain('directory');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
     }
-
 
     function it_should_run_in_run_context(RunContext $context)
     {
@@ -58,39 +52,24 @@ class PhpcsSpec extends ObjectBehavior
 
     function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
     {
-        $processBuilder->buildProcess('phpcs')->shouldNotBeCalled();
+        $processBuilder->createArgumentsForCommand('kawaii')->shouldNotBeCalled();
         $processBuilder->buildProcess()->shouldNotBeCalled();
 
         $context->getFiles()->willReturn(new FilesCollection());
         $this->run($context)->shouldBeNull();
     }
 
-    function it_does_not_runs_the_suite_with_invalid_extensions(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
-    {
-        $arguments = new ProcessArgumentsCollection();
-        $processBuilder->createArgumentsForCommand('phpcs')->willReturn($arguments);
-        $processBuilder->buildProcess($arguments)->willReturn($process);
-
-        $process->run()->shouldNotBeCalled();
-
-        $context->getFiles()->willReturn(new FilesCollection(array(
-          new SplFileInfo('file1.txt', '.', 'file1.txt'),
-        )));
-        $this->run($context);
-    }
-
     function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
         $arguments = new ProcessArgumentsCollection();
-        $processBuilder->createArgumentsForCommand('phpcs')->willReturn($arguments);
+        $processBuilder->createArgumentsForCommand('kawaii')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
         $context->getFiles()->willReturn(new FilesCollection(array(
-            new SplFileInfo('file1.php', '.', 'file1.php'),
-            new SplFileInfo('file2.php', '.', 'file2.php'),
+            new SplFileInfo('test.feature', '.', 'test.feature')
         )));
         $this->run($context);
     }
@@ -101,7 +80,7 @@ class PhpcsSpec extends ObjectBehavior
         ContextInterface $context
     ) {
         $arguments = new ProcessArgumentsCollection();
-        $processBuilder->createArgumentsForCommand('phpcs')->willReturn($arguments);
+        $processBuilder->createArgumentsForCommand('kawaii')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
         $process->run()->shouldBeCalled();
@@ -109,7 +88,7 @@ class PhpcsSpec extends ObjectBehavior
         $process->getOutput()->shouldBeCalled();
 
         $context->getFiles()->willReturn(new FilesCollection(array(
-            new SplFileInfo('file1.php', '.', 'file1.php'),
+            new SplFileInfo('test.feature', '.', 'test.feature')
         )));
         $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($context);
     }

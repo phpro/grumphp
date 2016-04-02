@@ -61,6 +61,20 @@ class ProcessArgumentsCollection extends ArrayCollection
     }
 
     /**
+     * Some CLI tools prefer to split the argument and the value.
+     *
+     * @param       $argument
+     * @param array $values
+     */
+    public function addArgumentArrayWithSeparatedValue($argument, array $values)
+    {
+        foreach ($values as $value) {
+            $this->add(sprintf($argument, $value));
+            $this->add($value);
+        }
+    }
+
+    /**
      * @param string $argument
      * @param string $value
      */

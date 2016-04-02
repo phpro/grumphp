@@ -1,4 +1,12 @@
 services:
+    task.ant:
+        class: GrumPHP\Task\Ant
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: ant}
+
     task.behat:
         class: GrumPHP\Task\Behat
         arguments:
@@ -23,6 +31,14 @@ services:
         tags:
             - {name: grumphp.task, config: composer}
 
+    task.git.gherkin:
+        class: GrumPHP\Task\Gherkin
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: gherkin}
+
     task.git.blacklist:
         class: GrumPHP\Task\Git\Blacklist
         arguments:
@@ -46,6 +62,13 @@ services:
         tags:
             - {name: grumphp.task, config: grunt}
 
+    task.gulp:
+        class: GrumPHP\Task\Gulp
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: gulp}
     task.jsonlint:
         class: GrumPHP\Task\JsonLint
         arguments:
@@ -53,6 +76,22 @@ services:
             - '@linter.jsonlint'
         tags:
             - {name: grumphp.task, config: jsonlint}
+
+    task.make:
+        class: GrumPHP\Task\Make
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: make}
+
+    task.phing:
+        class: GrumPHP\Task\Phing
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: phing}
 
     task.phpcs:
         class: GrumPHP\Task\Phpcs
@@ -94,6 +133,14 @@ services:
         tags:
             - {name: grumphp.task, config: phpunit}
 
+    task.robo:
+        class: GrumPHP\Task\Robo
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: robo}
+
     task.securitychecker:
         class: GrumPHP\Task\SecurityChecker
         arguments:
@@ -101,6 +148,14 @@ services:
             - '@process_builder'
         tags:
             - {name: grumphp.task, config: securitychecker}
+
+    task.shell:
+        class: GrumPHP\Task\Shell
+        arguments:
+            - '@config'
+            - '@process_builder'
+        tags:
+            - {name: grumphp.task, config: shell}
 
     task.xmllint:
         class: GrumPHP\Task\XmlLint

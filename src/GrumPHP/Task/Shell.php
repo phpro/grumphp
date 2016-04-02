@@ -9,16 +9,16 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Phpcs task
+ * Shell task
  */
-class Phpcs extends AbstractExternalTask
+class Shell extends AbstractExternalTask
 {
     /**
      * @return string
      */
     public function getName()
     {
-        return 'phpcs';
+        return 'shell';
     }
 
     /**
@@ -28,19 +28,11 @@ class Phpcs extends AbstractExternalTask
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array(
-            'standard' => 'PSR2',
-            'show_warnings' => true,
-            'tab_width' => null,
-            'ignore_patterns' => array(),
-            'sniffs' => array(),
+            'scripts' => array(),
             'triggered_by' => array('php')
         ));
 
-        $resolver->addAllowedTypes('standard', array('string'));
-        $resolver->addAllowedTypes('show_warnings', array('bool'));
-        $resolver->addAllowedTypes('tab_width', array('null', 'int'));
-        $resolver->addAllowedTypes('ignore_patterns', array('array'));
-        $resolver->addAllowedTypes('sniffs', array('array'));
+        $resolver->addAllowedTypes('scripts', array('array'));
         $resolver->addAllowedTypes('triggered_by', array('array'));
 
         return $resolver;
@@ -65,15 +57,27 @@ class Phpcs extends AbstractExternalTask
             return;
         }
 
-        $config = $this->getConfiguration();
+        $exceptions = array();
+        foreach ($config['scripts'] as $script) {
+            try {
+                $this->runShell($script);
+            } catch (RuntimeException $e) {
+                $exceptions[] = $e->getMessage();
+            }
+        }
 
-        $arguments = $this->processBuilder->createArgumentsForCommand('phpcs');
-        $arguments->addRequiredArgument('--standard=%s', $config['standard']);
-        $arguments->addOptionalArgument('--warning-severity=0', !$config['show_warnings']);
-        $arguments->addOptionalArgument('--tab-width=%s', $config['tab_width']);
-        $arguments->addOptionalCommaSeparatedArgument('--sniffs=%s', $config['sniffs']);
-        $arguments->addOptionalCommaSeparatedArgument('--ignore=%s', $config['ignore_patterns']);
-        $arguments->addFiles($files);
+        if (count($exceptions)) {
+            throw new RuntimeException(implode(PHP_EOL, $exceptions));
+        }
+    }
+
+    /**
+     * @param $script
+     */
+    private function runShell($script)
+    {
+        $arguments = $this->processBuilder->createArgumentsForCommand('sh');
+        $arguments->add($script);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();

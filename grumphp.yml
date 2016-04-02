@@ -1,5 +1,4 @@
 parameters:
-
   bin_dir: "./vendor/bin"
   git_dir: "."
   tasks:
@@ -18,8 +17,6 @@ parameters:
           priority: 100
       composer:
         no_check_lock: true
-        strict: true
       yamllint:
         ignore_patterns:
           - "#test/(.*).yml#"
-      securitychecker: ~

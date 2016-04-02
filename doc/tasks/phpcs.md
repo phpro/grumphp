@@ -13,6 +13,7 @@ parameters:
             tab_width: ~
             ignore_patterns: []
             sniffs: []
+            triggered_by: [php]
             
 ```
 
@@ -49,6 +50,12 @@ This is a list of patterns that will be ignored by phpcs. With this option you c
 *Default: []*
 
 This is a list of sniffs that need to be executed. Leave this option blank to run all configured sniffs for the selected standard.
+
+**triggered_by**
+
+*Default: [php]:
+
+This is a list of extensions to be sniffed. 
 
 ## Framework presets
 
@@ -87,4 +94,29 @@ parameters:
         phpcs:
             standard: "vendor/magento-ecg/coding-standard/Ecg/"
             show_warnings: false
+```
+
+### Drupal
+
+If you want to use Phpcs for your Drupal projects, you can require the Drupal Code Sniffer (Coder)
+
+```sh
+composer require --dev drupal/coder
+```
+
+Following this, you can add the path to your phpcs task.
+
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        phpcs:
+            standard: vendor/drupal/coder/coder_sniffer/Drupal/
+            ignore_patterns:
+              - cfg/
+              - libraries/
+            triggered_by:
+              - php
+              - module
+              - inc
 ```

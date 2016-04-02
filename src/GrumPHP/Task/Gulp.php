@@ -9,16 +9,16 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Phpcs task
+ * Gulp task
  */
-class Phpcs extends AbstractExternalTask
+class Gulp extends AbstractExternalTask
 {
     /**
      * @return string
      */
     public function getName()
     {
-        return 'phpcs';
+        return 'gulp';
     }
 
     /**
@@ -28,19 +28,13 @@ class Phpcs extends AbstractExternalTask
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array(
-            'standard' => 'PSR2',
-            'show_warnings' => true,
-            'tab_width' => null,
-            'ignore_patterns' => array(),
-            'sniffs' => array(),
-            'triggered_by' => array('php')
+            'gulp_file' => null,
+            'task' => null,
+            'triggered_by' => array('js', 'jsx', 'coffee', 'ts', 'less', 'sass', 'scss')
         ));
 
-        $resolver->addAllowedTypes('standard', array('string'));
-        $resolver->addAllowedTypes('show_warnings', array('bool'));
-        $resolver->addAllowedTypes('tab_width', array('null', 'int'));
-        $resolver->addAllowedTypes('ignore_patterns', array('array'));
-        $resolver->addAllowedTypes('sniffs', array('array'));
+        $resolver->addAllowedTypes('gulp_file', array('null', 'string'));
+        $resolver->addAllowedTypes('task', array('null', 'string'));
         $resolver->addAllowedTypes('triggered_by', array('array'));
 
         return $resolver;
@@ -65,15 +59,9 @@ class Phpcs extends AbstractExternalTask
             return;
         }
 
-        $config = $this->getConfiguration();
-
-        $arguments = $this->processBuilder->createArgumentsForCommand('phpcs');
-        $arguments->addRequiredArgument('--standard=%s', $config['standard']);
-        $arguments->addOptionalArgument('--warning-severity=0', !$config['show_warnings']);
-        $arguments->addOptionalArgument('--tab-width=%s', $config['tab_width']);
-        $arguments->addOptionalCommaSeparatedArgument('--sniffs=%s', $config['sniffs']);
-        $arguments->addOptionalCommaSeparatedArgument('--ignore=%s', $config['ignore_patterns']);
-        $arguments->addFiles($files);
+        $arguments = $this->processBuilder->createArgumentsForCommand('gulp');
+        $arguments->addOptionalArgument('--gulpfile=%s', $config['gulp_file']);
+        $arguments->addOptionalArgument('%s', $config['task']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
