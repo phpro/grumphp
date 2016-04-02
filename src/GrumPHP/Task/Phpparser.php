@@ -6,7 +6,6 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Php Parser task
