@@ -109,13 +109,13 @@ services:
         tags:
           - {name: grumphp.task, config: phpcsfixer}
 
-    task.php.blacklist:
-        class: GrumPHP\Task\Php\Blacklist
+    task.phpparser:
+        class: GrumPHP\Task\Phpparser
         arguments:
             - '@config'
             - '@parser.phpparser'
         tags:
-          - {name: grumphp.task, config: php_blacklist}
+          - {name: grumphp.task, config: php_parser}
 
     task.phpspec:
         class: GrumPHP\Task\Phpspec

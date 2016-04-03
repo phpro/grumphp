@@ -2,31 +2,22 @@
 
 namespace GrumPHP\Parser\Php\Visitor;
 
-use GrumPHP\Collection\ParseErrorsCollection;
-use GrumPHP\Parser\Php\PhpParserError;
-use PhpParser\NodeVisitorAbstract;
 use PhpParser\Node;
 
 class ConcreteMethodCallVisitor extends NodeVisitorAbstract
 {
-    protected $concreteMethods;
-    protected $filename;
+    protected $concreteMethods = [];
 
-    public function init($filename, array $keywords, ParseErrorsCollection $errors)
+    public function __construct(\GrumPHP\Configuration\GrumPHP $grumPHP)
     {
-        $this->concreteMethods = array();
+        parent::__construct($grumPHP);
 
-        foreach ($keywords as $ident) {
-            $letters = str_split($ident);
-
-            if ($letters[0] == '-' && $letters[1] == '>' && end($letters) == '(') {
-                // concrete method call
-                $this->concreteMethods[] = substr($ident, 2, -1);
-            }
+        if (!empty($this->blacklist)) {
+            $this->concreteMethods = array_merge($this->concreteMethods, $this->blacklist);
         }
-
-        $this->filename = $filename;
-        $this->errors   = $errors;
+        if (!empty($this->whitelist)) {
+            $this->concreteMethods = array_merge($this->concreteMethods, $this->whitelist);
+        }
     }
 
     public function leaveNode(Node $node)
@@ -36,16 +27,10 @@ class ConcreteMethodCallVisitor extends NodeVisitorAbstract
         ) {
             $method = $node->name;
             if (in_array($method, $this->concreteMethods)) {
-                $this->errors->add(
-                    new PhpParserError(
-                        PhpParserError::TYPE_WARNING,
-                        sprintf(
-                            'Found "%s" method call',
-                            $method
-                        ),
-                        $this->filename,
-                        $node->getLine()
-                    )
+                $this->addError(
+                    sprintf('Found "%s" method call', $method),
+                    $method,
+                    $node
                 );
             }
         }

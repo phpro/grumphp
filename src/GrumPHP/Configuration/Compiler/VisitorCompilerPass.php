@@ -20,7 +20,7 @@ class VisitorCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->findDefinition('task.php.blacklist');
+        $definition = $container->findDefinition('parser.phpparser');
         $taggedServices = $container->findTaggedServiceIds(self::TAG_PHPPARSER_VISITOR);
 
         foreach (array_keys($taggedServices) as $id) {

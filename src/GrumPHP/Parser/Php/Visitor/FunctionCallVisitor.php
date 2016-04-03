@@ -2,30 +2,22 @@
 
 namespace GrumPHP\Parser\Php\Visitor;
 
-use GrumPHP\Collection\ParseErrorsCollection;
-use GrumPHP\Parser\Php\PhpParserError;
-use PhpParser\NodeVisitorAbstract;
 use PhpParser\Node;
 
 class FunctionCallVisitor extends NodeVisitorAbstract
 {
-    protected $functions;
-    protected $filename;
+    protected $functions = [];
 
-    public function init($filename, array $keywords, ParseErrorsCollection $errors)
+    public function __construct(\GrumPHP\Configuration\GrumPHP $grumPHP)
     {
-        $this->functions = array();
+        parent::__construct($grumPHP);
 
-        foreach ($keywords as $ident) {
-            $letters = str_split($ident);
-
-            if ($letters[0] !== ':' && $letters[0] !== '-' && end($letters) == '(') {
-                $this->functions[] = substr($ident, 0, -1);
-            }
+        if (!empty($this->blacklist)) {
+            $this->functions = array_merge($this->functions, $this->blacklist);
         }
-
-        $this->filename = $filename;
-        $this->errors   = $errors;
+        if (!empty($this->whitelist)) {
+            $this->functions = array_merge($this->functions, $this->whitelist);
+        }
     }
 
     public function leaveNode(Node $node)
@@ -33,16 +25,10 @@ class FunctionCallVisitor extends NodeVisitorAbstract
         if ($node instanceof Node\Expr\FuncCall) {
             $function = $node->name;
             if (in_array($function, $this->functions)) {
-                $this->errors->add(
-                    new PhpParserError(
-                        PhpParserError::TYPE_WARNING,
-                        sprintf(
-                            'Found "%s" function call',
-                            $function
-                        ),
-                        $this->filename,
-                        $node->getLine()
-                    )
+                $this->addError(
+                    sprintf('Found "%s" function call', $function),
+                    $function,
+                    $node
                 );
             }
         }

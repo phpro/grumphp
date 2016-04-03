@@ -9,7 +9,7 @@ namespace GrumPHP\Parser;
  */
 class ParseError
 {
-    const TYPE_NONE = 'none';
+    const TYPE_NOTICE = 'notice';
     const TYPE_WARNING = 'warning';
     const TYPE_ERROR = 'error';
     const TYPE_FATAL = 'fatal';

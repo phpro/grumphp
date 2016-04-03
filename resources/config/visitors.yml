@@ -1,18 +1,24 @@
 services:
   grumphp.parser.php.visitor.function_call:
     class: GrumPHP\Parser\Php\Visitor\FunctionCallVisitor
+    arguments:
+      - '@config'
     public: false
     tags:
       - {name: php_parser.visitor}
 
   grumphp.parser.php.visitor.concrete_method_call:
     class: GrumPHP\Parser\Php\Visitor\ConcreteMethodCallVisitor
+    arguments:
+      - '@config'
     public: false
     tags:
       - {name: php_parser.visitor}
 
   grumphp.parser.php.visitor.static_method_call:
     class: GrumPHP\Parser\Php\Visitor\StaticMethodCallVisitor
+    arguments:
+      - '@config'
     public: false
     tags:
       - {name: php_parser.visitor}

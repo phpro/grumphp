@@ -10,7 +10,7 @@ use GrumPHP\Task\Context\RunContext;
 /**
  * Php Parser task
  */
-class Parser extends AbstractParserTask
+class Phpparser extends AbstractParserTask
 {
     /**
      * @return string
@@ -54,7 +54,7 @@ class Parser extends AbstractParserTask
 
         if ($parseErrors->count()) {
             throw new RuntimeException(sprintf(
-                "You have blacklisted keywords in your commit:\n%s",
+                "You have matched keywords in your commit:\n%s",
                 $parseErrors->__toString()
             ));
         }

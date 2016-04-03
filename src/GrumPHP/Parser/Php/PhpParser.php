@@ -21,13 +21,42 @@ use SplFileInfo;
 class PhpParser implements ParserInterface
 {
     /**
-     * @param SplFileInfo $filename
-     * @param array       $keywords
-     * @param NodeVisitorsCollection $visitors
+     * @var NodeVisitorsCollection|NodeVisitor[]
+     */
+    protected $nodeVisitors;
+
+    public function __construct()
+    {
+        $this->nodeVisitors = new NodeVisitorsCollection();
+    }
+
+    /**
+     * @param NodeVisitor $visitor
+     * @param array       $options
+     */
+    public function addNodeVisitor(NodeVisitor $visitor)
+    {
+        if ($this->nodeVisitors->contains($visitor)) {
+            return;
+        }
+
+        $this->nodeVisitors->add($visitor);
+    }
+
+    /**
+     * @return NodeVisitorsCollection|NodeVisitor[]
+     */
+    public function getNodeVisitors()
+    {
+        return $this->nodeVisitors;
+    }
+
+    /**
+     * @param SplFileInfo $file
      *
      * @return GrumPHP\Collection\ParseErrorsCollection
      */
-    public function parse(SplFileInfo $file, array $keywords, NodeVisitorsCollection $visitors)
+    public function parse(SplFileInfo $file)
     {
         $filename  = $file->getRealPath();
 
@@ -38,8 +67,8 @@ class PhpParser implements ParserInterface
 
         $traverser->addVisitor(new NameResolver);
 
-        foreach ($visitors as $visitor) {
-            $visitor->init($filename, $keywords, $errors);
+        foreach ($this->nodeVisitors as $visitor) {
+            $visitor->init($filename, $errors);
             $traverser->addVisitor($visitor);
         }
 

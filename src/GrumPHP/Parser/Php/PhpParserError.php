@@ -21,7 +21,7 @@ class PhpParserError extends ParseError
     public static function fromParseException(Error $exception, $filename)
     {
         return new self(
-            ParseError::TYPE_ERROR,
+            ParseError::TYPE_FATAL,
             $exception->getRawMessage(),
             $filename,
             $exception->getStartLine()
