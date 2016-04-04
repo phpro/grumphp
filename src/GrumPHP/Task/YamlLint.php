@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Linter\Yaml\YamlLinter;
 use GrumPHP\Task\Context\ContextInterface;
