@@ -40,8 +40,8 @@ class TaskRunnerHelperSpec extends ObjectBehavior
     {
         $aTask = $task->getWrappedObject();
         $aContext = $context->getWrappedObject();
-        $passedTaskResult = new TaskResult(TaskResult::PASSED, $aTask, $aContext);
-        $failedTaskResult = new TaskResult(TaskResult::FAILED, $aTask, $aContext, 'failed task message');
+        $passedTaskResult = TaskResult::createPassed($aTask, $aContext);
+        $failedTaskResult = TaskResult::createFailed($aTask, $aContext, 'failed task message');
         $taskResults = new TaskResultCollection();
         $taskResults->add($passedTaskResult);
         $taskResults->add($failedTaskResult);
@@ -58,7 +58,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
     {
         $aTask = $task->getWrappedObject();
         $aContext = $context->getWrappedObject();
-        $passedTaskResult = new TaskResult(TaskResult::PASSED, $aTask, $aContext);
+        $passedTaskResult = TaskResult::createPassed($aTask, $aContext);
         $taskResults = new TaskResultCollection();
         $taskResults->add($passedTaskResult);
         $taskRunner->run($context)->willReturn($taskResults);
@@ -74,7 +74,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
     {
         $aTask = $task->getWrappedObject();
         $aContext = $context->getWrappedObject();
-        $nonBlockingFailedTaskResult = new TaskResult(TaskResult::NONBLOCKING_FAILED, $aTask, $aContext, 'failed task message');
+        $nonBlockingFailedTaskResult = TaskResult::createNonBlockingFailed($aTask, $aContext, 'failed task message');
         $testResults = new TaskResultCollection();
         $testResults->add($nonBlockingFailedTaskResult);
         $taskRunner->run($context)->willReturn($testResults);
@@ -90,8 +90,8 @@ class TaskRunnerHelperSpec extends ObjectBehavior
     {
         $aTask = $task->getWrappedObject();
         $aContext = $context->getWrappedObject();
-        $failedTaskResult = new TaskResult(TaskResult::FAILED, $aTask, $aContext, 'failed task message');
-        $anotherFailedTaskResult = new TaskResult(TaskResult::FAILED, $aTask, $aContext, 'another failed task message');
+        $failedTaskResult = TaskResult::createFailed($aTask, $aContext, 'failed task message');
+        $anotherFailedTaskResult = TaskResult::createFailed($aTask, $aContext, 'another failed task message');
         $taskResults = new TaskResultCollection();
         $taskResults->add($failedTaskResult);
         $taskResults->add($anotherFailedTaskResult);
@@ -115,7 +115,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
     {
         $aTask = $task->getWrappedObject();
         $aContext = $context->getWrappedObject();
-        $nonBlockingFailedTaskResult = new TaskResult(TaskResult::NONBLOCKING_FAILED, $aTask, $aContext, 'non blocking task message');
+        $nonBlockingFailedTaskResult = TaskResult::createNonBlockingFailed($aTask, $aContext, 'non blocking task message');
         $taskResults = new TaskResultCollection();
         $taskResults->add($nonBlockingFailedTaskResult);
         $taskRunner->run($context)->willReturn($taskResults);

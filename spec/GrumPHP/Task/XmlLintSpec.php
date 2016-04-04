@@ -8,6 +8,7 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Linter\LintError;
 use GrumPHP\Linter\Xml\XmlLinter;
 use GrumPHP\Linter\Xml\XmlLintError;
+use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -57,9 +58,11 @@ class XmlLintSpec extends AbstractLinterTaskSpec
     {
         $linter->isInstalled()->willReturn(true);
         $linter->lint(Argument::any())->shouldNotBeCalled();
-
         $context->getFiles()->willReturn(new FilesCollection());
-        $this->run($context)->shouldBeNull();
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->getResultCode()->shouldBe(TaskResult::SKIPPED);        
     }
 
     function it_runs_the_suite(XmlLinter $linter, ContextInterface $context)
@@ -74,7 +77,10 @@ class XmlLintSpec extends AbstractLinterTaskSpec
         $context->getFiles()->willReturn(new FilesCollection(array(
             new SplFileInfo('file.xml', '.', 'file.xml'),
         )));
-        $this->run($context);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->isPassed()->shouldBe(true);
     }
 
     function it_throws_exception_if_the_process_fails(XmlLinter $linter, ContextInterface $context)
@@ -91,6 +97,9 @@ class XmlLintSpec extends AbstractLinterTaskSpec
         $context->getFiles()->willReturn(new FilesCollection(array(
             new SplFileInfo('file.xml', '.', 'file.xml'),
         )));
-        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($context);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->isPassed()->shouldBe(false);
     }
 }

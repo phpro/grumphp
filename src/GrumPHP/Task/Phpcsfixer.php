@@ -3,7 +3,7 @@
 namespace GrumPHP\Task;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
-use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -60,7 +60,7 @@ class Phpcsfixer extends AbstractExternalTask
     {
         $files = $context->getFiles()->name('*.php');
         if (0 === count($files)) {
-            return;
+            return TaskResult::createSkipped($this, $context);
         }
 
         $config = $this->getConfiguration();
@@ -111,7 +111,10 @@ class Phpcsfixer extends AbstractExternalTask
         }
 
         if (count($messages)) {
-            throw new RuntimeException(implode("\n", $messages) . "\n" . "\n" . implode("\n", $suggest));
+            $message = implode(PHP_EOL, $messages) . PHP_EOL . PHP_EOL . implode(PHP_EOL, $suggest);
+            return TaskResult::createFailed($this, $context, $message);
         }
+
+        return TaskResult::createPassed($this, $context);
     }
 }

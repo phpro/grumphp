@@ -6,6 +6,7 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Process\ProcessBuilder;
+use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -51,6 +52,17 @@ class PhpspecSpec extends ObjectBehavior
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
+    function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
+    {
+        $processBuilder->buildProcess('phpspec')->shouldNotBeCalled();
+        $processBuilder->buildProcess()->shouldNotBeCalled();
+        $context->getFiles()->willReturn(new FilesCollection());
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
+    }
+    
     function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
         $arguments = new ProcessArgumentsCollection();
@@ -63,7 +75,10 @@ class PhpspecSpec extends ObjectBehavior
         $context->getFiles()->willReturn(new FilesCollection(array(
             new SplFileInfo('test.php', '.', 'test.php')
         )));
-        $this->run($context);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->isPassed()->shouldBe(true);
     }
 
     function it_throws_exception_if_the_process_fails(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
@@ -79,6 +94,9 @@ class PhpspecSpec extends ObjectBehavior
         $context->getFiles()->willReturn(new FilesCollection(array(
             new SplFileInfo('test.php', '.', 'test.php')
         )));
-        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($context);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->isPassed()->shouldBe(false);
     }
 }

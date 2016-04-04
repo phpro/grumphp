@@ -24,11 +24,12 @@ class TaskRunnerSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith($grumPHP, $eventDispatcher);
 
-
         $task1->getName()->willReturn('task1');
         $task1->canRunInContext($context)->willReturn(true);
+        $task1->run($context)->willReturn(TaskResult::createPassed($task1->getWrappedObject(), $context->getWrappedObject()));
         $task2->getName()->willReturn('task2');
         $task2->canRunInContext($context)->willReturn(true);
+        $task2->run($context)->willReturn(TaskResult::createPassed($task2->getWrappedObject(), $context->getWrappedObject()));
 
         $grumPHP->stopOnFailure()->willReturn(false);
         $grumPHP->getTaskMetadata('task1')->willReturn(array('priority' => 0));
@@ -76,6 +77,16 @@ class TaskRunnerSpec extends ObjectBehavior
 
     function it_returns_a_failed_tasks_result_if_a_task_fails(TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
     {
+        $task1->run($context)->willReturn(TaskResult::createFailed($task1->getWrappedObject(), $context->getWrappedObject(), ''));
+        $task2->run($context)->shouldBeCalled();
+
+        $this->run($context)->shouldReturnAnInstanceOf('GrumPHP\Collection\TaskResultCollection');
+        $this->run($context)->shouldNotBePassed();
+        $this->run($context)->shouldContainFailedTaskResult();
+    }
+
+    function it_returns_a_failed_tasks_throws_an_exception(TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
+    {
         $task1->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
         $task2->run($context)->shouldBeCalled();
 
@@ -84,10 +95,11 @@ class TaskRunnerSpec extends ObjectBehavior
         $this->run($context)->shouldContainFailedTaskResult();
     }
 
+
     function it_returns_a_failed_tasks_result_if_a_non_blocking_task_fails(GrumPHP $grumPHP, TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
     {
         $grumPHP->isBlockingTask('task1')->willReturn(false);
-        $task1->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
+        $task1->run($context)->willReturn(TaskResult::createFailed($task1->getWrappedObject(), $context->getWrappedObject(), ''));
         $task2->run($context)->shouldBeCalled();
 
         $this->run($context)->shouldReturnAnInstanceOf('GrumPHP\Collection\TaskResultCollection');
@@ -100,7 +112,7 @@ class TaskRunnerSpec extends ObjectBehavior
         TaskInterface $task2,
         ContextInterface $context
     ) {
-        $task1->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
+        $task1->run($context)->willReturn(TaskResult::createFailed($task1->getWrappedObject(), $context->getWrappedObject(), ''));
         $task2->run($context)->shouldBeCalled();
 
         $this->run($context);
@@ -109,7 +121,7 @@ class TaskRunnerSpec extends ObjectBehavior
     function it_stops_on_a_failed_task_if_stop_on_failure(GrumPHP $grumPHP, TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
     {
         $grumPHP->stopOnFailure()->willReturn(true);
-        $task1->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
+        $task1->run($context)->willReturn(TaskResult::createFailed($task1->getWrappedObject(), $context->getWrappedObject(), ''));
         $task2->run($context)->shouldNotBeCalled();
 
         $this->run($context)->shouldHaveCount(1);
@@ -119,7 +131,7 @@ class TaskRunnerSpec extends ObjectBehavior
     {
         $grumPHP->stopOnFailure()->willReturn(true);
         $grumPHP->isBlockingTask('task1')->willReturn(false);
-        $task1->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
+        $task1->run($context)->willReturn(TaskResult::createFailed($task1->getWrappedObject(), $context->getWrappedObject(), ''));
         $task2->run($context)->shouldBeCalled();
 
         $this->run($context)->shouldHaveCount(2);
@@ -148,8 +160,8 @@ class TaskRunnerSpec extends ObjectBehavior
         TaskInterface $task2,
         ContextInterface $context
     ) {
-        $task1->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
-        $task2->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
+        $task1->run($context)->willReturn(TaskResult::createFailed($task1->getWrappedObject(), $context->getWrappedObject(), ''));
+        $task2->run($context)->willReturn(TaskResult::createFailed($task1->getWrappedObject(), $context->getWrappedObject(), ''));
 
         $eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, Argument::type('GrumPHP\Event\RunnerEvent'))->shouldBeCalled();
         $eventDispatcher->dispatch(TaskEvents::TASK_RUN, Argument::type('GrumPHP\Event\TaskEvent'))->shouldBeCalled();

@@ -6,6 +6,7 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Process\ProcessBuilder;
+use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -48,9 +49,11 @@ class PhpcsfixerSpec extends ObjectBehavior
     {
         $processBuilder->createArgumentsForCommand('php-cs-fixer')->shouldNotBeCalled();
         $processBuilder->buildProcess()->shouldNotBeCalled();
-
         $context->getFiles()->willReturn(new FilesCollection());
-        $this->run($context)->shouldBeNull();
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
@@ -76,7 +79,10 @@ class PhpcsfixerSpec extends ObjectBehavior
             new SplFileInfo('file1.php', '.', 'file1.php'),
             new SplFileInfo('file2.php', '.', 'file2.php'),
         )));
-        $this->run($context);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->isPassed()->shouldBe(true);
     }
 
     function it_throws_exception_if_the_process_fails(
@@ -95,6 +101,9 @@ class PhpcsfixerSpec extends ObjectBehavior
         $context->getFiles()->willReturn(new FilesCollection(array(
             new SplFileInfo('file1.php', '.', 'file1.php'),
         )));
-        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($context);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->isPassed()->shouldBe(false);
     }
 }

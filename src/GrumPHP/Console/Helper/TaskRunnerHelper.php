@@ -66,18 +66,17 @@ class TaskRunnerHelper extends Helper
         $taskResults = $this->taskRunner->run($context);
 
         $warnings = $taskResults->filterByResultCode(TaskResult::NONBLOCKING_FAILED);
-        $this->returnWarningMessages($output, $warnings->getAllMessages());
-
         if ($taskResults->isFailed()) {
             $failed = $taskResults->filterByResultCode(TaskResult::FAILED);
-            return $this->returnErrorMessages($output, $failed->getAllMessages());
+            return $this->returnErrorMessages($output, $failed->getAllMessages(), $warnings->getAllMessages());
         }
 
         if ($skipSuccessOutput) {
+            $this->returnWarningMessages($output, $warnings->getAllMessages());
             return self::CODE_SUCCESS;
         }
 
-        return $this->returnSuccessMessage($output);
+        return $this->returnSuccessMessage($output, $warnings->getAllMessages());
     }
 
     /**
@@ -95,12 +94,14 @@ class TaskRunnerHelper extends Helper
      *
      * @return int
      */
-    private function returnErrorMessages(OutputInterface $output, array $errorMessages)
+    private function returnErrorMessages(OutputInterface $output, array $errorMessages, array $warnings)
     {
         $failed = $this->paths()->getAsciiContent('failed');
         if ($failed) {
             $output->writeln('<fg=red>' . $failed . '</fg=red>');
         }
+
+        $this->returnWarningMessages($output, $warnings);
 
         foreach ($errorMessages as $errorMessage) {
             $output->writeln('<fg=red>' . $errorMessage . '</fg=red>');
@@ -116,14 +117,18 @@ class TaskRunnerHelper extends Helper
     /**
      * @param OutputInterface $output
      *
+     * @param array           $warnings
+     *
      * @return int
      */
-    private function returnSuccessMessage(OutputInterface $output)
+    private function returnSuccessMessage(OutputInterface $output, array $warnings)
     {
         $succeeded = $this->paths()->getAsciiContent('succeeded');
         if ($succeeded) {
             $output->write('<fg=green>' . $succeeded . '</fg=green>');
         }
+
+        $this->returnWarningMessages($output, $warnings);
 
         return self::CODE_SUCCESS;
     }

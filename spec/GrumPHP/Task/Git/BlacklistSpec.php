@@ -6,6 +6,7 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Process\ProcessBuilder;
+use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use PhpSpec\ObjectBehavior;
@@ -49,9 +50,11 @@ class BlacklistSpec extends ObjectBehavior
     {
         $processBuilder->createArgumentsForCommand('git')->shouldNotBeCalled();
         $processBuilder->buildProcess()->shouldNotBeCalled();
-
         $context->getFiles()->willReturn(new FilesCollection());
-        $this->run($context)->shouldBeNull();
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
     function it_does_not_do_anything_if_there_are_no_keywords(ProcessBuilder $processBuilder, ContextInterface $context)
@@ -63,7 +66,9 @@ class BlacklistSpec extends ObjectBehavior
             new SplFileInfo('file1.php', '.', 'file1.php'),
         )));
 
-        $this->run($context)->shouldBeNull();
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
     function it_runs_the_suite(
@@ -88,7 +93,10 @@ class BlacklistSpec extends ObjectBehavior
         $context->getFiles()->willReturn(new FilesCollection(array(
             new SplFileInfo('file1.php', '.', 'file1.php'),
         )));
-        $this->run($context);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->isPassed()->shouldBe(true);
     }
 
     function it_throws_exception_if_the_process_is_successfull(
@@ -112,6 +120,9 @@ class BlacklistSpec extends ObjectBehavior
         $context->getFiles()->willReturn(new FilesCollection(array(
             new SplFileInfo('file1.php', '.', 'file1.php'),
         )));
-        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($context);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->isPassed()->shouldBe(false);
     }
 }

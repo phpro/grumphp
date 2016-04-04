@@ -2,7 +2,7 @@
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -41,8 +41,7 @@ interface TaskInterface
     /**
      * @param ContextInterface $context
      *
-     * @return void
-     * @throws RuntimeException
+     * @return TaskResultInterface
      */
     public function run(ContextInterface $context);
 }
