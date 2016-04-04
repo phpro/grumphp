@@ -8,7 +8,7 @@ It lives under the `phpcs` namespace and has following configurable parameters:
 parameters:
     tasks:
         phpcs:
-            standard: PSR2
+            standard: ~
             show_warnings: true
             tab_width: ~
             ignore_patterns: []
@@ -19,9 +19,19 @@ parameters:
 
 **standard**
 
-*Default: PSR2*
+*Default: null*
 
 This parameter will describe which standard is being used to validate your code for bad coding standards.
+By default it is set to null so that the Phpcs defaults are being used.
+Phpcs will be using the PEAR or local `phpcs.xml` standard by default.
+You can configure this task to use any standard supported by the Phpcs CLI.
+For Example: `PEAR`, `PHPCS`, `PSR1`, `PSR2`, `Squiz` and `Zend`
+
+You can get a list of all installed phpcs standards with the command:
+
+```sh
+phpcs -i
+```
 
 
 **show_warnings**
