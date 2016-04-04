@@ -87,7 +87,7 @@ class TaskCompilerPass implements CompilerPassInterface
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array(
             'priority' => 0,
-            'blocking' => false
+            'blocking' => true,
         ));
 
         $metadata = isset($configuration['metadata']) ? $configuration['metadata'] : array();

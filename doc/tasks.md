@@ -79,7 +79,7 @@ This option can be used to specify the order in which the tasks will be executed
 The higher the priority, the sooner the task will be executed.
 
 
-**blocking** (Not Implemented Yet!!)
+**blocking**
 
 *Default: true*
 

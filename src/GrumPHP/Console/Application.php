@@ -132,7 +132,8 @@ class Application extends SymfonyConsole
         ));
         $helperSet->set(new Helper\TaskRunnerHelper(
             $container->get('task_runner'),
-            $container->get('event_dispatcher')
+            $container->get('event_dispatcher'),
+            $container->get('config')
         ));
 
         return $helperSet;
