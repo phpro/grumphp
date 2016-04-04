@@ -6,6 +6,7 @@
     "require": {
         "php": ">=5.3.6",
         "composer-plugin-api": "~1.0",
+        "composer/composer": "^1.0-beta2",
         "doctrine/collections": "~1.2",
         "gitonomy/gitlib": "~0.1.7",
         "seld/jsonlint": "~1.1",
@@ -21,8 +22,8 @@
         "monolog/monolog": "~1.17"
     },
     "require-dev": {
-        "composer/composer": "^1.0-alpha11",
-        "phpspec/phpspec": "~2.4",
+        "phpspec/phpspec": "~2.5",
+        "phpspec/prophecy": "~1.6",
         "squizlabs/php_codesniffer": "~2.3",
         "fabpot/php-cs-fixer": "~1.0",
         "phpunit/phpunit": "^4.8",

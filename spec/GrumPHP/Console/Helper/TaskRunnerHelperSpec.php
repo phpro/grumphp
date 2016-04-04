@@ -25,6 +25,11 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         $this->setHelperSet($helperSet);
     }
 
+    function it_is_a_console_helper()
+    {
+        $this->shouldHaveType('Symfony\Component\Console\Helper\Helper');
+    }
+
     function it_should_return_error_code_during_exceptions(OutputInterface $output, TaskRunner $taskRunner, ContextInterface $context)
     {
         $taskRunner->run($context)->willThrow(new FailureException());

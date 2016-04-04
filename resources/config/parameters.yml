@@ -3,7 +3,7 @@ parameters:
   git_dir: .
   tasks: []
   stop_on_failure: false
-  ignore_unstaged_changes: true
+  ignore_unstaged_changes: false
   extensions: []
   ascii:
     failed: grumphp-grumpy.txt

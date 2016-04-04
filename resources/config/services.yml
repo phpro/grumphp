@@ -38,6 +38,11 @@ services:
           - '%bin_dir%'
           - '@executable_finder'
 
+    locator.configuration_file:
+        class: GrumPHP\Locator\ConfigurationFile
+        arguments:
+          - '@filesystem'
+
     locator.changed_files:
         class: GrumPHP\Locator\ChangedFiles
         arguments:

@@ -30,13 +30,20 @@ class PathsHelper extends Helper
     protected $fileSystem;
 
     /**
-     * @param GrumPHP         $config
-     * @param Filesystem      $fileSystem
+     * @var string
      */
-    public function __construct(GrumPHP $config, Filesystem $fileSystem)
+    private $defaultConfigPath;
+
+    /**
+     * @param GrumPHP    $config
+     * @param Filesystem $fileSystem
+     * @param string     $defaultConfigPath
+     */
+    public function __construct(GrumPHP $config, Filesystem $fileSystem, $defaultConfigPath)
     {
         $this->config = $config;
         $this->fileSystem = $fileSystem;
+        $this->defaultConfigPath = $defaultConfigPath;
     }
 
     /**
@@ -137,7 +144,7 @@ class PathsHelper extends Helper
     {
         $gitPath = $this->getGitDir();
 
-        return $this->fileSystem->makePathRelative($this->getWorkingDir(), realpath($gitPath));
+        return $this->fileSystem->makePathRelative($this->getWorkingDir(), $this->getAbsolutePath($gitPath));
     }
 
     /**
@@ -199,13 +206,32 @@ class PathsHelper extends Helper
      */
     public function getRelativePath($path)
     {
+        $realpath = $this->getAbsolutePath($path);
+        return $this->fileSystem->makePathRelative($realpath, $this->getWorkingDir());
+    }
+
+    /**
+     * @param $path
+     *
+     * @return mixed
+     */
+    public function getAbsolutePath($path)
+    {
         $path = trim($path);
         $realpath = realpath($path);
         if (false === $realpath) {
             throw new FileNotFoundException($path);
         }
 
-        return $this->fileSystem->makePathRelative($realpath, $this->getWorkingDir());
+        return $realpath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultConfigPath()
+    {
+        return $this->defaultConfigPath;
     }
 
     /**
