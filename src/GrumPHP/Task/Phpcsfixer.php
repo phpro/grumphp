@@ -107,7 +107,6 @@ class Phpcsfixer extends AbstractExternalTask
                 } else {
                     $messages[] = $output;
                 }
-
             }
         }
 
