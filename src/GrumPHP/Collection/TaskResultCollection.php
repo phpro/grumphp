@@ -4,6 +4,7 @@ namespace GrumPHP\Collection;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 
 class TaskResultCollection extends ArrayCollection
 {
@@ -50,7 +51,7 @@ class TaskResultCollection extends ArrayCollection
      */
     public function filterByResultCode($resultCode)
     {
-        return $this->filter(function ($taskResult) use ($resultCode) {
+        return $this->filter(function (TaskResultInterface $taskResult) use ($resultCode) {
             return $resultCode === $taskResult->getResultCode();
         });
     }

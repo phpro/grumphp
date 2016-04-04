@@ -2,10 +2,6 @@
 
 namespace GrumPHP\Event;
 
-use GrumPHP\Collection\TaskResultCollection;
-use GrumPHP\Collection\TasksCollection;
-use GrumPHP\Task\Context\ContextInterface;
-
 /**
  * Class RunnerFailedEvent
  *
