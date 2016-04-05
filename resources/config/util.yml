@@ -1,0 +1,3 @@
+services:
+    grumphp.util.composer:
+        class: GrumPHP\Util\Composer

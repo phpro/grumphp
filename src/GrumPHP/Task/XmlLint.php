@@ -3,6 +3,7 @@
 namespace GrumPHP\Task;
 
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Runner\TaskResult;
 use GrumPHP\Linter\Xml\XmlLinter;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -65,19 +66,25 @@ class XmlLint extends AbstractLinterTask
     {
         $files = $context->getFiles()->name('*.xml');
         if (0 === count($files)) {
-            return;
+            return TaskResult::createSkipped($this, $context);
         }
 
         $config = $this->getConfiguration();
-
         $this->linter->setLoadFromNet($config['load_from_net']);
         $this->linter->setXInclude($config['x_include']);
         $this->linter->setDtdValidation($config['dtd_validation']);
         $this->linter->setSchemeValidation($config['scheme_validation']);
 
-        $lintErrors = $this->lint($files);
-        if ($lintErrors->count()) {
-            throw new RuntimeException($lintErrors->__toString());
+        try {
+            $lintErrors = $this->lint($files);
+        } catch (RuntimeException $e) {
+            return TaskResult::createFailed($this, $context, $e->getMessage());
         }
+
+        if ($lintErrors->count()) {
+            return TaskResult::createFailed($this, $context, (string) $lintErrors);
+        }
+
+        return TaskResult::createPassed($this, $context);
     }
 }

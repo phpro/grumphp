@@ -3,7 +3,7 @@
 namespace GrumPHP\Console\Helper;
 
 use GrumPHP\Event\Subscriber\ProgressSubscriber;
-use GrumPHP\Exception\ExceptionInterface;
+use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Task\Context\ContextInterface;
 use Symfony\Component\Console\Helper\Helper;
@@ -34,7 +34,7 @@ class TaskRunnerHelper extends Helper
     private $eventDispatcher;
 
     /**
-     * @param TaskRunner               $taskRunner
+     * @param TaskRunner $taskRunner
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(TaskRunner $taskRunner, EventDispatcherInterface $eventDispatcher)
@@ -63,20 +63,20 @@ class TaskRunnerHelper extends Helper
         // Make sure to add some default event listeners before running.
         $this->registerEventListeners($output, $context);
 
-        try {
-            $this->taskRunner->run($context);
-        } catch (ExceptionInterface $e) {
-            // We'll fail hard on any exception not generated in GrumPHP
+        $taskResults = $this->taskRunner->run($context);
 
-            return $this->returnErrorMessage($output, $e->getMessage());
+        $warnings = $taskResults->filterByResultCode(TaskResult::NONBLOCKING_FAILED);
+        if ($taskResults->isFailed()) {
+            $failed = $taskResults->filterByResultCode(TaskResult::FAILED);
+            return $this->returnErrorMessages($output, $failed->getAllMessages(), $warnings->getAllMessages());
         }
 
-        // Skip before returning any messages
         if ($skipSuccessOutput) {
+            $this->returnWarningMessages($output, $warnings->getAllMessages());
             return self::CODE_SUCCESS;
         }
 
-        return $this->returnSuccessMessage($output);
+        return $this->returnSuccessMessage($output, $warnings->getAllMessages());
     }
 
     /**
@@ -90,18 +90,23 @@ class TaskRunnerHelper extends Helper
 
     /**
      * @param OutputInterface $output
-     * @param string          $errorMessage
+     * @param array           $errorMessages
      *
      * @return int
      */
-    private function returnErrorMessage(OutputInterface $output, $errorMessage)
+    private function returnErrorMessages(OutputInterface $output, array $errorMessages, array $warnings)
     {
         $failed = $this->paths()->getAsciiContent('failed');
         if ($failed) {
             $output->writeln('<fg=red>' . $failed . '</fg=red>');
         }
 
-        $output->writeln('<fg=red>' . $errorMessage . '</fg=red>');
+        $this->returnWarningMessages($output, $warnings);
+
+        foreach ($errorMessages as $errorMessage) {
+            $output->writeln('<fg=red>' . $errorMessage . '</fg=red>');
+        }
+
         $output->writeln(
             '<fg=yellow>To skip commit checks, add -n or --no-verify flag to commit command</fg=yellow>'
         );
@@ -112,16 +117,31 @@ class TaskRunnerHelper extends Helper
     /**
      * @param OutputInterface $output
      *
+     * @param array           $warnings
+     *
      * @return int
      */
-    private function returnSuccessMessage(OutputInterface $output)
+    private function returnSuccessMessage(OutputInterface $output, array $warnings)
     {
         $succeeded = $this->paths()->getAsciiContent('succeeded');
         if ($succeeded) {
             $output->write('<fg=green>' . $succeeded . '</fg=green>');
         }
 
+        $this->returnWarningMessages($output, $warnings);
+
         return self::CODE_SUCCESS;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param array $warningMessages
+     */
+    private function returnWarningMessages($output, array $warningMessages)
+    {
+        foreach ($warningMessages as $warningMessage) {
+            $output->writeln('<fg=yellow>' . $warningMessage . '</fg=yellow>');
+        }
     }
 
     /**

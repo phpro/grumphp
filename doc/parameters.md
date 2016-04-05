@@ -6,7 +6,7 @@ parameters:
     bin_dir: ./vendor/bin
     git_dir: .
     stop_on_failure: false
-    ignore_unstaged_changes: true
+    ignore_unstaged_changes: false
     ascii:
         failed: resource/grumphp-grumpy.txt
         succeeded: resource/grumphp-happy.txt
@@ -35,11 +35,12 @@ By default GrumPHP will continue running the configured tasks.
 
 **ignore_unstaged_changes**
 
-*Default: true*
+*Default: false*
 
 By enabling this option, GrumPHP will stash your unstaged changes in git before running the tasks.
 This way the tasks will run with the code that is actually committed without the unstaged changes.
 Note that during the commit, the unstaged changes will be stored in git stash.
+This may mess with your working copy and result in unexpected merge conflicts.
 
 **ascii**
 

@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Runner;
 
+use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\RunnerEvent;
@@ -10,7 +11,6 @@ use GrumPHP\Event\RunnerFailedEvent;
 use GrumPHP\Event\TaskEvent;
 use GrumPHP\Event\TaskEvents;
 use GrumPHP\Event\TaskFailedEvent;
-use GrumPHP\Exception\FailureException;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
@@ -74,39 +74,81 @@ class TaskRunner
     /**
      * @param ContextInterface $context
      *
-     * @throws FailureException if any of the tasks fail
+     * @return TaskResultCollection
      */
     public function run(ContextInterface $context)
     {
-        $failures = false;
-        $messages = array();
         $tasks = $this->tasks->filterByContext($context)->sortByPriority($this->grumPHP);
+        $taskResults = new TaskResultCollection();
 
-        $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, new RunnerEvent($tasks, $context));
+        $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, new RunnerEvent($tasks, $context, $taskResults));
         foreach ($tasks as $task) {
             try {
-                $this->eventDispatcher->dispatch(TaskEvents::TASK_RUN, new TaskEvent($task, $context));
-                $task->run($context);
-                $this->eventDispatcher->dispatch(TaskEvents::TASK_COMPLETE, new TaskEvent($task, $context));
+                $taskResult = $this->runTask($task, $context);
             } catch (RuntimeException $e) {
-                $this->eventDispatcher->dispatch(TaskEvents::TASK_FAILED, new TaskFailedEvent($task, $context, $e));
-                $messages[] = $e->getMessage();
-                $failures = true;
+                $taskResult = TaskResult::createFailed($task, $context, $e->getMessage());
+            }
 
-                if ($this->grumPHP->stopOnFailure()) {
-                    break;
-                }
+            $taskResults->add($taskResult);
+            if (!$taskResult->isPassed() && $taskResult->isBlocking() && $this->grumPHP->stopOnFailure()) {
+                break;
             }
         }
 
-        if ($failures) {
+        if ($taskResults->isFailed()) {
             $this->eventDispatcher->dispatch(
                 RunnerEvents::RUNNER_FAILED,
-                new RunnerFailedEvent($tasks, $context, $messages)
+                new RunnerFailedEvent($tasks, $context, $taskResults)
             );
-            throw new FailureException(implode(PHP_EOL, $messages));
+
+            return $taskResults;
         }
 
-        $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_COMPLETE, new RunnerEvent($tasks, $context));
+        $this->eventDispatcher->dispatch(
+            RunnerEvents::RUNNER_COMPLETE,
+            new RunnerEvent($tasks, $context, $taskResults)
+        );
+
+        return $taskResults;
+    }
+
+    /**
+     * @param TaskInterface    $task
+     * @param ContextInterface $context
+     *
+     * @return TaskResultInterface
+     * @throws RuntimeException
+     */
+    private function runTask(TaskInterface $task, ContextInterface $context)
+    {
+        try {
+            $this->eventDispatcher->dispatch(TaskEvents::TASK_RUN, new TaskEvent($task, $context));
+            $result = $task->run($context);
+        } catch (RuntimeException $e) {
+            $result = TaskResult::createFailed($task, $context, $e->getMessage());
+        }
+        
+        if (!$result instanceof TaskResultInterface) {
+            throw RuntimeException::invalidTaskReturnType($task);
+        }
+
+        if (!$result->isPassed() && !$this->grumPHP->isBlockingTask($task->getName())) {
+            $result = TaskResult::createNonBlockingFailed(
+                $result->getTask(),
+                $result->getContext(),
+                $result->getMessage()
+            );
+        }
+        
+        if (!$result->isPassed()) {
+            $e = new RuntimeException($result->getMessage());
+            $this->eventDispatcher->dispatch(TaskEvents::TASK_FAILED, new TaskFailedEvent($task, $context, $e));
+
+            return $result;
+        }
+
+        $this->eventDispatcher->dispatch(TaskEvents::TASK_COMPLETE, new TaskEvent($task, $context));
+
+        return $result;
     }
 }

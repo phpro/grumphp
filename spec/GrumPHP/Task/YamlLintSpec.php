@@ -8,6 +8,7 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Linter\LintError;
 use GrumPHP\Linter\Yaml\YamlLinter;
 use GrumPHP\Linter\Yaml\YamlLintError;
+use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -55,9 +56,11 @@ class YamlLintSpec extends AbstractLinterTaskSpec
     {
         $linter->isInstalled()->willReturn(true);
         $linter->lint(Argument::any())->shouldNotBeCalled();
-
         $context->getFiles()->willReturn(new FilesCollection());
-        $this->run($context)->shouldBeNull();
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
     function it_runs_the_suite(YamlLinter $linter, ContextInterface $context)
@@ -70,7 +73,10 @@ class YamlLintSpec extends AbstractLinterTaskSpec
         $context->getFiles()->willReturn(new FilesCollection(array(
             new SplFileInfo('file.yaml', '.', 'file.yaml'),
         )));
-        $this->run($context);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->isPassed()->shouldBe(true);
     }
 
     function it_throws_exception_if_the_process_fails(YamlLinter $linter, ContextInterface $context)
@@ -85,6 +91,9 @@ class YamlLintSpec extends AbstractLinterTaskSpec
         $context->getFiles()->willReturn(new FilesCollection(array(
             new SplFileInfo('file.yaml', '.', 'file.yaml'),
         )));
-        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringRun($context);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->isPassed()->shouldBe(false);
     }
 }

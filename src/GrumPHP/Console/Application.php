@@ -3,7 +3,10 @@
 namespace GrumPHP\Console;
 
 use GrumPHP\Configuration\ContainerFactory;
+use GrumPHP\Exception\RuntimeException;
 use GrumPHP\IO\ConsoleIO;
+use GrumPHP\Locator\ConfigurationFile;
+use GrumPHP\Util\Composer;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Symfony\Component\Console\Application as SymfonyConsole;
@@ -24,7 +27,6 @@ class Application extends SymfonyConsole
 {
     const APP_NAME = 'GrumPHP';
     const APP_VERSION = '0.8.0';
-    const APP_CONFIG_FILE = 'grumphp.yml';
 
     /**
      * @var ContainerBuilder
@@ -37,14 +39,25 @@ class Application extends SymfonyConsole
     protected $configDefaultPath;
 
     /**
+     * @var string
+     */
+    protected $filesystem;
+
+    /**
+     * @var Helper\ComposerHelper
+     */
+    protected $composerHelper;
+
+    /**
      * Set up application:
      */
     public function __construct()
     {
-        parent::__construct(self::APP_NAME, self::APP_VERSION);
-
+        $this->filesystem = new Filesystem();
         $this->container = $this->getContainer();
         $this->setDispatcher($this->container->get('event_dispatcher'));
+
+        parent::__construct(self::APP_NAME, self::APP_VERSION);
     }
 
     /**
@@ -59,35 +72,11 @@ class Application extends SymfonyConsole
                 'c',
                 InputOption::VALUE_OPTIONAL,
                 'Path to config',
-                $this->getConfigDefaultPath()
+                $this->getDefaultConfigPath()
             )
         );
 
         return $definition;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getConfigDefaultPath()
-    {
-        if ($this->configDefaultPath) {
-            return $this->configDefaultPath;
-        }
-
-        $this->configDefaultPath = getcwd() . DIRECTORY_SEPARATOR . self::APP_CONFIG_FILE;
-        $composerFile = 'composer.json';
-
-        if (!file_exists($composerFile)) {
-            return $this->configDefaultPath;
-        }
-
-        $composer = json_decode(file_get_contents($composerFile), true);
-        if (isset($composer['extra']['grumphp']['config-default-path'])) {
-            $this->configDefaultPath = $composer['extra']['grumphp']['config-default-path'];
-        }
-
-        return $this->configDefaultPath;
     }
 
     /**
@@ -135,13 +124,16 @@ class Application extends SymfonyConsole
         $container = $this->getContainer();
 
         $helperSet = parent::getDefaultHelperSet();
+        $helperSet->set($this->initializeComposerHelper());
         $helperSet->set(new Helper\PathsHelper(
             $container->get('config'),
-            $container->get('filesystem')
+            $container->get('filesystem'),
+            $this->getDefaultConfigPath()
         ));
         $helperSet->set(new Helper\TaskRunnerHelper(
             $container->get('task_runner'),
-            $container->get('event_dispatcher')
+            $container->get('event_dispatcher'),
+            $container->get('config')
         ));
 
         return $helperSet;
@@ -158,14 +150,7 @@ class Application extends SymfonyConsole
 
         // Load cli options:
         $input = new ArgvInput();
-        $configPath = $input->getParameterOption(array('--config', '-c'), $this->getConfigDefaultPath());
-
-        // Make sure to set the full path when it is declared relative
-        // This will fix some issues in windows.
-        $filesystem = new Filesystem();
-        if (!$filesystem->isAbsolutePath($configPath)) {
-            $configPath = getcwd() . DIRECTORY_SEPARATOR . $configPath;
-        }
+        $configPath = $input->getParameterOption(array('--config', '-c'), $this->getDefaultConfigPath());
 
         // Build the service container:
         $this->container = ContainerFactory::buildFromConfiguration($configPath);
@@ -196,5 +181,44 @@ class Application extends SymfonyConsole
             $logger = $container->get('grumphp.logger');
             $logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
         }
+    }
+
+    /**
+     * @return string
+     */
+    protected function getDefaultConfigPath()
+    {
+        if ($this->configDefaultPath) {
+            return $this->configDefaultPath;
+        }
+
+        $locator = new ConfigurationFile($this->filesystem);
+        $this->configDefaultPath = $locator->locate(
+            getcwd(),
+            $this->initializeComposerHelper()->getRootPackage()
+        );
+
+        return $this->configDefaultPath;
+    }
+
+    /**
+     * @return Helper\ComposerHelper
+     */
+    protected function initializeComposerHelper()
+    {
+        if ($this->composerHelper) {
+            return $this->composerHelper;
+        }
+
+        try {
+            $composerFile = getcwd() . DIRECTORY_SEPARATOR . 'composer.json';
+            $configuration = Composer::loadConfiguration();
+            $rootPackage = Composer::loadRootPackageFromJson($composerFile, $configuration);
+        } catch (RuntimeException $e) {
+            $configuration = null;
+            $rootPackage = null;
+        }
+
+        return $this->composerHelper = new Helper\ComposerHelper($configuration, $rootPackage);
     }
 }

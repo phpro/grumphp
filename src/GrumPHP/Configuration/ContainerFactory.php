@@ -35,6 +35,7 @@ final class ContainerFactory
         $loader->load('subscribers.yml');
         $loader->load('tasks.yml');
         $loader->load('visitors.yml');
+        $loader->load('util.yml');
 
         // Load grumphp.yml file:
         $filesystem = new Filesystem();

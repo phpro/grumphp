@@ -2,7 +2,7 @@
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -51,7 +51,7 @@ class Phpunit extends AbstractExternalTask
     {
         $files = $context->getFiles()->name('*.php');
         if (0 === count($files)) {
-            return;
+            return TaskResult::createSkipped($this, $context);
         }
 
         $config = $this->getConfiguration();
@@ -63,7 +63,9 @@ class Phpunit extends AbstractExternalTask
         $process->run();
 
         if (!$process->isSuccessful()) {
-            throw new RuntimeException($process->getOutput());
+            return TaskResult::createFailed($this, $context, $process->getOutput());
         }
+
+        return TaskResult::createPassed($this, $context);
     }
 }

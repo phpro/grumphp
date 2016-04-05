@@ -2,7 +2,7 @@
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -56,7 +56,7 @@ class Robo extends AbstractExternalTask
         $config = $this->getConfiguration();
         $files = $context->getFiles()->extensions($config['triggered_by']);
         if (0 === count($files)) {
-            return;
+            return TaskResult::createSkipped($this, $context);
         }
 
         $arguments = $this->processBuilder->createArgumentsForCommand('robo');
@@ -67,7 +67,9 @@ class Robo extends AbstractExternalTask
         $process->run();
 
         if (!$process->isSuccessful()) {
-            throw new RuntimeException($process->getOutput());
+            return TaskResult::createFailed($this, $context, $process->getOutput());
         }
+
+        return TaskResult::createPassed($this, $context);
     }
 }
