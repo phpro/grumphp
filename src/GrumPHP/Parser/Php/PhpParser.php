@@ -80,7 +80,6 @@ class PhpParser implements ParserInterface
 
             // traverse
             $traverser->traverse($stmts);
-
         } catch (Error $e) {
             $errors[] = PhpParserError::fromParseException($e, $filename);
         }
