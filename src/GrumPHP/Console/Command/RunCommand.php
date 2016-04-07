@@ -60,7 +60,7 @@ class RunCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $files = $this->getRegisteredFiles();
-        $context = new RunContext($files, $this->paths());
+        $context = new RunContext($files);
 
         return $this->taskRunner()->run($output, $context);
     }
