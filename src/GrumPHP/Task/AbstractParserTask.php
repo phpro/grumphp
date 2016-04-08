@@ -49,14 +49,10 @@ abstract class AbstractParserTask implements TaskInterface
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array(
-            'visitors_options' => array(),
-            'visitors'         => array(),
             'triggered_by'     => array(),
             'ignore_patterns'  => array(),
         ));
 
-        $resolver->addAllowedTypes('visitors_options', array('array'));
-        $resolver->addAllowedTypes('visitors', array('array'));
         $resolver->addAllowedTypes('triggered_by', array('array'));
         $resolver->addAllowedTypes('ignore_patterns', array('array'));
 

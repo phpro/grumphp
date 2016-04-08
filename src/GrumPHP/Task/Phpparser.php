@@ -26,7 +26,14 @@ class Phpparser extends AbstractParserTask
     public function getConfigurableOptions()
     {
         $resolver = parent::getConfigurableOptions();
-        $resolver->setDefault('triggered_by', array('php'));
+        $resolver->setDefaults(array(
+            'triggered_by'     => array('php'),
+            'visitors_options' => array(),
+            'visitors'         => array(),
+        ));
+
+        $resolver->addAllowedTypes('visitors_options', array('array'));
+        $resolver->addAllowedTypes('visitors', array('array'));
 
         return $resolver;
     }
