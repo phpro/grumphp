@@ -6,6 +6,7 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use GrumPHP\Runner\TaskResult;
 
 /**
  * Php Parser task
@@ -55,15 +56,21 @@ class Phpparser extends AbstractParserTask
 
         $files = $context->getFiles(false)->extensions($config['triggered_by']);
         if (0 === count($files)) {
-            return;
+            return TaskResult::createSkipped($this, $context);
         }
         $parseErrors = $this->parse($files);
 
         if ($parseErrors->count()) {
-            throw new RuntimeException(sprintf(
-                "Some errors occured while parsing your PHP files:\n%s",
-                $parseErrors->__toString()
-            ));
+            return TaskResult::createFailed(
+                $this,
+                $context,
+                sprintf(
+                    "Some errors occured while parsing your PHP files:\n%s",
+                    $parseErrors->__toString()
+                )
+            );
         }
+
+        return TaskResult::createPassed($this, $context);
     }
 }
