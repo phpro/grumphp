@@ -61,7 +61,7 @@ class Phpparser extends AbstractParserTask
 
         if ($parseErrors->count()) {
             throw new RuntimeException(sprintf(
-                "You have matched keywords in your commit:\n%s",
+                "Some errors occured while parsing your PHP files:\n%s",
                 $parseErrors->__toString()
             ));
         }
