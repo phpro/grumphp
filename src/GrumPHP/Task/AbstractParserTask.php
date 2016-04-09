@@ -34,12 +34,12 @@ abstract class AbstractParserTask implements TaskInterface
     {
         $this->grumPHP = $grumPHP;
         $this->parser  = $parser;
-
+        /*
         if (!$parser->isInstalled()) {
             throw new RuntimeException(
                 sprintf('The %s can\'t run on your system. Please install all dependencies.', $this->getName())
             );
-        }
+        } */
     }
 
     /**
