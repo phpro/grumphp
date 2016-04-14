@@ -13,4 +13,4 @@ tag:
 	php -l src/GrumPHP/Console/Application.php
 	git add -A
 	git commit -m '$(TAG) release'
-	git tag -a 'v$(TAG)' -m'Version $(TAG)'
+	git tag -s 'v$(TAG)' -m'Version $(TAG)'
