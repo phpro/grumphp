@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Php-cs-fixer task
  */
-class Phpcsfixer extends AbstractExternalTask
+class PhpCsFixer extends AbstractExternalTask
 {
     /**
      * @return string

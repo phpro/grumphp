@@ -15,7 +15,7 @@ use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 
-class PhpcsfixerSpec extends ObjectBehavior
+class PhpCsFixerSpec extends ObjectBehavior
 {
 
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder)
@@ -26,7 +26,7 @@ class PhpcsfixerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\Phpcsfixer');
+        $this->shouldHaveType('GrumPHP\Task\PhpCsFixer');
     }
 
     function it_should_have_a_name()

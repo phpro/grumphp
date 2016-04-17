@@ -102,7 +102,7 @@ services:
           - {name: grumphp.task, config: phpcs}
 
     task.phpcsfixer:
-        class: GrumPHP\Task\Phpcsfixer
+        class: GrumPHP\Task\PhpCsFixer
         arguments:
           - '@config'
           - '@process_builder'
