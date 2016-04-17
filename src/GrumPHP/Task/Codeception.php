@@ -33,13 +33,13 @@ class Codeception extends AbstractExternalTask
             'config_file' => null,
             'suite' => null,
             'test'  => null,
-            'fail-fast' => false
+            'fail_fast' => false
         ));
 
         $resolver->addAllowedTypes('config_file', array('null', 'string'));
         $resolver->addAllowedTypes('suite', array('null', 'string'));
         $resolver->addAllowedTypes('test', array('null', 'string'));
-        $resolver->addAllowedTypes('fail-fast', array('bool'));
+        $resolver->addAllowedTypes('fail_fast', array('bool'));
 
         return $resolver;
     }
@@ -67,7 +67,7 @@ class Codeception extends AbstractExternalTask
         $arguments = $this->processBuilder->createArgumentsForCommand('codecept');
         $arguments->add('run');
         $arguments->addOptionalArgument('--config=%s', $config['config_file']);
-        $arguments->addOptionalArgument('--fail-fast', $config['fail-fast']);
+        $arguments->addOptionalArgument('--fail-fast', $config['fail_fast']);
         $arguments->addOptionalArgument('%s', $config['suite']);
         $arguments->addOptionalArgument('%s', $config['test']);
 

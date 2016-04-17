@@ -40,7 +40,7 @@ class CodeceptionSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('config_file');
         $options->getDefinedOptions()->shouldContain('suite');
         $options->getDefinedOptions()->shouldContain('test');
-        $options->getDefinedOptions()->shouldContain('fail-fast');
+        $options->getDefinedOptions()->shouldContain('fail_fast');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)

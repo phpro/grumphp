@@ -7,7 +7,7 @@ parameters:
     tasks:
         codeception:
             config_file: ~
-            fail-fast: false
+            fail_fast: false
             suite: ~
             test: ~
 ```
@@ -19,7 +19,7 @@ parameters:
 
 If your `codeception.yml` file is located in an exotic location, you can specify your custom config file location with this option. This option is set to `null` by default. This means that `codeception.yml` is automatically located if it exists in the current directory.
 
-**fail-fast**
+**fail_fast**
 
 *Default: false*
 
