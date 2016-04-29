@@ -4,10 +4,14 @@ namespace spec\GrumPHP\Event;
 
 use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Collection\TasksCollection;
+use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Task\Context\ContextInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @mixin RunnerEvent
+ */
 class RunnerEventSpec extends ObjectBehavior
 {
     function let(TasksCollection $tasks, ContextInterface $context, TaskResultCollection $taskResults)

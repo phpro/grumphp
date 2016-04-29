@@ -4,12 +4,16 @@ namespace spec\GrumPHP\Configuration;
 
 use GrumPHP\Configuration\Compiler\TaskCompilerPass;
 use GrumPHP\Configuration\ContainerFactory;
+use GrumPHP\Configuration\GrumPHP;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * @mixin GrumPHP
+ */
 class GrumPHPSpec extends ObjectBehavior
 {
     function let(ContainerInterface $container)

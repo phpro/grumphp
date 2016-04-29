@@ -19,7 +19,7 @@ parameters:
 
 *Default: null*
 
-You can specify the path to the .php_cs file.
+You can specify the path to the `.php_cs` file.
 
 
 **config**

@@ -4,9 +4,13 @@ namespace spec\GrumPHP\Console\Helper;
 
 use Composer\Config;
 use Composer\Package\RootPackage;
+use GrumPHP\Console\Helper\ComposerHelper;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @mixin ComposerHelper
+ */
 class ComposerHelperSpec extends ObjectBehavior
 {
 

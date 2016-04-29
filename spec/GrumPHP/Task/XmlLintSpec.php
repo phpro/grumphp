@@ -12,9 +12,13 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use GrumPHP\Task\XmlLint;
 use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 
+/**
+ * @mixin XmlLint
+ */
 class XmlLintSpec extends AbstractLinterTaskSpec
 {
     function let(GrumPHP $grumPHP, XmlLinter $linter)

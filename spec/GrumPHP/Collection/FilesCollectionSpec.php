@@ -2,10 +2,14 @@
 
 namespace spec\GrumPHP\Collection;
 
+use GrumPHP\Collection\FilesCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 
+/**
+ * @mixin FilesCollection
+ */
 class FilesCollectionSpec extends ObjectBehavior
 {
     /**

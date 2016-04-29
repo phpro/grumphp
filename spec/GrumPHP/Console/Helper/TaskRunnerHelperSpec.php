@@ -16,6 +16,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @mixin TaskRunnerHelper
+ */
 class TaskRunnerHelperSpec extends ObjectBehavior
 {
     function let(TaskRunner $taskRunner, EventDispatcherInterface $eventDispatcher, HelperSet $helperSet, PathsHelper $pathsHelper)

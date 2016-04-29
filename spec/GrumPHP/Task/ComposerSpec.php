@@ -5,8 +5,10 @@ namespace spec\GrumPHP\Task;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Task\Composer;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -15,12 +17,15 @@ use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 
+/**
+ * @mixin Composer
+ */
 class ComposerSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder)
+    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
         $grumPHP->getTaskConfiguration('composer')->willReturn(array());
-        $this->beConstructedWith($grumPHP, $processBuilder);
+        $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
     function it_is_initializable()
@@ -95,7 +100,6 @@ class ComposerSpec extends ObjectBehavior
 
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(false);
-        $process->getOutput()->shouldBeCalled();
 
         $context->getFiles()->willReturn(new FilesCollection(array(
             new SplFileInfo('composer.json', '.', 'composer.json')

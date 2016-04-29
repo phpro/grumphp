@@ -71,8 +71,9 @@ class Blacklist extends AbstractExternalTask
 
         if ($process->isSuccessful()) {
             return TaskResult::createFailed($this, $context, sprintf(
-                "You have blacklisted keywords in your commit:\n%s",
-                $process->getOutput()
+                'You have blacklisted keywords in your commit:%s%s',
+                PHP_EOL,
+                $this->formatter->format($process)
             ));
         }
 

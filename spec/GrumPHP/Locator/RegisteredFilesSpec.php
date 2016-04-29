@@ -3,9 +3,13 @@
 namespace spec\GrumPHP\Locator;
 
 use Gitonomy\Git\Repository;
+use GrumPHP\Locator\RegisteredFiles;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @mixin RegisteredFiles
+ */
 class RegisteredFilesSpec extends ObjectBehavior
 {
     function let(Repository $repository)

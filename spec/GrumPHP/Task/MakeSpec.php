@@ -5,22 +5,27 @@ namespace spec\GrumPHP\Task;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use GrumPHP\Task\Make;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 
+/**
+ * @mixin Make
+ */
 class MakeSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder)
+    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
         $grumPHP->getTaskConfiguration('make')->willReturn(array());
-        $this->beConstructedWith($grumPHP, $processBuilder);
+        $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
     function it_is_initializable()
@@ -91,7 +96,6 @@ class MakeSpec extends ObjectBehavior
 
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(false);
-        $process->getOutput()->shouldBeCalled();
 
         $context->getFiles()->willReturn(new FilesCollection(array(
             new SplFileInfo('test.php', '.', 'test.php')

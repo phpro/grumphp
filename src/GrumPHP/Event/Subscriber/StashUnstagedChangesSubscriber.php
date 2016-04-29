@@ -123,7 +123,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     {
         $pending = $this->repository->getWorkingCopy()->getDiffPending();
         if (!count($pending->getFiles())) {
-             return;
+            return;
         }
 
         try {

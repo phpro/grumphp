@@ -3,10 +3,14 @@
 namespace spec\GrumPHP\Console\Helper;
 
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Console\Helper\PathsHelper;
 use Symfony\Component\Filesystem\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @mixin PathsHelper
+ */
 class PathsHelperSpec extends ObjectBehavior
 {
     function let(GrumPHP $config, Filesystem $fileSystem)

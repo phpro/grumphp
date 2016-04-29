@@ -4,10 +4,14 @@ namespace spec\GrumPHP\Process;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Locator\ExternalCommand;
+use GrumPHP\Process\ProcessBuilder;
 use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @mixin ProcessBuilder
+ */
 class ProcessBuilderSpec extends ObjectBehavior
 {
     function let(ExternalCommand $externalCommandLocator)
