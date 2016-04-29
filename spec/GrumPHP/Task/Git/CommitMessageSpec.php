@@ -4,9 +4,13 @@ namespace spec\GrumPHP\Task\Git;
 
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Task\Context\GitCommitMsgContext;
+use GrumPHP\Task\Git\CommitMessage;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @mixin CommitMessage
+ */
 class CommitMessageSpec extends ObjectBehavior
 {
     function let(GrumPHP $grumPHP)

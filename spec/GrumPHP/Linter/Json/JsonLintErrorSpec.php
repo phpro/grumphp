@@ -2,10 +2,14 @@
 
 namespace spec\GrumPHP\Linter\Json;
 
+use GrumPHP\Linter\Json\JsonLintError;
 use GrumPHP\Linter\LintError;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @mixin JsonLintError
+ */
 class JsonLintErrorSpec extends ObjectBehavior
 {
     function let()

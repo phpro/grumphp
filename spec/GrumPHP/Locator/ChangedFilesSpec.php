@@ -6,10 +6,14 @@ use Gitonomy\Git\Diff\Diff;
 use Gitonomy\Git\Diff\File;
 use Gitonomy\Git\WorkingCopy;
 use Gitonomy\Git\Repository;
+use GrumPHP\Locator\ChangedFiles;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Prophecy\Prophet;
 
+/**
+ * @mixin ChangedFiles
+ */
 class ChangedFilesSpec extends ObjectBehavior
 {
     function let(Repository $repository)

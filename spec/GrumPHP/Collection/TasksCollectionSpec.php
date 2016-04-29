@@ -2,12 +2,16 @@
 
 namespace spec\GrumPHP\Collection;
 
+use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @mixin TasksCollection
+ */
 class TasksCollectionSpec extends ObjectBehavior
 {
     public function let(TaskInterface $task1, TaskInterface $task2)

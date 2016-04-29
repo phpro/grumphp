@@ -10,12 +10,16 @@ use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\RunnerEvent;
+use GrumPHP\Event\Subscriber\StashUnstagedChangesSubscriber;
 use GrumPHP\IO\IOInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @mixin StashUnstagedChangesSubscriber
+ */
 class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
 {
     function let(GrumPHP $grumPHP, Repository $repository, IOInterface $io, WorkingCopy $workingCopy, Diff $unstaged)

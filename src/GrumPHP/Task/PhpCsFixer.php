@@ -2,7 +2,9 @@
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
+use GrumPHP\Formatter\PhpCsFixerFormatter;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -14,6 +16,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PhpCsFixer extends AbstractExternalTask
 {
+    /**
+     * @var PhpCsFixerFormatter
+     */
+    protected $formatter;
+
     /**
      * @return string
      */
@@ -64,6 +71,7 @@ class PhpCsFixer extends AbstractExternalTask
         }
 
         $config = $this->getConfiguration();
+        $this->formatter->resetCounter();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('php-cs-fixer');
         $arguments->add('--format=json');
@@ -75,9 +83,51 @@ class PhpCsFixer extends AbstractExternalTask
         $arguments->addOptionalCommaSeparatedArgument('--fixers=%s', $config['fixers']);
         $arguments->add('fix');
 
+        if ($context instanceof RunContext && $config['config'] !== null) {
+            return $this->runOnAllFiles($context, $arguments);
+        }
+
+        return $this->runOnChangedFiles($context, $arguments, $files);
+    }
+
+    /**
+     * @param ContextInterface           $context
+     * @param ProcessArgumentsCollection $arguments
+     *
+     * @return TaskResult
+     */
+    private function runOnAllFiles(ContextInterface $context, ProcessArgumentsCollection $arguments)
+    {
+        $process = $this->processBuilder->buildProcess($arguments);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            $messages = array($this->formatter->format($process));
+            $suggestions = array($this->formatter->formatSuggestion($process));
+            $errorMessage = $this->formatter->formatErrorMessage($messages, $suggestions);
+
+            return TaskResult::createFailed($this, $context, $errorMessage);
+        }
+
+        return TaskResult::createPassed($this, $context);
+    }
+
+    /**
+     * @param ContextInterface           $context
+     * @param ProcessArgumentsCollection $arguments
+     * @param FilesCollection            $files
+     *
+     * @return TaskResult
+     */
+    private function runOnChangedFiles(
+        ContextInterface $context,
+        ProcessArgumentsCollection $arguments,
+        FilesCollection $files
+    ) {
+        $hasErrors = false;
         $messages = array();
-        $suggest = array('You can fix all errors by running following commands:');
-        $errorCount = 0;
+        $suggestions = array();
+
         foreach ($files as $file) {
             $fileArguments = new ProcessArgumentsCollection($arguments->getValues());
             $fileArguments->add($file);
@@ -85,34 +135,16 @@ class PhpCsFixer extends AbstractExternalTask
             $process->run();
 
             if (!$process->isSuccessful()) {
-                $output = $process->getOutput();
-                $json = json_decode($output, true);
-                if ($json) {
-                    if (isset($json['files'][0]['name']) && isset($json['files'][0]['appliedFixers'])) {
-                        $messages[] = sprintf(
-                            '%s) %s (%s)',
-                            ++$errorCount,
-                            $json['files'][0]['name'],
-                            implode(',', $json['files'][0]['appliedFixers'])
-                        );
-                    } elseif (isset($json['files'][0]['name'])) {
-                        $messages[] = sprintf(
-                            '%s) %s',
-                            ++$errorCount,
-                            $json['files'][0]['name']
-                        );
-                    }
-
-                    $suggest[] = str_replace(array("'--dry-run' ", "'--format=json' "), '', $process->getCommandLine());
-                } else {
-                    $messages[] = $output;
-                }
+                $hasErrors = true;
+                $messages[] = $this->formatter->format($process);
+                $suggestions[] = $this->formatter->formatSuggestion($process);
             }
         }
 
-        if (count($messages)) {
-            $message = implode(PHP_EOL, $messages) . PHP_EOL . PHP_EOL . implode(PHP_EOL, $suggest);
-            return TaskResult::createFailed($this, $context, $message);
+        if ($hasErrors) {
+            $errorMessage = $this->formatter->formatErrorMessage($messages, $suggestions);
+
+            return TaskResult::createFailed($this, $context, $errorMessage);
         }
 
         return TaskResult::createPassed($this, $context);

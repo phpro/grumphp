@@ -3,10 +3,14 @@
 namespace spec\GrumPHP\Locator;
 
 use Composer\Package\PackageInterface;
+use GrumPHP\Locator\ConfigurationFile;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Filesystem;
 
+/**
+ * @mixin ConfigurationFile
+ */
 class ConfigurationFileSpec extends ObjectBehavior
 {
     function let(Filesystem $filesystem)

@@ -1,0 +1,5 @@
+services:
+    formatter.raw_process:
+        class: GrumPHP\Formatter\RawProcessFormatter
+    formatter.php_cs_fixer:
+        class: GrumPHP\Formatter\PhpCsFixerFormatter

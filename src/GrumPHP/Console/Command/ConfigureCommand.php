@@ -161,8 +161,7 @@ class ConfigureCommand extends Command
 
         // Build configuration
         return array(
-            'parameters' => array
-            (
+            'parameters' => array(
                 'git_dir' => $gitDir,
                 'bin_dir' => $binDir,
                 'tasks' => array_map(function ($task) {

@@ -3,9 +3,13 @@
 namespace spec\GrumPHP\Task\Context;
 
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Task\Context\GitCommitMsgContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @mixin GitCommitMsgContext
+ */
 class GitCommitMsgContextSpec extends ObjectBehavior
 {
     /**

@@ -2,10 +2,14 @@
 
 namespace spec\GrumPHP\Locator;
 
+use GrumPHP\Locator\ExternalCommand;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Process\ExecutableFinder;
 
+/**
+ * @mixin ExternalCommand
+ */
 class ExternalCommandSpec extends ObjectBehavior
 {
     function let(ExecutableFinder $executableFinder)

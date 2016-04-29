@@ -5,22 +5,27 @@ namespace spec\GrumPHP\Task\Git;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
+use GrumPHP\Task\Git\Blacklist;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 
+/**
+ * @mixin Blacklist
+ */
 class BlacklistSpec extends ObjectBehavior
 {
 
-    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder)
+    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
         $grumPHP->getTaskConfiguration('git_blacklist')->willReturn(array());
-        $this->beConstructedWith($grumPHP, $processBuilder);
+        $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
     function it_is_initializable()
@@ -115,7 +120,6 @@ class BlacklistSpec extends ObjectBehavior
 
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
-        $process->getOutput()->shouldBeCalled();
 
         $context->getFiles()->willReturn(new FilesCollection(array(
             new SplFileInfo('file1.php', '.', 'file1.php'),

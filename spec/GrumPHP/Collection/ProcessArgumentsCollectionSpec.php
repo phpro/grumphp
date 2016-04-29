@@ -3,10 +3,14 @@
 namespace spec\GrumPHP\Collection;
 
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Collection\ProcessArgumentsCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use SplFileInfo;
 
+/**
+ * @mixin ProcessArgumentsCollection
+ */
 class ProcessArgumentsCollectionSpec extends ObjectBehavior
 {
     function it_is_initializable()

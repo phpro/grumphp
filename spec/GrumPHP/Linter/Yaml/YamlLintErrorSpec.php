@@ -3,9 +3,13 @@
 namespace spec\GrumPHP\Linter\Yaml;
 
 use GrumPHP\Linter\LintError;
+use GrumPHP\Linter\Yaml\YamlLintError;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @mixin YamlLintError
+ */
 class YamlLintErrorSpec extends ObjectBehavior
 {
     function let()

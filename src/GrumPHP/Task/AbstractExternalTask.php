@@ -3,6 +3,7 @@
 namespace GrumPHP\Task;
 
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\ProcessBuilder;
 
 /**
@@ -23,13 +24,19 @@ abstract class AbstractExternalTask implements TaskInterface
     protected $processBuilder;
 
     /**
+     * @var ProcessFormatterInterface
+     */
+    protected $formatter;
+
+    /**
      * @param GrumPHP $grumPHP
      * @param ProcessBuilder $processBuilder
      */
-    public function __construct(GrumPHP $grumPHP, ProcessBuilder $processBuilder)
+    public function __construct(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
         $this->grumPHP = $grumPHP;
         $this->processBuilder = $processBuilder;
+        $this->formatter = $formatter;
     }
 
     /**

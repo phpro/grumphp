@@ -75,7 +75,7 @@ class Codeception extends AbstractExternalTask
         $process->run();
 
         if (!$process->isSuccessful()) {
-            return TaskResult::createFailed($this, $context, $process->getOutput());
+            return TaskResult::createFailed($this, $context, $this->formatter->format($process));
         }
 
         return TaskResult::createPassed($this, $context);

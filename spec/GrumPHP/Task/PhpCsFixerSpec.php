@@ -5,23 +5,33 @@ namespace spec\GrumPHP\Task;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Formatter\PhpCsFixerFormatter;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use GrumPHP\Task\PhpCsFixer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 
+/**
+ * @mixin PhpCsFixer
+ */
 class PhpCsFixerSpec extends ObjectBehavior
 {
 
-    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder)
+    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, PhpCsFixerFormatter $formatter)
     {
         $grumPHP->getTaskConfiguration('phpcsfixer')->willReturn(array());
-        $this->beConstructedWith($grumPHP, $processBuilder);
+
+        $formatter->format(Argument::any())->willReturn('');
+        $formatter->formatSuggestion(Argument::any())->willReturn('');
+        $formatter->formatErrorMessage(Argument::cetera())->willReturn('');
+
+        $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
     function it_is_initializable()
@@ -66,19 +76,53 @@ class PhpCsFixerSpec extends ObjectBehavior
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
-    {
-        $arguments = new ProcessArgumentsCollection();
-        $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn($arguments);
-        $processBuilder->buildProcess(Argument::type('GrumPHP\Collection\ProcessArgumentsCollection'))->willReturn($process);
+    function it_runs_the_suite_for_all_files(
+        GrumPHP $grumPHP,
+        ProcessBuilder $processBuilder,
+        Process $process,
+        RunContext $context,
+        PhpCsFixerFormatter $formatter
+    ) {
+        $grumPHP->getTaskConfiguration('phpcsfixer')->willReturn(array('config' => '.php_cs'));
+        $formatter->resetCounter()->shouldBeCalled();
+
+        $context->getFiles()->willReturn(new FilesCollection(array(
+            $file1 = new SplFileInfo('file1.php', '.', 'file1.php'),
+            $file2 = new SplFileInfo('file2.php', '.', 'file2.php'),
+        )));
+
+        $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn(new ProcessArgumentsCollection());
+        $processBuilder->buildProcess(Argument::that(function (ProcessArgumentsCollection $args) use ($file1, $file2) {
+            return !($args->contains($file1) || $args->contains($file2));
+        }))->willReturn($process);
 
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->isPassed()->shouldBe(true);
+    }
+
+    function it_runs_the_suite_for_changed_files(
+        ProcessBuilder $processBuilder,
+        Process $process,
+        ContextInterface $context,
+        PhpCsFixerFormatter $formatter
+    ) {
+        $formatter->resetCounter()->shouldBeCalled();
         $context->getFiles()->willReturn(new FilesCollection(array(
-            new SplFileInfo('file1.php', '.', 'file1.php'),
-            new SplFileInfo('file2.php', '.', 'file2.php'),
+            $file1 = new SplFileInfo('file1.php', '.', 'file1.php'),
+            $file2 = new SplFileInfo('file2.php', '.', 'file2.php'),
         )));
+
+        $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn(new ProcessArgumentsCollection());
+        $processBuilder->buildProcess(Argument::that(function (ProcessArgumentsCollection $args) use ($file1, $file2) {
+            return $args->contains($file1) || $args->contains($file2);
+        }))->willReturn($process);
+
+        $process->run()->shouldBeCalled();
+        $process->isSuccessful()->willReturn(true);
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
@@ -88,13 +132,15 @@ class PhpCsFixerSpec extends ObjectBehavior
     function it_throws_exception_if_the_process_fails(
         ProcessBuilder $processBuilder,
         Process $process,
-        ContextInterface $context
+        ContextInterface $context,
+        PhpCsFixerFormatter $formatter
     ) {
+        $formatter->resetCounter()->shouldBeCalled();
+
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn($arguments);
         $processBuilder->buildProcess(Argument::type('GrumPHP\Collection\ProcessArgumentsCollection'))->willReturn($process);
 
-        $process->getOutput()->shouldBeCalled();
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(false);
 

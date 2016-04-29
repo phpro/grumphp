@@ -86,7 +86,7 @@ class Shell extends AbstractExternalTask
         $process->run();
 
         if (!$process->isSuccessful()) {
-            throw new RuntimeException($process->getOutput());
+            throw new RuntimeException($this->formatter->format($process));
         }
     }
 }

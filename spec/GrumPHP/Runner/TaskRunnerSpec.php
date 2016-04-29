@@ -6,12 +6,16 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\RunnerEvents;
 use GrumPHP\Event\TaskEvents;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @mixin TaskRunner
+ */
 class TaskRunnerSpec extends ObjectBehavior
 {
 

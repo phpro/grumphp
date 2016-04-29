@@ -7,6 +7,9 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 
+/**
+ * @mixin TaskResult
+ */
 class TaskResultSpec extends ObjectBehavior
 {
     const FAILED_TASK_MESSAGE = 'failed task message';

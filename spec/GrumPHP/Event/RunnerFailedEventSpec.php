@@ -4,11 +4,15 @@ namespace spec\GrumPHP\Event;
 
 use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Collection\TasksCollection;
+use GrumPHP\Event\RunnerFailedEvent;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @mixin RunnerFailedEvent
+ */
 class RunnerFailedEventSpec extends ObjectBehavior
 {
     function let(TasksCollection $tasks, ContextInterface $context, TaskResultCollection $taskResults)

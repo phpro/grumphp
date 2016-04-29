@@ -12,9 +12,13 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use GrumPHP\Task\JsonLint;
 use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 
+/**
+ * @mixin JsonLint
+ */
 class JsonLintSpec extends AbstractLinterTaskSpec
 {
     function let(GrumPHP $grumPHP, JsonLinter $linter)

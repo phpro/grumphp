@@ -3,9 +3,13 @@
 namespace spec\GrumPHP\Linter\Xml;
 
 use GrumPHP\Linter\LintError;
+use GrumPHP\Linter\Xml\XmlLintError;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @mixin XmlLintError
+ */
 class XmlLintErrorSpec extends ObjectBehavior
 {
     function let()

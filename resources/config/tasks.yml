@@ -4,6 +4,7 @@ services:
         arguments:
             - '@config'
             - '@process_builder'
+            - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, config: ant}
 
@@ -12,6 +13,7 @@ services:
         arguments:
             - '@config'
             - '@process_builder'
+            - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, config: behat}
 
@@ -20,6 +22,7 @@ services:
         arguments:
             - '@config'
             - '@process_builder'
+            - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, config: codeception}
 
@@ -28,6 +31,7 @@ services:
         arguments:
             - '@config'
             - '@process_builder'
+            - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, config: composer}
 
@@ -36,6 +40,7 @@ services:
         arguments:
             - '@config'
             - '@process_builder'
+            - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, config: gherkin}
 
@@ -44,6 +49,7 @@ services:
         arguments:
             - '@config'
             - '@process_builder'
+            - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, config: git_blacklist}
 
@@ -59,6 +65,7 @@ services:
         arguments:
             - '@config'
             - '@process_builder'
+            - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, config: grunt}
 
@@ -67,6 +74,7 @@ services:
         arguments:
             - '@config'
             - '@process_builder'
+            - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, config: gulp}
     task.jsonlint:
@@ -82,6 +90,7 @@ services:
         arguments:
             - '@config'
             - '@process_builder'
+            - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, config: make}
 
@@ -90,6 +99,7 @@ services:
         arguments:
             - '@config'
             - '@process_builder'
+            - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, config: phing}
 
@@ -98,6 +108,7 @@ services:
         arguments:
           - '@config'
           - '@process_builder'
+          - '@formatter.raw_process'
         tags:
           - {name: grumphp.task, config: phpcs}
 
@@ -106,6 +117,7 @@ services:
         arguments:
           - '@config'
           - '@process_builder'
+          - '@formatter.php_cs_fixer'
         tags:
           - {name: grumphp.task, config: phpcsfixer}
 
@@ -114,6 +126,7 @@ services:
         arguments:
           - '@config'
           - '@process_builder'
+          - '@formatter.raw_process'
         tags:
           - {name: grumphp.task, config: phpspec}
 
@@ -122,6 +135,7 @@ services:
         arguments:
             - '@config'
             - '@process_builder'
+            - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, config: phpunit}
 
@@ -130,6 +144,7 @@ services:
         arguments:
             - '@config'
             - '@process_builder'
+            - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, config: robo}
 
@@ -138,6 +153,7 @@ services:
         arguments:
             - '@config'
             - '@process_builder'
+            - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, config: securitychecker}
 
@@ -146,6 +162,7 @@ services:
         arguments:
             - '@config'
             - '@process_builder'
+            - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, config: shell}
 

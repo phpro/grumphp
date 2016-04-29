@@ -2,10 +2,14 @@
 
 namespace spec\GrumPHP\Collection;
 
+use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Linter\LintError;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @mixin LintErrorsCollection
+ */
 class LintErrorsCollectionSpec extends ObjectBehavior
 {
     function let()

@@ -6,6 +6,9 @@ use GrumPHP\Linter\LintError;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @mixin LintError
+ */
 class LintErrorSpec extends ObjectBehavior
 {
     function let()

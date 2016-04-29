@@ -4,6 +4,7 @@ namespace spec\GrumPHP\Event\Subscriber;
 
 use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Event\RunnerEvent;
+use GrumPHP\Event\Subscriber\ProgressSubscriber;
 use GrumPHP\Event\TaskEvent;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
@@ -11,6 +12,9 @@ use Prophecy\Argument;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @mixin ProgressSubscriber
+ */
 class ProgressSubscriberSpec extends ObjectBehavior
 {
     function let(OutputInterface $output, ProgressBar $progressBar)

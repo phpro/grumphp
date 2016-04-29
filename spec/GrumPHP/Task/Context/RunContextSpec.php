@@ -3,14 +3,14 @@
 namespace spec\GrumPHP\Task\Context;
 
 use GrumPHP\Collection\FilesCollection;
-use GrumPHP\Task\Context\GitPreCommitContext;
+use GrumPHP\Task\Context\RunContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin GitPreCommitContext
+ * @mixin RunContext
  */
-class GitPreCommitContextSpec extends ObjectBehavior
+class RunContextSpec extends ObjectBehavior
 {
     function let(FilesCollection $files)
     {
@@ -19,7 +19,7 @@ class GitPreCommitContextSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\Context\GitPreCommitContext');
+        $this->shouldHaveType('GrumPHP\Task\Context\RunContext');
     }
 
     function it_should_be_a_task_context()
