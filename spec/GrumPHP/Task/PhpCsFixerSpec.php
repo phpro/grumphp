@@ -83,7 +83,7 @@ class PhpCsFixerSpec extends ObjectBehavior
         RunContext $context,
         PhpCsFixerFormatter $formatter
     ) {
-        $grumPHP->getTaskConfiguration('phpcsfixer')->willReturn(array('config' => '.php_cs'));
+        $grumPHP->getTaskConfiguration('phpcsfixer')->willReturn(array('config_file' => '.php_cs'));
         $formatter->resetCounter()->shouldBeCalled();
 
         $context->getFiles()->willReturn(new FilesCollection(array(

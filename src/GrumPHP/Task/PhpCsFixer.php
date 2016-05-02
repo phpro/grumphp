@@ -83,7 +83,7 @@ class PhpCsFixer extends AbstractExternalTask
         $arguments->addOptionalCommaSeparatedArgument('--fixers=%s', $config['fixers']);
         $arguments->add('fix');
 
-        if ($context instanceof RunContext && $config['config'] !== null) {
+        if ($context instanceof RunContext && $config['config_file'] !== null) {
             return $this->runOnAllFiles($context, $arguments);
         }
 
