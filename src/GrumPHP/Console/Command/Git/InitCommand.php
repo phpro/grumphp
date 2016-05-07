@@ -8,6 +8,7 @@ use GrumPHP\Exception\FileNotFoundException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ProcessBuilder;
 
@@ -79,6 +80,7 @@ class InitCommand extends Command
         $this->input = $input;
         $gitHooksPath = $this->paths()->getGitHooksDir();
         $resourceHooksPath = $this->paths()->getGitHookTemplatesDir();
+        $helper = $this->getHelper('question');
 
         // Some git clients to not automatically create a git hooks folder.
         if (!$this->filesystem->exists($gitHooksPath)) {
@@ -92,6 +94,27 @@ class InitCommand extends Command
         foreach (self::$hooks as $hook) {
             $gitHook = $gitHooksPath . $hook;
             $hookTemplate = $resourceHooksPath . $hook;
+
+            if ($this->filesystem->exists($hookTemplate)) {
+                $questionString = $this->createQuestionString(
+                    sprintf('Hook for %s already exits, replace?', $hook),
+                    'Yes'
+                );
+
+                $question = new Question($questionString, 'Yes');
+                $replace = $helper->ask($input, $output, $question);
+
+                if (preg_match('/[n]/i', $replace)) {
+                    $output->writeln(
+                        '<fg=yellow>We suggest creating a custom task with the contents of '.$hook.'</fg=yellow>'
+                    );
+                    $output->writeln(
+                        '<fg=blue>More info: https://github.com/phpro/grumphp#custom-tasks</fg=blue>'
+                    );
+
+                    continue;
+                }
+            }
 
             if (!$this->filesystem->exists($hookTemplate)) {
                 throw new \RuntimeException(
@@ -168,5 +191,19 @@ class InitCommand extends Command
     protected function paths()
     {
         return $this->getHelper(PathsHelper::HELPER_NAME);
+    }
+
+    /**
+     * @param        $question
+     * @param null   $default
+     * @param string $separator
+     *
+     * @return string
+     */
+    protected function createQuestionString($question, $default = null, $separator = ':')
+    {
+        return $default !== null ?
+            sprintf('<info>%s</info> [<comment>%s</comment>]%s ', $question, $default, $separator) :
+            sprintf('<info>%s</info>%s ', $question, $separator);
     }
 }
