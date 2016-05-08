@@ -40,6 +40,14 @@ class GrumPHP
     }
 
     /**
+     * @return string
+     */
+    public function getHooksDir()
+    {
+        return $this->container->getParameter('hooks_dir');
+    }
+
+    /**
      * @return bool
      */
     public function stopOnFailure()

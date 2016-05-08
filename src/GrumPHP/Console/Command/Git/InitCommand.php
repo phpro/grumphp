@@ -79,6 +79,7 @@ class InitCommand extends Command
         $this->input = $input;
         $gitHooksPath = $this->paths()->getGitHooksDir();
         $resourceHooksPath = $this->paths()->getGitHookTemplatesDir();
+        $customHooksPath = $this->grumPHP->getHooksDir();
 
         // Some git clients to not automatically create a git hooks folder.
         if (!$this->filesystem->exists($gitHooksPath)) {
@@ -92,6 +93,9 @@ class InitCommand extends Command
         foreach (self::$hooks as $hook) {
             $gitHook = $gitHooksPath . $hook;
             $hookTemplate = $resourceHooksPath . $hook;
+            if (file_exists($customHooksPath . $hook)) {
+                $hookTemplate = $customHooksPath . $hook;
+            }
 
             if (!$this->filesystem->exists($hookTemplate)) {
                 throw new \RuntimeException(
