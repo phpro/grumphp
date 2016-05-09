@@ -1,0 +1,2 @@
+#!/bin/sh
+vagrant ssh --command "./vendor/bin/grumphp git:pre-commit --skip-success-output"
