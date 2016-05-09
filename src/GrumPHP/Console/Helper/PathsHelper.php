@@ -142,9 +142,7 @@ class PathsHelper extends Helper
      */
     public function getGitHookExecutionPath()
     {
-        $gitPath = $this->getGitDir();
-
-        return $this->fileSystem->makePathRelative($this->getWorkingDir(), $this->getAbsolutePath($gitPath));
+        return $this->getAbsolutePath($this->getGitDir());
     }
 
     /**
@@ -206,8 +204,7 @@ class PathsHelper extends Helper
      */
     public function getRelativePath($path)
     {
-        $realpath = $this->getAbsolutePath($path);
-        return $this->fileSystem->makePathRelative($realpath, $this->getWorkingDir());
+        return $this->getAbsolutePath($path);
     }
 
     /**
@@ -223,7 +220,7 @@ class PathsHelper extends Helper
             throw new FileNotFoundException($path);
         }
 
-        return $realpath;
+        return rtrim($realpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
     }
 
     /**
