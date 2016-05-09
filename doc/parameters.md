@@ -38,6 +38,7 @@ This parameter is used to find the git hooks at a custom location. It defaults t
 *Default: local*
 
 This parameter will tell GrumPHP which hooks preset to use. GrumPHP comes with two presets, local and vagrant.
+When using the vagrant preset be sure to add `cd /path/to/your/project` to `.bashrc`
 
 **stop_on_failure**
 
