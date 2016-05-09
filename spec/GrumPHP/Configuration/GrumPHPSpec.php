@@ -38,7 +38,7 @@ class GrumPHPSpec extends ObjectBehavior
         $this->getGitDir()->shouldReturn('.');
     }
 
-    function it_knows_the_hook_dir(ContainerInterface $container)
+    function it_knows_the_hooks_dir(ContainerInterface $container)
     {
         $container->getParameter('hooks_dir')->willReturn('./hooks/');
         $this->getHooksDir()->shouldReturn('./hooks/');
