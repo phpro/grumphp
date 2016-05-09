@@ -1,2 +1,2 @@
 #!/bin/sh
-vagrant ssh --command "./vendor/bin/grumphp git:pre-commit --skip-success-output"
+vagrant ssh --command "(exec $(HOOK_COMMAND) '--skip-success-output')"
