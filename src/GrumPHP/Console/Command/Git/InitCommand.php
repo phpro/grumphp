@@ -78,7 +78,8 @@ class InitCommand extends Command
     {
         $this->input = $input;
         $gitHooksPath = $this->paths()->getGitHooksDir();
-        $resourceHooksPath = rtrim($this->paths()->getGitHookTemplatesDir() . $this->grumPHP->getHooksPreset(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        $resourceHooksPath = $this->paths()->getGitHookTemplatesDir() . $this->grumPHP->getHooksPreset();
+        $resourceHooksPath = rtrim($resourceHooksPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         $customHooksPath = rtrim($this->grumPHP->getHooksDir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
         // Some git clients to not automatically create a git hooks folder.
