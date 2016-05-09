@@ -93,7 +93,7 @@ class InitCommand extends Command
         foreach (self::$hooks as $hook) {
             $gitHook = $gitHooksPath . $hook;
             $hookTemplate = $resourceHooksPath . $hook;
-            if (file_exists($customHooksPath . $hook)) {
+            if ($this->filesystem->exists($customHooksPath . $hook)) {
                 $hookTemplate = $customHooksPath . $hook;
             }
 
