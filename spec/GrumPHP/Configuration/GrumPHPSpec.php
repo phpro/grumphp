@@ -44,6 +44,12 @@ class GrumPHPSpec extends ObjectBehavior
         $this->getHooksDir()->shouldReturn('./hooks/');
     }
 
+    function it_knows_the_hook_preset(ContainerInterface $container)
+    {
+        $container->getParameter('hooks_preset')->willReturn('local');
+        $this->getHooksDir()->shouldReturn('local');
+    }
+
     function it_knows_to_stop_on_failure(ContainerInterface $container)
     {
         $container->getParameter('stop_on_failure')->willReturn(true);

@@ -48,6 +48,14 @@ class GrumPHP
     }
 
     /**
+     * @return string
+     */
+    public function getHooksPreset()
+    {
+        return $this->container->getParameter('hooks_preset');
+    }
+
+    /**
      * @return bool
      */
     public function stopOnFailure()

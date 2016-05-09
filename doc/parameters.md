@@ -33,6 +33,12 @@ This parameter is used to create the git hooks at the correct location. It defau
 This parameter will tell GrumPHP in which folder it can find the git hooks template folder.
 This parameter is used to find the git hooks at a custom location. It defaults to null and the default folder is used.
 
+**hooks_preset**
+
+*Default: local*
+
+This parameter will tell GrumPHP which hooks preset to use. GrumPHP comes with two presets, local and vagrant.
+
 **stop_on_failure**
 
 *Default: false*
