@@ -8,7 +8,7 @@
         "composer-plugin-api": "~1.0",
         "composer/composer": "^1.0",
         "doctrine/collections": "~1.2",
-        "gitonomy/gitlib": "~0.1.7",
+        "gitonomy/gitlib": "~1.0",
         "seld/jsonlint": "~1.1",
         "symfony/config": "~2.4|~3.0",
         "symfony/console": "~2.6|~3.0",
