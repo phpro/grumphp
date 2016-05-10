@@ -33,7 +33,7 @@ This parameter is used to create the git hooks at the correct location. It defau
 *Default: null*
 
 This parameter will tell GrumPHP in which folder it can find the git hooks template folder.
-IT is used to find the git hooks at a custom location so that you can write your own GIT hooks.
+It is used to find the git hooks at a custom location so that you can write your own GIT hooks.
 It defaults to null, which means that the default folder `resources/hooks `is used.
 
 **hooks_preset**
@@ -48,7 +48,7 @@ GrumPHP comes with following presets:
 - `vagrant`: All checks will run in your vagrant box.
 
 
-*Note:* When using the vagrant preset, make sure the working directory of the shell is located at your project path:
+*Note:* When using the vagrant preset, make sure the working directory of the vagrant shell is located at your remote project path:
  
 ```sh
 echo 'cd /remote/path/to/your/project' >> ~/.bashrc
