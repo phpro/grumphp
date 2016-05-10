@@ -1,7 +1,7 @@
 parameters:
   bin_dir: ./vendor/bin
   git_dir: .
-  hooks_dir:
+  hooks_dir: ~
   hooks_preset: local
   tasks: []
   stop_on_failure: false

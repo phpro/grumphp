@@ -5,6 +5,8 @@
 parameters:
     bin_dir: ./vendor/bin
     git_dir: .
+    hooks_dir: ~
+    hooks_preset: local
     stop_on_failure: false
     ignore_unstaged_changes: false
     ascii:
@@ -31,14 +33,26 @@ This parameter is used to create the git hooks at the correct location. It defau
 *Default: null*
 
 This parameter will tell GrumPHP in which folder it can find the git hooks template folder.
-This parameter is used to find the git hooks at a custom location. It defaults to null and the default folder is used.
+IT is used to find the git hooks at a custom location so that you can write your own GIT hooks.
+It defaults to null, which means that the default folder `resources/hooks `is used.
 
 **hooks_preset**
 
 *Default: local*
 
-This parameter will tell GrumPHP which hooks preset to use. GrumPHP comes with two presets, local and vagrant.
-When using the vagrant preset be sure to add `cd /path/to/your/project` to `.bashrc`
+This parameter will tell GrumPHP which hooks preset to use.
+Presets are only used when you did NOT specify a custom `hooks_dir`.
+GrumPHP comes with following presets:
+
+- `local`: All checks will run on your local computer.
+- `vagrant`: All checks will run in your vagrant box.
+
+
+*Note:* When using the vagrant preset, make sure the working directory of the shell is located at your project path:
+ 
+```sh
+echo 'cd /remote/path/to/your/project' >> ~/.bashrc
+```
 
 **stop_on_failure**
 

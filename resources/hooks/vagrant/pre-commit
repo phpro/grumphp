@@ -1,2 +1,12 @@
 #!/bin/sh
+
 vagrant ssh --command "(exec $(HOOK_COMMAND) '--skip-success-output')"
+
+# Validate exit code of above command
+RC=$?
+if [ "$RC" != 0 ]; then
+    exit $RC;
+fi
+
+# Clean exit:
+exit 0;

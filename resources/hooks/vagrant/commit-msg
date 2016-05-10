@@ -5,3 +5,12 @@ GIT_EMAIL=$(git config user.email)
 COMMIT_MSG_FILE=$1
 
 vagrant ssh --command "(exec $(HOOK_COMMAND)  '--git-user=$GIT_USER' '--git-email=$GIT_EMAIL' '$COMMIT_MSG_FILE')"
+
+# Validate exit code of above command
+RC=$?
+if [ "$RC" != 0 ]; then
+    exit $RC;
+fi
+
+# Clean exit:
+exit 0;

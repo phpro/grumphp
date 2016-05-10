@@ -71,6 +71,8 @@ You can specify a custom config filename and location in `composer.json` or in t
 parameters:
     bin_dir: "./vendor/bin"
     git_dir: "."
+    hooks_dir: ~
+    hooks_preset: local
     stop_on_failure: false
     ignore_unstaged_changes: false
     ascii:

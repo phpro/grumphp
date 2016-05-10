@@ -227,6 +227,20 @@ class PathsHelper extends Helper
     }
 
     /**
+     * @param string $path
+     *
+     * @return string
+     */
+    public function getPathWithTrailingSlash($path)
+    {
+        if (!$path) {
+            return $path;
+        }
+
+        return rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+    }
+
+    /**
      * @return string
      */
     public function getDefaultConfigPath()
