@@ -40,6 +40,22 @@ class GrumPHP
     }
 
     /**
+     * @return string
+     */
+    public function getHooksDir()
+    {
+        return $this->container->getParameter('hooks_dir');
+    }
+
+    /**
+     * @return string
+     */
+    public function getHooksPreset()
+    {
+        return $this->container->getParameter('hooks_preset');
+    }
+
+    /**
      * @return bool
      */
     public function stopOnFailure()

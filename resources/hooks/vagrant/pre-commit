@@ -1,0 +1,2 @@
+#!/bin/sh
+vagrant ssh --command "(exec $(HOOK_COMMAND) '--skip-success-output')"
