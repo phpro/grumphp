@@ -122,6 +122,7 @@ class InitCommand extends Command
     {
         $content = file_get_contents($templateFile);
         $replacements = array(
+            '${VAGRANT_DIR}' => $this->grumPHP->getVagrantDir(),
             '${HOOK_EXEC_PATH}' => $this->paths()->getGitHookExecutionPath(),
             '$(HOOK_COMMAND)' => $this->generateHookCommand('git:' . $hook),
         );

@@ -3,6 +3,7 @@ parameters:
   git_dir: .
   hooks_dir: ~
   hooks_preset: local
+  vagrant_dir: .
   tasks: []
   stop_on_failure: false
   ignore_unstaged_changes: false

@@ -50,6 +50,14 @@ class GrumPHP
     /**
      * @return string
      */
+    public function getVagrantDir()
+    {
+        return $this->container->getParameter('vagrant_dir');
+    }
+
+    /**
+     * @return string
+     */
     public function getHooksPreset()
     {
         return $this->container->getParameter('hooks_preset');
