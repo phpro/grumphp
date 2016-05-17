@@ -48,11 +48,14 @@ GrumPHP comes with following presets:
 - `vagrant`: All checks will run in your vagrant box.
 
 
-*Note:* When using the vagrant preset, make sure the working directory of the vagrant shell is located at your remote project path:
- 
-```sh
-echo 'cd /remote/path/to/your/project' >> ~/.bashrc
-```
+*Note:* When using the vagrant preset, make sure the working directory of the vagrant shell is set as vagrant_dir
+
+**vagrant_dir**
+
+*Default: .*
+
+This parameter will tell GrumPHP in which folder in the vagrant environment the project root is.
+This is where the grumPHP command will be executed. 
 
 **stop_on_failure**
 

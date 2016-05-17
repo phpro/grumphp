@@ -1,6 +1,6 @@
 #!/bin/sh
 
-vagrant ssh --command "(exec $(HOOK_COMMAND) '--skip-success-output')"
+vagrant ssh --command "cd ${VAGRANT_DIR} && (exec $(HOOK_COMMAND) '--skip-success-output')"
 
 # Validate exit code of above command
 RC=$?
