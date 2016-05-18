@@ -1,10 +1,16 @@
 #!/bin/sh
 
+#
+# Run the hook command.
+# Note: this will be replaced by the real command during copy.
+#
+
 GIT_USER=$(git config user.name)
 GIT_EMAIL=$(git config user.email)
 COMMIT_MSG_FILE=$1
+DIFF=$(git diff -r -p -m -M --full-index --staged | cat)
 
-vagrant ssh --command "(exec $(HOOK_COMMAND)  '--git-user=$GIT_USER' '--git-email=$GIT_EMAIL' '$COMMIT_MSG_FILE')"
+vagrant ssh --command "(echo $DIFF | exec $(HOOK_COMMAND) '--git-user=$GIT_USER' '--git-email=$GIT_EMAIL' '$COMMIT_MSG_FILE')"
 
 # Validate exit code of above command
 RC=$?

@@ -6,6 +6,7 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
+use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Locator\ChangedFiles;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use Symfony\Component\Console\Command\Command;
@@ -64,7 +65,9 @@ class PreCommitCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $files = $this->getCommittedFiles();
+        $io = new ConsoleIO($input, $output);
+        $files = $this->getCommittedFiles($io);
+
         $context = new GitPreCommitContext($files);
         $skipSuccessOutput = (bool) $input->getOption('skip-success-output');
 
@@ -75,9 +78,13 @@ class PreCommitCommand extends Command
     /**
      * @return FilesCollection
      */
-    protected function getCommittedFiles()
+    protected function getCommittedFiles(ConsoleIO $io)
     {
-        return $this->changedFilesLocator->locate();
+        if ($stdin = $io->readCommandInput()) {
+            return $this->changedFilesLocator->locateFromRawDiffInput($stdin);
+        }
+
+        return $this->changedFilesLocator->locateFromGitRepository();
     }
 
     /**

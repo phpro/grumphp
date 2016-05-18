@@ -2,7 +2,7 @@
 
 namespace spec\GrumPHP\IO;
 
-use Composer\IO\ConsoleIO;
+use GrumPHP\IO\ConsoleIO;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -78,5 +78,26 @@ class ConsoleIOSpec extends ObjectBehavior
 
         $output->write('test', true)->shouldBeCalled();
         $this->writeError('test');
+    }
+
+    function it_reads_command_input()
+    {
+        $handle = $this->mockHandle('input');
+        $this->readCommandInput($handle)->shouldBe('input');
+    }
+
+    function it_knows_empty_command_input()
+    {
+        $handle = $this->mockHandle("\r\n\t\f ");
+        $this->readCommandInput($handle)->shouldBe('');
+    }
+
+    private function mockHandle($content)
+    {
+        $handle = fopen('php://memory', 'a');
+        fwrite($handle, $content);
+        rewind($handle);
+
+        return $handle;
     }
 }

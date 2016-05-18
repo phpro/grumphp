@@ -3,7 +3,6 @@
 namespace spec\GrumPHP\Locator;
 
 use Gitonomy\Git\Diff\Diff;
-use Gitonomy\Git\Diff\File;
 use Gitonomy\Git\WorkingCopy;
 use Gitonomy\Git\Repository;
 use GrumPHP\Locator\ChangedFiles;
@@ -47,10 +46,27 @@ class ChangedFilesSpec extends ObjectBehavior
         $workingCopy->getDiffStaged()->willReturn($diff);
         $diff->getFiles()->willReturn(array($changedFile, $movedFile, $deletedFile));
 
-        $result = $this->locate();
+        $result = $this->locateFromGitRepository();
         $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
         $result[0]->getPathname()->shouldBe('file1.txt');
         $result[1]->getPathname()->shouldBe('file2.txt');
         $result->getIterator()->count()->shouldBe(2);
+    }
+
+    function it_will_list_all_diffed_files_from_raw_diff_input()
+    {
+        $rawDiff = 'diff --git a/file.txt b/file.txt
+new file mode 100644
+index 0000000000000000000000000000000000000000..9766475a4185a151dc9d56d614ffb9aaea3bfd42
+--- /dev/null
++++ b/file.txt
+@@ -0,0 +1 @@
++content
+';
+
+        $result = $this->locateFromRawDiffInput($rawDiff);
+        $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
+        $result[0]->getPathname()->shouldBe('file.txt');
+        $result->getIterator()->count()->shouldBe(1);
     }
 }

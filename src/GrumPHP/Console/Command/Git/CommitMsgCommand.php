@@ -6,6 +6,7 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
+use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Locator\ChangedFiles;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use SplFileInfo;
@@ -63,7 +64,8 @@ class CommitMsgCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $files = $this->getCommittedFiles();
+        $io = new ConsoleIO($input, $output);
+        $files = $this->getCommittedFiles($io);
         $gitUser = $input->getOption('git-user');
         $gitEmail = $input->getOption('git-email');
         $commitMsgPath = $input->getArgument('commit-msg-file');
@@ -77,9 +79,13 @@ class CommitMsgCommand extends Command
     /**
      * @return FilesCollection
      */
-    protected function getCommittedFiles()
+    protected function getCommittedFiles(ConsoleIO $io)
     {
-        return $this->changedFilesLocator->locate();
+        if ($stdin = $io->readCommandInput()) {
+            return $this->changedFilesLocator->locateFromRawDiffInput($stdin);
+        }
+
+        return $this->changedFilesLocator->locateFromGitRepository();
     }
 
     /**

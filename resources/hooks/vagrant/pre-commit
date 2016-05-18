@@ -1,6 +1,13 @@
 #!/bin/sh
 
-vagrant ssh --command "(exec $(HOOK_COMMAND) '--skip-success-output')"
+#
+# Run the hook command.
+# Note: this will be replaced by the real command during copy.
+#
+
+DIFF=$(git diff -r -p -m -M --full-index --staged | cat)
+
+vagrant ssh --command "( echo "$DIFF" | exec $(HOOK_COMMAND) '--skip-success-output')"
 
 # Validate exit code of above command
 RC=$?
