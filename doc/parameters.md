@@ -9,6 +9,7 @@ parameters:
     hooks_preset: local
     stop_on_failure: false
     ignore_unstaged_changes: false
+    process_timeout: 60
     ascii:
         failed: resource/grumphp-grumpy.txt
         succeeded: resource/grumphp-happy.txt
@@ -74,6 +75,15 @@ By enabling this option, GrumPHP will stash your unstaged changes in git before 
 This way the tasks will run with the code that is actually committed without the unstaged changes.
 Note that during the commit, the unstaged changes will be stored in git stash.
 This may mess with your working copy and result in unexpected merge conflicts.
+
+**process_timeout**
+
+*Default: 60*
+
+GrumPHP uses the Symfony Process component to run external tasks.
+The component will trigger a timeout after 60 seconds by default.
+If you've got tools that run more then 60 seconds, you can increase this parameter.
+It is also possible to disable the timeout by setting the value to `null`.
 
 **ascii**
 

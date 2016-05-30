@@ -6,6 +6,7 @@ parameters:
   tasks: []
   stop_on_failure: false
   ignore_unstaged_changes: false
+  process_timeout: 60
   extensions: []
   ascii:
     failed: grumphp-grumpy.txt
