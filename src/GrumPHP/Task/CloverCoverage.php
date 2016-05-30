@@ -42,7 +42,7 @@ class CloverCoverage implements TaskInterface
      */
     public function getName()
     {
-        return 'phpunit_coverage';
+        return 'clover_coverage';
     }
 
     /**
