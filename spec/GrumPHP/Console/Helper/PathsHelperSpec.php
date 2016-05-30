@@ -4,6 +4,7 @@ namespace spec\GrumPHP\Console\Helper;
 
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
+use GrumPHP\Locator\ExternalCommand;
 use Symfony\Component\Filesystem\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -13,9 +14,9 @@ use Prophecy\Argument;
  */
 class PathsHelperSpec extends ObjectBehavior
 {
-    function let(GrumPHP $config, Filesystem $fileSystem)
+    function let(GrumPHP $config, Filesystem $fileSystem, ExternalCommand $externalCommandLocator)
     {
-        $this->beConstructedWith($config, $fileSystem, '/grumphp.yml');
+        $this->beConstructedWith($config, $fileSystem, $externalCommandLocator, '/grumphp.yml');
     }
     
     function it_is_a_console_helper()

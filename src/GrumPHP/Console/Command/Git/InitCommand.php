@@ -133,11 +133,13 @@ class InitCommand extends Command
      * @param $command
      *
      * @return string
+     * @throws \GrumPHP\Exception\FileNotFoundException
      */
     protected function generateHookCommand($command)
     {
+        $executable = $this->paths()->getBinCommand('grumphp', true);
         $this->processBuilder->setArguments(array(
-            $this->paths()->getBinCommand('grumphp', true),
+            $this->paths()->getRelativeProjectPath($executable),
             $command
         ));
 

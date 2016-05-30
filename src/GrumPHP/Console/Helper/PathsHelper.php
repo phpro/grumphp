@@ -30,19 +30,30 @@ class PathsHelper extends Helper
     protected $fileSystem;
 
     /**
+     * @var ExternalCommand
+     */
+    private $externalCommandLocator;
+
+    /**
      * @var string
      */
     private $defaultConfigPath;
 
     /**
-     * @param GrumPHP    $config
-     * @param Filesystem $fileSystem
-     * @param string     $defaultConfigPath
+     * @param GrumPHP         $config
+     * @param Filesystem      $fileSystem
+     * @param ExternalCommand $externalCommandLocator
+     * @param string          $defaultConfigPath
      */
-    public function __construct(GrumPHP $config, Filesystem $fileSystem, $defaultConfigPath)
-    {
+    public function __construct(
+        GrumPHP $config,
+        Filesystem $fileSystem,
+        ExternalCommand $externalCommandLocator,
+        $defaultConfigPath
+    ) {
         $this->config = $config;
         $this->fileSystem = $fileSystem;
+        $this->externalCommandLocator = $externalCommandLocator;
         $this->defaultConfigPath = $defaultConfigPath;
     }
 
@@ -193,9 +204,7 @@ class PathsHelper extends Helper
      */
     public function getBinCommand($command, $forceUnix = false)
     {
-        $commandLocator = new ExternalCommand($this->getBinDir(), new ExecutableFinder());
-
-        return $commandLocator->locate($command, $forceUnix);
+        return $this->externalCommandLocator->locate($command, $forceUnix);
     }
 
     /**
@@ -208,6 +217,27 @@ class PathsHelper extends Helper
     {
         $realpath = $this->getAbsolutePath($path);
         return $this->fileSystem->makePathRelative($realpath, $this->getWorkingDir());
+    }
+
+    /**
+     * This method will return a relative path to a file of directory if it lives in the current project.
+     * When the file is not located in the current project, the absolute path to the file is returned.
+     *
+     * @param string $path
+     *
+     * @return string
+     * @throws FileNotFoundException
+     */
+    public function getRelativeProjectPath($path)
+    {
+        $realPath = $this->getAbsolutePath($path);
+        $gitPath = $this->getAbsolutePath($this->getGitDir());
+
+        if (0 !== strpos($realPath, $gitPath)) {
+            return $realPath;
+        }
+
+        return rtrim($this->getRelativePath($realPath), '\\/');
     }
 
     /**

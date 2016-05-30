@@ -128,6 +128,7 @@ class Application extends SymfonyConsole
         $helperSet->set(new Helper\PathsHelper(
             $container->get('config'),
             $container->get('filesystem'),
+            $container->get('locator.external_command'),
             $this->getDefaultConfigPath()
         ));
         $helperSet->set(new Helper\TaskRunnerHelper(
@@ -213,6 +214,7 @@ class Application extends SymfonyConsole
         try {
             $composerFile = getcwd() . DIRECTORY_SEPARATOR . 'composer.json';
             $configuration = Composer::loadConfiguration();
+            Composer::ensureProjectBinDirInSystemPath($configuration->get('bin-dir'));
             $rootPackage = Composer::loadRootPackageFromJson($composerFile, $configuration);
         } catch (RuntimeException $e) {
             $configuration = null;
