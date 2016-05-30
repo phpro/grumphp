@@ -76,11 +76,11 @@ class CloverCoverage implements TaskInterface
         $percentage = round(min(100, max(0, (float) $this->getConfiguration()['level'])), 2);
 
         if (!file_exists($this->getConfiguration()['clover_file'])) {
-            throw new InvalidArgumentException('Invalid input file provided');
+            return TaskResult::createFailed($this, $context, 'Invalid input file provided');
         }
 
         if (!$percentage) {
-            throw new InvalidArgumentException('An integer checked percentage must be given as second parameter');
+            return TaskResult::createFailed($this, $context, 'An integer checked percentage must be given as second parameter');
         }
 
         $xml             = new SimpleXMLElement(file_get_contents($this->getConfiguration()['clover_file']));
