@@ -8,7 +8,6 @@ use GrumPHP\Exception\FileNotFoundException;
 use GrumPHP\Locator\ExternalCommand;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Process\ExecutableFinder;
 
 /**
  * This class will return all configured paths relative to the working directory.
