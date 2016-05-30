@@ -12,7 +12,7 @@ use InvalidArgumentException;
 use SimpleXMLElement;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PHPUnitCoverageTask implements TaskInterface
+class CloverCoverage implements TaskInterface
 {
     /**
      * @var GrumPHP
