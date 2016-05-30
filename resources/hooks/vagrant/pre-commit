@@ -1,6 +1,18 @@
 #!/bin/sh
 
-vagrant ssh --command "(exec $(HOOK_COMMAND) '--skip-success-output')"
+#
+# Run the hook command.
+# Note: this will be replaced by the real command during copy.
+#
+
+DIFF=$(git diff -r -p -m -M --full-index --staged | cat)
+
+#
+# Run GrumPHP
+#
+vagrant ssh --command '$(which bash)' << COMMANDS
+  echo '$DIFF' | exec $(HOOK_COMMAND) '--ansi' '--skip-success-output'
+COMMANDS
 
 # Validate exit code of above command
 RC=$?

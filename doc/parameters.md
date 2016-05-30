@@ -48,11 +48,16 @@ GrumPHP comes with following presets:
 - `vagrant`: All checks will run in your vagrant box.
 
 
-*Note:* When using the vagrant preset, make sure the working directory of the vagrant shell is located at your remote project path:
+*Note:* 
+When using the vagrant preset, you are required to set the vagrant SSH home folder to your working directory. 
+This can be done by altering the `.bashrc` or `.zshrc` inside your vagrant box:
  
 ```sh
 echo 'cd /remote/path/to/your/project' >> ~/.bashrc
 ```
+
+You can also add the `.bashrc` or `.zshrc` to your vagrant provision script. 
+This way the home directory will be set for all the people who are using your vagrant box.
 
 **stop_on_failure**
 

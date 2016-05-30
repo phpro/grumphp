@@ -24,6 +24,11 @@ class ConsoleIO implements IOInterface
     private $output;
 
     /**
+     * @var string
+     */
+    private $stdin;
+
+    /**
      * ConsoleIO constructor.
      *
      * @param InputInterface  $input
@@ -89,6 +94,28 @@ class ConsoleIO implements IOInterface
     public function writeError($messages, $newline = true)
     {
         $this->doWrite($messages, $newline, true);
+    }
+
+    /**
+     * @param null|resource $handle
+     *
+     * @return string
+     */
+    public function readCommandInput($handle = STDIN)
+    {
+        if ($this->stdin !== null || ftell($handle) !== 0) {
+            return $this->stdin;
+        }
+        
+        $input = '';
+        while (!feof($handle)) {
+            $input .= fread($handle, 1024);
+        }
+
+        // When the input only consist of white space characters, we assume that there is no input.
+        $this->stdin = !preg_match('/^([\s]*)$/m', $input) ? $input : '';
+
+        return  $this->stdin;
     }
 
     /**

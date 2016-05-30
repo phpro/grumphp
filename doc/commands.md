@@ -28,6 +28,9 @@ php ./vendor/bin/grumphp git:pre-commit
 php ./vendor/bin/grumphp git:commit-msg
 ```
 
+Both commands support raw git diffs as STDIN input. 
+This way it is possible to pass changes triggered by `git commit -a` from the GIT hook to the GrumPHP commands.
+
 ## Run
 
 If you want to run the tests on the full codebase, you can run the command:

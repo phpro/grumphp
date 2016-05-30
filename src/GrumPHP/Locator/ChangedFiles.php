@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Locator;
 
+use Gitonomy\Git\Diff\Diff;
 use Gitonomy\Git\Diff\File;
 use Gitonomy\Git\Repository;
 use GrumPHP\Collection\FilesCollection;
@@ -30,9 +31,33 @@ class ChangedFiles
     /**
      * @return FilesCollection
      */
-    public function locate()
+    public function locateFromGitRepository()
     {
         $diff = $this->repository->getWorkingCopy()->getDiffStaged();
+
+        return $this->parseFilesFromDiff($diff);
+    }
+
+    /**
+     * @param string $rawDiff
+     *
+     * @return FilesCollection
+     */
+    public function locateFromRawDiffInput($rawDiff)
+    {
+        $diff = Diff::parse($rawDiff);
+        $diff->setRepository($this->repository);
+
+        return $this->parseFilesFromDiff($diff);
+    }
+
+    /**
+     * @param Diff $diff
+     *
+     * @return FilesCollection
+     */
+    private function parseFilesFromDiff(Diff $diff)
+    {
         $files = array();
         /** @var File $file */
         foreach ($diff->getFiles() as $file) {

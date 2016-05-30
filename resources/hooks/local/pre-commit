@@ -4,7 +4,10 @@
 # Run the hook command.
 # Note: this will be replaced by the real command during copy.
 #
-(cd "${HOOK_EXEC_PATH}" && exec $(HOOK_COMMAND) '--skip-success-output')
+
+DIFF=$(git diff -r -p -m -M --full-index --staged | cat)
+
+(cd "${HOOK_EXEC_PATH}" && echo "${DIFF}" | exec $(HOOK_COMMAND) '--skip-success-output')
 
 # Validate exit code of above command
 RC=$?
