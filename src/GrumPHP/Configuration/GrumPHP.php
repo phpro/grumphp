@@ -72,6 +72,19 @@ class GrumPHP
     }
 
     /**
+     * @return float|null
+     */
+    public function getProcessTimeout()
+    {
+        $timeout = $this->container->getParameter('process_timeout');
+        if (null === $timeout) {
+            return null;
+        }
+
+        return (float) $timeout;
+    }
+
+    /**
      * @return array
      */
     public function getRegisteredTasks()

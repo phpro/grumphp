@@ -62,6 +62,15 @@ class GrumPHPSpec extends ObjectBehavior
         $this->ignoreUnstagedChanges()->shouldReturn(true);
     }
 
+    function it_configures_the_symfony_process_timeout(ContainerInterface $container)
+    {
+        $container->getParameter('process_timeout')->willReturn(null);
+        $this->getProcessTimeout()->shouldReturn(null);
+
+        $container->getParameter('process_timeout')->willReturn(120);
+        $this->getProcessTimeout()->shouldReturn(120.0);
+    }
+
     function it_should_return_empty_ascii_location_for_unknown_resources(ContainerInterface $container)
     {
         $container->getParameter('ascii')->willReturn(array());

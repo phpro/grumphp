@@ -75,6 +75,7 @@ parameters:
     hooks_preset: local
     stop_on_failure: false
     ignore_unstaged_changes: false
+    process_timeout: 60
     ascii:
         failed: grumphp-grumpy.txt
         succeeded: grumphp-happy.txt

@@ -3,6 +3,7 @@
 namespace spec\GrumPHP\Process;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
+use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Locator\ExternalCommand;
 use GrumPHP\Process\ProcessBuilder;
 use PhpSpec\Exception\Example\FailureException;
@@ -14,9 +15,10 @@ use Prophecy\Argument;
  */
 class ProcessBuilderSpec extends ObjectBehavior
 {
-    function let(ExternalCommand $externalCommandLocator)
+    function let(GrumPHP $config, ExternalCommand $externalCommandLocator)
     {
-        $this->beConstructedWith($externalCommandLocator);
+        $this->beConstructedWith($config, $externalCommandLocator);
+        $config->getProcessTimeout()->willReturn(60);
     }
 
     function it_is_initializable()
@@ -41,6 +43,18 @@ class ProcessBuilderSpec extends ObjectBehavior
 
         $process->shouldHaveType('Symfony\Component\Process\Process');
         $process->getCommandLine()->shouldBeQuoted('/usr/bin/grumphp');
+    }
+
+    function it_should_be_possible_to_configure_the_process_timeout(
+        GrumPHP $config,
+        ExternalCommand $externalCommandLocator
+    )
+    {
+        $config->getProcessTimeout()->willReturn(120);
+
+        $arguments = new ProcessArgumentsCollection(array('/usr/bin/grumphp'));
+        $process = $this->buildProcess($arguments);
+        $process->getTimeout()->shouldBe(120.0);
     }
 
     function getMatchers()

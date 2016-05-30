@@ -18,6 +18,7 @@ services:
     process_builder:
       class: GrumPHP\Process\ProcessBuilder
       arguments:
+        - '@config'
         - '@locator.external_command'
 
     git.repository:
