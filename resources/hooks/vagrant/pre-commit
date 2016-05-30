@@ -5,11 +5,11 @@
 # Note: this will be replaced by the real command during copy.
 #
 
+# Fetch the GIT diff and format it as command input:
 DIFF=$(git diff -r -p -m -M --full-index --staged | cat)
+DIFF=$(printf %q "${DIFF}")
 
-#
 # Run GrumPHP
-#
 vagrant ssh --command '$(which bash)' << COMMANDS
   echo '$DIFF' | exec $(HOOK_COMMAND) '--ansi' '--skip-success-output'
 COMMANDS

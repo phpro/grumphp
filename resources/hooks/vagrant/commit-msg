@@ -9,11 +9,12 @@ GIT_USER=$(git config user.name)
 GIT_EMAIL=$(git config user.email)
 COMMIT_MSG_FILE=$1
 COMMIT_MSG=$(cat $COMMIT_MSG_FILE)
-DIFF=$(git diff -r -p -m -M --full-index --staged | cat)
 
-#
+# Fetch the GIT diff and format it as command input:
+DIFF=$(git diff -r -p -m -M --full-index --staged | cat)
+DIFF=$(printf %q "${DIFF}")
+
 # Copy the commit message and run GrumPHP
-#
 vagrant ssh --command '$(which bash)' << COMMANDS
   VAGRANT_COMMIT_MSG_FILE=\$(mktemp -t "grumphp-commitmsg.XXXXXXXXXX")
   echo '$COMMIT_MSG' > \$VAGRANT_COMMIT_MSG_FILE
