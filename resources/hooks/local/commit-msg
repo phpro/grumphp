@@ -18,7 +18,7 @@ DIFF=$(git diff -r -p -m -M --full-index --staged | cat)
 # Validate exit code of above command
 RC=$?
 if [ "$RC" != 0 ]; then
-    exit $RC;
+  exit $RC;
 fi
 
 # Clean exit:
