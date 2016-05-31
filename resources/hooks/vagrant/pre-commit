@@ -9,7 +9,7 @@
 DIFF=$(git diff -r -p -m -M --full-index --staged | cat)
 
 # Run GrumPHP
-vagrant ssh --command '$(which bash)' << COMMANDS
+vagrant ssh --command '$(which sh)' << COMMANDS
 
   # Transfer the DIFF
   DIFF=\$(cat <<- '__GRUMPHP_DIFF_HEREDOC__'
