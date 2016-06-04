@@ -9,6 +9,7 @@ parameters:
     tasks:
         ant: ~
         behat: ~
+        clover_coverage: ~
         codeception: ~
         composer: ~
         gherkin: ~
@@ -36,6 +37,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 
 - [Ant](tasks/ant.md)
 - [Behat](tasks/behat.md)
+- [Clover Coverage](tasks/clover_coverage.md)
 - [Codeception](tasks/codeception.md)
 - [Composer](tasks/composer.md)
 - [Gherkin](tasks/gherkin.md)
