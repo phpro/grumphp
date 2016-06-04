@@ -102,5 +102,4 @@ class CloverCoverage implements TaskInterface
 
         return TaskResult::createPassed($this, $context);
     }
-
 }
