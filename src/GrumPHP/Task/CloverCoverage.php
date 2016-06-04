@@ -80,7 +80,11 @@ class CloverCoverage implements TaskInterface
         }
 
         if (!$percentage) {
-            return TaskResult::createFailed($this, $context, 'An integer checked percentage must be given as second parameter');
+            return TaskResult::createFailed(
+                $this,
+                $context,
+                'An integer checked percentage must be given as second parameter'
+            );
         }
 
         $xml             = new SimpleXMLElement(file_get_contents($this->getConfiguration()['clover_file']));
@@ -96,7 +100,11 @@ class CloverCoverage implements TaskInterface
         $coverage = round(($checkedElements / $totalElements) * 100, 2);
 
         if ($coverage < $percentage) {
-            $message = 'Code coverage is ' . $coverage . '%, which is below the accepted ' . $percentage . '%' . PHP_EOL;
+            $message = sprintf(
+                'Code coverage is %1$d%%, which is below the accepted %2$d%%' . PHP_EOL,
+                $coverage,
+                $percentage
+            );
             return TaskResult::createFailed($this, $context, $message);
         }
 
