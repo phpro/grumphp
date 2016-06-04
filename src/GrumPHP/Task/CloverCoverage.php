@@ -74,8 +74,9 @@ class CloverCoverage implements TaskInterface
     public function run(ContextInterface $context)
     {
         $percentage = round(min(100, max(0, (float) $this->getConfiguration()['level'])), 2);
+        $cloverFile = $this->getConfiguration()['clover_file'];
 
-        if (!file_exists($this->getConfiguration()['clover_file'])) {
+        if (!$this->grumPHP->getFilesystem()->exists($cloverFile)) {
             return TaskResult::createFailed($this, $context, 'Invalid input file provided');
         }
 
@@ -87,7 +88,7 @@ class CloverCoverage implements TaskInterface
             );
         }
 
-        $xml             = new SimpleXMLElement(file_get_contents($this->getConfiguration()['clover_file']));
+        $xml             = new SimpleXMLElement(file_get_contents($cloverFile));
         $metrics         = $xml->xpath('//metrics');
         $totalElements   = 0;
         $checkedElements = 0;
