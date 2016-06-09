@@ -32,7 +32,7 @@
     "suggest": {
         "behat/behat": "Lets GrumPHP validate your project features.",
         "codegyre/robo": "Lets GrumPHP run your automated PHP tasks.",
-        "fabpot/php-cs-fixer": "Lets GrumPHP automatically fix your codestyle.",
+        "friendsofphp/php-cs-fixer": "Lets GrumPHP automatically fix your codestyle.",
         "phing/phing": "Lets GrumPHP run your automated PHP tasks.",
         "malukenho/kawaii-gherkin": "Lets GrumPHP lint your Gherkin files.",
         "phpspec/phpspec": "Lets GrumPHP spec your code.",
