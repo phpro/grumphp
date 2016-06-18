@@ -40,6 +40,7 @@ You will see following message in the composer logs:
 
 To make GrumPHP even more awesome, it will suggest installing some extra packages:
 
+- atoum/atoum : ~2.7
 - behat/behat : ~3.0
 - codegyre/robo : ~0.7
 - fabpot/php-cs-fixer : ~1.10|~2
@@ -82,6 +83,7 @@ parameters:
         succeeded: grumphp-happy.txt
     tasks:
         ant: ~
+        atoum: ~
         behat: ~
         codeception: ~
         composer: ~
