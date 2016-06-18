@@ -70,25 +70,25 @@ class Atoum extends AbstractExternalTask
 
         $arguments = $this->processBuilder->createArgumentsForCommand('atoum');
         if ($config['config_file']) {
-            $arguments->addArgumentArrayWithSeparatedValue('-c', [$config['config_file']]);
+            $arguments->addArgumentArrayWithSeparatedValue('-c', array($config['config_file']));
         }
         if ($config['bootstrap_file']) {
-            $arguments->addArgumentArrayWithSeparatedValue('--bootstrap-file', [$config['bootstrap_file']]);
+            $arguments->addArgumentArrayWithSeparatedValue('--bootstrap-file', array($config['bootstrap_file']));
         }
         if ($config['directories']) {
-            $arguments->addArgumentArrayWithSeparatedValue('--directories', [$config['directories']]);
+            $arguments->addArgumentArrayWithSeparatedValue('--directories', array($config['directories']));
         }
         if ($config['files']) {
-            $arguments->addArgumentArrayWithSeparatedValue('--files', [$config['files']]);
+            $arguments->addArgumentArrayWithSeparatedValue('--files', array($config['files']));
         }
         if ($config['namespaces']) {
-            $arguments->addArgumentArrayWithSeparatedValue('--namespaces', [$config['namespaces']]);
+            $arguments->addArgumentArrayWithSeparatedValue('--namespaces', array($config['namespaces']));
         }
         if ($config['methods']) {
-            $arguments->addArgumentArrayWithSeparatedValue('--methods', [$config['methods']]);
+            $arguments->addArgumentArrayWithSeparatedValue('--methods', array($config['methods']));
         }
         if ($config['tags']) {
-            $arguments->addArgumentArrayWithSeparatedValue('--tags', [$config['tags']]);
+            $arguments->addArgumentArrayWithSeparatedValue('--tags', array($config['tags']));
         }
 
         $process = $this->processBuilder->buildProcess($arguments);
