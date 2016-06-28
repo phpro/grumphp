@@ -37,16 +37,14 @@ class PhpCsFixer extends AbstractExternalTask
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array(
             'config' => null,
-            'config_file' => null,
-            'fixers' => array(),
-            'level' => null,
+            'pathMode' => 'override',
+            'rules' => array(),
             'verbose' => true,
         ));
 
         $resolver->addAllowedTypes('config', array('null', 'string'));
-        $resolver->addAllowedTypes('config_file', array('null', 'string'));
-        $resolver->addAllowedTypes('fixers', array('array'));
-        $resolver->addAllowedTypes('level', array('null', 'string'));
+        $resolver->addAllowedTypes('pathMode', array('string'));
+        $resolver->addAllowedTypes('rules', array('array'));
         $resolver->addAllowedTypes('verbose', array('bool'));
 
         return $resolver;
@@ -76,14 +74,13 @@ class PhpCsFixer extends AbstractExternalTask
         $arguments = $this->processBuilder->createArgumentsForCommand('php-cs-fixer');
         $arguments->add('--format=json');
         $arguments->add('--dry-run');
-        $arguments->addOptionalArgument('--level=%s', $config['level']);
         $arguments->addOptionalArgument('--config=%s', $config['config']);
-        $arguments->addOptionalArgument('--config-file=%s', $config['config_file']);
+        $arguments->addOptionalArgument('--path-mode=%s', $config['pathMode']);
         $arguments->addOptionalArgument('--verbose', $config['verbose']);
-        $arguments->addOptionalCommaSeparatedArgument('--fixers=%s', $config['fixers']);
+        $arguments->addOptionalCommaSeparatedArgument('--rules=%s', $config['rules']);
         $arguments->add('fix');
 
-        if ($context instanceof RunContext && $config['config_file'] !== null) {
+        if ($context instanceof RunContext && $config['config'] !== null) {
             return $this->runOnAllFiles($context, $arguments);
         }
 

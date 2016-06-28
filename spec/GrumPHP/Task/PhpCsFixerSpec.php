@@ -49,9 +49,8 @@ class PhpCsFixerSpec extends ObjectBehavior
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
         $options->getDefinedOptions()->shouldContain('config');
-        $options->getDefinedOptions()->shouldContain('config_file');
-        $options->getDefinedOptions()->shouldContain('fixers');
-        $options->getDefinedOptions()->shouldContain('level');
+        $options->getDefinedOptions()->shouldContain('pathMode');
+        $options->getDefinedOptions()->shouldContain('rules');
         $options->getDefinedOptions()->shouldContain('verbose');
     }
 
@@ -83,7 +82,7 @@ class PhpCsFixerSpec extends ObjectBehavior
         RunContext $context,
         PhpCsFixerFormatter $formatter
     ) {
-        $grumPHP->getTaskConfiguration('phpcsfixer')->willReturn(array('config_file' => '.php_cs'));
+        $grumPHP->getTaskConfiguration('phpcsfixer')->willReturn(array('config' => '.php_cs'));
         $formatter->resetCounter()->shouldBeCalled();
 
         $context->getFiles()->willReturn(new FilesCollection(array(
