@@ -16,6 +16,7 @@ matrix:
       env: DEPENDENCIES='low'
     - php: 7.0
     - php: hhvm
+    - php: nightly
   fast_finish: true
 
 before_install:
