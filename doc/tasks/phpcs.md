@@ -11,6 +11,7 @@ parameters:
             standard: ~
             show_warnings: true
             tab_width: ~
+            whitelist_path_pattern: ~
             ignore_patterns: []
             sniffs: []
             triggered_by: [php]
@@ -46,6 +47,14 @@ Triggers an error when there are warnings.
 *Default: null*
 
 By default, the standard will specify the optimal tab-width of the code. If you want to overwrite this option, you can use this configuration option.
+
+
+**whitelist_path_pattern**
+
+*Default: null*
+
+This is regex pattern that will filter files to validate. With this option you can skip files like tests. This option is used in relation with the parameter `triggered_by`.
+For exemple you can use `whitelist_path_pattern: "^src/(.*)"` to validate only files in your `src/` directory in a Symfony.
 
 
 **ignore_patterns**

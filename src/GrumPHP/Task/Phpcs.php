@@ -31,6 +31,7 @@ class Phpcs extends AbstractExternalTask
             'standard' => null,
             'show_warnings' => true,
             'tab_width' => null,
+            'whitelist_path_pattern' => null,
             'ignore_patterns' => array(),
             'sniffs' => array(),
             'triggered_by' => array('php')
@@ -39,6 +40,7 @@ class Phpcs extends AbstractExternalTask
         $resolver->addAllowedTypes('standard', array('null', 'string'));
         $resolver->addAllowedTypes('show_warnings', array('bool'));
         $resolver->addAllowedTypes('tab_width', array('null', 'int'));
+        $resolver->addAllowedTypes('whitelist_path_pattern', array('null', 'string'));
         $resolver->addAllowedTypes('ignore_patterns', array('array'));
         $resolver->addAllowedTypes('sniffs', array('array'));
         $resolver->addAllowedTypes('triggered_by', array('array'));
@@ -60,7 +62,15 @@ class Phpcs extends AbstractExternalTask
     public function run(ContextInterface $context)
     {
         $config = $this->getConfiguration();
-        $files = $context->getFiles()->extensions($config['triggered_by']);
+
+        /** @var string|null $whitelistPathPattern */
+        $whitelistPathPattern = $this->getWhitelistPathPattern($config);
+        if (!$whitelistPathPattern) {
+            $files = $context->getFiles()->extensions($config['triggered_by']);
+        } else {
+            $files = $context->getFiles()->path($whitelistPathPattern);
+        }
+
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
@@ -83,5 +93,35 @@ class Phpcs extends AbstractExternalTask
         }
 
         return TaskResult::createPassed($this, $context);
+    }
+
+    /**
+     * @param array $config
+     *
+     * @return null|string
+     */
+    protected function getWhitelistPathPattern(array $config)
+    {
+        /** @var string|null $whitelistPathPattern */
+        $whitelistPathPattern = $config['whitelist_path_pattern'];
+        if (!$whitelistPathPattern) {
+            return null;
+        }
+
+        $whitelistPathPattern = $this->escapePatternDirectorySeparator($whitelistPathPattern);
+        $whitelistPathPattern = '/'.$whitelistPathPattern.'.(%s)$/';
+        $whitelistPathPattern = sprintf($whitelistPathPattern, implode('|', $config['triggered_by']));
+
+        return $whitelistPathPattern;
+    }
+
+    /**
+     * @param string $pattern
+     *
+     * @return string
+     */
+    protected function escapePatternDirectorySeparator($pattern)
+    {
+        return str_replace('/', '\\/', $pattern);
     }
 }
