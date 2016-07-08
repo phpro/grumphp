@@ -11,6 +11,7 @@ parameters:
             standard: ~
             show_warnings: true
             tab_width: ~
+            encoding: ~
             ignore_patterns: []
             sniffs: []
             triggered_by: [php]
@@ -47,6 +48,11 @@ Triggers an error when there are warnings.
 
 By default, the standard will specify the optimal tab-width of the code. If you want to overwrite this option, you can use this configuration option.
 
+**encoding**
+
+*Default: null*
+
+The default encoding used by PHP_CodeSniffer (is ISO-8859-1).
 
 **ignore_patterns**
 
