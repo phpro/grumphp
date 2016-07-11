@@ -73,6 +73,22 @@ class FilesCollection extends ArrayCollection
     }
 
     /**
+     * Filter by paths
+     *
+     * $collection->paths(array('/^spec\/','/^src\/'))
+     *
+     * @param array $patterns
+     *
+     * @return FilesCollection
+     */
+    public function paths(array $patterns)
+    {
+        $filter = new Iterator\PathFilterIterator($this->getIterator(), $patterns, array());
+
+        return new FilesCollection(iterator_to_array($filter));
+    }
+
+    /**
      * Adds rules that filenames must not match.
      *
      * You can use patterns (delimited with / sign) or simple strings.
