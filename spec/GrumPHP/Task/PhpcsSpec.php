@@ -46,6 +46,7 @@ class PhpcsSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('standard');
         $options->getDefinedOptions()->shouldContain('show_warnings');
         $options->getDefinedOptions()->shouldContain('tab_width');
+        $options->getDefinedOptions()->shouldContain('encoding');
         $options->getDefinedOptions()->shouldContain('ignore_patterns');
         $options->getDefinedOptions()->shouldContain('sniffs');
         $options->getDefinedOptions()->shouldContain('triggered_by');
