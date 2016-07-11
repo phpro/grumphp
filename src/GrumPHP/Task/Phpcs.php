@@ -31,7 +31,7 @@ class Phpcs extends AbstractExternalTask
             'standard' => null,
             'show_warnings' => true,
             'tab_width' => null,
-            'whitelist_path_pattern' => null,
+            'whitelist_patterns' => array(),
             'ignore_patterns' => array(),
             'sniffs' => array(),
             'triggered_by' => array('php')
@@ -40,7 +40,7 @@ class Phpcs extends AbstractExternalTask
         $resolver->addAllowedTypes('standard', array('null', 'string'));
         $resolver->addAllowedTypes('show_warnings', array('bool'));
         $resolver->addAllowedTypes('tab_width', array('null', 'int'));
-        $resolver->addAllowedTypes('whitelist_path_pattern', array('null', 'string'));
+        $resolver->addAllowedTypes('whitelist_patterns', array('array'));
         $resolver->addAllowedTypes('ignore_patterns', array('array'));
         $resolver->addAllowedTypes('sniffs', array('array'));
         $resolver->addAllowedTypes('triggered_by', array('array'));
@@ -61,21 +61,23 @@ class Phpcs extends AbstractExternalTask
      */
     public function run(ContextInterface $context)
     {
+        /** @var array $config */
         $config = $this->getConfiguration();
+        /** @var array $whitelistPatterns */
+        $whitelistPatterns = $config['whitelist_patterns'];
+        /** @var array $extensions */
+        $extensions = $config['triggered_by'];
 
-        /** @var string|null $whitelistPathPattern */
-        $whitelistPathPattern = $this->getWhitelistPathPattern($config);
-        if (!$whitelistPathPattern) {
-            $files = $context->getFiles()->extensions($config['triggered_by']);
+        if (0 === count($whitelistPatterns)) {
+            $files = $context->getFiles()->extensions($extensions);
         } else {
-            $files = $context->getFiles()->path($whitelistPathPattern);
+            array_walk($whitelistPatterns, array($this, 'escapePatternDirectorySeparator'), $extensions);
+            $files = $context->getFiles()->paths($whitelistPatterns);
         }
 
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
-
-        $config = $this->getConfiguration();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('phpcs');
         $arguments->addOptionalArgument('--standard=%s', $config['standard']);
@@ -96,32 +98,14 @@ class Phpcs extends AbstractExternalTask
     }
 
     /**
-     * @param array $config
-     *
-     * @return null|string
-     */
-    protected function getWhitelistPathPattern(array $config)
-    {
-        /** @var string|null $whitelistPathPattern */
-        $whitelistPathPattern = $config['whitelist_path_pattern'];
-        if (!$whitelistPathPattern) {
-            return null;
-        }
-
-        $whitelistPathPattern = $this->escapePatternDirectorySeparator($whitelistPathPattern);
-        $whitelistPathPattern = '/'.$whitelistPathPattern.'.(%s)$/';
-        $whitelistPathPattern = sprintf($whitelistPathPattern, implode('|', $config['triggered_by']));
-
-        return $whitelistPathPattern;
-    }
-
-    /**
      * @param string $pattern
-     *
-     * @return string
+     * @param int $index
+     * @param array $extensions
      */
-    protected function escapePatternDirectorySeparator($pattern)
+    protected function escapePatternDirectorySeparator(&$pattern, $index, $extensions)
     {
-        return str_replace('/', '\\/', $pattern);
+        $pattern = str_replace('/', '\\/', $pattern);
+        $pattern = '/'.$pattern.'(%s)$/i';
+        $pattern = sprintf($pattern, implode('|', $extensions));
     }
 }
