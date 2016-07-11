@@ -45,6 +45,7 @@ class XmlLintSpec extends AbstractLinterTaskSpec
         $options->getDefinedOptions()->shouldContain('x_include');
         $options->getDefinedOptions()->shouldContain('dtd_validation');
         $options->getDefinedOptions()->shouldContain('scheme_validation');
+        $options->getDefinedOptions()->shouldContain('triggered_by');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)

@@ -41,12 +41,14 @@ class XmlLint extends AbstractLinterTask
             'x_include' => false,
             'dtd_validation' => false,
             'scheme_validation' => false,
+            'triggered_by' => array('xml'),
         ));
 
         $resolver->addAllowedTypes('load_from_net', array('bool'));
         $resolver->addAllowedTypes('x_include', array('bool'));
         $resolver->addAllowedTypes('dtd_validation', array('bool'));
         $resolver->addAllowedTypes('scheme_validation', array('bool'));
+        $resolver->addAllowedTypes('triggered_by', array('array'));
 
         return $resolver;
     }
@@ -64,12 +66,12 @@ class XmlLint extends AbstractLinterTask
      */
     public function run(ContextInterface $context)
     {
-        $files = $context->getFiles()->name('*.xml');
+        $config = $this->getConfiguration();
+        $files = $context->getFiles()->extensions($config['triggered_by']);
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 
-        $config = $this->getConfiguration();
         $this->linter->setLoadFromNet($config['load_from_net']);
         $this->linter->setXInclude($config['x_include']);
         $this->linter->setDtdValidation($config['dtd_validation']);
