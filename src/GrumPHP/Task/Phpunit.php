@@ -60,7 +60,7 @@ class Phpunit extends AbstractExternalTask
 
         $arguments = $this->processBuilder->createArgumentsForCommand('phpunit');
         $arguments->addOptionalArgument('--configuration=%s', $config['config_file']);
-        if(count($config['group']) > 0 ) {
+        if (count($config['group']) > 0) {
             $arguments->addOptionalArgument('--group=%s', implode(',', $config['group']));
         }
 
