@@ -29,9 +29,11 @@ class Phpunit extends AbstractExternalTask
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array(
             'config_file' => null,
+            'group' => null,
         ));
 
         $resolver->addAllowedTypes('config_file', array('null', 'string'));
+        $resolver->addAllowedTypes('group', array('null', 'array'));
 
         return $resolver;
     }
@@ -58,6 +60,9 @@ class Phpunit extends AbstractExternalTask
 
         $arguments = $this->processBuilder->createArgumentsForCommand('phpunit');
         $arguments->addOptionalArgument('--configuration=%s', $config['config_file']);
+        if(count($config['group']) > 0 ) {
+            $arguments->addOptionalArgument('--group=%s', implode(',', $config['group']));
+        }
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
