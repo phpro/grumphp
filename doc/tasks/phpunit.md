@@ -9,7 +9,7 @@ parameters:
     tasks:
         phpunit:
             config_file: ~
-            group: ~
+            group: []
 ```
 
 **config_file**
