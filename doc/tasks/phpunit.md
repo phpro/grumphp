@@ -22,7 +22,7 @@ This means that `phpunit.xml` or `phpunit.xml.dist` are automatically loaded if 
 
 **group**
 
-*Default: null*
+*Default: array()*
 
 If you wish to only run tests from a certain Group.
 `group: [fast,quick,small]`
