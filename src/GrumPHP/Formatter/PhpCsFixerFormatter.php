@@ -3,6 +3,7 @@
 namespace GrumPHP\Formatter;
 
 use Symfony\Component\Process\Process;
+use Symfony\Component\Process\ProcessUtils;
 
 /**
  * Class PhpCsFixerFormatter
@@ -50,7 +51,12 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
      */
     public function formatSuggestion(Process $process)
     {
-        return str_replace(array("'--dry-run' ", "'--format=json' "), '', $process->getCommandLine());
+        $pattern = '%s ';
+
+        $dryrun = sprintf($pattern, ProcessUtils::escapeArgument('--dry-run'));
+        $formatJson = sprintf($pattern, ProcessUtils::escapeArgument('--format=json'));
+
+        return str_replace(array($dryrun, $formatJson), '', $process->getCommandLine());
     }
 
     /**
