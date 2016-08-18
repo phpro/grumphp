@@ -6,6 +6,7 @@ use GrumPHP\Formatter\PhpCsFixerFormatter;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Process\ProcessUtils;
 
 /**
  * @mixin PhpCsFixerFormatter
@@ -16,7 +17,7 @@ class PhpCsFixerFormatterSpec extends ObjectBehavior
     {
         $this->shouldHaveType('GrumPHP\Formatter\PhpCsFixerFormatter');
     }
-    
+
     function it_is_a_process_formatter()
     {
         $this->shouldHaveType('GrumPHP\Formatter\ProcessFormatterInterface');
@@ -73,7 +74,12 @@ class PhpCsFixerFormatterSpec extends ObjectBehavior
 
     function it_formats_suggestions(Process $process)
     {
-        $process->getCommandLine()->willReturn('phpcsfixer \'--dry-run\' \'--format=json\' .');
+        $dryRun = ProcessUtils::escapeArgument('--dry-run');
+        $formatJson = ProcessUtils::escapeArgument('--format=json');
+
+        $command = sprintf('phpcsfixer %s %s .', $dryRun, $formatJson);
+
+        $process->getCommandLine()->willReturn($command);
         $this->formatSuggestion($process)->shouldReturn('phpcsfixer .');
     }
 
