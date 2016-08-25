@@ -2,14 +2,9 @@
 
 namespace spec\GrumPHP\Formatter;
 
-use GrumPHP\Collection\ProcessArgumentsCollection;
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\PhpcsFormatter;
-use GrumPHP\Process\ProcessBuilder;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\ProcessUtils;
 
 /**
  * @mixin PhpcsFormatter
