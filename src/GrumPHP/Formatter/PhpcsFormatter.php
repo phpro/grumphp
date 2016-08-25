@@ -46,7 +46,7 @@ class PhpcsFormatter implements ProcessFormatterInterface
             return $output;
         }
 
-        $this->output = substr($output, 0, $pos);
+        $this->output = trim(substr($output, 0, $pos));
         $this->suggestedFiles = $this->getSuggestedFilesFromJson($json);
 
         if (empty($this->suggestedFiles)) {
