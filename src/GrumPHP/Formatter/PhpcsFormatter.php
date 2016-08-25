@@ -22,7 +22,7 @@ class PhpcsFormatter implements ProcessFormatterInterface
     /**
      * @var string[]
      */
-    protected $suggestedFiles = [];
+    protected $suggestedFiles = array();
 
     /**
      * @param Process $process
@@ -62,7 +62,7 @@ class PhpcsFormatter implements ProcessFormatterInterface
      */
     public function getSuggestedFilesFromJson(array $json)
     {
-        $suggestedFiles = [];
+        $suggestedFiles = array();
         if (!isset($json['totals']) || $json['totals']['fixable'] == 0) {
             return $suggestedFiles;
         }
