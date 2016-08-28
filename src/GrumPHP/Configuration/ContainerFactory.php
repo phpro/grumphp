@@ -21,6 +21,7 @@ final class ContainerFactory
         $container = new ContainerBuilder();
         $container->addCompilerPass(new Compiler\ExtensionCompilerPass());
         $container->addCompilerPass(new Compiler\TaskCompilerPass());
+        $container->addCompilerPass(new Compiler\VisitorCompilerPass());
         $container->addCompilerPass(
             new RegisterListenersPass('event_dispatcher', 'grumphp.event_listener', 'grumphp.event_subscriber')
         );
@@ -29,10 +30,12 @@ final class ContainerFactory
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../../resources/config'));
         $loader->load('formatter.yml');
         $loader->load('linters.yml');
+        $loader->load('parsers.yml');
         $loader->load('parameters.yml');
         $loader->load('services.yml');
         $loader->load('subscribers.yml');
         $loader->load('tasks.yml');
+        $loader->load('visitors.yml');
         $loader->load('util.yml');
 
         // Load grumphp.yml file:

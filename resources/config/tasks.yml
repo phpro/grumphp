@@ -121,6 +121,14 @@ services:
         tags:
           - {name: grumphp.task, config: phpcsfixer}
 
+    task.phpparser:
+        class: GrumPHP\Task\Phpparser
+        arguments:
+            - '@config'
+            - '@parser.phpparser'
+        tags:
+          - {name: grumphp.task, config: php_parser}
+
     task.phpspec:
         class: GrumPHP\Task\Phpspec
         arguments:
