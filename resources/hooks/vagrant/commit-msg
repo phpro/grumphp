@@ -32,7 +32,7 @@ vagrant ssh --command '$(which sh)' << COMMANDS
 
   VAGRANT_COMMIT_MSG_FILE=\$(mktemp -t "grumphp-commitmsg.XXXXXXXXXX")
   echo "\${COMMIT_MSG}" > \$VAGRANT_COMMIT_MSG_FILE
-  echo "\${DIFF}" | exec $(HOOK_COMMAND) '--ansi' --git-user='$GIT_USER' --git-email='$GIT_EMAIL' \$VAGRANT_COMMIT_MSG_FILE
+  printf "%s\n" "\${DIFF}" | exec $(HOOK_COMMAND) '--ansi' --git-user='$GIT_USER' --git-email='$GIT_EMAIL' \$VAGRANT_COMMIT_MSG_FILE
   RC=\$?
   rm \$VAGRANT_COMMIT_MSG_FILE
   exit \$RC
