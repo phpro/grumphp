@@ -39,9 +39,9 @@ class PhpcsFormatter implements ProcessFormatterInterface
         $pos = strrpos($output, "\n");
         if ($pos === false) {
             return $output;
-        } else {
-            $lastLine = substr($output, $pos + 1);
         }
+        $lastLine = substr($output, $pos + 1);
+
         if (!$json = json_decode($lastLine, true)) {
             return $output;
         }
@@ -49,11 +49,7 @@ class PhpcsFormatter implements ProcessFormatterInterface
         $this->output = trim(substr($output, 0, $pos));
         $this->suggestedFiles = $this->getSuggestedFilesFromJson($json);
 
-        if (empty($this->suggestedFiles)) {
-            return $this->output;
-        }
-
-        return '';
+        return $this->output;
     }
 
     /**
@@ -87,10 +83,13 @@ class PhpcsFormatter implements ProcessFormatterInterface
      */
     public function formatErrorMessage(ProcessArgumentsCollection $defaultArguments, ProcessBuilder $processBuilder)
     {
+        if (empty($this->suggestedFiles)) {
+            return '';
+        }
         $defaultArguments->addArgumentArray('%s', $this->suggestedFiles);
         return sprintf(
             '%sYou can fix some errors by running following command:%s',
-            $this->output . PHP_EOL . PHP_EOL,
+            PHP_EOL . PHP_EOL,
             PHP_EOL . $processBuilder->buildProcess($defaultArguments)->getCommandLine()
         );
     }
