@@ -87,10 +87,12 @@ class Phpcs extends AbstractExternalTask
 
         if (!$process->isSuccessful()) {
             $output = $this->formatter->format($process);
-            if (!$output) {
+            try {
                 $arguments = $this->processBuilder->createArgumentsForCommand('phpcbf');
                 $arguments = $this->addArgumentsFromConfig($arguments, $config);
-                $output = $this->formatter->formatErrorMessage($arguments, $this->processBuilder);
+                $output .= $this->formatter->formatErrorMessage($arguments, $this->processBuilder);
+            } catch (\RuntimeException $exception) { // phpcbf could not get found.
+                $output .= PHP_EOL . 'Info: phpcbf could not get found. Please consider to install it for suggestions.';
             }
             return TaskResult::createFailed($this, $context, $output);
         }
