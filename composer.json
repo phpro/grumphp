@@ -40,7 +40,8 @@
         "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",
         "roave/security-advisories": "Lets GrumPHP be sure that there are no known security issues.",
         "sensiolabs/security-checker": "Lets GrumPHP be sure that there are no known security issues.",
-        "codeception/codeception": "Lets GrumPHP run your project's full stack tests"
+        "codeception/codeception": "Lets GrumPHP run your project's full stack tests",
+        "phpmd/phpmd": "Lets GrumPHP sort out the mess in your code"
     },
     "authors": [
         {
