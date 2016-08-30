@@ -23,6 +23,6 @@ The full list of rules/rulesets can be found at [PhpMd Rules](https://phpmd.org/
 
 **triggered_by**
 
-*Default: [php]:*
+*Default: [php]*
 
 This is a list of extensions to be sniffed. 
