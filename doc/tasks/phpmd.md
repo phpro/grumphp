@@ -14,7 +14,7 @@ parameters:
 
 **ruleset**
 
-*Default: cleancode,codesize,naming*
+*Default: [cleancode,codesize,naming]*
 
 With this parameter you will be able to configure the rule/rulesets you want to use. You can use the standard 
 sets provided by PhpMd or you can configure your own xml configuration as described in the [PhpMd Documentation](https://phpmd.org/documentation/creating-a-ruleset.html)
@@ -23,6 +23,6 @@ The full list of rules/rulesets can be found at [PhpMd Rules](https://phpmd.org/
 
 **triggered_by**
 
-*Default: [php]:
+*Default: [php]:*
 
 This is a list of extensions to be sniffed. 
