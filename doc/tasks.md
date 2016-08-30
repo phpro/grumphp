@@ -21,6 +21,7 @@ parameters:
         phing: ~
         phpcs: ~
         phpcsfixer: ~
+        phpmd: ~
         phpspec: ~
         phpunit: ~
         robo: ~
