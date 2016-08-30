@@ -51,6 +51,7 @@ To make GrumPHP even more awesome, it will suggest installing some extra package
 - squizlabs/php_codesniffer : ~2.3
 - codeception/codeception : ~2.1
 - sensiolabs/security-checker : ~3.0
+- phpmd/phpmd : ~2.4
 
 GrumPHP will never push you into using a specific task. You can choose the tasks that fit your needs, and activate or
 deactivate any task in no time!
@@ -93,6 +94,7 @@ parameters:
         phing: ~
         phpcs: ~
         phpcsfixer: ~
+        phpmd: ~
         phpspec: ~
         phpunit: ~
         robo: ~
@@ -138,7 +140,6 @@ This package has been tested with following git clients:
 
 Following tasks are still on the roadmap:
 
-- phpmd
 - phpcpd
 - phpdcd
 - twig lint
