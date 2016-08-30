@@ -49,6 +49,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Phpcs](tasks/phpcs.md)
 - [PHP-CS-Fixer](tasks/php_cs_fixer.md)
 - [Phpspec](tasks/phpspec.md)
+- [PhpMd](tasks/phpmd.md)
 - [Phpunit](tasks/phpunit.md)
 - [Robo](tasks/robo.md)
 - [Security Checker](tasks/security_checker.md)
