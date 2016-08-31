@@ -78,6 +78,7 @@ class PhpcsSpec extends ObjectBehavior
     {
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('phpcs')->willReturn($arguments);
+        $processBuilder->createArgumentsForCommand('phpcbf')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
         $process->run()->shouldNotBeCalled();
@@ -95,6 +96,7 @@ class PhpcsSpec extends ObjectBehavior
     {
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('phpcs')->willReturn($arguments);
+        $processBuilder->createArgumentsForCommand('phpcbf')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
         $process->run()->shouldBeCalled();

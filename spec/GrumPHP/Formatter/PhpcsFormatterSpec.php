@@ -2,7 +2,9 @@
 
 namespace spec\GrumPHP\Formatter;
 
+use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Formatter\PhpcsFormatter;
+use GrumPHP\Process\ProcessBuilder;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Process\Process;
 
@@ -34,23 +36,49 @@ class PhpcsFormatterSpec extends ObjectBehavior
         $this->format($process)->shouldReturn('invalid');
     }
 
-    function it_formats_phpcs_json_output_for_single_file(Process $process)
+    function it_formats_phpcs_json_output_for_single_file(Process $process, ProcessBuilder $processBuilder)
     {
         $json = $this->parseJson(array(
-            '/filePath' => array('messages' => array('fixable' => true), ),
+            '/filePath' => array('messages' => array(array('fixable' => true),),),
         ));
-        $process->getOutput()->willReturn($json);
-        $this->format($process)->shouldBe('');
+
+        $arguments = new ProcessArgumentsCollection();
+        $process->getOutput()->willReturn('something' . PHP_EOL . 'something' . $json);
+        $this->format($process)->shouldBe('something' . PHP_EOL . 'something');
+
+        $this->getSuggestedFilesFromJson(json_decode($json, true))->shouldBe(array('/filePath'));
+
+        $processBuilder->buildProcess($arguments)->willReturn($process);
+        $process->getCommandLine()->shouldBeCalled();
+        $this->formatErrorMessage($arguments, $processBuilder)
+            ->shouldBe(sprintf(
+                '%sYou can fix some errors by running following command:%s',
+                PHP_EOL . PHP_EOL,
+                PHP_EOL . ''
+            ));
     }
 
-    function it_formats_phpcs_json_output_for_multiple_files(Process $process)
+    function it_formats_phpcs_json_output_for_multiple_files(Process $process, ProcessBuilder $processBuilder)
     {
         $json = $this->parseJson(array(
-            '/filePath' => array('messages' => array('fixable' => true), ),
-            '/filePath2' => array('messages' => array('fixable' => false), ),
+            '/filePath' => array('messages' => array(array('fixable' => true),),),
+            '/filePath2' => array('messages' => array(array('fixable' => false),),),
         ));
-        $process->getOutput()->willReturn($json);
-        $this->format($process)->shouldBe('');
+
+        $arguments = new ProcessArgumentsCollection(array('phpcbf'));
+        $process->getOutput()->willReturn('something' . PHP_EOL . 'something' . $json);
+        $this->format($process)->shouldBe('something' . PHP_EOL . 'something');
+
+        $this->getSuggestedFilesFromJson(json_decode($json, true))->shouldBe(array('/filePath'));
+
+        $processBuilder->buildProcess($arguments)->willReturn($process);
+        $process->getCommandLine()->willReturn();
+        $this->formatErrorMessage($arguments, $processBuilder)
+            ->shouldBe(sprintf(
+                '%sYou can fix some errors by running following command:%s',
+                PHP_EOL . PHP_EOL,
+                PHP_EOL . ''
+            ));
     }
 
     /**
@@ -60,9 +88,18 @@ class PhpcsFormatterSpec extends ObjectBehavior
      */
     private function parseJson(array $files)
     {
+        $fixable = 0;
+        foreach ($files as $file) {
+            foreach ($file['messages'] as $message) {
+                if ($message['fixable']) {
+                    $fixable++;
+                    break;
+                }
+            }
+        }
         return PHP_EOL . json_encode(array(
             'totals' => array(
-                'fixable' => 1
+                'fixable' => $fixable
             ),
             'files' => $files
         ));
