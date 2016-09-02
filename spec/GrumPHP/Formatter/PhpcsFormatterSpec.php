@@ -39,14 +39,14 @@ class PhpcsFormatterSpec extends ObjectBehavior
     function it_formats_phpcs_json_output_for_single_file(Process $process, ProcessBuilder $processBuilder)
     {
         $json = $this->parseJson(array(
-            '/filePath' => array('messages' => array(array('fixable' => true),),),
+            '/var/www/Classes/Command/CacheCommandController.php' => array('messages' => array(array('fixable' => true),),),
         ));
 
         $arguments = new ProcessArgumentsCollection();
-        $process->getOutput()->willReturn('something' . PHP_EOL . 'something' . $json);
-        $this->format($process)->shouldBe('something' . PHP_EOL . 'something');
+        $process->getOutput()->willReturn($this->getExampleData() . $json);
+        $this->format($process)->shouldBe($this->getExampleData());
 
-        $this->getSuggestedFilesFromJson(json_decode($json, true))->shouldBe(array('/filePath'));
+        $this->getSuggestedFilesFromJson(json_decode($json, true))->shouldBe(array('/var/www/Classes/Command/CacheCommandController.php'));
 
         $processBuilder->buildProcess($arguments)->willReturn($process);
         $process->getCommandLine()->shouldBeCalled();
@@ -61,15 +61,15 @@ class PhpcsFormatterSpec extends ObjectBehavior
     function it_formats_phpcs_json_output_for_multiple_files(Process $process, ProcessBuilder $processBuilder)
     {
         $json = $this->parseJson(array(
-            '/filePath' => array('messages' => array(array('fixable' => true),),),
-            '/filePath2' => array('messages' => array(array('fixable' => false),),),
+            '/var/www/Classes/Command/CacheCommandController.php' => array('messages' => array(array('fixable' => true),),),
+            '/var/www/Classes/Command/DebugCommandController.php' => array('messages' => array(array('fixable' => false),),),
         ));
 
         $arguments = new ProcessArgumentsCollection(array('phpcbf'));
-        $process->getOutput()->willReturn('something' . PHP_EOL . 'something' . $json);
-        $this->format($process)->shouldBe('something' . PHP_EOL . 'something');
+        $process->getOutput()->willReturn($this->getExampleData() . $json);
+        $this->format($process)->shouldBe($this->getExampleData());
 
-        $this->getSuggestedFilesFromJson(json_decode($json, true))->shouldBe(array('/filePath'));
+        $this->getSuggestedFilesFromJson(json_decode($json, true))->shouldBe(array('/var/www/Classes/Command/CacheCommandController.php'));
 
         $processBuilder->buildProcess($arguments)->willReturn($process);
         $process->getCommandLine()->willReturn();
@@ -103,5 +103,23 @@ class PhpcsFormatterSpec extends ObjectBehavior
             ),
             'files' => $files
         ));
+    }
+
+    private function getExampleData(){
+        return  <<<EOD
+FILE: /var/www/Classes/Command/CacheCommandController.php
+----------------------------------------------------------------------
+FOUND 4 ERRORS AFFECTING 3 LINES
+----------------------------------------------------------------------
+ 28 | ERROR | [x] Opening brace of a class must be on the line after
+    |       |     the definition
+ 36 | ERROR | [x] Opening brace should be on a new line
+ 49 | ERROR | [x] Expected 1 newline at end of file; 0 found
+ 49 | ERROR | [x] The closing brace for the class must go on the next
+    |       |     line after the body
+----------------------------------------------------------------------
+PHPCBF CAN FIX THE 4 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+----------------------------------------------------------------------
+EOD;
     }
 }
