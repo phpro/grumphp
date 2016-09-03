@@ -49,12 +49,12 @@ class PhpcsFormatterSpec extends ObjectBehavior
         $this->getSuggestedFilesFromJson(json_decode($json, true))->shouldBe(array('/var/www/Classes/Command/CacheCommandController.php'));
 
         $processBuilder->buildProcess($arguments)->willReturn($process);
-        $process->getCommandLine()->shouldBeCalled();
+        $process->getCommandLine()->willReturn("'phpcbf' '--standard=PSR2' '--ignore=spec/*Spec.php,test/*.php' '/var/www/Classes/Command/CacheCommandController.php'");
         $this->formatErrorMessage($arguments, $processBuilder)
             ->shouldBe(sprintf(
                 '%sYou can fix some errors by running following command:%s',
                 PHP_EOL . PHP_EOL,
-                PHP_EOL . ''
+                PHP_EOL . "'phpcbf' '--standard=PSR2' '--ignore=spec/*Spec.php,test/*.php' '/var/www/Classes/Command/CacheCommandController.php'"
             ));
     }
 
@@ -72,12 +72,12 @@ class PhpcsFormatterSpec extends ObjectBehavior
         $this->getSuggestedFilesFromJson(json_decode($json, true))->shouldBe(array('/var/www/Classes/Command/CacheCommandController.php'));
 
         $processBuilder->buildProcess($arguments)->willReturn($process);
-        $process->getCommandLine()->willReturn();
+        $process->getCommandLine()->willReturn("'phpcbf' '--standard=PSR2' '--ignore=spec/*Spec.php,test/*.php' '/var/www/Classes/Command/CacheCommandController.php'");
         $this->formatErrorMessage($arguments, $processBuilder)
             ->shouldBe(sprintf(
                 '%sYou can fix some errors by running following command:%s',
                 PHP_EOL . PHP_EOL,
-                PHP_EOL . ''
+                PHP_EOL . "'phpcbf' '--standard=PSR2' '--ignore=spec/*Spec.php,test/*.php' '/var/www/Classes/Command/CacheCommandController.php'"
             ));
     }
 
@@ -105,8 +105,9 @@ class PhpcsFormatterSpec extends ObjectBehavior
         ));
     }
 
-    private function getExampleData(){
-        return  <<<EOD
+    private function getExampleData()
+    {
+        return <<<EOD
 FILE: /var/www/Classes/Command/CacheCommandController.php
 ----------------------------------------------------------------------
 FOUND 4 ERRORS AFFECTING 3 LINES

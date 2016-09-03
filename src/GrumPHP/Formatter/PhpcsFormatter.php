@@ -5,7 +5,6 @@ namespace GrumPHP\Formatter;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Process\ProcessBuilder;
 use Symfony\Component\Process\Process;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class PhpcsFormatter
