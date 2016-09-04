@@ -120,11 +120,11 @@ class ComposerSpec extends ObjectBehavior
     {
         $composerFile = tempnam(sys_get_temp_dir(), 'grumphp-composer');
         $grumPHP->getTaskConfiguration('composer')->willReturn(array(
-            'file' => $composerFile,
+            'file' => str_replace('\\', '/', $composerFile),
             'no_local_repository' => true
         ));
 
-        file_put_contents($composerFile, '{"name": "tmp/test", "repositories": [{"type": "path", "url": "/"}]}');
+        file_put_contents($composerFile, '{"repositories": [{"type": "path", "url": "/"}]}');
 
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('composer')->willReturn($arguments);
@@ -154,11 +154,11 @@ class ComposerSpec extends ObjectBehavior
     {
         $composerFile = tempnam(sys_get_temp_dir(), 'grumphp-composer');
         $grumPHP->getTaskConfiguration('composer')->willReturn(array(
-            'file' => $composerFile,
+            'file' => str_replace('\\', '/', $composerFile),
             'no_local_repository' => true
         ));
 
-        file_put_contents($composerFile, '{"name": "tmp/test", "repositories": [{"type": "vcs", "url": "/"}]}');
+        file_put_contents($composerFile, '{"repositories": [{"type": "vcs", "url": "/"}]}');
 
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('composer')->willReturn($arguments);
