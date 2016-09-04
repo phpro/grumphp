@@ -13,6 +13,7 @@ parameters:
             no_check_all: false
             no_check_lock: false
             no_check_publish: false
+            no_local_repository: false
             with_dependencies: false
             strict: false
 ```
@@ -43,6 +44,13 @@ Do not emit an error if composer.lock exists and is not up to date.
 *Default: false*
 
 Do not emit an error if composer.json is unsuitable for publishing as a package on Packagist but is otherwise valid.
+
+
+**no_local_repository**
+
+*Default: false*
+
+Do emit an error if composer.json declares local repositories (see https://getcomposer.org/doc/05-repositories.md#path).
 
 
 **with_dependencies**
