@@ -46,6 +46,7 @@ class ComposerSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('no_check_all');
         $options->getDefinedOptions()->shouldContain('no_check_lock');
         $options->getDefinedOptions()->shouldContain('no_check_publish');
+        $options->getDefinedOptions()->shouldContain('no_local_repository');
         $options->getDefinedOptions()->shouldContain('with_dependencies');
         $options->getDefinedOptions()->shouldContain('strict');
     }
@@ -108,5 +109,72 @@ class ComposerSpec extends ObjectBehavior
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
         $result->isPassed()->shouldBe(false);
+    }
+
+    function it_fails_when_it_has_local_repositories(
+        GrumPHP $grumPHP,
+        ProcessBuilder $processBuilder,
+        Process $process,
+        ContextInterface $context
+    )
+    {
+        $composerFile = tempnam(sys_get_temp_dir(), 'grumphp-composer');
+        $grumPHP->getTaskConfiguration('composer')->willReturn(array(
+            'file' => str_replace('\\', '/', $composerFile),
+            'no_local_repository' => true
+        ));
+
+        file_put_contents($composerFile, '{"repositories": [{"type": "path", "url": "/"}]}');
+
+        $arguments = new ProcessArgumentsCollection();
+        $processBuilder->createArgumentsForCommand('composer')->willReturn($arguments);
+        $processBuilder->buildProcess($arguments)->willReturn($process);
+
+        $process->run()->shouldBeCalled();
+        $process->isSuccessful()->willReturn(true);
+
+        $context->getFiles()->willReturn(new FilesCollection(array(
+            new SplFileInfo($composerFile, '.', $composerFile)
+        )));
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->isPassed()->shouldBe(false);
+
+        unlink($composerFile);
+    }
+
+
+    function it_succeeds_when_it_has_no_local_repositories(
+        GrumPHP $grumPHP,
+        ProcessBuilder $processBuilder,
+        Process $process,
+        ContextInterface $context
+    )
+    {
+        $composerFile = tempnam(sys_get_temp_dir(), 'grumphp-composer');
+        $grumPHP->getTaskConfiguration('composer')->willReturn(array(
+            'file' => str_replace('\\', '/', $composerFile),
+            'no_local_repository' => true
+        ));
+
+        file_put_contents($composerFile, '{"repositories": [{"type": "vcs", "url": "/"}]}');
+
+        $arguments = new ProcessArgumentsCollection();
+        $processBuilder->createArgumentsForCommand('composer')->willReturn($arguments);
+        $processBuilder->buildProcess($arguments)->willReturn($process);
+
+        $process->run()->shouldBeCalled();
+        $process->isSuccessful()->willReturn(true);
+
+        $context->getFiles()->willReturn(new FilesCollection(array(
+            new SplFileInfo($composerFile, '.', $composerFile)
+        )));
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->isPassed()->shouldBe(true);
+
+        unlink($composerFile);
     }
 }

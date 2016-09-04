@@ -7,6 +7,7 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use SplFileInfo;
 
 /**
  * Composer task
@@ -34,6 +35,7 @@ class Composer extends AbstractExternalTask
             'no_check_all' => false,
             'no_check_lock' => false,
             'no_check_publish'  => false,
+            'no_local_repository' => false,
             'with_dependencies' => false,
             'strict' => false
         ));
@@ -42,6 +44,7 @@ class Composer extends AbstractExternalTask
         $resolver->addAllowedTypes('no_check_all', array('bool'));
         $resolver->addAllowedTypes('no_check_lock', array('bool'));
         $resolver->addAllowedTypes('no_check_publish', array('bool'));
+        $resolver->addAllowedTypes('no_local_repository', array('bool'));
         $resolver->addAllowedTypes('with_dependencies', array('bool'));
         $resolver->addAllowedTypes('strict', array('bool'));
 
@@ -86,6 +89,31 @@ class Composer extends AbstractExternalTask
             return TaskResult::createFailed($this, $context, $this->formatter->format($process));
         }
 
+        if ($config['no_local_repository'] && $this->hasLocalRepository($files->first())) {
+            return TaskResult::createFailed($this, $context, 'You have at least one local repository declared.');
+        }
+
         return TaskResult::createPassed($this, $context);
+    }
+
+    /**
+     * Checks if composer.local host one or more local repositories.
+     *
+     * @param SplFileInfo $composerFile
+     *
+     * @return bool
+     */
+    private function hasLocalRepository(SplFileInfo $composerFile)
+    {
+        $json = file_get_contents($composerFile->getRealPath());
+        $package = json_decode($json, true);
+
+        foreach ($package['repositories'] as $repository) {
+            if ($repository['type'] === 'path') {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
