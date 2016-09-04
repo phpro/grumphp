@@ -5,7 +5,7 @@ namespace spec\GrumPHP\Task;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Configuration\GrumPHP;
-use GrumPHP\Formatter\ProcessFormatterInterface;
+use GrumPHP\Formatter\PhpcsFormatter;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
@@ -23,7 +23,7 @@ use Symfony\Component\Process\Process;
 class PhpcsSpec extends ObjectBehavior
 {
 
-    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
+    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, PhpcsFormatter $formatter)
     {
         $grumPHP->getTaskConfiguration('phpcs')->willReturn(array());
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
@@ -78,6 +78,7 @@ class PhpcsSpec extends ObjectBehavior
     {
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('phpcs')->willReturn($arguments);
+        $processBuilder->createArgumentsForCommand('phpcbf')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
         $process->run()->shouldNotBeCalled();
@@ -95,6 +96,7 @@ class PhpcsSpec extends ObjectBehavior
     {
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('phpcs')->willReturn($arguments);
+        $processBuilder->createArgumentsForCommand('phpcbf')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
         $process->run()->shouldBeCalled();
@@ -117,6 +119,7 @@ class PhpcsSpec extends ObjectBehavior
     ) {
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('phpcs')->willReturn($arguments);
+        $processBuilder->createArgumentsForCommand('phpcbf')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
         $process->run()->shouldBeCalled();
