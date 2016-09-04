@@ -21,6 +21,7 @@ parameters:
         phing: ~
         phpcs: ~
         phpcsfixer: ~
+        phpcsfixer2: ~
         phpmd: ~
         phpspec: ~
         phpunit: ~
@@ -49,6 +50,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Phing](tasks/phing.md)
 - [Phpcs](tasks/phpcs.md)
 - [PHP-CS-Fixer](tasks/php_cs_fixer.md)
+- [PHP-CS-Fixer 2](tasks/php_cs_fixer2.md)
 - [PhpMd](tasks/phpmd.md)
 - [Phpspec](tasks/phpspec.md)
 - [Phpunit](tasks/phpunit.md)
