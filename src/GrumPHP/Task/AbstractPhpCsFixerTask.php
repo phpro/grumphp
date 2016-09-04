@@ -4,13 +4,49 @@ namespace GrumPHP\Task;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
+use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Formatter\PhpCsFixerFormatter;
+use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 
-trait PhpCsFixerTrait
+/**
+ * Class PhpCsFixerRunner
+ *
+ * @package GrumPHP\Task
+ */
+abstract class AbstractPhpCsFixerTask implements TaskInterface
 {
+    /**
+     * @var GrumPHP
+     */
+    protected $grumPHP;
+
+    /**
+     * @var ProcessBuilder
+     */
+    protected $processBuilder;
+
+    /**
+     * @var PhpCsFixerFormatter
+     */
+    protected $formatter;
+
+    /**
+     * PhpCsFixerRunner constructor.
+     *
+     * @param GrumPHP             $grumPHP
+     * @param ProcessBuilder      $processBuilder
+     * @param PhpCsFixerFormatter $formatter
+     */
+    public function __construct(GrumPHP $grumPHP, ProcessBuilder $processBuilder, PhpCsFixerFormatter $formatter)
+    {
+        $this->processBuilder = $processBuilder;
+        $this->formatter = $formatter;
+        $this->grumPHP = $grumPHP;
+    }
 
     /**
      * {@inheritdoc}
@@ -20,6 +56,15 @@ trait PhpCsFixerTrait
         return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfiguration()
+    {
+        $configured = $this->grumPHP->getTaskConfiguration($this->getName());
+
+        return $this->getConfigurableOptions()->resolve($configured);
+    }
 
     /**
      * @param ContextInterface           $context

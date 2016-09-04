@@ -2,27 +2,16 @@
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Collection\FilesCollection;
-use GrumPHP\Collection\ProcessArgumentsCollection;
-use GrumPHP\Formatter\PhpCsFixerFormatter;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
-use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Php-cs-fixer task
  */
-class PhpCsFixer extends AbstractExternalTask
+class PhpCsFixer extends AbstractPhpCsFixerTask
 {
-    use PhpCsFixerTrait;
-
-    /**
-     * @var PhpCsFixerFormatter
-     */
-    protected $formatter;
-
     /**
      * @return string
      */
