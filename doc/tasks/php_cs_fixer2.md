@@ -7,7 +7,7 @@ It lives under the `phpcsfixer2` namespace and has following configurable parame
 # grumphp.yml
 parameters:
     tasks:
-        phpcsfixer:
+        phpcsfixer2:
             allow_risky: false
             cache_file: ~
             config: ~
@@ -20,7 +20,7 @@ parameters:
 
 **allow_risky**
 
-*Default: null*
+*Default: false*
 
 The allow_risky option allows you to set whether riskys fixer may run. 
 Risky fixer is a fixer, which could change code behaviour. 
