@@ -9,7 +9,7 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Git Blacklist Task
+ * Git Conflict Task
  *
  * @package GrumPHP\Task\Git
  */
