@@ -88,6 +88,7 @@ parameters:
         gherkin: ~
         git_blacklist: ~
         git_commit_message: ~
+        git_conflict: ~
         grunt: ~
         gulp: ~
         jsonlint: ~
