@@ -69,7 +69,7 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
         $arguments->addOptionalArgument('--cache-file=%s', $config['cache_file']);
         $arguments->addOptionalArgument('--config=%s', $config['config']);
         $arguments->addOptionalCommaSeparatedArgument('--rules=%s', $config['rules']);
-        $arguments->addOptionalArgument('--using-cache', $config['using_cache'] ? 'yes' : 'no');
+        $arguments->addOptionalArgument('--using-cache=%s', $config['using_cache'] ? 'yes' : 'no');
         $arguments->addOptionalArgument('--path-mode=%s', $config['path_mode']);
         $arguments->addOptionalArgument('--verbose', $config['verbose']);
         $arguments->add('fix');
