@@ -9,6 +9,7 @@ parameters:
         phplint:
             exclude: []
             jobs: ~
+            triggered_by: ['php']
 ```
 **exclude**
 
@@ -24,3 +25,9 @@ directories you wish to exclude, such as the vendor directory.
 The number of jobs you wish to use for parallel processing. If no number
 is given, it is left up to parallel-lint itself, which currently
 defaults to 10.
+
+**trigered_by**
+
+*Default: ['php']*
+
+Any file extensions that you wish to be passed to the linter.

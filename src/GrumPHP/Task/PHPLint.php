@@ -31,10 +31,12 @@ class PHPLint extends AbstractExternalTask
         $resolver->setDefaults(array(
             'jobs' => null,
             'exclude' => array(),
+            'triggered_by' => array('php'),
         ));
 
         $resolver->setAllowedTypes('jobs', array('int', 'null'));
         $resolver->setAllowedTypes('exclude', 'array');
+        $resolver->setAllowedTypes('triggered_by', 'array');
 
         return $resolver;
     }
@@ -52,11 +54,8 @@ class PHPLint extends AbstractExternalTask
      */
     public function run(ContextInterface $context)
     {
-        $fileNames = array_map(function (\SplFileInfo $file) {
-            return $file->getPathname();
-        }, iterator_to_array($context->getFiles()->extensions(array('php'))));
-
         $config = $this->getConfiguration();
+        $files  = $context->getFiles()->extensions($config['triggered_by']);
 
         $args = $this->processBuilder->createArgumentsForCommand('parallel-lint');
         $args->add('--no-colors');
@@ -65,7 +64,9 @@ class PHPLint extends AbstractExternalTask
             $args->add($config['jobs']);
         }
         $args->addArgumentArrayWithSeparatedValue('--exclude', $config['exclude']);
-        $args->addArgumentArray('%s', $fileNames);
+        $args->add('-e');
+        $args->addOptionalCommaSeparatedArgument('%s', $config['triggered_by']);
+        $args->addFiles($files);
 
         $process = $this->processBuilder->buildProcess($args);
         $process->run();

@@ -39,6 +39,7 @@ class PHPLintSpec extends ObjectBehavior
         $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
         $options->getDefinedOptions()->shouldContain('jobs');
         $options->getDefinedOptions()->shouldContain('exclude');
+        $options->getDefinedOptions()->shouldContain('triggered_by');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
