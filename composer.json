@@ -43,7 +43,7 @@
         "sensiolabs/security-checker": "Lets GrumPHP be sure that there are no known security issues.",
         "codeception/codeception": "Lets GrumPHP run your project's full stack tests",
         "phpmd/phpmd": "Lets GrumPHP sort out the mess in your code",
-		"jakub-onderka/php-parallel-lint": "Lets GrumPHP quickly lint your entire code base."
+        "jakub-onderka/php-parallel-lint": "Lets GrumPHP quickly lint your entire code base."
     },
     "authors": [
         {
