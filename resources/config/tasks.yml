@@ -130,6 +130,15 @@ services:
         tags:
           - {name: grumphp.task, config: phpcsfixer2}
 
+    task.phplint:
+        class: GrumPHP\Task\PHPLint
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: phplint}
+
     task.phpmd:
         class: GrumPHP\Task\PhpMd
         arguments:
