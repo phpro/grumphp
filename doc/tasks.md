@@ -24,6 +24,7 @@ parameters:
         phpcsfixer: ~
         phpcsfixer2: ~
         phpmd: ~
+        phplint: ~
         phpspec: ~
         phpunit: ~
         robo: ~
@@ -54,6 +55,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [PHP-CS-Fixer](tasks/php_cs_fixer.md)
 - [PHP-CS-Fixer 2](tasks/php_cs_fixer2.md)
 - [PhpMd](tasks/phpmd.md)
+- [PHPLint](tasks/phplint.md)
 - [Phpspec](tasks/phpspec.md)
 - [Phpunit](tasks/phpunit.md)
 - [Robo](tasks/robo.md)
@@ -64,7 +66,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 
 ## Metadata
 
-Every task has a pre-defined `metadata` key on which application specific options can be configured. 
+Every task has a pre-defined `metadata` key on which application specific options can be configured.
 For example:
 
 ```yaml
@@ -89,7 +91,7 @@ The higher the priority, the sooner the task will be executed.
 
 *Default: true*
 
-This option can be used to make a failing task non-blocking. 
+This option can be used to make a failing task non-blocking.
 By default all tasks will be marked as blocking.
 When a task is non-blocking, the errors will be displayed but the tests will pass.
 
