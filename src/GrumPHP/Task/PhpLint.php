@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * PHP parallel lint task.
  */
-class PHPLint extends AbstractExternalTask
+class PhpLint extends AbstractExternalTask
 {
     /**
      * @return string
@@ -31,7 +31,7 @@ class PHPLint extends AbstractExternalTask
         $resolver->setDefaults(array(
             'jobs' => null,
             'exclude' => array(),
-            'triggered_by' => array('php'),
+            'triggered_by' => array('php', 'phtml', 'php3', 'php4', 'php5'),
         ));
 
         $resolver->setAllowedTypes('jobs', array('int', 'null'));
@@ -57,18 +57,13 @@ class PHPLint extends AbstractExternalTask
         $config = $this->getConfiguration();
         $files  = $context->getFiles()->extensions($config['triggered_by']);
 
-        $args = $this->processBuilder->createArgumentsForCommand('parallel-lint');
-        $args->add('--no-colors');
-        if (!empty($config['jobs'])) {
-            $args->add('-j');
-            $args->add($config['jobs']);
-        }
-        $args->addArgumentArrayWithSeparatedValue('--exclude', $config['exclude']);
-        $args->add('-e');
-        $args->addOptionalCommaSeparatedArgument('%s', $config['triggered_by']);
-        $args->addFiles($files);
+        $arguments = $this->processBuilder->createArgumentsForCommand('parallel-lint');
+        $arguments->add('--no-colors');
+        $arguments->addOptionalArgumentWithSeparatedValue('-j', $config['jobs']);
+        $arguments->addArgumentArrayWithSeparatedValue('--exclude', $config['exclude']);
+        $arguments->addFiles($files);
 
-        $process = $this->processBuilder->buildProcess($args);
+        $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
 
         if (!$process->isSuccessful()) {

@@ -9,7 +9,7 @@ parameters:
         phplint:
             exclude: []
             jobs: ~
-            triggered_by: ['php']
+            triggered_by: ['php', 'phtml', 'php3', 'php4', 'php5']
 ```
 **exclude**
 
@@ -28,6 +28,6 @@ defaults to 10.
 
 **trigered_by**
 
-*Default: ['php']*
+*Default: ['php', 'phtml', 'php3', 'php4', 'php5']*
 
 Any file extensions that you wish to be passed to the linter.

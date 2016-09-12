@@ -14,7 +14,7 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 
-class PHPLintSpec extends ObjectBehavior
+class PhpLintSpec extends ObjectBehavior
 {
 
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
@@ -25,7 +25,7 @@ class PHPLintSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\PHPLint');
+        $this->shouldHaveType('GrumPHP\Task\PhpLint');
     }
 
     function it_should_have_a_name()
