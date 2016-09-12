@@ -7,21 +7,12 @@ The PHPLint task will check your source files for syntax errors.
 parameters:
     tasks:
         phplint:
-            to_check: [ '.' ]
             exclude: []
             jobs: ~
 ```
-
-**to_check**
-
-*Default: project root*
-
-The directories to check. By default, it checks the entire repository,
-but you can fine-tune this as needed.
-
 **exclude**
 
-*Default: array()*
+*Default: []*
 
 Any directories to be excluded from linting. You can specify which
 directories you wish to exclude, such as the vendor directory.
