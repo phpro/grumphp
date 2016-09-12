@@ -131,7 +131,7 @@ services:
           - {name: grumphp.task, config: phpcsfixer2}
 
     task.phplint:
-        class: GrumPHP\Task\PHPLint
+        class: GrumPHP\Task\PhpLint
         arguments:
             - '@config'
             - '@process_builder'
