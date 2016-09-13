@@ -64,7 +64,7 @@ Having trouble installing GrumPHP? Find out how to:
 
 ## Configuration
 
-Some things in GrumPHP can be configured in a `grumphp.yml` or `grumphp.yml.dist` file in the root of your project (the directory where you run the grumphp command). 
+Some things in GrumPHP can be configured in a `grumphp.yml` or `grumphp.yml.dist` file in the root of your project (the directory where you run the grumphp command).
 You can specify a custom config filename and location in `composer.json` or in the `--config` option of the console commands.
 
 ```yaml
@@ -96,6 +96,7 @@ parameters:
         phpcs: ~
         phpcsfixer: ~
         phpcsfixer2: ~
+        phplint: ~
         phpmd: ~
         phpspec: ~
         phpunit: ~

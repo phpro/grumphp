@@ -37,6 +37,20 @@ class ProcessArgumentsCollection extends ArrayCollection
 
     /**
      * @param string $argument
+     * @param string $value
+     */
+    public function addOptionalArgumentWithSeparatedValue($argument, $value)
+    {
+        if (!$value) {
+            return;
+        }
+
+        $this->add($argument);
+        $this->add($value);
+    }
+
+    /**
+     * @param string $argument
      * @param array  $values
      * @param string $delimiter
      */

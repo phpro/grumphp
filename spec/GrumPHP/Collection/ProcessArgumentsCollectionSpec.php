@@ -34,6 +34,15 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
         $this->getValues()->shouldBe(array('--argument=value'));
     }
 
+    function it_should_be_able_to_add_optional_argument_with_separated_value()
+    {
+        $this->addOptionalArgumentWithSeparatedValue('--argument', null);
+        $this->getValues()->shouldBe(array());
+
+        $this->addOptionalArgumentWithSeparatedValue('--argument', 'value');
+        $this->getValues()->shouldBe(array('--argument', 'value'));
+    }
+
     function it_should_be_able_to_add_optional_comma_separated_argument()
     {
         $this->addOptionalCommaSeparatedArgument('--argument=%s', array());

@@ -27,7 +27,8 @@
         "squizlabs/php_codesniffer": "~2.3",
         "friendsofphp/php-cs-fixer": "~1|~2",
         "phpunit/phpunit": "^4.8",
-        "sensiolabs/security-checker": "^3.0"
+        "sensiolabs/security-checker": "^3.0",
+        "jakub-onderka/php-parallel-lint": "^0.9.2"
     },
     "suggest": {
         "behat/behat": "Lets GrumPHP validate your project features.",
@@ -41,7 +42,8 @@
         "roave/security-advisories": "Lets GrumPHP be sure that there are no known security issues.",
         "sensiolabs/security-checker": "Lets GrumPHP be sure that there are no known security issues.",
         "codeception/codeception": "Lets GrumPHP run your project's full stack tests",
-        "phpmd/phpmd": "Lets GrumPHP sort out the mess in your code"
+        "phpmd/phpmd": "Lets GrumPHP sort out the mess in your code",
+        "jakub-onderka/php-parallel-lint": "Lets GrumPHP quickly lint your entire code base."
     },
     "authors": [
         {
