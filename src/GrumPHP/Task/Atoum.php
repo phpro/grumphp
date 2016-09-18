@@ -30,20 +30,20 @@ class Atoum extends AbstractExternalTask
         $resolver->setDefaults(array(
             'config_file' => null,
             'bootstrap_file' => null,
-            'directories' => null,
-            'files' => null,
-            'namespaces' => null,
-            'methods' => null,
-            'tags' => null,
+            'directories' => array(),
+            'files' => array(),
+            'namespaces' => array(),
+            'methods' => array(),
+            'tags' => array(),
         ));
 
         $resolver->addAllowedTypes('config_file', array('null', 'string'));
         $resolver->addAllowedTypes('bootstrap_file', array('null', 'string'));
-        $resolver->addAllowedTypes('directories', array('null', 'string'));
-        $resolver->addAllowedTypes('files', array('null', 'string'));
-        $resolver->addAllowedTypes('namespaces', array('null', 'string'));
-        $resolver->addAllowedTypes('methods', array('null', 'string'));
-        $resolver->addAllowedTypes('tags', array('null', 'string'));
+        $resolver->addAllowedTypes('directories', array('array'));
+        $resolver->addAllowedTypes('files', array('array'));
+        $resolver->addAllowedTypes('namespaces', array('array'));
+        $resolver->addAllowedTypes('methods', array('array'));
+        $resolver->addAllowedTypes('tags', array('array'));
 
         return $resolver;
     }
@@ -69,27 +69,13 @@ class Atoum extends AbstractExternalTask
         $config = $this->getConfiguration();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('atoum');
-        if ($config['config_file']) {
-            $arguments->addArgumentArrayWithSeparatedValue('-c', array($config['config_file']));
-        }
-        if ($config['bootstrap_file']) {
-            $arguments->addArgumentArrayWithSeparatedValue('--bootstrap-file', array($config['bootstrap_file']));
-        }
-        if ($config['directories']) {
-            $arguments->addArgumentArrayWithSeparatedValue('--directories', array($config['directories']));
-        }
-        if ($config['files']) {
-            $arguments->addArgumentArrayWithSeparatedValue('--files', array($config['files']));
-        }
-        if ($config['namespaces']) {
-            $arguments->addArgumentArrayWithSeparatedValue('--namespaces', array($config['namespaces']));
-        }
-        if ($config['methods']) {
-            $arguments->addArgumentArrayWithSeparatedValue('--methods', array($config['methods']));
-        }
-        if ($config['tags']) {
-            $arguments->addArgumentArrayWithSeparatedValue('--tags', array($config['tags']));
-        }
+        $arguments->addOptionalSeparatedArgument('-c', $config['config_file']);
+        $arguments->addOptionalSeparatedArgument('--bootstrap-file', $config['bootstrap_file']);
+        $arguments->addSeparatedArgumentArray('--directories', $config['directories']);
+        $arguments->addSeparatedArgumentArray('--files', $config['files']);
+        $arguments->addSeparatedArgumentArray('--namespaces', $config['namespaces']);
+        $arguments->addSeparatedArgumentArray('--methods', $config['methods']);
+        $arguments->addSeparatedArgumentArray('--tags', $config['tags']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();

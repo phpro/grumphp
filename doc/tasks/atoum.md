@@ -8,13 +8,20 @@ It lives under the `atoum` namespace and has the following configurable paramete
 parameters:
     tasks:
         atoum:
-            config_file: ~
-            bootstrap_file: ~
-            directories: ~
-            files: ~
-            namespaces: ~
-            methods: ~
-            tags: ~
+            config_file: .atoum.php
+            bootstrap_file: tests/units/bootstrap.php
+            directories:
+                - tests/units
+            files:
+                - tests/units/MyTest.php
+            namespaces:
+                - mageekguy\\atoum\\tests\\units\\asserters
+            methods:
+                - mageekguy\\atoum\\tests\\units\\asserters\\string::testContains
+                - mageekguy\\atoum\\tests\\units\\asserters\\string::*
+            tags:
+                - thisIsOneTag
+                - thisIsThreeTag
 ```
 
 **config_file**
@@ -35,7 +42,7 @@ The path to your bootstrap file if you need any.
 
 **directories**
 
-*Default: null*
+*Default: array()*
 
 If you want to limit the execution of the unit tests to certain directories, list them here.
 
@@ -43,7 +50,7 @@ If you want to limit the execution of the unit tests to certain directories, lis
 
 **files**
 
-*Default: null*
+*Default: array()*
 
 If you want to limit the execution of the unit tests to certain files, list them here.
 
@@ -51,7 +58,7 @@ If you want to limit the execution of the unit tests to certain files, list them
 
 **namespaces**
 
-*Default: null*
+*Default: array()*
 
 If you want to limit the execution of the unit tests to certain namespaces, list them here.
 
@@ -59,7 +66,7 @@ If you want to limit the execution of the unit tests to certain namespaces, list
 
 **methods**
 
-*Default: null*
+*Default: array()*
 
 If you want to limit the execution of the unit tests to certain methods or classes, list them here.
 
@@ -67,7 +74,7 @@ If you want to limit the execution of the unit tests to certain methods or class
 
 **tags**
 
-*Default: null*
+*Default: array()*
 
 If you want to limit the execution of the unit tests to certain tags, list them here.
 
