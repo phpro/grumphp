@@ -8,6 +8,15 @@ services:
         tags:
             - {name: grumphp.task, config: ant}
 
+    task.atoum:
+        class: GrumPHP\Task\Atoum
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: atoum}
+
     task.behat:
         class: GrumPHP\Task\Behat
         arguments:
