@@ -37,7 +37,7 @@ class GrumPHPExtension implements ExtensionInterface
 
 This page lists third party extensions implementing useful GrumPHP tasks.
 
-- [andersundsehr/grumphp-bom-task](https://github.com/andersundsehr/grumphp-bom-task) Forces files to have a BOM (Byte Order Mark).
+- [andersundsehr/grumphp-bom-task](https://github.com/andersundsehr/grumphp-bom-task) Forces files to have no BOM (Byte Order Mark).
 - [andersundsehr/grumphp-xliff-task](https://github.com/andersundsehr/grumphp-xliff-task) Validates XLIFF files.
 - [wearejust/grumphp-extra-tasks](https://github.com/wearejust/grumphp-extra-tasks) Extra GrumPHP tasks like a PhpCsAutoFixer.
 
