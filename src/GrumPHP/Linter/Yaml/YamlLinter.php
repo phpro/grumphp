@@ -41,13 +41,36 @@ class YamlLinter implements LinterInterface
 
         try {
             $content = file_get_contents($file->getPathname());
-            Yaml::parse($content, $this->exceptionOnInvalidType, $this->objectSupport);
+            $this->parseYaml($content);
         } catch (ParseException $exception) {
             $exception->setParsedFile($file->getPathname());
             $errors[] = YamlLintError::fromParseException($exception);
         }
 
         return $errors;
+    }
+
+    /**
+     * @param string $content
+     * @throws ParseException
+     */
+    private function parseYaml($content)
+    {
+        $rc = new \ReflectionClass('Symfony\Component\Yaml\Yaml');
+        $method = $rc->getMethod('parse');
+        $params = $method->getParameters();
+
+        // Lint on Symfony Yaml < 3.1
+        if ($params[1]->getName() !== 'flags') {
+            Yaml::parse($content, $this->exceptionOnInvalidType, $this->objectSupport);
+            return;
+        }
+
+        // Lint on Symfony Yaml >= 3.1
+        $flags = 0;
+        $flags += $this->objectSupport ? Yaml::PARSE_OBJECT : 0;
+        $flags += $this->exceptionOnInvalidType ? Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE : 0;
+        Yaml::parse($content, $flags);
     }
 
     /**
