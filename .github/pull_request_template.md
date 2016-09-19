@@ -22,7 +22,7 @@
 - [ ] Are the task parameters documented?
 - [ ] Is the task registered in the tasks.yml file?
 - [ ] Does the task contains phpspec tests?
-- [ ] Is the configuration having logical allowed types.
+- [ ] Is the configuration having logical allowed types?
 - [ ] Does the task run in the correct context?
 - [ ] Is the `run()` method readable?
 - [ ] Is the `run()` method using the configuration correctly?
