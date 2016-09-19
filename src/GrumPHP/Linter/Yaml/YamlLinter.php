@@ -51,17 +51,30 @@ class YamlLinter implements LinterInterface
     }
 
     /**
-     * @param string $content
-     * @throws ParseException
+     * This method can be used to determine the Symfony Linter version.
+     * If this method returns true, you are using Symfony YAML > 3.1.
+     *
+     * @link http://symfony.com/blog/new-in-symfony-3-1-customizable-yaml-parsing-and-dumping
+     *
+     * @return bool
      */
-    private function parseYaml($content)
+    public static function supportsFlags()
     {
         $rc = new \ReflectionClass('Symfony\Component\Yaml\Yaml');
         $method = $rc->getMethod('parse');
         $params = $method->getParameters();
 
+        return $params[1]->getName() === 'flags';
+    }
+
+    /**
+     * @param string $content
+     * @throws ParseException
+     */
+    private function parseYaml($content)
+    {
         // Lint on Symfony Yaml < 3.1
-        if ($params[1]->getName() !== 'flags') {
+        if (!self::supportsFlags()) {
             Yaml::parse($content, $this->exceptionOnInvalidType, $this->objectSupport);
             return;
         }
