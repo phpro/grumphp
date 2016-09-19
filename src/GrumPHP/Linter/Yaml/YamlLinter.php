@@ -41,13 +41,49 @@ class YamlLinter implements LinterInterface
 
         try {
             $content = file_get_contents($file->getPathname());
-            Yaml::parse($content, $this->exceptionOnInvalidType, $this->objectSupport);
+            $this->parseYaml($content);
         } catch (ParseException $exception) {
             $exception->setParsedFile($file->getPathname());
             $errors[] = YamlLintError::fromParseException($exception);
         }
 
         return $errors;
+    }
+
+    /**
+     * This method can be used to determine the Symfony Linter version.
+     * If this method returns true, you are using Symfony YAML > 3.1.
+     *
+     * @link http://symfony.com/blog/new-in-symfony-3-1-customizable-yaml-parsing-and-dumping
+     *
+     * @return bool
+     */
+    public static function supportsFlags()
+    {
+        $rc = new \ReflectionClass('Symfony\Component\Yaml\Yaml');
+        $method = $rc->getMethod('parse');
+        $params = $method->getParameters();
+
+        return $params[1]->getName() === 'flags';
+    }
+
+    /**
+     * @param string $content
+     * @throws ParseException
+     */
+    private function parseYaml($content)
+    {
+        // Lint on Symfony Yaml < 3.1
+        if (!self::supportsFlags()) {
+            Yaml::parse($content, $this->exceptionOnInvalidType, $this->objectSupport);
+            return;
+        }
+
+        // Lint on Symfony Yaml >= 3.1
+        $flags = 0;
+        $flags += $this->objectSupport ? Yaml::PARSE_OBJECT : 0;
+        $flags += $this->exceptionOnInvalidType ? Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE : 0;
+        Yaml::parse($content, $flags);
     }
 
     /**
