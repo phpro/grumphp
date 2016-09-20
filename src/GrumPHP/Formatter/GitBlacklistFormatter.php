@@ -30,7 +30,7 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
      * @param string $output
      * @return string
      */
-    protected function formatOutput($output)
+    private function formatOutput($output)
     {
         $result = "\033[m";
         foreach (array_filter(explode(PHP_EOL, $output)) as $lineNumber => $line) {
@@ -40,10 +40,10 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
                 $result .= $line . PHP_EOL;
             }
         }
-        return $result;
+        return trim($result);
     }
 
-    protected function trimOutputLine($line, $lineNumber)
+    private function trimOutputLine($line, $lineNumber)
     {
         $wordColor = "\033[1;31";
         $resetColor = "\033[m";
@@ -53,7 +53,7 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
         $before = 20;
         $after = 20;
 
-        if (strlen($line) >= 50) {
+        if (strlen($line) >= 80) {
             $lastPos = 0;
             $positionsFirst = array();
             $positionsSecond = array();
