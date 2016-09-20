@@ -67,6 +67,7 @@ services:
             - '@config'
             - '@process_builder'
             - '@formatter.git_blacklist'
+            - '@grumphp.io'
         tags:
             - {name: grumphp.task, config: git_blacklist}
 

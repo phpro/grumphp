@@ -7,3 +7,5 @@ services:
         class: GrumPHP\Formatter\PhpcsFormatter
     formatter.git_blacklist:
         class: GrumPHP\Formatter\GitBlacklistFormatter
+        arguments:
+            - '@grumphp.io'

@@ -3,6 +3,7 @@
 namespace spec\GrumPHP\Formatter;
 
 use GrumPHP\Formatter\GitBlacklistFormatter;
+use GrumPHP\IO\ConsoleIO;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Process\Process;
@@ -12,6 +13,12 @@ use Symfony\Component\Process\Process;
  */
 class GitBlacklistFormatterSpec extends ObjectBehavior
 {
+    function let(ConsoleIO $consoleIO)
+    {
+        $consoleIO->isDecorated()->willReturn(true);
+        $this->beConstructedWith($consoleIO);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType('GrumPHP\Formatter\GitBlacklistFormatter');

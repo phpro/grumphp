@@ -2,6 +2,10 @@
 
 namespace GrumPHP\Task\Git;
 
+use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Formatter\ProcessFormatterInterface;
+use GrumPHP\IO\IOInterface;
+use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\AbstractExternalTask;
 use GrumPHP\Task\Context\ContextInterface;
@@ -15,6 +19,22 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Blacklist extends AbstractExternalTask
 {
+    /**
+     * @var IOInterface
+     */
+    private $IO;
+
+    public function __construct(
+        GrumPHP $grumPHP,
+        ProcessBuilder $processBuilder,
+        ProcessFormatterInterface $formatter,
+        IOInterface $IO
+    ) {
+        $this->IO = $IO;
+        parent::__construct($grumPHP, $processBuilder, $formatter);
+    }
+
+
     /**
      * @return string
      */
@@ -65,7 +85,7 @@ class Blacklist extends AbstractExternalTask
         $arguments->add('-n');
         $arguments->add('--break');
         $arguments->add('--heading');
-        $arguments->add('--color');
+        $arguments->addOptionalArgument('--color', $this->IO->isDecorated());
         $arguments->addArgumentArrayWithSeparatedValue('-e', $config['keywords']);
         $arguments->addFiles($files);
 

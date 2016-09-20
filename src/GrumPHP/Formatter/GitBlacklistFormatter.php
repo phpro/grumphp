@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Formatter;
 
+use GrumPHP\IO\IOInterface;
 use Symfony\Component\Process\Process;
 
 /**
@@ -11,6 +12,20 @@ use Symfony\Component\Process\Process;
  */
 class GitBlacklistFormatter implements ProcessFormatterInterface
 {
+    /**
+     * @var IOInterface
+     */
+    private $IO;
+
+    /**
+     * GitBlacklistFormatter constructor.
+     * @param IOInterface $IO
+     */
+    public function __construct(IOInterface $IO)
+    {
+        $this->IO = $IO;
+    }
+
     /**
      * @param Process $process
      *
@@ -22,7 +37,9 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
         if (!$output) {
             return $process->getErrorOutput();
         }
-
+        if (!$this->IO->isDecorated()) {
+            return $output;
+        }
         return $this->formatOutput($output);
     }
 
@@ -77,8 +94,8 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
                 $pos -= $before;
                 $pos2 += $after;
                 $parts[] = '  ' . $lineNumber . $coloredColon
-                    . ($pos + $before) . $coloredColon .
-                    ' ' . mb_substr($line, $pos, $pos2 - $pos) . $resetColor;
+                    . ($pos + $before) . $coloredColon
+                    . ' ' . mb_substr($line, $pos, $pos2 - $pos) . $resetColor;
             }
 
             $line = implode(PHP_EOL, $parts);
