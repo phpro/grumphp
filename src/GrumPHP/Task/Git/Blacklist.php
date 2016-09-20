@@ -63,6 +63,9 @@ class Blacklist extends AbstractExternalTask
         $arguments->add('grep');
         $arguments->add('--cached');
         $arguments->add('-n');
+        $arguments->add('--break');
+        $arguments->add('--heading');
+        $arguments->add('--color');
         $arguments->addArgumentArrayWithSeparatedValue('-e', $config['keywords']);
         $arguments->addFiles($files);
 
