@@ -55,9 +55,9 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
 
         if (strlen($line) >= 50) {
             $lastPos = 0;
-            $positionsFirst = [];
-            $positionsSecond = [];
-            $parts = [];
+            $positionsFirst = array();
+            $positionsSecond = array();
+            $parts = array();
 
             while (($lastPos = mb_strpos($line, $wordColor, $lastPos)) !== false) {
                 $positionsFirst[] = $lastPos;
