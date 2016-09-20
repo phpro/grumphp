@@ -42,7 +42,7 @@ The path to your bootstrap file if you need any.
 
 **directories**
 
-*Default: array()*
+*Default: []*
 
 If you want to limit the execution of the unit tests to certain directories, list them here.
 
@@ -50,7 +50,7 @@ If you want to limit the execution of the unit tests to certain directories, lis
 
 **files**
 
-*Default: array()*
+*Default: []*
 
 If you want to limit the execution of the unit tests to certain files, list them here.
 
@@ -58,7 +58,7 @@ If you want to limit the execution of the unit tests to certain files, list them
 
 **namespaces**
 
-*Default: array()*
+*Default: []*
 
 If you want to limit the execution of the unit tests to certain namespaces, list them here.
 
@@ -66,7 +66,7 @@ If you want to limit the execution of the unit tests to certain namespaces, list
 
 **methods**
 
-*Default: array()*
+*Default: []*
 
 If you want to limit the execution of the unit tests to certain methods or classes, list them here.
 
@@ -74,7 +74,7 @@ If you want to limit the execution of the unit tests to certain methods or class
 
 **tags**
 
-*Default: array()*
+*Default: []*
 
 If you want to limit the execution of the unit tests to certain tags, list them here.
 

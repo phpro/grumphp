@@ -69,8 +69,8 @@ class Atoum extends AbstractExternalTask
         $config = $this->getConfiguration();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('atoum');
-        $arguments->addOptionalSeparatedArgument('-c', $config['config_file']);
-        $arguments->addOptionalSeparatedArgument('--bootstrap-file', $config['bootstrap_file']);
+        $arguments->addOptionalArgumentWithSeparatedValue('-c', $config['config_file']);
+        $arguments->addOptionalArgumentWithSeparatedValue('--bootstrap-file', $config['bootstrap_file']);
         $arguments->addSeparatedArgumentArray('--directories', $config['directories']);
         $arguments->addSeparatedArgumentArray('--files', $config['files']);
         $arguments->addSeparatedArgumentArray('--namespaces', $config['namespaces']);

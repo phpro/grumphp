@@ -65,18 +65,6 @@ class ProcessArgumentsCollection extends ArrayCollection
 
     /**
      * @param string $argument
-     * @param string $value
-     */
-    public function addOptionalSeparatedArgument($argument, $value = null)
-    {
-        if (!is_null($value)) {
-            $this->add($argument);
-            $this->add($value);
-        }
-    }
-
-    /**
-     * @param string $argument
      * @param array  $values
      */
     public function addArgumentArray($argument, array $values)
