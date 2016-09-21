@@ -103,4 +103,15 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
             'file2.txt',
         ));
     }
+
+    function it_should_be_able_to_add_comma_separated_files()
+    {
+        $files = new FilesCollection(array(
+            new SplFileInfo('file1.txt'),
+            new SplFileInfo('file2.txt')
+        ));
+        $this->addCommaSeparatedFiles($files);
+
+        $this->getValues()->shouldBe(array('file1.txt,file2.txt'));
+    }
 }

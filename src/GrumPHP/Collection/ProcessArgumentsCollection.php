@@ -126,4 +126,18 @@ class ProcessArgumentsCollection extends ArrayCollection
             $this->add($file->getPathname());
         }
     }
+
+    /**
+     * @param FilesCollection|\SplFileInfo[] $files
+     */
+    public function addCommaSeparatedFiles(FilesCollection $files)
+    {
+        $paths = array();
+
+        foreach ($files as $file) {
+            $paths[] = $file->getPathname();
+        }
+
+        $this->add(implode(',', $paths));
+    }
 }

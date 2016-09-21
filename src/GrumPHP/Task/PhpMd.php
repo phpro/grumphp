@@ -61,7 +61,7 @@ class PhpMd extends AbstractExternalTask
         $config = $this->getConfiguration();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('phpmd');
-        $arguments->addFiles($files);
+        $arguments->addCommaSeparatedFiles($files);
         $arguments->add('text');
         $arguments->addOptionalCommaSeparatedArgument('%s', $config['ruleset']);
 
