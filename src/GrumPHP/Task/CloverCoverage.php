@@ -51,12 +51,16 @@ class CloverCoverage implements TaskInterface
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults([
-            'level' => 100,
-        ]);
+
+        $resolver->setDefined('clover_file');
+        $resolver->setDefined('level');
 
         $resolver->addAllowedTypes('clover_file', ['string']);
         $resolver->addAllowedTypes('level', ['int', 'float']);
+
+        $resolver->setDefaults([
+            'level' => 100,
+        ]);
 
         $resolver->setRequired('clover_file');
 
