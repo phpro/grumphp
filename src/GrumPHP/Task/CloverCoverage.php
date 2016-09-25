@@ -94,8 +94,8 @@ class CloverCoverage implements TaskInterface
         }
 
         $xml             = new SimpleXMLElement(file_get_contents($cloverFile));
-        $totalElements   = (string)$xml->xpath('/coverage/project/metrics/@elements')[0];
-        $checkedElements = (string)$xml->xpath('/coverage/project/metrics/@coveredelements')[0];
+        $totalElements   = (string)current($xml->xpath('/coverage/project/metrics/@elements'));
+        $checkedElements = (string)current($xml->xpath('/coverage/project/metrics/@coveredelements'));
 
         $coverage = round(($checkedElements / $totalElements) * 100, 2);
 
