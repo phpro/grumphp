@@ -7,8 +7,6 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
-use GrumPHP\Task\TaskInterface;
-use InvalidArgumentException;
 use SimpleXMLElement;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
