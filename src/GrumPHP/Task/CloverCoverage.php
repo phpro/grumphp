@@ -75,6 +75,9 @@ class CloverCoverage implements TaskInterface
         return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function run(ContextInterface $context)
     {
         $configuration = $this->getConfiguration();
