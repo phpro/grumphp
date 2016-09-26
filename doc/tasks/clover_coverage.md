@@ -9,7 +9,7 @@ parameters:
     tasks:
         clover_coverage:
             config_file: /tmp/clover.xml
-            level: 85
+            level: 100
 ```
 
 **clover_file**
