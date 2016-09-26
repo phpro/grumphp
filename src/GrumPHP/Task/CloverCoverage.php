@@ -12,6 +12,9 @@ use InvalidArgumentException;
 use SimpleXMLElement;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Clover unit test coverage task
+ */
 class CloverCoverage implements TaskInterface
 {
     /**
