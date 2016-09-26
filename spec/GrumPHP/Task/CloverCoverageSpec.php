@@ -13,7 +13,7 @@ use Prophecy\Argument;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @mixin Phpunit
+ * @mixin CloverCoverage
  */
 class CloverCoverageSpec extends ObjectBehavior
 {
