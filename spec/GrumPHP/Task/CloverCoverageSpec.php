@@ -4,10 +4,10 @@ namespace spec\GrumPHP\Task;
 
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Task\CloverCoverage;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
-use GrumPHP\Task\Phpunit;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Filesystem;
