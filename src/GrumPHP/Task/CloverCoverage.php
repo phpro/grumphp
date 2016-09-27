@@ -8,6 +8,7 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use SimpleXMLElement;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -21,11 +22,18 @@ class CloverCoverage implements TaskInterface
     protected $grumPHP;
 
     /**
-     * @param GrumPHP $grumPHP
+     * @var Filesystem
      */
-    public function __construct(GrumPHP $grumPHP)
+    protected $filesystem;
+
+    /**
+     * @param GrumPHP $grumPHP
+     * @param Filesystem $filesystem
+     */
+    public function __construct(GrumPHP $grumPHP, Filesystem $filesystem)
     {
         $this->grumPHP = $grumPHP;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -85,7 +93,7 @@ class CloverCoverage implements TaskInterface
         $percentage = round(min(100, max(0, (float) $configuration['level'])), 2);
         $cloverFile = $configuration['clover_file'];
 
-        if (!$this->grumPHP->getFilesystem()->exists($cloverFile)) {
+        if (!$this->filesystem->exists($cloverFile)) {
             return TaskResult::createFailed($this, $context, 'Invalid input file provided');
         }
 
