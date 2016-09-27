@@ -85,6 +85,7 @@ parameters:
         ant: ~
         atoum: ~
         behat: ~
+        clover_coverage: ~
         codeception: ~
         composer: ~
         gherkin: ~

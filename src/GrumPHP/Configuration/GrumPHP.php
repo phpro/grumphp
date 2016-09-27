@@ -4,6 +4,7 @@ namespace GrumPHP\Configuration;
 
 use GrumPHP\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * The code representation of our grumphp.yml file.
@@ -147,5 +148,13 @@ class GrumPHP
     {
         $taskMetadata = $this->getTaskMetadata($taskName);
         return $taskMetadata['blocking'];
+    }
+
+    /**
+     * @return Filesystem
+     */
+    public function getFilesystem()
+    {
+        return $this->container->get('filesystem');
     }
 }
