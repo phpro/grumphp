@@ -24,6 +24,13 @@ class Blacklist extends AbstractExternalTask
      */
     private $IO;
 
+    /**
+     * Blacklist constructor.
+     * @param GrumPHP $grumPHP
+     * @param ProcessBuilder $processBuilder
+     * @param ProcessFormatterInterface $formatter
+     * @param IOInterface $IO
+     */
     public function __construct(
         GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,

@@ -12,6 +12,12 @@ use Symfony\Component\Process\Process;
  */
 class GitBlacklistFormatter implements ProcessFormatterInterface
 {
+    const WORD_COLOR = "\033[1;31";
+    const RESET_COLOR = "\033[m";
+    const COLON_COLOR = "\033[36m";
+    const SPACE_BEFORE = 20;
+    const SPACE_AFTER = 20;
+
     /**
      * @var IOInterface
      */
@@ -49,10 +55,10 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
      */
     private function formatOutput($output)
     {
-        $result = "\033[m";
+        $result = static::RESET_COLOR;
         foreach (array_filter(explode(PHP_EOL, $output)) as $lineNumber => $line) {
             if (preg_match('/^[0-9]+/', $line)) {
-                $result .= $this->trimOutputLine($line, $lineNumber) . PHP_EOL;
+                $result .= $this->trimOutputLine($line, (int)$lineNumber) . PHP_EOL;
             } else {
                 $result .= $line . PHP_EOL;
             }
@@ -60,47 +66,48 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
         return trim($result);
     }
 
+    /**
+     * @param string $line
+     * @param int $lineNumber
+     * @return string
+     */
     private function trimOutputLine($line, $lineNumber)
     {
-        $wordColor = "\033[1;31";
-        $resetColor = "\033[m";
-        $colonColor = "\033[36m";
-        $coloredColon = $colonColor . ':' . $resetColor;
-
-        $before = 20;
-        $after = 20;
-
-        if (strlen($line) >= 80) {
-            $lastPos = 0;
-            $positionsFirst = array();
-            $positionsSecond = array();
-            $parts = array();
-
-            while (($lastPos = mb_strpos($line, $wordColor, $lastPos)) !== false) {
-                $positionsFirst[] = $lastPos;
-                $lastPos = $lastPos + mb_strlen($wordColor);
-            }
-            $lastPos = 0;
-            while (($lastPos = mb_strpos($line, $resetColor, $lastPos)) !== false) {
-                $positionsSecond[] = $lastPos;
-                $lastPos = $lastPos + mb_strlen($resetColor);
-            }
-
-            foreach ($positionsFirst as $pos) {
-                do {
-                    $pos2 = array_shift($positionsSecond);
-                } while ($pos2 < $pos);
-
-                $pos -= $before;
-                $pos2 += $after;
-                $parts[] = '  ' . $lineNumber . $coloredColon
-                    . ($pos + $before) . $coloredColon
-                    . ' ' . mb_substr($line, $pos, $pos2 - $pos) . $resetColor;
-            }
-
-            $line = implode(PHP_EOL, $parts);
+        if (strlen($line) < 80) {
+            return $line;
         }
 
-        return $line;
+        $positionsWordColor = array();
+        $positionsResetColor = array();
+        $parts = array();
+        $lastPos = 0;
+
+        //iterate over all WORD_COLORs and save the positions into $positionsWordColor
+        while (($lastPos = mb_strpos($line, static::WORD_COLOR, $lastPos)) !== false) {
+            $positionsWordColor[] = $lastPos;
+            $lastPos = $lastPos + mb_strlen(static::WORD_COLOR);
+        }
+        $lastPos = 0;
+
+        //iterate over all RESET_COLORs and save the positions into $positionsResetColor
+        while (($lastPos = mb_strpos($line, static::RESET_COLOR, $lastPos)) !== false) {
+            $positionsResetColor[] = $lastPos;
+            $lastPos = $lastPos + mb_strlen(static::RESET_COLOR);
+        }
+
+        foreach ($positionsWordColor as $pos) {
+            do {
+                $pos2 = array_shift($positionsResetColor);
+            } while ($pos2 < $pos);
+
+            $pos -= static::SPACE_BEFORE;
+            $pos2 += static::SPACE_AFTER;
+
+            $part = '  ' . $lineNumber . static::COLON_COLOR . ':' . static::RESET_COLOR;
+            $part .= ($pos + static::SPACE_BEFORE) . static::COLON_COLOR . ':' . static::RESET_COLOR;
+            $part .= ' ' . mb_substr($line, $pos, $pos2 - $pos) . static::RESET_COLOR;
+            $parts[] = $part;
+        }
+        return implode(PHP_EOL, $parts);
     }
 }
