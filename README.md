@@ -79,6 +79,7 @@ parameters:
     tasks:
         ant: ~
         behat: ~
+        clover_coverage: ~
         codeception: ~
         composer: ~
         gherkin: ~
