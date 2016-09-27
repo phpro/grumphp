@@ -33,6 +33,14 @@ class CloverCoverageSpec extends ObjectBehavior
         $this->getName()->shouldBe('clover_coverage');
     }
 
+    function it_should_have_configurable_options()
+    {
+        $options = $this->getConfigurableOptions();
+        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->getDefinedOptions()->shouldContain('level');
+        $options->getDefinedOptions()->shouldContain('clover_file');
+    }
+
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
