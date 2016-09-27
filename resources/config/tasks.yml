@@ -53,6 +53,14 @@ services:
         tags:
             - {name: grumphp.task, config: git_blacklist}
 
+    task.git.clovercoverage:
+        class: GrumPHP\Task\Git\CloverCoverage
+        arguments:
+            - '@config'
+            - '@filesystem'
+        tags:
+            - {name: grumphp.task, config: clover_coverage}
+
     task.git.commitmessage:
         class: GrumPHP\Task\Git\CommitMessage
         arguments:
