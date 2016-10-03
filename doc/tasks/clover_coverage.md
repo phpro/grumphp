@@ -8,7 +8,7 @@ It lives under the `clover_coverage` namespace and has following configurable pa
 parameters:
     tasks:
         clover_coverage:
-            config_file: /tmp/clover.xml
+            clover_file: /tmp/clover.xml
             level: 100
 ```
 
@@ -17,6 +17,7 @@ parameters:
 *Required*
 
 The location of the clover code coverage XML file.
+
 **level**
 
 *Default: 100*
