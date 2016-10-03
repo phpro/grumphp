@@ -80,7 +80,7 @@ class PreCommitCommand extends Command
      */
     protected function getCommittedFiles(ConsoleIO $io)
     {
-        if ($stdin = $io->readCommandInput()) {
+        if ($stdin = $io->readCommandInput(STDIN)) {
             return $this->changedFilesLocator->locateFromRawDiffInput($stdin);
         }
 

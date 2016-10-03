@@ -4,7 +4,7 @@ namespace GrumPHP\Console;
 
 use GrumPHP\Configuration\ContainerFactory;
 use GrumPHP\Exception\RuntimeException;
-use GrumPHP\IO\ConsoleIO;
+use GrumPHP\IO\IOInterface;
 use GrumPHP\Locator\ConfigurationFile;
 use GrumPHP\Util\Composer;
 use Monolog\Handler\StreamHandler;
@@ -170,13 +170,14 @@ class Application extends SymfonyConsole
         parent::configureIO($input, $output);
 
         $container = $this->getContainer();
-        $io = new ConsoleIO($input, $output);
 
-        // Overwrite the nullIO with the console IO.
-        $container->set('grumphp.io.console', $io);
-        $container->setAlias('grumphp.io', 'grumphp.io.console');
+        // Register the console input and output to the container
+        $container->set('console.input', $input);
+        $container->set('console.output', $output);
 
-        // Make sure to let the logger log to the stdout in verbose mode!
+        // Redirect the GrumPHP logger to the stdout in verbose mode
+        /** @var IOInterface $io */
+        $io = $container->get('grumphp.io.console');
         if ($io->isVerbose()) {
             /** @var Logger $logger */
             $logger = $container->get('grumphp.logger');

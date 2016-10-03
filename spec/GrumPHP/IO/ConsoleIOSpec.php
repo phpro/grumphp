@@ -2,6 +2,7 @@
 
 namespace spec\GrumPHP\IO;
 
+use GrumPHP\Exception\RuntimeException;
 use GrumPHP\IO\ConsoleIO;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -90,6 +91,11 @@ class ConsoleIOSpec extends ObjectBehavior
     {
         $handle = $this->mockHandle("\r\n\t\f ");
         $this->readCommandInput($handle)->shouldBe('');
+    }
+
+    function it_only_reads_valid_command_input_resource_streams()
+    {
+        $this->shouldThrow(RuntimeException::class)->duringReadCommandInput('string');
     }
 
     private function mockHandle($content)
