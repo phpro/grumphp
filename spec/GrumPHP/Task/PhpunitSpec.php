@@ -44,6 +44,7 @@ class PhpunitSpec extends ObjectBehavior
         $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
         $options->getDefinedOptions()->shouldContain('config_file');
         $options->getDefinedOptions()->shouldContain('group');
+        $options->getDefinedOptions()->shouldContain('always_execute');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
@@ -65,6 +66,26 @@ class PhpunitSpec extends ObjectBehavior
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
+    }
+
+    function it_runs_if_there_are_no_files_but_always_execute_is_passed(GrumPHP $grumPHP, Process $process, ProcessBuilder $processBuilder, ContextInterface $context)
+    {
+        $grumPHP->getTaskConfiguration('phpunit')->willReturn(array(
+            'always_execute' => true,
+        ));
+
+        $arguments = new ProcessArgumentsCollection();
+        $processBuilder->createArgumentsForCommand('phpunit')->willReturn($arguments);
+        $processBuilder->buildProcess($arguments)->willReturn($process);
+
+        $process->run()->shouldBeCalled();
+        $process->isSuccessful()->willReturn(true);
+
+        $context->getFiles()->willReturn(new FilesCollection());
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->isPassed()->shouldBe(true);
     }
 
     function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)

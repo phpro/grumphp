@@ -30,10 +30,12 @@ class Phpunit extends AbstractExternalTask
         $resolver->setDefaults(array(
             'config_file' => null,
             'group' => array(),
+            'always_execute' => false,
         ));
 
         $resolver->addAllowedTypes('config_file', array('null', 'string'));
         $resolver->addAllowedTypes('group', array('array'));
+        $resolver->addAllowedTypes('always_execute', array('bool'));
 
         return $resolver;
     }
@@ -51,12 +53,12 @@ class Phpunit extends AbstractExternalTask
      */
     public function run(ContextInterface $context)
     {
+        $config = $this->getConfiguration();
+        
         $files = $context->getFiles()->name('*.php');
-        if (0 === count($files)) {
+        if (0 === count($files) && !$config['always_execute']) {
             return TaskResult::createSkipped($this, $context);
         }
-
-        $config = $this->getConfiguration();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('phpunit');
         $arguments->addOptionalArgument('--configuration=%s', $config['config_file']);

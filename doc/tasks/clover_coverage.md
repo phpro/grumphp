@@ -1,6 +1,10 @@
 # Clover Coverage
 
-The Phpunit task will run your unit tests.
+The Clover Coverage task will run your unit tests.
+
+Note that to make sure that there is always a clover file available, you might need to
+set `always_execute` to `true` in the `phpunit` task configuration.
+
 It lives under the `clover_coverage` namespace and has following configurable parameters:
 
 ```yaml

@@ -10,6 +10,7 @@ parameters:
         phpunit:
             config_file: ~
             group: []
+            always_execute: false
 ```
 
 **config_file**
@@ -26,3 +27,9 @@ This means that `phpunit.xml` or `phpunit.xml.dist` are automatically loaded if 
 
 If you wish to only run tests from a certain Group.
 `group: [fast,quick,small]`
+
+**always_execute**
+
+*Default: false*
+
+Always run the whole test suite, even if no PHP files were changed.
