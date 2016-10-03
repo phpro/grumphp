@@ -49,6 +49,7 @@ To make GrumPHP even more awesome, it will suggest installing some extra package
 - phpspec/phpspec : ~2.1
 - phpunit/phpunit : ~4.5
 - roave/security-advisories : dev-master@dev
+- sebastian/phpcpd : ~2.0
 - squizlabs/php_codesniffer : ~2.3
 - codeception/codeception : ~2.1
 - sensiolabs/security-checker : ~3.0
@@ -96,6 +97,7 @@ parameters:
         gulp: ~
         jsonlint: ~
         phing: ~
+        phpcpd: ~
         phpcs: ~
         phpcsfixer: ~
         phpcsfixer2: ~
@@ -146,7 +148,6 @@ This package has been tested with following git clients:
 
 Following tasks are still on the roadmap:
 
-- phpcpd
 - phpdcd
 - twig lint
 - symfony validation

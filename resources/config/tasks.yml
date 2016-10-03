@@ -120,6 +120,15 @@ services:
         tags:
             - {name: grumphp.task, config: phing}
 
+    task.phpcpd:
+        class: GrumPHP\Task\Phpcpd
+        arguments:
+          - '@config'
+          - '@process_builder'
+          - '@formatter.raw_process'
+        tags:
+          - {name: grumphp.task, config: phpcpd}
+
     task.phpcs:
         class: GrumPHP\Task\Phpcs
         arguments:
