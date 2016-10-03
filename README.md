@@ -40,7 +40,6 @@ You will see following message in the composer logs:
 
 To make GrumPHP even more awesome, it will suggest installing some extra packages:
 
-- asm89/twig-lint : ~1.0
 - atoum/atoum : ~2.7
 - behat/behat : ~3.0
 - codegyre/robo : ~0.7
@@ -54,6 +53,7 @@ To make GrumPHP even more awesome, it will suggest installing some extra package
 - squizlabs/php_codesniffer : ~2.3
 - codeception/codeception : ~2.1
 - sensiolabs/security-checker : ~3.0
+- twig/twig : ^1.12
 - phpmd/phpmd : ~2.4
 
 GrumPHP will never push you into using a specific task. You can choose the tasks that fit your needs, and activate or
