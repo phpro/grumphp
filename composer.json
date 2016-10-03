@@ -22,17 +22,16 @@
         "monolog/monolog": "~1.17"
     },
     "require-dev": {
-        "asm89/twig-lint": "~1.0",
         "phpspec/phpspec": "~2.5",
         "phpspec/prophecy": "~1.6",
         "squizlabs/php_codesniffer": "~2.3",
         "friendsofphp/php-cs-fixer": "~1|~2",
         "phpunit/phpunit": "^4.8",
         "sensiolabs/security-checker": "^3.0",
+        "twig/twig": "^1.12",
         "jakub-onderka/php-parallel-lint": "^0.9.2"
     },
     "suggest": {
-        "asm89/twig-lint": "Lets GrumPHP lint your twig templates.",
         "atoum/atoum": "Lets GrumPHP run your unit tests.",
         "behat/behat": "Lets GrumPHP validate your project features.",
         "codegyre/robo": "Lets GrumPHP run your automated PHP tasks.",
@@ -43,6 +42,7 @@
         "phpunit/phpunit": "Lets GrumPHP run your unit tests.",
         "sebastian/phpcpd": "Lets GrumPHP find duplicated code.",
         "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",
+        "twig/twig": "Lets GrumPHP lint your twig templates.",
         "roave/security-advisories": "Lets GrumPHP be sure that there are no known security issues.",
         "sensiolabs/security-checker": "Lets GrumPHP be sure that there are no known security issues.",
         "codeception/codeception": "Lets GrumPHP run your project's full stack tests",

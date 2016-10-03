@@ -2,10 +2,10 @@
 
 namespace GrumPHP\Linter\Twig;
 
-use Asm89\Twig\Lint\StubbedEnvironment;
 use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Linter\LinterInterface;
 use SplFileInfo;
+use Twig_Environment;
 use Twig_Error;
 use Twig_Loader_String;
 
@@ -17,13 +17,13 @@ use Twig_Loader_String;
 class TwigLinter implements LinterInterface
 {
     /**
-     * @var StubbedEnvironment
+     * @var Twig_Environment
      */
     private $environment;
 
     public function __construct()
     {
-        $this->environment = new StubbedEnvironment(new Twig_Loader_String());
+        $this->environment = new Twig_Environment(new Twig_Loader_String());
     }
 
     /**
@@ -52,6 +52,6 @@ class TwigLinter implements LinterInterface
      */
     public function isInstalled()
     {
-        return class_exists('Asm89\Twig\Lint\StubbedEnvironment');
+        return class_exists('Twig_Environment');
     }
 }

@@ -1,0 +1,36 @@
+{% include "othertemplate.twig" %}
+
+{% block body %}
+    The body of the thing.
+
+    {% if foo.bar %}
+        {{ foo.bar|trans }}
+    {% endif %}
+
+    {% some_other_block 'foo' %}
+
+    {% stylesheets '/path/to/sass/main.sass' filter='sass,?yui_css' output='css/all.css' %}
+        {% set endstylesheets = 'foo' %}
+    <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+    {% endstylesheets %}
+
+    {{ foo('bar') }}
+
+    {{ foo }}
+
+    {% if meh is sometest(meh) %}
+    {% endif %}
+
+    {% if foo %}
+        {% meh 'foo' %}
+    {% else %}
+        {% meh 'foo' 'bar' with {} %}
+    {% endif %}
+
+    {% render 'WebProfilerBundle:Exception:show' with { 'exception': collector.exception, 'format': 'html' } %}
+{% endblock body %}
+
+{% block foo %}
+        {% trans %}Foo bar.{% endtrans %}
+        {% trans %}Bar.{% endtrans %}
+{% endblock foo %}
