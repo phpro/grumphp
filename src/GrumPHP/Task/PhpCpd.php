@@ -69,10 +69,14 @@ class PhpCpd extends AbstractExternalTask
         }
 
         $arguments = $this->processBuilder->createArgumentsForCommand('phpcpd');
+        $extensions = array_map(function ($extension) {
+            return sprintf('*.%s', $extension);
+        }, $config['triggered_by']);
 
         $arguments->addArgumentArray('--exclude=%s', $config['exclude']);
         $arguments->addRequiredArgument('--min-lines=%u', $config['min_lines']);
         $arguments->addRequiredArgument('--min-tokens=%u', $config['min_tokens']);
+        $arguments->addOptionalCommaSeparatedArgument('--names=%s', $extensions);
         $arguments->addOptionalArgument('--fuzzy', $config['fuzzy']);
         $arguments->add($config['directory']);
 
