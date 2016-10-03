@@ -22,6 +22,7 @@ parameters:
         jsonlint: ~
         make: ~
         phing: ~
+        phpcpd: ~
         phpcs: ~
         phpcsfixer: ~
         phpcsfixer2: ~
@@ -55,6 +56,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [JsonLint](tasks/jsonlint.md)
 - [Make](tasks/make.md)
 - [Phing](tasks/phing.md)
+- [PhpCpd](tasks/phpcpd.md)
 - [Phpcs](tasks/phpcs.md)
 - [PHP-CS-Fixer](tasks/php_cs_fixer.md)
 - [PHP-CS-Fixer 2](tasks/php_cs_fixer2.md)

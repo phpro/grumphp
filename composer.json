@@ -39,6 +39,7 @@
         "malukenho/kawaii-gherkin": "Lets GrumPHP lint your Gherkin files.",
         "phpspec/phpspec": "Lets GrumPHP spec your code.",
         "phpunit/phpunit": "Lets GrumPHP run your unit tests.",
+        "sebastian/phpcpd": "Lets GrumPHP find duplicated code.",
         "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",
         "roave/security-advisories": "Lets GrumPHP be sure that there are no known security issues.",
         "sensiolabs/security-checker": "Lets GrumPHP be sure that there are no known security issues.",
