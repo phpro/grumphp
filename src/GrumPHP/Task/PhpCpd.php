@@ -2,7 +2,6 @@
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
