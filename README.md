@@ -40,6 +40,7 @@ You will see following message in the composer logs:
 
 To make GrumPHP even more awesome, it will suggest installing some extra packages:
 
+- asm89/twig-lint : ~1.0
 - atoum/atoum : ~2.7
 - behat/behat : ~3.0
 - codegyre/robo : ~0.7
@@ -108,6 +109,7 @@ parameters:
         robo: ~
         securitychecker: ~
         shell: ~
+        twiglint: ~
         xmllint: ~
         yamllint: ~
     extensions: []
@@ -149,7 +151,6 @@ This package has been tested with following git clients:
 Following tasks are still on the roadmap:
 
 - phpdcd
-- twig lint
 - symfony validation
 - npm tests
 - humbug

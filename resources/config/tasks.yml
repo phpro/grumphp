@@ -219,6 +219,14 @@ services:
         tags:
             - {name: grumphp.task, config: shell}
 
+    task.twiglint:
+        class: GrumPHP\Task\TwigLint
+        arguments:
+            - '@config'
+            - '@linter.twiglint'
+        tags:
+            - {name: grumphp.task, config: twiglint}
+
     task.xmllint:
         class: GrumPHP\Task\XmlLint
         arguments:

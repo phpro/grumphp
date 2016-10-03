@@ -3,6 +3,10 @@ services:
         class: GrumPHP\Linter\Json\JsonLinter
         arguments: []
 
+    linter.twiglint:
+        class: GrumPHP\Linter\Twig\TwigLinter
+        arguments: []
+
     linter.xmllint:
         class: GrumPHP\Linter\Xml\XmlLinter
         arguments: []
