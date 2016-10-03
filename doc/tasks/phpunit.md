@@ -10,7 +10,7 @@ parameters:
         phpunit:
             config_file: ~
             group: []
-            always_execute: ~
+            always_execute: false
 ```
 
 **config_file**
