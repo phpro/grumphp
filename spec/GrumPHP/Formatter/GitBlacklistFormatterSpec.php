@@ -52,14 +52,14 @@ class GitBlacklistFormatterSpec extends ObjectBehavior
 
     function it_displays_stdout_simple(Process $process)
     {
-        $process->getOutput()->willReturn('normal/file.php' . PHP_EOL . "8\033[36m:\033[m\033[1;31mvar_dump(\033[m'bla');" . PHP_EOL);
+        $process->getOutput()->willReturn('normal/file.php' . "\n" . "8\033[36m:\033[m\033[1;31mvar_dump(\033[m'bla');" . "\n");
         $process->getErrorOutput()->willReturn('');
         $this->format($process)->shouldReturn("\033[mnormal/file.php" . PHP_EOL . "8\033[36m:\033[m\033[1;31mvar_dump(\033[m'bla');");
     }
 
     function it_displays_stdout_long(Process $process)
     {
-        $process->getOutput()->willReturn('normal/file.php' . PHP_EOL . "42\033[36m:\033[mstuff stuff g;if(d.options.debug===!0&&(\033[1;31mvar_dump(\033[m\"Active tab is \"),d.options.debug.href,f=g.split(\"#\")[1],d.options.debug===!0&&\033[1;31mvar_dump(\033[m\"Pushed state \"+g);" . PHP_EOL);
+        $process->getOutput()->willReturn('normal/file.php' . "\n" . "42\033[36m:\033[mstuff stuff g;if(d.options.debug===!0&&(\033[1;31mvar_dump(\033[m\"Active tab is \"),d.options.debug.href,f=g.split(\"#\")[1],d.options.debug===!0&&\033[1;31mvar_dump(\033[m\"Pushed state \"+g);" . "\n");
         $process->getErrorOutput()->willReturn('');
         $this->format($process)->shouldReturn(
             "\033[mnormal/file.php" . PHP_EOL
