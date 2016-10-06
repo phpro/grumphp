@@ -56,7 +56,7 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
     private function formatOutput($output)
     {
         $result = static::RESET_COLOR;
-        foreach (array_filter(explode(PHP_EOL, $output)) as $lineNumber => $line) {
+        foreach (array_filter(explode("\n", $output)) as $lineNumber => $line) {
             if (preg_match('/^[0-9]+/', $line)) {
                 $result .= $this->trimOutputLine($line, (int)$lineNumber) . PHP_EOL;
             } else {
