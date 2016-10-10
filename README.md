@@ -43,7 +43,7 @@ To make GrumPHP even more awesome, it will suggest installing some extra package
 - atoum/atoum : ~2.7
 - behat/behat : ~3.0
 - codegyre/robo : ~0.7
-- friendsofphp/php-cs-fixer: ~1|~2
+- friendsofphp/php-cs-fixer : ~1|~2
 - malukenho/kawaii-gherkin : ~0.1
 - phing/phing : ~2.0
 - phpspec/phpspec : ~2.1
