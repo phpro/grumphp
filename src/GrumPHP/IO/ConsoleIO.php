@@ -2,6 +2,7 @@
 
 namespace GrumPHP\IO;
 
+use GrumPHP\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -97,12 +98,19 @@ class ConsoleIO implements IOInterface
     }
 
     /**
-     * @param null|resource $handle
+     * @param resource $handle
      *
      * @return string
+     * @throws \GrumPHP\Exception\RuntimeException
      */
-    public function readCommandInput($handle = STDIN)
+    public function readCommandInput($handle)
     {
+        if (!is_resource($handle)) {
+            throw new RuntimeException(
+                sprintf('Expected a resource stream for reading the commandline input. Got %s.', gettype($handle))
+            );
+        }
+
         if ($this->stdin !== null || ftell($handle) !== 0) {
             return $this->stdin;
         }

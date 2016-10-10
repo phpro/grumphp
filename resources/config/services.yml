@@ -55,7 +55,7 @@ services:
           - '@git.repository'
 
     grumphp.io:
-        alias: grumphp.io.null
+        alias: grumphp.io.console
 
     grumphp.io.null:
         class: GrumPHP\IO\NullIO
@@ -63,7 +63,10 @@ services:
 
     grumphp.io.console:
         class: GrumPHP\IO\ConsoleIO
-        synthetic: true
+        lazy: true
+        arguments:
+          - '@console.input'
+          - '@console.output'
 
     grumphp.logger:
         class: Monolog\Logger
@@ -74,3 +77,11 @@ services:
     grumphp.logger.handler.nullhandler:
         class: Monolog\Handler\NullHandler
         public: false
+
+    console.input:
+        class: Symfony\Component\Console\Input\ArgvInput
+        synthetic: true
+
+    console.output:
+        class: Symfony\Component\Console\Output\ConsoleOutput
+        synthetic: true

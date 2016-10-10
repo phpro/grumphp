@@ -2,10 +2,12 @@
 
 namespace spec\GrumPHP\Task\Git;
 
+use Composer\IO\IOInterface;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\ProcessFormatterInterface;
+use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
@@ -22,10 +24,10 @@ use Symfony\Component\Process\Process;
 class BlacklistSpec extends ObjectBehavior
 {
 
-    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
+    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter, ConsoleIO $consoleIO)
     {
         $grumPHP->getTaskConfiguration('git_blacklist')->willReturn(array());
-        $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->beConstructedWith($grumPHP, $processBuilder, $formatter, $consoleIO);
     }
 
     function it_is_initializable()

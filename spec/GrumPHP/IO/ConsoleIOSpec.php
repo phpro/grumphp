@@ -92,6 +92,11 @@ class ConsoleIOSpec extends ObjectBehavior
         $this->readCommandInput($handle)->shouldBe('');
     }
 
+    function it_only_reads_valid_command_input_resource_streams()
+    {
+        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringReadCommandInput('string');
+    }
+
     private function mockHandle($content)
     {
         $handle = fopen('php://memory', 'a');

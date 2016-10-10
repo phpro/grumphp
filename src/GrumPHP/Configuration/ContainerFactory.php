@@ -3,12 +3,18 @@
 namespace GrumPHP\Configuration;
 
 use GrumPHP\Configuration\Compiler;
+use Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 use Symfony\Component\Filesystem\Filesystem;
 
+/**
+ * Class ContainerFactory
+ *
+ * @package GrumPHP\Configuration
+ */
 final class ContainerFactory
 {
     /**
@@ -19,6 +25,9 @@ final class ContainerFactory
     public static function buildFromConfiguration($path)
     {
         $container = new ContainerBuilder();
+        $container->setProxyInstantiator(new RuntimeInstantiator());
+
+        // Add compiler passes:
         $container->addCompilerPass(new Compiler\ExtensionCompilerPass());
         $container->addCompilerPass(new Compiler\TaskCompilerPass());
         $container->addCompilerPass(
