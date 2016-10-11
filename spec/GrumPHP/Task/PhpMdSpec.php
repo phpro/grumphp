@@ -42,6 +42,7 @@ class PhpMdSpec extends ObjectBehavior
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->getDefinedOptions()->shouldContain('exclude');
         $options->getDefinedOptions()->shouldContain('ruleset');
         $options->getDefinedOptions()->shouldContain('triggered_by');
     }
