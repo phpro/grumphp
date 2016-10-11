@@ -122,7 +122,7 @@ services:
             - {name: grumphp.task, config: phing}
 
     task.phpcpd:
-        class: GrumPHP\Task\Phpcpd
+        class: GrumPHP\Task\PhpCpd
         arguments:
           - '@config'
           - '@process_builder'
