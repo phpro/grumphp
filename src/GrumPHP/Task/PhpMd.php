@@ -66,8 +66,7 @@ class PhpMd extends AbstractExternalTask
         $arguments->addCommaSeparatedFiles($files);
         $arguments->add('text');
         $arguments->addOptionalCommaSeparatedArgument('%s', $config['ruleset']);
-        $arguments->add('--exclude');
-        $arguments->addOptionalCommaSeparatedArgument('%s', $config['exclude']);
+        $arguments->addOptionalCommaSeparatedArgument('--exclude %s', $config['exclude']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
