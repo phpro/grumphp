@@ -8,7 +8,7 @@ It lives under the `phpmd` namespace and has following configurable parameters:
 parameters:
     tasks:
         phpmd:
-            exclude: ~
+            exclude: []
             ruleset: ['cleancode', 'codesize', 'naming']
             triggered_by: ['php']
 ```
