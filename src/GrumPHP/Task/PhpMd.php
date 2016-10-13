@@ -29,10 +29,12 @@ class PhpMd extends AbstractExternalTask
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array(
+            'exclude' => array(),
             'ruleset' => array('cleancode', 'codesize', 'naming'),
             'triggered_by' => array('php')
         ));
 
+        $resolver->addAllowedTypes('exclude', array('array'));
         $resolver->addAllowedTypes('ruleset', array('array'));
         $resolver->addAllowedTypes('triggered_by', array('array'));
 
@@ -64,6 +66,8 @@ class PhpMd extends AbstractExternalTask
         $arguments->addCommaSeparatedFiles($files);
         $arguments->add('text');
         $arguments->addOptionalCommaSeparatedArgument('%s', $config['ruleset']);
+        $arguments->addOptionalArgument('--exclude', !empty($config['exclude']));
+        $arguments->addOptionalCommaSeparatedArgument('%s', $config['exclude']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
