@@ -46,6 +46,7 @@ To make GrumPHP even more awesome, it will suggest installing some extra package
 - friendsofphp/php-cs-fixer : ~1|~2
 - malukenho/kawaii-gherkin : ~0.1
 - phing/phing : ~2.0
+- sstalle/php7cc : ~1.1
 - phpspec/phpspec : ~2.1
 - phpunit/phpunit : ~4.5
 - roave/security-advisories : dev-master@dev
@@ -97,6 +98,7 @@ parameters:
         gulp: ~
         jsonlint: ~
         phing: ~
+        php7cc: ~
         phpcpd: ~
         phpcs: ~
         phpcsfixer: ~
