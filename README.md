@@ -43,6 +43,7 @@ To make GrumPHP even more awesome, it will suggest installing some extra package
 - atoum/atoum : ~2.7
 - behat/behat : ~3.0
 - codegyre/robo : ~0.7
+- doctrine/orm: ~2.5
 - friendsofphp/php-cs-fixer : ~1|~2
 - malukenho/kawaii-gherkin : ~0.1
 - phing/phing : ~2.0
@@ -89,6 +90,7 @@ parameters:
         clover_coverage: ~
         codeception: ~
         composer: ~
+        doctrine_orm: ~
         gherkin: ~
         git_blacklist: ~
         git_commit_message: ~
