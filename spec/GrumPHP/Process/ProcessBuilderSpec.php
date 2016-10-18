@@ -4,6 +4,7 @@ namespace spec\GrumPHP\Process;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\IO\IOInterface;
 use GrumPHP\Locator\ExternalCommand;
 use GrumPHP\Process\ProcessBuilder;
 use PhpSpec\Exception\Example\FailureException;
@@ -15,9 +16,9 @@ use Prophecy\Argument;
  */
 class ProcessBuilderSpec extends ObjectBehavior
 {
-    function let(GrumPHP $config, ExternalCommand $externalCommandLocator)
+    function let(GrumPHP $config, ExternalCommand $externalCommandLocator, IOInterface $io)
     {
-        $this->beConstructedWith($config, $externalCommandLocator);
+        $this->beConstructedWith($config, $externalCommandLocator, $io);
         $config->getProcessTimeout()->willReturn(60);
     }
 
@@ -47,7 +48,8 @@ class ProcessBuilderSpec extends ObjectBehavior
 
     function it_should_be_possible_to_configure_the_process_timeout(
         GrumPHP $config,
-        ExternalCommand $externalCommandLocator
+        ExternalCommand $externalCommandLocator,
+        IOInterface $io
     )
     {
         $config->getProcessTimeout()->willReturn(120);
@@ -55,6 +57,19 @@ class ProcessBuilderSpec extends ObjectBehavior
         $arguments = new ProcessArgumentsCollection(array('/usr/bin/grumphp'));
         $process = $this->buildProcess($arguments);
         $process->getTimeout()->shouldBe(120.0);
+    }
+
+    function it_outputs_the_command_when_run_very_very_verbose(
+        GrumPHP $config,
+        ExternalCommand $externalCommandLocator,
+        IOInterface $io
+    ) {
+        $io->isVeryVerbose()->willReturn(true);
+        $io->write(PHP_EOL.'Command: "/usr/bin/grumphp"', true)->shouldBeCalled();
+
+        $arguments = new ProcessArgumentsCollection(array('/usr/bin/grumphp'));
+        $process = $this->buildProcess($arguments);
+
     }
 
     function getMatchers()
