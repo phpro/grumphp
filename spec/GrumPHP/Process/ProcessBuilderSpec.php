@@ -64,10 +64,13 @@ class ProcessBuilderSpec extends ObjectBehavior
         ExternalCommand $externalCommandLocator,
         IOInterface $io
     ) {
-        $io->isVeryVerbose()->willReturn(true);
-        $io->write(PHP_EOL.'Command: "/usr/bin/grumphp"', true)->shouldBeCalled();
+        $command = '/usr/bin/grumphp';
+        $escapedCommand = escapeshellarg($command);
 
-        $arguments = new ProcessArgumentsCollection(array('/usr/bin/grumphp'));
+        $io->isVeryVerbose()->willReturn(true);
+        $io->write(PHP_EOL."Command: $escapedCommand", true)->shouldBeCalled();
+
+        $arguments = new ProcessArgumentsCollection(array($command));
         $process = $this->buildProcess($arguments);
 
     }
