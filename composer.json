@@ -35,6 +35,7 @@
         "atoum/atoum": "Lets GrumPHP run your unit tests.",
         "behat/behat": "Lets GrumPHP validate your project features.",
         "codegyre/robo": "Lets GrumPHP run your automated PHP tasks.",
+        "doctrine/orm": "Lets GrumPHP validate your Doctrine mapping files.",
         "friendsofphp/php-cs-fixer": "Lets GrumPHP automatically fix your codestyle.",
         "phing/phing": "Lets GrumPHP run your automated PHP tasks.",
         "malukenho/kawaii-gherkin": "Lets GrumPHP lint your Gherkin files.",
