@@ -150,15 +150,17 @@ This package has been tested with following git clients:
 
 ## Roadmap
 
-Following tasks are still on the roadmap:
+Lot's of tasks are already available to make sure your team writes great code.
+There are still 2 major parts that are missing before we can release a v1.0.0:
 
-- twig lint
-- symfony validation
-- npm tests
-- humbug
-- ...
+- [A PHAR executable](/grumphp/issues/61)
+- [Specify a group of tasks you want to run](/grumphp/issues/50)
 
-New features or bugfixes can be logged at the [issue tracker](https://github.com/phpro/grumphp/issues).
+We are always looking to support new tasks. 
+Feel free to log an issue or create a pull request for a task we forgot.
+
+Are you missing a feature or did you find a bug?
+Log it in the [issue tracker](https://github.com/phpro/grumphp/issues)!
 Want to help out? Feel free to contact us!
 
 ## Build your own conventions checker
