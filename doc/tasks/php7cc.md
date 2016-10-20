@@ -8,14 +8,14 @@ It lives under the `php7cc` namespace and has following configurable parameters:
 parameters:
     tasks:
         php7cc:
-            exclude: ['vendor']
-            level: 'error'
+            exclude: []
+            level: ~
             triggered_by: ['php']
 ```
 
 **exclude**
 
-*Default: [vendor]*
+*Default: []*
 
 This is a list of directories to be excluded
 
