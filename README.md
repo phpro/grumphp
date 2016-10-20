@@ -152,7 +152,6 @@ This package has been tested with following git clients:
 
 Following tasks are still on the roadmap:
 
-- phpdcd
 - twig lint
 - symfony validation
 - npm tests
