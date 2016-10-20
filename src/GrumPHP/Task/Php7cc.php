@@ -28,7 +28,7 @@ class Php7cc extends AbstractExternalTask
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array(
-            'exclude' => array('vendor'),
+            'exclude' => array(),
             'level' => null,
             'triggered_by' => array('php')
         ));
