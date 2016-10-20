@@ -67,7 +67,7 @@ class ProcessBuilder
         $builder = SymfonyProcessBuilder::create($arguments->getValues());
         $builder->setTimeout($this->config->getProcessTimeout());
         $process = $builder->getProcess();
-        $this->writeVerboseOutput($process);
+        $this->logProcessInVerboseMode($process);
         return $process;
     }
 
@@ -84,10 +84,10 @@ class ProcessBuilder
     /**
      * @param Process $process
      */
-    private function writeVerboseOutput($process)
+    private function logProcessInVerboseMode($process)
     {
         if ($this->io->isVeryVerbose()) {
-            $this->io->write(PHP_EOL.'Command: '.$process->getCommandLine(), true);
+            $this->io->write(PHP_EOL . 'Command: ' . $process->getCommandLine(), true);
         }
     }
 }
