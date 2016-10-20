@@ -84,7 +84,7 @@ class ProcessBuilder
     /**
      * @param Process $process
      */
-    private function logProcessInVerboseMode($process)
+    private function logProcessInVerboseMode(Process $process)
     {
         if ($this->io->isVeryVerbose()) {
             $this->io->write(PHP_EOL . 'Command: ' . $process->getCommandLine(), true);
