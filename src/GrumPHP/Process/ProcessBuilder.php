@@ -4,6 +4,7 @@ namespace GrumPHP\Process;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\IO\IOInterface;
 use GrumPHP\Locator\ExternalCommand;
 use Symfony\Component\Process\Process;
 use \Symfony\Component\Process\ProcessBuilder as SymfonyProcessBuilder;
@@ -27,15 +28,21 @@ class ProcessBuilder
     private $config;
 
     /**
+     * @var IOInterface
+     */
+    private $io;
+
+    /**
      * ProcessBuilder constructor.
      *
      * @param GrumPHP         $config
      * @param ExternalCommand $externalCommandLocator
      */
-    public function __construct(GrumPHP $config, ExternalCommand $externalCommandLocator)
+    public function __construct(GrumPHP $config, ExternalCommand $externalCommandLocator, IOInterface $io)
     {
         $this->externalCommandLocator = $externalCommandLocator;
         $this->config = $config;
+        $this->io = $io;
     }
 
     /**
@@ -59,8 +66,9 @@ class ProcessBuilder
     {
         $builder = SymfonyProcessBuilder::create($arguments->getValues());
         $builder->setTimeout($this->config->getProcessTimeout());
-
-        return $builder->getProcess();
+        $process = $builder->getProcess();
+        $this->logProcessInVerboseMode($process);
+        return $process;
     }
 
     /**
@@ -71,5 +79,15 @@ class ProcessBuilder
     private function getCommandLocation($command)
     {
         return $this->externalCommandLocator->locate($command);
+    }
+
+    /**
+     * @param Process $process
+     */
+    private function logProcessInVerboseMode($process)
+    {
+        if ($this->io->isVeryVerbose()) {
+            $this->io->write(PHP_EOL . 'Command: ' . $process->getCommandLine(), true);
+        }
     }
 }
