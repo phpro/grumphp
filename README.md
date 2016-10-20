@@ -153,8 +153,8 @@ This package has been tested with following git clients:
 Lot's of tasks are already available to make sure your team writes great code.
 There are still 2 major parts that are missing before we can release a v1.0.0:
 
-- [A PHAR executable](/grumphp/issues/61)
-- [Specify a group of tasks you want to run](/grumphp/issues/50)
+- [A PHAR executable](https://github.com/phpro//grumphp/issues/61)
+- [Specify a group of tasks you want to run](https://github.com/phpro//grumphp/issues/50)
 
 We are always looking to support new tasks. 
 Feel free to log an issue or create a pull request for a task we forgot.
