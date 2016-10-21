@@ -29,9 +29,11 @@ class NpmScript extends AbstractExternalTask
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array(
             'script' => null,
+            'triggered_by' => array()
         ));
 
         $resolver->addAllowedTypes('script', array('string'));
+        $resolver->addAllowedTypes('triggered_by', array('array'));
 
         return $resolver;
     }
@@ -51,12 +53,15 @@ class NpmScript extends AbstractExternalTask
     {
         $config = $this->getConfiguration();
         $files = $context->getFiles();
+        if (count($config['triggered_by'])) {
+            $files = $files->extensions($config['triggered_by']);
+        }
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 
         $arguments = $this->processBuilder->createArgumentsForCommand('npm');
-        $arguments->addOptionalArgument('%s', $config['script']);
+        $arguments->addRequiredArgument('%s', $config['script']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
