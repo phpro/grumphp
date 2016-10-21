@@ -29,11 +29,13 @@ class NpmScript extends AbstractExternalTask
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array(
             'script' => null,
-            'triggered_by' => array()
+            'triggered_by' => array('js', 'jsx', 'coffee', 'ts', 'less', 'sass', 'scss'),
+            'working_directory' => './',
         ));
 
         $resolver->addAllowedTypes('script', array('string'));
         $resolver->addAllowedTypes('triggered_by', array('array'));
+        $resolver->addAllowedTypes('working_directory', array('string'));
 
         return $resolver;
     }
@@ -52,10 +54,7 @@ class NpmScript extends AbstractExternalTask
     public function run(ContextInterface $context)
     {
         $config = $this->getConfiguration();
-        $files = $context->getFiles();
-        if (count($config['triggered_by'])) {
-            $files = $files->extensions($config['triggered_by']);
-        }
+        $files = $context->getFiles()->extensions($config['triggered_by']);
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
@@ -64,6 +63,7 @@ class NpmScript extends AbstractExternalTask
         $arguments->addRequiredArgument('%s', $config['script']);
 
         $process = $this->processBuilder->buildProcess($arguments);
+        $process->setWorkingDirectory($config['working_directory']);
         $process->run();
 
         if (!$process->isSuccessful()) {
