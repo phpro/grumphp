@@ -24,7 +24,7 @@ class ComposerScriptSpec extends ObjectBehavior
 {
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
-        $grumPHP->getTaskConfiguration('composer_script')->willReturn(array('script' => 'test'));
+        $grumPHP->getTaskConfiguration('composer_script')->willReturn(array('script' => 'test', 'working_directory' => './'));
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
@@ -44,6 +44,7 @@ class ComposerScriptSpec extends ObjectBehavior
         $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
         $options->getDefinedOptions()->shouldContain('script');
         $options->getDefinedOptions()->shouldContain('triggered_by');
+        $options->getDefinedOptions()->shouldContain('working_directory');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
@@ -74,6 +75,7 @@ class ComposerScriptSpec extends ObjectBehavior
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
         $process->run()->shouldBeCalled();
+        $process->setWorkingDirectory('./')->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
         $context->getFiles()->willReturn(new FilesCollection(array(
@@ -95,6 +97,7 @@ class ComposerScriptSpec extends ObjectBehavior
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
         $process->run()->shouldBeCalled();
+        $process->setWorkingDirectory('./')->shouldBeCalled();
         $process->isSuccessful()->willReturn(false);
 
         $context->getFiles()->willReturn(new FilesCollection(array(

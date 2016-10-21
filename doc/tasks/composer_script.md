@@ -9,7 +9,8 @@ parameters:
     tasks:
         composer_script:
             script: ~
-            triggered_by: []
+            triggered_by: [php, phtml]
+            working_directory: "./"
 ```
 
 **script**
@@ -26,8 +27,15 @@ but this is surely NOT recommended!
 
 **triggered_by**
 
-*Default: []*
+*Default: [php, phtml]*
 
 This option will specify which file extensions will trigger the Composer script.
 By default Composer script will be triggered by altering any file.
 You can overwrite this option to whatever file you want to use!
+
+
+**working_directory**
+
+*Default: "./"*
+
+This option specifies in which directory the Composer script should be run.
