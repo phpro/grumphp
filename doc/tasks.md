@@ -22,6 +22,7 @@ parameters:
         gulp: ~
         jsonlint: ~
         make: ~
+        npm_script: ~
         phing: ~
         php7cc: ~
         phpcpd: ~
@@ -58,6 +59,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Gulp](tasks/gulp.md)
 - [JsonLint](tasks/jsonlint.md)
 - [Make](tasks/make.md)
+- [NPM script](tasks/npm_script.md)
 - [Phing](tasks/phing.md)
 - [Php7cc](tasks/php7cc.md) 
 - [PhpCpd](tasks/phpcpd.md)
