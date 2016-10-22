@@ -82,7 +82,7 @@ class InitCommand extends Command
         $resourceHooksPath = $this->paths()->getPathWithTrailingSlash($resourceHooksPath);
         $customHooksPath = $this->paths()->getPathWithTrailingSlash($this->grumPHP->getHooksDir());
 
-        // Some git clients to not automatically create a git hooks folder.
+        // Some git clients do not automatically create a git hooks folder.
         if (!$this->filesystem->exists($gitHooksPath)) {
             $this->filesystem->mkdir($gitHooksPath);
             $output->writeln(sprintf(
