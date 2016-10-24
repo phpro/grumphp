@@ -62,6 +62,18 @@ class GrumPHPSpec extends ObjectBehavior
         $this->ignoreUnstagedChanges()->shouldReturn(true);
     }
 
+    function it_configures_the_process_async_limit(ContainerInterface $container)
+    {
+        $container->getParameter('process_async_limit')->willReturn(5);
+        $this->getProcessAsyncLimit()->shouldReturn(5);
+    }
+
+    function it_configures_the_process_async_wait_time(ContainerInterface $container)
+    {
+        $container->getParameter('process_async_wait')->willReturn(0);
+        $this->getProcessAsyncWaitTime()->shouldReturn(0);
+    }
+
     function it_configures_the_symfony_process_timeout(ContainerInterface $container)
     {
         $container->getParameter('process_timeout')->willReturn(null);

@@ -73,6 +73,22 @@ class GrumPHP
     }
 
     /**
+     * @return int
+     */
+    public function getProcessAsyncLimit()
+    {
+        return (int) $this->container->getParameter('process_async_limit');
+    }
+
+    /**
+     * @return int
+     */
+    public function getProcessAsyncWaitTime()
+    {
+        return (int) $this->container->getParameter('process_async_wait');
+    }
+
+    /**
      * @return float|null
      */
     public function getProcessTimeout()

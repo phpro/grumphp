@@ -6,6 +6,7 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\PhpCsFixerFormatter;
+use GrumPHP\Process\AsyncProcessRunner;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
@@ -30,6 +31,11 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
     protected $processBuilder;
 
     /**
+     * @var AsyncProcessRunner
+     */
+    protected $processRunner;
+
+    /**
      * @var PhpCsFixerFormatter
      */
     protected $formatter;
@@ -39,11 +45,17 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
      *
      * @param GrumPHP             $grumPHP
      * @param ProcessBuilder      $processBuilder
+     * @param AsyncProcessRunner  $processRunner
      * @param PhpCsFixerFormatter $formatter
      */
-    public function __construct(GrumPHP $grumPHP, ProcessBuilder $processBuilder, PhpCsFixerFormatter $formatter)
-    {
+    public function __construct(
+        GrumPHP $grumPHP,
+        ProcessBuilder $processBuilder,
+        AsyncProcessRunner $processRunner,
+        PhpCsFixerFormatter $formatter
+    ) {
         $this->processBuilder = $processBuilder;
+        $this->processRunner = $processRunner;
         $this->formatter = $formatter;
         $this->grumPHP = $grumPHP;
     }
@@ -107,9 +119,12 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
         foreach ($files as $file) {
             $fileArguments = new ProcessArgumentsCollection($arguments->getValues());
             $fileArguments->add($file);
-            $process = $this->processBuilder->buildProcess($fileArguments);
-            $process->run();
+            $processes[] = $this->processBuilder->buildProcess($fileArguments);
+        }
 
+        $this->processRunner->run($processes);
+
+        foreach ($processes as $process) {
             if (!$process->isSuccessful()) {
                 $hasErrors = true;
                 $messages[] = $this->formatter->format($process);
