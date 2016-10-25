@@ -3,7 +3,6 @@
 namespace GrumPHP\Process;
 
 use GrumPHP\Configuration\GrumPHP;
-use GrumPHP\Runner\TaskResult;
 use Symfony\Component\Process\Process;
 
 /**
