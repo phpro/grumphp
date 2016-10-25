@@ -1,4 +1,9 @@
 services:
+    async_process_runner:
+      class: GrumPHP\Process\AsyncProcessRunner
+      arguments:
+        - '@config'
+
     config:
         class: GrumPHP\Configuration\GrumPHP
         arguments:

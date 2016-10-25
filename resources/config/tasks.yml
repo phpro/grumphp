@@ -162,6 +162,7 @@ services:
         arguments:
           - '@config'
           - '@process_builder'
+          - '@async_process_runner'
           - '@formatter.php_cs_fixer'
         tags:
           - {name: grumphp.task, config: phpcsfixer}
@@ -171,6 +172,7 @@ services:
         arguments:
           - '@config'
           - '@process_builder'
+          - '@async_process_runner'
           - '@formatter.php_cs_fixer'
         tags:
           - {name: grumphp.task, config: phpcsfixer2}
