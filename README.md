@@ -73,8 +73,7 @@ You can specify a custom config filename and location in `composer.json` or in t
 
 ```yaml
 # grumphp.yml
-parameters:
-    bin_dir: "./vendor/bin"
+parameters:    bin_dir: "./vendor/bin"
     git_dir: "."
     hooks_dir: ~
     hooks_preset: local
@@ -120,7 +119,7 @@ parameters:
         yamllint: ~
     extensions: []
 ```
-.
+
 You can find a detailed overview of the configurable options in these sections:
 
 - [Parameters](doc/parameters.md)
