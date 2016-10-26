@@ -121,6 +121,15 @@ services:
         tags:
             - {name: grumphp.task, config: make}
 
+    task.npm.script:
+        class: GrumPHP\Task\NpmScript
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: npm_script}
+
     task.phing:
         class: GrumPHP\Task\Phing
         arguments:
