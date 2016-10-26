@@ -93,6 +93,7 @@ parameters:
         clover_coverage: ~
         codeception: ~
         composer: ~
+        composer_script: ~
         doctrine_orm: ~
         gherkin: ~
         git_blacklist: ~
@@ -101,6 +102,7 @@ parameters:
         grunt: ~
         gulp: ~
         jsonlint: ~
+        npm_script: ~
         phing: ~
         php7cc: ~
         phpcpd: ~
