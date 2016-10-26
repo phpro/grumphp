@@ -75,7 +75,7 @@ class NpmScriptSpec extends ObjectBehavior
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
         $process->run()->shouldBeCalled();
-        $process->setWorkingDirectory('./')->shouldBeCalled();
+        $process->setWorkingDirectory(getcwd())->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
         $context->getFiles()->willReturn(new FilesCollection(array(
@@ -97,7 +97,7 @@ class NpmScriptSpec extends ObjectBehavior
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
         $process->run()->shouldBeCalled();
-        $process->setWorkingDirectory('./')->shouldBeCalled();
+        $process->setWorkingDirectory(getcwd())->shouldBeCalled();
         $process->isSuccessful()->willReturn(false);
 
         $context->getFiles()->willReturn(new FilesCollection(array(

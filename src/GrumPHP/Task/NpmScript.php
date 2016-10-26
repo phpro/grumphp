@@ -63,7 +63,7 @@ class NpmScript extends AbstractExternalTask
         $arguments->addRequiredArgument('%s', $config['script']);
 
         $process = $this->processBuilder->buildProcess($arguments);
-        $process->setWorkingDirectory($config['working_directory']);
+        $process->setWorkingDirectory(realpath($config['working_directory']));
         $process->run();
 
         if (!$process->isSuccessful()) {
