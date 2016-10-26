@@ -62,7 +62,7 @@ class ComposerScript extends AbstractExternalTask
         $arguments = $this->processBuilder->createArgumentsForCommand('composer');
         $arguments->add('run-script');
         $arguments->addRequiredArgument('%s', $config['script']);
-        $arguments->addOptionalArgument('-d %s', $config['working_directory']);
+        $arguments->addOptionalArgument('--working-dir=%s', $config['working_directory']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
