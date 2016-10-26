@@ -21,3 +21,10 @@ parameters:
         ignore_patterns:
           - "#test/(.*).yml#"
       phplint: ~
+      php_parser: ~
+
+services:
+  grumphp.parser.php.visitor.declare_strict_types:
+    class: '\GrumPHP\Parser\Php\Visitor\DeclareStrictTypesVisitor'
+    tags:
+      - {name: 'php_parser.visitor'}

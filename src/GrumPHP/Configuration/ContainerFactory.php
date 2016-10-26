@@ -29,6 +29,7 @@ final class ContainerFactory
 
         // Add compiler passes:
         $container->addCompilerPass(new Compiler\ExtensionCompilerPass());
+        $container->addCompilerPass(new Compiler\PhpParserCompilerPass());
         $container->addCompilerPass(new Compiler\TaskCompilerPass());
         $container->addCompilerPass(
             new RegisterListenersPass('event_dispatcher', 'grumphp.event_listener', 'grumphp.event_subscriber')
@@ -39,6 +40,7 @@ final class ContainerFactory
         $loader->load('formatter.yml');
         $loader->load('linters.yml');
         $loader->load('parameters.yml');
+        $loader->load('parsers.yml');
         $loader->load('services.yml');
         $loader->load('subscribers.yml');
         $loader->load('tasks.yml');

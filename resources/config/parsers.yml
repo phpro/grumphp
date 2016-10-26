@@ -1,0 +1,17 @@
+services:
+    grumphp.parser.php.factory.parser:
+      class: 'GrumPHP\Parser\Php\Factory\ParserFactory'
+      arguments: []
+    grumphp.parser.php.factory.traverser:
+      class: 'GrumPHP\Parser\Php\Factory\TraverserFactory'
+      arguments: []
+    grumphp.parser.php.visitor.nameresolver:
+      class: 'PhpParser\NodeVisitor\NameResolver'
+      arguments: []
+      tags:
+        - {name: 'php_parser.visitor'}
+    grumphp.parser.php.parser:
+      class: 'GrumPHP\Parser\Php\PhpParser'
+      arguments:
+        - '@grumphp.parser.php.factory.parser'
+        - '@grumphp.parser.php.factory.traverser'
