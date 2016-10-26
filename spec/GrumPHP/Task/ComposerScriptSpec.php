@@ -24,7 +24,7 @@ class ComposerScriptSpec extends ObjectBehavior
 {
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
-        $grumPHP->getTaskConfiguration('composer_script')->willReturn(array('script' => 'test', 'working_directory' => './'));
+        $grumPHP->getTaskConfiguration('composer_script')->willReturn(array('script' => 'test'));
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
@@ -75,7 +75,6 @@ class ComposerScriptSpec extends ObjectBehavior
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
         $process->run()->shouldBeCalled();
-        $process->setWorkingDirectory('./')->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
         $context->getFiles()->willReturn(new FilesCollection(array(
@@ -97,7 +96,6 @@ class ComposerScriptSpec extends ObjectBehavior
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
         $process->run()->shouldBeCalled();
-        $process->setWorkingDirectory('./')->shouldBeCalled();
         $process->isSuccessful()->willReturn(false);
 
         $context->getFiles()->willReturn(new FilesCollection(array(

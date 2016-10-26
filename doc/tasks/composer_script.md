@@ -10,7 +10,7 @@ parameters:
         composer_script:
             script: ~
             triggered_by: [php, phtml]
-            working_directory: "./"
+            working_directory: ~
 ```
 
 **script**
@@ -36,6 +36,6 @@ You can overwrite this option to whatever file you want to use!
 
 **working_directory**
 
-*Default: "./"*
+*Default: null*
 
 This option specifies in which directory the Composer script should be run.

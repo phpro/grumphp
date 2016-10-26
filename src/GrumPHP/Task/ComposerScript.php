@@ -28,12 +28,12 @@ class ComposerScript extends AbstractExternalTask
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array(
-            'working_directory' => './',
+            'working_directory' => null,
             'script' => null,
             'triggered_by' => array('php', 'phtml')
         ));
 
-        $resolver->addAllowedTypes('working_directory', array('string'));
+        $resolver->addAllowedTypes('working_directory', array('null', 'string'));
         $resolver->addAllowedTypes('script', array('string'));
         $resolver->addAllowedTypes('triggered_by', array('array'));
 
@@ -62,9 +62,9 @@ class ComposerScript extends AbstractExternalTask
         $arguments = $this->processBuilder->createArgumentsForCommand('composer');
         $arguments->add('run-script');
         $arguments->addRequiredArgument('%s', $config['script']);
+        $arguments->addOptionalArgument('-d %s', $config['working_directory']);
 
         $process = $this->processBuilder->buildProcess($arguments);
-        $process->setWorkingDirectory($config['working_directory']);
         $process->run();
 
         if (!$process->isSuccessful()) {
