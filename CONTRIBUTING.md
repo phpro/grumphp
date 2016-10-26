@@ -1,4 +1,4 @@
-# Contributing
+## Contributing
 
 GrumPHP is an open source, community-driven project. If you'd like to contribute,
 feel free to do this, but remember to follow this few simple rules:
