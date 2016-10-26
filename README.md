@@ -120,7 +120,7 @@ parameters:
         yamllint: ~
     extensions: []
 ```
-
+.
 You can find a detailed overview of the configurable options in these sections:
 
 - [Parameters](doc/parameters.md)
@@ -185,4 +185,4 @@ Please take a look at our rules before [contributing your code](CONTRIBUTING.md)
 
 ### License
 
-GrumPHP is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+GrumPHP is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
