@@ -17,9 +17,6 @@ use SplFileInfo;
  */
 class PhpParser implements ParserInterface
 {
-    const KIND_PHP5 = 'php5';
-    const KIND_PHP7 = 'php7';
-
     /**
      * @var ParserFactory
      */
@@ -65,7 +62,7 @@ class PhpParser implements ParserInterface
         $errors = new ParseErrorsCollection();
         $context = new ParserContext($file, $errors);
         $parser = $this->parserFactory->createFromOptions($this->parserOptions);
-        $traverser = $this->traverserFactory->createForContext($context);
+        $traverser = $this->traverserFactory->createForTaskContext($this->parserOptions, $context);
 
         try {
             $code = file_get_contents($file->getRealPath());
@@ -83,6 +80,6 @@ class PhpParser implements ParserInterface
      */
     public function isInstalled()
     {
-        return class_exists('PhpParser\Parser');
+        return interface_exists('PhpParser\Parser');
     }
 }

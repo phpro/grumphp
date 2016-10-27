@@ -1,17 +1,46 @@
 services:
+    grumphp.parser.php.configurator.traverser:
+      class: 'GrumPHP\Parser\Php\Configurator\TraverserConfigurator'
+      arguments:
+        - '@service_container'
+
     grumphp.parser.php.factory.parser:
       class: 'GrumPHP\Parser\Php\Factory\ParserFactory'
       arguments: []
+
     grumphp.parser.php.factory.traverser:
       class: 'GrumPHP\Parser\Php\Factory\TraverserFactory'
-      arguments: []
-    grumphp.parser.php.visitor.nameresolver:
-      class: 'PhpParser\NodeVisitor\NameResolver'
-      arguments: []
-      tags:
-        - {name: 'php_parser.visitor'}
+      arguments:
+        - '@grumphp.parser.php.configurator.traverser'
+
     grumphp.parser.php.parser:
       class: 'GrumPHP\Parser\Php\PhpParser'
       arguments:
         - '@grumphp.parser.php.factory.parser'
         - '@grumphp.parser.php.factory.traverser'
+
+    #
+    # AVAILABLE PHP PARSER VISITORS ...
+    #
+    grumphp.parser.php.visitor.declare_strict_types:
+      class: 'GrumPHP\Parser\Php\Visitor\DeclareStrictTypesVisitor'
+      tags:
+        - {name: 'php_parser.visitor'}
+
+    grumphp.parser.php.visitor.forbidden_function_calls:
+      class: 'GrumPHP\Parser\Php\Visitor\ForbiddenFunctionCallsVisitor'
+      arguments: []
+      tags:
+        - {name: 'php_parser.visitor'}
+
+    grumphp.parser.php.visitor.nameresolver:
+      class: 'PhpParser\NodeVisitor\NameResolver'
+      arguments: []
+      tags:
+        - {name: 'php_parser.visitor'}
+
+    grumphp.parser.php.visitor.no_exit_statements:
+      class: 'GrumPHP\Parser\Php\Visitor\NoExitStatementsVisitor'
+      arguments: []
+      tags:
+        - {name: 'php_parser.visitor'}

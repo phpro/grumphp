@@ -4,7 +4,6 @@ namespace GrumPHP\Configuration\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Class PhpParserCompilerPass
@@ -16,6 +15,12 @@ class PhpParserCompilerPass implements CompilerPassInterface
     const TAG = 'php_parser.visitor';
 
     /**
+     * Sets the visitors as non shared services.
+     * This will make sure that the state of the visitor won't need to be reset after an iteration of the traverser.
+     *
+     * All visitor Ids are registered in the traverser configurator.
+     * The configurator will be used to apply the configured visitors to the traverser.
+     *
      * @param ContainerBuilder $container
      *
      * @throws \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
@@ -23,15 +28,10 @@ class PhpParserCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $traverserFactory = $container->findDefinition('grumphp.parser.php.factory.traverser');
-        $taggedServices = $container->findTaggedServiceIds('php_parser.visitor');
-
-        foreach ($taggedServices as $id => $tags) {
-            // Make sure to start with a fresh state on every parse:
+        $traverserConfigurator = $container->findDefinition('grumphp.parser.php.configurator.traverser');
+        foreach ($container->findTaggedServiceIds(self::TAG) as $id => $tags) {
             $container->findDefinition($id)->setShared(false);
-
-            // Add the node visitor to the traverser factory:
-            $traverserFactory->addMethodCall('addNodeVisitor', array(new Reference($id)));
+            $traverserConfigurator->addMethodCall('registerVisitorId', array($id));
         }
     }
 }

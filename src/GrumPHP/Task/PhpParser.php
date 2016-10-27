@@ -9,8 +9,16 @@ use GrumPHP\Runner\TaskResult;
 /**
  * Php Parser task
  */
-class Phpparser extends AbstractParserTask
+class PhpParser extends AbstractParserTask
 {
+    const KIND_PHP5 = 'php5';
+    const KIND_PHP7 = 'php7';
+
+    /**
+     * @var \GrumPHP\Parser\Php\PhpParser
+     */
+    protected $parser;
+
     /**
      * @return string
      */
@@ -25,8 +33,11 @@ class Phpparser extends AbstractParserTask
     public function getConfigurableOptions()
     {
         $resolver = parent::getConfigurableOptions();
+
         $resolver->setDefaults(array(
-            'triggered_by'     => array('php'),
+            'triggered_by' => array('php'),
+            'kind' => self::KIND_PHP7,
+            'visitors' => [],
         ));
 
         return $resolver;
@@ -52,7 +63,7 @@ class Phpparser extends AbstractParserTask
             return TaskResult::createSkipped($this, $context);
         }
 
-        $this->parser->setParserOptions(['kind' => \GrumPHP\Parser\Php\PhpParser::KIND_PHP7]);
+        $this->parser->setParserOptions($config);
 
         $parseErrors = $this->parse($files);
 

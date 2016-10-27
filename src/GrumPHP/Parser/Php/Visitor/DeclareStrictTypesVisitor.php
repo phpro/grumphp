@@ -19,12 +19,12 @@ class DeclareStrictTypesVisitor extends AbstractVisitor
     /**
      * @param Node $node
      *
-     * @return false|null|Node|\PhpParser\Node[]|void
+     * @return void
      */
     public function leaveNode(Node $node)
     {
         if (!$node instanceof Node\Stmt\Declare_) {
-            return null;
+            return;
         }
 
         foreach ($node->declares as $id => $declare) {
@@ -34,21 +34,17 @@ class DeclareStrictTypesVisitor extends AbstractVisitor
 
             $this->hasStrictType = $declare->value->value === 1;
         }
-
-        return null;
     }
 
     /**
      * @param array $nodes
      *
-     * @return null
+     * @return void
      */
     public function afterTraverse(array $nodes)
     {
         if (!$this->hasStrictType) {
             $this->addError('No "declare(strict_types = 1)" found in file!');
         }
-
-        return null;
     }
 }

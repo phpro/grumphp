@@ -2,10 +2,9 @@
 
 namespace GrumPHP\Parser\Php\Factory;
 
+use GrumPHP\Parser\Php\Configurator\TraverserConfigurator;
 use GrumPHP\Parser\Php\Context\ParserContext;
-use GrumPHP\Parser\Php\Visitor\ContextAwareVisitorInterface;
 use PhpParser\NodeTraverser;
-use PhpParser\NodeVisitor;
 
 /**
  * Class TraverserFactory
@@ -15,33 +14,34 @@ use PhpParser\NodeVisitor;
 class TraverserFactory
 {
     /**
-     * @var NodeVisitor[]
+     * @var TraverserConfigurator
      */
-    private $visitors = [];
+    private $configurator;
 
     /**
-     * @param NodeVisitor $visitor
+     * TraverserFactory constructor.
+     *
+     * @param TraverserConfigurator $configurator
      */
-    public function addNodeVisitor(NodeVisitor $visitor)
+    public function __construct(TraverserConfigurator $configurator)
     {
-        $this->visitors[] = $visitor;
+        $this->configurator = $configurator;
     }
 
     /**
+     * @param array         $parserOptions
      * @param ParserContext $context
      *
      * @return NodeTraverser
+     * @throws \GrumPHP\Exception\RuntimeException
      */
-    public function createForContext(ParserContext $context)
+    public function createForTaskContext(array $parserOptions, ParserContext $context)
     {
-        $traverser = new NodeTraverser();
-        foreach ($this->visitors as $visitor) {
-            $traverser->addVisitor($visitor);
+        $this->configurator->registerOptions($parserOptions);
+        $this->configurator->registerContext($context);
 
-            if ($visitor instanceof ContextAwareVisitorInterface) {
-                $visitor->setContext($context);
-            }
-        }
+        $traverser = new NodeTraverser();
+        $this->configurator->configure($traverser);
 
         return $traverser;
     }

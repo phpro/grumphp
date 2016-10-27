@@ -214,7 +214,7 @@ services:
           - {name: grumphp.task, config: phpmd}
 
     task.phpparser:
-        class: GrumPHP\Task\Phpparser
+        class: GrumPHP\Task\PhpParser
         arguments:
             - '@config'
             - '@grumphp.parser.php.parser'

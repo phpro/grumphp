@@ -32,7 +32,7 @@ class AbstractVisitor extends NodeVisitorAbstract implements ContextAwareVisitor
      * @param int    $line
      * @param string $type
      */
-    protected function addError($message, $line = -1, $type = ParseError::TYPE_FATAL)
+    protected function addError($message, $line = -1, $type = ParseError::TYPE_ERROR)
     {
         $errors = $this->context->getErrors();
         $fileName = $this->context->getFile()->getRealPath();
