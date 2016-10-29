@@ -16,9 +16,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class TraverserConfigurator
 {
-
-    const CONFIGURATION_PREFIX = 'grumphp.parser.php.visitor.';
-
     /**
      * @var string[]
      */
@@ -45,11 +42,21 @@ class TraverserConfigurator
     }
 
     /**
-     * @param $visitorId
+     * @param string $alias
+     * @param string $visitorId
+     *
+     * @throws \GrumPHP\Exception\RuntimeException
      */
-    public function registerVisitorId($visitorId)
+    public function registerVisitorId($alias, $visitorId)
     {
-        $this->registeredVisitorIds[] = (string) $visitorId;
+        if (array_key_exists($alias, $this->registeredVisitorIds)) {
+            $registeredId = $this->registeredVisitorIds[$alias];
+            throw new RuntimeException(
+                sprintf('The visitor alias %s is already registered to visitor with id %s.', $alias, $registeredId)
+            );
+        }
+
+        $this->registeredVisitorIds[$alias] = (string) $visitorId;
     }
 
     /**
@@ -78,10 +85,13 @@ class TraverserConfigurator
         $this->guardTaskHasVisitors();
         $this->guardContextIsRegistered();
 
-        $configuredVisitors = $this->normalizeConfiguredVisitors($this->options['visitors']);
+        $configuredVisitors = $this->options['visitors'];
         $configuredVisitorIds = array_keys($configuredVisitors);
-        $visitorIds = array_values(array_intersect($this->registeredVisitorIds, $configuredVisitorIds));
-        $unknownConfiguredVisitorIds = array_diff($configuredVisitorIds, $this->registeredVisitorIds);
+        $registeredVisitors = $this->registeredVisitorIds;
+        $registeredVisitorsIds = array_keys($registeredVisitors);
+
+        $visitorIds = array_values(array_intersect($registeredVisitorsIds, $configuredVisitorIds));
+        $unknownConfiguredVisitorIds = array_diff($configuredVisitorIds, $registeredVisitorsIds);
         
         if (count($unknownConfiguredVisitorIds)) {
             throw new RuntimeException(
@@ -89,14 +99,15 @@ class TraverserConfigurator
             );
         }
 
-        foreach ($visitorIds as $visitorId) {
+        foreach ($visitorIds as $visitorAlias) {
+            $visitorId = $registeredVisitors[$visitorAlias];
             $visitor = $this->container->get($visitorId);
 
             if ($visitor instanceof ContextAwareVisitorInterface) {
                 $visitor->setContext($this->context);
             }
 
-            $options = $configuredVisitors[$visitorId];
+            $options = $configuredVisitors[$visitorAlias];
             if ($visitor instanceof ConfigurableVisitorInterface && is_array($options)) {
                 $visitor->configure($options);
             }
@@ -106,26 +117,6 @@ class TraverserConfigurator
 
         // Reset context to make sure the next configure call will actually run in the correct context:
         $this->context = null;
-    }
-
-    /**
-     * Add the configuration prefix to a string if it is not added yet.
-     * This makes it possible to use short visitor names in the configuration.
-     *
-     * @param array $visitorIds
-     *
-     * @return array
-     */
-    private function normalizeConfiguredVisitors($visitorIds)
-    {
-        $matcher = '/^' . preg_quote(self::CONFIGURATION_PREFIX, '/') . '/';
-        $newVisitors = [];
-        foreach ($visitorIds as $visitorId => $config) {
-            $newVisitorId = preg_match($matcher, $visitorId) ? $visitorId : self::CONFIGURATION_PREFIX . $visitorId;
-            $newVisitors[$newVisitorId] = $config;
-        }
-
-        return $newVisitors;
     }
 
     /**

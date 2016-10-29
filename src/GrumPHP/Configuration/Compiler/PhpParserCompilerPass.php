@@ -31,7 +31,10 @@ class PhpParserCompilerPass implements CompilerPassInterface
         $traverserConfigurator = $container->findDefinition('grumphp.parser.php.configurator.traverser');
         foreach ($container->findTaggedServiceIds(self::TAG) as $id => $tags) {
             $container->findDefinition($id)->setShared(false);
-            $traverserConfigurator->addMethodCall('registerVisitorId', array($id));
+            foreach ($tags as $tag) {
+                $alias = array_key_exists('alias', $tag) ? $tag['alias'] : $id;
+                $traverserConfigurator->addMethodCall('registerVisitorId', array($alias, $id));
+            }
         }
     }
 }
