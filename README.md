@@ -111,6 +111,7 @@ parameters:
         phpcsfixer2: ~
         phplint: ~
         phpmd: ~
+        phpparser: ~
         phpspec: ~
         phpunit: ~
         robo: ~

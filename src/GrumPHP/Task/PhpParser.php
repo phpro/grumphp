@@ -24,7 +24,7 @@ class PhpParser extends AbstractParserTask
      */
     public function getName()
     {
-        return 'php_parser';
+        return 'phpparser';
     }
 
     /**

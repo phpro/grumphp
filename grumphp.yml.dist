@@ -22,7 +22,7 @@ parameters:
         ignore_patterns:
           - "#test/(.*).yml#"
       phplint: ~
-      php_parser:
+      phpparser:
         visitors:
           nameresolver: ~
           #declare_strict_types: ~

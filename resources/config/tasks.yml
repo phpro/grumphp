@@ -219,7 +219,7 @@ services:
             - '@config'
             - '@grumphp.parser.php.parser'
         tags:
-          - {name: grumphp.task, config: php_parser}
+          - {name: grumphp.task, config: phpparser}
 
     task.phpspec:
         class: GrumPHP\Task\Phpspec

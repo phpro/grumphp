@@ -42,6 +42,7 @@
         "friendsofphp/php-cs-fixer": "Lets GrumPHP automatically fix your codestyle.",
         "jakub-onderka/php-parallel-lint": "Lets GrumPHP quickly lint your entire code base.",
         "malukenho/kawaii-gherkin": "Lets GrumPHP lint your Gherkin files.",
+        "nikic/php-parser": "Lets GrumPHP run static analyses through your PHP files.",
         "phing/phing": "Lets GrumPHP run your automated PHP tasks.",
         "phpmd/phpmd": "Lets GrumPHP sort out the mess in your code",
         "phpspec/phpspec": "Lets GrumPHP spec your code.",
