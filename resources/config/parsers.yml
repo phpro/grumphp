@@ -3,6 +3,8 @@ services:
       class: 'GrumPHP\Parser\Php\Configurator\TraverserConfigurator'
       arguments:
         - '@service_container'
+      calls:
+        - ['registerStandardEnabledVisitor', ['nameresolver', ~]]
 
     grumphp.parser.php.factory.parser:
       class: 'GrumPHP\Parser\Php\Factory\ParserFactory'

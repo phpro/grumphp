@@ -1,6 +1,6 @@
 <?php
 
-namespace PhproTest\DoctrineHydrationModule;
+namespace GrumPHPTest;
 
 error_reporting(E_ALL | E_STRICT);
 define('PROJECT_BASE_PATH', __DIR__ . '/../..');

@@ -1,7 +1,8 @@
 <?php
 
-namespace GrumPHP\Linter\Xml;
+namespace GrumPHPTest\Linter\Xml;
 
+use GrumPHP\Linter\Xml\XmlLinter;
 use SplFileInfo;
 
 /**

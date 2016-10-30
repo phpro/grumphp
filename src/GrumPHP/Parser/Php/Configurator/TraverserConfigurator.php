@@ -19,12 +19,17 @@ class TraverserConfigurator
     /**
      * @var string[]
      */
-    private $registeredVisitorIds = [];
+    private $registeredVisitorIds = array();
 
     /**
      * @var array
      */
-    private $options = [];
+    private $standardEnabledVisitors = array();
+
+    /**
+     * @var array
+     */
+    private $options = array();
 
     /**
      * @var ParserContext
@@ -60,6 +65,23 @@ class TraverserConfigurator
     }
 
     /**
+     * @param            $alias
+     * @param array|null $visitorOptions
+     *
+     * @throws \GrumPHP\Exception\RuntimeException
+     */
+    public function registerStandardEnabledVisitor($alias, array $visitorOptions = null)
+    {
+        if (array_key_exists($alias, $this->standardEnabledVisitors)) {
+            throw new RuntimeException(
+                sprintf('The visitor alias %s is already registered as a default enabled visitor.', $alias)
+            );
+        }
+
+        $this->standardEnabledVisitors[$alias] = $visitorOptions;
+    }
+
+    /**
      * @param array $options
      */
     public function registerOptions(array $options)
@@ -85,7 +107,7 @@ class TraverserConfigurator
         $this->guardTaskHasVisitors();
         $this->guardContextIsRegistered();
 
-        $configuredVisitors = $this->options['visitors'];
+        $configuredVisitors = $this->loadEnabledVisitorsForCurrentOptions();
         $configuredVisitorIds = array_keys($configuredVisitors);
         $registeredVisitors = $this->registeredVisitorIds;
         $registeredVisitorsIds = array_keys($registeredVisitors);
@@ -117,6 +139,19 @@ class TraverserConfigurator
 
         // Reset context to make sure the next configure call will actually run in the correct context:
         $this->context = null;
+    }
+
+    /**
+     * @return array
+     */
+    private function loadEnabledVisitorsForCurrentOptions()
+    {
+        $visitors = $this->standardEnabledVisitors;
+        foreach ($this->options['visitors'] as $alias => $visitorOptions) {
+            $visitors[$alias] = $visitorOptions;
+        }
+
+        return $visitors;
     }
 
     /**

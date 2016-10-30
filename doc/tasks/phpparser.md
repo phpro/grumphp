@@ -82,15 +82,37 @@ parameters:
         phpparser:
             visitors:
                 forbidden_function_calls: 
-                    blacklist: 
-                        - var_dump
+                    functions: 
+                        - 'var_dump'
+                    class_methods:
+                        - '$dumper->dump'
+                    class_methods:
+                        - 'Dumper::dump'
 ```
 
-**blacklist**
+**functions**
 
 *Default: []*
 
 This is a list of blacklisted function calls.
+When one of the functions inside this list is being called by your code, 
+the parser will markt this method as an error.
+
+
+**class_methods**
+
+*Default: []*
+
+This is a list of blacklisted class method calls. The syntax is `$variableName->methodName`.
+When one of the functions inside this list is being called by your code, 
+the parser will markt this method as an error.
+
+
+**class_methods**
+
+*Default: []*
+
+This is a list of blacklisted static method calls. The syntax is `Fully\Qualified\ClassName::staticMethodName`.
 When one of the functions inside this list is being called by your code, 
 the parser will markt this method as an error.
 
@@ -100,16 +122,10 @@ the parser will markt this method as an error.
 This visitor is an alias for the built-in PhpParser NameResolver visitor.
 It looks for class aliases in your code and adds the alias as an attribute to the class nodes.
 
-```yaml
-# grumphp.yml
-parameters:
-    tasks:
-        phpparser:
-            visitors:
-                nameresolver: ~ 
-```
+*Note:* This visitor is enabled by default since it is used by other visitors. 
+You don't have to register it in the task configuration.
 
-This visitore is not configurable!
+This visitor is not configurable!
 
 
 ### no_exit_statements
@@ -126,7 +142,7 @@ parameters:
                 no_exit_statements: ~ 
 ```
 
-This visitore is not configurable!
+This visitor is not configurable!
 
 
 ## Creating your own visitor

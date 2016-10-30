@@ -24,10 +24,8 @@ parameters:
       phplint: ~
       phpparser:
         visitors:
-          nameresolver: ~
-          #declare_strict_types: ~
           no_exit_statements: ~
           forbidden_function_calls:
-            blacklist: [var_dump]
+            functions: [var_dump]
         metadata:
           priority: 100000
