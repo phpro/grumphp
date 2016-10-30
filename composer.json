@@ -30,8 +30,7 @@
         "phpspec/prophecy": "~1.6",
         "phpunit/phpunit": "^4.8",
         "sensiolabs/security-checker": "^3.0",
-        "squizlabs/php_codesniffer": "~2.3",
-        "sstalle/php7cc": "^1.1"
+        "squizlabs/php_codesniffer": "~2.3"
     },
     "suggest": {
         "atoum/atoum": "Lets GrumPHP run your unit tests.",
