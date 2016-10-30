@@ -26,6 +26,6 @@ parameters:
         visitors:
           no_exit_statements: ~
           forbidden_function_calls:
-            functions: [var_dump]
+            blacklist: [var_dump]
         metadata:
           priority: 100000

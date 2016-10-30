@@ -3,23 +3,23 @@
 namespace GrumPHPTest\Parser\Php\Visitor;
 
 use GrumPHP\Parser\ParseError;
-use GrumPHP\Parser\Php\Visitor\ForbiddenFunctionCallsVisitor;
+use GrumPHP\Parser\Php\Visitor\ForbiddenClassMethodCallsVisitor;
 
 /**
- * Class ForbiddenFunctionCallsVisitorTest
+ * Class ForbiddenClassMethodCallsVisitorTest
  *
  * @package GrumPHPTest\Parser\Php\Visitor
  */
-class ForbiddenFunctionCallsVisitorTest extends AbstractVisitorTest
+class ForbiddenClassMethodCallsVisitorTest extends AbstractVisitorTest
 {
     /**
-     * @return ForbiddenFunctionCallsVisitor
+     * @return ForbiddenClassMethodCallsVisitor
      */
     protected function getVisitor()
     {
-        $visitor = new ForbiddenFunctionCallsVisitor();
+        $visitor = new ForbiddenClassMethodCallsVisitor();
         $visitor->configure(array(
-           'blacklist' => array('var_dump'),
+           'blacklist' => array('$dumper->dump'),
         ));
 
         return $visitor;
@@ -36,17 +36,20 @@ class ForbiddenFunctionCallsVisitorTest extends AbstractVisitorTest
     /**
      * @test
      */
-    function it_does_not_allow_blacklisted_functions()
+    function it_does_not_allow_blacklisted_class_method_calls()
     {
         $code = <<<EOC
 <?php
-var_dump('test');
+\$dumper = new ClassDumper();
+\$dumper->dump('something');
+\$this->dumper->dump('something');
 EOC;
 
         $errors = $this->visit($code);
-        $this->assertCount(1, $errors);
+        $this->assertCount(2, $errors);
         $this->assertEquals(ParseError::TYPE_ERROR, $errors[0]->getType());
-        $this->assertEquals(2, $errors[0]->getLine());
+        $this->assertEquals(3, $errors[0]->getLine());
+        $this->assertEquals(4, $errors[1]->getLine());
     }
 
     /**
@@ -56,7 +59,7 @@ EOC;
     {
         $code = <<<EOC
 <?php
-validMethod();
+\$some->validMethod();
 EOC;
 
         $errors = $this->visit($code);

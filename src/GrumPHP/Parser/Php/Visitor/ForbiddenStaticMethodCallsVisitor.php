@@ -7,11 +7,11 @@ use PhpParser\Node;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class ForbiddenFunctionCallsVisitor
+ * Class ForbiddenStaticMethodCallsVisitor
  *
  * @package GrumPHP\Parser\Php\Visitor
  */
-class ForbiddenFunctionCallsVisitor extends AbstractVisitor implements ConfigurableVisitorInterface
+class ForbiddenStaticMethodCallsVisitor extends AbstractVisitor implements ConfigurableVisitorInterface
 {
     /**
      * @var array
@@ -42,18 +42,21 @@ class ForbiddenFunctionCallsVisitor extends AbstractVisitor implements Configura
      */
     public function leaveNode(Node $node)
     {
-        if (!$node instanceof Node\Expr\FuncCall) {
+        if (!$node instanceof Node\Expr\StaticCall) {
             return;
         }
 
-        $function = $node->name;
-        if (!in_array($function, $this->blacklist)) {
+        $class = implode('\\', $node->class->parts);
+        $method = $node->name;
+        $normalized = sprintf('%s::%s', $class, $method);
+
+        if (!in_array($normalized, $this->blacklist)) {
             return;
         }
 
         $this->addError(
-            sprintf('Found blacklisted "%s" function call', $function),
-            $node->getLine(),
+            sprintf('Found blacklisted "%s" static method call', $normalized),
+            $node->getline(),
             ParseError::TYPE_ERROR
         );
     }

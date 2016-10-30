@@ -51,7 +51,9 @@ It's also possible to write your own visitor!
 ## Built-in visitors
 
 - [declare_strict_types](#declare_strict_types)
+- [forbidden_class_method_calls](#forbidden_class_method_calls)
 - [forbidden_function_calls](#forbidden_function_calls)
+- [forbidden_static_method_calls](#forbidden_static_method_calls)
 - [nameresolver](#nameresolver)
 - [no_exit_statements](#no_exit_statements)
 
@@ -71,6 +73,30 @@ parameters:
 This visitore is not configurable!
 
 
+### forbidden_class_method_calls
+
+This visitor can be used to look for forbidden class method calls.
+
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        phpparser:
+            visitors:
+                forbidden_class_method_calls: 
+                    blacklist:
+                        - '$dumper->dump'
+```
+
+**blacklist**
+
+*Default: []*
+
+This is a list of blacklisted class method calls. The syntax is `$variableName->methodName`.
+When one of the functions inside this list is being called by your code, 
+the parser will markt this method as an error.
+
+
 ### forbidden_function_calls
 
 This visitor can be used to look for forbidden function calls.
@@ -82,15 +108,11 @@ parameters:
         phpparser:
             visitors:
                 forbidden_function_calls: 
-                    functions: 
+                    blacklist: 
                         - 'var_dump'
-                    class_methods:
-                        - '$dumper->dump'
-                    class_methods:
-                        - 'Dumper::dump'
 ```
 
-**functions**
+**blacklist**
 
 *Default: []*
 
@@ -99,16 +121,22 @@ When one of the functions inside this list is being called by your code,
 the parser will markt this method as an error.
 
 
-**class_methods**
+### forbidden_static_method_calls
 
-*Default: []*
+This visitor can be used to look for forbidden static method calls.
 
-This is a list of blacklisted class method calls. The syntax is `$variableName->methodName`.
-When one of the functions inside this list is being called by your code, 
-the parser will markt this method as an error.
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        phpparser:
+            visitors:
+                forbidden_static_method_calls: 
+                    blacklist:
+                        - 'Dumper::dump'
+```
 
-
-**class_methods**
+**blacklist**
 
 *Default: []*
 

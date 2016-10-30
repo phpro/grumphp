@@ -7,11 +7,11 @@ use PhpParser\Node;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class ForbiddenFunctionCallsVisitor
+ * Class ForbiddenClassMethodCallsVisitor
  *
  * @package GrumPHP\Parser\Php\Visitor
  */
-class ForbiddenFunctionCallsVisitor extends AbstractVisitor implements ConfigurableVisitorInterface
+class ForbiddenClassMethodCallsVisitor extends AbstractVisitor implements ConfigurableVisitorInterface
 {
     /**
      * @var array
@@ -42,18 +42,20 @@ class ForbiddenFunctionCallsVisitor extends AbstractVisitor implements Configura
      */
     public function leaveNode(Node $node)
     {
-        if (!$node instanceof Node\Expr\FuncCall) {
+        if (!$node instanceof Node\Expr\MethodCall || !isset($node->var->name)) {
             return;
         }
 
-        $function = $node->name;
-        if (!in_array($function, $this->blacklist)) {
+        $variable = $node->var->name;
+        $method = $node->name;
+        $normalized = sprintf('$%s->%s', $variable, $method);
+        if (!in_array($normalized, $this->blacklist)) {
             return;
         }
 
         $this->addError(
-            sprintf('Found blacklisted "%s" function call', $function),
-            $node->getLine(),
+            sprintf('Found blacklisted "%s" method call', $normalized),
+            $node->getline(),
             ParseError::TYPE_ERROR
         );
     }
