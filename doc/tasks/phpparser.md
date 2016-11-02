@@ -55,6 +55,7 @@ It's also possible to write your own visitor!
 - [forbidden_function_calls](#forbidden_function_calls)
 - [forbidden_static_method_calls](#forbidden_static_method_calls)
 - [nameresolver](#nameresolver)
+- [never_use_else](#never_use_else)
 - [no_exit_statements](#no_exit_statements)
 
 ### declare_strict_types
@@ -152,6 +153,27 @@ It looks for class aliases in your code and adds the alias as an attribute to th
 
 *Note:* This visitor is enabled by default since it is used by other visitors. 
 You don't have to register it in the task configuration.
+
+This visitor is not configurable!
+
+
+### never_user_else
+
+This visitor will search for the `else` and `elseif` keywords in your code.
+An error will be added if one of those statements is found.
+More information about Object Calisthenics can be found 
+[here](http://www.slideshare.net/rdohms/your-code-sucks-lets-fix-it-15471808) 
+and 
+[here](http://www.slideshare.net/guilhermeblanco/object-calisthenics-applied-to-php).
+
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        phpparser:
+            visitors:
+                never_user_else: ~ 
+```
 
 This visitor is not configurable!
 

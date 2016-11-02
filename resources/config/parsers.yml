@@ -53,6 +53,12 @@ services:
       tags:
         - {name: 'php_parser.visitor', alias: 'nameresolver'}
 
+    grumphp.parser.php.visitor.never_use_else:
+      class: 'GrumPHP\Parser\Php\Visitor\NeverUseElseVisitor'
+      arguments: []
+      tags:
+        - {name: 'php_parser.visitor', alias: 'never_use_else'}
+
     grumphp.parser.php.visitor.no_exit_statements:
       class: 'GrumPHP\Parser\Php\Visitor\NoExitStatementsVisitor'
       arguments: []
