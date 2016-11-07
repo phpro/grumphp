@@ -151,7 +151,7 @@ class Application extends SymfonyConsole
 
         // Load cli options:
         $input = new ArgvInput();
-        $configPath = $input->getParameterOption(array('--config', '-c'), $this->getDefaultConfigPath());
+        $configPath = $input->getParameterOption(['--config', '-c'], $this->getDefaultConfigPath());
 
         // Build the service container:
         $this->container = ContainerFactory::buildFromConfiguration($configPath);

@@ -24,7 +24,7 @@ class ComposerSpec extends ObjectBehavior
 {
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
-        $grumPHP->getTaskConfiguration('composer')->willReturn(array());
+        $grumPHP->getTaskConfiguration('composer')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
@@ -81,9 +81,9 @@ class ComposerSpec extends ObjectBehavior
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('composer.json', '.', 'composer.json')
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
@@ -102,9 +102,9 @@ class ComposerSpec extends ObjectBehavior
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(false);
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('composer.json', '.', 'composer.json')
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
@@ -119,10 +119,10 @@ class ComposerSpec extends ObjectBehavior
     )
     {
         $composerFile = tempnam(sys_get_temp_dir(), 'grumphp-composer');
-        $grumPHP->getTaskConfiguration('composer')->willReturn(array(
+        $grumPHP->getTaskConfiguration('composer')->willReturn([
             'file' => str_replace('\\', '/', $composerFile),
             'no_local_repository' => true
-        ));
+        ]);
 
         file_put_contents($composerFile, '{"repositories": [{"type": "path", "url": "/"}]}');
 
@@ -133,9 +133,9 @@ class ComposerSpec extends ObjectBehavior
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo($composerFile, '.', $composerFile)
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
@@ -153,10 +153,10 @@ class ComposerSpec extends ObjectBehavior
     )
     {
         $composerFile = tempnam(sys_get_temp_dir(), 'grumphp-composer');
-        $grumPHP->getTaskConfiguration('composer')->willReturn(array(
+        $grumPHP->getTaskConfiguration('composer')->willReturn([
             'file' => str_replace('\\', '/', $composerFile),
             'no_local_repository' => true
-        ));
+        ]);
 
         file_put_contents($composerFile, '{"repositories": [{"type": "vcs", "url": "/"}]}');
 
@@ -167,9 +167,9 @@ class ComposerSpec extends ObjectBehavior
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo($composerFile, '.', $composerFile)
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');

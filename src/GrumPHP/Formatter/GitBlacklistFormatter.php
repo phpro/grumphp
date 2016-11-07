@@ -77,9 +77,9 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
             return $line;
         }
 
-        $positionsWordColor = array();
-        $positionsResetColor = array();
-        $parts = array();
+        $positionsWordColor = [];
+        $positionsResetColor = [];
+        $parts = [];
         $lastPos = 0;
 
         //iterate over all WORD_COLORs and save the positions into $positionsWordColor

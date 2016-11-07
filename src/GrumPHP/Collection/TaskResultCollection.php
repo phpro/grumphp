@@ -61,7 +61,7 @@ class TaskResultCollection extends ArrayCollection
      */
     public function getAllMessages()
     {
-        $messages = array();
+        $messages = [];
 
         foreach ($this as $taskResult) {
             $messages[] = $taskResult->getMessage();

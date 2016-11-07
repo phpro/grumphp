@@ -28,21 +28,21 @@ class PhpCpd extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'directory' => '.',
-            'exclude' => array('vendor'),
+            'exclude' => ['vendor'],
             'fuzzy' => false,
             'min_lines' => 5,
             'min_tokens' => 70,
-            'triggered_by' => array('php'),
-        ));
+            'triggered_by' => ['php'],
+        ]);
 
-        $resolver->addAllowedTypes('directory', array('string'));
-        $resolver->addAllowedTypes('exclude', array('array'));
-        $resolver->addAllowedTypes('fuzzy', array('bool'));
-        $resolver->addAllowedTypes('min_lines', array('int'));
-        $resolver->addAllowedTypes('min_tokens', array('int'));
-        $resolver->addAllowedTypes('triggered_by', array('array'));
+        $resolver->addAllowedTypes('directory', ['string']);
+        $resolver->addAllowedTypes('exclude', ['array']);
+        $resolver->addAllowedTypes('fuzzy', ['bool']);
+        $resolver->addAllowedTypes('min_lines', ['int']);
+        $resolver->addAllowedTypes('min_tokens', ['int']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
     }

@@ -27,7 +27,7 @@ class AsyncProcessRunnerSpec extends ObjectBehavior
     function it_should_be_able_to_run_processes()
     {
         $prophet = new Prophet();
-        $processes = array();
+        $processes = [];
 
         for ($i = 0; $i < 20; $i++) {
             $process = $prophet->prophesize('Symfony\Component\Process\Process');

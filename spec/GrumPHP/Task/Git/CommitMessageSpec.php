@@ -16,9 +16,9 @@ class CommitMessageSpec extends ObjectBehavior
     function let(GrumPHP $grumPHP)
     {
         $this->beConstructedWith($grumPHP);
-        $grumPHP->getTaskConfiguration('git_commit_message')->willReturn(array(
-            'matchers' => array('test', '*es*', 'te[s][t]', '/^te(.*)/', '/(.*)st$/', '/t(e|a)st/', 'TEST')
-        ));
+        $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
+            'matchers' => ['test', '*es*', 'te[s][t]', '/^te(.*)/', '/(.*)st$/', '/t(e|a)st/', 'TEST']
+        ]);
     }
 
     function it_should_have_a_name()
@@ -70,10 +70,10 @@ class CommitMessageSpec extends ObjectBehavior
 
     function it_runs_with_additional_modifiers(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
-        $grumPHP->getTaskConfiguration('git_commit_message')->willReturn(array(
-            'matchers' => array('/.*ümlaut/'),
+        $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
+            'matchers' => ['/.*ümlaut/'],
             'additional_modifiers' => 'u',
-        ));
+        ]);
 
         $context->getCommitMessage()->willReturn('message containing ümlaut');
 

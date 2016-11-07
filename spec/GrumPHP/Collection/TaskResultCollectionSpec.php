@@ -92,11 +92,11 @@ class TaskResultCollectionSpec extends ObjectBehavior
         $this->add(TaskResult::createPassed($aTask, $aContext));
         $this->add(TaskResult::createFailed($aTask, $aContext, 'another failed message'));
 
-        $this->getAllMessages()->shouldReturn(array(
+        $this->getAllMessages()->shouldReturn([
             'failed message',
             null,
             'another failed message',
-        ));
+        ]);
     }
 
     function it_has_failed_if_it_contains_failed_task_result(TaskInterface $task, ContextInterface $context)

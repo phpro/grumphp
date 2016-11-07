@@ -27,15 +27,15 @@ class Make extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'make_file' => null,
             'task' => null,
-            'triggered_by' => array('php')
-        ));
+            'triggered_by' => ['php']
+        ]);
 
-        $resolver->addAllowedTypes('make_file', array('null', 'string'));
-        $resolver->addAllowedTypes('task', array('null', 'string'));
-        $resolver->addAllowedTypes('triggered_by', array('array'));
+        $resolver->addAllowedTypes('make_file', ['null', 'string']);
+        $resolver->addAllowedTypes('task', ['null', 'string']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
     }

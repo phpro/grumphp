@@ -56,13 +56,13 @@ class Blacklist extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
-            'keywords' => array(),
-            'triggered_by' => array('php')
-        ));
+        $resolver->setDefaults([
+            'keywords' => [],
+            'triggered_by' => ['php']
+        ]);
 
-        $resolver->addAllowedTypes('keywords', array('array'));
-        $resolver->addAllowedTypes('triggered_by', array('array'));
+        $resolver->addAllowedTypes('keywords', ['array']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
     }

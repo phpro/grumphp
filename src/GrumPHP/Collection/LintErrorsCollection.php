@@ -16,7 +16,7 @@ class LintErrorsCollection extends ArrayCollection
      */
     public function __toString()
     {
-        $errors = array();
+        $errors = [];
         foreach ($this->getIterator() as $error) {
             $errors[] = $error->__toString();
         }

@@ -31,7 +31,7 @@ class FilesCollection extends ArrayCollection
      */
     public function name($pattern)
     {
-        $filter = new Iterator\FilenameFilterIterator($this->getIterator(), array($pattern), array());
+        $filter = new Iterator\FilenameFilterIterator($this->getIterator(), [$pattern], []);
 
         return new FilesCollection(iterator_to_array($filter));
     }
@@ -51,7 +51,7 @@ class FilesCollection extends ArrayCollection
      */
     public function notName($pattern)
     {
-        $filter = new Iterator\FilenameFilterIterator($this->getIterator(), array(), array($pattern));
+        $filter = new Iterator\FilenameFilterIterator($this->getIterator(), [], [$pattern]);
 
         return new FilesCollection(iterator_to_array($filter));
     }
@@ -67,7 +67,7 @@ class FilesCollection extends ArrayCollection
      */
     public function path($pattern)
     {
-        $filter = new Iterator\PathFilterIterator($this->getIterator(), array($pattern), array());
+        $filter = new Iterator\PathFilterIterator($this->getIterator(), [$pattern], []);
 
         return new FilesCollection(iterator_to_array($filter));
     }
@@ -85,7 +85,7 @@ class FilesCollection extends ArrayCollection
      */
     public function notPath($pattern)
     {
-        $filter = new Iterator\PathFilterIterator($this->getIterator(), array(), array($pattern));
+        $filter = new Iterator\PathFilterIterator($this->getIterator(), [], [$pattern]);
 
         return new FilesCollection(iterator_to_array($filter));
     }
@@ -120,7 +120,7 @@ class FilesCollection extends ArrayCollection
     public function size($size)
     {
         $comparator = new Comparator\NumberComparator($size);
-        $filter = new Iterator\SizeRangeFilterIterator($this->getIterator(), array($comparator));
+        $filter = new Iterator\SizeRangeFilterIterator($this->getIterator(), [$comparator]);
 
         return new FilesCollection(iterator_to_array($filter));
     }
@@ -144,7 +144,7 @@ class FilesCollection extends ArrayCollection
     public function date($date)
     {
         $comparator = new Comparator\DateComparator($date);
-        $filter = new Iterator\DateRangeFilterIterator($this->getIterator(), array($comparator));
+        $filter = new Iterator\DateRangeFilterIterator($this->getIterator(), [$comparator]);
 
         return new FilesCollection(iterator_to_array($filter));
     }
@@ -163,7 +163,7 @@ class FilesCollection extends ArrayCollection
      */
     public function filter(\Closure $closure)
     {
-        $filter = new Iterator\CustomFilterIterator($this->getIterator(), array($closure));
+        $filter = new Iterator\CustomFilterIterator($this->getIterator(), [$closure]);
 
         return new FilesCollection(iterator_to_array($filter));
     }

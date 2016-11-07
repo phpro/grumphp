@@ -24,7 +24,7 @@ class PhpunitSpec extends ObjectBehavior
 {
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
-        $grumPHP->getTaskConfiguration('phpunit')->willReturn(array());
+        $grumPHP->getTaskConfiguration('phpunit')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
@@ -70,9 +70,9 @@ class PhpunitSpec extends ObjectBehavior
 
     function it_runs_if_there_are_no_files_but_always_execute_is_passed(GrumPHP $grumPHP, Process $process, ProcessBuilder $processBuilder, ContextInterface $context)
     {
-        $grumPHP->getTaskConfiguration('phpunit')->willReturn(array(
+        $grumPHP->getTaskConfiguration('phpunit')->willReturn([
             'always_execute' => true,
-        ));
+        ]);
 
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('phpunit')->willReturn($arguments);
@@ -97,9 +97,9 @@ class PhpunitSpec extends ObjectBehavior
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('test.php', '.', 'test.php')
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
@@ -115,9 +115,9 @@ class PhpunitSpec extends ObjectBehavior
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(false);
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('test.php', '.', 'test.php')
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');

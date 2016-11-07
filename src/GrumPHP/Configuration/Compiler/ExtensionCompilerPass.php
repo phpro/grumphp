@@ -20,7 +20,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $extensions = $container->getParameter('extensions');
-        $extensions = is_array($extensions) ? $extensions : array();
+        $extensions = is_array($extensions) ? $extensions : [];
         foreach ($extensions as $extensionClass) {
             if (!class_exists($extensionClass)) {
                 throw new RuntimeException(sprintf('Invalid extension class specified: %s', $extensionClass));

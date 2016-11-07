@@ -23,7 +23,7 @@ class ConflictSpec extends ObjectBehavior
 
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
-        $grumPHP->getTaskConfiguration('git_conflict')->willReturn(array());
+        $grumPHP->getTaskConfiguration('git_conflict')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
@@ -41,7 +41,7 @@ class ConflictSpec extends ObjectBehavior
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
-        $options->getDefinedOptions()->shouldBe(array());
+        $options->getDefinedOptions()->shouldBe([]);
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
@@ -64,9 +64,9 @@ class ConflictSpec extends ObjectBehavior
         $processBuilder->createArgumentsForCommand('git')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('file1.php', '.', 'file1.php'),
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');

@@ -26,19 +26,19 @@ class PhpCsFixer extends AbstractPhpCsFixerTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'config' => null,
             'config_file' => null,
-            'fixers' => array(),
+            'fixers' => [],
             'level' => null,
             'verbose' => true,
-        ));
+        ]);
 
-        $resolver->addAllowedTypes('config', array('null', 'string'));
-        $resolver->addAllowedTypes('config_file', array('null', 'string'));
-        $resolver->addAllowedTypes('fixers', array('array'));
-        $resolver->addAllowedTypes('level', array('null', 'string'));
-        $resolver->addAllowedTypes('verbose', array('bool'));
+        $resolver->addAllowedTypes('config', ['null', 'string']);
+        $resolver->addAllowedTypes('config_file', ['null', 'string']);
+        $resolver->addAllowedTypes('fixers', ['array']);
+        $resolver->addAllowedTypes('level', ['null', 'string']);
+        $resolver->addAllowedTypes('verbose', ['bool']);
 
         return $resolver;
     }

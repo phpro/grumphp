@@ -85,9 +85,9 @@ class YamlLinterTest extends \PHPUnit_Framework_TestCase
      */
     function provideYamlValidation()
     {
-        return array(
-            array('fixture' => 'valid.yml', 'errors' => 0),
-            array('fixture' => 'invalid.yml', 'errors' => 1),
-        );
+        return [
+            ['fixture' => 'valid.yml', 'errors' => 0],
+            ['fixture' => 'invalid.yml', 'errors' => 1],
+        ];
     }
 }

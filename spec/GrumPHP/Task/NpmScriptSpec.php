@@ -24,7 +24,7 @@ class NpmScriptSpec extends ObjectBehavior
 {
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
-        $grumPHP->getTaskConfiguration('npm_script')->willReturn(array('script' => 'test', 'working_directory' => './'));
+        $grumPHP->getTaskConfiguration('npm_script')->willReturn(['script' => 'test', 'working_directory' => './']);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
@@ -78,9 +78,9 @@ class NpmScriptSpec extends ObjectBehavior
         $process->setWorkingDirectory(getcwd())->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('test.js', '.', 'test.js')
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
@@ -100,9 +100,9 @@ class NpmScriptSpec extends ObjectBehavior
         $process->setWorkingDirectory(getcwd())->shouldBeCalled();
         $process->isSuccessful()->willReturn(false);
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('test.js', '.', 'test.js')
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');

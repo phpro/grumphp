@@ -40,7 +40,7 @@ class ProcessBuilderSpec extends ObjectBehavior
 
     function it_should_build_process_based_on_process_arguments()
     {
-        $arguments = new ProcessArgumentsCollection(array('/usr/bin/grumphp'));
+        $arguments = new ProcessArgumentsCollection(['/usr/bin/grumphp']);
         $process = $this->buildProcess($arguments);
 
         $process->shouldHaveType('Symfony\Component\Process\Process');
@@ -55,7 +55,7 @@ class ProcessBuilderSpec extends ObjectBehavior
     {
         $config->getProcessTimeout()->willReturn(120);
 
-        $arguments = new ProcessArgumentsCollection(array('/usr/bin/grumphp'));
+        $arguments = new ProcessArgumentsCollection(['/usr/bin/grumphp']);
         $process = $this->buildProcess($arguments);
         $process->getTimeout()->shouldBe(120.0);
     }
@@ -69,14 +69,14 @@ class ProcessBuilderSpec extends ObjectBehavior
         $command = '/usr/bin/grumphp';
         $io->write(PHP_EOL . 'Command: ' . ProcessUtils::escapeArgument($command), true)->shouldBeCalled();
 
-        $arguments = new ProcessArgumentsCollection(array($command));
+        $arguments = new ProcessArgumentsCollection([$command]);
         $process = $this->buildProcess($arguments);
 
     }
 
     function getMatchers()
     {
-        return array(
+        return [
             'beQuoted' => function ($subject, $string) {
                 $regex = sprintf('{^([\'"])%s\1$}', preg_quote($string));
                 if (!preg_match($regex, $subject)) {
@@ -88,6 +88,6 @@ class ProcessBuilderSpec extends ObjectBehavior
 
                 return true;
             }
-        );
+        ];
     }
 }

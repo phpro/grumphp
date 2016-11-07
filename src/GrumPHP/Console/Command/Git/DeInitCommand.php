@@ -19,10 +19,10 @@ class DeInitCommand extends Command
     /**
      * @var array
      */
-    protected static $hooks = array(
+    protected static $hooks = [
         'pre-commit',
         'commit-msg',
-    );
+    ];
 
     /**
      * @var GrumPHP

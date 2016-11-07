@@ -20,7 +20,7 @@ class FilesCollectionSpec extends ObjectBehavior
     function let(SplFileInfo $file1, SplFileInfo $file2)
     {
         $this->tempFile = tempnam(sys_get_temp_dir(), 'phpspec');
-        $this->beConstructedWith(array($file1, $file2));
+        $this->beConstructedWith([$file1, $file2]);
     }
 
     function letgo()
@@ -137,7 +137,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $file1->getPathname()->willReturn('path1/file.php');
         $file2->getPathname()->willReturn('path2/file.php');
 
-        $iterator = new \ArrayIterator(array($file1->getWrappedObject()));
+        $iterator = new \ArrayIterator([$file1->getWrappedObject()]);
         $result = $this->filterByFileList($iterator);
         $result->count()->shouldBe(1);
         $files = $result->toArray();
@@ -149,7 +149,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $file1->getFilename()->willReturn('file.php');
         $file2->getFilename()->willReturn('file.jpg');
 
-        $result = $this->extensions(array('php', 'js'));
+        $result = $this->extensions(['php', 'js']);
         $result->count()->shouldBe(1);
         $files = $result->toArray();
         $files[0]->shouldBe($file1);
@@ -160,7 +160,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $file1->getFilename()->willReturn('file.php');
         $file2->getFilename()->willReturn('file.jpg');
 
-        $result = $this->extensions(array());
+        $result = $this->extensions([]);
         $result->count()->shouldBe(0);
     }
 }

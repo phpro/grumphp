@@ -30,7 +30,7 @@ class Composer extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'file' => './composer.json',
             'no_check_all' => false,
             'no_check_lock' => false,
@@ -38,15 +38,15 @@ class Composer extends AbstractExternalTask
             'no_local_repository' => false,
             'with_dependencies' => false,
             'strict' => false
-        ));
+        ]);
 
-        $resolver->addAllowedTypes('file', array('string'));
-        $resolver->addAllowedTypes('no_check_all', array('bool'));
-        $resolver->addAllowedTypes('no_check_lock', array('bool'));
-        $resolver->addAllowedTypes('no_check_publish', array('bool'));
-        $resolver->addAllowedTypes('no_local_repository', array('bool'));
-        $resolver->addAllowedTypes('with_dependencies', array('bool'));
-        $resolver->addAllowedTypes('strict', array('bool'));
+        $resolver->addAllowedTypes('file', ['string']);
+        $resolver->addAllowedTypes('no_check_all', ['bool']);
+        $resolver->addAllowedTypes('no_check_lock', ['bool']);
+        $resolver->addAllowedTypes('no_check_publish', ['bool']);
+        $resolver->addAllowedTypes('no_local_repository', ['bool']);
+        $resolver->addAllowedTypes('with_dependencies', ['bool']);
+        $resolver->addAllowedTypes('strict', ['bool']);
 
         return $resolver;
     }

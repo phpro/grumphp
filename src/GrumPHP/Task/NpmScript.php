@@ -27,15 +27,15 @@ class NpmScript extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'script' => null,
-            'triggered_by' => array('js', 'jsx', 'coffee', 'ts', 'less', 'sass', 'scss'),
+            'triggered_by' => ['js', 'jsx', 'coffee', 'ts', 'less', 'sass', 'scss'],
             'working_directory' => './',
-        ));
+        ]);
 
-        $resolver->addAllowedTypes('script', array('string'));
-        $resolver->addAllowedTypes('triggered_by', array('array'));
-        $resolver->addAllowedTypes('working_directory', array('string'));
+        $resolver->addAllowedTypes('script', ['string']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
+        $resolver->addAllowedTypes('working_directory', ['string']);
 
         return $resolver;
     }

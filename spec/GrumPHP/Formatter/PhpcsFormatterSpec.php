@@ -38,15 +38,15 @@ class PhpcsFormatterSpec extends ObjectBehavior
 
     function it_formats_phpcs_json_output_for_single_file(Process $process, ProcessBuilder $processBuilder)
     {
-        $json = $this->parseJson(array(
-            '/var/www/Classes/Command/CacheCommandController.php' => array('messages' => array(array('fixable' => true),),),
-        ));
+        $json = $this->parseJson([
+            '/var/www/Classes/Command/CacheCommandController.php' => ['messages' => [['fixable' => true],],],
+        ]);
 
         $arguments = new ProcessArgumentsCollection();
         $process->getOutput()->willReturn($this->getExampleData() . $json);
         $this->format($process)->shouldBe($this->getExampleData());
 
-        $this->getSuggestedFilesFromJson(json_decode($json, true))->shouldBe(array('/var/www/Classes/Command/CacheCommandController.php'));
+        $this->getSuggestedFilesFromJson(json_decode($json, true))->shouldBe(['/var/www/Classes/Command/CacheCommandController.php']);
 
         $processBuilder->buildProcess($arguments)->willReturn($process);
         $process->getCommandLine()->willReturn("'phpcbf' '--standard=PSR2' '--ignore=spec/*Spec.php,test/*.php' '/var/www/Classes/Command/CacheCommandController.php'");
@@ -60,16 +60,16 @@ class PhpcsFormatterSpec extends ObjectBehavior
 
     function it_formats_phpcs_json_output_for_multiple_files(Process $process, ProcessBuilder $processBuilder)
     {
-        $json = $this->parseJson(array(
-            '/var/www/Classes/Command/CacheCommandController.php' => array('messages' => array(array('fixable' => true),),),
-            '/var/www/Classes/Command/DebugCommandController.php' => array('messages' => array(array('fixable' => false),),),
-        ));
+        $json = $this->parseJson([
+            '/var/www/Classes/Command/CacheCommandController.php' => ['messages' => [['fixable' => true],],],
+            '/var/www/Classes/Command/DebugCommandController.php' => ['messages' => [['fixable' => false],],],
+        ]);
 
-        $arguments = new ProcessArgumentsCollection(array('phpcbf'));
+        $arguments = new ProcessArgumentsCollection(['phpcbf']);
         $process->getOutput()->willReturn($this->getExampleData() . $json);
         $this->format($process)->shouldBe($this->getExampleData());
 
-        $this->getSuggestedFilesFromJson(json_decode($json, true))->shouldBe(array('/var/www/Classes/Command/CacheCommandController.php'));
+        $this->getSuggestedFilesFromJson(json_decode($json, true))->shouldBe(['/var/www/Classes/Command/CacheCommandController.php']);
 
         $processBuilder->buildProcess($arguments)->willReturn($process);
         $process->getCommandLine()->willReturn("'phpcbf' '--standard=PSR2' '--ignore=spec/*Spec.php,test/*.php' '/var/www/Classes/Command/CacheCommandController.php'");
@@ -97,12 +97,12 @@ class PhpcsFormatterSpec extends ObjectBehavior
                 }
             }
         }
-        return PHP_EOL . json_encode(array(
-            'totals' => array(
+        return PHP_EOL . json_encode([
+            'totals' => [
                 'fixable' => $fixable
-            ),
+            ],
             'files' => $files
-        ));
+        ]);
     }
 
     private function getExampleData()

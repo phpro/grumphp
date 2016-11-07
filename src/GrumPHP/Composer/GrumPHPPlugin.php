@@ -67,13 +67,13 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             PackageEvents::POST_PACKAGE_INSTALL => 'postPackageInstall',
             PackageEvents::POST_PACKAGE_UPDATE => 'postPackageUpdate',
             PackageEvents::PRE_PACKAGE_UNINSTALL => 'prePackageUninstall',
             ScriptEvents::POST_INSTALL_CMD => 'runScheduledTasks',
             ScriptEvents::POST_UPDATE_CMD => 'runScheduledTasks',
-        );
+        ];
     }
 
     /**
@@ -184,7 +184,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         $commandLocator = new ExternalCommand($config->get('bin-dir'), new ExecutableFinder());
         $executable = $commandLocator->locate('grumphp');
 
-        $builder = new ProcessBuilder(array($executable, $command, '--no-interaction'));
+        $builder = new ProcessBuilder([$executable, $command, '--no-interaction']);
         $process = $builder->getProcess();
 
         // Check executable which is running:

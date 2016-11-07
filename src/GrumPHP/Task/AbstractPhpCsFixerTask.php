@@ -90,8 +90,8 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
         $process->run();
 
         if (!$process->isSuccessful()) {
-            $messages = array($this->formatter->format($process));
-            $suggestions = array($this->formatter->formatSuggestion($process));
+            $messages = [$this->formatter->format($process)];
+            $suggestions = [$this->formatter->formatSuggestion($process)];
             $errorMessage = $this->formatter->formatErrorMessage($messages, $suggestions);
 
             return TaskResult::createFailed($this, $context, $errorMessage);
@@ -113,8 +113,8 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
         FilesCollection $files
     ) {
         $hasErrors = false;
-        $messages = array();
-        $suggestions = array();
+        $messages = [];
+        $suggestions = [];
 
         foreach ($files as $file) {
             $fileArguments = new ProcessArgumentsCollection($arguments->getValues());

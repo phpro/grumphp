@@ -27,13 +27,13 @@ class Phpspec extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'config_file' => null,
             'stop_on_failure' => false,
-        ));
+        ]);
 
-        $resolver->addAllowedTypes('config_file', array('null', 'string'));
-        $resolver->addAllowedTypes('stop_on_failure', array('bool'));
+        $resolver->addAllowedTypes('config_file', ['null', 'string']);
+        $resolver->addAllowedTypes('stop_on_failure', ['bool']);
 
         return $resolver;
     }

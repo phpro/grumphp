@@ -23,7 +23,7 @@ class YamlLintSpec extends AbstractLinterTaskSpec
 {
     function let(GrumPHP $grumPHP, YamlLinter $linter)
     {
-        $grumPHP->getTaskConfiguration('yamllint')->willReturn(array());
+        $grumPHP->getTaskConfiguration('yamllint')->willReturn([]);
         $this->beConstructedWith($grumPHP, $linter);
     }
 
@@ -74,9 +74,9 @@ class YamlLintSpec extends AbstractLinterTaskSpec
         $linter->setExceptionOnInvalidType(false)->shouldBeCalled();
         $linter->lint(Argument::type('SplFileInfo'))->willReturn(new LintErrorsCollection());
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('file.yaml', '.', 'file.yaml'),
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
@@ -88,13 +88,13 @@ class YamlLintSpec extends AbstractLinterTaskSpec
         $linter->isInstalled()->willReturn(true);
         $linter->setObjectSupport(false)->shouldBeCalled();
         $linter->setExceptionOnInvalidType(false)->shouldBeCalled();
-        $linter->lint(Argument::type('SplFileInfo'))->willReturn(new LintErrorsCollection(array(
+        $linter->lint(Argument::type('SplFileInfo'))->willReturn(new LintErrorsCollection([
             new YamlLintError(LintError::TYPE_ERROR, 0, 'error', 'file.yaml', 1, 1)
-        )));
+        ]));
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('file.yaml', '.', 'file.yaml'),
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');

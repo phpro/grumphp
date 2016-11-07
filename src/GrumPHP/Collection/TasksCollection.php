@@ -41,7 +41,7 @@ class TasksCollection extends ArrayCollection
         $stableSortIndex = PHP_INT_MAX;
         foreach ($this->getIterator() as $task) {
             $metadata = $grumPHP->getTaskMetadata($task->getName());
-            $priorityQueue->insert($task, array($metadata['priority'], $stableSortIndex--));
+            $priorityQueue->insert($task, [$metadata['priority'], $stableSortIndex--]);
         }
 
         return new TasksCollection(array_values(iterator_to_array($priorityQueue)));

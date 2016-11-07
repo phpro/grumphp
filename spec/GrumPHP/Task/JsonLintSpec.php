@@ -23,7 +23,7 @@ class JsonLintSpec extends AbstractLinterTaskSpec
 {
     function let(GrumPHP $grumPHP, JsonLinter $linter)
     {
-        $grumPHP->getTaskConfiguration('jsonlint')->willReturn(array());
+        $grumPHP->getTaskConfiguration('jsonlint')->willReturn([]);
         $this->beConstructedWith($grumPHP, $linter);
     }
 
@@ -71,9 +71,9 @@ class JsonLintSpec extends AbstractLinterTaskSpec
         $linter->setDetectKeyConflicts(false)->shouldBeCalled();
         $linter->lint(Argument::type('SplFileInfo'))->willReturn(new LintErrorsCollection());
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('file.json', '.', 'file.json'),
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
@@ -84,13 +84,13 @@ class JsonLintSpec extends AbstractLinterTaskSpec
     {
         $linter->isInstalled()->willReturn(true);
         $linter->setDetectKeyConflicts(false)->shouldBeCalled();
-        $linter->lint(Argument::type('SplFileInfo'))->willReturn(new LintErrorsCollection(array(
+        $linter->lint(Argument::type('SplFileInfo'))->willReturn(new LintErrorsCollection([
             new JsonLintError(LintError::TYPE_ERROR, 0, 'error', 'file.json', 1, 1)
-        )));
+        ]));
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('file.json', '.', 'file.json'),
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');

@@ -19,7 +19,7 @@ class ProcessArgumentsCollection extends ArrayCollection
      */
     public static function forExecutable($executable)
     {
-        return new ProcessArgumentsCollection(array($executable));
+        return new ProcessArgumentsCollection([$executable]);
     }
 
     /**
@@ -132,7 +132,7 @@ class ProcessArgumentsCollection extends ArrayCollection
      */
     public function addCommaSeparatedFiles(FilesCollection $files)
     {
-        $paths = array();
+        $paths = [];
 
         foreach ($files as $file) {
             $paths[] = $file->getPathname();

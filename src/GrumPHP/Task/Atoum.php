@@ -27,23 +27,23 @@ class Atoum extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'config_file' => null,
             'bootstrap_file' => null,
-            'directories' => array(),
-            'files' => array(),
-            'namespaces' => array(),
-            'methods' => array(),
-            'tags' => array(),
-        ));
+            'directories' => [],
+            'files' => [],
+            'namespaces' => [],
+            'methods' => [],
+            'tags' => [],
+        ]);
 
-        $resolver->addAllowedTypes('config_file', array('null', 'string'));
-        $resolver->addAllowedTypes('bootstrap_file', array('null', 'string'));
-        $resolver->addAllowedTypes('directories', array('array'));
-        $resolver->addAllowedTypes('files', array('array'));
-        $resolver->addAllowedTypes('namespaces', array('array'));
-        $resolver->addAllowedTypes('methods', array('array'));
-        $resolver->addAllowedTypes('tags', array('array'));
+        $resolver->addAllowedTypes('config_file', ['null', 'string']);
+        $resolver->addAllowedTypes('bootstrap_file', ['null', 'string']);
+        $resolver->addAllowedTypes('directories', ['array']);
+        $resolver->addAllowedTypes('files', ['array']);
+        $resolver->addAllowedTypes('namespaces', ['array']);
+        $resolver->addAllowedTypes('methods', ['array']);
+        $resolver->addAllowedTypes('tags', ['array']);
 
         return $resolver;
     }

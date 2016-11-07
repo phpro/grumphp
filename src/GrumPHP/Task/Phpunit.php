@@ -27,15 +27,15 @@ class Phpunit extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'config_file' => null,
-            'group' => array(),
+            'group' => [],
             'always_execute' => false,
-        ));
+        ]);
 
-        $resolver->addAllowedTypes('config_file', array('null', 'string'));
-        $resolver->addAllowedTypes('group', array('array'));
-        $resolver->addAllowedTypes('always_execute', array('bool'));
+        $resolver->addAllowedTypes('config_file', ['null', 'string']);
+        $resolver->addAllowedTypes('group', ['array']);
+        $resolver->addAllowedTypes('always_execute', ['bool']);
 
         return $resolver;
     }

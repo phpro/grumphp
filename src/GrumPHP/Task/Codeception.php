@@ -29,17 +29,17 @@ class Codeception extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'config_file' => null,
             'suite' => null,
             'test'  => null,
             'fail_fast' => false
-        ));
+        ]);
 
-        $resolver->addAllowedTypes('config_file', array('null', 'string'));
-        $resolver->addAllowedTypes('suite', array('null', 'string'));
-        $resolver->addAllowedTypes('test', array('null', 'string'));
-        $resolver->addAllowedTypes('fail_fast', array('bool'));
+        $resolver->addAllowedTypes('config_file', ['null', 'string']);
+        $resolver->addAllowedTypes('suite', ['null', 'string']);
+        $resolver->addAllowedTypes('test', ['null', 'string']);
+        $resolver->addAllowedTypes('fail_fast', ['bool']);
 
         return $resolver;
     }

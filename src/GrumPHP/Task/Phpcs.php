@@ -34,23 +34,23 @@ class Phpcs extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'standard' => null,
             'show_warnings' => true,
             'tab_width' => null,
             'encoding' => null,
-            'ignore_patterns' => array(),
-            'sniffs' => array(),
-            'triggered_by' => array('php')
-        ));
+            'ignore_patterns' => [],
+            'sniffs' => [],
+            'triggered_by' => ['php']
+        ]);
 
-        $resolver->addAllowedTypes('standard', array('null', 'string'));
-        $resolver->addAllowedTypes('show_warnings', array('bool'));
-        $resolver->addAllowedTypes('tab_width', array('null', 'int'));
-        $resolver->addAllowedTypes('encoding', array('null', 'string'));
-        $resolver->addAllowedTypes('ignore_patterns', array('array'));
-        $resolver->addAllowedTypes('sniffs', array('array'));
-        $resolver->addAllowedTypes('triggered_by', array('array'));
+        $resolver->addAllowedTypes('standard', ['null', 'string']);
+        $resolver->addAllowedTypes('show_warnings', ['bool']);
+        $resolver->addAllowedTypes('tab_width', ['null', 'int']);
+        $resolver->addAllowedTypes('encoding', ['null', 'string']);
+        $resolver->addAllowedTypes('ignore_patterns', ['array']);
+        $resolver->addAllowedTypes('sniffs', ['array']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
     }

@@ -27,15 +27,15 @@ class Ant extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
-            'triggered_by' => array('php'),
+        $resolver->setDefaults([
+            'triggered_by' => ['php'],
             'build_file' => null,
             'task' => null,
-        ));
+        ]);
 
-        $resolver->addAllowedTypes('triggered_by', array('array'));
-        $resolver->addAllowedTypes('build_file', array('null', 'string'));
-        $resolver->addAllowedTypes('task', array('null', 'string'));
+        $resolver->addAllowedTypes('triggered_by', ['array']);
+        $resolver->addAllowedTypes('build_file', ['null', 'string']);
+        $resolver->addAllowedTypes('task', ['null', 'string']);
 
         return $resolver;
     }
