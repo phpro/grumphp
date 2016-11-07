@@ -157,7 +157,7 @@ You don't have to register it in the task configuration.
 This visitor is not configurable!
 
 
-### never_user_else
+### never_use_else
 
 This visitor will search for the `else` and `elseif` keywords in your code.
 An error will be added if one of those statements is found.
@@ -172,7 +172,7 @@ parameters:
     tasks:
         phpparser:
             visitors:
-                never_user_else: ~ 
+                never_use_else: ~ 
 ```
 
 This visitor is not configurable!

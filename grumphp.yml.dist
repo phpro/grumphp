@@ -25,6 +25,7 @@ parameters:
       phpparser:
         visitors:
           no_exit_statements: ~
+          never_use_else: ~
           forbidden_function_calls:
             blacklist: [var_dump]
         metadata:
