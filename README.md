@@ -185,4 +185,4 @@ Please take a look at our rules before [contributing your code](CONTRIBUTING.md)
 
 ### License
 
-GrumPHP is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+GrumPHP is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
