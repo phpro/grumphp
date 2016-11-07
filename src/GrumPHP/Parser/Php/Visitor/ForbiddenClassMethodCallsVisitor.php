@@ -16,7 +16,7 @@ class ForbiddenClassMethodCallsVisitor extends AbstractVisitor implements Config
     /**
      * @var array
      */
-    private $blacklist = array();
+    private $blacklist = [];
 
     /**
      * @param array $options
@@ -25,11 +25,11 @@ class ForbiddenClassMethodCallsVisitor extends AbstractVisitor implements Config
     {
         $resolver = new OptionsResolver();
 
-        $resolver->setDefaults(array(
-            'blacklist' => array(),
-        ));
+        $resolver->setDefaults([
+            'blacklist' => [],
+        ]);
 
-        $resolver->setAllowedTypes('blacklist', array('array'));
+        $resolver->setAllowedTypes('blacklist', ['array']);
 
         $config = $resolver->resolve($options);
         $this->blacklist = $config['blacklist'];

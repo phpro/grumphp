@@ -16,9 +16,9 @@ class ParseErrorsCollectionSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(array(
+        $this->beConstructedWith([
             new ParseError(ParseError::TYPE_ERROR, 'Found "count" function call', 'Ant.php', 58),
-        ));
+        ]);
     }
 
     function it_is_initializable()

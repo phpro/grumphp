@@ -20,7 +20,7 @@ class PhpParserSpec extends AbstractParserTaskSpec
     function let(GrumPHP $grumPHP, ParserInterface $parser)
     {
         $parser->isInstalled()->willReturn(true);
-        $grumPHP->getTaskConfiguration('phpparser')->willReturn(array());
+        $grumPHP->getTaskConfiguration('phpparser')->willReturn([]);
         $this->beConstructedWith($grumPHP, $parser);
     }
 

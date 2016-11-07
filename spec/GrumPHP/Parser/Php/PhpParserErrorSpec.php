@@ -17,8 +17,8 @@ class PhpParserErrorSpec extends ObjectBehavior
 {
     function let()
     {
-        $exception = new Error('syntax error', array('startLine' => 61));
-        $this->beConstructedThrough('fromParseException', array($exception, 'JsonLint.php'));
+        $exception = new Error('syntax error', ['startLine' => 61]);
+        $this->beConstructedThrough('fromParseException', [$exception, 'JsonLint.php']);
     }
 
     function it_is_initializable()

@@ -34,11 +34,11 @@ class PhpParser extends AbstractParserTask
     {
         $resolver = parent::getConfigurableOptions();
 
-        $resolver->setDefaults(array(
-            'triggered_by' => array('php'),
+        $resolver->setDefaults([
+            'triggered_by' => ['php'],
             'kind' => self::KIND_PHP7,
             'visitors' => [],
-        ));
+        ]);
 
         return $resolver;
     }

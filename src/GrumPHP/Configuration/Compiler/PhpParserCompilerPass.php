@@ -33,7 +33,7 @@ class PhpParserCompilerPass implements CompilerPassInterface
             $container->findDefinition($id)->setShared(false);
             foreach ($tags as $tag) {
                 $alias = array_key_exists('alias', $tag) ? $tag['alias'] : $id;
-                $traverserConfigurator->addMethodCall('registerVisitorId', array($alias, $id));
+                $traverserConfigurator->addMethodCall('registerVisitorId', [$alias, $id]);
             }
         }
     }

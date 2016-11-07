@@ -70,7 +70,7 @@ class PhpParserSpec extends ObjectBehavior
     function it_parses_a_file(NodeTraverserInterface $traverser)
     {
         $file = new \SplFileInfo($this->tempFile);
-        $traverser->traverse(array())->shouldBeCalled();
+        $traverser->traverse([])->shouldBeCalled();
         $errors = $this->parse($file);
 
         $errors->shouldBeAnInstanceOf('GrumPHP\Collection\ParseErrorsCollection');

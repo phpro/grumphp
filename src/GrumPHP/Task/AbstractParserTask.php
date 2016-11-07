@@ -48,13 +48,13 @@ abstract class AbstractParserTask implements TaskInterface
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
-            'triggered_by'     => array(),
-            'ignore_patterns'  => array(),
-        ));
+        $resolver->setDefaults([
+            'triggered_by'     => [],
+            'ignore_patterns'  => [],
+        ]);
 
-        $resolver->addAllowedTypes('triggered_by', array('array'));
-        $resolver->addAllowedTypes('ignore_patterns', array('array'));
+        $resolver->addAllowedTypes('triggered_by', ['array']);
+        $resolver->addAllowedTypes('ignore_patterns', ['array']);
 
         return $resolver;
     }

@@ -19,17 +19,17 @@ class TraverserConfigurator
     /**
      * @var string[]
      */
-    private $registeredVisitorIds = array();
+    private $registeredVisitorIds = [];
 
     /**
      * @var array
      */
-    private $standardEnabledVisitors = array();
+    private $standardEnabledVisitors = [];
 
     /**
      * @var array
      */
-    private $options = array();
+    private $options = [];
 
     /**
      * @var ParserContext

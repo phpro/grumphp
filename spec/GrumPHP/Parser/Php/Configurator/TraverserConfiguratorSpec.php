@@ -33,7 +33,7 @@ class TraverserConfiguratorSpec extends ObjectBehavior
     
     function it_throws_an_exception_if_a_context_is_not_set(NodeTraverserInterface $traverser)
     {
-        $this->registerOptions(array('visitors' => array()));
+        $this->registerOptions(['visitors' => []]);
         $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringConfigure($traverser);
     }
 
@@ -53,7 +53,7 @@ class TraverserConfiguratorSpec extends ObjectBehavior
         $this->registerVisitorId($visitorAlias, $visitorAlias);
         $this->registerStandardEnabledVisitor($visitorAlias, null);
         $this->registerContext($context);
-        $this->registerOptions(array('visitors' => array()));
+        $this->registerOptions(['visitors' => []]);
         $container->get($visitorAlias)->willReturn($visitor);
 
         $traverser->addVisitor($visitor)->shouldBeCalled();
@@ -70,9 +70,11 @@ class TraverserConfiguratorSpec extends ObjectBehavior
         $visitorAlias = 'task_visitor';
         $this->registerVisitorId($visitorAlias, $visitorAlias);
         $this->registerContext($context);
-        $this->registerOptions(array('visitors' => array(
+        $this->registerOptions([
+            'visitors' => [
             $visitorAlias => null
-        )));
+            ]
+        ]);
         $container->get($visitorAlias)->willReturn($visitor);
 
         $traverser->addVisitor($visitor)->shouldBeCalled();
@@ -86,9 +88,11 @@ class TraverserConfiguratorSpec extends ObjectBehavior
     ) {
         $visitorAlias = 'unknown_visitor';
         $this->registerContext($context);
-        $this->registerOptions(array('visitors' => array(
+        $this->registerOptions([
+            'visitors' => [
             $visitorAlias => null
-        )));
+            ]
+        ]);
 
         $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringConfigure($traverser);
     }
@@ -102,7 +106,7 @@ class TraverserConfiguratorSpec extends ObjectBehavior
         $visitorAlias = 'unused_visitor';
         $this->registerVisitorId($visitorAlias, $visitorAlias);
         $this->registerContext($context);
-        $this->registerOptions(array('visitors' => array()));
+        $this->registerOptions(['visitors' => []]);
         $container->get($visitorAlias)->willReturn($visitor);
 
         $traverser->addVisitor($visitor)->shouldNotBeCalled();
@@ -119,9 +123,11 @@ class TraverserConfiguratorSpec extends ObjectBehavior
         $visitorAlias = 'context_aware_visitor';
         $this->registerVisitorId($visitorAlias, $visitorAlias);
         $this->registerContext($context);
-        $this->registerOptions(array('visitors' => array(
+        $this->registerOptions([
+            'visitors' => [
             $visitorAlias => null
-        )));
+            ]
+        ]);
         $container->get($visitorAlias)->willReturn($visitor);
 
         $visitor->setContext($context)->shouldBeCalled();
@@ -137,12 +143,14 @@ class TraverserConfiguratorSpec extends ObjectBehavior
         ConfigurableVisitorInterface $visitor
     ) {
         $visitorAlias = 'configurable_visitor';
-        $configuration = array('key' => 'value');
+        $configuration = ['key' => 'value'];
         $this->registerVisitorId($visitorAlias, $visitorAlias);
         $this->registerContext($context);
-        $this->registerOptions(array('visitors' => array(
+        $this->registerOptions([
+            'visitors' => [
             $visitorAlias => $configuration
-        )));
+            ]
+        ]);
         $container->get($visitorAlias)->willReturn($visitor);
 
         $visitor->configure($configuration)->shouldBeCalled();
