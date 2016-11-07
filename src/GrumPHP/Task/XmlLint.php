@@ -36,19 +36,19 @@ class XmlLint extends AbstractLinterTask
     public function getConfigurableOptions()
     {
         $resolver = parent::getConfigurableOptions();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'load_from_net' => false,
             'x_include' => false,
             'dtd_validation' => false,
             'scheme_validation' => false,
-            'triggered_by' => array('xml'),
-        ));
+            'triggered_by' => ['xml'],
+        ]);
 
-        $resolver->addAllowedTypes('load_from_net', array('bool'));
-        $resolver->addAllowedTypes('x_include', array('bool'));
-        $resolver->addAllowedTypes('dtd_validation', array('bool'));
-        $resolver->addAllowedTypes('scheme_validation', array('bool'));
-        $resolver->addAllowedTypes('triggered_by', array('array'));
+        $resolver->addAllowedTypes('load_from_net', ['bool']);
+        $resolver->addAllowedTypes('x_include', ['bool']);
+        $resolver->addAllowedTypes('dtd_validation', ['bool']);
+        $resolver->addAllowedTypes('scheme_validation', ['bool']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
     }

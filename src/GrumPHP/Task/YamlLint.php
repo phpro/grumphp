@@ -36,13 +36,13 @@ class YamlLint extends AbstractLinterTask
     public function getConfigurableOptions()
     {
         $resolver = parent::getConfigurableOptions();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'object_support' => false,
             'exception_on_invalid_type' => false,
-        ));
+        ]);
 
-        $resolver->addAllowedTypes('object_support', array('bool'));
-        $resolver->addAllowedTypes('exception_on_invalid_type', array('bool'));
+        $resolver->addAllowedTypes('object_support', ['bool']);
+        $resolver->addAllowedTypes('exception_on_invalid_type', ['bool']);
 
         return $resolver;
     }
