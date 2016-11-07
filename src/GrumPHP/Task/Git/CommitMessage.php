@@ -50,17 +50,17 @@ class CommitMessage implements TaskInterface
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'case_insensitive' => true,
             'multiline' => true,
-            'matchers' => array(),
+            'matchers' => [],
             'additional_modifiers' => ''
-        ));
+        ]);
 
-        $resolver->addAllowedTypes('case_insensitive', array('bool'));
-        $resolver->addAllowedTypes('multiline', array('bool'));
-        $resolver->addAllowedTypes('matchers', array('array'));
-        $resolver->addAllowedTypes('additional_modifiers', array('string'));
+        $resolver->addAllowedTypes('case_insensitive', ['bool']);
+        $resolver->addAllowedTypes('multiline', ['bool']);
+        $resolver->addAllowedTypes('matchers', ['array']);
+        $resolver->addAllowedTypes('additional_modifiers', ['string']);
 
         return $resolver;
     }
@@ -82,7 +82,7 @@ class CommitMessage implements TaskInterface
     {
         $config = $this->getConfiguration();
         $commitMessage = $context->getCommitMessage();
-        $exceptions = array();
+        $exceptions = [];
 
         foreach ($config['matchers'] as $rule) {
             try {
@@ -119,7 +119,7 @@ class CommitMessage implements TaskInterface
         }
 
         $additionalModifiersArray = array_filter(str_split((string) $config['additional_modifiers']));
-        array_map(array($regex, 'addPatternModifier'), $additionalModifiersArray);
+        array_map([$regex, 'addPatternModifier'], $additionalModifiersArray);
 
         if (!preg_match((string) $regex, $commitMessage)) {
             throw new RuntimeException(

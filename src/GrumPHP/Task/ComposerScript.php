@@ -27,15 +27,15 @@ class ComposerScript extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'working_directory' => null,
             'script' => null,
-            'triggered_by' => array('php', 'phtml')
-        ));
+            'triggered_by' => ['php', 'phtml']
+        ]);
 
-        $resolver->addAllowedTypes('working_directory', array('null', 'string'));
-        $resolver->addAllowedTypes('script', array('string'));
-        $resolver->addAllowedTypes('triggered_by', array('array'));
+        $resolver->addAllowedTypes('working_directory', ['null', 'string']);
+        $resolver->addAllowedTypes('script', ['string']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
     }

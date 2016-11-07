@@ -28,15 +28,15 @@ class DoctrineOrm extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'skip_mapping' => false,
             'skip_sync' => false,
-            'triggered_by' => array('php', 'xml', 'yml'),
-        ));
+            'triggered_by' => ['php', 'xml', 'yml'],
+        ]);
 
-        $resolver->addAllowedTypes('skip_mapping', array('bool'));
-        $resolver->addAllowedTypes('skip_sync', array('bool'));
-        $resolver->addAllowedTypes('triggered_by', array('array'));
+        $resolver->addAllowedTypes('skip_mapping', ['bool']);
+        $resolver->addAllowedTypes('skip_sync', ['bool']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
     }

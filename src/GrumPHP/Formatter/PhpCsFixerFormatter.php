@@ -56,7 +56,7 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
         $dryrun = sprintf($pattern, ProcessUtils::escapeArgument('--dry-run'));
         $formatJson = sprintf($pattern, ProcessUtils::escapeArgument('--format=json'));
 
-        return str_replace(array($dryrun, $formatJson), '', $process->getCommandLine());
+        return str_replace([$dryrun, $formatJson], '', $process->getCommandLine());
     }
 
     /**
@@ -81,7 +81,7 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
      */
     private function formatJsonResponse(array $json)
     {
-        $formatted = array();
+        $formatted = [];
         foreach ($json['files'] as $file) {
             if (!is_array($file) || !isset($file['name'])) {
                 $formatted[] = 'Invalid file: ' . print_r($file, true);

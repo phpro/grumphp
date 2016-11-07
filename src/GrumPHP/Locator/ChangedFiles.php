@@ -58,7 +58,7 @@ class ChangedFiles
      */
     private function parseFilesFromDiff(Diff $diff)
     {
-        $files = array();
+        $files = [];
         /** @var File $file */
         foreach ($diff->getFiles() as $file) {
             if ($file->isDeletion()) {

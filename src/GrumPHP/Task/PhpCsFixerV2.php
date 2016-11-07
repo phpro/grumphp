@@ -26,25 +26,25 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'allow_risky' => false,
             'cache_file' => null,
             'config' => null,
-            'rules' => array(),
+            'rules' => [],
             'using_cache' => true,
             'path_mode' => null,
             'verbose' => true,
-        ));
+        ]);
 
-        $resolver->addAllowedTypes('allow_risky', array('bool'));
-        $resolver->addAllowedTypes('cache_file', array('null', 'string'));
-        $resolver->addAllowedTypes('config', array('null', 'string'));
-        $resolver->addAllowedTypes('rules', array('array'));
-        $resolver->addAllowedTypes('using_cache', array('bool'));
-        $resolver->addAllowedTypes('path_mode', array('null', 'string'));
-        $resolver->addAllowedTypes('verbose', array('bool'));
+        $resolver->addAllowedTypes('allow_risky', ['bool']);
+        $resolver->addAllowedTypes('cache_file', ['null', 'string']);
+        $resolver->addAllowedTypes('config', ['null', 'string']);
+        $resolver->addAllowedTypes('rules', ['array']);
+        $resolver->addAllowedTypes('using_cache', ['bool']);
+        $resolver->addAllowedTypes('path_mode', ['null', 'string']);
+        $resolver->addAllowedTypes('verbose', ['bool']);
 
-        $resolver->setAllowedValues('path_mode', array(null, 'override', 'intersection'));
+        $resolver->setAllowedValues('path_mode', [null, 'override', 'intersection']);
 
         return $resolver;
     }

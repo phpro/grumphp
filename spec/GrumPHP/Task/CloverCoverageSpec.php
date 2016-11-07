@@ -19,7 +19,7 @@ class CloverCoverageSpec extends ObjectBehavior
 {
     function let(GrumPHP $grumPHP, Filesystem $filesystem)
     {
-        $grumPHP->getTaskConfiguration('clover_coverage')->willReturn(array());
+        $grumPHP->getTaskConfiguration('clover_coverage')->willReturn([]);
         $this->beConstructedWith($grumPHP, $filesystem);
     }
 
@@ -58,9 +58,9 @@ class CloverCoverageSpec extends ObjectBehavior
 
     function it_runs_the_suite_but_fails_when_file_doesnt_exists(GrumPHP $grumPHP, GitCommitMsgContext $context, Filesystem $filesystem)
     {
-        $grumPHP->getTaskConfiguration('clover_coverage')->willReturn(array(
+        $grumPHP->getTaskConfiguration('clover_coverage')->willReturn([
             'clover_file' => 'foo.bar',
-        ));
+        ]);
         $filesystem->exists('foo.bar')->willReturn(false);
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
@@ -70,10 +70,10 @@ class CloverCoverageSpec extends ObjectBehavior
     function it_runs_the_suite(GrumPHP $grumPHP, GitCommitMsgContext $context, Filesystem $filesystem)
     {
         $filename = dirname(dirname(dirname(__DIR__))) . '/test/fixtures/clover_coverage/60-percent-coverage.xml';
-        $grumPHP->getTaskConfiguration('clover_coverage')->willReturn(array(
+        $grumPHP->getTaskConfiguration('clover_coverage')->willReturn([
             'clover_file' => $filename,
             'level' => 50,
-        ));
+        ]);
         $filesystem->exists($filename)->willReturn(true);
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
@@ -83,10 +83,10 @@ class CloverCoverageSpec extends ObjectBehavior
     function it_runs_the_suite_but_not_reaching_coverage(GrumPHP $grumPHP, GitCommitMsgContext $context, Filesystem $filesystem)
     {
         $filename = dirname(dirname(dirname(__DIR__))) . '/test/fixtures/clover_coverage/60-percent-coverage.xml';
-        $grumPHP->getTaskConfiguration('clover_coverage')->willReturn(array(
+        $grumPHP->getTaskConfiguration('clover_coverage')->willReturn([
             'clover_file' => $filename,
             'level' => 100,
-        ));
+        ]);
         $filesystem->exists($filename)->willReturn(true);
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');

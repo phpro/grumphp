@@ -36,8 +36,8 @@ class TaskRunnerSpec extends ObjectBehavior
         $task2->run($context)->willReturn(TaskResult::createPassed($task2->getWrappedObject(), $context->getWrappedObject()));
 
         $grumPHP->stopOnFailure()->willReturn(false);
-        $grumPHP->getTaskMetadata('task1')->willReturn(array('priority' => 0));
-        $grumPHP->getTaskMetadata('task2')->willReturn(array('priority' => 0));
+        $grumPHP->getTaskMetadata('task1')->willReturn(['priority' => 0]);
+        $grumPHP->getTaskMetadata('task2')->willReturn(['priority' => 0]);
         $grumPHP->isBlockingTask('task1')->willReturn(true);
         $grumPHP->isBlockingTask('task2')->willReturn(true);
 
@@ -52,14 +52,14 @@ class TaskRunnerSpec extends ObjectBehavior
 
     function it_holds_tasks(TaskInterface $task1, TaskInterface $task2)
     {
-        $this->getTasks()->toArray()->shouldEqual(array($task1, $task2));
+        $this->getTasks()->toArray()->shouldEqual([$task1, $task2]);
     }
 
     function it_does_not_add_the_same_task_twice(TaskInterface $task1, TaskInterface $task2)
     {
         $this->addTask($task1);
 
-        $this->getTasks()->toArray()->shouldEqual(array($task1, $task2));
+        $this->getTasks()->toArray()->shouldEqual([$task1, $task2]);
     }
 
     function it_runs_all_tasks(TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
@@ -177,7 +177,7 @@ class TaskRunnerSpec extends ObjectBehavior
 
     public function getMatchers()
     {
-        return array(
+        return [
             'containFailedTaskResult' => function ($taskResultCollection) {
                 return $taskResultCollection->exists(function ($key, $taskResult) {
                     return TaskResult::FAILED === $taskResult->getResultCode();
@@ -188,6 +188,6 @@ class TaskRunnerSpec extends ObjectBehavior
                     return TaskResult::NONBLOCKING_FAILED === $taskResult->getResultCode();
                 });
             },
-        );
+        ];
     }
 }

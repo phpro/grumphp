@@ -36,11 +36,11 @@ class JsonLint extends AbstractLinterTask
     public function getConfigurableOptions()
     {
         $resolver = parent::getConfigurableOptions();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'detect_key_conflicts' => false,
-        ));
+        ]);
 
-        $resolver->addAllowedTypes('detect_key_conflicts', array('bool'));
+        $resolver->addAllowedTypes('detect_key_conflicts', ['bool']);
 
         return $resolver;
     }

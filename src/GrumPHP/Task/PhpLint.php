@@ -27,13 +27,13 @@ class PhpLint extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'jobs' => null,
-            'exclude' => array(),
-            'triggered_by' => array('php', 'phtml', 'php3', 'php4', 'php5'),
-        ));
+            'exclude' => [],
+            'triggered_by' => ['php', 'phtml', 'php3', 'php4', 'php5'],
+        ]);
 
-        $resolver->setAllowedTypes('jobs', array('int', 'null'));
+        $resolver->setAllowedTypes('jobs', ['int', 'null']);
         $resolver->setAllowedTypes('exclude', 'array');
         $resolver->setAllowedTypes('triggered_by', 'array');
 

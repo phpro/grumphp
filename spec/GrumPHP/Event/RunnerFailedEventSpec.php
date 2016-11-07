@@ -55,9 +55,9 @@ class RunnerFailedEventSpec extends ObjectBehavior
         $this->beConstructedWith($tasks, $context, $taskResults);
 
         $this->getMessages()->shouldReturn(
-            array(
+            [
                 'message 1',
-            )
+            ]
         );
     }
 

@@ -85,36 +85,36 @@ class GrumPHPSpec extends ObjectBehavior
 
     function it_should_return_empty_ascii_location_for_unknown_resources(ContainerInterface $container)
     {
-        $container->getParameter('ascii')->willReturn(array());
+        $container->getParameter('ascii')->willReturn([]);
         $this->getAsciiContentPath('success')->shouldReturn(null);
     }
 
     function it_should_return_the_ascii_location_for_known_resources(ContainerInterface $container)
     {
-        $container->getParameter('ascii')->willReturn(array('success' => 'success'));
+        $container->getParameter('ascii')->willReturn(['success' => 'success']);
         $this->getAsciiContentPath('success')->shouldReturn('success');
     }
 
     function it_should_know_all_registered_tasks(ContainerInterface $container)
     {
-        $container->getParameter('grumphp.tasks.registered')->willReturn(array('phpspec'));
+        $container->getParameter('grumphp.tasks.registered')->willReturn(['phpspec']);
 
-        $this->getRegisteredTasks()->shouldBe(array('phpspec'));
+        $this->getRegisteredTasks()->shouldBe(['phpspec']);
     }
 
     function it_should_know_task_configuration(ContainerInterface $container)
     {
-        $container->getParameter('grumphp.tasks.configuration')->willReturn(array('phpspec' => array()));
+        $container->getParameter('grumphp.tasks.configuration')->willReturn(['phpspec' => []]);
 
-        $this->getTaskConfiguration('phpspec')->shouldReturn(array());
+        $this->getTaskConfiguration('phpspec')->shouldReturn([]);
         $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringGetTaskConfiguration('phpunit');
     }
 
     function it_should_know_task_metadata(ContainerInterface $container)
     {
-        $container->getParameter('grumphp.tasks.metadata')->willReturn(array('phpspec' => array()));
+        $container->getParameter('grumphp.tasks.metadata')->willReturn(['phpspec' => []]);
 
-        $this->getTaskMetadata('phpspec')->shouldReturn(array());
+        $this->getTaskMetadata('phpspec')->shouldReturn([]);
         $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringGetTaskMetadata('phpunit');
     }
 
@@ -122,10 +122,10 @@ class GrumPHPSpec extends ObjectBehavior
     {
         $container->getParameter('grumphp.tasks.metadata')
             ->willReturn(
-                array(
-                    'phpspec' => array('blocking' => true),
-                    'phpunit' => array('blocking' => false),
-                )
+                [
+                    'phpspec' => ['blocking' => true],
+                    'phpunit' => ['blocking' => false],
+                ]
             );
         $this->isBlockingTask('phpunit')->shouldReturn(false);
         $this->isBlockingTask('phpspec')->shouldReturn(true);

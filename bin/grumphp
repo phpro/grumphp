@@ -3,12 +3,12 @@
 
 define('GRUMPHP_PATH', realpath(__DIR__ . '/..'));
 
-$autoloadLocations = array(
+$autoloadLocations = [
     getcwd() . '/vendor/autoload.php',
     getcwd() . '/../../autoload.php',
     __DIR__ . '/../vendor/autoload.php',
     __DIR__ . '/../../../autoload.php',
-);
+];
 
 $loaded = false;
 foreach ($autoloadLocations as $autoload) {

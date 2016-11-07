@@ -24,7 +24,7 @@ class SecurityCheckerSpec extends ObjectBehavior
 {
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
-        $grumPHP->getTaskConfiguration('securitychecker')->willReturn(array());
+        $grumPHP->getTaskConfiguration('securitychecker')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
@@ -64,7 +64,7 @@ class SecurityCheckerSpec extends ObjectBehavior
         ProcessBuilder $processBuilder,
         ContextInterface $context
     ) {
-        $grumPHP->getTaskConfiguration('securitychecker')->willReturn(array('run_always' => false));
+        $grumPHP->getTaskConfiguration('securitychecker')->willReturn(['run_always' => false]);
 
         $processBuilder->createArgumentsForCommand('security-checker')->shouldNotBeCalled();
         $processBuilder->buildProcess()->shouldNotBeCalled();
@@ -81,7 +81,7 @@ class SecurityCheckerSpec extends ObjectBehavior
         Process $process,
         ContextInterface $context
     ) {
-        $grumPHP->getTaskConfiguration('securitychecker')->willReturn(array('run_always' => true));
+        $grumPHP->getTaskConfiguration('securitychecker')->willReturn(['run_always' => true]);
 
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('security-checker')->willReturn($arguments);
@@ -102,7 +102,7 @@ class SecurityCheckerSpec extends ObjectBehavior
         Process $process,
         ContextInterface $context
     ) {
-        $grumPHP->getTaskConfiguration('securitychecker')->willReturn(array('run_always' => false));
+        $grumPHP->getTaskConfiguration('securitychecker')->willReturn(['run_always' => false]);
 
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('security-checker')->willReturn($arguments);
@@ -111,9 +111,9 @@ class SecurityCheckerSpec extends ObjectBehavior
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('composer.lock', '.', 'composer.lock')
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
@@ -132,9 +132,9 @@ class SecurityCheckerSpec extends ObjectBehavior
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(false);
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('composer.lock', '.', 'composer.lock')
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');

@@ -26,7 +26,7 @@ class PhpCsFixerSpec extends ObjectBehavior
 
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, AsyncProcessRunner $processRunner, PhpCsFixerFormatter $formatter)
     {
-        $grumPHP->getTaskConfiguration('phpcsfixer')->willReturn(array());
+        $grumPHP->getTaskConfiguration('phpcsfixer')->willReturn([]);
 
         $formatter->format(Argument::any())->willReturn('');
         $formatter->formatSuggestion(Argument::any())->willReturn('');
@@ -84,13 +84,13 @@ class PhpCsFixerSpec extends ObjectBehavior
         RunContext $context,
         PhpCsFixerFormatter $formatter
     ) {
-        $grumPHP->getTaskConfiguration('phpcsfixer')->willReturn(array('config_file' => '.php_cs'));
+        $grumPHP->getTaskConfiguration('phpcsfixer')->willReturn(['config_file' => '.php_cs']);
         $formatter->resetCounter()->shouldBeCalled();
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             $file1 = new SplFileInfo('file1.php', '.', 'file1.php'),
             $file2 = new SplFileInfo('file2.php', '.', 'file2.php'),
-        )));
+        ]));
 
         $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn(new ProcessArgumentsCollection());
         $processBuilder->buildProcess(Argument::that(function (ProcessArgumentsCollection $args) use ($file1, $file2) {
@@ -113,10 +113,10 @@ class PhpCsFixerSpec extends ObjectBehavior
         PhpCsFixerFormatter $formatter
     ) {
         $formatter->resetCounter()->shouldBeCalled();
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             $file1 = new SplFileInfo('file1.php', '.', 'file1.php'),
             $file2 = new SplFileInfo('file2.php', '.', 'file2.php'),
-        )));
+        ]));
 
         $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn(new ProcessArgumentsCollection());
         $processBuilder->buildProcess(Argument::that(function (ProcessArgumentsCollection $args) use ($file1, $file2) {
@@ -147,9 +147,9 @@ class PhpCsFixerSpec extends ObjectBehavior
         $processRunner->run(Argument::type('array'))->shouldBeCalled();
     $process->isSuccessful()->willReturn(false);
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('file1.php', '.', 'file1.php'),
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');

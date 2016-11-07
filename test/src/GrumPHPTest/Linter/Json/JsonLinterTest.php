@@ -72,10 +72,10 @@ class JsonLinterTest extends \PHPUnit_Framework_TestCase
      */
     function provideJsonValidation()
     {
-        return array(
-            array('fixture' => 'valid.json', 'errors' => 0),
-            array('fixture' => 'duplicate-keys.json', 'errors' => 0),
-            array('fixture' => 'invalid.json', 'errors' => 1),
-        );
+        return [
+            ['fixture' => 'valid.json', 'errors' => 0],
+            ['fixture' => 'duplicate-keys.json', 'errors' => 0],
+            ['fixture' => 'invalid.json', 'errors' => 1],
+        ];
     }
 }

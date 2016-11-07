@@ -28,58 +28,58 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
     function it_should_be_able_to_add_optional_argument()
     {
         $this->addOptionalArgument('--argument=%s', null);
-        $this->getValues()->shouldBe(array());
+        $this->getValues()->shouldBe([]);
 
         $this->addOptionalArgument('--argument=%s', 'value');
-        $this->getValues()->shouldBe(array('--argument=value'));
+        $this->getValues()->shouldBe(['--argument=value']);
     }
 
     function it_should_be_able_to_add_optional_argument_with_separated_value()
     {
         $this->addOptionalArgumentWithSeparatedValue('--argument', null);
-        $this->getValues()->shouldBe(array());
+        $this->getValues()->shouldBe([]);
 
         $this->addOptionalArgumentWithSeparatedValue('--argument', 'value');
-        $this->getValues()->shouldBe(array('--argument', 'value'));
+        $this->getValues()->shouldBe(['--argument', 'value']);
     }
 
     function it_should_be_able_to_add_optional_comma_separated_argument()
     {
-        $this->addOptionalCommaSeparatedArgument('--argument=%s', array());
-        $this->getValues()->shouldBe(array());
+        $this->addOptionalCommaSeparatedArgument('--argument=%s', []);
+        $this->getValues()->shouldBe([]);
 
-        $this->addOptionalCommaSeparatedArgument('--argument=%s', array(1, 2));
-        $this->getValues()->shouldBe(array('--argument=1,2'));
+        $this->addOptionalCommaSeparatedArgument('--argument=%s', [1, 2]);
+        $this->getValues()->shouldBe(['--argument=1,2']);
     }
 
     function it_should_be_able_to_add_an_argument_array()
     {
-        $this->addArgumentArray('--item=%s', array(1, 2));
-        $this->getValues()->shouldBe(array(
+        $this->addArgumentArray('--item=%s', [1, 2]);
+        $this->getValues()->shouldBe([
             '--item=1',
             '--item=2',
-        ));
+        ]);
     }
 
     function it_should_be_able_to_add_an_argument_array_with_separated_values()
     {
-        $this->addArgumentArrayWithSeparatedValue('--item', array(1, 2));
-        $this->getValues()->shouldBe(array(
+        $this->addArgumentArrayWithSeparatedValue('--item', [1, 2]);
+        $this->getValues()->shouldBe([
             '--item',
             1,
             '--item',
             2,
-        ));
+        ]);
     }
 
     function it_should_be_able_to_add_separated_argument_array()
     {
-        $this->addSeparatedArgumentArray('--item', array(1, 2));
-        $this->getValues()->shouldBe(array(
+        $this->addSeparatedArgumentArray('--item', [1, 2]);
+        $this->getValues()->shouldBe([
             '--item',
             1,
             2,
-        ));
+        ]);
     }
 
     function it_should_be_able_to_add_required_argument()
@@ -87,31 +87,31 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
         $this->shouldThrow('GrumPHP\Exception\InvalidArgumentException')->duringAddRequiredArgument('--argument=%s', false);
 
         $this->addRequiredArgument('--argument=%s', 'value');
-        $this->getValues()->shouldBe(array('--argument=value'));
+        $this->getValues()->shouldBe(['--argument=value']);
     }
 
     function it_should_be_able_to_add_files()
     {
-        $files = new FilesCollection(array(
+        $files = new FilesCollection([
             new SplFileInfo('file1.txt'),
             new SplFileInfo('file2.txt')
-        ));
+        ]);
         $this->addFiles($files);
 
-        $this->getValues()->shouldBe(array(
+        $this->getValues()->shouldBe([
             'file1.txt',
             'file2.txt',
-        ));
+        ]);
     }
 
     function it_should_be_able_to_add_comma_separated_files()
     {
-        $files = new FilesCollection(array(
+        $files = new FilesCollection([
             new SplFileInfo('file1.txt'),
             new SplFileInfo('file2.txt')
-        ));
+        ]);
         $this->addCommaSeparatedFiles($files);
 
-        $this->getValues()->shouldBe(array('file1.txt,file2.txt'));
+        $this->getValues()->shouldBe(['file1.txt,file2.txt']);
     }
 }

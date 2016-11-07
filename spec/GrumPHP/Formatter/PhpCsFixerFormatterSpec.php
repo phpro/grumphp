@@ -38,33 +38,33 @@ class PhpCsFixerFormatterSpec extends ObjectBehavior
 
     function it_handles_invalid_file_formats(Process $process)
     {
-        $json = $this->parseJson(array('invalid'));
+        $json = $this->parseJson(['invalid']);
         $process->getOutput()->willReturn($json);
         $this->format($process)->shouldStartWith('Invalid file: ');
     }
 
     function it_formats_php_cs_fixer_json_output_for_single_file(Process $process)
     {
-        $json = $this->parseJson(array(
-            array('name' => 'name1', ),
-        ));
+        $json = $this->parseJson([
+            ['name' => 'name1',],
+        ]);
         $process->getOutput()->willReturn($json);
         $this->format($process)->shouldBe('1) name1');
     }
 
     function it_formats_php_cs_fixer_json_output_for_multiple_files(Process $process)
     {
-        $json = $this->parseJson(array(
-            array('name' => 'name1', ),
-            array('name' => 'name2', 'appliedFixers' => array('fixer1', 'fixer2')),
-        ));
+        $json = $this->parseJson([
+            ['name' => 'name1',],
+            ['name' => 'name2', 'appliedFixers' => ['fixer1', 'fixer2']],
+        ]);
         $process->getOutput()->willReturn($json);
         $this->format($process)->shouldBe('1) name1' . PHP_EOL . '2) name2 (fixer1,fixer2)');
     }
 
     function it_should_be_possible_to_reset_the_counter(Process $process)
     {
-        $json = $this->parseJson(array(array('name' => 'name1')));
+        $json = $this->parseJson([['name' => 'name1']]);
         $process->getOutput()->willReturn($json);
 
         $this->format($process)->shouldBe('1) name1');
@@ -85,7 +85,7 @@ class PhpCsFixerFormatterSpec extends ObjectBehavior
 
     function it_formats_the_error_message()
     {
-        $this->formatErrorMessage(array('message1'), array('message2'))->shouldBeString();
+        $this->formatErrorMessage(['message1'], ['message2'])->shouldBeString();
     }
 
     /**
@@ -95,6 +95,6 @@ class PhpCsFixerFormatterSpec extends ObjectBehavior
      */
     private function parseJson(array $files)
     {
-        return json_encode(array('files' => $files));
+        return json_encode(['files' => $files]);
     }
 }

@@ -27,15 +27,15 @@ class Php7cc extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
-            'exclude' => array(),
+        $resolver->setDefaults([
+            'exclude' => [],
             'level' => null,
-            'triggered_by' => array('php')
-        ));
+            'triggered_by' => ['php']
+        ]);
 
-        $resolver->addAllowedTypes('exclude', array('array'));
-        $resolver->addAllowedTypes('level', array('null', 'string'));
-        $resolver->addAllowedTypes('triggered_by', array('array'));
+        $resolver->addAllowedTypes('exclude', ['array']);
+        $resolver->addAllowedTypes('level', ['null', 'string']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
     }

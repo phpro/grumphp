@@ -27,17 +27,17 @@ class Behat extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'config' => null,
             'format' => null,
             'suite' => null,
             'stop_on_failure' => false,
-        ));
+        ]);
 
-        $resolver->addAllowedTypes('config', array('null', 'string'));
-        $resolver->addAllowedTypes('format', array('null', 'string'));
-        $resolver->addAllowedTypes('suite', array('null', 'string'));
-        $resolver->addAllowedTypes('stop_on_failure', array('bool'));
+        $resolver->addAllowedTypes('config', ['null', 'string']);
+        $resolver->addAllowedTypes('format', ['null', 'string']);
+        $resolver->addAllowedTypes('suite', ['null', 'string']);
+        $resolver->addAllowedTypes('stop_on_failure', ['bool']);
 
         return $resolver;
     }

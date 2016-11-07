@@ -14,7 +14,7 @@ class RunnerFailedEvent extends RunnerEvent
      */
     public function getMessages()
     {
-        $messages = array();
+        $messages = [];
 
         foreach ($this->getTaskResults() as $taskResult) {
             if (null !== $taskResult->getMessage()) {

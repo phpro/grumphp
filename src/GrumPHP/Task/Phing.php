@@ -27,15 +27,15 @@ class Phing extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'build_file' => null,
             'task' => null,
-            'triggered_by' => array('php')
-        ));
+            'triggered_by' => ['php']
+        ]);
 
-        $resolver->addAllowedTypes('build_file', array('null', 'string'));
-        $resolver->addAllowedTypes('task', array('null', 'string'));
-        $resolver->addAllowedTypes('triggered_by', array('array'));
+        $resolver->addAllowedTypes('build_file', ['null', 'string']);
+        $resolver->addAllowedTypes('task', ['null', 'string']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
     }

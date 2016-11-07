@@ -42,11 +42,11 @@ abstract class AbstractLinterTask implements TaskInterface
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
-            'ignore_patterns' => array(),
-        ));
+        $resolver->setDefaults([
+            'ignore_patterns' => [],
+        ]);
 
-        $resolver->addAllowedTypes('ignore_patterns', array('array'));
+        $resolver->addAllowedTypes('ignore_patterns', ['array']);
 
         return $resolver;
     }

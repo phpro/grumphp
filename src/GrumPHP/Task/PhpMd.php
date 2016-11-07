@@ -28,15 +28,15 @@ class PhpMd extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
-            'exclude' => array(),
-            'ruleset' => array('cleancode', 'codesize', 'naming'),
-            'triggered_by' => array('php')
-        ));
+        $resolver->setDefaults([
+            'exclude' => [],
+            'ruleset' => ['cleancode', 'codesize', 'naming'],
+            'triggered_by' => ['php']
+        ]);
 
-        $resolver->addAllowedTypes('exclude', array('array'));
-        $resolver->addAllowedTypes('ruleset', array('array'));
-        $resolver->addAllowedTypes('triggered_by', array('array'));
+        $resolver->addAllowedTypes('exclude', ['array']);
+        $resolver->addAllowedTypes('ruleset', ['array']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
     }

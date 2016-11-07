@@ -27,7 +27,7 @@ class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
         $grumPHP->ignoreUnstagedChanges()->willReturn(true);
         $repository->getWorkingCopy()->willReturn($workingCopy);
         $workingCopy->getDiffPending()->willReturn($unstaged);
-        $unstaged->getFiles()->willReturn(array('file1.php'));
+        $unstaged->getFiles()->willReturn(['file1.php']);
 
         $this->beConstructedWith($grumPHP, $repository, $io);
     }
@@ -71,7 +71,7 @@ class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
     function it_should_not_run_when_there_are_no_unstaged_changes(Repository $repository, Diff $unstaged)
     {
         $event = new RunnerEvent(new TasksCollection(), new RunContext(new FilesCollection()), new TaskResultCollection());
-        $unstaged->getFiles()->willReturn(array());
+        $unstaged->getFiles()->willReturn([]);
 
         $this->saveStash($event);
         $this->popStash($event);
