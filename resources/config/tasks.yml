@@ -213,6 +213,14 @@ services:
         tags:
           - {name: grumphp.task, config: phpmd}
 
+    task.phpparser:
+        class: GrumPHP\Task\PhpParser
+        arguments:
+            - '@config'
+            - '@grumphp.parser.php.parser'
+        tags:
+          - {name: grumphp.task, config: phpparser}
+
     task.phpspec:
         class: GrumPHP\Task\Phpspec
         arguments:

@@ -1,13 +1,14 @@
 <?php
 
-namespace GrumPHP\Linter\Yaml;
+namespace GrumPHPTest\Linter\Yaml;
 
+use GrumPHP\Linter\Yaml\YamlLinter;
 use SplFileInfo;
 
 /**
  * Class YamlLinterTest
  *
- * @package GrumPHP\Linter\Yaml
+ * @package GrumPHPTest\Linter\Yaml
  */
 class YamlLinterTest extends \PHPUnit_Framework_TestCase
 {

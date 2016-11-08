@@ -99,6 +99,15 @@ class TaskRunnerSpec extends ObjectBehavior
         $this->run($context)->shouldContainFailedTaskResult();
     }
 
+    function it_returns_non_blocking_faled_when_tasks_throws_a_platform_exception(TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
+    {
+        $task1->run($context)->willThrow('GrumPHP\Exception\PlatformException');
+        $task2->run($context)->shouldBeCalled();
+
+        $this->run($context)->shouldReturnAnInstanceOf('GrumPHP\Collection\TaskResultCollection');
+        $this->run($context)->shouldNotBePassed();
+        $this->run($context)->shouldContainNonBlockingFailedTaskResult();
+    }
 
     function it_returns_a_failed_tasks_result_if_a_non_blocking_task_fails(GrumPHP $grumPHP, TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
     {

@@ -30,3 +30,9 @@ Minimum issue level. There are 3 issue levels: "info", "warning" and "error". "i
 *Default: [php]*
 
 This is a list of extensions to be sniffed.
+
+
+## Known issues
+
+- Since this task is using an old version of phpparser, it currently cannot be used in combination with the `phpparser` task. 
+[Click here for more information](https://github.com/sstalle/php7cc/issues/79)

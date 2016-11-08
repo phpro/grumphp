@@ -1,13 +1,14 @@
 <?php
 
-namespace GrumPHP\Linter\Json;
+namespace GrumPHPTest\Linter\Json;
 
+use GrumPHP\Linter\Json\JsonLinter;
 use SplFileInfo;
 
 /**
  * Class JsonLinterTest
  *
- * @package GrumPHP\Linter\Json
+ * @package GrumPHPTest\Linter\Json
  */
 class JsonLinterTest extends \PHPUnit_Framework_TestCase
 {

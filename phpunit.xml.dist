@@ -3,5 +3,8 @@
         <testsuite name="Linters">
             <directory>./test/src/GrumPHPTest/Linter</directory>
         </testsuite>
+        <testsuite name="Parsers">
+            <directory>./test/src/GrumPHPTest/Parser</directory>
+        </testsuite>
     </testsuites>
 </phpunit>
