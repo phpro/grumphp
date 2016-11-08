@@ -44,8 +44,14 @@ class ExternalCommand
      */
     public function locate($command, $forceUnix = false)
     {
-        // Search executable:
-        $executable = $this->executableFinder->find($command, null, [$this->binDir]);
+        
+        // Search executable (prefer local installation over global):
+        if (is_executable($this->binDir . '/' . $command)) {
+            $executable = $this->binDir . '/' . $command;
+        } else {
+            $executable = $this->executableFinder->find($command, null, [$this->binDir]);
+        }
+
         if (!$executable) {
             throw new RuntimeException(
                 sprintf('The executable for "%s" could not be found.', $command)
