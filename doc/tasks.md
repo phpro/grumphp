@@ -35,12 +35,12 @@ parameters:
         phpparser: ~
         phpspec: ~
         phpunit: ~
+        phpversion: ~        
         robo: ~
         securitychecker: ~
         shell: ~
         xmllint: ~
         yamllint: ~
-        phpversion: ~
 ```
 
 Every task has it's own default configuration. It is possible to overwrite the parameters per task.
@@ -75,12 +75,12 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [PhpParser](tasks/phpparser.md)
 - [Phpspec](tasks/phpspec.md)
 - [Phpunit](tasks/phpunit.md)
+- [PhpVersion](tasks/phpversion.md)
 - [Robo](tasks/robo.md)
 - [Security Checker](tasks/security_checker.md)
 - [Shell](tasks/shell.md)
 - [XmlLint](tasks/xmllint.md)
 - [YamlLint](tasks/yamllint.md)
-- [PhpVersion](tasks/phpversion.md)
 
 ## Metadata
 

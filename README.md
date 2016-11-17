@@ -115,12 +115,12 @@ parameters:
         phpparser: ~
         phpspec: ~
         phpunit: ~
+        phpversion: ~        
         robo: ~
         securitychecker: ~
         shell: ~
         xmllint: ~
         yamllint: ~
-        phpversion: ~
     extensions: []
 ```
 

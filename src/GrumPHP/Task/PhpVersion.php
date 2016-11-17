@@ -6,6 +6,7 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
+use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -13,29 +14,79 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PhpVersion implements TaskInterface
 {
+    /**
+     * @var \GrumPHP\Util\PhpVersion
+     */
+    private $util;
 
     /**
-     * @var array
+     * @var GrumPHP
      */
-    private $versions;
-
-    /**
-     * @var string
-     */
-    private $projectVersion;
+    private $grumPHP;
 
     /**
      * PhpVersion constructor.
-     * @param GrumPHP $config
-     * @param array $versions
+     * @param GrumPHP $grumPHP
+     * @param \GrumPHP\Util\PhpVersion $util
      */
-    public function __construct(GrumPHP $config, array $versions)
+    public function __construct(GrumPHP $grumPHP, \GrumPHP\Util\PhpVersion $util)
     {
-        $this->versions = $versions;
-        $options = $config->getTaskConfiguration($this->getName());
-        if (array_key_exists('project', $options)) {
-            $this->projectVersion = $options['project'];
+        $this->grumPHP = $grumPHP;
+        $this->util = $util;
+    }
+
+    /**
+     * This methods specifies if a task can run in a specific context.
+     *
+     * @param ContextInterface $context
+     *
+     * @return bool
+     */
+    public function canRunInContext(ContextInterface $context)
+    {
+        return $context instanceof RunContext;
+    }
+
+    /**
+     * @param ContextInterface $context
+     *
+     * @return TaskResultInterface
+     */
+    public function run(ContextInterface $context)
+    {
+        // Check the current version
+        $config = $this->getConfiguration();
+        if (!$this->util->isSupportedVersion(PHP_VERSION)) {
+            return TaskResult::createFailed(
+                $this,
+                $context,
+                sprintf('PHP version %s is unsupported', PHP_VERSION)
+            );
         }
+
+        // Check the project version if defined
+        if (array_key_exists('project', $config) !== null) {
+            $projectVersion = $config['project'];
+            if (!$this->util->isSupportedProjectVersion(PHP_VERSION, $projectVersion)) {
+                return TaskResult::createFailed(
+                    $this,
+                    $context,
+                    sprintf('This project requires PHP version %s, you have %s', $projectVersion, PHP_VERSION)
+                );
+            }
+        }
+
+        return TaskResult::createPassed($this, $context);
+    }
+
+    /**
+     * @return array
+     */
+    public function getConfiguration()
+    {
+        $configured = $this->grumPHP->getTaskConfiguration($this->getName());
+
+        return $this->getConfigurableOptions()->resolve($configured);
     }
 
     /**
@@ -44,14 +95,6 @@ class PhpVersion implements TaskInterface
     public function getName()
     {
         return 'phpversion';
-    }
-
-    /**
-     * @return array
-     */
-    public function getConfiguration()
-    {
-        return [];
     }
 
     /**
@@ -65,50 +108,8 @@ class PhpVersion implements TaskInterface
                 'project' => null,
             ]
         );
-
         $resolver->addAllowedTypes('project', ['null', 'string']);
 
         return $resolver;
-    }
-
-    /**
-     * This methods specifies if a task can run in a specific context.
-     *
-     * @param ContextInterface $context
-     *
-     * @return bool
-     */
-    public function canRunInContext(ContextInterface $context)
-    {
-        return true;
-    }
-
-    /**
-     * @param ContextInterface $context
-     *
-     * @return TaskResultInterface
-     */
-    public function run(ContextInterface $context)
-    {
-        $versionIsSupported = false;
-        $now = new \DateTime();
-        foreach ($this->versions as $number => $eol) {
-            $eol = new \DateTime($eol);
-            if ($now < $eol && version_compare(PHP_VERSION, $number) >= 0) {
-                $versionIsSupported = true;
-            }
-        }
-        if (!$versionIsSupported) {
-            return TaskResult::createFailed($this, $context, sprintf('PHP version %s is end of life', PHP_VERSION));
-        }
-        if ($this->projectVersion !== null && version_compare(PHP_VERSION, $this->projectVersion) === -1) {
-            return TaskResult::createFailed(
-                $this,
-                $context,
-                sprintf('This project requires PHP version %s, you have %s', $this->projectVersion, PHP_VERSION)
-            );
-        }
-
-        return TaskResult::createPassed($this, $context);
     }
 }

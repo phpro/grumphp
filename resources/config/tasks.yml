@@ -239,6 +239,14 @@ services:
         tags:
             - {name: grumphp.task, config: phpunit}
 
+    task.phpversion:
+        class: GrumPHP\Task\PhpVersion
+        arguments:
+            - '@config'
+            - '@grumphp.util.phpversion'
+        tags:
+            - {name: grumphp.task, config: phpversion}
+
     task.robo:
         class: GrumPHP\Task\Robo
         arguments:
@@ -281,13 +289,3 @@ services:
             - '@linter.yamllint'
         tags:
             - {name: grumphp.task, config: yamllint}
-
-    task.phpversion:
-        class: GrumPHP\Task\PhpVersion
-        arguments:
-            - '@config'
-            -
-              5.6: '2016-12-31 23:59:59'
-              7.0: '2018-12-03 23:59:59'
-        tags:
-            - {name: grumphp.task, config: phpversion}

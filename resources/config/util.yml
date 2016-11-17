@@ -1,3 +1,10 @@
 services:
     grumphp.util.composer:
         class: GrumPHP\Util\Composer
+
+    grumphp.util.phpversion:
+        class: GrumPHP\Util\PhpVersion
+        arguments:
+            -
+              5.6: '2018-12-31 23:59:59'
+              7.0: '2018-12-03 23:59:59'
