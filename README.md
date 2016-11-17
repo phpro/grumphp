@@ -120,6 +120,7 @@ parameters:
         shell: ~
         xmllint: ~
         yamllint: ~
+        phpversion: ~
     extensions: []
 ```
 
