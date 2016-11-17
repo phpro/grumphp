@@ -67,15 +67,13 @@ class FilesCollection extends ArrayCollection
      */
     public function path($pattern)
     {
-        $filter = new Iterator\PathFilterIterator($this->getIterator(), [$pattern], []);
-
-        return new FilesCollection(iterator_to_array($filter));
+        return $this->paths([$pattern]);
     }
 
     /**
      * Filter by paths
      *
-     * $collection->paths(array('/^spec\/','/^src\/'))
+     * $collection->paths(['/^spec\/','/^src\/'])
      *
      * @param array $patterns
      *
@@ -83,7 +81,7 @@ class FilesCollection extends ArrayCollection
      */
     public function paths(array $patterns)
     {
-        $filter = new Iterator\PathFilterIterator($this->getIterator(), $patterns, array());
+        $filter = new Iterator\PathFilterIterator($this->getIterator(), $patterns, []);
 
         return new FilesCollection(iterator_to_array($filter));
     }
