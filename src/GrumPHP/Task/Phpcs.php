@@ -68,12 +68,12 @@ class Phpcs extends AbstractExternalTask
         /** @var array $extensions */
         $extensions = $config['triggered_by'];
 
-        if (0 === count($whitelistPatterns)) {
-            $files = $context->getFiles()->extensions($extensions);
-        } else {
-            array_walk($whitelistPatterns, array($this, 'escapePatternDirectorySeparator'), $extensions);
-            $files = $context->getFiles()->paths($whitelistPatterns);
+        /** @var \GrumPHP\Collection\FilesCollection $files */
+        $files = $context->getFiles();
+        if (0 !== count($whitelistPatterns)) {
+            $files = $files->paths($whitelistPatterns);
         }
+        $files = $files->extensions($extensions);
 
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);
@@ -95,17 +95,5 @@ class Phpcs extends AbstractExternalTask
         }
 
         return TaskResult::createPassed($this, $context);
-    }
-
-    /**
-     * @param string $pattern
-     * @param int $index
-     * @param array $extensions
-     */
-    protected function escapePatternDirectorySeparator(&$pattern, $index, $extensions)
-    {
-        $pattern = str_replace('/', '\\/', $pattern);
-        $pattern = '/'.$pattern.'(%s)$/i';
-        $pattern = sprintf($pattern, implode('|', $extensions));
     }
 }
