@@ -27,11 +27,15 @@ class Phpunit extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'config_file' => null,
-        ));
+            'group' => [],
+            'always_execute' => false,
+        ]);
 
-        $resolver->addAllowedTypes('config_file', array('null', 'string'));
+        $resolver->addAllowedTypes('config_file', ['null', 'string']);
+        $resolver->addAllowedTypes('group', ['array']);
+        $resolver->addAllowedTypes('always_execute', ['bool']);
 
         return $resolver;
     }
@@ -49,15 +53,16 @@ class Phpunit extends AbstractExternalTask
      */
     public function run(ContextInterface $context)
     {
+        $config = $this->getConfiguration();
+        
         $files = $context->getFiles()->name('*.php');
-        if (0 === count($files)) {
+        if (0 === count($files) && !$config['always_execute']) {
             return TaskResult::createSkipped($this, $context);
         }
 
-        $config = $this->getConfiguration();
-
         $arguments = $this->processBuilder->createArgumentsForCommand('phpunit');
         $arguments->addOptionalArgument('--configuration=%s', $config['config_file']);
+        $arguments->addOptionalCommaSeparatedArgument('--group=%s', $config['group']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();

@@ -23,7 +23,7 @@ class XmlLintSpec extends AbstractLinterTaskSpec
 {
     function let(GrumPHP $grumPHP, XmlLinter $linter)
     {
-        $grumPHP->getTaskConfiguration('xmllint')->willReturn(array());
+        $grumPHP->getTaskConfiguration('xmllint')->willReturn([]);
         $this->beConstructedWith($grumPHP, $linter);
     }
 
@@ -45,6 +45,7 @@ class XmlLintSpec extends AbstractLinterTaskSpec
         $options->getDefinedOptions()->shouldContain('x_include');
         $options->getDefinedOptions()->shouldContain('dtd_validation');
         $options->getDefinedOptions()->shouldContain('scheme_validation');
+        $options->getDefinedOptions()->shouldContain('triggered_by');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
@@ -78,9 +79,9 @@ class XmlLintSpec extends AbstractLinterTaskSpec
         $linter->setSchemeValidation(false)->shouldBeCalled();
         $linter->lint(Argument::type('SplFileInfo'))->willReturn(new LintErrorsCollection());
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('file.xml', '.', 'file.xml'),
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
@@ -94,13 +95,13 @@ class XmlLintSpec extends AbstractLinterTaskSpec
         $linter->setXInclude(false)->shouldBeCalled();
         $linter->setDtdValidation(false)->shouldBeCalled();
         $linter->setSchemeValidation(false)->shouldBeCalled();
-        $linter->lint(Argument::type('SplFileInfo'))->willReturn(new LintErrorsCollection(array(
+        $linter->lint(Argument::type('SplFileInfo'))->willReturn(new LintErrorsCollection([
             new XmlLintError(LintError::TYPE_ERROR, 0, 'error', 'file.xml', 1, 1)
-        )));
+        ]));
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('file.xml', '.', 'file.xml'),
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');

@@ -27,15 +27,15 @@ class Robo extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'load_from' => null,
             'task' => null,
-            'triggered_by' => array('php')
-        ));
+            'triggered_by' => ['php']
+        ]);
 
-        $resolver->addAllowedTypes('load_from', array('null', 'string'));
-        $resolver->addAllowedTypes('task', array('null', 'string'));
-        $resolver->addAllowedTypes('triggered_by', array('array'));
+        $resolver->addAllowedTypes('load_from', ['null', 'string']);
+        $resolver->addAllowedTypes('task', ['null', 'string']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
     }

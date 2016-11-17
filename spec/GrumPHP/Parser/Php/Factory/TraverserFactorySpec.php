@@ -1,0 +1,40 @@
+<?php
+
+namespace spec\GrumPHP\Parser\Php\Factory;
+
+use GrumPHP\Parser\Php\Configurator\TraverserConfigurator;
+use GrumPHP\Parser\Php\Context\ParserContext;
+use GrumPHP\Parser\Php\Factory\TraverserFactory;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
+/**
+ * Class TraverserFactorySpec
+ *
+ * @package spec\GrumPHP\Parser\Php\Factory
+ * @mixin TraverserFactory
+ */
+class TraverserFactorySpec extends ObjectBehavior
+{
+    function let(TraverserConfigurator $configurator)
+    {
+        $this->beConstructedWith($configurator);
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType('GrumPHP\Parser\Php\Factory\TraverserFactory');
+    }
+
+    function it_can_create_a_task_and_context_specific_traverser(TraverserConfigurator $configurator, ParserContext $context)
+    {
+
+        $taskOptions = ['visitors' => []];
+
+        $configurator->registerOptions($taskOptions)->shouldBeCalled();
+        $configurator->registerContext($context)->shouldBeCalled();
+        $configurator->configure(Argument::type('PhpParser\NodeTraverser'))->shouldBeCalled();
+
+        $this->createForTaskContext($taskOptions, $context)->shouldBeAnInstanceOf('PhpParser\NodeTraverser');
+    }
+}

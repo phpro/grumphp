@@ -19,7 +19,7 @@ class ProcessArgumentsCollection extends ArrayCollection
      */
     public static function forExecutable($executable)
     {
-        return new ProcessArgumentsCollection(array($executable));
+        return new ProcessArgumentsCollection([$executable]);
     }
 
     /**
@@ -33,6 +33,20 @@ class ProcessArgumentsCollection extends ArrayCollection
         }
 
         $this->add(sprintf($argument, $value));
+    }
+
+    /**
+     * @param string $argument
+     * @param string $value
+     */
+    public function addOptionalArgumentWithSeparatedValue($argument, $value)
+    {
+        if (!$value) {
+            return;
+        }
+
+        $this->add($argument);
+        $this->add($value);
     }
 
     /**
@@ -76,6 +90,22 @@ class ProcessArgumentsCollection extends ArrayCollection
 
     /**
      * @param string $argument
+     * @param array  $values
+     */
+    public function addSeparatedArgumentArray($argument, array $values)
+    {
+        if (!count($values)) {
+            return;
+        }
+
+        $this->add($argument);
+        foreach ($values as $value) {
+            $this->add($value);
+        }
+    }
+
+    /**
+     * @param string $argument
      * @param string $value
      */
     public function addRequiredArgument($argument, $value)
@@ -95,5 +125,19 @@ class ProcessArgumentsCollection extends ArrayCollection
         foreach ($files as $file) {
             $this->add($file->getPathname());
         }
+    }
+
+    /**
+     * @param FilesCollection|\SplFileInfo[] $files
+     */
+    public function addCommaSeparatedFiles(FilesCollection $files)
+    {
+        $paths = [];
+
+        foreach ($files as $file) {
+            $paths[] = $file->getPathname();
+        }
+
+        $this->add(implode(',', $paths));
     }
 }

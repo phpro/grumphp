@@ -27,19 +27,19 @@ class SecurityChecker extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'lockfile' => './composer.lock',
             'format' => null,
             'end_point' => null,
             'timeout' => null,
             'run_always' => false,
-        ));
+        ]);
 
-        $resolver->addAllowedTypes('lockfile', array('string'));
-        $resolver->addAllowedTypes('format', array('null', 'string'));
-        $resolver->addAllowedTypes('end_point', array('null', 'string'));
-        $resolver->addAllowedTypes('timeout', array('null', 'int'));
-        $resolver->addAllowedTypes('run_always', array('bool'));
+        $resolver->addAllowedTypes('lockfile', ['string']);
+        $resolver->addAllowedTypes('format', ['null', 'string']);
+        $resolver->addAllowedTypes('end_point', ['null', 'string']);
+        $resolver->addAllowedTypes('timeout', ['null', 'int']);
+        $resolver->addAllowedTypes('run_always', ['bool']);
 
         return $resolver;
     }

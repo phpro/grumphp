@@ -27,15 +27,15 @@ class Grunt extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'grunt_file' => null,
             'task' => null,
-            'triggered_by' => array('js', 'jsx', 'coffee', 'ts', 'less', 'sass', 'scss')
-        ));
+            'triggered_by' => ['js', 'jsx', 'coffee', 'ts', 'less', 'sass', 'scss']
+        ]);
 
-        $resolver->addAllowedTypes('grunt_file', array('null', 'string'));
-        $resolver->addAllowedTypes('task', array('null', 'string'));
-        $resolver->addAllowedTypes('triggered_by', array('array'));
+        $resolver->addAllowedTypes('grunt_file', ['null', 'string']);
+        $resolver->addAllowedTypes('task', ['null', 'string']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
     }

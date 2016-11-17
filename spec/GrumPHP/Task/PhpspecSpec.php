@@ -25,7 +25,7 @@ class PhpspecSpec extends ObjectBehavior
 
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
-        $grumPHP->getTaskConfiguration('phpspec')->willReturn(array());
+        $grumPHP->getTaskConfiguration('phpspec')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
@@ -77,9 +77,9 @@ class PhpspecSpec extends ObjectBehavior
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('test.php', '.', 'test.php')
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
@@ -95,9 +95,9 @@ class PhpspecSpec extends ObjectBehavior
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(false);
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('test.php', '.', 'test.php')
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');

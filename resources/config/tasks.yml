@@ -8,6 +8,15 @@ services:
         tags:
             - {name: grumphp.task, config: ant}
 
+    task.atoum:
+        class: GrumPHP\Task\Atoum
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: atoum}
+
     task.behat:
         class: GrumPHP\Task\Behat
         arguments:
@@ -16,6 +25,14 @@ services:
             - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, config: behat}
+
+    task.clovercoverage:
+        class: GrumPHP\Task\CloverCoverage
+        arguments:
+            - '@config'
+            - '@filesystem'
+        tags:
+            - {name: grumphp.task, config: clover_coverage}
 
     task.codeception:
         class: GrumPHP\Task\Codeception
@@ -35,6 +52,24 @@ services:
         tags:
             - {name: grumphp.task, config: composer}
 
+    task.composer.script:
+        class: GrumPHP\Task\ComposerScript
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: composer_script}
+
+    task.doctrine_orm:
+        class: GrumPHP\Task\DoctrineOrm
+        arguments:
+          - '@config'
+          - '@process_builder'
+          - '@formatter.raw_process'
+        tags:
+          - {name: grumphp.task, config: doctrine_orm}
+
     task.git.gherkin:
         class: GrumPHP\Task\Gherkin
         arguments:
@@ -49,7 +84,8 @@ services:
         arguments:
             - '@config'
             - '@process_builder'
-            - '@formatter.raw_process'
+            - '@formatter.git_blacklist'
+            - '@grumphp.io'
         tags:
             - {name: grumphp.task, config: git_blacklist}
 
@@ -94,6 +130,15 @@ services:
         tags:
             - {name: grumphp.task, config: make}
 
+    task.npm.script:
+        class: GrumPHP\Task\NpmScript
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: npm_script}
+
     task.phing:
         class: GrumPHP\Task\Phing
         arguments:
@@ -103,12 +148,30 @@ services:
         tags:
             - {name: grumphp.task, config: phing}
 
+    task.php7cc:
+        class: GrumPHP\Task\Php7cc
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: php7cc}
+
+    task.phpcpd:
+        class: GrumPHP\Task\PhpCpd
+        arguments:
+          - '@config'
+          - '@process_builder'
+          - '@formatter.raw_process'
+        tags:
+          - {name: grumphp.task, config: phpcpd}
+
     task.phpcs:
         class: GrumPHP\Task\Phpcs
         arguments:
           - '@config'
           - '@process_builder'
-          - '@formatter.raw_process'
+          - '@formatter.phpcs'
         tags:
           - {name: grumphp.task, config: phpcs}
 
@@ -117,9 +180,46 @@ services:
         arguments:
           - '@config'
           - '@process_builder'
+          - '@async_process_runner'
           - '@formatter.php_cs_fixer'
         tags:
           - {name: grumphp.task, config: phpcsfixer}
+
+    task.phpcsfixer2:
+        class: GrumPHP\Task\PhpCsFixerV2
+        arguments:
+          - '@config'
+          - '@process_builder'
+          - '@async_process_runner'
+          - '@formatter.php_cs_fixer'
+        tags:
+          - {name: grumphp.task, config: phpcsfixer2}
+
+    task.phplint:
+        class: GrumPHP\Task\PhpLint
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: phplint}
+
+    task.phpmd:
+        class: GrumPHP\Task\PhpMd
+        arguments:
+          - '@config'
+          - '@process_builder'
+          - '@formatter.raw_process'
+        tags:
+          - {name: grumphp.task, config: phpmd}
+
+    task.phpparser:
+        class: GrumPHP\Task\PhpParser
+        arguments:
+            - '@config'
+            - '@grumphp.parser.php.parser'
+        tags:
+          - {name: grumphp.task, config: phpparser}
 
     task.phpspec:
         class: GrumPHP\Task\Phpspec

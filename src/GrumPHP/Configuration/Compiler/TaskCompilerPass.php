@@ -27,9 +27,9 @@ class TaskCompilerPass implements CompilerPassInterface
         $taggedServices = $container->findTaggedServiceIds(self::TAG_GRUMPHP_TASK);
         $configuration = $container->getParameter('tasks');
 
-        $tasksRegistered = array();
-        $tasksMetadata = array();
-        $tasksConfiguration = array();
+        $tasksRegistered = [];
+        $tasksMetadata = [];
+        $tasksConfiguration = [];
         foreach ($taggedServices as $id => $tags) {
             $taskTag = $this->getTaskTag($tags);
             $configKey = $taskTag['config'];
@@ -45,7 +45,7 @@ class TaskCompilerPass implements CompilerPassInterface
             }
 
             // Load configuration and metadata:
-            $taskConfig = is_array($configuration[$configKey]) ? $configuration[$configKey] : array();
+            $taskConfig = is_array($configuration[$configKey]) ? $configuration[$configKey] : [];
             $tasksMetadata[$configKey] = $this->parseTaskMetadata($taskConfig);
 
             // The metadata can't be part of the actual configuration.
@@ -54,7 +54,7 @@ class TaskCompilerPass implements CompilerPassInterface
             $tasksConfiguration[$configKey] = $taskConfig;
 
             // Add the task to the task runner:
-            $definition->addMethodCall('addTask', array(new Reference($id)));
+            $definition->addMethodCall('addTask', [new Reference($id)]);
         }
 
         sort($tasksRegistered);
@@ -72,7 +72,7 @@ class TaskCompilerPass implements CompilerPassInterface
     private function getTaskTag(array $tags)
     {
         $resolver = new OptionsResolver();
-        $resolver->setRequired(array('config'));
+        $resolver->setRequired(['config']);
 
         return $resolver->resolve(current($tags));
     }
@@ -85,12 +85,12 @@ class TaskCompilerPass implements CompilerPassInterface
     private function parseTaskMetadata($configuration)
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'priority' => 0,
             'blocking' => true,
-        ));
+        ]);
 
-        $metadata = isset($configuration['metadata']) ? $configuration['metadata'] : array();
+        $metadata = isset($configuration['metadata']) ? $configuration['metadata'] : [];
 
         return $resolver->resolve($metadata);
     }

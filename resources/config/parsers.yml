@@ -1,0 +1,66 @@
+services:
+    grumphp.parser.php.configurator.traverser:
+      class: 'GrumPHP\Parser\Php\Configurator\TraverserConfigurator'
+      arguments:
+        - '@service_container'
+      calls:
+        - ['registerStandardEnabledVisitor', ['nameresolver', ~]]
+
+    grumphp.parser.php.factory.parser:
+      class: 'GrumPHP\Parser\Php\Factory\ParserFactory'
+      arguments: []
+
+    grumphp.parser.php.factory.traverser:
+      class: 'GrumPHP\Parser\Php\Factory\TraverserFactory'
+      arguments:
+        - '@grumphp.parser.php.configurator.traverser'
+
+    grumphp.parser.php.parser:
+      class: 'GrumPHP\Parser\Php\PhpParser'
+      arguments:
+        - '@grumphp.parser.php.factory.parser'
+        - '@grumphp.parser.php.factory.traverser'
+
+    #
+    # AVAILABLE PHP PARSER VISITORS ...
+    #
+    grumphp.parser.php.visitor.declare_strict_types:
+      class: 'GrumPHP\Parser\Php\Visitor\DeclareStrictTypesVisitor'
+      tags:
+        - {name: 'php_parser.visitor', alias: 'declare_strict_types'}
+
+    grumphp.parser.php.visitor.forbidden_class_method_calls:
+      class: 'GrumPHP\Parser\Php\Visitor\ForbiddenClassMethodCallsVisitor'
+      arguments: []
+      tags:
+        - {name: 'php_parser.visitor', alias: 'forbidden_class_method_calls'}
+
+    grumphp.parser.php.visitor.forbidden_function_calls:
+      class: 'GrumPHP\Parser\Php\Visitor\ForbiddenFunctionCallsVisitor'
+      arguments: []
+      tags:
+        - {name: 'php_parser.visitor', alias: 'forbidden_function_calls'}
+
+    grumphp.parser.php.visitor.forbidden_static_method_calls:
+      class: 'GrumPHP\Parser\Php\Visitor\ForbiddenStaticMethodCallsVisitor'
+      arguments: []
+      tags:
+        - {name: 'php_parser.visitor', alias: 'forbidden_static_method_calls'}
+
+    grumphp.parser.php.visitor.nameresolver:
+      class: 'PhpParser\NodeVisitor\NameResolver'
+      arguments: []
+      tags:
+        - {name: 'php_parser.visitor', alias: 'nameresolver'}
+
+    grumphp.parser.php.visitor.never_use_else:
+      class: 'GrumPHP\Parser\Php\Visitor\NeverUseElseVisitor'
+      arguments: []
+      tags:
+        - {name: 'php_parser.visitor', alias: 'never_use_else'}
+
+    grumphp.parser.php.visitor.no_exit_statements:
+      class: 'GrumPHP\Parser\Php\Visitor\NoExitStatementsVisitor'
+      arguments: []
+      tags:
+        - {name: 'php_parser.visitor', alias: 'no_exit_statements'}

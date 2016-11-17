@@ -27,14 +27,14 @@ class Gherkin extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'directory' => 'features',
             'align' => null,
-        ));
+        ]);
 
-        $resolver->addAllowedTypes('directory', array('string'));
-        $resolver->addAllowedTypes('align', array('null', 'string'));
-        $resolver->addAllowedValues('align', array(null, 'left', 'right'));
+        $resolver->addAllowedTypes('directory', ['string']);
+        $resolver->addAllowedTypes('align', ['null', 'string']);
+        $resolver->addAllowedValues('align', [null, 'left', 'right']);
 
         return $resolver;
     }
@@ -53,7 +53,7 @@ class Gherkin extends AbstractExternalTask
     public function run(ContextInterface $context)
     {
         $config = $this->getConfiguration();
-        $files = $context->getFiles()->extensions(array('feature'));
+        $files = $context->getFiles()->extensions(['feature']);
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);
         }

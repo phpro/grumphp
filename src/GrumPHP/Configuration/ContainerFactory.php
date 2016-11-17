@@ -3,12 +3,18 @@
 namespace GrumPHP\Configuration;
 
 use GrumPHP\Configuration\Compiler;
+use Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 use Symfony\Component\Filesystem\Filesystem;
 
+/**
+ * Class ContainerFactory
+ *
+ * @package GrumPHP\Configuration
+ */
 final class ContainerFactory
 {
     /**
@@ -19,7 +25,11 @@ final class ContainerFactory
     public static function buildFromConfiguration($path)
     {
         $container = new ContainerBuilder();
+        $container->setProxyInstantiator(new RuntimeInstantiator());
+
+        // Add compiler passes:
         $container->addCompilerPass(new Compiler\ExtensionCompilerPass());
+        $container->addCompilerPass(new Compiler\PhpParserCompilerPass());
         $container->addCompilerPass(new Compiler\TaskCompilerPass());
         $container->addCompilerPass(
             new RegisterListenersPass('event_dispatcher', 'grumphp.event_listener', 'grumphp.event_subscriber')
@@ -30,6 +40,7 @@ final class ContainerFactory
         $loader->load('formatter.yml');
         $loader->load('linters.yml');
         $loader->load('parameters.yml');
+        $loader->load('parsers.yml');
         $loader->load('services.yml');
         $loader->load('subscribers.yml');
         $loader->load('tasks.yml');

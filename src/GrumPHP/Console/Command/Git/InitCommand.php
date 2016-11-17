@@ -21,10 +21,10 @@ class InitCommand extends Command
     /**
      * @var array
      */
-    public static $hooks = array(
+    public static $hooks = [
         'pre-commit',
         'commit-msg',
-    );
+    ];
 
     /**
      * @var GrumPHP
@@ -82,7 +82,7 @@ class InitCommand extends Command
         $resourceHooksPath = $this->paths()->getPathWithTrailingSlash($resourceHooksPath);
         $customHooksPath = $this->paths()->getPathWithTrailingSlash($this->grumPHP->getHooksDir());
 
-        // Some git clients to not automatically create a git hooks folder.
+        // Some git clients do not automatically create a git hooks folder.
         if (!$this->filesystem->exists($gitHooksPath)) {
             $this->filesystem->mkdir($gitHooksPath);
             $output->writeln(sprintf(
@@ -121,10 +121,10 @@ class InitCommand extends Command
     protected function parseHookBody($hook, $templateFile)
     {
         $content = file_get_contents($templateFile);
-        $replacements = array(
+        $replacements = [
             '${HOOK_EXEC_PATH}' => $this->paths()->getGitHookExecutionPath(),
             '$(HOOK_COMMAND)' => $this->generateHookCommand('git:' . $hook),
-        );
+        ];
 
         return str_replace(array_keys($replacements), array_values($replacements), $content);
     }
@@ -138,10 +138,10 @@ class InitCommand extends Command
     protected function generateHookCommand($command)
     {
         $executable = $this->paths()->getBinCommand('grumphp', true);
-        $this->processBuilder->setArguments(array(
+        $this->processBuilder->setArguments([
             $this->paths()->getRelativeProjectPath($executable),
             $command
-        ));
+        ]);
 
         if ($configFile = $this->useExoticConfigFile()) {
             $this->processBuilder->add(sprintf('--config=%s', $configFile));

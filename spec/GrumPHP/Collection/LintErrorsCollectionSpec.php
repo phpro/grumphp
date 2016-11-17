@@ -14,9 +14,9 @@ class LintErrorsCollectionSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(array(
+        $this->beConstructedWith([
             new LintError(LintError::TYPE_ERROR, 'error', 'file.txt', 1),
-        ));
+        ]);
     }
 
     function it_is_initializable()

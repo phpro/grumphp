@@ -34,7 +34,7 @@ class RegisteredFiles
         $allFiles = trim($this->repository->run('ls-files'));
         $filePaths = preg_split("/\r\n|\n|\r/", $allFiles);
 
-        $files = array();
+        $files = [];
         foreach ($filePaths as $file) {
             $files[] = new SplFileInfo($file, dirname($file), $file);
         }

@@ -44,7 +44,7 @@ class ChangedFilesSpec extends ObjectBehavior
 
         $repository->getWorkingCopy()->willReturn($workingCopy);
         $workingCopy->getDiffStaged()->willReturn($diff);
-        $diff->getFiles()->willReturn(array($changedFile, $movedFile, $deletedFile));
+        $diff->getFiles()->willReturn([$changedFile, $movedFile, $deletedFile]);
 
         $result = $this->locateFromGitRepository();
         $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');

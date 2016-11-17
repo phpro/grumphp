@@ -4,6 +4,7 @@ namespace GrumPHP\Configuration;
 
 use GrumPHP\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * The code representation of our grumphp.yml file.
@@ -69,6 +70,22 @@ class GrumPHP
     public function ignoreUnstagedChanges()
     {
         return (bool) $this->container->getParameter('ignore_unstaged_changes');
+    }
+
+    /**
+     * @return int
+     */
+    public function getProcessAsyncLimit()
+    {
+        return (int) $this->container->getParameter('process_async_limit');
+    }
+
+    /**
+     * @return int
+     */
+    public function getProcessAsyncWaitTime()
+    {
+        return (int) $this->container->getParameter('process_async_wait');
     }
 
     /**
@@ -147,5 +164,13 @@ class GrumPHP
     {
         $taskMetadata = $this->getTaskMetadata($taskName);
         return $taskMetadata['blocking'];
+    }
+
+    /**
+     * @return Filesystem
+     */
+    public function getFilesystem()
+    {
+        return $this->container->get('filesystem');
     }
 }

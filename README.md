@@ -40,17 +40,23 @@ You will see following message in the composer logs:
 
 To make GrumPHP even more awesome, it will suggest installing some extra packages:
 
+- atoum/atoum : ~2.7
 - behat/behat : ~3.0
 - codegyre/robo : ~0.7
-- fabpot/php-cs-fixer : ~1.10
+- doctrine/orm: ~2.5
+- friendsofphp/php-cs-fixer : ~1|~2
 - malukenho/kawaii-gherkin : ~0.1
 - phing/phing : ~2.0
+- sstalle/php7cc : ~1.1
 - phpspec/phpspec : ~2.1
 - phpunit/phpunit : ~4.5
 - roave/security-advisories : dev-master@dev
+- sebastian/phpcpd : ~2.0
 - squizlabs/php_codesniffer : ~2.3
 - codeception/codeception : ~2.1
 - sensiolabs/security-checker : ~3.0
+- phpmd/phpmd : ~2.4
+- nikic/php-parser: ~2.1
 
 GrumPHP will never push you into using a specific task. You can choose the tasks that fit your needs, and activate or
 deactivate any task in no time!
@@ -63,7 +69,7 @@ Having trouble installing GrumPHP? Find out how to:
 
 ## Configuration
 
-Some things in GrumPHP can be configured in a `grumphp.yml` or `grumphp.yml.dist` file in the root of your project (the directory where you run the grumphp command). 
+Some things in GrumPHP can be configured in a `grumphp.yml` or `grumphp.yml.dist` file in the root of your project (the directory where you run the grumphp command).
 You can specify a custom config filename and location in `composer.json` or in the `--config` option of the console commands.
 
 ```yaml
@@ -75,24 +81,38 @@ parameters:
     hooks_preset: local
     stop_on_failure: false
     ignore_unstaged_changes: false
+    process_async_limit: 10
+    process_async_wait: 1000
     process_timeout: 60
     ascii:
         failed: grumphp-grumpy.txt
         succeeded: grumphp-happy.txt
     tasks:
         ant: ~
+        atoum: ~
         behat: ~
+        clover_coverage: ~
         codeception: ~
         composer: ~
+        composer_script: ~
+        doctrine_orm: ~
         gherkin: ~
         git_blacklist: ~
         git_commit_message: ~
+        git_conflict: ~
         grunt: ~
         gulp: ~
         jsonlint: ~
+        npm_script: ~
         phing: ~
+        php7cc: ~
+        phpcpd: ~
         phpcs: ~
         phpcsfixer: ~
+        phpcsfixer2: ~
+        phplint: ~
+        phpmd: ~
+        phpparser: ~
         phpspec: ~
         phpunit: ~
         robo: ~
@@ -123,7 +143,7 @@ Since GrumPHP is just a CLI tool, these commands can be triggered:
 
 ## Compatibility
 
-GrumPHP works with PHP 5.3 or above, and is also tested to work with HHVM.
+GrumPHP works with PHP 5.4 or above, and is also tested to work with HHVM.
 
 This package has been tested with following git clients:
 
@@ -136,18 +156,17 @@ This package has been tested with following git clients:
 
 ## Roadmap
 
-Following tasks are still on the roadmap:
+Lot's of tasks are already available to make sure your team writes great code.
+There are still 2 major parts that are missing before we can release a v1.0.0:
 
-- phpmd
-- phpcpd
-- phpdcd
-- twig lint
-- symfony validation
-- npm tests
-- humbug
-- ...
+- [A PHAR executable](https://github.com/phpro//grumphp/issues/61)
+- [Specify a group of tasks you want to run](https://github.com/phpro//grumphp/issues/50)
 
-New features or bugfixes can be logged at the [issue tracker](https://github.com/phpro/grumphp/issues).
+We are always looking to support new tasks. 
+Feel free to log an issue or create a pull request for a task we forgot.
+
+Are you missing a feature or did you find a bug?
+Log it in the [issue tracker](https://github.com/phpro/grumphp/issues)!
 Want to help out? Feel free to contact us!
 
 ## Build your own conventions checker
@@ -168,4 +187,4 @@ Please take a look at our rules before [contributing your code](CONTRIBUTING.md)
 
 ### License
 
-GrumPHP is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+GrumPHP is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

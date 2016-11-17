@@ -4,20 +4,22 @@ namespace spec\GrumPHP\Process;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\IO\IOInterface;
 use GrumPHP\Locator\ExternalCommand;
 use GrumPHP\Process\ProcessBuilder;
 use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Process\ProcessUtils;
 
 /**
  * @mixin ProcessBuilder
  */
 class ProcessBuilderSpec extends ObjectBehavior
 {
-    function let(GrumPHP $config, ExternalCommand $externalCommandLocator)
+    function let(GrumPHP $config, ExternalCommand $externalCommandLocator, IOInterface $io)
     {
-        $this->beConstructedWith($config, $externalCommandLocator);
+        $this->beConstructedWith($config, $externalCommandLocator, $io);
         $config->getProcessTimeout()->willReturn(60);
     }
 
@@ -38,7 +40,7 @@ class ProcessBuilderSpec extends ObjectBehavior
 
     function it_should_build_process_based_on_process_arguments()
     {
-        $arguments = new ProcessArgumentsCollection(array('/usr/bin/grumphp'));
+        $arguments = new ProcessArgumentsCollection(['/usr/bin/grumphp']);
         $process = $this->buildProcess($arguments);
 
         $process->shouldHaveType('Symfony\Component\Process\Process');
@@ -47,19 +49,34 @@ class ProcessBuilderSpec extends ObjectBehavior
 
     function it_should_be_possible_to_configure_the_process_timeout(
         GrumPHP $config,
-        ExternalCommand $externalCommandLocator
+        ExternalCommand $externalCommandLocator,
+        IOInterface $io
     )
     {
         $config->getProcessTimeout()->willReturn(120);
 
-        $arguments = new ProcessArgumentsCollection(array('/usr/bin/grumphp'));
+        $arguments = new ProcessArgumentsCollection(['/usr/bin/grumphp']);
         $process = $this->buildProcess($arguments);
         $process->getTimeout()->shouldBe(120.0);
     }
 
+    function it_outputs_the_command_when_run_very_very_verbose(
+        GrumPHP $config,
+        ExternalCommand $externalCommandLocator,
+        IOInterface $io
+    ) {
+        $io->isVeryVerbose()->willReturn(true);
+        $command = '/usr/bin/grumphp';
+        $io->write(PHP_EOL . 'Command: ' . ProcessUtils::escapeArgument($command), true)->shouldBeCalled();
+
+        $arguments = new ProcessArgumentsCollection([$command]);
+        $process = $this->buildProcess($arguments);
+
+    }
+
     function getMatchers()
     {
-        return array(
+        return [
             'beQuoted' => function ($subject, $string) {
                 $regex = sprintf('{^([\'"])%s\1$}', preg_quote($string));
                 if (!preg_match($regex, $subject)) {
@@ -71,6 +88,6 @@ class ProcessBuilderSpec extends ObjectBehavior
 
                 return true;
             }
-        );
+        ];
     }
 }

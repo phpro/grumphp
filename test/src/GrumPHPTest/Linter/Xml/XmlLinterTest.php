@@ -1,7 +1,8 @@
 <?php
 
-namespace GrumPHP\Linter\Xml;
+namespace GrumPHPTest\Linter\Xml;
 
+use GrumPHP\Linter\Xml\XmlLinter;
 use SplFileInfo;
 
 /**
@@ -112,10 +113,10 @@ class XmlLinterTest extends \PHPUnit_Framework_TestCase
      */
     function provideXmlValidation()
     {
-        return array(
-            array('fixture' => 'xml-valid.xml', 'errors' => 0),
-            array('fixture' => 'xml-invalid.xml', 'errors' => 1),
-        );
+        return [
+            ['fixture' => 'xml-valid.xml', 'errors' => 0],
+            ['fixture' => 'xml-invalid.xml', 'errors' => 1],
+        ];
     }
 
     /**
@@ -123,16 +124,16 @@ class XmlLinterTest extends \PHPUnit_Framework_TestCase
      */
     function provideDtdValidation()
     {
-        return array(
-            array('fixture' => 'xml-valid.xml', 'errors' => 0, 'loadFromNet' => false),
-            array('fixture' => 'dtd-internal-valid.xml', 'errors' => 0, 'loadFromNet' => false),
-            array('fixture' => 'dtd-internal-invalid.xml', 'errors' => 1, 'loadFromNet' => false),
-            array('fixture' => 'dtd-external-valid.xml', 'errors' => 0, 'loadFromNet' => false),
-            array('fixture' => 'dtd-external-invalid.xml', 'errors' => 1, 'loadFromNet' => false),
-            array('fixture' => 'dtd-url-valid.xml', 'errors' => 0, 'loadFromNet' => true),
-            array('fixture' => 'dtd-url-invalid.xml', 'errors' => 1, 'loadFromNet' => true),
-            array('fixture' => 'dtd-url-invalid.xml', 'errors' => 0, 'loadFromNet' => false),
-        );
+        return [
+            ['fixture' => 'xml-valid.xml', 'errors' => 0, 'loadFromNet' => false],
+            ['fixture' => 'dtd-internal-valid.xml', 'errors' => 0, 'loadFromNet' => false],
+            ['fixture' => 'dtd-internal-invalid.xml', 'errors' => 1, 'loadFromNet' => false],
+            ['fixture' => 'dtd-external-valid.xml', 'errors' => 0, 'loadFromNet' => false],
+            ['fixture' => 'dtd-external-invalid.xml', 'errors' => 1, 'loadFromNet' => false],
+            ['fixture' => 'dtd-url-valid.xml', 'errors' => 0, 'loadFromNet' => true],
+            ['fixture' => 'dtd-url-invalid.xml', 'errors' => 1, 'loadFromNet' => true],
+            ['fixture' => 'dtd-url-invalid.xml', 'errors' => 0, 'loadFromNet' => false],
+        ];
     }
 
     /**
@@ -140,16 +141,16 @@ class XmlLinterTest extends \PHPUnit_Framework_TestCase
      */
     function provideSchemeValidation()
     {
-        return array(
-            array('fixture' => 'xml-valid.xml', 'errors' => 0, 'loadFromNet' => false),
-            array('fixture' => 'xsd-namespace-valid.xml', 'errors' => 0, 'loadFromNet' => false),
-            array('fixture' => 'xsd-namespace-invalid.xml', 'errors' => 1, 'loadFromNet' => false),
-            array('fixture' => 'xsd-nonamespace-valid.xml', 'errors' => 0, 'loadFromNet' => false),
-            array('fixture' => 'xsd-nonamespace-invalid.xml', 'errors' => 1, 'loadFromNet' => false),
-            array('fixture' => 'xsd-url-valid.xml', 'errors' => 0, 'loadFromNet' => true),
-            array('fixture' => 'xsd-url-invalid.xml', 'errors' => 1, 'loadFromNet' => true),
-            array('fixture' => 'xsd-url-invalid.xml', 'errors' => 0, 'loadFromNet' => false),
-        );
+        return [
+            ['fixture' => 'xml-valid.xml', 'errors' => 0, 'loadFromNet' => false],
+            ['fixture' => 'xsd-namespace-valid.xml', 'errors' => 0, 'loadFromNet' => false],
+            ['fixture' => 'xsd-namespace-invalid.xml', 'errors' => 1, 'loadFromNet' => false],
+            ['fixture' => 'xsd-nonamespace-valid.xml', 'errors' => 0, 'loadFromNet' => false],
+            ['fixture' => 'xsd-nonamespace-invalid.xml', 'errors' => 1, 'loadFromNet' => false],
+            ['fixture' => 'xsd-url-valid.xml', 'errors' => 0, 'loadFromNet' => true],
+            ['fixture' => 'xsd-url-invalid.xml', 'errors' => 1, 'loadFromNet' => true],
+            ['fixture' => 'xsd-url-invalid.xml', 'errors' => 0, 'loadFromNet' => false],
+        ];
     }
 
     /**
@@ -157,10 +158,10 @@ class XmlLinterTest extends \PHPUnit_Framework_TestCase
      */
     function provideDtdAndSchemeValidation()
     {
-        return array(
-            array('fixture' => 'dtd-xsd-valid.xml', 'errors' => 0),
-            array('fixture' => 'dtd-xsd-invalid.xml', 'errors' => 2),
-        );
+        return [
+            ['fixture' => 'dtd-xsd-valid.xml', 'errors' => 0],
+            ['fixture' => 'dtd-xsd-invalid.xml', 'errors' => 2],
+        ];
     }
 
     /**
@@ -168,10 +169,10 @@ class XmlLinterTest extends \PHPUnit_Framework_TestCase
      */
     function provideXincludeValidation()
     {
-        return array(
-            array('fixture' => 'xml-valid.xml', 'errors' => 0),
-            array('fixture' => 'xinclude-valid.xml', 'errors' => 0),
-            array('fixture' => 'xinclude-invalid.xml', 'errors' => 2),
-        );
+        return [
+            ['fixture' => 'xml-valid.xml', 'errors' => 0],
+            ['fixture' => 'xinclude-valid.xml', 'errors' => 0],
+            ['fixture' => 'xinclude-invalid.xml', 'errors' => 2],
+        ];
     }
 }

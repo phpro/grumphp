@@ -13,6 +13,7 @@ parameters:
             x_include: false
             dtd_validation: false
             scheme_validation: false
+            triggered_by: [xml]
 ```
 
 **ignore_patterns**
@@ -53,3 +54,9 @@ Both internal, external as online resources are fetched and used for validation.
 
 It is possible to validate XML against the specified XSD schemes. 
 Both internal, external as online resources are fetched and used for validation.
+
+**triggered_by**
+
+*Default: [xml]*
+
+This is a list of extensions to be sniffed. Extend it for including xsd, wsdl, and others.

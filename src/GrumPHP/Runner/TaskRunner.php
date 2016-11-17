@@ -11,6 +11,7 @@ use GrumPHP\Event\RunnerFailedEvent;
 use GrumPHP\Event\TaskEvent;
 use GrumPHP\Event\TaskEvents;
 use GrumPHP\Event\TaskFailedEvent;
+use GrumPHP\Exception\PlatformException;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
@@ -124,6 +125,8 @@ class TaskRunner
         try {
             $this->eventDispatcher->dispatch(TaskEvents::TASK_RUN, new TaskEvent($task, $context));
             $result = $task->run($context);
+        } catch (PlatformException $e) {
+            $result = TaskResult::createNonBlockingFailed($task, $context, $e->getMessage());
         } catch (RuntimeException $e) {
             $result = TaskResult::createFailed($task, $context, $e->getMessage());
         }

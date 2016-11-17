@@ -27,15 +27,15 @@ class Gulp extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'gulp_file' => null,
             'task' => null,
-            'triggered_by' => array('js', 'jsx', 'coffee', 'ts', 'less', 'sass', 'scss')
-        ));
+            'triggered_by' => ['js', 'jsx', 'coffee', 'ts', 'less', 'sass', 'scss']
+        ]);
 
-        $resolver->addAllowedTypes('gulp_file', array('null', 'string'));
-        $resolver->addAllowedTypes('task', array('null', 'string'));
-        $resolver->addAllowedTypes('triggered_by', array('array'));
+        $resolver->addAllowedTypes('gulp_file', ['null', 'string']);
+        $resolver->addAllowedTypes('task', ['null', 'string']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
     }

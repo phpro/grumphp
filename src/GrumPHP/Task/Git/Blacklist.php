@@ -2,6 +2,10 @@
 
 namespace GrumPHP\Task\Git;
 
+use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Formatter\ProcessFormatterInterface;
+use GrumPHP\IO\IOInterface;
+use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\AbstractExternalTask;
 use GrumPHP\Task\Context\ContextInterface;
@@ -16,6 +20,29 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class Blacklist extends AbstractExternalTask
 {
     /**
+     * @var IOInterface
+     */
+    private $IO;
+
+    /**
+     * Blacklist constructor.
+     * @param GrumPHP $grumPHP
+     * @param ProcessBuilder $processBuilder
+     * @param ProcessFormatterInterface $formatter
+     * @param IOInterface $IO
+     */
+    public function __construct(
+        GrumPHP $grumPHP,
+        ProcessBuilder $processBuilder,
+        ProcessFormatterInterface $formatter,
+        IOInterface $IO
+    ) {
+        $this->IO = $IO;
+        parent::__construct($grumPHP, $processBuilder, $formatter);
+    }
+
+
+    /**
      * @return string
      */
     public function getName()
@@ -29,13 +56,13 @@ class Blacklist extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
-            'keywords' => array(),
-            'triggered_by' => array('php')
-        ));
+        $resolver->setDefaults([
+            'keywords' => [],
+            'triggered_by' => ['php']
+        ]);
 
-        $resolver->addAllowedTypes('keywords', array('array'));
-        $resolver->addAllowedTypes('triggered_by', array('array'));
+        $resolver->addAllowedTypes('keywords', ['array']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
     }
@@ -63,6 +90,9 @@ class Blacklist extends AbstractExternalTask
         $arguments->add('grep');
         $arguments->add('--cached');
         $arguments->add('-n');
+        $arguments->add('--break');
+        $arguments->add('--heading');
+        $arguments->addOptionalArgument('--color', $this->IO->isDecorated());
         $arguments->addArgumentArrayWithSeparatedValue('-e', $config['keywords']);
         $arguments->addFiles($files);
 

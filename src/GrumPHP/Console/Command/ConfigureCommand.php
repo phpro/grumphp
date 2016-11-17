@@ -133,42 +133,42 @@ class ConfigureCommand extends Command
         );
         $question = new ConfirmationQuestion($questionString, true);
         if (!$helper->ask($input, $output, $question)) {
-            return array();
+            return [];
         }
 
         // Search for git_dir
         $default = $this->guessGitDir();
         $questionString = $this->createQuestionString('In which folder is GIT initialized?', $default);
         $question = new Question($questionString, $default);
-        $question->setValidator(array($this, 'pathValidator'));
+        $question->setValidator([$this, 'pathValidator']);
         $gitDir = $helper->ask($input, $output, $question);
 
         // Search for bin_dir
         $default = $this->guessBinDir();
         $questionString = $this->createQuestionString('Where can we find the executables?', $default);
         $question = new Question($questionString, $default);
-        $question->setValidator(array($this, 'pathValidator'));
+        $question->setValidator([$this, 'pathValidator']);
         $binDir = $helper->ask($input, $output, $question);
 
         // Search tasks
         $question = new ChoiceQuestion(
             'Which tasks do you want to run?',
             $this->getAvailableTasks($this->config),
-            array()
+            []
         );
         $question->setMultiselect(true);
         $tasks = $helper->ask($input, $output, $question);
 
         // Build configuration
-        return array(
-            'parameters' => array(
+        return [
+            'parameters' => [
                 'git_dir' => $gitDir,
                 'bin_dir' => $binDir,
                 'tasks' => array_map(function ($task) {
                     return null;
                 }, array_flip($tasks)),
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -230,7 +230,7 @@ class ConfigureCommand extends Command
     {
         $defaultGitDir = $this->config->getGitDir();
         try {
-            $topLevel = $this->repository->run('rev-parse', array('--show-toplevel'));
+            $topLevel = $this->repository->run('rev-parse', ['--show-toplevel']);
         } catch (Exception $e) {
             return $defaultGitDir;
         }

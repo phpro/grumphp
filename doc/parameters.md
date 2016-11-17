@@ -9,6 +9,8 @@ parameters:
     hooks_preset: local
     stop_on_failure: false
     ignore_unstaged_changes: false
+    process_async_limit: 10
+    process_async_wait: 1000
     process_timeout: 60
     ascii:
         failed: resource/grumphp-grumpy.txt
@@ -49,15 +51,15 @@ GrumPHP comes with following presets:
 - `vagrant`: All checks will run in your vagrant box.
 
 
-*Note:* 
-When using the vagrant preset, you are required to set the vagrant SSH home folder to your working directory. 
+*Note:*
+When using the vagrant preset, you are required to set the vagrant SSH home folder to your working directory.
 This can be done by altering the `.bashrc` or `.zshrc` inside your vagrant box:
- 
+
 ```sh
 echo 'cd /remote/path/to/your/project' >> ~/.bashrc
 ```
 
-You can also add the `.bashrc` or `.zshrc` to your vagrant provision script. 
+You can also add the `.bashrc` or `.zshrc` to your vagrant provision script.
 This way the home directory will be set for all the people who are using your vagrant box.
 
 **stop_on_failure**
@@ -65,7 +67,7 @@ This way the home directory will be set for all the people who are using your va
 *Default: false*
 
 This parameter will tell GrumPHP to stop running tasks when one of the tasks results in an error.
-By default GrumPHP will continue running the configured tasks. 
+By default GrumPHP will continue running the configured tasks.
 
 **ignore_unstaged_changes**
 
@@ -75,6 +77,19 @@ By enabling this option, GrumPHP will stash your unstaged changes in git before 
 This way the tasks will run with the code that is actually committed without the unstaged changes.
 Note that during the commit, the unstaged changes will be stored in git stash.
 This may mess with your working copy and result in unexpected merge conflicts.
+
+**process_async_limit**
+
+*Default: 10*
+
+This parameter controls how many asynchronous processes GrumPHP will run simultaneously. Please note
+that not all external tasks uses asynchronous processes, nor would they necessarily benefit from using it.
+
+**process_async_wait**
+
+*Default: 1000*
+
+This parameter controls how long GrumPHP will wait (in microseconds) before checking the status of all asynchronous processes.
 
 **process_timeout**
 

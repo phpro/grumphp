@@ -2,10 +2,12 @@
 
 namespace spec\GrumPHP\Task\Git;
 
+use Composer\IO\IOInterface;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\ProcessFormatterInterface;
+use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
@@ -22,10 +24,10 @@ use Symfony\Component\Process\Process;
 class BlacklistSpec extends ObjectBehavior
 {
 
-    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
+    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter, ConsoleIO $consoleIO)
     {
-        $grumPHP->getTaskConfiguration('git_blacklist')->willReturn(array());
-        $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $grumPHP->getTaskConfiguration('git_blacklist')->willReturn([]);
+        $this->beConstructedWith($grumPHP, $processBuilder, $formatter, $consoleIO);
     }
 
     function it_is_initializable()
@@ -67,9 +69,9 @@ class BlacklistSpec extends ObjectBehavior
         $processBuilder->createArgumentsForCommand('git')->shouldNotBeCalled();
         $processBuilder->buildProcess()->shouldNotBeCalled();
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('file1.php', '.', 'file1.php'),
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
@@ -82,8 +84,8 @@ class BlacklistSpec extends ObjectBehavior
         Process $process,
         ContextInterface $context
     ) {
-        $grumPHP->getTaskConfiguration('git_blacklist')->willReturn(array(
-            'keywords'=>array('var_dump('))
+        $grumPHP->getTaskConfiguration('git_blacklist')->willReturn([
+            'keywords'=> ['var_dump(']]
         );
 
         $arguments = new ProcessArgumentsCollection();
@@ -95,9 +97,9 @@ class BlacklistSpec extends ObjectBehavior
         // Assume that blacklisted keywords was not found by `git grep` process
         $process->isSuccessful()->willReturn(false);
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('file1.php', '.', 'file1.php'),
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
@@ -110,8 +112,8 @@ class BlacklistSpec extends ObjectBehavior
         Process $process,
         ContextInterface $context
     ) {
-        $grumPHP->getTaskConfiguration('git_blacklist')->willReturn(array(
-            'keywords'=>array('var_dump('))
+        $grumPHP->getTaskConfiguration('git_blacklist')->willReturn([
+            'keywords'=> ['var_dump(']]
         );
 
         $arguments = new ProcessArgumentsCollection();
@@ -121,9 +123,9 @@ class BlacklistSpec extends ObjectBehavior
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('file1.php', '.', 'file1.php'),
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');

@@ -8,19 +8,31 @@ To activate a task, it is sufficient to add an empty task configuration:
 parameters:
     tasks:
         ant: ~
+        atoum: ~
         behat: ~
+        clover_coverage: ~
         codeception: ~
         composer: ~
+        composer_script: ~
+        doctrine_orm: ~
         gherkin: ~
         git_blacklist: ~
         git_commit_message: ~
+        git_conflict: ~
         grunt: ~
         gulp: ~
         jsonlint: ~
         make: ~
+        npm_script: ~
         phing: ~
+        php7cc: ~
+        phpcpd: ~
         phpcs: ~
         phpcsfixer: ~
+        phpcsfixer2: ~
+        phplint: ~
+        phpmd: ~
+        phpparser: ~
         phpspec: ~
         phpunit: ~
         robo: ~
@@ -35,19 +47,31 @@ Every task has it's own default configuration. It is possible to overwrite the p
 ## Tasks
 
 - [Ant](tasks/ant.md)
+- [Atoum](tasks/atoum.md)
 - [Behat](tasks/behat.md)
+- [Clover Coverage](tasks/clover_coverage.md)
 - [Codeception](tasks/codeception.md)
 - [Composer](tasks/composer.md)
+- [Composer Script](tasks/composer_script.md)
+- [Doctrine ORM](tasks/doctrine_orm.md)
 - [Gherkin](tasks/gherkin.md)
 - [Git blacklist](tasks/git_blacklist.md)
 - [Git commit message](tasks/git_commit_message.md)
+- [Git conflict](tasks/git_conflict.md)
 - [Grunt](tasks/grunt.md)
 - [Gulp](tasks/gulp.md)
 - [JsonLint](tasks/jsonlint.md)
 - [Make](tasks/make.md)
+- [NPM script](tasks/npm_script.md)
 - [Phing](tasks/phing.md)
+- [Php7cc](tasks/php7cc.md) 
+- [PhpCpd](tasks/phpcpd.md)
 - [Phpcs](tasks/phpcs.md)
 - [PHP-CS-Fixer](tasks/php_cs_fixer.md)
+- [PHP-CS-Fixer 2](tasks/php_cs_fixer2.md)
+- [PHPLint](tasks/phplint.md)
+- [PhpMd](tasks/phpmd.md)
+- [PhpParser](tasks/phpparser.md)
 - [Phpspec](tasks/phpspec.md)
 - [Phpunit](tasks/phpunit.md)
 - [Robo](tasks/robo.md)
@@ -58,7 +82,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 
 ## Metadata
 
-Every task has a pre-defined `metadata` key on which application specific options can be configured. 
+Every task has a pre-defined `metadata` key on which application specific options can be configured.
 For example:
 
 ```yaml
@@ -83,7 +107,7 @@ The higher the priority, the sooner the task will be executed.
 
 *Default: true*
 
-This option can be used to make a failing task non-blocking. 
+This option can be used to make a failing task non-blocking.
 By default all tasks will be marked as blocking.
 When a task is non-blocking, the errors will be displayed but the tests will pass.
 

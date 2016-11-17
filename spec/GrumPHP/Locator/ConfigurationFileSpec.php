@@ -42,11 +42,11 @@ class ConfigurationFileSpec extends ObjectBehavior
 
     function it_should_use_the_config_file_configured_in_the_composer_file(Filesystem $filesystem, PackageInterface $package)
     {
-        $package->getExtra()->willReturn(array(
-            'grumphp' => array(
+        $package->getExtra()->willReturn([
+            'grumphp' => [
                 'config-default-path' => '/composer/exotic/path/grumphp.yml'
-            )
-        ));
+            ]
+        ]);
 
         $filesystem->exists($this->pathArgument('/composer/grumphp.yml'))->willReturn(true);
         $filesystem->exists('/composer/exotic/path/grumphp.yml')->willReturn(true);
@@ -57,11 +57,11 @@ class ConfigurationFileSpec extends ObjectBehavior
 
     function it_should_use_the_config_file_configured_in_the_composer_file_and_fall_back_on_dist(Filesystem $filesystem, PackageInterface $package)
     {
-        $package->getExtra()->willReturn(array(
-            'grumphp' => array(
+        $package->getExtra()->willReturn([
+            'grumphp' => [
                 'config-default-path' => '/composer/exotic/path/grumphp.yml'
-            )
-        ));
+            ]
+        ]);
 
         $filesystem->exists($this->pathArgument('/composer/grumphp.yml'))->willReturn(true);
         $filesystem->exists('/composer/exotic/path/grumphp.yml')->willReturn(false);
@@ -73,11 +73,11 @@ class ConfigurationFileSpec extends ObjectBehavior
 
     function it_should_always_return_absolute_paths(Filesystem $filesystem, PackageInterface $package)
     {
-        $package->getExtra()->willReturn(array(
-            'grumphp' => array(
+        $package->getExtra()->willReturn([
+            'grumphp' => [
                 'config-default-path' => 'exotic/path/grumphp.yml'
-            )
-        ));
+            ]
+        ]);
 
         $filesystem->exists($this->pathArgument('/composer/grumphp.yml'))->willReturn(true);
         $filesystem->exists($this->pathArgument('exotic/path/grumphp.yml'))->willReturn(true);
@@ -88,7 +88,7 @@ class ConfigurationFileSpec extends ObjectBehavior
 
     function it_should_locate_config_file_on_empty_composer_configuration(Filesystem $filesystem, PackageInterface $package)
     {
-        $package->getExtra()->willReturn(array());
+        $package->getExtra()->willReturn([]);
 
         $filesystem->exists($this->pathArgument('/composer/grumphp.yml'))->willReturn(true);
         $filesystem->isAbsolutePath($this->pathArgument('/composer/grumphp.yml'))->willReturn(true);
@@ -98,7 +98,7 @@ class ConfigurationFileSpec extends ObjectBehavior
 
     private function pathRegex($expected)
     {
-        return '#^' . str_replace(array('.', '/'), array('\.', '[\\\/]{1}'), $expected) . '$#i';
+        return '#^' . str_replace(['.', '/'], ['\.', '[\\\/]{1}'], $expected) . '$#i';
     }
 
     private function pathArgument($expected)

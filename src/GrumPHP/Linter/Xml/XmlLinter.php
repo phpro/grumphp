@@ -149,11 +149,11 @@ class XmlLinter implements LinterInterface
      */
     private function registerXmlStreamContext()
     {
-        libxml_set_streams_context(stream_context_create(array(
-            'http' => array(
+        libxml_set_streams_context(stream_context_create([
+            'http' => [
                 'user_agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:43.0) Gecko/20100101 Firefox/43.0'
-            )
-        )));
+            ]
+        ]));
     }
 
     /**
@@ -205,7 +205,7 @@ class XmlLinter implements LinterInterface
      */
     private function validateInternalSchemes(SplFileInfo $file, DOMDocument $document)
     {
-        $schemas = array();
+        $schemas = [];
         $attributes = $document->documentElement->attributes;
 
         if ($schemaLocation = $attributes->getNamedItemNS(self::XSI_NAMESPACE, 'schemaLocation')) {

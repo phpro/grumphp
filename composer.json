@@ -4,43 +4,53 @@
     "type": "composer-plugin",
     "license": "MIT",
     "require": {
-        "php": ">=5.3.6",
+        "php": ">=5.4.0",
         "composer-plugin-api": "~1.0",
         "composer/composer": "^1.0",
         "doctrine/collections": "~1.2",
         "gitonomy/gitlib": "~1.0",
+        "monolog/monolog": "~1.17",
         "seld/jsonlint": "~1.1",
-        "symfony/config": "~2.4|~3.0",
-        "symfony/console": "~2.6|~3.0",
-        "symfony/dependency-injection": "~2.4|~3.0",
-        "symfony/event-dispatcher": "~2.5|~3.0",
-        "symfony/filesystem": "~2.4|~3.0",
-        "symfony/finder": "~2.4|~3.0",
-        "symfony/options-resolver": "~2.6|~3.0",
-        "symfony/process": "~2.4|~3.0",
-        "symfony/yaml": "~2.4|~3.0",
-        "monolog/monolog": "~1.17"
+        "symfony/config": "~2.7|~3.0",
+        "symfony/console": "~2.7|~3.0",
+        "symfony/dependency-injection": "~2.7|~3.0",
+        "symfony/event-dispatcher": "~2.7|~3.0",
+        "symfony/filesystem": "~2.7|~3.0",
+        "symfony/finder": "~2.7|~3.0",
+        "symfony/options-resolver": "~2.7|~3.0",
+        "symfony/process": "~2.7|~3.0",
+        "symfony/proxy-manager-bridge": "~2.7|~3.0",
+        "symfony/yaml": "~2.7|~3.0"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "~1|~2",
+        "jakub-onderka/php-parallel-lint": "^0.9.2",
+        "nikic/php-parser": "~2.1",
         "phpspec/phpspec": "~2.5",
         "phpspec/prophecy": "~1.6",
-        "squizlabs/php_codesniffer": "~2.3",
-        "friendsofphp/php-cs-fixer": "~1",
         "phpunit/phpunit": "^4.8",
-        "sensiolabs/security-checker": "^3.0"
+        "sensiolabs/security-checker": "^3.0",
+        "squizlabs/php_codesniffer": "~2.3"
     },
     "suggest": {
+        "atoum/atoum": "Lets GrumPHP run your unit tests.",
         "behat/behat": "Lets GrumPHP validate your project features.",
+        "codeception/codeception": "Lets GrumPHP run your project's full stack tests",
         "codegyre/robo": "Lets GrumPHP run your automated PHP tasks.",
+        "doctrine/orm": "Lets GrumPHP validate your Doctrine mapping files.",
         "friendsofphp/php-cs-fixer": "Lets GrumPHP automatically fix your codestyle.",
-        "phing/phing": "Lets GrumPHP run your automated PHP tasks.",
+        "jakub-onderka/php-parallel-lint": "Lets GrumPHP quickly lint your entire code base.",
         "malukenho/kawaii-gherkin": "Lets GrumPHP lint your Gherkin files.",
+        "nikic/php-parser": "Lets GrumPHP run static analyses through your PHP files.",
+        "phing/phing": "Lets GrumPHP run your automated PHP tasks.",
+        "phpmd/phpmd": "Lets GrumPHP sort out the mess in your code",
         "phpspec/phpspec": "Lets GrumPHP spec your code.",
         "phpunit/phpunit": "Lets GrumPHP run your unit tests.",
-        "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",
         "roave/security-advisories": "Lets GrumPHP be sure that there are no known security issues.",
+        "sebastian/phpcpd": "Lets GrumPHP find duplicated code.",
         "sensiolabs/security-checker": "Lets GrumPHP be sure that there are no known security issues.",
-        "codeception/codeception": "Lets GrumPHP run your project's full stack tests"
+        "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",
+        "sstalle/php7cc": "Lets GrumPHP check PHP 5.3 - 5.6 code compatibility with PHP 7."
     },
     "authors": [
         {
@@ -52,6 +62,9 @@
             "email": "toon.verwerft@phpro.be"
         }
     ],
+    "config": {
+        "sort-packages": true
+    },
     "extra": {
       "class": "GrumPHP\\Composer\\GrumPHPPlugin"
     },

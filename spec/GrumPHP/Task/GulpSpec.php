@@ -24,7 +24,7 @@ class GulpSpec extends ObjectBehavior
 {
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
-        $grumPHP->getTaskConfiguration('gulp')->willReturn(array());
+        $grumPHP->getTaskConfiguration('gulp')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
@@ -77,9 +77,9 @@ class GulpSpec extends ObjectBehavior
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('test.js', '.', 'test.js')
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
@@ -98,9 +98,9 @@ class GulpSpec extends ObjectBehavior
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(false);
 
-        $context->getFiles()->willReturn(new FilesCollection(array(
+        $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('test.js', '.', 'test.js')
-        )));
+        ]));
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');

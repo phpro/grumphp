@@ -50,12 +50,12 @@ class ProgressSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             RunnerEvents::RUNNER_RUN => 'startProgress',
             TaskEvents::TASK_RUN => 'advanceProgress',
             RunnerEvents::RUNNER_COMPLETE => 'finishProgress',
             RunnerEvents::RUNNER_FAILED => 'finishProgress',
-        );
+        ];
     }
 
     /**

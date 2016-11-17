@@ -28,13 +28,13 @@ class Shell extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
-            'scripts' => array(),
-            'triggered_by' => array('php')
-        ));
+        $resolver->setDefaults([
+            'scripts' => [],
+            'triggered_by' => ['php']
+        ]);
 
-        $resolver->addAllowedTypes('scripts', array('array'));
-        $resolver->addAllowedTypes('triggered_by', array('array'));
+        $resolver->addAllowedTypes('scripts', ['array']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
     }
@@ -58,7 +58,7 @@ class Shell extends AbstractExternalTask
             return TaskResult::createSkipped($this, $context);
         }
 
-        $exceptions = array();
+        $exceptions = [];
         foreach ($config['scripts'] as $script) {
             try {
                 $this->runShell($script);
