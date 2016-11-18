@@ -74,6 +74,19 @@ class FilesCollectionSpec extends ObjectBehavior
         $files[0]->shouldBe($file1);
     }
 
+    function it_should_filter_by_paths(SplFileInfo $file1, SplFileInfo $file2)
+    {
+        $file1->getRelativePathname()->willReturn('path1/file.php');
+        $file2->getRelativePathname()->willReturn('path2/file.png');
+
+        $result = $this->paths(['path1', 'path2']);
+        $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
+        $result->count()->shouldBe(2);
+        $files = $result->toArray();
+        $files[0]->shouldBe($file1);
+        $files[1]->shouldBe($file2);
+    }
+
     function it_should_filter_by_not_path(SplFileInfo $file1, SplFileInfo $file2)
     {
         $file1->getRelativePathname()->willReturn('path1/file.php');
