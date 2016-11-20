@@ -8,6 +8,7 @@ use Gitonomy\Git\Repository;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\ComposerHelper;
 use GrumPHP\Console\Helper\PathsHelper;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -246,7 +247,7 @@ class ConfigureCommand extends Command
     public function pathValidator($path)
     {
         if (!$this->filesystem->exists($path)) {
-            throw new \RuntimeException(sprintf('The path %s could not be found!', $path));
+            throw new RuntimeException(sprintf('The path %s could not be found!', $path));
         }
         return $path;
     }

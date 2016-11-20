@@ -2,6 +2,7 @@
 
 namespace spec\GrumPHP\Formatter;
 
+use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Formatter\RawProcessFormatter;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -14,12 +15,12 @@ class RawProcessFormatterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Formatter\RawProcessFormatter');
+        $this->shouldHaveType(RawProcessFormatter::class);
     }
 
     function it_is_a_process_formatter()
     {
-        $this->shouldHaveType('GrumPHP\Formatter\ProcessFormatterInterface');
+        $this->shouldHaveType(ProcessFormatterInterface::class);
     }
 
     function it_displays_the_full_process_output(Process $process)

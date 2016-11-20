@@ -11,6 +11,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @mixin ProgressSubscriber
@@ -24,12 +25,12 @@ class ProgressSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Event\Subscriber\ProgressSubscriber');
+        $this->shouldHaveType(ProgressSubscriber::class);
     }
 
     function it_is_an_event_subscriber()
     {
-        $this->shouldImplement('Symfony\Component\EventDispatcher\EventSubscriberInterface');
+        $this->shouldImplement(EventSubscriberInterface::class);
     }
 
     function it_should_subscribe_to_events()

@@ -20,7 +20,7 @@ class ParseErrorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Parser\ParseError');
+        $this->shouldHaveType(ParseError::class);
     }
 
     function it_has_an_error_type()

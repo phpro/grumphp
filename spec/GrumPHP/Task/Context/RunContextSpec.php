@@ -3,6 +3,7 @@
 namespace spec\GrumPHP\Task\Context;
 
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\RunContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -19,12 +20,12 @@ class RunContextSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\Context\RunContext');
+        $this->shouldHaveType(RunContext::class);
     }
 
     function it_should_be_a_task_context()
     {
-        $this->shouldImplement('GrumPHP\Task\Context\ContextInterface');
+        $this->shouldImplement(ContextInterface::class);
     }
 
     function it_should_have_files(FilesCollection $files)

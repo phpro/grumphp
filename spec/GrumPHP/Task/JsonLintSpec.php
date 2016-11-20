@@ -9,12 +9,14 @@ use GrumPHP\Linter\LintError;
 use GrumPHP\Linter\Json\JsonLinter;
 use GrumPHP\Linter\Json\JsonLintError;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\JsonLint;
 use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @mixin JsonLint
@@ -29,7 +31,7 @@ class JsonLintSpec extends AbstractLinterTaskSpec
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\JsonLint');
+        $this->shouldHaveType(JsonLint::class);
     }
 
     function it_should_have_a_name()
@@ -40,7 +42,7 @@ class JsonLintSpec extends AbstractLinterTaskSpec
     function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
-        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('detect_key_conflicts');
     }
 
@@ -61,7 +63,7 @@ class JsonLintSpec extends AbstractLinterTaskSpec
         $context->getFiles()->willReturn(new FilesCollection());
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
@@ -76,7 +78,7 @@ class JsonLintSpec extends AbstractLinterTaskSpec
         ]));
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(true);
     }
 
@@ -93,7 +95,7 @@ class JsonLintSpec extends AbstractLinterTaskSpec
         ]));
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(false);
     }
 }

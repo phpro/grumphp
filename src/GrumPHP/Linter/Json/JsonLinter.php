@@ -47,7 +47,7 @@ class JsonLinter implements LinterInterface
      */
     public function isInstalled()
     {
-        return class_exists('Seld\JsonLint\JsonParser');
+        return class_exists(JsonParser::class);
     }
 
     /**

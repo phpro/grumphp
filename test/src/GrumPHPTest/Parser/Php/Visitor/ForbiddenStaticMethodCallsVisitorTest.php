@@ -3,6 +3,7 @@
 namespace GrumPHPTest\Parser\Php\Visitor;
 
 use GrumPHP\Parser\ParseError;
+use GrumPHP\Parser\Php\Visitor\ConfigurableVisitorInterface;
 use GrumPHP\Parser\Php\Visitor\ForbiddenStaticMethodCallsVisitor;
 
 /**
@@ -30,7 +31,7 @@ class ForbiddenStaticMethodCallsVisitorTest extends AbstractVisitorTest
      */
     function it_is_a_configurable_visitor()
     {
-        $this->assertInstanceOf('GrumPHP\Parser\Php\Visitor\ConfigurableVisitorInterface', $this->getVisitor());
+        $this->assertInstanceOf(ConfigurableVisitorInterface::class, $this->getVisitor());
     }
 
     /**

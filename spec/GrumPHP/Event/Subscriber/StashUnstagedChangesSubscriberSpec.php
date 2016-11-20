@@ -11,11 +11,13 @@ use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Event\Subscriber\StashUnstagedChangesSubscriber;
+use GrumPHP\Exception\RuntimeException;
 use GrumPHP\IO\IOInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @mixin StashUnstagedChangesSubscriber
@@ -34,12 +36,12 @@ class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Event\Subscriber\StashUnstagedChangesSubscriber');
+        $this->shouldHaveType(StashUnstagedChangesSubscriber::class);
     }
 
     function it_is_an_event_subscriber()
     {
-        $this->shouldImplement('Symfony\Component\EventDispatcher\EventSubscriberInterface');
+        $this->shouldImplement(EventSubscriberInterface::class);
     }
 
     function it_should_subscribe_to_events()
@@ -98,7 +100,7 @@ class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
         $repository->run('stash', Argument::containing('pop'))->willThrow('Exception');
 
         $this->saveStash($event);
-        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringPopStash($event);
+        $this->shouldThrow(RuntimeException::class)->duringPopStash($event);
     }
 
     function it_should_stash_changes(Repository $repository)

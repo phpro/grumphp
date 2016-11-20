@@ -5,6 +5,7 @@ namespace GrumPHP\Console\Command\Git;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Exception\FileNotFoundException;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -99,7 +100,7 @@ class InitCommand extends Command
             }
 
             if (!$this->filesystem->exists($hookTemplate)) {
-                throw new \RuntimeException(
+                throw new RuntimeException(
                     sprintf('Could not find hook template for %s at %s.', $hook, $hookTemplate)
                 );
             }

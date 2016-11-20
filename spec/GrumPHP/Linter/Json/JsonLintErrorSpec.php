@@ -19,12 +19,12 @@ class JsonLintErrorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Linter\Json\JsonLintError');
+        $this->shouldHaveType(JsonLintError::class);
     }
 
     function it_is_a_lint_error()
     {
-        $this->shouldHaveType('GrumPHP\Linter\LintError');
+        $this->shouldHaveType(LintError::class);
     }
 
     function it_can_be_parsed_as_string()

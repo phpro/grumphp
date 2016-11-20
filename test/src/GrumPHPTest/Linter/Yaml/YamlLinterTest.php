@@ -2,7 +2,11 @@
 
 namespace GrumPHPTest\Linter\Yaml;
 
+use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Linter\Yaml\YamlLinter;
+use GrumPHP\Linter\Yaml\YamlLintError;
+use PHPUnit_Framework_TestCase;
+use RuntimeException;
 use SplFileInfo;
 
 /**
@@ -10,7 +14,7 @@ use SplFileInfo;
  *
  * @package GrumPHPTest\Linter\Yaml
  */
-class YamlLinterTest extends \PHPUnit_Framework_TestCase
+class YamlLinterTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var YamlLinter
@@ -31,7 +35,7 @@ class YamlLinterTest extends \PHPUnit_Framework_TestCase
     {
         $file = new SplFileInfo(TEST_BASE_PATH . '/fixtures/linters/yaml/' . $fixture);
         if (!$file->isReadable()) {
-            throw new \RuntimeException(sprintf('The fixture %s could not be loaded!', $fixture));
+            throw new RuntimeException(sprintf('The fixture %s could not be loaded!', $fixture));
         }
 
         return $file;
@@ -43,10 +47,10 @@ class YamlLinterTest extends \PHPUnit_Framework_TestCase
     private function validateFixture($fixture, $errors)
     {
         $result = $this->linter->lint($this->getFixture($fixture));
-        $this->assertInstanceOf('GrumPHP\Collection\LintErrorsCollection', $result);
+        $this->assertInstanceOf(LintErrorsCollection::class, $result);
         $this->assertEquals($result->count(), $errors, 'Invalid error-count expected.');
         if ($result->count()) {
-            $this->assertInstanceOf('GrumPHP\Linter\Yaml\YamlLintError', $result[0]);
+            $this->assertInstanceOf(YamlLintError::class, $result[0]);
         }
     }
 

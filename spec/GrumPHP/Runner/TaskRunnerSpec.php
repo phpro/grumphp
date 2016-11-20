@@ -2,9 +2,16 @@
 
 namespace spec\GrumPHP\Runner;
 
+use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Event\RunnerEvents;
+use GrumPHP\Event\RunnerFailedEvent;
+use GrumPHP\Event\TaskEvent;
 use GrumPHP\Event\TaskEvents;
+use GrumPHP\Event\TaskFailedEvent;
+use GrumPHP\Exception\PlatformException;
+use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Task\Context\ContextInterface;
@@ -47,7 +54,7 @@ class TaskRunnerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Runner\TaskRunner');
+        $this->shouldHaveType(TaskRunner::class);
     }
 
     function it_holds_tasks(TaskInterface $task1, TaskInterface $task2)
@@ -75,7 +82,7 @@ class TaskRunnerSpec extends ObjectBehavior
         $task1->run($context)->shouldBeCalled();
         $task2->run($context)->shouldBeCalled();
 
-        $this->run($context)->shouldReturnAnInstanceOf('GrumPHP\Collection\TaskResultCollection');
+        $this->run($context)->shouldReturnAnInstanceOf(TaskResultCollection::class);
         $this->run($context)->shouldBePassed();
     }
 
@@ -84,27 +91,27 @@ class TaskRunnerSpec extends ObjectBehavior
         $task1->run($context)->willReturn(TaskResult::createFailed($task1->getWrappedObject(), $context->getWrappedObject(), ''));
         $task2->run($context)->shouldBeCalled();
 
-        $this->run($context)->shouldReturnAnInstanceOf('GrumPHP\Collection\TaskResultCollection');
+        $this->run($context)->shouldReturnAnInstanceOf(TaskResultCollection::class);
         $this->run($context)->shouldNotBePassed();
         $this->run($context)->shouldContainFailedTaskResult();
     }
 
     function it_returns_a_failed_tasks_throws_an_exception(TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
     {
-        $task1->run($context)->willThrow('GrumPHP\Exception\RuntimeException');
+        $task1->run($context)->willThrow(RuntimeException::class);
         $task2->run($context)->shouldBeCalled();
 
-        $this->run($context)->shouldReturnAnInstanceOf('GrumPHP\Collection\TaskResultCollection');
+        $this->run($context)->shouldReturnAnInstanceOf(TaskResultCollection::class);
         $this->run($context)->shouldNotBePassed();
         $this->run($context)->shouldContainFailedTaskResult();
     }
 
     function it_returns_non_blocking_faled_when_tasks_throws_a_platform_exception(TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
     {
-        $task1->run($context)->willThrow('GrumPHP\Exception\PlatformException');
+        $task1->run($context)->willThrow(PlatformException::class);
         $task2->run($context)->shouldBeCalled();
 
-        $this->run($context)->shouldReturnAnInstanceOf('GrumPHP\Collection\TaskResultCollection');
+        $this->run($context)->shouldReturnAnInstanceOf(TaskResultCollection::class);
         $this->run($context)->shouldNotBePassed();
         $this->run($context)->shouldContainNonBlockingFailedTaskResult();
     }
@@ -115,7 +122,7 @@ class TaskRunnerSpec extends ObjectBehavior
         $task1->run($context)->willReturn(TaskResult::createFailed($task1->getWrappedObject(), $context->getWrappedObject(), ''));
         $task2->run($context)->shouldBeCalled();
 
-        $this->run($context)->shouldReturnAnInstanceOf('GrumPHP\Collection\TaskResultCollection');
+        $this->run($context)->shouldReturnAnInstanceOf(TaskResultCollection::class);
         $this->run($context)->shouldNotBePassed();
         $this->run($context)->shouldContainNonBlockingFailedTaskResult();
     }
@@ -159,10 +166,10 @@ class TaskRunnerSpec extends ObjectBehavior
         $task1->run($context)->shouldBeCalled();
         $task2->run($context)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, Argument::type('GrumPHP\Event\RunnerEvent'))->shouldBeCalled();
-        $eventDispatcher->dispatch(TaskEvents::TASK_RUN, Argument::type('GrumPHP\Event\TaskEvent'))->shouldBeCalled();
-        $eventDispatcher->dispatch(TaskEvents::TASK_COMPLETE, Argument::type('GrumPHP\Event\TaskEvent'))->shouldBeCalled();
-        $eventDispatcher->dispatch(RunnerEvents::RUNNER_COMPLETE, Argument::type('GrumPHP\Event\RunnerEvent'))->shouldBeCalled();
+        $eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, Argument::type(RunnerEvent::class))->shouldBeCalled();
+        $eventDispatcher->dispatch(TaskEvents::TASK_RUN, Argument::type(TaskEvent::class))->shouldBeCalled();
+        $eventDispatcher->dispatch(TaskEvents::TASK_COMPLETE, Argument::type(TaskEvent::class))->shouldBeCalled();
+        $eventDispatcher->dispatch(RunnerEvents::RUNNER_COMPLETE, Argument::type(RunnerEvent::class))->shouldBeCalled();
 
         $this->run($context);
     }
@@ -176,10 +183,10 @@ class TaskRunnerSpec extends ObjectBehavior
         $task1->run($context)->willReturn(TaskResult::createFailed($task1->getWrappedObject(), $context->getWrappedObject(), ''));
         $task2->run($context)->willReturn(TaskResult::createFailed($task1->getWrappedObject(), $context->getWrappedObject(), ''));
 
-        $eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, Argument::type('GrumPHP\Event\RunnerEvent'))->shouldBeCalled();
-        $eventDispatcher->dispatch(TaskEvents::TASK_RUN, Argument::type('GrumPHP\Event\TaskEvent'))->shouldBeCalled();
-        $eventDispatcher->dispatch(TaskEvents::TASK_FAILED, Argument::type('GrumPHP\Event\TaskFailedEvent'))->shouldBeCalled();
-        $eventDispatcher->dispatch(RunnerEvents::RUNNER_FAILED, Argument::type('GrumPHP\Event\RunnerFailedEvent'))->shouldBeCalled();
+        $eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, Argument::type(RunnerEvent::class))->shouldBeCalled();
+        $eventDispatcher->dispatch(TaskEvents::TASK_RUN, Argument::type(TaskEvent::class))->shouldBeCalled();
+        $eventDispatcher->dispatch(TaskEvents::TASK_FAILED, Argument::type(TaskFailedEvent::class))->shouldBeCalled();
+        $eventDispatcher->dispatch(RunnerEvents::RUNNER_FAILED, Argument::type(RunnerFailedEvent::class))->shouldBeCalled();
 
         $this->run($context);
     }
