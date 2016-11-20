@@ -7,6 +7,7 @@ use GrumPHP\Parser\ParserInterface;
 use GrumPHP\Parser\Php\Context\ParserContext;
 use GrumPHP\Parser\Php\Factory\ParserFactory;
 use GrumPHP\Parser\Php\Factory\TraverserFactory;
+use GrumPHP\Util\Filesystem;
 use PhpParser\Error;
 use PhpParser\Parser;
 use SplFileInfo;
@@ -34,15 +35,25 @@ class PhpParser implements ParserInterface
     private $parserOptions = [];
 
     /**
+     * @var Filesystem
+     */
+    private $filesystem;
+
+    /**
      * PhpParser constructor.
      *
      * @param ParserFactory    $parserFactory
      * @param TraverserFactory $traverserFactory
+     * @param Filesystem       $filesystem
      */
-    public function __construct(ParserFactory $parserFactory, TraverserFactory $traverserFactory)
-    {
+    public function __construct(
+        ParserFactory $parserFactory,
+        TraverserFactory $traverserFactory,
+        Filesystem $filesystem
+    ) {
         $this->parserFactory = $parserFactory;
         $this->traverserFactory = $traverserFactory;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -66,7 +77,7 @@ class PhpParser implements ParserInterface
         $traverser = $this->traverserFactory->createForTaskContext($this->parserOptions, $context);
 
         try {
-            $code = file_get_contents($file->getRealPath());
+            $code = $this->filesystem->readFromFileInfo($file);
             $stmts = $parser->parse($code);
             $traverser->traverse($stmts);
         } catch (Error $e) {

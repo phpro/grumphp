@@ -6,9 +6,6 @@ cache:
 
 matrix:
   include:
-    - php: 5.5
-    - php: 5.5
-      env: DEPENDENCIES='low'
     - php: 5.6
     - php: 5.6
       env: DEPENDENCIES='low'

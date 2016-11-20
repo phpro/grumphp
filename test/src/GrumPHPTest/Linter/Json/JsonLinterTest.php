@@ -5,8 +5,10 @@ namespace GrumPHPTest\Linter\Json;
 use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Linter\Json\JsonLinter;
 use GrumPHP\Linter\Json\JsonLintError;
+use GrumPHP\Util\Filesystem;
 use PHPUnit_Framework_TestCase;
 use RuntimeException;
+use Seld\JsonLint\JsonParser;
 use SplFileInfo;
 
 /**
@@ -23,7 +25,10 @@ class JsonLinterTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->linter = new JsonLinter();
+        $this->linter = new JsonLinter(
+            new Filesystem(),
+            new JsonParser()
+        );
     }
 
     /**

@@ -6,8 +6,8 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Exception\FileNotFoundException;
 use GrumPHP\Locator\ExternalCommand;
+use GrumPHP\Util\Filesystem;
 use Symfony\Component\Console\Helper\Helper;
-use Symfony\Component\Filesystem\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

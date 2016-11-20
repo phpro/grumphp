@@ -2,10 +2,14 @@
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Formatter\ProcessFormatterInterface;
+use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use GrumPHP\Util\Filesystem;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use SplFileInfo;
 
@@ -16,6 +20,30 @@ use SplFileInfo;
  */
 class Composer extends AbstractExternalTask
 {
+
+    /**
+     * @var Filesystem
+     */
+    private $filesystem;
+
+    /**
+     * Composer constructor.
+     *
+     * @param GrumPHP                   $grumPHP
+     * @param ProcessBuilder            $processBuilder
+     * @param ProcessFormatterInterface $formatter
+     * @param Filesystem                $filesystem
+     */
+    public function __construct(
+        GrumPHP $grumPHP,
+        ProcessBuilder $processBuilder,
+        ProcessFormatterInterface $formatter,
+        Filesystem $filesystem
+    ) {
+        parent::__construct($grumPHP, $processBuilder, $formatter);
+        $this->filesystem = $filesystem;
+    }
+
     /**
      * @return string
      */
@@ -105,7 +133,7 @@ class Composer extends AbstractExternalTask
      */
     private function hasLocalRepository(SplFileInfo $composerFile)
     {
-        $json = file_get_contents($composerFile->getRealPath());
+        $json = $this->filesystem->readFromFileInfo($composerFile);
         $package = json_decode($json, true);
 
         foreach ($package['repositories'] as $repository) {

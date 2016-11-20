@@ -5,6 +5,7 @@ namespace GrumPHPTest\Linter\Yaml;
 use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Linter\Yaml\YamlLinter;
 use GrumPHP\Linter\Yaml\YamlLintError;
+use GrumPHP\Util\Filesystem;
 use PHPUnit_Framework_TestCase;
 use RuntimeException;
 use SplFileInfo;
@@ -23,7 +24,9 @@ class YamlLinterTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->linter = new YamlLinter();
+        $this->linter = new YamlLinter(
+            new Filesystem()
+        );
     }
 
     /**

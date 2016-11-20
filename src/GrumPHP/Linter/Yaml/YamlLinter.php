@@ -4,6 +4,7 @@ namespace GrumPHP\Linter\Yaml;
 
 use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Linter\LinterInterface;
+use GrumPHP\Util\Filesystem;
 use ReflectionClass;
 use SplFileInfo;
 use Symfony\Component\Yaml\Exception\ParseException;
@@ -32,6 +33,21 @@ class YamlLinter implements LinterInterface
     private $exceptionOnInvalidType = false;
 
     /**
+     * @var Filesystem
+     */
+    private $filesystem;
+
+    /**
+     * YamlLinter constructor.
+     *
+     * @param Filesystem $filesystem
+     */
+    public function __construct(Filesystem $filesystem)
+    {
+        $this->filesystem = $filesystem;
+    }
+
+    /**
      * @param SplFileInfo $file
      *
      * @return LintErrorsCollection
@@ -41,7 +57,7 @@ class YamlLinter implements LinterInterface
         $errors = new LintErrorsCollection();
 
         try {
-            $content = file_get_contents($file->getPathname());
+            $content = $this->filesystem->readFromFileInfo($file);
             $this->parseYaml($content);
         } catch (ParseException $exception) {
             $exception->setParsedFile($file->getPathname());

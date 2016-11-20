@@ -4,9 +4,9 @@ namespace spec\GrumPHP\Locator;
 
 use Composer\Package\PackageInterface;
 use GrumPHP\Locator\ConfigurationFile;
+use GrumPHP\Util\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @mixin ConfigurationFile

@@ -7,6 +7,7 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\IO\IOInterface;
 use GrumPHP\Locator\ConfigurationFile;
 use GrumPHP\Util\Composer;
+use GrumPHP\Util\Filesystem;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Symfony\Component\Console\Application as SymfonyConsole;
@@ -15,7 +16,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**

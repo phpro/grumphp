@@ -15,7 +15,7 @@ services:
           - '@service_container'
 
     filesystem:
-        class: Symfony\Component\Filesystem\Filesystem
+        alias: grumphp.util.filesystem
 
     executable_finder:
         class: Symfony\Component\Process\ExecutableFinder
@@ -91,3 +91,6 @@ services:
     console.output:
         class: Symfony\Component\Console\Output\ConsoleOutput
         synthetic: true
+
+    json.parser:
+        class: Seld\JsonLint\JsonParser
