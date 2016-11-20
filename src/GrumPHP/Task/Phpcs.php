@@ -40,6 +40,7 @@ class Phpcs extends AbstractExternalTask
             'show_warnings' => true,
             'tab_width' => null,
             'encoding' => null,
+            'whitelist_patterns' => [],
             'ignore_patterns' => [],
             'sniffs' => [],
             'triggered_by' => ['php']
@@ -49,6 +50,7 @@ class Phpcs extends AbstractExternalTask
         $resolver->addAllowedTypes('show_warnings', ['bool']);
         $resolver->addAllowedTypes('tab_width', ['null', 'int']);
         $resolver->addAllowedTypes('encoding', ['null', 'string']);
+        $resolver->addAllowedTypes('whitelist_patterns', ['array']);
         $resolver->addAllowedTypes('ignore_patterns', ['array']);
         $resolver->addAllowedTypes('sniffs', ['array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
@@ -69,13 +71,23 @@ class Phpcs extends AbstractExternalTask
      */
     public function run(ContextInterface $context)
     {
+        /** @var array $config */
         $config = $this->getConfiguration();
-        $files = $context->getFiles()->extensions($config['triggered_by']);
+        /** @var array $whitelistPatterns */
+        $whitelistPatterns = $config['whitelist_patterns'];
+        /** @var array $extensions */
+        $extensions = $config['triggered_by'];
+
+        /** @var \GrumPHP\Collection\FilesCollection $files */
+        $files = $context->getFiles();
+        if (0 !== count($whitelistPatterns)) {
+            $files = $files->paths($whitelistPatterns);
+        }
+        $files = $files->extensions($extensions);
+
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
-
-        $config = $this->getConfiguration();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('phpcs');
         $arguments = $this->addArgumentsFromConfig($arguments, $config);

@@ -11,6 +11,7 @@ parameters:
             standard: ~
             show_warnings: true
             tab_width: ~
+            whitelist_patterns: []
             encoding: ~
             ignore_patterns: []
             sniffs: []
@@ -53,6 +54,19 @@ By default, the standard will specify the optimal tab-width of the code. If you 
 *Default: null*
 
 The default encoding used by PHP_CodeSniffer (is ISO-8859-1).
+
+**whitelist_patterns**
+
+*Default: []*
+
+This is a list of regex patterns that will filter files to validate. With this option you can skip files like tests. This option is used in relation with the parameter `triggered_by`.
+For exemple to validate only files in your `src/App/` and `src/AppBundle/` directories in a Symfony you can use 
+```yml
+whitelist_patterns:
+  - /^src\/App\/(.*)/
+  - /^src\/AppBundle\/(.*)/
+```
+
 
 **ignore_patterns**
 
