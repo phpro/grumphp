@@ -3,9 +3,11 @@
 namespace spec\GrumPHP\Task\Context;
 
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use SplFileInfo;
 
 /**
  * @mixin GitCommitMsgContext
@@ -17,19 +19,19 @@ class GitCommitMsgContextSpec extends ObjectBehavior
      */
     protected $tempFile;
 
-    function let(FilesCollection $files, \SplFileInfo $fileInfo)
+    function let(FilesCollection $files, SplFileInfo $fileInfo)
     {
         $this->beConstructedWith($files, $fileInfo, 'user', 'user@email.com');
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\Context\GitCommitMsgContext');
+        $this->shouldHaveType(GitCommitMsgContext::class);
     }
 
     function it_should_be_a_task_context()
     {
-        $this->shouldImplement('GrumPHP\Task\Context\ContextInterface');
+        $this->shouldImplement(ContextInterface::class);
     }
 
     function it_should_have_files(FilesCollection $files)

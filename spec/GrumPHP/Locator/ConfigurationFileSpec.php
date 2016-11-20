@@ -20,7 +20,7 @@ class ConfigurationFileSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Locator\ConfigurationFile');
+        $this->shouldHaveType(ConfigurationFile::class);
     }
 
     function it_should_locate_config_file(Filesystem $filesystem)

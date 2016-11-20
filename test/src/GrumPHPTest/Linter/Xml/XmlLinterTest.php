@@ -2,7 +2,11 @@
 
 namespace GrumPHPTest\Linter\Xml;
 
+use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Linter\Xml\XmlLinter;
+use GrumPHP\Linter\Xml\XmlLintError;
+use PHPUnit_Framework_TestCase;
+use RuntimeException;
 use SplFileInfo;
 
 /**
@@ -10,7 +14,7 @@ use SplFileInfo;
  *
  * @package GrumPHP\Linter\Xml
  */
-class XmlLinterTest extends \PHPUnit_Framework_TestCase
+class XmlLinterTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var XmlLinter
@@ -31,7 +35,7 @@ class XmlLinterTest extends \PHPUnit_Framework_TestCase
     {
         $file = new SplFileInfo(TEST_BASE_PATH . '/fixtures/linters/xml/' . $fixture);
         if (!$file->isReadable()) {
-            throw new \RuntimeException(sprintf('The fixture %s could not be loaded!', $fixture));
+            throw new RuntimeException(sprintf('The fixture %s could not be loaded!', $fixture));
         }
 
         return $file;
@@ -44,10 +48,10 @@ class XmlLinterTest extends \PHPUnit_Framework_TestCase
     private function validateFixture($fixture, $errors)
     {
         $result = $this->linter->lint($this->getFixture($fixture));
-        $this->assertInstanceOf('GrumPHP\Collection\LintErrorsCollection', $result);
+        $this->assertInstanceOf(LintErrorsCollection::class, $result);
         $this->assertEquals($result->count(), $errors, 'Invalid error-count expected.');
         if ($result->count()) {
-            $this->assertInstanceOf('GrumPHP\Linter\Xml\XmlLintError', $result[0]);
+            $this->assertInstanceOf(XmlLintError::class, $result[0]);
         }
     }
 

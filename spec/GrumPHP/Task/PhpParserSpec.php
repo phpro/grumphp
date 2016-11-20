@@ -7,6 +7,7 @@ use GrumPHP\Parser\ParserInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\PhpParser;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class PhpParserSpec
@@ -26,7 +27,7 @@ class PhpParserSpec extends AbstractParserTaskSpec
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\PhpParser');
+        $this->shouldHaveType(PhpParser::class);
     }
 
     function it_should_have_a_name()
@@ -37,7 +38,7 @@ class PhpParserSpec extends AbstractParserTaskSpec
     function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
-        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('kind');
         $options->getDefinedOptions()->shouldContain('visitors');
     }

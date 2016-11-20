@@ -3,8 +3,10 @@
 namespace spec\GrumPHP\Locator;
 
 use Gitonomy\Git\Diff\Diff;
+use Gitonomy\Git\Diff\File;
 use Gitonomy\Git\WorkingCopy;
 use Gitonomy\Git\Repository;
+use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Locator\ChangedFiles;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -22,13 +24,13 @@ class ChangedFilesSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Locator\ChangedFiles');
+        $this->shouldHaveType(ChangedFiles::class);
     }
 
     protected function mockFile($name, $isRename = false, $isDelete = false)
     {
         $prophet = new Prophet();
-        $file = $prophet->prophesize('Gitonomy\Git\Diff\File');
+        $file = $prophet->prophesize(File::class);
         $file->getName()->willReturn($name);
         $file->getNewName()->willReturn($name);
         $file->isRename()->willReturn($isRename);
@@ -47,7 +49,7 @@ class ChangedFilesSpec extends ObjectBehavior
         $diff->getFiles()->willReturn([$changedFile, $movedFile, $deletedFile]);
 
         $result = $this->locateFromGitRepository();
-        $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
+        $result->shouldBeAnInstanceOf(FilesCollection::class);
         $result[0]->getPathname()->shouldBe('file1.txt');
         $result[1]->getPathname()->shouldBe('file2.txt');
         $result->getIterator()->count()->shouldBe(2);
@@ -65,7 +67,7 @@ index 0000000000000000000000000000000000000000..9766475a4185a151dc9d56d614ffb9aa
 ';
 
         $result = $this->locateFromRawDiffInput($rawDiff);
-        $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
+        $result->shouldBeAnInstanceOf(FilesCollection::class);
         $result[0]->getPathname()->shouldBe('file.txt');
         $result->getIterator()->count()->shouldBe(1);
     }

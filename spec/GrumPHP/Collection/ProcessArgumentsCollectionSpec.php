@@ -4,6 +4,7 @@ namespace spec\GrumPHP\Collection;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
+use GrumPHP\Exception\InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use SplFileInfo;
@@ -15,13 +16,13 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Collection\ProcessArgumentsCollection');
+        $this->shouldHaveType(ProcessArgumentsCollection::class);
     }
 
     function it_should_be_able_to_create_a_new_collection_based_on_a_command()
     {
         $result = $this->forExecutable('exec');
-        $result->shouldBeAnInstanceOf('GrumPHP\Collection\ProcessArgumentsCollection');
+        $result->shouldBeAnInstanceOf(ProcessArgumentsCollection::class);
         $result->first()->shouldBe('exec');
     }
 
@@ -84,7 +85,7 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
 
     function it_should_be_able_to_add_required_argument()
     {
-        $this->shouldThrow('GrumPHP\Exception\InvalidArgumentException')->duringAddRequiredArgument('--argument=%s', false);
+        $this->shouldThrow(InvalidArgumentException::class)->duringAddRequiredArgument('--argument=%s', false);
 
         $this->addRequiredArgument('--argument=%s', 'value');
         $this->getValues()->shouldBe(['--argument=value']);

@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Collection;
 
+use Closure;
 use Doctrine\Common\Collections\ArrayCollection;
 use GrumPHP\Util\Regex;
 use Symfony\Component\Finder\Comparator;
@@ -155,13 +156,13 @@ class FilesCollection extends ArrayCollection
      * The anonymous function receives a \SplFileInfo and must return false
      * to remove files.
      *
-     * @param \Closure $closure An anonymous function
+     * @param Closure $closure An anonymous function
      *
      * @return FilesCollection The current Finder instance
      *
      * @see CustomFilterIterator
      */
-    public function filter(\Closure $closure)
+    public function filter(Closure $closure)
     {
         $filter = new Iterator\CustomFilterIterator($this->getIterator(), [$closure]);
 

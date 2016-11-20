@@ -12,6 +12,7 @@ use PhpParser\NodeTraverserInterface;
 use PhpParser\Parser;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use SplFileInfo;
 
 /**
  * Class PhpParserSpec
@@ -46,7 +47,7 @@ class PhpParserSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Parser\Php\PhpParser');
+        $this->shouldHaveType(PhpParser::class);
     }
 
     function it_uses_parser_options(
@@ -55,7 +56,7 @@ class PhpParserSpec extends ObjectBehavior
         Parser $parser,
         NodeTraverserInterface $traverser
     ) {
-        $file = new \SplFileInfo($this->tempFile);
+        $file = new SplFileInfo($this->tempFile);
         $this->setParserOptions($options = ['kind' => 'php7']);
 
         $parserFactory->createFromOptions($options)->shouldBeCalled()->willReturn($parser);
@@ -69,21 +70,21 @@ class PhpParserSpec extends ObjectBehavior
 
     function it_parses_a_file(NodeTraverserInterface $traverser)
     {
-        $file = new \SplFileInfo($this->tempFile);
+        $file = new SplFileInfo($this->tempFile);
         $traverser->traverse([])->shouldBeCalled();
         $errors = $this->parse($file);
 
-        $errors->shouldBeAnInstanceOf('GrumPHP\Collection\ParseErrorsCollection');
+        $errors->shouldBeAnInstanceOf(ParseErrorsCollection::class);
         $errors->count()->shouldBe(0);
     }
 
     function it_catches_parse_exceptions(Parser $parser)
     {
-        $file = new \SplFileInfo($this->tempFile);
+        $file = new SplFileInfo($this->tempFile);
         $parser->parse(Argument::any())->willThrow(new Error('Error ....'));
         $errors = $this->parse($file);
 
-        $errors->shouldBeAnInstanceOf('GrumPHP\Collection\ParseErrorsCollection');
+        $errors->shouldBeAnInstanceOf(ParseErrorsCollection::class);
         $errors->count()->shouldBe(1);
     }
 }

@@ -6,6 +6,7 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Process\AsyncProcessRunner;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Prophet;
+use Symfony\Component\Process\Process;
 
 /**
  * @mixin AsyncProcessRunner
@@ -21,7 +22,7 @@ class AsyncProcessRunnerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Process\AsyncProcessRunner');
+        $this->shouldHaveType(AsyncProcessRunner::class);
     }
 
     function it_should_be_able_to_run_processes()
@@ -30,7 +31,7 @@ class AsyncProcessRunnerSpec extends ObjectBehavior
         $processes = [];
 
         for ($i = 0; $i < 20; $i++) {
-            $process = $prophet->prophesize('Symfony\Component\Process\Process');
+            $process = $prophet->prophesize(Process::class);
 
             $process->started = false;
             $process->terminated = false;

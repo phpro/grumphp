@@ -8,6 +8,7 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Composer;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -15,6 +16,7 @@ use GrumPHP\Task\Context\RunContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
 /**
@@ -30,7 +32,7 @@ class ComposerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\Composer');
+        $this->shouldHaveType(Composer::class);
     }
 
     function it_should_have_a_name()
@@ -41,7 +43,7 @@ class ComposerSpec extends ObjectBehavior
     function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
-        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('file');
         $options->getDefinedOptions()->shouldContain('no_check_all');
         $options->getDefinedOptions()->shouldContain('no_check_lock');
@@ -68,7 +70,7 @@ class ComposerSpec extends ObjectBehavior
         $context->getFiles()->willReturn(new FilesCollection());
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
@@ -86,7 +88,7 @@ class ComposerSpec extends ObjectBehavior
         ]));
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(true);
     }
 
@@ -107,7 +109,7 @@ class ComposerSpec extends ObjectBehavior
         ]));
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(false);
     }
 
@@ -138,7 +140,7 @@ class ComposerSpec extends ObjectBehavior
         ]));
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(false);
 
         unlink($composerFile);
@@ -172,7 +174,7 @@ class ComposerSpec extends ObjectBehavior
         ]));
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(true);
 
         unlink($composerFile);

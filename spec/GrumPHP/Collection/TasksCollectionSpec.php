@@ -2,6 +2,7 @@
 
 namespace spec\GrumPHP\Collection;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Task\Context\ContextInterface;
@@ -21,12 +22,12 @@ class TasksCollectionSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Collection\TasksCollection');
+        $this->shouldHaveType(TasksCollection::class);
     }
 
     function it_is_an_array_collection()
     {
-        $this->shouldHaveType('Doctrine\Common\Collections\ArrayCollection');
+        $this->shouldHaveType(ArrayCollection::class);
     }
 
     function it_should_filter_by_context(TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
@@ -35,7 +36,7 @@ class TasksCollectionSpec extends ObjectBehavior
         $task2->canRunInContext($context)->willReturn(false);
 
         $result = $this->filterByContext($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Collection\TasksCollection');
+        $result->shouldBeAnInstanceOf(TasksCollection::class);
         $result->count()->shouldBe(1);
         $tasks = $result->toArray();
         $tasks[0]->shouldBe($task1);
@@ -54,7 +55,7 @@ class TasksCollectionSpec extends ObjectBehavior
         $grumPHP->getTaskMetadata('task3')->willReturn(['priority' => 100]);
 
         $result = $this->sortByPriority($grumPHP);
-        $result->shouldBeAnInstanceOf('GrumPHP\Collection\TasksCollection');
+        $result->shouldBeAnInstanceOf(TasksCollection::class);
         $result->count()->shouldBe(3);
         $tasks = $result->toArray();
 

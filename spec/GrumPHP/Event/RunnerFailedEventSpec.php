@@ -4,6 +4,7 @@ namespace spec\GrumPHP\Event;
 
 use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Collection\TasksCollection;
+use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Event\RunnerFailedEvent;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
@@ -22,12 +23,12 @@ class RunnerFailedEventSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Event\RunnerFailedEvent');
+        $this->shouldHaveType(RunnerFailedEvent::class);
     }
 
     function it_is_a_runner_event()
     {
-        $this->shouldHaveType('GrumPHP\Event\RunnerEvent');
+        $this->shouldHaveType(RunnerEvent::class);
     }
 
     function it_has_tasks(TasksCollection $tasks)

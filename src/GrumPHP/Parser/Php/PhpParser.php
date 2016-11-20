@@ -8,6 +8,7 @@ use GrumPHP\Parser\Php\Context\ParserContext;
 use GrumPHP\Parser\Php\Factory\ParserFactory;
 use GrumPHP\Parser\Php\Factory\TraverserFactory;
 use PhpParser\Error;
+use PhpParser\Parser;
 use SplFileInfo;
 
 /**
@@ -80,6 +81,6 @@ class PhpParser implements ParserInterface
      */
     public function isInstalled()
     {
-        return interface_exists('PhpParser\Parser');
+        return interface_exists(Parser::class);
     }
 }

@@ -2,7 +2,9 @@
 
 namespace spec\GrumPHP\IO;
 
+use GrumPHP\Exception\RuntimeException;
 use GrumPHP\IO\ConsoleIO;
+use GrumPHP\IO\IOInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,12 +23,12 @@ class ConsoleIOSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\IO\ConsoleIO');
+        $this->shouldHaveType(ConsoleIO::class);
     }
 
     function it_should_be_a_IO()
     {
-        $this->shouldImplement('GrumPHP\IO\IOInterface');
+        $this->shouldImplement(IOInterface::class);
     }
 
     function it_should_know_if_the_input_is_interactive_modus(InputInterface $input)
@@ -94,7 +96,7 @@ class ConsoleIOSpec extends ObjectBehavior
 
     function it_only_reads_valid_command_input_resource_streams()
     {
-        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringReadCommandInput('string');
+        $this->shouldThrow(RuntimeException::class)->duringReadCommandInput('string');
     }
 
     private function mockHandle($content)

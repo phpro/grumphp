@@ -8,6 +8,7 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -91,7 +92,7 @@ class Phpcs extends AbstractExternalTask
                 $arguments = $this->processBuilder->createArgumentsForCommand('phpcbf');
                 $arguments = $this->addArgumentsFromConfig($arguments, $config);
                 $output .= $this->formatter->formatErrorMessage($arguments, $this->processBuilder);
-            } catch (\RuntimeException $exception) { // phpcbf could not get found.
+            } catch (RuntimeException $exception) { // phpcbf could not get found.
                 $output .= PHP_EOL . 'Info: phpcbf could not get found. Please consider to install it for suggestions.';
             }
             return TaskResult::createFailed($this, $context, $output);

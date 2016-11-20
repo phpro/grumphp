@@ -4,6 +4,7 @@ namespace spec\GrumPHP\Task;
 
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\CloverCoverage;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -11,6 +12,7 @@ use GrumPHP\Task\Context\RunContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @mixin CloverCoverage
@@ -25,7 +27,7 @@ class CloverCoverageSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\CloverCoverage');
+        $this->shouldHaveType(CloverCoverage::class);
     }
 
     function it_should_have_a_name()
@@ -36,7 +38,7 @@ class CloverCoverageSpec extends ObjectBehavior
     function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
-        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('level');
         $options->getDefinedOptions()->shouldContain('clover_file');
     }
@@ -63,7 +65,7 @@ class CloverCoverageSpec extends ObjectBehavior
         ]);
         $filesystem->exists('foo.bar')->willReturn(false);
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->getResultCode()->shouldBe(TaskResult::FAILED);
     }
 
@@ -76,7 +78,7 @@ class CloverCoverageSpec extends ObjectBehavior
         ]);
         $filesystem->exists($filename)->willReturn(true);
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->getResultCode()->shouldBe(TaskResult::PASSED);
     }
 
@@ -89,7 +91,7 @@ class CloverCoverageSpec extends ObjectBehavior
         ]);
         $filesystem->exists($filename)->willReturn(true);
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->getResultCode()->shouldBe(TaskResult::FAILED);
         $result->getMessage()->shouldBe('Code coverage is 60%, which is below the accepted 100%' . PHP_EOL);
     }

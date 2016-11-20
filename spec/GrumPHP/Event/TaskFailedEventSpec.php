@@ -2,6 +2,8 @@
 
 namespace spec\GrumPHP\Event;
 
+use Exception;
+use GrumPHP\Event\TaskEvent;
 use GrumPHP\Event\TaskFailedEvent;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
@@ -15,19 +17,19 @@ class TaskFailedEventSpec extends ObjectBehavior
 {
 
 
-    function let(TaskInterface $task, ContextInterface $context, \Exception $exception)
+    function let(TaskInterface $task, ContextInterface $context, Exception $exception)
     {
         $this->beConstructedWith($task, $context, $exception);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Event\TaskFailedEvent');
+        $this->shouldHaveType(TaskFailedEvent::class);
     }
 
     function it_is_a_runner_event()
     {
-        $this->shouldHaveType('GrumPHP\Event\TaskEvent');
+        $this->shouldHaveType(TaskEvent::class);
     }
 
     function it_has_a_task(TaskInterface $task)
@@ -35,7 +37,7 @@ class TaskFailedEventSpec extends ObjectBehavior
         $this->getTask()->shouldBe($task);
     }
 
-    function it_should_contain_the_exception(\Exception $exception)
+    function it_should_contain_the_exception(Exception $exception)
     {
         $this->getException()->shouldBe($exception);
     }

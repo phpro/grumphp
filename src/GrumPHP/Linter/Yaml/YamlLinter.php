@@ -4,6 +4,7 @@ namespace GrumPHP\Linter\Yaml;
 
 use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Linter\LinterInterface;
+use ReflectionClass;
 use SplFileInfo;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
@@ -60,7 +61,7 @@ class YamlLinter implements LinterInterface
      */
     public static function supportsFlags()
     {
-        $rc = new \ReflectionClass('Symfony\Component\Yaml\Yaml');
+        $rc = new ReflectionClass(Yaml::class);
         $method = $rc->getMethod('parse');
         $params = $method->getParameters();
 
@@ -91,7 +92,7 @@ class YamlLinter implements LinterInterface
      */
     public function isInstalled()
     {
-        return class_exists('Symfony\Component\Yaml\Yaml');
+        return class_exists(Yaml::class);
     }
 
     /**

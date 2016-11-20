@@ -9,12 +9,14 @@ use GrumPHP\Linter\LintError;
 use GrumPHP\Linter\Yaml\YamlLinter;
 use GrumPHP\Linter\Yaml\YamlLintError;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\YamlLint;
 use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @mixin YamlLint
@@ -29,7 +31,7 @@ class YamlLintSpec extends AbstractLinterTaskSpec
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\YamlLint');
+        $this->shouldHaveType(YamlLint::class);
     }
 
     function it_should_have_a_name()
@@ -40,7 +42,7 @@ class YamlLintSpec extends AbstractLinterTaskSpec
     function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
-        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('object_support');
         $options->getDefinedOptions()->shouldContain('exception_on_invalid_type');
     }
@@ -63,7 +65,7 @@ class YamlLintSpec extends AbstractLinterTaskSpec
         $context->getFiles()->willReturn(new FilesCollection());
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
@@ -79,7 +81,7 @@ class YamlLintSpec extends AbstractLinterTaskSpec
         ]));
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(true);
     }
 
@@ -97,7 +99,7 @@ class YamlLintSpec extends AbstractLinterTaskSpec
         ]));
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(false);
     }
 }

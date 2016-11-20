@@ -2,6 +2,8 @@
 
 namespace spec\GrumPHP\Collection;
 
+use ArrayIterator;
+use Doctrine\Common\Collections\ArrayCollection;
 use GrumPHP\Collection\FilesCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -30,12 +32,12 @@ class FilesCollectionSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Collection\FilesCollection');
+        $this->shouldHaveType(FilesCollection::class);
     }
 
     function it_is_an_array_collection()
     {
-        $this->shouldHaveType('Doctrine\Common\Collections\ArrayCollection');
+        $this->shouldHaveType(ArrayCollection::class);
     }
 
     function it_should_filter_by_name(SplFileInfo $file1, SplFileInfo $file2)
@@ -44,7 +46,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $file2->getFilename()->willReturn('file.png');
 
         $result = $this->name('*.php');
-        $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
+        $result->shouldBeAnInstanceOf(FilesCollection::class);
         $result->count()->shouldBe(1);
         $files = $result->toArray();
         $files[0]->shouldBe($file1);
@@ -56,7 +58,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $file2->getFilename()->willReturn('file.png');
 
         $result = $this->notName('*.png');
-        $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
+        $result->shouldBeAnInstanceOf(FilesCollection::class);
         $result->count()->shouldBe(1);
         $files = $result->toArray();
         $files[0]->shouldBe($file1);
@@ -68,7 +70,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $file2->getRelativePathname()->willReturn('path2/file.png');
 
         $result = $this->path('path1');
-        $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
+        $result->shouldBeAnInstanceOf(FilesCollection::class);
         $result->count()->shouldBe(1);
         $files = $result->toArray();
         $files[0]->shouldBe($file1);
@@ -80,7 +82,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $file2->getRelativePathname()->willReturn('path2/file.png');
 
         $result = $this->notPath('path2');
-        $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
+        $result->shouldBeAnInstanceOf(FilesCollection::class);
         $result->count()->shouldBe(1);
         $files = $result->toArray();
         $files[0]->shouldBe($file1);
@@ -96,7 +98,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $file2->getSize()->willReturn(16 * 1024);
 
         $result = $this->size('>= 4K')->size('<= 10K');
-        $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
+        $result->shouldBeAnInstanceOf(FilesCollection::class);
         $result->count()->shouldBe(1);
         $files = $result->toArray();
         $files[0]->shouldBe($file1);
@@ -112,7 +114,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $file2->getMTime()->willReturn(strtotime('-5 days'));
 
         $result = $this->date('since yesterday');
-        $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
+        $result->shouldBeAnInstanceOf(FilesCollection::class);
         $result->count()->shouldBe(1);
         $files = $result->toArray();
         $files[0]->shouldBe($file1);
@@ -126,7 +128,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $result = $this->filter(function (SplFileInfo $file) {
             return $file->getRelativePathname() === 'path1/file.php';
         });
-        $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
+        $result->shouldBeAnInstanceOf(FilesCollection::class);
         $result->count()->shouldBe(1);
         $files = $result->toArray();
         $files[0]->shouldBe($file1);
@@ -137,7 +139,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $file1->getPathname()->willReturn('path1/file.php');
         $file2->getPathname()->willReturn('path2/file.php');
 
-        $iterator = new \ArrayIterator([$file1->getWrappedObject()]);
+        $iterator = new ArrayIterator([$file1->getWrappedObject()]);
         $result = $this->filterByFileList($iterator);
         $result->count()->shouldBe(1);
         $files = $result->toArray();

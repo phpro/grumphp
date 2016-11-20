@@ -9,12 +9,14 @@ use GrumPHP\Linter\LintError;
 use GrumPHP\Linter\Xml\XmlLinter;
 use GrumPHP\Linter\Xml\XmlLintError;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\XmlLint;
 use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @mixin XmlLint
@@ -29,7 +31,7 @@ class XmlLintSpec extends AbstractLinterTaskSpec
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\XmlLint');
+        $this->shouldHaveType(XmlLint::class);
     }
 
     function it_should_have_a_name()
@@ -40,7 +42,7 @@ class XmlLintSpec extends AbstractLinterTaskSpec
     function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
-        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('load_from_net');
         $options->getDefinedOptions()->shouldContain('x_include');
         $options->getDefinedOptions()->shouldContain('dtd_validation');
@@ -66,7 +68,7 @@ class XmlLintSpec extends AbstractLinterTaskSpec
         $context->getFiles()->willReturn(new FilesCollection());
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);        
     }
 
@@ -84,7 +86,7 @@ class XmlLintSpec extends AbstractLinterTaskSpec
         ]));
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(true);
     }
 
@@ -104,7 +106,7 @@ class XmlLintSpec extends AbstractLinterTaskSpec
         ]));
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(false);
     }
 }
