@@ -3,7 +3,6 @@
 namespace GrumPHP\Configuration;
 
 use GrumPHP\Exception\RuntimeException;
-use GrumPHP\Util\Filesystem;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
