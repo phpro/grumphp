@@ -82,7 +82,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $file2->getRelativePathname()->willReturn('path2/file.png');
 
         $result = $this->paths(['path1', 'path2']);
-        $result->shouldBeAnInstanceOf('GrumPHP\Collection\FilesCollection');
+        $result->shouldBeAnInstanceOf(FilesCollection::class);
         $result->count()->shouldBe(2);
         $files = $result->toArray();
         $files[0]->shouldBe($file1);
