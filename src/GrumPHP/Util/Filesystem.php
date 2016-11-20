@@ -19,7 +19,13 @@ class Filesystem extends SymfonyFilesystem
     public function readFromFileInfo(SplFileInfo $file)
     {
         $handle = $file->openFile('r');
+        $handle->rewind();
 
-        return $handle->fread($handle->getSize());
+        $content = '';
+        while (!$handle->eof()) {
+            $content .= $handle->fgets();
+        }
+
+        return $content;
     }
 }
