@@ -123,6 +123,8 @@ class FilesCollectionSpec extends ObjectBehavior
         $file2->isFile()->willReturn(true);
         $file1->getRealPath()->willReturn($this->tempFile);
         $file2->getRealPath()->willReturn($this->tempFile);
+        $file1->getPathname()->willReturn($this->tempFile);
+        $file2->getPathname()->willReturn($this->tempFile);
         $file1->getMTime()->willReturn(strtotime('-4 hours'));
         $file2->getMTime()->willReturn(strtotime('-5 days'));
 
