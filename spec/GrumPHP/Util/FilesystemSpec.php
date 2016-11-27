@@ -11,7 +11,6 @@ use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 
 /**
  * Class FilesystemSpec
- * @mixin Filesystem
  */
 class FilesystemSpec extends ObjectBehavior
 {

@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin XmlLinter
+ * Class XmlLinterSpec
  */
 class XmlLinterSpec extends ObjectBehavior
 {

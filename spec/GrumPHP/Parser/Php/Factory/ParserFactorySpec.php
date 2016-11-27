@@ -10,9 +10,6 @@ use Prophecy\Argument;
 
 /**
  * Class ParserFactorySpec
- *
- * @package spec\GrumPHP\Parser\Php\Factory
- * @mixin ParserFactory
  */
 class ParserFactorySpec extends ObjectBehavior
 {

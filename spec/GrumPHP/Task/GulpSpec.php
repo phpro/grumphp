@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
 /**
- * @mixin Gulp
+ * Class GulpSpec
  */
 class GulpSpec extends ObjectBehavior
 {

@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin YamlLinter
+ * Class YamlLinterSpec
  */
 class YamlLinterSpec extends ObjectBehavior
 {

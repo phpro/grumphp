@@ -13,7 +13,7 @@ use Prophecy\Argument;
 use Prophecy\Prophet;
 
 /**
- * @mixin ChangedFiles
+ * Class ChangedFilesSpec
  */
 class ChangedFilesSpec extends ObjectBehavior
 {

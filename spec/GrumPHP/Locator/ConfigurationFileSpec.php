@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin ConfigurationFile
+ * Class ConfigurationFileSpec
  */
 class ConfigurationFileSpec extends ObjectBehavior
 {

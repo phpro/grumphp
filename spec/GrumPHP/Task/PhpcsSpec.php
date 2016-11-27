@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
 /**
- * @mixin Phpcs
+ * Class PhpcsSpec
  */
 class PhpcsSpec extends ObjectBehavior
 {

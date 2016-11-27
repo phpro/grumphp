@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
 /**
- * @mixin PhpMd
+ * Class PhpMdSpec
  */
 class PhpMdSpec extends ObjectBehavior
 {

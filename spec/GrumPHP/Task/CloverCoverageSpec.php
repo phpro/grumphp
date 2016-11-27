@@ -15,7 +15,7 @@ use Prophecy\Argument;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @mixin CloverCoverage
+ * Class CloverCoverageSpec
  */
 class CloverCoverageSpec extends ObjectBehavior
 {

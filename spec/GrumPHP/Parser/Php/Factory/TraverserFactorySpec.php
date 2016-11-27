@@ -11,9 +11,6 @@ use Prophecy\Argument;
 
 /**
  * Class TraverserFactorySpec
- *
- * @package spec\GrumPHP\Parser\Php\Factory
- * @mixin TraverserFactory
  */
 class TraverserFactorySpec extends ObjectBehavior
 {

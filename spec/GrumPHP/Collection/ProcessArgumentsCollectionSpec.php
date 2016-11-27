@@ -10,7 +10,7 @@ use Prophecy\Argument;
 use SplFileInfo;
 
 /**
- * @mixin ProcessArgumentsCollection
+ * Class ProcessArgumentsCollectionSpec
  */
 class ProcessArgumentsCollectionSpec extends ObjectBehavior
 {

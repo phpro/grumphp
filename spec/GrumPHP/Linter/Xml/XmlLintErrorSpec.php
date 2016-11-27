@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin XmlLintError
+ * Class XmlLintErrorSpec
  */
 class XmlLintErrorSpec extends ObjectBehavior
 {

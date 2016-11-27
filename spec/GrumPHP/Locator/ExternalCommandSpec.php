@@ -9,7 +9,7 @@ use Prophecy\Argument;
 use Symfony\Component\Process\ExecutableFinder;
 
 /**
- * @mixin ExternalCommand
+ * Class ExternalCommandSpec
  */
 class ExternalCommandSpec extends ObjectBehavior
 {

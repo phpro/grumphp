@@ -10,7 +10,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
 
 /**
- * @mixin PhpCsFixerFormatter
+ * Class PhpCsFixerFormatterSpec
  */
 class PhpCsFixerFormatterSpec extends ObjectBehavior
 {

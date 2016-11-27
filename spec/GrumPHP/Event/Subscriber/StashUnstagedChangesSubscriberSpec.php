@@ -20,7 +20,7 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * @mixin StashUnstagedChangesSubscriber
+ * Class StashUnstagedChangesSubscriberSpec
  */
 class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
 {

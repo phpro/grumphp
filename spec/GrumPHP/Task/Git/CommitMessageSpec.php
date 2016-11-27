@@ -12,7 +12,7 @@ use Prophecy\Argument;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @mixin CommitMessage
+ * Class CommitMessageSpec
  */
 class CommitMessageSpec extends ObjectBehavior
 {

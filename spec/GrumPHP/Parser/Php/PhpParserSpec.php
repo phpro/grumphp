@@ -17,9 +17,6 @@ use SplFileInfo;
 
 /**
  * Class PhpParserSpec
- *
- * @package spec\GrumPHP\Parser\Php
- * @mixin PhpParser
  */
 class PhpParserSpec extends ObjectBehavior
 {

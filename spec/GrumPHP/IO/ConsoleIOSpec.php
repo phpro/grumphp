@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @mixin ConsoleIO
+ * Class ConsoleIOSpec
  */
 class ConsoleIOSpec extends ObjectBehavior
 {

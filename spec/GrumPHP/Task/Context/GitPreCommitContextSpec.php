@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin GitPreCommitContext
+ * Class GitPreCommitContextSpec
  */
 class GitPreCommitContextSpec extends ObjectBehavior
 {

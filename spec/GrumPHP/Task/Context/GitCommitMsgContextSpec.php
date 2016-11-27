@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin GitCommitMsgContext
+ * Class GitCommitMsgContextSpec
  */
 class GitCommitMsgContextSpec extends ObjectBehavior
 {

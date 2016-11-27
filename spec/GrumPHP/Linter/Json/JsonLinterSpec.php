@@ -10,7 +10,7 @@ use Prophecy\Argument;
 use Seld\JsonLint\JsonParser;
 
 /**
- * @mixin JsonLinter
+ * Class JsonLinterSpec
  */
 class JsonLinterSpec extends ObjectBehavior
 {

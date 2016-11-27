@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
 /**
- * @mixin Conflict
+ * Class ConflictSpec
  */
 class ConflictSpec extends ObjectBehavior
 {

@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
 /**
- * @mixin SecurityChecker
+ * Class SecurityCheckerSpec
  */
 class SecurityCheckerSpec extends ObjectBehavior
 {

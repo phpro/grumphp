@@ -19,7 +19,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin TaskRunnerHelper
+ * Class TaskRunnerHelperSpec
  */
 class TaskRunnerHelperSpec extends ObjectBehavior
 {

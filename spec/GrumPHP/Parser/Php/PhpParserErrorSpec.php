@@ -9,9 +9,6 @@ use PhpSpec\ObjectBehavior;
 
 /**
  * Class PhpParserErrorSpec
- *
- * @package spec\GrumPHP\Parser\Php
- * @mixin  PhpParserError
  */
 class PhpParserErrorSpec extends ObjectBehavior
 {

@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * @mixin GrumPHP
+ * Class GrumPHPSpec
  */
 class GrumPHPSpec extends ObjectBehavior
 {

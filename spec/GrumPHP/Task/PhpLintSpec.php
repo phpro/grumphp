@@ -17,6 +17,9 @@ use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
+/**
+ * Class PhpLintSpec
+ */
 class PhpLintSpec extends ObjectBehavior
 {
 

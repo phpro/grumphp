@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin RunContext
+ * Class RunContextSpec
  */
 class RunContextSpec extends ObjectBehavior
 {

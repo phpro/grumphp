@@ -10,7 +10,7 @@ use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * @mixin FilesCollection
+ * Class FilesCollectionSpec
  */
 class FilesCollectionSpec extends ObjectBehavior
 {

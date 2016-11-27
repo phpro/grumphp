@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin LintErrorsCollection
+ * Class LintErrorsCollectionSpec
  */
 class LintErrorsCollectionSpec extends ObjectBehavior
 {

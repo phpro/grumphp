@@ -22,7 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
 /**
- * @mixin PhpCsFixer
+ * Class PhpCsFixerV2Spec
  */
 class PhpCsFixerV2Spec extends ObjectBehavior
 {

@@ -12,7 +12,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin PathsHelper
+ * Class PathsHelperSpec
  */
 class PathsHelperSpec extends ObjectBehavior
 {
