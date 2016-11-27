@@ -11,7 +11,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin TasksCollection
+ * Class TasksCollectionSpec
  */
 class TasksCollectionSpec extends ObjectBehavior
 {

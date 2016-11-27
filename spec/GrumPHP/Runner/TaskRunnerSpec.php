@@ -21,7 +21,7 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * @mixin TaskRunner
+ * Class TaskRunnerSpec
  */
 class TaskRunnerSpec extends ObjectBehavior
 {

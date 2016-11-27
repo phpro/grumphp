@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
 /**
- * @mixin Ant
+ * Class AntSpec
  */
 class AntSpec extends ObjectBehavior
 {

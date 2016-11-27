@@ -3,7 +3,6 @@
 namespace GrumPHP\Task\Context;
 
 use GrumPHP\Collection\FilesCollection;
-use SplFileInfo;
 
 /**
  * Class GitCommitMsgContext
@@ -24,11 +23,6 @@ class GitCommitMsgContext implements ContextInterface
     private $commitMessage = null;
 
     /**
-     * @var SplFileInfo
-     */
-    private $commitMessageFile;
-
-    /**
      * @var string
      */
     private $userName;
@@ -40,14 +34,14 @@ class GitCommitMsgContext implements ContextInterface
 
     /**
      * @param FilesCollection $files
-     * @param SplFileInfo     $commitMessageFile
+     * @param string          $commitMessage
      * @param string          $userName
      * @param string          $userEmail
      */
-    public function __construct(FilesCollection $files, SplFileInfo $commitMessageFile, $userName, $userEmail)
+    public function __construct(FilesCollection $files, $commitMessage, $userName, $userEmail)
     {
         $this->files = $files;
-        $this->commitMessageFile = $commitMessageFile;
+        $this->commitMessage = $commitMessage;
         $this->userName = $userName;
         $this->userEmail = $userEmail;
     }
@@ -57,10 +51,6 @@ class GitCommitMsgContext implements ContextInterface
      */
     public function getCommitMessage()
     {
-        if (is_null($this->commitMessage)) {
-            $this->commitMessage = file_get_contents($this->commitMessageFile->getPathname());
-        }
-
         return $this->commitMessage;
     }
 

@@ -11,9 +11,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class PhpParserSpec
- *
- * @package spec\GrumPHP\Task
- * @mixin PhpParser
  */
 class PhpParserSpec extends AbstractParserTaskSpec
 {

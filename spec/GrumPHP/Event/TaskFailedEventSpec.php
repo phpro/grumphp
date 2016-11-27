@@ -11,7 +11,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin TaskFailedEvent
+ * Class TaskFailedEventSpec
  */
 class TaskFailedEventSpec extends ObjectBehavior
 {

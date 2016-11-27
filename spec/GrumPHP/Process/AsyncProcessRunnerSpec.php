@@ -9,7 +9,7 @@ use Prophecy\Prophet;
 use Symfony\Component\Process\Process;
 
 /**
- * @mixin AsyncProcessRunner
+ * Class AsyncProcessRunnerSpec
  */
 class AsyncProcessRunnerSpec extends ObjectBehavior
 {

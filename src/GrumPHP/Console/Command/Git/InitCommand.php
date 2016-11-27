@@ -5,11 +5,11 @@ namespace GrumPHP\Console\Command\Git;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Exception\FileNotFoundException;
+use GrumPHP\Util\Filesystem;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
@@ -106,7 +106,7 @@ class InitCommand extends Command
             }
 
             $content = $this->parseHookBody($hook, $hookTemplate);
-            file_put_contents($gitHook, $content);
+            $this->filesystem->dumpFile($gitHook, $content);
             $this->filesystem->chmod($gitHook, 0775);
         }
 
@@ -121,7 +121,7 @@ class InitCommand extends Command
      */
     protected function parseHookBody($hook, $templateFile)
     {
-        $content = file_get_contents($templateFile);
+        $content = $this->filesystem->readFromFileInfo($templateFile);
         $replacements = [
             '${HOOK_EXEC_PATH}' => $this->paths()->getGitHookExecutionPath(),
             '$(HOOK_COMMAND)' => $this->generateHookCommand('git:' . $hook),

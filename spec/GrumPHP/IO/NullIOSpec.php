@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin NullIO
+ * Class NullIOSpec
  */
 class NullIOSpec extends ObjectBehavior
 {

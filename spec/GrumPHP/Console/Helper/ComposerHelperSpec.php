@@ -10,7 +10,7 @@ use Prophecy\Argument;
 use Symfony\Component\Console\Helper\Helper;
 
 /**
- * @mixin ComposerHelper
+ * Class ComposerHelperSpec
  */
 class ComposerHelperSpec extends ObjectBehavior
 {

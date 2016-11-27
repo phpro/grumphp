@@ -9,6 +9,7 @@ use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Locator\ChangedFiles;
 use GrumPHP\Task\Context\GitCommitMsgContext;
+use GrumPHP\Util\Filesystem;
 use SplFileInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -34,15 +35,22 @@ class CommitMsgCommand extends Command
     protected $changedFilesLocator;
 
     /**
-     * @param GrumPHP $grumPHP
-     * @param ChangedFiles $changedFilesLocator
+     * @var Filesystem
      */
-    public function __construct(GrumPHP $grumPHP, ChangedFiles $changedFilesLocator)
+    private $filesystem;
+
+    /**
+     * @param GrumPHP      $grumPHP
+     * @param ChangedFiles $changedFilesLocator
+     * @param Filesystem   $filesystem
+     */
+    public function __construct(GrumPHP $grumPHP, ChangedFiles $changedFilesLocator, Filesystem $filesystem)
     {
         parent::__construct();
 
         $this->grumPHP = $grumPHP;
         $this->changedFilesLocator = $changedFilesLocator;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -70,9 +78,10 @@ class CommitMsgCommand extends Command
         $gitEmail = $input->getOption('git-email');
         $commitMsgPath = $input->getArgument('commit-msg-file');
         $commitMsgFile = new SplFileInfo($commitMsgPath);
+        $commitMsg = $this->filesystem->readFromFileInfo($commitMsgFile);
 
         $output->writeln('<fg=yellow>GrumPHP detected a commit-msg command.</fg=yellow>');
-        $context = new GitCommitMsgContext($files, $commitMsgFile, $gitUser, $gitEmail);
+        $context = new GitCommitMsgContext($files, $commitMsg, $gitUser, $gitEmail);
         return $this->taskRunner()->run($output, $context);
     }
 

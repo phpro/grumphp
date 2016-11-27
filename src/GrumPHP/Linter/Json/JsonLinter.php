@@ -4,6 +4,7 @@ namespace GrumPHP\Linter\Json;
 
 use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Linter\LinterInterface;
+use GrumPHP\Util\Filesystem;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
 use SplFileInfo;
@@ -21,6 +22,28 @@ class JsonLinter implements LinterInterface
     private $detectKeyConflicts = false;
 
     /**
+     * @var Filesystem
+     */
+    private $filesystem;
+
+    /**
+     * @var JsonParser
+     */
+    private $jsonParser;
+
+    /**
+     * JsonLinter constructor.
+     *
+     * @param Filesystem $filesystem
+     * @param JsonParser $jsonParser
+     */
+    public function __construct(Filesystem $filesystem, JsonParser $jsonParser)
+    {
+        $this->filesystem = $filesystem;
+        $this->jsonParser = $jsonParser;
+    }
+
+    /**
      * @param SplFileInfo $file
      *
      * @return mixed
@@ -28,13 +51,12 @@ class JsonLinter implements LinterInterface
      */
     public function lint(SplFileInfo $file)
     {
-        $parser = new JsonParser();
         $errors = new LintErrorsCollection();
         $flags = $this->calculateFlags();
 
         try {
-            $json = file_get_contents($file->getPathname());
-            $parser->parse($json, $flags);
+            $json = $this->filesystem->readFromFileInfo($file);
+            $this->jsonParser->parse($json, $flags);
         } catch (ParsingException $exception) {
             $errors->add(JsonLintError::fromParsingException($file, $exception));
         }

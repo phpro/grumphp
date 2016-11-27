@@ -7,8 +7,6 @@ use PhpSpec\ObjectBehavior;
 
 /**
  * Class AbstractLinterTaskSpec
- *
- * @package spec\GrumPHP\Task
  */
 abstract class AbstractLinterTaskSpec extends ObjectBehavior
 {

@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin Regex
+ * Class RegexSpec
  */
 class RegexSpec extends ObjectBehavior
 {

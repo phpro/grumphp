@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * @mixin ProgressSubscriber
+ * Class ProgressSubscriberSpec
  */
 class ProgressSubscriberSpec extends ObjectBehavior
 {

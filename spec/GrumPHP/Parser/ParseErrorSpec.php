@@ -7,9 +7,6 @@ use PhpSpec\ObjectBehavior;
 
 /**
  * Class ParseErrorSpec
- *
- * @package spec\GrumPHP\Parser
- * @mixin ParseError
  */
 class ParseErrorSpec extends ObjectBehavior
 {

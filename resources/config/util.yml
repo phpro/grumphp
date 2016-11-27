@@ -1,3 +1,6 @@
 services:
     grumphp.util.composer:
         class: GrumPHP\Util\Composer
+
+    grumphp.util.filesystem:
+        class: GrumPHP\Util\Filesystem

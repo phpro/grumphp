@@ -9,7 +9,7 @@ use Prophecy\Argument;
 use Symfony\Component\Process\Process;
 
 /**
- * @mixin RawProcessFormatter
+ * Class RawProcessFormatterSpec
  */
 class RawProcessFormatterSpec extends ObjectBehavior
 {

@@ -7,6 +7,7 @@ use GrumPHP\Parser\Php\Context\ParserContext;
 use GrumPHP\Parser\Php\Factory\ParserFactory;
 use GrumPHP\Parser\Php\Factory\TraverserFactory;
 use GrumPHP\Parser\Php\PhpParser;
+use GrumPHP\Util\Filesystem;
 use PhpParser\Error;
 use PhpParser\NodeTraverserInterface;
 use PhpParser\Parser;
@@ -16,33 +17,20 @@ use SplFileInfo;
 
 /**
  * Class PhpParserSpec
- *
- * @package spec\GrumPHP\Parser\Php
- * @mixin PhpParser
  */
 class PhpParserSpec extends ObjectBehavior
 {
-    /**
-     * @var string
-     */
-    protected $tempFile;
-
     function let(
         ParserFactory $parserFactory,
         TraverserFactory $traverserFactory,
         Parser $parser,
-        NodeTraverserInterface $traverser
+        NodeTraverserInterface $traverser,
+        Filesystem $filesystem
     ) {
-        $this->beConstructedWith($parserFactory, $traverserFactory);
-        $this->tempFile = tempnam(sys_get_temp_dir(), 'phpparser');
+        $this->beConstructedWith($parserFactory, $traverserFactory, $filesystem);
         $parserFactory->createFromOptions(Argument::any())->willReturn($parser);
         $traverserFactory->createForTaskContext(Argument::cetera())->willReturn($traverser);
         $parser->parse(Argument::any())->willReturn([]);
-    }
-
-    function letgo()
-    {
-        unlink($this->tempFile);
     }
 
     function it_is_initializable()
@@ -56,7 +44,7 @@ class PhpParserSpec extends ObjectBehavior
         Parser $parser,
         NodeTraverserInterface $traverser
     ) {
-        $file = new SplFileInfo($this->tempFile);
+        $file = new SplFileInfo('php://memory');
         $this->setParserOptions($options = ['kind' => 'php7']);
 
         $parserFactory->createFromOptions($options)->shouldBeCalled()->willReturn($parser);
@@ -70,7 +58,7 @@ class PhpParserSpec extends ObjectBehavior
 
     function it_parses_a_file(NodeTraverserInterface $traverser)
     {
-        $file = new SplFileInfo($this->tempFile);
+        $file = new SplFileInfo('php://memory');
         $traverser->traverse([])->shouldBeCalled();
         $errors = $this->parse($file);
 
@@ -80,7 +68,7 @@ class PhpParserSpec extends ObjectBehavior
 
     function it_catches_parse_exceptions(Parser $parser)
     {
-        $file = new SplFileInfo($this->tempFile);
+        $file = new SplFileInfo('php://memory');
         $parser->parse(Argument::any())->willThrow(new Error('Error ....'));
         $errors = $this->parse($file);
 

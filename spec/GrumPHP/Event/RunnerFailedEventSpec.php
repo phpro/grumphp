@@ -12,7 +12,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin RunnerFailedEvent
+ * Class RunnerFailedEventSpec
  */
 class RunnerFailedEventSpec extends ObjectBehavior
 {

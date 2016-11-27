@@ -10,9 +10,6 @@ use SplFileInfo;
 
 /**
  * Class ParserContextSpec
- *
- * @package spec\GrumPHP\Parser\Php\Context
- * @mixin ParserContext
  */
 class ParserContextSpec extends ObjectBehavior
 {

@@ -10,7 +10,7 @@ use Prophecy\Argument;
 use Symfony\Component\Process\Process;
 
 /**
- * @mixin GitBlacklistFormatterSpec
+ * Class GitBlacklistFormatterSpec
  */
 class GitBlacklistFormatterSpec extends ObjectBehavior
 {

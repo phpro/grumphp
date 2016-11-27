@@ -10,7 +10,7 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * @mixin TaskEvent
+ * Class TaskEventSpec
  */
 class TaskEventSpec extends ObjectBehavior
 {

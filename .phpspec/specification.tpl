@@ -8,7 +8,6 @@ use %subject%;
 
 /**
  * Class %name%
- * @mixin %subject_class%
  */
 class %name% extends ObjectBehavior
 {

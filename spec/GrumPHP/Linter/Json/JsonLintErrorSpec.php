@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin JsonLintError
+ * Class JsonLintErrorSpec
  */
 class JsonLintErrorSpec extends ObjectBehavior
 {

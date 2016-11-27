@@ -7,8 +7,6 @@ use PhpSpec\ObjectBehavior;
 
 /**
  * Class AbstractParserTaskSpec
- *
- * @package spec\GrumPHP\Task
  */
 abstract class AbstractParserTaskSpec extends ObjectBehavior
 {

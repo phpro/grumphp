@@ -49,6 +49,7 @@ services:
             - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
+            - '@grumphp.util.filesystem'
         tags:
             - {name: grumphp.task, config: composer}
 

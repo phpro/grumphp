@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin LintError
+ * Class LintErrorSpec
  */
 class LintErrorSpec extends ObjectBehavior
 {

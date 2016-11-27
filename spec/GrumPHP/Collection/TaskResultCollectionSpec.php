@@ -9,7 +9,7 @@ use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
- * @mixin TaskResultCollection
+ * Class TaskResultCollectionSpec
  */
 class TaskResultCollectionSpec extends ObjectBehavior
 {

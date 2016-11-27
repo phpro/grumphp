@@ -15,9 +15,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class TraverserConfiguratorSpec
- *
- * @package spec\GrumPHP\Parser\Php\Configurator
- * @mixin TraverserConfigurator
  */
 class TraverserConfiguratorSpec extends ObjectBehavior
 {

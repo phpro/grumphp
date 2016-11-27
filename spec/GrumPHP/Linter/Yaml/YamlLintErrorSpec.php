@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin YamlLintError
+ * Class YamlLintErrorSpec
  */
 class YamlLintErrorSpec extends ObjectBehavior
 {

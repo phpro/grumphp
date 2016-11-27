@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\Process\Process;
 
 /**
- * @mixin PhpcsFormatter
+ * Class PhpcsFormatterSpec
  */
 class PhpcsFormatterSpec extends ObjectBehavior
 {

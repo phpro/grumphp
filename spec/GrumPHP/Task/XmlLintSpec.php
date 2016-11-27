@@ -19,7 +19,7 @@ use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @mixin XmlLint
+ * Class XmlLintSpec
  */
 class XmlLintSpec extends AbstractLinterTaskSpec
 {

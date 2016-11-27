@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin GrumPHPPlugin
+ * Class GrumPHPPluginSpec
  */
 class GrumPHPPluginSpec extends ObjectBehavior
 {

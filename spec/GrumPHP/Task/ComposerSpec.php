@@ -13,21 +13,23 @@ use GrumPHP\Task\Composer;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use GrumPHP\Util\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use SplFileObject;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
 /**
- * @mixin Composer
+ * Class ComposerSpec
  */
 class ComposerSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
+    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter, Filesystem $filesystem)
     {
         $grumPHP->getTaskConfiguration('composer')->willReturn([]);
-        $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->beConstructedWith($grumPHP, $processBuilder, $formatter, $filesystem);
     }
 
     function it_is_initializable()
@@ -116,17 +118,16 @@ class ComposerSpec extends ObjectBehavior
     function it_fails_when_it_has_local_repositories(
         GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,
+        Filesystem $filesystem,
         Process $process,
         ContextInterface $context
     )
     {
-        $composerFile = tempnam(sys_get_temp_dir(), 'grumphp-composer');
+        $composerFile = 'composer.json';
         $grumPHP->getTaskConfiguration('composer')->willReturn([
-            'file' => str_replace('\\', '/', $composerFile),
+            'file' => $composerFile,
             'no_local_repository' => true
         ]);
-
-        file_put_contents($composerFile, '{"repositories": [{"type": "path", "url": "/"}]}');
 
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('composer')->willReturn($arguments);
@@ -136,31 +137,30 @@ class ComposerSpec extends ObjectBehavior
         $process->isSuccessful()->willReturn(true);
 
         $context->getFiles()->willReturn(new FilesCollection([
-            new SplFileInfo($composerFile, '.', $composerFile)
+            $composerFile = new SplFileInfo($composerFile, '.', $composerFile)
         ]));
+
+        $filesystem->readFromFileInfo($composerFile)->willReturn('{"repositories": [{"type": "path", "url": "/"}]}');
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(false);
-
-        unlink($composerFile);
     }
 
 
     function it_succeeds_when_it_has_no_local_repositories(
         GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,
+        Filesystem $filesystem,
         Process $process,
         ContextInterface $context
     )
     {
-        $composerFile = tempnam(sys_get_temp_dir(), 'grumphp-composer');
+        $composerFile = 'composer.json';
         $grumPHP->getTaskConfiguration('composer')->willReturn([
-            'file' => str_replace('\\', '/', $composerFile),
+            'file' => $composerFile,
             'no_local_repository' => true
         ]);
-
-        file_put_contents($composerFile, '{"repositories": [{"type": "vcs", "url": "/"}]}');
 
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('composer')->willReturn($arguments);
@@ -170,13 +170,13 @@ class ComposerSpec extends ObjectBehavior
         $process->isSuccessful()->willReturn(true);
 
         $context->getFiles()->willReturn(new FilesCollection([
-            new SplFileInfo($composerFile, '.', $composerFile)
+            $composerFile = new SplFileInfo($composerFile, '.', $composerFile)
         ]));
+
+        $filesystem->readFromFileInfo($composerFile)->willReturn('{"repositories": [{"type": "vcs", "url": "/"}]}');
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(true);
-
-        unlink($composerFile);
     }
 }

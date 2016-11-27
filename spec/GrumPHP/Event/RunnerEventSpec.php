@@ -11,7 +11,7 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * @mixin RunnerEvent
+ * Class RunnerEventSpec
  */
 class RunnerEventSpec extends ObjectBehavior
 {

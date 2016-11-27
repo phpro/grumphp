@@ -14,7 +14,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
 
 /**
- * @mixin ProcessBuilder
+ * Class ProcessBuilderSpec
  */
 class ProcessBuilderSpec extends ObjectBehavior
 {
