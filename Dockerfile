@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install git zip php5-mcrypt -y && \
     mv composer.phar /usr/local/bin/composer && \
     composer global require phpro/grumphp && \
     composer global update phpro/grumphp && \
-    echo 'date.timezone = America/Sao_Paulo' > /usr/local/etc/php/conf.d/php.ini && \
+    echo 'date.timezone = UTC' > /usr/local/etc/php/conf.d/php.ini && \
     echo 'memory_limit = -1' >> /usr/local/etc/php/conf.d/php.ini && \
     echo 'extension=/usr/lib/php5/20131226/mcrypt.so' >> /usr/local/etc/php/conf.d/php.ini && \
     apt-get clean && apt-get autoremove -y
