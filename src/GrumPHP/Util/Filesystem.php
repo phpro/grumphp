@@ -19,8 +19,6 @@ class Filesystem extends SymfonyFilesystem
     public function readFromFileInfo(SplFileInfo $file)
     {
         $handle = $file->openFile('r');
-        $handle->rewind();
-
         $content = '';
         while (!$handle->eof()) {
             $content .= $handle->fgets();
