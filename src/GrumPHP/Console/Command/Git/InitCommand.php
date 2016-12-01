@@ -7,6 +7,7 @@ use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Exception\FileNotFoundException;
 use GrumPHP\Util\Filesystem;
 use RuntimeException;
+use SplFileInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -94,9 +95,9 @@ class InitCommand extends Command
 
         foreach (self::$hooks as $hook) {
             $gitHook = $gitHooksPath . $hook;
-            $hookTemplate = $resourceHooksPath . $hook;
+            $hookTemplate = new SplFileInfo($resourceHooksPath . $hook);
             if ($customHooksPath && $this->filesystem->exists($customHooksPath . $hook)) {
-                $hookTemplate = $customHooksPath . $hook;
+                $hookTemplate = new SplFileInfo($customHooksPath . $hook);
             }
 
             if (!$this->filesystem->exists($hookTemplate)) {
@@ -119,7 +120,7 @@ class InitCommand extends Command
      *
      * @return mixed
      */
-    protected function parseHookBody($hook, $templateFile)
+    protected function parseHookBody($hook, SplFileInfo $templateFile)
     {
         $content = $this->filesystem->readFromFileInfo($templateFile);
         $replacements = [
