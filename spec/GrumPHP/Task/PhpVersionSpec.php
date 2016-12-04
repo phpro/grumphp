@@ -8,17 +8,19 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\PhpVersion;
 use GrumPHP\Task\YamlLint;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use GrumPHP\Util\PhpVersion as PhpVersionUtility;
 
 /**
  * @mixin YamlLint
  */
-class PhpVersionSpec
+class PhpVersionSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, PhpVersionSpec $version)
+    function let(GrumPHP $grumPHP, PhpVersion $version, PhpVersionUtility $phpVersionUtility)
     {
         $grumPHP->getTaskConfiguration('phpversion')->willReturn([]);
-        $this->beConstructedWith([]);
+        $this->beConstructedWith($grumPHP, $phpVersionUtility);
     }
 
     function it_is_initializable()
@@ -37,9 +39,9 @@ class PhpVersionSpec
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
     }
 
-    function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
+    function it_should_not_run_in_git_pre_commit_context(GitPreCommitContext $context)
     {
-        $this->canRunInContext($context)->shouldReturn(true);
+        $this->canRunInContext($context)->shouldReturn(false);
     }
 
     function it_should_run_in_run_context(RunContext $context)
@@ -50,6 +52,6 @@ class PhpVersionSpec
     function it_runs_the_suite(PhpVersion $version, ContextInterface $context)
     {
         $result = $this->run($context);
-        $result->isPassed()->shouldBe(true);
+        $result->isPassed()->shouldBeBool();
     }
 }
