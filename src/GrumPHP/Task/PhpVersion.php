@@ -17,7 +17,7 @@ class PhpVersion implements TaskInterface
     /**
      * @var \GrumPHP\Util\PhpVersion
      */
-    private $util;
+    private $phpVersionUtility;
 
     /**
      * @var GrumPHP
@@ -27,12 +27,12 @@ class PhpVersion implements TaskInterface
     /**
      * PhpVersion constructor.
      * @param GrumPHP $grumPHP
-     * @param \GrumPHP\Util\PhpVersion $util
+     * @param \GrumPHP\Util\PhpVersion $phpVersionUtility
      */
-    public function __construct(GrumPHP $grumPHP, \GrumPHP\Util\PhpVersion $util)
+    public function __construct(GrumPHP $grumPHP, \GrumPHP\Util\PhpVersion $phpVersionUtility)
     {
         $this->grumPHP = $grumPHP;
-        $this->util = $util;
+        $this->phpVersionUtility = $phpVersionUtility;
     }
 
     /**
@@ -56,7 +56,7 @@ class PhpVersion implements TaskInterface
     {
         // Check the current version
         $config = $this->getConfiguration();
-        if (!$this->util->isSupportedVersion(PHP_VERSION)) {
+        if (!$this->phpVersionUtility->isSupportedVersion(PHP_VERSION)) {
             return TaskResult::createFailed(
                 $this,
                 $context,
@@ -65,13 +65,12 @@ class PhpVersion implements TaskInterface
         }
 
         // Check the project version if defined
-        if (array_key_exists('project', $config) !== null) {
-            $projectVersion = $config['project'];
-            if (!$this->util->isSupportedProjectVersion(PHP_VERSION, $projectVersion)) {
+        if ($config['project'] !== null) {
+            if (!$this->phpVersionUtility->isSupportedProjectVersion(PHP_VERSION, $config['project'])) {
                 return TaskResult::createFailed(
                     $this,
                     $context,
-                    sprintf('This project requires PHP version %s, you have %s', $projectVersion, PHP_VERSION)
+                    sprintf('This project requires PHP version %s, you have %s', $config['project'], PHP_VERSION)
                 );
             }
         }

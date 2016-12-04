@@ -2,6 +2,8 @@
 
 namespace GrumPHP\Util;
 
+use DateTime;
+
 /**
  * Class PhpVersion
  * @package GrumPHP\Util
@@ -32,9 +34,9 @@ class PhpVersion
     public function isSupportedVersion($currentVersion)
     {
         $versionIsSupported = false;
-        $now = new \DateTime();
+        $now = new DateTime();
         foreach ($this->versions as $number => $eol) {
-            $eol = new \DateTime($eol);
+            $eol = new DateTime($eol);
             if ($now < $eol && version_compare($currentVersion, $number) >= 0) {
                 $versionIsSupported = true;
             }

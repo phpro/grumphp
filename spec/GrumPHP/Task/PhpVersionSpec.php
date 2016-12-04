@@ -8,7 +8,7 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\PhpVersion;
 use GrumPHP\Task\YamlLint;
-use Prophecy\Argument;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @mixin YamlLint
@@ -23,7 +23,7 @@ class PhpVersionSpec
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\PhpVersion');
+        $this->shouldHaveType(PhpVersion::class);
     }
 
     function it_should_have_a_name()
@@ -34,7 +34,7 @@ class PhpVersionSpec
     function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
-        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->shouldBeAnInstanceOf(OptionsResolver::class);
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
@@ -49,9 +49,7 @@ class PhpVersionSpec
 
     function it_runs_the_suite(PhpVersion $version, ContextInterface $context)
     {
-        $version->isInstalled()->willReturn(true);
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
         $result->isPassed()->shouldBe(true);
     }
 }
