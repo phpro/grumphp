@@ -27,9 +27,6 @@ parameters:
           autoclear: ~
 ```
 
-Every options available are documented on [kahlan](https://kahlan.github.io/docs/cli-options.html)
-
-
 **config**
 
 *Default: `kahlan-config.php`*
