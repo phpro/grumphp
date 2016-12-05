@@ -8,6 +8,7 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -15,10 +16,11 @@ use GrumPHP\Task\Make;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
 /**
- * @mixin Make
+ * Class MakeSpec
  */
 class MakeSpec extends ObjectBehavior
 {
@@ -30,7 +32,7 @@ class MakeSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\Make');
+        $this->shouldHaveType(Make::class);
     }
 
     function it_should_have_a_name()
@@ -41,7 +43,7 @@ class MakeSpec extends ObjectBehavior
     function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
-        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('make_file');
         $options->getDefinedOptions()->shouldContain('task');
         $options->getDefinedOptions()->shouldContain('triggered_by');
@@ -64,7 +66,7 @@ class MakeSpec extends ObjectBehavior
         $context->getFiles()->willReturn(new FilesCollection());
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
@@ -81,7 +83,7 @@ class MakeSpec extends ObjectBehavior
             new SplFileInfo('test.php', '.', 'test.php')
         ]));
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(true);
     }
 
@@ -102,7 +104,7 @@ class MakeSpec extends ObjectBehavior
         ]));
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(false);
     }
 }

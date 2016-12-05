@@ -5,6 +5,7 @@ namespace spec\GrumPHP\Configuration;
 use GrumPHP\Configuration\Compiler\TaskCompilerPass;
 use GrumPHP\Configuration\ContainerFactory;
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Exception\RuntimeException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Container;
@@ -12,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * @mixin GrumPHP
+ * Class GrumPHPSpec
  */
 class GrumPHPSpec extends ObjectBehavior
 {
@@ -23,7 +24,7 @@ class GrumPHPSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Configuration\GrumPHP');
+        $this->shouldHaveType(GrumPHP::class);
     }
 
     function it_knows_the_bin_dir(ContainerInterface $container)
@@ -107,7 +108,7 @@ class GrumPHPSpec extends ObjectBehavior
         $container->getParameter('grumphp.tasks.configuration')->willReturn(['phpspec' => []]);
 
         $this->getTaskConfiguration('phpspec')->shouldReturn([]);
-        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringGetTaskConfiguration('phpunit');
+        $this->shouldThrow(RuntimeException::class)->duringGetTaskConfiguration('phpunit');
     }
 
     function it_should_know_task_metadata(ContainerInterface $container)
@@ -115,7 +116,7 @@ class GrumPHPSpec extends ObjectBehavior
         $container->getParameter('grumphp.tasks.metadata')->willReturn(['phpspec' => []]);
 
         $this->getTaskMetadata('phpspec')->shouldReturn([]);
-        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringGetTaskMetadata('phpunit');
+        $this->shouldThrow(RuntimeException::class)->duringGetTaskMetadata('phpunit');
     }
 
     function it_should_know_if_a_task_is_a_blocking_task(ContainerInterface $container)

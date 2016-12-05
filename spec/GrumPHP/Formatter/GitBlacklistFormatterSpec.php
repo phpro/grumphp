@@ -3,13 +3,14 @@
 namespace spec\GrumPHP\Formatter;
 
 use GrumPHP\Formatter\GitBlacklistFormatter;
+use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\IO\ConsoleIO;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Process\Process;
 
 /**
- * @mixin GitBlacklistFormatterSpec
+ * Class GitBlacklistFormatterSpec
  */
 class GitBlacklistFormatterSpec extends ObjectBehavior
 {
@@ -21,12 +22,12 @@ class GitBlacklistFormatterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Formatter\GitBlacklistFormatter');
+        $this->shouldHaveType(GitBlacklistFormatter::class);
     }
 
     function it_is_a_process_formatter()
     {
-        $this->shouldHaveType('GrumPHP\Formatter\ProcessFormatterInterface');
+        $this->shouldHaveType(ProcessFormatterInterface::class);
     }
 
     function it_does_not_displays_the_full_process_output(Process $process)

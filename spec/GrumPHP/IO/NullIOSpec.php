@@ -2,24 +2,25 @@
 
 namespace spec\GrumPHP\IO;
 
+use GrumPHP\IO\IOInterface;
 use GrumPHP\IO\NullIO;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin NullIO
+ * Class NullIOSpec
  */
 class NullIOSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\IO\NullIO');
+        $this->shouldHaveType(NullIO::class);
     }
 
 
     function it_should_be_a_IO()
     {
-        $this->shouldImplement('GrumPHP\IO\IOInterface');
+        $this->shouldImplement(IOInterface::class);
     }
 
     function it_should_know_if_the_input_is_interactive_modus()

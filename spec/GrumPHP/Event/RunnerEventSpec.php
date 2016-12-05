@@ -8,9 +8,10 @@ use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Task\Context\ContextInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
- * @mixin RunnerEvent
+ * Class RunnerEventSpec
  */
 class RunnerEventSpec extends ObjectBehavior
 {
@@ -21,12 +22,12 @@ class RunnerEventSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Event\RunnerEvent');
+        $this->shouldHaveType(RunnerEvent::class);
     }
 
     function it_is_an_event()
     {
-        $this->shouldHaveType('Symfony\Component\EventDispatcher\Event');
+        $this->shouldHaveType(Event::class);
     }
 
     function it_has_tasks(TasksCollection $tasks)

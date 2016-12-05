@@ -8,6 +8,7 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\PhpcsFormatter;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -15,10 +16,11 @@ use GrumPHP\Task\Phpcs;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
 /**
- * @mixin Phpcs
+ * Class PhpcsSpec
  */
 class PhpcsSpec extends ObjectBehavior
 {
@@ -31,7 +33,7 @@ class PhpcsSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\Phpcs');
+        $this->shouldHaveType(Phpcs::class);
     }
 
     function it_should_have_a_name()
@@ -42,11 +44,12 @@ class PhpcsSpec extends ObjectBehavior
     function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
-        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('standard');
         $options->getDefinedOptions()->shouldContain('show_warnings');
         $options->getDefinedOptions()->shouldContain('tab_width');
         $options->getDefinedOptions()->shouldContain('encoding');
+        $options->getDefinedOptions()->shouldContain('whitelist_patterns');
         $options->getDefinedOptions()->shouldContain('ignore_patterns');
         $options->getDefinedOptions()->shouldContain('sniffs');
         $options->getDefinedOptions()->shouldContain('triggered_by');
@@ -70,7 +73,7 @@ class PhpcsSpec extends ObjectBehavior
         $context->getFiles()->willReturn(new FilesCollection());
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
@@ -88,7 +91,7 @@ class PhpcsSpec extends ObjectBehavior
         ]));
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
@@ -108,7 +111,7 @@ class PhpcsSpec extends ObjectBehavior
         ]));
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(true);
     }
 
@@ -130,7 +133,7 @@ class PhpcsSpec extends ObjectBehavior
         ]));
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(false);
     }
 }

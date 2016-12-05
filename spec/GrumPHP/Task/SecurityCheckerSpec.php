@@ -8,6 +8,7 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -15,10 +16,11 @@ use GrumPHP\Task\SecurityChecker;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
 /**
- * @mixin SecurityChecker
+ * Class SecurityCheckerSpec
  */
 class SecurityCheckerSpec extends ObjectBehavior
 {
@@ -30,7 +32,7 @@ class SecurityCheckerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\SecurityChecker');
+        $this->shouldHaveType(SecurityChecker::class);
     }
 
     function it_should_have_a_name()
@@ -41,7 +43,7 @@ class SecurityCheckerSpec extends ObjectBehavior
     function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
-        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('lockfile');
         $options->getDefinedOptions()->shouldContain('format');
         $options->getDefinedOptions()->shouldContain('end_point');
@@ -71,7 +73,7 @@ class SecurityCheckerSpec extends ObjectBehavior
         $context->getFiles()->willReturn(new FilesCollection());
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
@@ -92,7 +94,7 @@ class SecurityCheckerSpec extends ObjectBehavior
         $context->getFiles()->willReturn(new FilesCollection());
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(true);
     }
 
@@ -116,7 +118,7 @@ class SecurityCheckerSpec extends ObjectBehavior
         ]));
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(true);
     }
 
@@ -127,7 +129,7 @@ class SecurityCheckerSpec extends ObjectBehavior
     ) {
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('security-checker')->willReturn($arguments);
-        $processBuilder->buildProcess(Argument::type('GrumPHP\Collection\ProcessArgumentsCollection'))->willReturn($process);
+        $processBuilder->buildProcess(Argument::type(ProcessArgumentsCollection::class))->willReturn($process);
 
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(false);
@@ -137,7 +139,7 @@ class SecurityCheckerSpec extends ObjectBehavior
         ]));
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(false);
     }
 }

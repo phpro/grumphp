@@ -20,6 +20,7 @@ services:
       arguments:
         - '@grumphp.parser.php.factory.parser'
         - '@grumphp.parser.php.factory.traverser'
+        - '@grumphp.util.filesystem'
 
     #
     # AVAILABLE PHP PARSER VISITORS ...

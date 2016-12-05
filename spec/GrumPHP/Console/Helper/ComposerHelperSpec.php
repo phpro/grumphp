@@ -7,9 +7,10 @@ use Composer\Package\RootPackage;
 use GrumPHP\Console\Helper\ComposerHelper;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Console\Helper\Helper;
 
 /**
- * @mixin ComposerHelper
+ * Class ComposerHelperSpec
  */
 class ComposerHelperSpec extends ObjectBehavior
 {
@@ -21,12 +22,12 @@ class ComposerHelperSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Console\Helper\ComposerHelper');
+        $this->shouldHaveType(ComposerHelper::class);
     }
 
     function it_is_a_console_helper()
     {
-        $this->shouldHaveType('Symfony\Component\Console\Helper\Helper');
+        $this->shouldHaveType(Helper::class);
     }
 
     function it_knows_if_the_composer_configuration_is_available()

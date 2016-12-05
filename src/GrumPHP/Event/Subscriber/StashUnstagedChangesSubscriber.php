@@ -186,7 +186,12 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
 
         $subscriber = $this;
         register_shutdown_function(function () use ($subscriber) {
-            if (!error_get_last()) {
+            if (!$error = error_get_last()) {
+                return;
+            }
+
+            // Don't fail on non-blcoking errors!
+            if (in_array($error['type'], [E_DEPRECATED, E_USER_DEPRECATED])) {
                 return;
             }
 

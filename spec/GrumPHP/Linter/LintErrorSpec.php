@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin LintError
+ * Class LintErrorSpec
  */
 class LintErrorSpec extends ObjectBehavior
 {
@@ -18,7 +18,7 @@ class LintErrorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Linter\LintError');
+        $this->shouldHaveType(LintError::class);
     }
 
     function it_has_an_error_type()

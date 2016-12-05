@@ -2,7 +2,13 @@
 
 namespace GrumPHPTest\Linter\Json;
 
+use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Linter\Json\JsonLinter;
+use GrumPHP\Linter\Json\JsonLintError;
+use GrumPHP\Util\Filesystem;
+use PHPUnit_Framework_TestCase;
+use RuntimeException;
+use Seld\JsonLint\JsonParser;
 use SplFileInfo;
 
 /**
@@ -10,7 +16,7 @@ use SplFileInfo;
  *
  * @package GrumPHPTest\Linter\Json
  */
-class JsonLinterTest extends \PHPUnit_Framework_TestCase
+class JsonLinterTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var JsonLinter
@@ -19,7 +25,10 @@ class JsonLinterTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->linter = new JsonLinter();
+        $this->linter = new JsonLinter(
+            new Filesystem(),
+            new JsonParser()
+        );
     }
 
     /**
@@ -31,7 +40,7 @@ class JsonLinterTest extends \PHPUnit_Framework_TestCase
     {
         $file = new SplFileInfo(TEST_BASE_PATH . '/fixtures/linters/json/' . $fixture);
         if (!$file->isReadable()) {
-            throw new \RuntimeException(sprintf('The fixture %s could not be loaded!', $fixture));
+            throw new RuntimeException(sprintf('The fixture %s could not be loaded!', $fixture));
         }
 
         return $file;
@@ -43,10 +52,10 @@ class JsonLinterTest extends \PHPUnit_Framework_TestCase
     private function validateFixture($fixture, $errors)
     {
         $result = $this->linter->lint($this->getFixture($fixture));
-        $this->assertInstanceOf('GrumPHP\Collection\LintErrorsCollection', $result);
+        $this->assertInstanceOf(LintErrorsCollection::class, $result);
         $this->assertEquals($result->count(), $errors, 'Invalid error-count expected.');
         if ($result->count()) {
-            $this->assertInstanceOf('GrumPHP\Linter\Json\JsonLintError', $result[0]);
+            $this->assertInstanceOf(JsonLintError::class, $result[0]);
         }
     }
 

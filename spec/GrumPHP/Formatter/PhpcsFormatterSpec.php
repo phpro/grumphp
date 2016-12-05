@@ -4,23 +4,24 @@ namespace spec\GrumPHP\Formatter;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Formatter\PhpcsFormatter;
+use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\ProcessBuilder;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Process\Process;
 
 /**
- * @mixin PhpcsFormatter
+ * Class PhpcsFormatterSpec
  */
 class PhpcsFormatterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Formatter\PhpcsFormatter');
+        $this->shouldHaveType(PhpcsFormatter::class);
     }
 
     function it_is_a_process_formatter()
     {
-        $this->shouldHaveType('GrumPHP\Formatter\ProcessFormatterInterface');
+        $this->shouldHaveType(ProcessFormatterInterface::class);
     }
 
     function it_handles_command_exceptions(Process $process)

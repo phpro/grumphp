@@ -5,11 +5,13 @@ namespace spec\GrumPHP\Console\Helper;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
+use GrumPHP\Event\Subscriber\ProgressSubscriber;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
+use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -17,7 +19,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin TaskRunnerHelper
+ * Class TaskRunnerHelperSpec
  */
 class TaskRunnerHelperSpec extends ObjectBehavior
 {
@@ -31,7 +33,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
 
     function it_is_a_console_helper()
     {
-        $this->shouldHaveType('Symfony\Component\Console\Helper\Helper');
+        $this->shouldHaveType(Helper::class);
     }
 
     function it_should_return_error_code_with_a_failed_task(
@@ -138,7 +140,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher
     ) {
         $taskRunner->run($context)->willReturn(new TaskResultCollection());
-        $eventDispatcher->addSubscriber(Argument::type('GrumPHP\Event\Subscriber\ProgressSubscriber'))->shouldBeCalled();
+        $eventDispatcher->addSubscriber(Argument::type(ProgressSubscriber::class))->shouldBeCalled();
         $this->run($output, $context)->shouldReturn(TaskRunnerHelper::CODE_SUCCESS);
     }
 }

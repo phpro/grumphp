@@ -3,13 +3,16 @@
 namespace spec\GrumPHP\Task\Git;
 
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use GrumPHP\Task\Git\CommitMessage;
+use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @mixin CommitMessage
+ * Class CommitMessageSpec
  */
 class CommitMessageSpec extends ObjectBehavior
 {
@@ -29,7 +32,7 @@ class CommitMessageSpec extends ObjectBehavior
     function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
-        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('case_insensitive');
         $options->getDefinedOptions()->shouldContain('multiline');
         $options->getDefinedOptions()->shouldContain('matchers');
@@ -38,12 +41,12 @@ class CommitMessageSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\Git\CommitMessage');
+        $this->shouldHaveType(CommitMessage::class);
     }
 
     function it_is_a_grumphp_task()
     {
-        $this->shouldImplement('GrumPHP\Task\TaskInterface');
+        $this->shouldImplement(TaskInterface::class);
     }
 
     function it_should_run_in_git_commit_msg_context(GitCommitMsgContext $context)
@@ -56,7 +59,7 @@ class CommitMessageSpec extends ObjectBehavior
         $context->getCommitMessage()->willReturn('test');
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(true);
     }
 
@@ -64,7 +67,7 @@ class CommitMessageSpec extends ObjectBehavior
         $context->getCommitMessage()->willReturn('invalid');
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(false);
     }
 
@@ -78,7 +81,7 @@ class CommitMessageSpec extends ObjectBehavior
         $context->getCommitMessage()->willReturn('message containing ümlaut');
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(true);
     }
 }

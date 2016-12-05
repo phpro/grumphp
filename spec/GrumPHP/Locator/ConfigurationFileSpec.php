@@ -4,12 +4,12 @@ namespace spec\GrumPHP\Locator;
 
 use Composer\Package\PackageInterface;
 use GrumPHP\Locator\ConfigurationFile;
+use GrumPHP\Util\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @mixin ConfigurationFile
+ * Class ConfigurationFileSpec
  */
 class ConfigurationFileSpec extends ObjectBehavior
 {
@@ -20,7 +20,7 @@ class ConfigurationFileSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Locator\ConfigurationFile');
+        $this->shouldHaveType(ConfigurationFile::class);
     }
 
     function it_should_locate_config_file(Filesystem $filesystem)

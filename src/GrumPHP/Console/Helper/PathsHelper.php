@@ -6,8 +6,9 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Exception\FileNotFoundException;
 use GrumPHP\Locator\ExternalCommand;
+use GrumPHP\Util\Filesystem;
+use SplFileInfo;
 use Symfony\Component\Console\Helper\Helper;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * This class will return all configured paths relative to the working directory.
@@ -106,13 +107,13 @@ class PathsHelper extends Helper
 
         // Specified by user:
         if ($this->fileSystem->exists($file)) {
-            return file_get_contents($file);
+            return $this->fileSystem->readFromFileInfo($file);
         }
 
         // Embedded ASCII art:
         $embeddedFile = $this->getAsciiPath() . $file;
         if ($this->fileSystem->exists($embeddedFile)) {
-            return file_get_contents($embeddedFile);
+            return $this->fileSystem->readFromFileInfo(new SplFileInfo($embeddedFile));
         }
 
         // Error:

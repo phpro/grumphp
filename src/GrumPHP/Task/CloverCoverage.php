@@ -7,8 +7,9 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use GrumPHP\Util\Filesystem;
 use SimpleXMLElement;
-use Symfony\Component\Filesystem\Filesystem;
+use SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -105,7 +106,7 @@ class CloverCoverage implements TaskInterface
             );
         }
 
-        $xml             = new SimpleXMLElement(file_get_contents($cloverFile));
+        $xml             = new SimpleXMLElement($this->filesystem->readFromFileInfo(new SplFileInfo($cloverFile)));
         $totalElements   = (string)current($xml->xpath('/coverage/project/metrics/@elements'));
         $checkedElements = (string)current($xml->xpath('/coverage/project/metrics/@coveredelements'));
 

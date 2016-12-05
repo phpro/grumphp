@@ -3,7 +3,7 @@
 namespace GrumPHP\Locator;
 
 use Composer\Package\PackageInterface;
-use Symfony\Component\Filesystem\Filesystem;
+use GrumPHP\Util\Filesystem;
 
 /**
  * Class ConfigurationFile

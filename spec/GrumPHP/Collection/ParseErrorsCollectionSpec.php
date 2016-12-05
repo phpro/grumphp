@@ -2,15 +2,13 @@
 
 namespace spec\GrumPHP\Collection;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use GrumPHP\Collection\ParseErrorsCollection;
 use GrumPHP\Parser\ParseError;
 use PhpSpec\ObjectBehavior;
 
 /**
  * Class ParseErrorsCollectionSpec
- *
- * @package spec\GrumPHP\Collection
- * @mixin ParseErrorsCollection
  */
 class ParseErrorsCollectionSpec extends ObjectBehavior
 {
@@ -23,12 +21,12 @@ class ParseErrorsCollectionSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Collection\ParseErrorsCollection');
+        $this->shouldHaveType(ParseErrorsCollection::class);
     }
 
     function it_is_an_array_collection()
     {
-        $this->shouldHaveType('Doctrine\Common\Collections\ArrayCollection');
+        $this->shouldHaveType(ArrayCollection::class);
     }
 
     function it_should_be_parsed_as_string()

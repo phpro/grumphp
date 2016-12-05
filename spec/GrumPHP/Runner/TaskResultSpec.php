@@ -8,7 +8,7 @@ use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
- * @mixin TaskResult
+ * Class TaskResultSpec
  */
 class TaskResultSpec extends ObjectBehavior
 {

@@ -9,13 +9,13 @@ use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
- * @mixin TaskResultCollection
+ * Class TaskResultCollectionSpec
  */
 class TaskResultCollectionSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Collection\TaskResultCollection');
+        $this->shouldHaveType(TaskResultCollection::class);
     }
 
     function it_contains_task_result(TaskResult $taskResult)

@@ -10,10 +10,11 @@ use GrumPHP\Process\ProcessBuilder;
 use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
 
 /**
- * @mixin ProcessBuilder
+ * Class ProcessBuilderSpec
  */
 class ProcessBuilderSpec extends ObjectBehavior
 {
@@ -25,7 +26,7 @@ class ProcessBuilderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Process\ProcessBuilder');
+        $this->shouldHaveType(ProcessBuilder::class);
     }
 
     function it_should_be_able_to_create_process_arguments_based_on_taskname(ExternalCommand $externalCommandLocator)
@@ -33,7 +34,7 @@ class ProcessBuilderSpec extends ObjectBehavior
         $externalCommandLocator->locate('grumphp')->willReturn('/usr/bin/grumphp');
 
         $arguments = $this->createArgumentsForCommand('grumphp');
-        $arguments->shouldHaveType('GrumPHP\Collection\ProcessArgumentsCollection');
+        $arguments->shouldHaveType(ProcessArgumentsCollection::class);
         $arguments[0]->shouldBe('/usr/bin/grumphp');
         $arguments->count()->shouldBe(1);
     }
@@ -43,7 +44,7 @@ class ProcessBuilderSpec extends ObjectBehavior
         $arguments = new ProcessArgumentsCollection(['/usr/bin/grumphp']);
         $process = $this->buildProcess($arguments);
 
-        $process->shouldHaveType('Symfony\Component\Process\Process');
+        $process->shouldHaveType(Process::class);
         $process->getCommandLine()->shouldBeQuoted('/usr/bin/grumphp');
     }
 

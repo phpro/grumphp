@@ -7,6 +7,7 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\IO\IOInterface;
 use GrumPHP\Locator\ConfigurationFile;
 use GrumPHP\Util\Composer;
+use GrumPHP\Util\Filesystem;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Symfony\Component\Console\Application as SymfonyConsole;
@@ -15,7 +16,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
@@ -26,7 +26,7 @@ use Symfony\Component\Process\ProcessBuilder;
 class Application extends SymfonyConsole
 {
     const APP_NAME = 'GrumPHP';
-    const APP_VERSION = '0.9.6';
+    const APP_VERSION = '0.10.1';
 
     /**
      * @var ContainerBuilder
@@ -39,7 +39,7 @@ class Application extends SymfonyConsole
     protected $configDefaultPath;
 
     /**
-     * @var string
+     * @var Filesystem
      */
     protected $filesystem;
 
@@ -89,7 +89,7 @@ class Application extends SymfonyConsole
 
         $commands[] = new Command\ConfigureCommand(
             $container->get('config'),
-            $container->get('filesystem'),
+            $container->get('grumphp.util.filesystem'),
             $container->get('git.repository'),
             $container->get('task_runner')
         );
@@ -100,15 +100,16 @@ class Application extends SymfonyConsole
 
         $commands[] = new Command\Git\CommitMsgCommand(
             $container->get('config'),
-            $container->get('locator.changed_files')
+            $container->get('locator.changed_files'),
+            $container->get('grumphp.util.filesystem')
         );
         $commands[] = new Command\Git\DeInitCommand(
             $container->get('config'),
-            $container->get('filesystem')
+            $container->get('grumphp.util.filesystem')
         );
         $commands[] = new Command\Git\InitCommand(
             $container->get('config'),
-            $container->get('filesystem'),
+            $container->get('grumphp.util.filesystem'),
             ProcessBuilder::create()
         );
         $commands[] = new Command\Git\PreCommitCommand(
@@ -127,7 +128,7 @@ class Application extends SymfonyConsole
         $helperSet->set($this->initializeComposerHelper());
         $helperSet->set(new Helper\PathsHelper(
             $container->get('config'),
-            $container->get('filesystem'),
+            $container->get('grumphp.util.filesystem'),
             $container->get('locator.external_command'),
             $this->getDefaultConfigPath()
         ));

@@ -8,6 +8,8 @@ use Gitonomy\Git\Repository;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\ComposerHelper;
 use GrumPHP\Console\Helper\PathsHelper;
+use GrumPHP\Util\Filesystem;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,7 +18,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -188,14 +189,16 @@ class ConfigureCommand extends Command
     /**
      * @param array $configuration
      *
-     * @return bool|int
+     * @return bool
      */
     protected function writeConfiguration(array $configuration)
     {
         try {
             $yaml = Yaml::dump($configuration);
             $grumphpConfigName = $this->input->getOption('config');
-            return file_put_contents($grumphpConfigName, $yaml);
+            $this->filesystem->dumpFile($grumphpConfigName, $yaml);
+
+            return true;
         } catch (Exception $e) {
             // Fail silently and return false!
         }
@@ -246,7 +249,7 @@ class ConfigureCommand extends Command
     public function pathValidator($path)
     {
         if (!$this->filesystem->exists($path)) {
-            throw new \RuntimeException(sprintf('The path %s could not be found!', $path));
+            throw new RuntimeException(sprintf('The path %s could not be found!', $path));
         }
         return $path;
     }

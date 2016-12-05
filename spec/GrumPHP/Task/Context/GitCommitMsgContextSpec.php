@@ -3,12 +3,13 @@
 namespace spec\GrumPHP\Task\Context;
 
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin GitCommitMsgContext
+ * Class GitCommitMsgContextSpec
  */
 class GitCommitMsgContextSpec extends ObjectBehavior
 {
@@ -17,19 +18,19 @@ class GitCommitMsgContextSpec extends ObjectBehavior
      */
     protected $tempFile;
 
-    function let(FilesCollection $files, \SplFileInfo $fileInfo)
+    function let(FilesCollection $files)
     {
-        $this->beConstructedWith($files, $fileInfo, 'user', 'user@email.com');
+        $this->beConstructedWith($files, 'message', 'user', 'user@email.com');
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\Context\GitCommitMsgContext');
+        $this->shouldHaveType(GitCommitMsgContext::class);
     }
 
     function it_should_be_a_task_context()
     {
-        $this->shouldImplement('GrumPHP\Task\Context\ContextInterface');
+        $this->shouldImplement(ContextInterface::class);
     }
 
     function it_should_have_files(FilesCollection $files)
@@ -45,5 +46,10 @@ class GitCommitMsgContextSpec extends ObjectBehavior
     function it_should_know_the_git_email()
     {
         $this->getUserEmail()->shouldBe('user@email.com');
+    }
+
+    function it_knows_the_commit_message()
+    {
+        $this->getCommitMessage()->shouldBe('message');
     }
 }

@@ -7,9 +7,10 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
- * @mixin TaskEvent
+ * Class TaskEventSpec
  */
 class TaskEventSpec extends ObjectBehavior
 {
@@ -21,12 +22,12 @@ class TaskEventSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Event\TaskEvent');
+        $this->shouldHaveType(TaskEvent::class);
     }
 
     function it_is_an_event()
     {
-        $this->shouldHaveType('Symfony\Component\EventDispatcher\Event');
+        $this->shouldHaveType(Event::class);
     }
 
     function it_has_a_task(TaskInterface $task)

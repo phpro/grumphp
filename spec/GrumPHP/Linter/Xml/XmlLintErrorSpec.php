@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin XmlLintError
+ * Class XmlLintErrorSpec
  */
 class XmlLintErrorSpec extends ObjectBehavior
 {
@@ -19,12 +19,12 @@ class XmlLintErrorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Linter\Xml\XmlLintError');
+        $this->shouldHaveType(XmlLintError::class);
     }
 
     function it_is_a_lint_error()
     {
-        $this->shouldHaveType('GrumPHP\Linter\LintError');
+        $this->shouldHaveType(LintError::class);
     }
 
 

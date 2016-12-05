@@ -3,24 +3,25 @@
 namespace spec\GrumPHP\Formatter;
 
 use GrumPHP\Formatter\PhpCsFixerFormatter;
+use GrumPHP\Formatter\ProcessFormatterInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
 
 /**
- * @mixin PhpCsFixerFormatter
+ * Class PhpCsFixerFormatterSpec
  */
 class PhpCsFixerFormatterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Formatter\PhpCsFixerFormatter');
+        $this->shouldHaveType(PhpCsFixerFormatter::class);
     }
 
     function it_is_a_process_formatter()
     {
-        $this->shouldHaveType('GrumPHP\Formatter\ProcessFormatterInterface');
+        $this->shouldHaveType(ProcessFormatterInterface::class);
     }
 
     function it_handles_command_exceptions(Process $process)

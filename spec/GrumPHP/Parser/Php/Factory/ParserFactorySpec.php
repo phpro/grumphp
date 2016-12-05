@@ -4,26 +4,24 @@ namespace spec\GrumPHP\Parser\Php\Factory;
 
 use GrumPHP\Parser\Php\Factory\ParserFactory;
 use GrumPHP\Task\PhpParser;
+use PhpParser\Parser;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
  * Class ParserFactorySpec
- *
- * @package spec\GrumPHP\Parser\Php\Factory
- * @mixin ParserFactory
  */
 class ParserFactorySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Parser\Php\Factory\ParserFactory');
+        $this->shouldHaveType(ParserFactory::class);
     }
 
     function it_can_create_a_parser_from_task_options()
     {
 
         $options = ['kind' => PhpParser::KIND_PHP7];
-        $this->createFromOptions($options)->shouldBeAnInstanceOf('\PhpParser\Parser');
+        $this->createFromOptions($options)->shouldBeAnInstanceOf(Parser::class);
     }
 }

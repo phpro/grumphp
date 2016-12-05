@@ -4,13 +4,15 @@ namespace spec\GrumPHP\Console\Helper;
 
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
+use GrumPHP\Exception\FileNotFoundException;
 use GrumPHP\Locator\ExternalCommand;
-use Symfony\Component\Filesystem\Filesystem;
+use GrumPHP\Util\Filesystem;
+use Symfony\Component\Console\Helper\Helper;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @mixin PathsHelper
+ * Class PathsHelperSpec
  */
 class PathsHelperSpec extends ObjectBehavior
 {
@@ -21,13 +23,13 @@ class PathsHelperSpec extends ObjectBehavior
     
     function it_is_a_console_helper()
     {
-        $this->shouldHaveType('Symfony\Component\Console\Helper\Helper');
+        $this->shouldHaveType(Helper::class);
     }
 
     function it_throws_exception_during_get_relative_path_when_file_is_not_found()
     {
         $path = '/non/existent/path/config.yml';
-        $this->shouldThrow('GrumPHP\Exception\FileNotFoundException')->duringGetRelativePath($path);
+        $this->shouldThrow(FileNotFoundException::class)->duringGetRelativePath($path);
     }
 
     function it_knows_the_default_configuration_file()

@@ -2,6 +2,7 @@
 
 namespace spec\GrumPHP\Parser\Php\Configurator;
 
+use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Parser\Php\Configurator\TraverserConfigurator;
 use GrumPHP\Parser\Php\Context\ParserContext;
 use GrumPHP\Parser\Php\Visitor\ConfigurableVisitorInterface;
@@ -14,9 +15,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class TraverserConfiguratorSpec
- *
- * @package spec\GrumPHP\Parser\Php\Configurator
- * @mixin TraverserConfigurator
  */
 class TraverserConfiguratorSpec extends ObjectBehavior
 {
@@ -27,20 +25,20 @@ class TraverserConfiguratorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Parser\Php\Configurator\TraverserConfigurator');
+        $this->shouldHaveType(TraverserConfigurator::class);
     }
     
     
     function it_throws_an_exception_if_a_context_is_not_set(NodeTraverserInterface $traverser)
     {
         $this->registerOptions(['visitors' => []]);
-        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringConfigure($traverser);
+        $this->shouldThrow(RuntimeException::class)->duringConfigure($traverser);
     }
 
     function it_throws_an_exception_if_no_visitors_are_configured(ParserContext $context, NodeTraverserInterface $traverser)
     {
         $this->registerContext($context);
-        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringConfigure($traverser);
+        $this->shouldThrow(RuntimeException::class)->duringConfigure($traverser);
     }
     
     function it_loads_standard_enabled_visitors(
@@ -94,7 +92,7 @@ class TraverserConfiguratorSpec extends ObjectBehavior
             ]
         ]);
 
-        $this->shouldThrow('GrumPHP\Exception\RuntimeException')->duringConfigure($traverser);
+        $this->shouldThrow(RuntimeException::class)->duringConfigure($traverser);
     }
     
     function it_does_not_load_unused_visitors(

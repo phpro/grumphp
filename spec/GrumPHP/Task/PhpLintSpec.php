@@ -7,13 +7,19 @@ use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\ProcessBuilder;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use GrumPHP\Task\PhpLint;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
+/**
+ * Class PhpLintSpec
+ */
 class PhpLintSpec extends ObjectBehavior
 {
 
@@ -25,7 +31,7 @@ class PhpLintSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\PhpLint');
+        $this->shouldHaveType(PhpLint::class);
     }
 
     function it_should_have_a_name()
@@ -36,7 +42,7 @@ class PhpLintSpec extends ObjectBehavior
     function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
-        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('jobs');
         $options->getDefinedOptions()->shouldContain('exclude');
         $options->getDefinedOptions()->shouldContain('triggered_by');
@@ -66,7 +72,7 @@ class PhpLintSpec extends ObjectBehavior
         ]));
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(true);
     }
 
@@ -84,7 +90,7 @@ class PhpLintSpec extends ObjectBehavior
         ]));
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(false);
     }
 }

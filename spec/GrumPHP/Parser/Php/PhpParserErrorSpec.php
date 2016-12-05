@@ -9,9 +9,6 @@ use PhpSpec\ObjectBehavior;
 
 /**
  * Class PhpParserErrorSpec
- *
- * @package spec\GrumPHP\Parser\Php
- * @mixin  PhpParserError
  */
 class PhpParserErrorSpec extends ObjectBehavior
 {
@@ -23,7 +20,7 @@ class PhpParserErrorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Parser\Php\PhpParserError');
+        $this->shouldHaveType(PhpParserError::class);
     }
 
     function it_has_an_error_type()

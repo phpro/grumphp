@@ -9,6 +9,7 @@ use GrumPHP\Formatter\PhpCsFixerFormatter;
 use GrumPHP\Process\AsyncProcessRunner;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -16,10 +17,11 @@ use GrumPHP\Task\PhpCsFixer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
 /**
- * @mixin PhpCsFixer
+ * Class PhpCsFixerSpec
  */
 class PhpCsFixerSpec extends ObjectBehavior
 {
@@ -37,7 +39,7 @@ class PhpCsFixerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('GrumPHP\Task\PhpCsFixer');
+        $this->shouldHaveType(PhpCsFixer::class);
     }
 
     function it_should_have_a_name()
@@ -48,7 +50,7 @@ class PhpCsFixerSpec extends ObjectBehavior
     function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
-        $options->shouldBeAnInstanceOf('Symfony\Component\OptionsResolver\OptionsResolver');
+        $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('config');
         $options->getDefinedOptions()->shouldContain('config_file');
         $options->getDefinedOptions()->shouldContain('fixers');
@@ -63,7 +65,7 @@ class PhpCsFixerSpec extends ObjectBehavior
         $context->getFiles()->willReturn(new FilesCollection());
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
@@ -101,7 +103,7 @@ class PhpCsFixerSpec extends ObjectBehavior
         $process->isSuccessful()->willReturn(true);
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(true);
     }
 
@@ -127,7 +129,7 @@ class PhpCsFixerSpec extends ObjectBehavior
     $process->isSuccessful()->willReturn(true);
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(true);
     }
 
@@ -142,7 +144,7 @@ class PhpCsFixerSpec extends ObjectBehavior
 
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn($arguments);
-        $processBuilder->buildProcess(Argument::type('GrumPHP\Collection\ProcessArgumentsCollection'))->willReturn($process);
+        $processBuilder->buildProcess(Argument::type(ProcessArgumentsCollection::class))->willReturn($process);
 
         $processRunner->run(Argument::type('array'))->shouldBeCalled();
     $process->isSuccessful()->willReturn(false);
@@ -152,7 +154,7 @@ class PhpCsFixerSpec extends ObjectBehavior
         ]));
 
         $result = $this->run($context);
-        $result->shouldBeAnInstanceOf('GrumPHP\Runner\TaskResultInterface');
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(false);
     }
 }
