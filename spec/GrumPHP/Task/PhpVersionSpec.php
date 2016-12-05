@@ -39,9 +39,9 @@ class PhpVersionSpec extends ObjectBehavior
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
     }
 
-    function it_should_not_run_in_git_pre_commit_context(GitPreCommitContext $context)
+    function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
     {
-        $this->canRunInContext($context)->shouldReturn(false);
+        $this->canRunInContext($context)->shouldReturn(true);
     }
 
     function it_should_run_in_run_context(RunContext $context)

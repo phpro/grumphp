@@ -6,7 +6,9 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
+use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use GrumPHP\Util\PhpVersion as phpVersionUtility;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -29,7 +31,7 @@ class PhpVersion implements TaskInterface
      * @param GrumPHP $grumPHP
      * @param \GrumPHP\Util\PhpVersion $phpVersionUtility
      */
-    public function __construct(GrumPHP $grumPHP, \GrumPHP\Util\PhpVersion $phpVersionUtility)
+    public function __construct(GrumPHP $grumPHP, phpVersionUtility $phpVersionUtility)
     {
         $this->grumPHP = $grumPHP;
         $this->phpVersionUtility = $phpVersionUtility;
@@ -44,7 +46,7 @@ class PhpVersion implements TaskInterface
      */
     public function canRunInContext(ContextInterface $context)
     {
-        return $context instanceof RunContext;
+        return $context instanceof RunContext || $context instanceof GitPreCommitContext;
     }
 
     /**
