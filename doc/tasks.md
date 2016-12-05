@@ -22,6 +22,7 @@ parameters:
         grunt: ~
         gulp: ~
         jsonlint: ~
+        kahlan: ~
         make: ~
         npm_script: ~
         phing: ~
@@ -62,6 +63,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Grunt](tasks/grunt.md)
 - [Gulp](tasks/gulp.md)
 - [JsonLint](tasks/jsonlint.md)
+- [Kahlan](tasks/kahlan.md)
 - [Make](tasks/make.md)
 - [NPM script](tasks/npm_script.md)
 - [Phing](tasks/phing.md)
