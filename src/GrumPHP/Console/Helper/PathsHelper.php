@@ -107,7 +107,7 @@ class PathsHelper extends Helper
 
         // Specified by user:
         if ($this->fileSystem->exists($file)) {
-            return $this->fileSystem->readFromFileInfo($file);
+            return $this->fileSystem->readFromFileInfo(new SplFileInfo($file));
         }
 
         // Embedded ASCII art:
