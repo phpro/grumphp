@@ -54,8 +54,8 @@ class KahlanSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('istanbul');
         $options->getDefinedOptions()->shouldContain('lcov');
         $options->getDefinedOptions()->shouldContain('ff');
-        $options->getDefinedOptions()->shouldContain('no-colors');
-        $options->getDefinedOptions()->shouldContain('no-header');
+        $options->getDefinedOptions()->shouldContain('no_colors');
+        $options->getDefinedOptions()->shouldContain('no_header');
         $options->getDefinedOptions()->shouldContain('include');
         $options->getDefinedOptions()->shouldContain('exclude');
         $options->getDefinedOptions()->shouldContain('persistent');
