@@ -8,7 +8,7 @@ use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
-use GrumPHP\Util\PhpVersion as phpVersionUtility;
+use GrumPHP\Util\PhpVersion as PhpVersionUtility;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PhpVersion implements TaskInterface
 {
     /**
-     * @var \GrumPHP\Util\PhpVersion
+     * @var PhpVersionUtility
      */
     private $phpVersionUtility;
 
@@ -29,9 +29,9 @@ class PhpVersion implements TaskInterface
     /**
      * PhpVersion constructor.
      * @param GrumPHP $grumPHP
-     * @param \GrumPHP\Util\PhpVersion $phpVersionUtility
+     * @param PhpVersionUtility $phpVersionUtility
      */
-    public function __construct(GrumPHP $grumPHP, phpVersionUtility $phpVersionUtility)
+    public function __construct(GrumPHP $grumPHP, PhpVersionUtility $phpVersionUtility)
     {
         $this->grumPHP = $grumPHP;
         $this->phpVersionUtility = $phpVersionUtility;
