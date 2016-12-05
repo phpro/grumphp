@@ -115,6 +115,7 @@ parameters:
         phpparser: ~
         phpspec: ~
         phpunit: ~
+        phpversion: ~        
         robo: ~
         securitychecker: ~
         shell: ~

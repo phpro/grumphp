@@ -6,5 +6,8 @@
         <testsuite name="Parsers">
             <directory>./test/src/GrumPHPTest/Parser</directory>
         </testsuite>
+        <testsuite name="Util">
+            <directory>./test/src/GrumPHPTest/Util</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

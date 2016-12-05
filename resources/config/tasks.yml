@@ -240,6 +240,14 @@ services:
         tags:
             - {name: grumphp.task, config: phpunit}
 
+    task.phpversion:
+        class: GrumPHP\Task\PhpVersion
+        arguments:
+            - '@config'
+            - '@grumphp.util.phpversion'
+        tags:
+            - {name: grumphp.task, config: phpversion}
+
     task.robo:
         class: GrumPHP\Task\Robo
         arguments:
