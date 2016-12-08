@@ -10,6 +10,7 @@ parameters:
         ant: ~
         atoum: ~
         behat: ~
+        brunch: ~
         clover_coverage: ~
         codeception: ~
         composer: ~
@@ -51,6 +52,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Ant](tasks/ant.md)
 - [Atoum](tasks/atoum.md)
 - [Behat](tasks/behat.md)
+- [Brunch](tasks/brunch.md)
 - [Clover Coverage](tasks/clover_coverage.md)
 - [Codeception](tasks/codeception.md)
 - [Composer](tasks/composer.md)
