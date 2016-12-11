@@ -44,8 +44,10 @@ class BrunchSpec extends ObjectBehavior
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
-        $options->getDefinedOptions()->shouldContain('brunch_file');
         $options->getDefinedOptions()->shouldContain('task');
+        $options->getDefinedOptions()->shouldContain('env');
+        $options->getDefinedOptions()->shouldContain('jobs');
+        $options->getDefinedOptions()->shouldContain('debug');
         $options->getDefinedOptions()->shouldContain('triggered_by');
     }
 

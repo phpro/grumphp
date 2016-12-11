@@ -28,13 +28,17 @@ class Brunch extends AbstractExternalTask
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'brunch_file' => null,
             'task' => 'build',
+            'env' => 'production',
+            'jobs' => 4,
+            'debug' => false,
             'triggered_by' => ['js', 'jsx', 'coffee', 'ts', 'less', 'sass', 'scss']
         ]);
 
-        $resolver->addAllowedTypes('brunch_file', ['null', 'string']);
         $resolver->addAllowedTypes('task', ['string']);
+        $resolver->addAllowedTypes('env', ['string']);
+        $resolver->addAllowedTypes('jobs', ['int']);
+        $resolver->addAllowedTypes('debug', ['bool']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
@@ -60,8 +64,10 @@ class Brunch extends AbstractExternalTask
         }
 
         $arguments = $this->processBuilder->createArgumentsForCommand('brunch');
-        $arguments->addOptionalArgument('%s', $config['task']);
-        $arguments->addOptionalArgument('%s', $config['brunch_file']);
+        $arguments->addRequiredArgument('%s', $config['task']);
+        $arguments->addOptionalArgument('--env %s', $config['env']);
+        $arguments->addOptionalArgument('--jobs %s', $config['jobs']);
+        $arguments->addOptionalArgument('--debug', $config['debug']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
