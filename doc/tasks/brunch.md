@@ -15,15 +15,6 @@ parameters:
             triggered_by: [js, jsx, coffee, ts, less, sass, scss]
 ```
 
-**brunch_file**
-
-*Default: null*
-
-If your `brunch-config.js file is located at an exotic location, you can specify your custom brunch file location with this option.
-This option is set to `null` by default.
-This means that `brunch-config.js` is automatically loaded if the file exists in the current directory.
-
-
 **task**
 
 *Default: build*
