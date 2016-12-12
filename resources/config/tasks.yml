@@ -26,6 +26,15 @@ services:
         tags:
             - {name: grumphp.task, config: behat}
 
+    task.brunch:
+        class: GrumPHP\Task\Brunch
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: brunch}
+
     task.clovercoverage:
         class: GrumPHP\Task\CloverCoverage
         arguments:

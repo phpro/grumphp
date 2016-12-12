@@ -92,6 +92,7 @@ parameters:
         ant: ~
         atoum: ~
         behat: ~
+        brunch: ~
         clover_coverage: ~
         codeception: ~
         composer: ~
