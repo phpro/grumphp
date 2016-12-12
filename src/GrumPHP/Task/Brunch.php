@@ -65,8 +65,8 @@ class Brunch extends AbstractExternalTask
 
         $arguments = $this->processBuilder->createArgumentsForCommand('brunch');
         $arguments->addRequiredArgument('%s', $config['task']);
-        $arguments->addOptionalArgumentWithSeparatedValue('--env %s', $config['env']);
-        $arguments->addOptionalArgument('--jobs %s', $config['jobs']);
+        $arguments->addOptionalArgumentWithSeparatedValue('--env', $config['env']);
+        $arguments->addOptionalArgumentWithSeparatedValue('--jobs', $config['jobs']);
         $arguments->addOptionalArgument('--debug', $config['debug']);
 
         $process = $this->processBuilder->buildProcess($arguments);
