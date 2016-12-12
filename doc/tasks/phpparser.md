@@ -121,6 +121,7 @@ This is a list of blacklisted function calls.
 When one of the functions inside this list is being called by your code, 
 the parser will markt this method as an error.
 
+*Note* that statements like `die()` and `exit` are not functions but exit nodes. You can validate these statements by adding the [`no_exit_statements`](https://github.com/phpro/grumphp/blob/master/doc/tasks/phpparser.md#no_exit_statements) visitor to your configuration.
 
 ### forbidden_static_method_calls
 
