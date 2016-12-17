@@ -10,13 +10,14 @@ namespace GrumPHP\TestSuite;
 class TestSuite implements TestSuiteInterface
 {
     /**
-     * @var array
-     */
-    private $taskNames = [];
-    /**
      * @var string
      */
     private $name;
+
+    /**
+     * @var array
+     */
+    private $taskNames = [];
 
     /**
      * TestSuite constructor.

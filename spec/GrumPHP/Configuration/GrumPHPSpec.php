@@ -2,14 +2,11 @@
 
 namespace spec\GrumPHP\Configuration;
 
-use GrumPHP\Configuration\Compiler\TaskCompilerPass;
-use GrumPHP\Configuration\ContainerFactory;
+use GrumPHP\Collection\TestSuiteCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Exception\RuntimeException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -130,5 +127,11 @@ class GrumPHPSpec extends ObjectBehavior
             );
         $this->isBlockingTask('phpunit')->shouldReturn(false);
         $this->isBlockingTask('phpspec')->shouldReturn(true);
+    }
+
+    function it_should_know_all_testsuites(ContainerInterface $container)
+    {
+        $container->getParameter('grumphp.testsuites')->willReturn($testSuites = new TestSuiteCollection());
+        $this->getTestSuites()->shouldBe($testSuites);
     }
 }
