@@ -3,7 +3,6 @@
 namespace GrumPHP\Configuration\Compiler;
 
 use GrumPHP\Collection\TestSuiteCollection;
-use GrumPHP\Exception\RuntimeException;
 use GrumPHP\TestSuite\TestSuite;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -48,7 +47,7 @@ class TestSuiteCompilerPass implements CompilerPassInterface
         $options->setAllowedValues('tasks', function (array $value) use ($registeredTasks) {
             foreach ($value as $task) {
                 if (!in_array($task, $registeredTasks, true)) {
-                    throw new RuntimeException(sprintf(
+                    throw new InvalidOptionsException(sprintf(
                         'The testsuite option "tasks" contains the unknow task "%s". Expected one of %s',
                         $task,
                         implode(',', $registeredTasks)
