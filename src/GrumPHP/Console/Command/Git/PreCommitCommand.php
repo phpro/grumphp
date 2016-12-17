@@ -71,7 +71,7 @@ class PreCommitCommand extends Command
 
         $context = new TaskRunnerContext(
             new GitPreCommitContext($files),
-            $testSuite = $this->grumPHP->getTestSuites()->getOptional('git_pre_commit')
+            $this->grumPHP->getTestSuites()->getOptional('git_pre_commit')
         );
         $context->setSkipSuccessOutput((bool) $input->getOption('skip-success-output'));
 

@@ -85,7 +85,7 @@ class CommitMsgCommand extends Command
 
         $context = new TaskRunnerContext(
             new GitCommitMsgContext($files, $commitMsg, $gitUser, $gitEmail),
-            $testSuite = $this->grumPHP->getTestSuites()->getOptional('git_commit_msg')
+            $this->grumPHP->getTestSuites()->getOptional('git_commit_msg')
         );
 
         return $this->taskRunner()->run($output, $context);
