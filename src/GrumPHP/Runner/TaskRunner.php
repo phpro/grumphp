@@ -73,13 +73,17 @@ class TaskRunner
     }
 
     /**
-     * @param ContextInterface $context
+     * @param TaskRunnerContext $runnerContext
      *
      * @return TaskResultCollection
      */
-    public function run(ContextInterface $context)
+    public function run(TaskRunnerContext $runnerContext)
     {
-        $tasks = $this->tasks->filterByContext($context)->sortByPriority($this->grumPHP);
+        $context = $runnerContext->getTaskContext();
+        $tasks = $this->tasks
+            ->filterByContext($runnerContext->getTaskContext())
+            ->filterByTestSuite($runnerContext->getTestSuite())
+            ->sortByPriority($this->grumPHP);
         $taskResults = new TaskResultCollection();
 
         $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, new RunnerEvent($tasks, $context, $taskResults));

@@ -31,6 +31,7 @@ final class ContainerFactory
         $container->addCompilerPass(new Compiler\ExtensionCompilerPass());
         $container->addCompilerPass(new Compiler\PhpParserCompilerPass());
         $container->addCompilerPass(new Compiler\TaskCompilerPass());
+        $container->addCompilerPass(new Compiler\TestSuiteCompilerPass());
         $container->addCompilerPass(
             new RegisterListenersPass('event_dispatcher', 'grumphp.event_listener', 'grumphp.event_subscriber')
         );
