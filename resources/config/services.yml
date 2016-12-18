@@ -54,6 +54,7 @@ services:
         class: GrumPHP\Locator\ChangedFiles
         arguments:
           - '@git.repository'
+          - '@filesystem'
 
     locator.registered_files:
         class: GrumPHP\Locator\RegisteredFiles

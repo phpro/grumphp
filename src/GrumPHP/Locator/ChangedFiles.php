@@ -6,6 +6,7 @@ use Gitonomy\Git\Diff\Diff;
 use Gitonomy\Git\Diff\File;
 use Gitonomy\Git\Repository;
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Util\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -19,13 +20,19 @@ class ChangedFiles
      * @var Repository
      */
     protected $repository;
+    /**
+     * @var Filesystem
+     */
+    private $filesystem;
 
     /**
      * @param Repository $repository
+     * @param Filesystem $filesystem
      */
-    public function __construct(Repository $repository)
+    public function __construct(Repository $repository, Filesystem $filesystem)
     {
         $this->repository = $repository;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -61,12 +68,14 @@ class ChangedFiles
         $files = [];
         /** @var File $file */
         foreach ($diff->getFiles() as $file) {
-            if ($file->isDeletion()) {
+            $fileName = $file->isRename() ? $file->getNewName() : $file->getName();
+            $fileObject = new SplFileInfo($fileName, dirname($fileName), $fileName);
+
+            if ($file->isDeletion() || !$this->filesystem->exists($fileObject->getPathname())) {
                 continue;
             }
 
-            $fileName = $file->isRename() ? $file->getNewName() : $file->getName();
-            $files[] = new SplFileInfo($fileName, dirname($fileName), $fileName);
+            $files[] = $fileObject;
         }
 
         return new FilesCollection($files);
