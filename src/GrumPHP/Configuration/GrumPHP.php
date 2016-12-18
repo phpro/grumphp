@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Configuration;
 
+use GrumPHP\Collection\TestSuiteCollection;
 use GrumPHP\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -136,6 +137,14 @@ class GrumPHP
         }
 
         return $tasksMetadata[$taskName];
+    }
+
+    /**
+     * @return TestSuiteCollection
+     */
+    public function getTestSuites()
+    {
+        return $this->container->getParameter('grumphp.testsuites');
     }
 
     /**

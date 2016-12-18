@@ -7,6 +7,7 @@ use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
+use GrumPHP\TestSuite\TestSuiteInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -40,6 +41,29 @@ class TasksCollectionSpec extends ObjectBehavior
         $result->count()->shouldBe(1);
         $tasks = $result->toArray();
         $tasks[0]->shouldBe($task1);
+    }
+
+    function it_can_filter_by_testsuite(TaskInterface $task1, TaskInterface $task2, TestSuiteInterface $testSuite)
+    {
+        $task1->getName()->willReturn('task1');
+        $task2->getName()->willReturn('task2');
+        $testSuite->getTaskNames()->willReturn(['task1']);
+
+        $result = $this->filterByTestSuite($testSuite);
+        $result->shouldBeAnInstanceOf(TasksCollection::class);
+        $result->count()->shouldBe(1);
+        $tasks = $result->toArray();
+        $tasks[0]->shouldBe($task1);
+    }
+
+    function it_can_filter_by_empty_testsuite(TaskInterface $task1, TaskInterface $task2)
+    {
+        $result = $this->filterByTestSuite(null);
+        $result->shouldBeAnInstanceOf(TasksCollection::class);
+        $result->count()->shouldBe(2);
+        $tasks = $result->toArray();
+        $tasks[0]->shouldBe($task1);
+        $tasks[1]->shouldBe($task2);
     }
 
     function it_should_sort_on_priority(TaskInterface $task1, TaskInterface $task2, TaskInterface $task3, GrumPHP $grumPHP)

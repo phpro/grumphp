@@ -8,6 +8,7 @@ use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Locator\ChangedFiles;
+use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use GrumPHP\Util\Filesystem;
 use SplFileInfo;
@@ -81,7 +82,12 @@ class CommitMsgCommand extends Command
         $commitMsg = $this->filesystem->readFromFileInfo($commitMsgFile);
 
         $output->writeln('<fg=yellow>GrumPHP detected a commit-msg command.</fg=yellow>');
-        $context = new GitCommitMsgContext($files, $commitMsg, $gitUser, $gitEmail);
+
+        $context = new TaskRunnerContext(
+            new GitCommitMsgContext($files, $commitMsg, $gitUser, $gitEmail),
+            $this->grumPHP->getTestSuites()->getOptional('git_commit_msg')
+        );
+
         return $this->taskRunner()->run($output, $context);
     }
 

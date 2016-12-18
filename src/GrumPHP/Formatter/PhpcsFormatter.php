@@ -58,7 +58,7 @@ class PhpcsFormatter implements ProcessFormatterInterface
     public function getSuggestedFilesFromJson(array $json)
     {
         $suggestedFiles = [];
-        if (!isset($json['totals']) || $json['totals']['fixable'] == 0) {
+        if (!isset($json['totals'], $json['totals']['fixable']) || $json['totals']['fixable'] == 0) {
             return $suggestedFiles;
         }
         foreach ($json['files'] as $absolutePath => $data) {

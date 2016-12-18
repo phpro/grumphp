@@ -4,6 +4,7 @@ parameters:
   hooks_dir: ~
   hooks_preset: local
   tasks: []
+  testsuites: []
   stop_on_failure: false
   ignore_unstaged_changes: false
   process_async_limit: 10

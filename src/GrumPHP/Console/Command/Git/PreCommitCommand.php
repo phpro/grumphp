@@ -8,6 +8,7 @@ use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Locator\ChangedFiles;
+use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -68,11 +69,14 @@ class PreCommitCommand extends Command
         $io = new ConsoleIO($input, $output);
         $files = $this->getCommittedFiles($io);
 
-        $context = new GitPreCommitContext($files);
-        $skipSuccessOutput = (bool) $input->getOption('skip-success-output');
+        $context = new TaskRunnerContext(
+            new GitPreCommitContext($files),
+            $this->grumPHP->getTestSuites()->getOptional('git_pre_commit')
+        );
+        $context->setSkipSuccessOutput((bool) $input->getOption('skip-success-output'));
 
         $output->writeln('<fg=yellow>GrumPHP detected a pre-commit command.</fg=yellow>');
-        return $this->taskRunner()->run($output, $context, $skipSuccessOutput);
+        return $this->taskRunner()->run($output, $context);
     }
 
     /**

@@ -124,6 +124,7 @@ parameters:
         shell: ~
         xmllint: ~
         yamllint: ~
+    testsuites: []
     extensions: []
 ```
 
@@ -132,6 +133,7 @@ You can find a detailed overview of the configurable options in these sections:
 - [Parameters](doc/parameters.md)
 - [Tasks](doc/tasks.md)
 - [Events](doc/events.md)
+- [TestSuites](doc/testsuites.md)
 - [Extensions](doc/extensions.md)
 
 ## Commands
@@ -161,10 +163,9 @@ This package has been tested with following git clients:
 ## Roadmap
 
 Lot's of tasks are already available to make sure your team writes great code.
-There are still 2 major parts that are missing before we can release a v1.0.0:
+There are still 1 major parts that are missing before we can release a v1.0.0:
 
 - [A PHAR executable](https://github.com/phpro//grumphp/issues/61)
-- [Specify a group of tasks you want to run](https://github.com/phpro//grumphp/issues/50)
 
 We are always looking to support new tasks. 
 Feel free to log an issue or create a pull request for a task we forgot.

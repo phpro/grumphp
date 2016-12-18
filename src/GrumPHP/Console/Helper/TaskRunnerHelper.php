@@ -5,7 +5,7 @@ namespace GrumPHP\Console\Helper;
 use GrumPHP\Event\Subscriber\ProgressSubscriber;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskRunner;
-use GrumPHP\Task\Context\ContextInterface;
+use GrumPHP\Runner\TaskRunnerContext;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -53,15 +53,21 @@ class TaskRunnerHelper extends Helper
 
     /**
      * @param OutputInterface  $output
-     * @param ContextInterface $context
-     * @param bool|false       $skipSuccessOutput
+     * @param TaskRunnerContext $context
      *
      * @return int
      */
-    public function run(OutputInterface $output, ContextInterface $context, $skipSuccessOutput = false)
+    public function run(OutputInterface $output, TaskRunnerContext $context)
     {
         // Make sure to add some default event listeners before running.
-        $this->registerEventListeners($output, $context);
+        $this->registerEventListeners($output);
+
+        if ($context->hasTestSuite()) {
+            $output->writeln(sprintf(
+                '<fg=yellow>Running testsuite: %s</fg=yellow>',
+                $context->getTestSuite()->getName()
+            ));
+        }
 
         $taskResults = $this->taskRunner->run($context);
 
@@ -71,7 +77,7 @@ class TaskRunnerHelper extends Helper
             return $this->returnErrorMessages($output, $failed->getAllMessages(), $warnings->getAllMessages());
         }
 
-        if ($skipSuccessOutput) {
+        if ($context->isSkipSuccessOutput()) {
             $this->returnWarningMessages($output, $warnings->getAllMessages());
             return self::CODE_SUCCESS;
         }
@@ -81,9 +87,8 @@ class TaskRunnerHelper extends Helper
 
     /**
      * @param OutputInterface  $output
-     * @param ContextInterface $context
      */
-    private function registerEventListeners(OutputInterface $output, ContextInterface $context)
+    private function registerEventListeners(OutputInterface $output)
     {
         $this->eventDispatcher->addSubscriber(new ProgressSubscriber($output, new ProgressBar($output)));
     }

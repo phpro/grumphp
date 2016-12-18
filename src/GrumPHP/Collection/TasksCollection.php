@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
+use GrumPHP\TestSuite\TestSuiteInterface;
 use SplPriorityQueue;
 
 /**
@@ -25,6 +26,22 @@ class TasksCollection extends ArrayCollection
     {
         return $this->filter(function (TaskInterface $task) use ($context) {
             return $task->canRunInContext($context);
+        });
+    }
+
+    /**
+     * @param TestSuiteInterface|null $testSuite
+     *
+     * @return TasksCollection
+     */
+    public function filterByTestSuite(TestSuiteInterface $testSuite = null)
+    {
+        if ($testSuite === null) {
+            return new TasksCollection($this->toArray());
+        }
+
+        return $this->filter(function (TaskInterface $task) use ($testSuite) {
+            return in_array($task->getName(), $testSuite->getTaskNames(), true);
         });
     }
 
