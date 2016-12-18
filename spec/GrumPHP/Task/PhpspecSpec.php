@@ -48,6 +48,7 @@ class PhpspecSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('config_file');
         $options->getDefinedOptions()->shouldContain('format');
         $options->getDefinedOptions()->shouldContain('stop_on_failure');
+        $options->getDefinedOptions()->shouldContain('verbose');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)

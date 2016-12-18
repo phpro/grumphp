@@ -11,6 +11,7 @@ parameters:
           priority: 300
       phpspec:
         format: progress
+        verbose: true
         metadata:
           priority: 200
       phpunit:
