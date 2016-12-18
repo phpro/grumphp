@@ -29,10 +29,12 @@ class Phpspec extends AbstractExternalTask
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'config_file' => null,
+            'format' => null,
             'stop_on_failure' => false,
         ]);
 
         $resolver->addAllowedTypes('config_file', ['null', 'string']);
+        $resolver->addAllowedTypes('format', ['null', 'string']);
         $resolver->addAllowedTypes('stop_on_failure', ['bool']);
 
         return $resolver;
@@ -62,6 +64,7 @@ class Phpspec extends AbstractExternalTask
         $arguments->add('run');
         $arguments->add('--no-interaction');
         $arguments->addOptionalArgument('--config=%s', $config['config_file']);
+        $arguments->addOptionalArgument('--format=%s', $config['format']);
         $arguments->addOptionalArgument('--stop-on-failure', $config['stop_on_failure']);
 
         $process = $this->processBuilder->buildProcess($arguments);

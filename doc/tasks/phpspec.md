@@ -9,6 +9,7 @@ parameters:
     tasks:
         phpspec:
             config_file: ~
+            format: ~
             stop_on_failure: false
 ```
 
@@ -17,6 +18,15 @@ parameters:
 *Default: null*
 
 If your phpspec.yml file is located at an exotic location, you can specify your custom config file location with this option.
+
+
+**format**
+
+*Default: null*
+
+You can overwrite the default `progress` format or the one specified in the `phpspec.yml` config file by configuring this option.
+
+[A list of all formatters](http://www.phpspec.net/en/stable/cookbook/configuration.html#formatter)
 
 
 **stop_on_failure**
