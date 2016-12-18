@@ -2,11 +2,8 @@
 
 namespace spec\GrumPHP\Collection;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use GrumPHP\Collection\TestSuiteCollection;
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Exception\InvalidArgumentException;
-use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\TestSuite\TestSuiteInterface;
 use PhpSpec\ObjectBehavior;
