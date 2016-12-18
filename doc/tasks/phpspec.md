@@ -11,7 +11,7 @@ parameters:
             config_file: ~
             format: ~
             stop_on_failure: false
-            vebrose: false
+            verbose: false
 ```
 
 **config_file**
