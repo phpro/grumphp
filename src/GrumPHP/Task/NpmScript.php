@@ -61,12 +61,10 @@ class NpmScript extends AbstractExternalTask
             return TaskResult::createSkipped($this, $context);
         }
 
-        $command = 'npm';
+        $arguments = $this->processBuilder->createArgumentsForCommand('npm');
         if (true === $config['is_run_task']) {
-            $command = 'npm run';
+            $arguments->addOptionalArgument('%s', 'run');
         }
-
-        $arguments = $this->processBuilder->createArgumentsForCommand($command);
         $arguments->addRequiredArgument('%s', $config['script']);
 
         $process = $this->processBuilder->buildProcess($arguments);
