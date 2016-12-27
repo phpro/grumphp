@@ -62,7 +62,7 @@ class NpmScript extends AbstractExternalTask
         }
 
         $arguments = $this->processBuilder->createArgumentsForCommand('npm');
-        $arguments->addOptionalArgument('run', $config['is_run_config']);
+        $arguments->addOptionalArgument('run', $config['is_run_task']);
         $arguments->addRequiredArgument('%s', $config['script']);
 
         $process = $this->processBuilder->buildProcess($arguments);
