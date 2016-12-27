@@ -31,11 +31,13 @@ class NpmScript extends AbstractExternalTask
             'script' => null,
             'triggered_by' => ['js', 'jsx', 'coffee', 'ts', 'less', 'sass', 'scss'],
             'working_directory' => './',
+            'is_run_task' => false,
         ]);
 
         $resolver->addAllowedTypes('script', ['string']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
         $resolver->addAllowedTypes('working_directory', ['string']);
+        $resolver->addAllowedTypes('is_run_task', ['bool']);
 
         return $resolver;
     }
@@ -60,6 +62,7 @@ class NpmScript extends AbstractExternalTask
         }
 
         $arguments = $this->processBuilder->createArgumentsForCommand('npm');
+        $arguments->addOptionalArgument('run', $config['is_run_task']);
         $arguments->addRequiredArgument('%s', $config['script']);
 
         $process = $this->processBuilder->buildProcess($arguments);

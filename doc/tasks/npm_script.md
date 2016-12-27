@@ -11,6 +11,7 @@ parameters:
             script: ~
             triggered_by: [js, jsx, coffee, ts, less, sass, scss]
             working_directory: "./"
+            is_run_task: false
 ```
 
 **script**
@@ -39,3 +40,9 @@ You can overwrite this option to whatever file you want to use!
 *Default: "./"*
 
 This option specifies in which directory the NPM script should be run.
+
+**is_run_task**
+
+*Default: false*
+
+This option will append 'run' to the npm command to make it possible to run custom npm scripts.
