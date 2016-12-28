@@ -28,7 +28,8 @@ class Phpdoc extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'config_file' => null,
             'target_folder' => null,
             'cache_folder' => null,
@@ -50,8 +51,8 @@ class Phpdoc extends AbstractExternalTask
             'quiet' => null,
             'ansi' => null,
             'no_ansi' => null,
-            'no_interaction' => null,
-        ]);
+            'no_interaction' => null]
+        );
 
         $resolver->addAllowedTypes('config_file', ['null', 'string']);
         $resolver->addAllowedTypes('target_folder', ['null', 'string']);
@@ -133,19 +134,27 @@ class Phpdoc extends AbstractExternalTask
         $trueTargetFolder = null;
 
         if ($process->isSuccessful() && $context instanceof GitPreCommitContext) {
-            if (($config['target_folder'])) {
-                $trueTargetFolder = $config['target_folder'];
-            } elseif ($config['config_file'] && file_exists($config['config_file'])) {
-                $xmlElement = new SimpleXMLElement(file_get_contents($config['config_file']));
-                $trueTargetFolder = $xmlElement->transformer->target;
-            } elseif (file_exists('phpdoc.xml')) {
-                $xmlElement = new SimpleXMLElement(file_get_contents('phpdoc.xml'));
-                $trueTargetFolder = $xmlElement->transformer->target;
-            } elseif (file_exists('phpdoc.dist.xml')) {
+            if (file_exists('phpdoc.dist.xml')) {
                 $xmlElement = new SimpleXMLElement(file_get_contents('phpdoc.dist.xml'));
                 $trueTargetFolder = $xmlElement->transformer->target;
-            } else {
-                $trueTargetFolder = 'output';
+            }
+
+            if (file_exists('phpdoc.xml')) {
+                $xmlElement = new SimpleXMLElement(file_get_contents('phpdoc.xml'));
+                $trueTargetFolder = $xmlElement->transformer->target;
+            }
+
+            if ($config['config_file'] && file_exists($config['config_file'])) {
+                $xmlElement = new SimpleXMLElement(file_get_contents($config['config_file']));
+                $trueTargetFolder = $xmlElement->transformer->target;
+            }
+
+            if (($config['target_folder'])) {
+                $trueTargetFolder = $config['target_folder'];
+            }
+
+            if (!file_exists('phpdoc.dist.xml') && !file_exists('phpdoc.xml') &&  !$config['config_file'] && !$config['target_folder']) {
+                 $trueTargetFolder = 'output';
             }
 
             $argumentsGit = $this->processBuilder->createArgumentsForCommand('git');
