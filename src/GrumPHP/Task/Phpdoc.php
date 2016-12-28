@@ -153,7 +153,11 @@ class Phpdoc extends AbstractExternalTask
                 $trueTargetFolder = $config['target_folder'];
             }
 
-            if (!file_exists('phpdoc.dist.xml') && !file_exists('phpdoc.xml') &&  !$config['config_file'] && !$config['target_folder']) {
+            if (!file_exists('phpdoc.dist.xml') 
+                && !file_exists('phpdoc.xml') 
+                && !$config['config_file'] 
+                && !$config['target_folder']
+            ) {
                  $trueTargetFolder = 'output';
             }
 
