@@ -144,6 +144,8 @@ class Phpdoc extends AbstractExternalTask
             } elseif (file_exists('phpdoc.dist.xml')) {
                 $xmlElement = new SimpleXMLElement(file_get_contents('phpdoc.dist.xml'));
                 $trueTargetFolder = $xmlElement->transformer->target;
+            } else {
+                $trueTargetFolder = 'output';
             }
 
             $argumentsGit = $this->processBuilder->createArgumentsForCommand('git');
