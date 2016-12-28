@@ -135,6 +135,10 @@ class Phpdoc extends AbstractExternalTask
 
             $processGit = $this->processBuilder->buildProcess($argumentsGit);
             $processGit->run();
+
+            if (!$processGit->isSuccessful()) {
+                return TaskResult::createFailed($this, $context, $this->formatter->format($processGit));
+            }
         }
 
         return TaskResult::createPassed($this, $context);
