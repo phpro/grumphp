@@ -214,6 +214,15 @@ services:
         tags:
           - {name: grumphp.task, config: phpcsfixer2}
 
+    task.phpdoc:
+            class: GrumPHP\Task\Phpdoc
+            arguments:
+                - '@config'
+                - '@process_builder'
+                - '@formatter.raw_process'
+            tags:
+                - {name: grumphp.task, config: phpdoc}
+
     task.phplint:
         class: GrumPHP\Task\PhpLint
         arguments:
