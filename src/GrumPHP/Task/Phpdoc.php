@@ -125,7 +125,7 @@ class Phpdoc extends AbstractExternalTask
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
 
-        if ($process->isSuccessful() && !$process->isRunning() && $context instanceof GitPreCommitContext) {
+        if ($process->isSuccessful() && $context instanceof GitPreCommitContext) {
             $argumentsGit = $this->processBuilder->createArgumentsForCommand('git');
             $argumentsGit->addOptionalArgumentWithSeparatedValue('add', $config['target_folder'] . '*');
 
