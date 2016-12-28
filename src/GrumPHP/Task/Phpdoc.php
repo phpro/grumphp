@@ -7,6 +7,7 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use SimpleXMLElement;
 
 /**
  * Phpdoc task
@@ -29,10 +30,10 @@ class Phpdoc extends AbstractExternalTask
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'config_file' => null,
-            'target_folder' => "doc/",
+            'target_folder' => null,
             'cache_folder' => null,
             'filename' => null,
-            'directory' => "src/",
+            'directory' => null,
             'encoding' => null,
             'extensions' => null,
             'ignore' => null,
@@ -99,7 +100,7 @@ class Phpdoc extends AbstractExternalTask
         $config = $this->getConfiguration();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('phpdoc');
-        $arguments->addOptionalArgumentWithSeparatedValue('--configuration', $config['config_file']);
+        $arguments->addOptionalArgumentWithSeparatedValue('--config', $config['config_file']);
         $arguments->addOptionalArgumentWithSeparatedValue('--target', $config['target_folder']);
         $arguments->addOptionalArgumentWithSeparatedValue('--cache-folder', $config['cache_folder']);
         $arguments->addOptionalArgumentWithSeparatedValue('--filename', $config['filename']);
@@ -129,9 +130,24 @@ class Phpdoc extends AbstractExternalTask
             return TaskResult::createFailed($this, $context, $this->formatter->format($process));
         }
 
+        $trueTargetFolder = null;
+
         if ($process->isSuccessful() && $context instanceof GitPreCommitContext) {
+            if (($config['target_folder'])) {
+                $trueTargetFolder = $config['target_folder'];
+            } elseif ($config['config_file'] && file_exists($config['config_file'])) {
+                $xmlElement = new SimpleXMLElement(file_get_contents($config['config_file']));
+                $trueTargetFolder = $xmlElement->transformer->target;
+            } elseif (file_exists('phpdoc.xml')) {
+                $xmlElement = new SimpleXMLElement(file_get_contents('phpdoc.xml'));
+                $trueTargetFolder = $xmlElement->transformer->target;
+            } elseif (file_exists('phpdoc.dist.xml')) {
+                $xmlElement = new SimpleXMLElement(file_get_contents('phpdoc.dist.xml'));
+                $trueTargetFolder = $xmlElement->transformer->target;
+            }
+
             $argumentsGit = $this->processBuilder->createArgumentsForCommand('git');
-            $argumentsGit->addOptionalArgumentWithSeparatedValue('add', $config['target_folder'] . '*');
+            $argumentsGit->addOptionalArgumentWithSeparatedValue('add', $trueTargetFolder . '*');
 
             $processGit = $this->processBuilder->buildProcess($argumentsGit);
             $processGit->run();
