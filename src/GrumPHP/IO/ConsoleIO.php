@@ -121,7 +121,7 @@ class ConsoleIO implements IOInterface
         }
 
         // When the input only consist of white space characters, we assume that there is no input.
-        $this->stdin = !preg_match('/^([\s]*)$/m', $input) ? $input : '';
+        $this->stdin = !preg_match_all('/^([\s]*)$/', $input) ? $input : '';
 
         return  $this->stdin;
     }
