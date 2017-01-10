@@ -110,6 +110,10 @@ class Application extends SymfonyConsole
             $container->get('config'),
             $container->get('locator.changed_files')
         );
+        $commands[] = new Command\Git\PrePushCommand(
+            $container->get('config'),
+            $container->get('locator.changed_files')
+        );
 
         return $commands;
     }
