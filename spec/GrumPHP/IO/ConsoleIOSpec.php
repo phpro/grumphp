@@ -88,9 +88,28 @@ class ConsoleIOSpec extends ObjectBehavior
         $this->readCommandInput($handle)->shouldBe('input');
     }
 
+    function it_reads_actual_diffs_from_input()
+    {
+        $diff = <<<EOD
+diff --git a/src/test.php b/src/test.php
+index 372bf10b74013301cfb4bf0e8007d208bb813363..d95f50da4a02d3d203bda1f3cb94e29d4f0ef481 100644
+--- a/src/test.php
++++ b/src/test.php
+@@ -2,3 +2,4 @@
+ 
+ 
+ 'something';
++'ok';
+
+EOD;
+
+        $handle = $this->mockHandle($diff);
+        $this->readCommandInput($handle)->shouldBe($diff);
+    }
+
     function it_knows_empty_command_input()
     {
-        $handle = $this->mockHandle("\r\n\t\f ");
+        $handle = $this->mockHandle(" \r\n\t\f ");
         $this->readCommandInput($handle)->shouldBe('');
     }
 
