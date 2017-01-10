@@ -26,7 +26,7 @@ use Symfony\Component\Process\ProcessBuilder;
 class Application extends SymfonyConsole
 {
     const APP_NAME = 'GrumPHP';
-    const APP_VERSION = '0.11.0';
+    const APP_VERSION = '0.11.1';
 
     /**
      * @var ContainerBuilder
