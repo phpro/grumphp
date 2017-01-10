@@ -162,7 +162,7 @@ This package has been tested with following git clients:
 
 ## Roadmap
 
-Lot's of tasks are already available to make sure your team writes great code.
+Lots of tasks are already available to make sure your team writes great code.
 There are still 1 major parts that are missing before we can release a v1.0.0:
 
 - [A PHAR executable](https://github.com/phpro//grumphp/issues/61)
