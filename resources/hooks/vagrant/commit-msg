@@ -37,12 +37,3 @@ vagrant ssh --command '$(which sh)' << COMMANDS
   rm \$VAGRANT_COMMIT_MSG_FILE
   exit \$RC
 COMMANDS
-
-# Validate exit code of above command
-RC=$?
-if [ "$RC" != 0 ]; then
-  exit $RC;
-fi
-
-# Clean exit:
-exit 0;

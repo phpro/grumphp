@@ -19,12 +19,3 @@ vagrant ssh --command '$(which sh)' << COMMANDS
 
   printf "%s\n" "\${DIFF}" | exec $(HOOK_COMMAND) '--ansi' '--skip-success-output'
 COMMANDS
-
-# Validate exit code of above command
-RC=$?
-if [ "$RC" != 0 ]; then
-  exit $RC;
-fi
-
-# Clean exit:
-exit 0;
