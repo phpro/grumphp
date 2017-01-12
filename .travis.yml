@@ -24,18 +24,19 @@ matrix:
   fast_finish: true
 
 before_install:
-  - composer selfupdate
+  - alias composer=composer\ --no-interaction && composer selfupdate
   - composer global require hirak/prestissimo
 
 install:
-  - if [ "$DEPENDENCIES" != "low" ]; then travis_retry composer update --no-progress --profile --prefer-dist --no-scripts --no-interaction; fi;
-  - if [ "$DEPENDENCIES" == "low" ]; then travis_retry composer update --no-progress --profile --prefer-lowest --no-scripts --no-interaction; fi;
+  - >
+    travis_retry composer update --no-progress --profile --no-scripts
+    $([[ $DEPENDENCIES = low ]] && echo --prefer-lowest)
 
 script:
-   - ./bin/grumphp run
+   - bin/grumphp run
 
 notifications:
   irc:
     skip_join: true
     channels:
-      - "chat.freenode.net#grumphp"
+      - chat.freenode.net#grumphp
