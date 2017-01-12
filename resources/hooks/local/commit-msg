@@ -14,12 +14,3 @@ DIFF=$(git diff -r -p -m -M --full-index --staged | cat)
 
 # Run GrumPHP
 (cd "${HOOK_EXEC_PATH}" && printf "%s\n" "${DIFF}" | exec $(HOOK_COMMAND) "--git-user=$GIT_USER" "--git-email=$GIT_EMAIL" "$COMMIT_MSG_FILE")
-
-# Validate exit code of above command
-RC=$?
-if [ "$RC" != 0 ]; then
-  exit $RC;
-fi
-
-# Clean exit:
-exit 0;
