@@ -5,7 +5,6 @@
 | New feature?  | yes/no
 | BC breaks?    | yes/no
 | Deprecations? | yes/no
-| Tests pass?   | yes/no
 | Documented?   | yes/no
 | Fixed tickets | comma-separated list of tickets fixed by the PR, if any
 
