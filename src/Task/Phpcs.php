@@ -6,6 +6,7 @@ use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
+use GrumPHP\Task\Context\GitPrePushContext;
 use GrumPHP\Task\Context\RunContext;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -59,7 +60,9 @@ class Phpcs extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context)
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return ($context instanceof GitPreCommitContext
+                || $context instanceof GitPrePushContext
+                || $context instanceof RunContext);
     }
 
     /**

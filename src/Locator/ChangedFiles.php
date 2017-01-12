@@ -6,6 +6,7 @@ use Gitonomy\Git\Diff\Diff;
 use Gitonomy\Git\Diff\File;
 use Gitonomy\Git\Repository;
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Task\Context\GitPrePushContext;
 use GrumPHP\Util\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -39,8 +40,20 @@ class ChangedFiles
     public function locateFromGitRepository()
     {
         $diff = $this->repository->getWorkingCopy()->getDiffStaged();
+//      if($context instanceof GitPrePushContext ) {
+        $actualbranch = trim(shell_exec('git name-rev --name-only HEAD'));
+        $diff = explode("\n",trim(shell_exec('git diff --name-only origin/' . $actualbranch . '..HEAD --oneline')));
+        foreach ($diff as $file) {
+            $fileObject = new SplFileInfo($file, dirname($file), $file);
+            $files[] = $fileObject;
+        }
 
-        return $this->parseFilesFromDiff($diff);
+        $diff = new FilesCollection($files);
+//      }
+        if($diff instanceof Gitonomy\Git\Diff\Diff) {
+            return $this->parseFilesFromDiff($diff);
+        }
+        return $diff;
     }
 
     /**

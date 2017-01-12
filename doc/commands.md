@@ -26,6 +26,7 @@ GrumPHP will be triggered with GIT hooks. However, you can run following command
 ```sh
 php ./vendor/bin/grumphp git:pre-commit
 php ./vendor/bin/grumphp git:commit-msg
+php ./vendor/bin/grumphp git:pre-push
 ```
 
 Both commands support raw git diffs as STDIN input. 

@@ -1,0 +1,18 @@
+#!/bin/sh
+
+GIT_CURRENT_BRANCH=$(git name-rev --name-only HEAD)
+
+# Fetch the GIT diff and format it as command input:
+DIFF=git diff --name-only origin/"$GIT_CURRENT_BRANCH"..HEAD --oneline
+
+# Run GrumPHP
+(cd "./" && printf "%s\n" "${DIFF}" | exec 'vendor/phpro/grumphp/bin/grumphp' 'git:pre-push')
+
+# Validate exit code of above command
+RC=$?
+if [ "$RC" != 0 ]; then
+  exit $RC;
+fi
+
+# Clean exit:
+exit 0;

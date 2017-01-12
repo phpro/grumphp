@@ -146,6 +146,7 @@ Since GrumPHP is just a CLI tool, these commands can be triggered:
 - [git:deinit](doc/commands.md#installation)
 - [git:pre-commit](doc/commands.md#git-hooks)
 - [git:commit-msg](doc/commands.md#git-hooks)
+- [git:pre-push](doc/commands.md#git-hooks)
 - [run](doc/commands.md#run)
 
 ## Compatibility
