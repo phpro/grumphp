@@ -5,11 +5,6 @@ namespace GrumPHPTest\Parser\Php\Visitor;
 use GrumPHP\Parser\ParseError;
 use GrumPHP\Parser\Php\Visitor\NoExitStatementsVisitor;
 
-/**
- * Class NoExitStatementsVisitorTest
- *
- * @package GrumPHPTest\Parser\Php\Visitor
- */
 class NoExitStatementsVisitorTest extends AbstractVisitorTest
 {
     /**

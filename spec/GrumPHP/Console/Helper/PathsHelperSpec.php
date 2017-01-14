@@ -11,16 +11,13 @@ use Symfony\Component\Console\Helper\Helper;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-/**
- * Class PathsHelperSpec
- */
 class PathsHelperSpec extends ObjectBehavior
 {
     function let(GrumPHP $config, Filesystem $filesystem, ExternalCommand $externalCommandLocator)
     {
         $this->beConstructedWith($config, $filesystem, $externalCommandLocator, '/grumphp.yml');
     }
-    
+
     function it_is_a_console_helper()
     {
         $this->shouldHaveType(Helper::class);

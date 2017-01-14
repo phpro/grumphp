@@ -7,10 +7,6 @@ use DateTime;
 use GrumPHP\Util\PhpVersion;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class PhpVersionSpec
- * @package spec\GrumPHP\Util
- */
 class PhpVersionSpec extends ObjectBehavior
 {
     function let(PhpVersion $phpVersion)

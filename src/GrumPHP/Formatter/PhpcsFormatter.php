@@ -6,11 +6,6 @@ use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Process\ProcessBuilder;
 use Symfony\Component\Process\Process;
 
-/**
- * Class PhpcsFormatter
- *
- * @package GrumPHP\Formatter
- */
 class PhpcsFormatter implements ProcessFormatterInterface
 {
     /**

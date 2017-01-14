@@ -12,9 +12,6 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
 
-/**
- * Class ProcessBuilderSpec
- */
 class ProcessBuilderSpec extends ObjectBehavior
 {
     function let(GrumPHP $config, ExternalCommand $externalCommandLocator, IOInterface $io)

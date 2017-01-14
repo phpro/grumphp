@@ -6,9 +6,6 @@ use GrumPHP\Linter\LintError;
 use GrumPHP\Linter\Yaml\YamlLintError;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class YamlLintErrorSpec
- */
 class YamlLintErrorSpec extends ObjectBehavior
 {
     function let()

@@ -8,9 +8,6 @@ use SplFileInfo;
 use SplFileObject;
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 
-/**
- * Class FilesystemSpec
- */
 class FilesystemSpec extends ObjectBehavior
 {
     function it_is_initializable()

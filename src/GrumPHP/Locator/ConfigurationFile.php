@@ -5,11 +5,6 @@ namespace GrumPHP\Locator;
 use Composer\Package\PackageInterface;
 use GrumPHP\Util\Filesystem;
 
-/**
- * Class ConfigurationFile
- *
- * @package GrumPHP\Locator
- */
 class ConfigurationFile
 {
     const APP_CONFIG_FILE = 'grumphp.yml';

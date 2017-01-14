@@ -8,9 +8,6 @@ use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\Event;
 
-/**
- * Class TaskEventSpec
- */
 class TaskEventSpec extends ObjectBehavior
 {
 

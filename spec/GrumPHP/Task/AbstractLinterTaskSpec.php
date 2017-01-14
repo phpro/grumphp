@@ -5,9 +5,6 @@ namespace spec\GrumPHP\Task;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class AbstractLinterTaskSpec
- */
 abstract class AbstractLinterTaskSpec extends ObjectBehavior
 {
 

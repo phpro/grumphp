@@ -6,9 +6,6 @@ use GrumPHP\IO\IOInterface;
 use GrumPHP\IO\NullIO;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class NullIOSpec
- */
 class NullIOSpec extends ObjectBehavior
 {
     function it_is_initializable()

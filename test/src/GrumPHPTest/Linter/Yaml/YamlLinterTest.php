@@ -10,11 +10,6 @@ use PHPUnit_Framework_TestCase;
 use RuntimeException;
 use SplFileInfo;
 
-/**
- * Class YamlLinterTest
- *
- * @package GrumPHPTest\Linter\Yaml
- */
 class YamlLinterTest extends PHPUnit_Framework_TestCase
 {
     /**

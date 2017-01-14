@@ -6,11 +6,6 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use Symfony\Component\EventDispatcher\Event;
 
-/**
- * Class TaskEvent
- *
- * @package GrumPHP\Event
- */
 class TaskEvent extends Event
 {
     /**

@@ -12,11 +12,6 @@ use Composer\Repository\RepositoryFactory;
 use Exception;
 use GrumPHP\Exception\RuntimeException;
 
-/**
- * Class Composer
- *
- * @package GrumPHP\Util
- */
 class Composer
 {
 

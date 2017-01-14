@@ -5,11 +5,6 @@ namespace GrumPHP\Parser\Php\Factory;
 use GrumPHP\Task\PhpParser;
 use PhpParser\ParserFactory as PhpParserFactory;
 
-/**
- * Class ParserFactory
- *
- * @package GrumPHP\Parser\Php\Factory
- */
 class ParserFactory
 {
     /**

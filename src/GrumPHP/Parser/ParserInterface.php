@@ -5,11 +5,6 @@ namespace GrumPHP\Parser;
 use GrumPHP\Collection\ParseErrorsCollection;
 use SplFileInfo;
 
-/**
- * Interface ParserInterface
- *
- * @package GrumPHP\Parser
- */
 interface ParserInterface
 {
     /**

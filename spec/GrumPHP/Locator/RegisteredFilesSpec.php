@@ -7,9 +7,6 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Locator\RegisteredFiles;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class RegisteredFilesSpec
- */
 class RegisteredFilesSpec extends ObjectBehavior
 {
     function let(Repository $repository)

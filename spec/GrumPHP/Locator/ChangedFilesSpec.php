@@ -12,9 +12,6 @@ use GrumPHP\Util\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Prophet;
 
-/**
- * Class ChangedFilesSpec
- */
 class ChangedFilesSpec extends ObjectBehavior
 {
     function let(Repository $repository, Filesystem $filesystem)

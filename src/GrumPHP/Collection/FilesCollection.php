@@ -12,8 +12,6 @@ use Traversable;
 
 /**
  * Class FileSequence
- *
- * @package GrumPHP\Collection
  */
 class FilesCollection extends ArrayCollection
 {

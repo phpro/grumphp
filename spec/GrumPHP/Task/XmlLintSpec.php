@@ -18,9 +18,6 @@ use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class XmlLintSpec
- */
 class XmlLintSpec extends AbstractLinterTaskSpec
 {
     function let(GrumPHP $grumPHP, XmlLinter $linter)
@@ -69,7 +66,7 @@ class XmlLintSpec extends AbstractLinterTaskSpec
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf(TaskResultInterface::class);
-        $result->getResultCode()->shouldBe(TaskResult::SKIPPED);        
+        $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
     function it_runs_the_suite(XmlLinter $linter, ContextInterface $context)

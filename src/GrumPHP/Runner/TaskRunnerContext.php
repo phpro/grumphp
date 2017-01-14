@@ -5,11 +5,6 @@ namespace GrumPHP\Runner;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\TestSuite\TestSuiteInterface;
 
-/**
- * Class TaskRunnerContext
- *
- * @package GrumPHP\Runner
- */
 class TaskRunnerContext
 {
 

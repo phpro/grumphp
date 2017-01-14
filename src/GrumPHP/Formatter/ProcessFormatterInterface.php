@@ -5,8 +5,6 @@ use Symfony\Component\Process\Process;
 
 /**
  * Class RawProcessFormatter
- *
- * @package GrumPHP\Formatter
  */
 interface ProcessFormatterInterface
 {

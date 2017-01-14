@@ -6,11 +6,6 @@ use GrumPHP\Parser\ParseError;
 use GrumPHP\Parser\Php\Visitor\ConfigurableVisitorInterface;
 use GrumPHP\Parser\Php\Visitor\ForbiddenFunctionCallsVisitor;
 
-/**
- * Class ForbiddenFunctionCallsVisitorTest
- *
- * @package GrumPHPTest\Parser\Php\Visitor
- */
 class ForbiddenFunctionCallsVisitorTest extends AbstractVisitorTest
 {
     /**

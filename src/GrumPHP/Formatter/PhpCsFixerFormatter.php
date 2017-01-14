@@ -5,11 +5,6 @@ namespace GrumPHP\Formatter;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
 
-/**
- * Class PhpCsFixerFormatter
- *
- * @package GrumPHP\Formatter
- */
 class PhpCsFixerFormatter implements ProcessFormatterInterface
 {
     /**

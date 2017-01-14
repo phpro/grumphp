@@ -5,9 +5,6 @@ namespace spec\GrumPHP\Parser;
 use GrumPHP\Parser\ParseError;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class ParseErrorSpec
- */
 class ParseErrorSpec extends ObjectBehavior
 {
     function let()

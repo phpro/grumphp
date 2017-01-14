@@ -14,8 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Git Blacklist Task
- *
- * @package GrumPHP\Task\Git
  */
 class Blacklist extends AbstractExternalTask
 {

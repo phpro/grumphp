@@ -8,9 +8,6 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
 
-/**
- * Class PhpCsFixerFormatterSpec
- */
 class PhpCsFixerFormatterSpec extends ObjectBehavior
 {
     function it_is_initializable()

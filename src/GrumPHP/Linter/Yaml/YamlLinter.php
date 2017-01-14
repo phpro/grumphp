@@ -10,11 +10,6 @@ use SplFileInfo;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
-/**
- * Class YamlLinter
- *
- * @package GrumPHP\Linter\Yaml
- */
 class YamlLinter implements LinterInterface
 {
 

@@ -6,11 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use GrumPHP\Exception\InvalidArgumentException;
 use GrumPHP\TestSuite\TestSuiteInterface;
 
-/**
- * Class TestSuiteCollection
- *
- * @package GrumPHP\Collection
- */
 class TestSuiteCollection extends ArrayCollection
 {
 

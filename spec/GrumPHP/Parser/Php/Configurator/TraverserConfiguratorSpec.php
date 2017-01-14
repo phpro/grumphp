@@ -12,9 +12,6 @@ use PhpParser\NodeVisitor;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/**
- * Class TraverserConfiguratorSpec
- */
 class TraverserConfiguratorSpec extends ObjectBehavior
 {
     function let(ContainerInterface $container)

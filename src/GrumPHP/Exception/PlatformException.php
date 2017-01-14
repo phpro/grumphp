@@ -6,11 +6,6 @@ namespace GrumPHP\Exception;
 use GrumPHP\Util\Platform;
 use Symfony\Component\Process\Process;
 
-/**
- * Class PlatformException
- *
- * @package GrumPHP\Exception
- */
 class PlatformException extends RuntimeException
 {
     /**

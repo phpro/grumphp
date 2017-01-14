@@ -6,11 +6,6 @@ use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Interface TaskInterface
- *
- * @package GrumPHP\Task
- */
 interface TaskInterface
 {
 

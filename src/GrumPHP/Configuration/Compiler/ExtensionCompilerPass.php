@@ -7,11 +7,6 @@ use GrumPHP\Extension\ExtensionInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-/**
- * Class ExtensionCompilerPass
- *
- * @package GrumPHP\Configuration\Compiler
- */
 class ExtensionCompilerPass implements CompilerPassInterface
 {
     /**

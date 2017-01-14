@@ -7,11 +7,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Class ConsoleIO
- *
- * @package GrumPHP\IO
- */
 class ConsoleIO implements IOInterface
 {
     /**
@@ -114,7 +109,7 @@ class ConsoleIO implements IOInterface
         if ($this->stdin !== null || ftell($handle) !== 0) {
             return $this->stdin;
         }
-        
+
         $input = '';
         while (!feof($handle)) {
             $input .= fread($handle, 1024);

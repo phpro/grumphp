@@ -2,11 +2,6 @@
 
 namespace GrumPHP\Parser;
 
-/**
- * Class ParseError
- *
- * @package GrumPHP\Parser
- */
 class ParseError
 {
     const TYPE_NOTICE = 'notice';

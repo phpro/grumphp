@@ -12,11 +12,6 @@ use PhpParser\Error;
 use PhpParser\Parser;
 use SplFileInfo;
 
-/**
- * Class PhpParser
- *
- * @package GrumPHP\Parser\Php
- */
 class PhpParser implements ParserInterface
 {
     /**

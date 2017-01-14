@@ -17,11 +17,6 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * Class TaskRunner
- *
- * @package GrumPHP\Runner
- */
 class TaskRunner
 {
     /**
@@ -134,7 +129,7 @@ class TaskRunner
         } catch (RuntimeException $e) {
             $result = TaskResult::createFailed($task, $context, $e->getMessage());
         }
-        
+
         if (!$result instanceof TaskResultInterface) {
             throw RuntimeException::invalidTaskReturnType($task);
         }
@@ -146,7 +141,7 @@ class TaskRunner
                 $result->getMessage()
             );
         }
-        
+
         if (!$result->isPassed()) {
             $e = new RuntimeException($result->getMessage());
             $this->eventDispatcher->dispatch(TaskEvents::TASK_FAILED, new TaskFailedEvent($task, $context, $e));

@@ -6,9 +6,6 @@ use GrumPHP\TestSuite\TestSuiteInterface;
 use PhpSpec\ObjectBehavior;
 use GrumPHP\TestSuite\TestSuite;
 
-/**
- * Class TestSuiteSpec
- */
 class TestSuiteSpec extends ObjectBehavior
 {
     function let()

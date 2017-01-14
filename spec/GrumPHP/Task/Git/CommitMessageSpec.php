@@ -10,9 +10,6 @@ use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class CommitMessageSpec
- */
 class CommitMessageSpec extends ObjectBehavior
 {
     function let(GrumPHP $grumPHP)

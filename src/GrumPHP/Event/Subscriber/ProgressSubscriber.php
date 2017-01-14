@@ -11,11 +11,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use ReflectionClass;
 
-/**
- * Class ProgressSubscriber
- *
- * @package GrumPHP\Event\Subscriber
- */
 class ProgressSubscriber implements EventSubscriberInterface
 {
     /**

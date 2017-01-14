@@ -7,11 +7,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-/**
- * Class PhpParserCompilerPass
- *
- * @package GrumPHP\Configuration\Compiler
- */
 class PhpParserCompilerPass implements CompilerPassInterface
 {
     const TAG = 'php_parser.visitor';

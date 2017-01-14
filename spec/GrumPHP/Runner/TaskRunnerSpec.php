@@ -21,9 +21,6 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * Class TaskRunnerSpec
- */
 class TaskRunnerSpec extends ObjectBehavior
 {
 

@@ -4,11 +4,6 @@ namespace GrumPHP\Task\Context;
 
 use GrumPHP\Collection\FilesCollection;
 
-/**
- * Class RunContext
- *
- * @package GrumPHP\Task\Context
- */
 class RunContext implements ContextInterface
 {
     /**

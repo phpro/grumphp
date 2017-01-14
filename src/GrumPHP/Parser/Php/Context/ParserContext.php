@@ -5,11 +5,6 @@ namespace GrumPHP\Parser\Php\Context;
 use GrumPHP\Collection\ParseErrorsCollection;
 use SplFileInfo;
 
-/**
- * Class ParserContext
- *
- * @package GrumPHP\Parser\Php\Context
- */
 class ParserContext
 {
     /**

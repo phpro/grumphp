@@ -7,9 +7,6 @@ use GrumPHP\Parser\Php\PhpParserError;
 use PhpParser\Error;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class PhpParserErrorSpec
- */
 class PhpParserErrorSpec extends ObjectBehavior
 {
     function let()

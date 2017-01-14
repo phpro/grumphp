@@ -7,9 +7,6 @@ use GrumPHP\Linter\Yaml\YamlLinter;
 use GrumPHP\Util\Filesystem;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class YamlLinterSpec
- */
 class YamlLinterSpec extends ObjectBehavior
 {
     function let(Filesystem $filesystem)

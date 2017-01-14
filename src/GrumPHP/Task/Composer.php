@@ -15,8 +15,6 @@ use SplFileInfo;
 
 /**
  * Composer task
- *
- * @package GrumPHP\Task
  */
 class Composer extends AbstractExternalTask
 {

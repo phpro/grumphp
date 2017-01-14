@@ -5,11 +5,6 @@ namespace GrumPHP\Parser\Php\Visitor;
 use GrumPHP\Parser\ParseError;
 use PhpParser\Node;
 
-/**
- * Class NeverUseElseVisitor
- *
- * @package GrumPHP\Parser\Php\Visitor
- */
 class NeverUseElseVisitor extends AbstractVisitor
 {
     /**

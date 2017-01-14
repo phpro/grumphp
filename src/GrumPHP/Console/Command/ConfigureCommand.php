@@ -20,11 +20,6 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Yaml\Yaml;
 
-/**
- * Class ConfigureCommand
- *
- * @package GrumPHP\Console\Command
- */
 class ConfigureCommand extends Command
 {
     const COMMAND_NAME = 'configure';

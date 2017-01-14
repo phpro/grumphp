@@ -7,9 +7,6 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class GitCommitMsgContextSpec
- */
 class GitCommitMsgContextSpec extends ObjectBehavior
 {
     /**

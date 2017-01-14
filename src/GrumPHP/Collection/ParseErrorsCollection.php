@@ -4,11 +4,6 @@ namespace GrumPHP\Collection;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * Class ParseErrorsCollection
- *
- * @package GrumPHP\Collection
- */
 class ParseErrorsCollection extends ArrayCollection
 {
     /**

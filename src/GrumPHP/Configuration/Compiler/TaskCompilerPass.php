@@ -8,11 +8,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class TaskCompilerPass
- *
- * @package GrumPHP\Configuration\Compiler
- */
 class TaskCompilerPass implements CompilerPassInterface
 {
 

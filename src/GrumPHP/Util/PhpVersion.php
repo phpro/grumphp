@@ -4,10 +4,6 @@ namespace GrumPHP\Util;
 
 use DateTime;
 
-/**
- * Class PhpVersion
- * @package GrumPHP\Util
- */
 class PhpVersion
 {
 

@@ -8,9 +8,6 @@ use GrumPHP\Exception\InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
 use SplFileInfo;
 
-/**
- * Class ProcessArgumentsCollectionSpec
- */
 class ProcessArgumentsCollectionSpec extends ObjectBehavior
 {
     function it_is_initializable()

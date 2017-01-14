@@ -6,11 +6,6 @@ use GrumPHP\Parser\ParseError;
 use PhpParser\Node;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class ForbiddenStaticMethodCallsVisitor
- *
- * @package GrumPHP\Parser\Php\Visitor
- */
 class ForbiddenStaticMethodCallsVisitor extends AbstractVisitor implements ConfigurableVisitorInterface
 {
     /**

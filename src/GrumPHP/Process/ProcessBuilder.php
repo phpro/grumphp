@@ -11,11 +11,6 @@ use GrumPHP\Util\Platform;
 use Symfony\Component\Process\Process;
 use \Symfony\Component\Process\ProcessBuilder as SymfonyProcessBuilder;
 
-/**
- * Class ProcessBuilder
- *
- * @package GrumPHP\Process
- */
 class ProcessBuilder
 {
 

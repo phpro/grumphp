@@ -8,9 +8,6 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class TaskResultCollectionSpec
- */
 class TaskResultCollectionSpec extends ObjectBehavior
 {
     function it_is_initializable()

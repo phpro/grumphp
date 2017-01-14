@@ -5,11 +5,6 @@ namespace GrumPHP\Locator;
 use GrumPHP\Exception\RuntimeException;
 use Symfony\Component\Process\ExecutableFinder;
 
-/**
- * Class ExternalCommand
- *
- * @package GrumPHP\Locator
- */
 class ExternalCommand
 {
     /**

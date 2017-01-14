@@ -3,11 +3,6 @@
 
 namespace GrumPHP\Util;
 
-/**
- * Class Platform
- *
- * @package GrumPHP\Util
- */
 class Platform
 {
     /**

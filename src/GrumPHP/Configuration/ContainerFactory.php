@@ -10,11 +10,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 
-/**
- * Class ContainerFactory
- *
- * @package GrumPHP\Configuration
- */
 final class ContainerFactory
 {
     /**

@@ -21,11 +21,6 @@ use GrumPHP\Locator\ExternalCommand;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\ProcessBuilder;
 
-/**
- * Class GrumPHPPlugin
- *
- * @package GrumPHP\Composer
- */
 class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 {
     const PACKAGE_NAME = 'phpro/grumphp';

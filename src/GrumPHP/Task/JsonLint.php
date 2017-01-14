@@ -10,11 +10,6 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class JsonLint
- *
- * @package GrumPHP\Task
- */
 class JsonLint extends AbstractLinterTask
 {
     /**
@@ -71,7 +66,7 @@ class JsonLint extends AbstractLinterTask
         } catch (RuntimeException $e) {
             return TaskResult::createFailed($this, $context, $e->getMessage());
         }
-        
+
         if ($lintErrors->count()) {
             return TaskResult::createFailed($this, $context, (string) $lintErrors);
         }

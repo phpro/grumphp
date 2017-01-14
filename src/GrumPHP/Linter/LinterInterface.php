@@ -5,11 +5,6 @@ namespace GrumPHP\Linter;
 use GrumPHP\Collection\LintErrorsCollection;
 use SplFileInfo;
 
-/**
- * Interface LinterInterface
- *
- * @package GrumPHP\Linter
- */
 interface LinterInterface
 {
     /**

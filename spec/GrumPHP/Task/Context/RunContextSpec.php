@@ -7,9 +7,6 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\RunContext;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class RunContextSpec
- */
 class RunContextSpec extends ObjectBehavior
 {
     function let(FilesCollection $files)

@@ -15,8 +15,6 @@ use GrumPHP\Task\Context\RunContext;
 
 /**
  * Class PhpCsFixerRunner
- *
- * @package GrumPHP\Task
  */
 abstract class AbstractPhpCsFixerTask implements TaskInterface
 {

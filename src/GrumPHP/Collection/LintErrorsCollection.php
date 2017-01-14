@@ -4,11 +4,6 @@ namespace GrumPHP\Collection;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * Class LintErrorsCollection
- *
- * @package GrumPHP\Collection
- */
 class LintErrorsCollection extends ArrayCollection
 {
     /**

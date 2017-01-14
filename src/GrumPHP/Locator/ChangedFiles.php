@@ -11,8 +11,6 @@ use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Class Git
- *
- * @package GrumPHP\Locator
  */
 class ChangedFiles
 {

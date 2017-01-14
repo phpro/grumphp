@@ -2,11 +2,6 @@
 
 namespace GrumPHP\Event;
 
-/**
- * Class TaskEvents
- *
- * @package GrumPHP\Event
- */
 final class TaskEvents
 {
     const TASK_RUN = 'grumphp.task.run';

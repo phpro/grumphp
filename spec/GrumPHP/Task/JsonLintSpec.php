@@ -18,9 +18,6 @@ use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class JsonLintSpec
- */
 class JsonLintSpec extends AbstractLinterTaskSpec
 {
     function let(GrumPHP $grumPHP, JsonLinter $linter)
