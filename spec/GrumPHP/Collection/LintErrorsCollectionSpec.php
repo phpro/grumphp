@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Linter\LintError;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * Class LintErrorsCollectionSpec

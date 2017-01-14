@@ -2,9 +2,7 @@
 
 namespace spec\GrumPHP\Util;
 
-use GrumPHP\Util\Regex;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * Class RegexSpec

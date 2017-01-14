@@ -10,7 +10,6 @@ use GrumPHP\Parser\Php\Visitor\ContextAwareVisitorInterface;
 use PhpParser\NodeTraverserInterface;
 use PhpParser\NodeVisitor;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -27,8 +26,8 @@ class TraverserConfiguratorSpec extends ObjectBehavior
     {
         $this->shouldHaveType(TraverserConfigurator::class);
     }
-    
-    
+
+
     function it_throws_an_exception_if_a_context_is_not_set(NodeTraverserInterface $traverser)
     {
         $this->registerOptions(['visitors' => []]);
@@ -40,7 +39,7 @@ class TraverserConfiguratorSpec extends ObjectBehavior
         $this->registerContext($context);
         $this->shouldThrow(RuntimeException::class)->duringConfigure($traverser);
     }
-    
+
     function it_loads_standard_enabled_visitors(
         ContainerInterface $container,
         ParserContext $context,
@@ -58,7 +57,7 @@ class TraverserConfiguratorSpec extends ObjectBehavior
 
         $this->configure($traverser);
     }
-    
+
     function it_loads_configured_visitors_from_task_configuration(
         ContainerInterface $container,
         ParserContext $context,
@@ -79,7 +78,7 @@ class TraverserConfiguratorSpec extends ObjectBehavior
 
         $this->configure($traverser);
     }
-    
+
     function it_throws_an_exception_if_the_configured_visitor_could_not_be_found(
         ParserContext $context,
         NodeTraverserInterface $traverser
@@ -94,7 +93,7 @@ class TraverserConfiguratorSpec extends ObjectBehavior
 
         $this->shouldThrow(RuntimeException::class)->duringConfigure($traverser);
     }
-    
+
     function it_does_not_load_unused_visitors(
         ContainerInterface $container,
         ParserContext $context,

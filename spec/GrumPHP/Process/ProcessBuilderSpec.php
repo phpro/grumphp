@@ -9,7 +9,6 @@ use GrumPHP\Locator\ExternalCommand;
 use GrumPHP\Process\ProcessBuilder;
 use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
 

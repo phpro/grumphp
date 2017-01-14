@@ -6,7 +6,6 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * Class GitCommitMsgContextSpec

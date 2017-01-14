@@ -4,7 +4,6 @@ namespace spec\GrumPHP\Exception;
 
 use GrumPHP\Exception\RuntimeException;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use GrumPHP\Exception\InvalidArgumentException;
 
 /**

@@ -13,7 +13,6 @@ use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
-use GrumPHP\Task\PhpCsFixer;
 use GrumPHP\Task\PhpCsFixerV2;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

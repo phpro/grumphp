@@ -6,7 +6,6 @@ use GrumPHP\Event\TaskEvent;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\Event;
 
 /**

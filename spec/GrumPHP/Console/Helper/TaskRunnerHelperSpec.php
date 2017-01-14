@@ -2,7 +2,6 @@
 
 namespace spec\GrumPHP\Console\Helper;
 
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\Event\Subscriber\ProgressSubscriber;

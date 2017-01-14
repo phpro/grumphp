@@ -6,7 +6,6 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Exception\InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use SplFileInfo;
 
 /**

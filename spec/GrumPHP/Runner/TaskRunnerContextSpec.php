@@ -5,7 +5,6 @@ namespace spec\GrumPHP\Runner;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\TestSuite\TestSuiteInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use GrumPHP\Runner\TaskRunnerContext;
 
 /**

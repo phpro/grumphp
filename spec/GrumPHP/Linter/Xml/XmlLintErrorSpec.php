@@ -5,7 +5,6 @@ namespace spec\GrumPHP\Linter\Xml;
 use GrumPHP\Linter\LintError;
 use GrumPHP\Linter\Xml\XmlLintError;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * Class XmlLintErrorSpec

@@ -10,7 +10,6 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Locator\ChangedFiles;
 use GrumPHP\Util\Filesystem;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Prophecy\Prophet;
 
 /**

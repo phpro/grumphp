@@ -8,7 +8,6 @@ use GrumPHP\Event\TaskFailedEvent;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * Class TaskFailedEventSpec

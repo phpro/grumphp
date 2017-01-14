@@ -15,8 +15,6 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Util\Filesystem;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use SplFileObject;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;

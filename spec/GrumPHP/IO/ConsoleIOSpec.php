@@ -6,7 +6,6 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\IO\ConsoleIO;
 use GrumPHP\IO\IOInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;

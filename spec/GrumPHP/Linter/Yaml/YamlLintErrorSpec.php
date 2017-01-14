@@ -5,7 +5,6 @@ namespace spec\GrumPHP\Linter\Yaml;
 use GrumPHP\Linter\LintError;
 use GrumPHP\Linter\Yaml\YamlLintError;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * Class YamlLintErrorSpec
