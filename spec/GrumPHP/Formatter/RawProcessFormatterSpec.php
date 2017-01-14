@@ -5,7 +5,6 @@ namespace spec\GrumPHP\Formatter;
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Formatter\RawProcessFormatter;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Process\Process;
 
 /**

@@ -7,7 +7,6 @@ use Composer\DependencyResolver\Operation\InstallOperation;
 use Composer\DependencyResolver\Operation\UninstallOperation;
 use Composer\DependencyResolver\Operation\UpdateOperation;
 use Composer\EventDispatcher\EventSubscriberInterface;
-use Composer\Installer;
 use Composer\Installer\PackageEvents;
 use Composer\Installer\PackageEvent;
 use Composer\IO\IOInterface;

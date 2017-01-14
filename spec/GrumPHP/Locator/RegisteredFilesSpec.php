@@ -6,7 +6,6 @@ use Gitonomy\Git\Repository;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Locator\RegisteredFiles;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * Class RegisteredFilesSpec

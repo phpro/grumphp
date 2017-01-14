@@ -5,7 +5,6 @@ namespace spec\GrumPHP\Linter\Xml;
 use GrumPHP\Linter\LinterInterface;
 use GrumPHP\Linter\Xml\XmlLinter;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * Class XmlLinterSpec

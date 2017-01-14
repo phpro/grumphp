@@ -6,7 +6,6 @@ use ArrayIterator;
 use Doctrine\Common\Collections\ArrayCollection;
 use GrumPHP\Collection\FilesCollection;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**

@@ -4,7 +4,6 @@ namespace spec\GrumPHP\Linter;
 
 use GrumPHP\Linter\LintError;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * Class LintErrorSpec

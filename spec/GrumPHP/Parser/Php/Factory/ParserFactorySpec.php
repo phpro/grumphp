@@ -6,7 +6,6 @@ use GrumPHP\Parser\Php\Factory\ParserFactory;
 use GrumPHP\Task\PhpParser;
 use PhpParser\Parser;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * Class ParserFactorySpec

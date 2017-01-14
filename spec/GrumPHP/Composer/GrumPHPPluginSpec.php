@@ -6,7 +6,6 @@ use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Plugin\PluginInterface;
 use GrumPHP\Composer\GrumPHPPlugin;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * Class GrumPHPPluginSpec

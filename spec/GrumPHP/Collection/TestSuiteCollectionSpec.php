@@ -7,7 +7,6 @@ use GrumPHP\Exception\InvalidArgumentException;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\TestSuite\TestSuiteInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * Class TestSuiteCollectionSpec

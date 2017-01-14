@@ -6,7 +6,6 @@ use Composer\Config;
 use Composer\Package\RootPackage;
 use GrumPHP\Console\Helper\ComposerHelper;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Console\Helper\Helper;
 
 /**

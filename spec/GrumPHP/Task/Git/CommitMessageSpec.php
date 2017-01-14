@@ -8,7 +8,6 @@ use GrumPHP\Task\Context\GitCommitMsgContext;
 use GrumPHP\Task\Git\CommitMessage;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

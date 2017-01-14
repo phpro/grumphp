@@ -4,7 +4,6 @@ namespace spec\GrumPHP\TestSuite;
 
 use GrumPHP\TestSuite\TestSuiteInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use GrumPHP\TestSuite\TestSuite;
 
 /**

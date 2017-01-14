@@ -5,7 +5,6 @@ namespace spec\GrumPHP\Locator;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Locator\ExternalCommand;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Process\ExecutableFinder;
 
 /**

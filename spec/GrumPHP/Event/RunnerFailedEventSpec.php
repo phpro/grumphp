@@ -9,7 +9,6 @@ use GrumPHP\Event\RunnerFailedEvent;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * Class RunnerFailedEventSpec

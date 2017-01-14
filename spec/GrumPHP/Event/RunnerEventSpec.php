@@ -7,7 +7,6 @@ use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Task\Context\ContextInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\Event;
 
 /**

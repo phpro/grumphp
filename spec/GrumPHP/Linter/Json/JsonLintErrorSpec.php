@@ -5,7 +5,6 @@ namespace spec\GrumPHP\Linter\Json;
 use GrumPHP\Linter\Json\JsonLintError;
 use GrumPHP\Linter\LintError;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * Class JsonLintErrorSpec

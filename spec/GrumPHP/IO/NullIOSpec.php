@@ -5,7 +5,6 @@ namespace spec\GrumPHP\IO;
 use GrumPHP\IO\IOInterface;
 use GrumPHP\IO\NullIO;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * Class NullIOSpec

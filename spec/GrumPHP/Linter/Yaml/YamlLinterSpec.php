@@ -6,7 +6,6 @@ use GrumPHP\Linter\LinterInterface;
 use GrumPHP\Linter\Yaml\YamlLinter;
 use GrumPHP\Util\Filesystem;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * Class YamlLinterSpec

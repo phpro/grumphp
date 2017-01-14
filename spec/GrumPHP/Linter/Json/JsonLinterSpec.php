@@ -6,7 +6,6 @@ use GrumPHP\Linter\Json\JsonLinter;
 use GrumPHP\Linter\LinterInterface;
 use GrumPHP\Util\Filesystem;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Seld\JsonLint\JsonParser;
 
 /**

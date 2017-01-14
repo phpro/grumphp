@@ -3,7 +3,6 @@
 namespace spec\GrumPHP\Util;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use GrumPHP\Util\Filesystem;
 use SplFileInfo;
 use SplFileObject;

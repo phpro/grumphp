@@ -6,7 +6,6 @@ use GrumPHP\Formatter\GitBlacklistFormatter;
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\IO\ConsoleIO;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Process\Process;
 
 /**
