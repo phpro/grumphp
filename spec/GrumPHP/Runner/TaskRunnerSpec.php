@@ -26,7 +26,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class TaskRunnerSpec extends ObjectBehavior
 {
-
     public function let(
         GrumPHP $grumPHP,
         EventDispatcherInterface $eventDispatcher,

@@ -13,7 +13,6 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class TaskEventSpec extends ObjectBehavior
 {
-
     function let(TaskInterface $task, ContextInterface $context)
     {
         $this->beConstructedWith($task, $context);

@@ -11,7 +11,6 @@ use GrumPHP\Collection\FilesCollection;
  */
 interface ContextInterface
 {
-
     /**
      * @return FilesCollection
      */

@@ -17,7 +17,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 class YamlLinter implements LinterInterface
 {
-
     /**
      * True if object support is enabled, false otherwise
      *

@@ -71,7 +71,6 @@ class ProcessBuilderSpec extends ObjectBehavior
 
         $arguments = new ProcessArgumentsCollection([$command]);
         $process = $this->buildProcess($arguments);
-
     }
 
     function getMatchers()

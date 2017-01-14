@@ -12,7 +12,6 @@ use GrumPHP\TestSuite\TestSuiteInterface;
  */
 class TaskRunnerContext
 {
-
     /**
      * @var ContextInterface
      */

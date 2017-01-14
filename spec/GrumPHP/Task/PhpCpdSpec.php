@@ -23,7 +23,6 @@ use Symfony\Component\Process\Process;
  */
 class PhpCpdSpec extends ObjectBehavior
 {
-
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
         $grumPHP->getTaskConfiguration('phpcpd')->willReturn([]);

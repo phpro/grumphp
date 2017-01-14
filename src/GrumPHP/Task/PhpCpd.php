@@ -13,7 +13,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PhpCpd extends AbstractExternalTask
 {
-
     /**
      * @return string
      */

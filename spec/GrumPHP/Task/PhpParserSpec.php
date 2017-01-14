@@ -14,7 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PhpParserSpec extends AbstractParserTaskSpec
 {
-
     function let(GrumPHP $grumPHP, ParserInterface $parser)
     {
         $parser->isInstalled()->willReturn(true);

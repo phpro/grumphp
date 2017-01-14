@@ -41,7 +41,7 @@ class ForbiddenStaticMethodCallsVisitorTest extends AbstractVisitorTest
     {
         $code = <<<EOC
 <?php
-use Dumper\StaticDumper As StaticDumper;
+use Dumper\StaticDumper;
 use Dumper\Alias As StaticDumperAlias;
 
 StaticDumper::dump('something');

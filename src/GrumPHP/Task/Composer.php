@@ -20,7 +20,6 @@ use SplFileInfo;
  */
 class Composer extends AbstractExternalTask
 {
-
     /**
      * @var Filesystem
      */

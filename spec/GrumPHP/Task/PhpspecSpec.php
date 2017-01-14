@@ -23,7 +23,6 @@ use Symfony\Component\Process\Process;
  */
 class PhpspecSpec extends ObjectBehavior
 {
-
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
         $grumPHP->getTaskConfiguration('phpspec')->willReturn([]);

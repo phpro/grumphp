@@ -23,7 +23,6 @@ use Symfony\Component\Process\Process;
  */
 class PhpMdSpec extends ObjectBehavior
 {
-
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
         $grumPHP->getTaskConfiguration('phpmd')->willReturn([]);

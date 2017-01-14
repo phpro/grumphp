@@ -19,7 +19,6 @@ use GrumPHP\Exception\RuntimeException;
  */
 class Composer
 {
-
     /**
      * @param string|JsonFile $json
      * @param Config $config

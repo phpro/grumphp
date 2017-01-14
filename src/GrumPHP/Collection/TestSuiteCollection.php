@@ -13,7 +13,6 @@ use GrumPHP\TestSuite\TestSuiteInterface;
  */
 class TestSuiteCollection extends ArrayCollection
 {
-
     /**
      * @param string $name
      *

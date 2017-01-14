@@ -13,7 +13,6 @@ use SplFileInfo;
  */
 class JsonLintError extends LintError
 {
-
     /**
      * @param SplFileInfo      $file
      * @param ParsingException $exception

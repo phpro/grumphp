@@ -13,7 +13,6 @@ use Symfony\Component\Console\Helper\Helper;
  */
 class ComposerHelperSpec extends ObjectBehavior
 {
-
     function let(Config $config, RootPackage $rootPackage)
     {
         $this->beConstructedWith($config, $rootPackage);
@@ -48,5 +47,4 @@ class ComposerHelperSpec extends ObjectBehavior
     {
         $this->getRootPackage()->shouldBe($rootPackage);
     }
-
 }

@@ -49,7 +49,6 @@ class PathsHelperSpec extends ObjectBehavior
         $filesystem->exists($fileName)->willReturn(true);
         $filesystem->readFromFileInfo(Argument::that(function (SplFileInfo $file) use ($fileName) {
             return $file->getPathname() === $fileName;
-
         }))->willReturn($content = 'ascii');
 
         $this->getAsciiContent('resource')->shouldBe($content);

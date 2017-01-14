@@ -10,7 +10,6 @@ use DateTime;
  */
 class PhpVersion
 {
-
     /**
      * @var array
      */
