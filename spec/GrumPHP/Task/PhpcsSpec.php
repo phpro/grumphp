@@ -59,7 +59,6 @@ class PhpcsSpec extends ObjectBehavior
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-
     function it_should_run_in_run_context(RunContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);

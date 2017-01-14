@@ -26,7 +26,6 @@ class YamlLintErrorSpec extends ObjectBehavior
         $this->shouldHaveType(LintError::class);
     }
 
-
     function it_has_a_snippet()
     {
         $this->getSnippet()->shouldBe('snippet');

@@ -16,7 +16,6 @@ class NullIOSpec extends ObjectBehavior
         $this->shouldHaveType(NullIO::class);
     }
 
-
     function it_should_be_a_IO()
     {
         $this->shouldImplement(IOInterface::class);

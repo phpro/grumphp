@@ -27,7 +27,6 @@ class TraverserConfiguratorSpec extends ObjectBehavior
         $this->shouldHaveType(TraverserConfigurator::class);
     }
 
-
     function it_throws_an_exception_if_a_context_is_not_set(NodeTraverserInterface $traverser)
     {
         $this->registerOptions(['visitors' => []]);

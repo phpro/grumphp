@@ -145,7 +145,6 @@ class ComposerSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(false);
     }
 
-
     function it_succeeds_when_it_has_no_local_repositories(
         GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,

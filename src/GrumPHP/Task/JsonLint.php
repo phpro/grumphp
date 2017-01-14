@@ -71,7 +71,7 @@ class JsonLint extends AbstractLinterTask
         } catch (RuntimeException $e) {
             return TaskResult::createFailed($this, $context, $e->getMessage());
         }
-        
+
         if ($lintErrors->count()) {
             return TaskResult::createFailed($this, $context, (string) $lintErrors);
         }

@@ -41,7 +41,6 @@ class Blacklist extends AbstractExternalTask
         parent::__construct($grumPHP, $processBuilder, $formatter);
     }
 
-
     /**
      * @return string
      */
