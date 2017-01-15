@@ -1,26 +1,22 @@
 language: php
 
+php:
+  - 5.6
+  - 7.0
+  - 7.1
+  - hhvm
+  - nightly
+
+env:
+  matrix:
+    -
+    - DEPENDENCIES=--prefer-lowest
+
 cache:
   directories:
-    - $HOME/.composer/cache
+    - .composer/cache
 
 matrix:
-  include:
-    - php: 5.6
-    - php: 5.6
-      env: DEPENDENCIES='low'
-    - php: 7.0
-    - php: 7.0
-      env: DEPENDENCIES='low'
-    - php: 7.1
-    - php: 7.1
-      env: DEPENDENCIES='low'
-    - php: hhvm
-    - php: hhvm
-      env: DEPENDENCIES='low'
-    - php: nightly
-    - php: nightly
-      env: DEPENDENCIES='low'
   fast_finish: true
 
 before_install:
@@ -28,9 +24,7 @@ before_install:
   - composer global require hirak/prestissimo
 
 install:
-  - >
-    travis_retry composer update --no-progress --profile --no-scripts
-    $([[ $DEPENDENCIES = low ]] && echo --prefer-lowest)
+  - travis_retry composer update --no-progress --profile --no-scripts $DEPENDENCIES
 
 script:
    - bin/grumphp run
