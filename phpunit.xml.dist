@@ -1,13 +1,10 @@
-<phpunit bootstrap="./test/src/Bootstrap.php" colors="true">
+<phpunit bootstrap="test/Bootstrap.php" colors="true">
     <testsuites>
         <testsuite name="Linters">
-            <directory>./test/src/GrumPHPTest/Linter</directory>
+            <directory>test/Linter</directory>
         </testsuite>
         <testsuite name="Parsers">
-            <directory>./test/src/GrumPHPTest/Parser</directory>
-        </testsuite>
-        <testsuite name="Util">
-            <directory>./test/src/GrumPHPTest/Util</directory>
+            <directory>test/Parser</directory>
         </testsuite>
     </testsuites>
 </phpunit>
