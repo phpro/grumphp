@@ -32,7 +32,7 @@ final class ContainerFactory
         );
 
         // Load basic service file + custom user configuration
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../../resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../resources/config'));
         $loader->load('formatter.yml');
         $loader->load('linters.yml');
         $loader->load('parameters.yml');
