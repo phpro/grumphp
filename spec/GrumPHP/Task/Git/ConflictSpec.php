@@ -22,7 +22,6 @@ use Symfony\Component\Process\Process;
  */
 class ConflictSpec extends ObjectBehavior
 {
-
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
         $grumPHP->getTaskConfiguration('git_conflict')->willReturn([]);

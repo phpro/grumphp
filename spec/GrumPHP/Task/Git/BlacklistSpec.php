@@ -23,7 +23,6 @@ use Symfony\Component\Process\Process;
  */
 class BlacklistSpec extends ObjectBehavior
 {
-
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter, ConsoleIO $consoleIO)
     {
         $grumPHP->getTaskConfiguration('git_blacklist')->willReturn([]);

@@ -12,7 +12,6 @@ use RuntimeException;
  */
 class Regex
 {
-
     /**
      * A list of all allowed regex modifiers in PHP.
      */

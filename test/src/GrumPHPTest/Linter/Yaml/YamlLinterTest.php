@@ -85,7 +85,6 @@ class YamlLinterTest extends PHPUnit_Framework_TestCase
         $this->linter->setExceptionOnInvalidType(true);
         $fixture = YamlLinter::supportsFlags() ? 'object-support.yml' : 'object-support-old.yml';
         $this->validateFixture($fixture, 1);
-
     }
 
     /**

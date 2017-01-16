@@ -23,7 +23,6 @@ use Symfony\Component\Process\Process;
  */
 class Php7ccSpec extends ObjectBehavior
 {
-
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
         $grumPHP->getTaskConfiguration('php7cc')->willReturn([]);

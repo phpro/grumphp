@@ -13,7 +13,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 interface TaskInterface
 {
-
     /**
      * @return string
      */

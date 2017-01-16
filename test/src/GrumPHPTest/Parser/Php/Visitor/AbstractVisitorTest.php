@@ -19,7 +19,6 @@ use SplFileInfo;
  */
 abstract class AbstractVisitorTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * @test
      */

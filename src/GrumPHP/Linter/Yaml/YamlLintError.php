@@ -12,7 +12,6 @@ use Symfony\Component\Yaml\Exception\ParseException;
  */
 class YamlLintError extends LintError
 {
-
     /**
      * @var string
      */

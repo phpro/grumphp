@@ -10,7 +10,6 @@ use PhpSpec\ObjectBehavior;
  */
 abstract class AbstractLinterTaskSpec extends ObjectBehavior
 {
-
     function it_is_a_task()
     {
         $this->shouldImplement(TaskInterface::class);

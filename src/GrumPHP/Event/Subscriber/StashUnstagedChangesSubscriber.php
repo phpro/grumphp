@@ -22,7 +22,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class StashUnstagedChangesSubscriber implements EventSubscriberInterface
 {
-
     /**
      * @var GrumPHP
      */

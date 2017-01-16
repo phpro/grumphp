@@ -9,7 +9,6 @@ use PhpSpec\ObjectBehavior;
  */
 class RegexSpec extends ObjectBehavior
 {
-
     function it_will_handle_regex_input()
     {
         $this->beConstructedWith('#test#');

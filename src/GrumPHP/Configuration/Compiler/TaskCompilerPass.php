@@ -15,7 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class TaskCompilerPass implements CompilerPassInterface
 {
-
     const TAG_GRUMPHP_TASK = 'grumphp.task';
 
     /**

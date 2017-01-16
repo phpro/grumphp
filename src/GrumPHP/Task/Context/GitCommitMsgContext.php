@@ -11,7 +11,6 @@ use GrumPHP\Collection\FilesCollection;
  */
 class GitCommitMsgContext implements ContextInterface
 {
-
     /**
      * @var FilesCollection
      */

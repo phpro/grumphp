@@ -18,7 +18,6 @@ use \Symfony\Component\Process\ProcessBuilder as SymfonyProcessBuilder;
  */
 class ProcessBuilder
 {
-
     /**
      * @var ExternalCommand
      */

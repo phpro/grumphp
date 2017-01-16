@@ -16,7 +16,6 @@ use SplPriorityQueue;
  */
 class TasksCollection extends ArrayCollection
 {
-
     /**
      * @param ContextInterface $context
      *

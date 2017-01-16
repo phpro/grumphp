@@ -22,7 +22,6 @@ use Symfony\Component\Process\Process;
  */
 class PhpLintSpec extends ObjectBehavior
 {
-
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
         $grumPHP->getTaskConfiguration('phplint')->willReturn([]);

@@ -26,7 +26,6 @@ class TraverserFactorySpec extends ObjectBehavior
 
     function it_can_create_a_task_and_context_specific_traverser(TraverserConfigurator $configurator, ParserContext $context)
     {
-
         $taskOptions = ['visitors' => []];
 
         $configurator->registerOptions($taskOptions)->shouldBeCalled();

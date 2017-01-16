@@ -25,7 +25,6 @@ use Symfony\Component\Process\Process;
  */
 class PhpCsFixerSpec extends ObjectBehavior
 {
-
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, AsyncProcessRunner $processRunner, PhpCsFixerFormatter $formatter)
     {
         $grumPHP->getTaskConfiguration('phpcsfixer')->willReturn([]);

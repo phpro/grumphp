@@ -19,7 +19,6 @@ class ParserFactorySpec extends ObjectBehavior
 
     function it_can_create_a_parser_from_task_options()
     {
-
         $options = ['kind' => PhpParser::KIND_PHP7];
         $this->createFromOptions($options)->shouldBeAnInstanceOf(Parser::class);
     }
