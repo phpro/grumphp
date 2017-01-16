@@ -54,7 +54,7 @@ class Phpunit extends AbstractExternalTask
     public function run(ContextInterface $context)
     {
         $config = $this->getConfiguration();
-        
+
         $files = $context->getFiles()->name('*.php');
         if (0 === count($files) && !$config['always_execute']) {
             return TaskResult::createSkipped($this, $context);

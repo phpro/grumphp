@@ -114,7 +114,7 @@ class ConsoleIO implements IOInterface
         if ($this->stdin !== null || ftell($handle) !== 0) {
             return $this->stdin;
         }
-        
+
         $input = '';
         while (!feof($handle)) {
             $input .= fread($handle, 1024);

@@ -76,7 +76,6 @@ class XmlLinterTest extends PHPUnit_Framework_TestCase
         $this->validateFixture($fixture, $errors);
     }
 
-
     /**
      * @test
      * @dataProvider provideSchemeValidation
