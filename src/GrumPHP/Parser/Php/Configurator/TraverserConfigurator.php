@@ -114,7 +114,7 @@ class TraverserConfigurator
 
         $visitorIds = array_values(array_intersect($registeredVisitorsIds, $configuredVisitorIds));
         $unknownConfiguredVisitorIds = array_diff($configuredVisitorIds, $registeredVisitorsIds);
-        
+
         if (count($unknownConfiguredVisitorIds)) {
             throw new RuntimeException(
                 sprintf('Found unknown php_parser visitors: %s', implode(',', $unknownConfiguredVisitorIds))

@@ -26,7 +26,6 @@ class XmlLintErrorSpec extends ObjectBehavior
         $this->shouldHaveType(LintError::class);
     }
 
-
     function it_has_an_error_code()
     {
         $this->getCode()->shouldBe(0);

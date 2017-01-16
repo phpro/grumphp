@@ -60,7 +60,6 @@ class XmlLintSpec extends AbstractLinterTaskSpec
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-
     function it_does_not_do_anything_if_there_are_no_files(XmlLinter $linter, ContextInterface $context)
     {
         $linter->isInstalled()->willReturn(true);

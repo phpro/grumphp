@@ -1,6 +1,5 @@
 <?php
 
-
 namespace GrumPHP\Exception;
 
 use GrumPHP\Util\Platform;

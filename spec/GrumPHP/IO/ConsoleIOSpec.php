@@ -95,8 +95,8 @@ index 372bf10b74013301cfb4bf0e8007d208bb813363..d95f50da4a02d3d203bda1f3cb94e29d
 --- a/src/test.php
 +++ b/src/test.php
 @@ -2,3 +2,4 @@
- 
- 
+
+
  'something';
 +'ok';
 

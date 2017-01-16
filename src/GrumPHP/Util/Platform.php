@@ -1,6 +1,5 @@
 <?php
 
-
 namespace GrumPHP\Util;
 
 /**

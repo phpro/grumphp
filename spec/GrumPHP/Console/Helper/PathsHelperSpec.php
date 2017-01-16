@@ -20,7 +20,7 @@ class PathsHelperSpec extends ObjectBehavior
     {
         $this->beConstructedWith($config, $filesystem, $externalCommandLocator, '/grumphp.yml');
     }
-    
+
     function it_is_a_console_helper()
     {
         $this->shouldHaveType(Helper::class);
