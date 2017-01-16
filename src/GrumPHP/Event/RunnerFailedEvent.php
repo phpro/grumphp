@@ -2,11 +2,6 @@
 
 namespace GrumPHP\Event;
 
-/**
- * Class RunnerFailedEvent
- *
- * @package GrumPHP\Event
- */
 class RunnerFailedEvent extends RunnerEvent
 {
     /**

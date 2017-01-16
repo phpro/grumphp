@@ -5,11 +5,6 @@ namespace GrumPHP\Linter\Xml;
 use GrumPHP\Linter\LintError;
 use LibXMLError;
 
-/**
- * Class XmlLintError
- *
- * @package GrumPHP\Linter\Xml
- */
 class XmlLintError extends LintError
 {
     /**

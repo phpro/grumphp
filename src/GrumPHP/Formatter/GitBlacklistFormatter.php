@@ -5,11 +5,6 @@ namespace GrumPHP\Formatter;
 use GrumPHP\IO\IOInterface;
 use Symfony\Component\Process\Process;
 
-/**
- * Class GitBlacklistFormatter
- *
- * @package GrumPHP\Formatter
- */
 class GitBlacklistFormatter implements ProcessFormatterInterface
 {
     const WORD_COLOR = "\033[1;31";

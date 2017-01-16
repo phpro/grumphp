@@ -8,9 +8,6 @@ use GrumPHP\Exception\RuntimeException;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/**
- * Class GrumPHPSpec
- */
 class GrumPHPSpec extends ObjectBehavior
 {
     function let(ContainerInterface $container)

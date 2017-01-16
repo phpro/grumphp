@@ -4,11 +4,6 @@ namespace GrumPHP\Formatter;
 
 use Symfony\Component\Process\Process;
 
-/**
- * Class RawProcessFormatter
- *
- * @package GrumPHP\Formatter
- */
 class RawProcessFormatter implements ProcessFormatterInterface
 {
     /**

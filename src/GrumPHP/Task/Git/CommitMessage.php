@@ -13,8 +13,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Git CommitMessage Task
- *
- * @package GrumPHP\Task
  */
 class CommitMessage implements TaskInterface
 {

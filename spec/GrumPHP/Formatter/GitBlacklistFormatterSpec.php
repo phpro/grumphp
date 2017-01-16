@@ -8,9 +8,6 @@ use GrumPHP\IO\ConsoleIO;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Process\Process;
 
-/**
- * Class GitBlacklistFormatterSpec
- */
 class GitBlacklistFormatterSpec extends ObjectBehavior
 {
     function let(ConsoleIO $consoleIO)

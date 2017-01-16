@@ -7,9 +7,6 @@ use GrumPHP\Parser\Php\Context\ParserContext;
 use PhpSpec\ObjectBehavior;
 use SplFileInfo;
 
-/**
- * Class ParserContextSpec
- */
 class ParserContextSpec extends ObjectBehavior
 {
     function let(SplFileInfo $file, ParseErrorsCollection $errors)

@@ -9,11 +9,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class TestSuiteCompilerPass
- *
- * @package GrumPHP\Configuration\Compiler
- */
 class TestSuiteCompilerPass implements CompilerPassInterface
 {
     /**

@@ -9,9 +9,6 @@ use PhpParser\NodeTraverser;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-/**
- * Class TraverserFactorySpec
- */
 class TraverserFactorySpec extends ObjectBehavior
 {
     function let(TraverserConfigurator $configurator)

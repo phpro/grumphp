@@ -5,11 +5,6 @@ namespace GrumPHP\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use GrumPHP\Exception\InvalidArgumentException;
 
-/**
- * Class ProcessArgumentsCollection
- *
- * @package GrumPHP\Collection
- */
 class ProcessArgumentsCollection extends ArrayCollection
 {
     /**

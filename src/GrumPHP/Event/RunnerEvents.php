@@ -2,11 +2,6 @@
 
 namespace GrumPHP\Event;
 
-/**
- * Class RunnerEvents
- *
- * @package GrumPHP\Events
- */
 final class RunnerEvents
 {
     const RUNNER_RUN = 'grumphp.runner.run';

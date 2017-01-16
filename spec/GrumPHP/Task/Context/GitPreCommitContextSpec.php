@@ -7,9 +7,6 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class GitPreCommitContextSpec
- */
 class GitPreCommitContextSpec extends ObjectBehavior
 {
     function let(FilesCollection $files)

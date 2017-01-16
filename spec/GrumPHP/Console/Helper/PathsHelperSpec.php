@@ -11,9 +11,6 @@ use Symfony\Component\Console\Helper\Helper;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-/**
- * Class PathsHelperSpec
- */
 class PathsHelperSpec extends ObjectBehavior
 {
     function let(GrumPHP $config, Filesystem $filesystem, ExternalCommand $externalCommandLocator)

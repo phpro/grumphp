@@ -8,9 +8,6 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Prophet;
 use Symfony\Component\Process\Process;
 
-/**
- * Class AsyncProcessRunnerSpec
- */
 class AsyncProcessRunnerSpec extends ObjectBehavior
 {
     public function let(GrumPHP $grumPHP) {

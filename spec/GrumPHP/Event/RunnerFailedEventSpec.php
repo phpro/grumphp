@@ -10,9 +10,6 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class RunnerFailedEventSpec
- */
 class RunnerFailedEventSpec extends ObjectBehavior
 {
     function let(TasksCollection $tasks, ContextInterface $context, TaskResultCollection $taskResults)

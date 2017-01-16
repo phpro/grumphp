@@ -18,9 +18,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-/**
- * Class TaskRunnerHelperSpec
- */
 class TaskRunnerHelperSpec extends ObjectBehavior
 {
     function let(

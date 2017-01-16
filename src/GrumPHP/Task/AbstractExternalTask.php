@@ -6,11 +6,6 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\ProcessBuilder;
 
-/**
- * Class AbstractExternalTask
- *
- * @package GrumPHP\Task
- */
 abstract class AbstractExternalTask implements TaskInterface
 {
     /**

@@ -5,11 +5,6 @@ namespace GrumPHP\Util;
 use SplFileInfo;
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 
-/**
- * Class Filesystem
- *
- * @package GrumPHP\Util
- */
 class Filesystem extends SymfonyFilesystem
 {
     /**

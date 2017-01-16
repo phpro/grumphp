@@ -9,11 +9,6 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Parser\ParserInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class AbstractParser
- *
- * @package GrumPHP\Task
- */
 abstract class AbstractParserTask implements TaskInterface
 {
     /**

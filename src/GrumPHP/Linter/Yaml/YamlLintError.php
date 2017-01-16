@@ -5,11 +5,6 @@ namespace GrumPHP\Linter\Yaml;
 use GrumPHP\Linter\LintError;
 use Symfony\Component\Yaml\Exception\ParseException;
 
-/**
- * Class YamlLintError
- *
- * @package GrumPHP\Linter\Yaml
- */
 class YamlLintError extends LintError
 {
     /**

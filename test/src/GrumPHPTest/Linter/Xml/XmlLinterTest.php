@@ -9,11 +9,6 @@ use PHPUnit_Framework_TestCase;
 use RuntimeException;
 use SplFileInfo;
 
-/**
- * Class XmlLinterTest
- *
- * @package GrumPHP\Linter\Xml
- */
 class XmlLinterTest extends PHPUnit_Framework_TestCase
 {
     /**

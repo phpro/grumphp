@@ -7,11 +7,6 @@ use GrumPHP\Parser\Php\Context\ParserContext;
 use GrumPHP\Parser\Php\PhpParserError;
 use PhpParser\NodeVisitorAbstract;
 
-/**
- * Class AbstractVisitor
- *
- * @package GrumPHP\Parser\Php\Visitor
- */
 class AbstractVisitor extends NodeVisitorAbstract implements ContextAwareVisitorInterface
 {
     /**

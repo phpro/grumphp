@@ -2,11 +2,6 @@
 
 namespace GrumPHP\IO;
 
-/**
- * Interface IOInterface
- *
- * @package GrumPHP\IO
- */
 interface IOInterface
 {
     /**

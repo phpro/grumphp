@@ -5,11 +5,6 @@ namespace GrumPHP\Util;
 use Symfony\Component\Finder\Glob;
 use RuntimeException;
 
-/**
- * Class Regex
- *
- * @package GrumPHP\Util
- */
 class Regex
 {
     /**

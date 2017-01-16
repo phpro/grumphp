@@ -7,9 +7,6 @@ use GrumPHP\Locator\ExternalCommand;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Process\ExecutableFinder;
 
-/**
- * Class ExternalCommandSpec
- */
 class ExternalCommandSpec extends ObjectBehavior
 {
     function let(ExecutableFinder $executableFinder)

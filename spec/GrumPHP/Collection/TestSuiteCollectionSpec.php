@@ -8,9 +8,6 @@ use GrumPHP\Task\TaskInterface;
 use GrumPHP\TestSuite\TestSuiteInterface;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class TestSuiteCollectionSpec
- */
 class TestSuiteCollectionSpec extends ObjectBehavior
 {
     public function let(TestSuiteInterface $testSuite1, TaskInterface $testSuite2)

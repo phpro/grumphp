@@ -19,9 +19,6 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/**
- * Class StashUnstagedChangesSubscriberSpec
- */
 class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
 {
     function let(GrumPHP $grumPHP, Repository $repository, IOInterface $io, WorkingCopy $workingCopy, Diff $unstaged)

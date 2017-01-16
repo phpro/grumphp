@@ -5,11 +5,6 @@ namespace GrumPHPTest\Parser\Php\Visitor;
 use GrumPHP\Parser\ParseError;
 use GrumPHP\Parser\Php\Visitor\DeclareStrictTypesVisitor;
 
-/**
- * Class DeclareStrictTypesVisitorTest
- *
- * @package GrumPHPTest\Parser\Php\Visitor
- */
 class DeclareStrictTypesVisitorTest extends AbstractVisitorTest
 {
     /**

@@ -4,11 +4,6 @@ namespace GrumPHP\Task\Context;
 
 use GrumPHP\Collection\FilesCollection;
 
-/**
- * Class GitCommitMsgContext
- *
- * @package GrumPHP\Task\Context
- */
 class GitCommitMsgContext implements ContextInterface
 {
     /**

@@ -9,9 +9,6 @@ use GrumPHP\Task\Context\ContextInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\Event;
 
-/**
- * Class RunnerEventSpec
- */
 class RunnerEventSpec extends ObjectBehavior
 {
     function let(TasksCollection $tasks, ContextInterface $context, TaskResultCollection $taskResults)

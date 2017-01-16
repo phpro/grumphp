@@ -9,11 +9,6 @@ use GrumPHP\Parser\Php\Visitor\ContextAwareVisitorInterface;
 use PhpParser\NodeTraverserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/**
- * Class TraverserConfigurator
- *
- * @package GrumPHP\Parser\Php\Configurator
- */
 class TraverserConfigurator
 {
     /**
@@ -155,7 +150,6 @@ class TraverserConfigurator
     }
 
     /**
-     *
      * @throws \GrumPHP\Exception\RuntimeException
      */
     private function guardTaskHasVisitors()

@@ -9,11 +9,6 @@ use GrumPHP\Task\TaskInterface;
 use GrumPHP\TestSuite\TestSuiteInterface;
 use SplPriorityQueue;
 
-/**
- * Class TasksCollection
- *
- * @package GrumPHP\Collection
- */
 class TasksCollection extends ArrayCollection
 {
     /**

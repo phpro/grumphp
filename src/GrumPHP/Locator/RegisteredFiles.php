@@ -6,11 +6,6 @@ use Gitonomy\Git\Repository;
 use GrumPHP\Collection\FilesCollection;
 use Symfony\Component\Finder\SplFileInfo;
 
-/**
- * Class RegisteredFiles
- *
- * @package GrumPHP\Locator
- */
 class RegisteredFiles
 {
     /**

@@ -7,9 +7,6 @@ use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Linter\LintError;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class LintErrorsCollectionSpec
- */
 class LintErrorsCollectionSpec extends ObjectBehavior
 {
     function let()

@@ -5,9 +5,6 @@ namespace spec\GrumPHP\Task;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class AbstractParserTaskSpec
- */
 abstract class AbstractParserTaskSpec extends ObjectBehavior
 {
     function it_is_a_task()

@@ -6,9 +6,6 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use %subject%;
 
-/**
- * Class %name%
- */
 class %name% extends ObjectBehavior
 {
     function it_is_initializable()

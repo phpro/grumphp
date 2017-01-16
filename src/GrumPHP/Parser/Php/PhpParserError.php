@@ -5,11 +5,6 @@ namespace GrumPHP\Parser\Php;
 use GrumPHP\Parser\ParseError;
 use PhpParser\Error;
 
-/**
- * Class PhpParserError
- *
- * @package GrumPHP\Parser\Php
- */
 class PhpParserError extends ParseError
 {
     /**

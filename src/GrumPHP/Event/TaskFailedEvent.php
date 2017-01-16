@@ -6,11 +6,6 @@ use Exception;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 
-/**
- * Class TaskFailedEvent
- *
- * @package GrumPHP\Event
- */
 class TaskFailedEvent extends TaskEvent
 {
     /**

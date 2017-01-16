@@ -13,9 +13,6 @@ use GrumPHP\Util\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class CloverCoverageSpec
- */
 class CloverCoverageSpec extends ObjectBehavior
 {
     function let(GrumPHP $grumPHP)

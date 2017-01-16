@@ -2,11 +2,6 @@
 
 namespace GrumPHP\TestSuite;
 
-/**
- * Class TestSuite
- *
- * @package GrumPHP\TestSuite
- */
 class TestSuite implements TestSuiteInterface
 {
     /**

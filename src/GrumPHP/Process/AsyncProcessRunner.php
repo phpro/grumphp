@@ -5,11 +5,6 @@ namespace GrumPHP\Process;
 use GrumPHP\Configuration\GrumPHP;
 use Symfony\Component\Process\Process;
 
-/**
- * Class AsyncProcessRunner
- *
- * @package GrumPHP\Process
- */
 class AsyncProcessRunner
 {
     /**

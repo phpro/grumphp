@@ -8,9 +8,6 @@ use GrumPHP\Console\Helper\ComposerHelper;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Console\Helper\Helper;
 
-/**
- * Class ComposerHelperSpec
- */
 class ComposerHelperSpec extends ObjectBehavior
 {
     function let(Config $config, RootPackage $rootPackage)

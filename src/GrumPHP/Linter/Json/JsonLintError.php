@@ -6,11 +6,6 @@ use GrumPHP\Linter\LintError;
 use Seld\JsonLint\ParsingException;
 use SplFileInfo;
 
-/**
- * Class JsonLintError
- *
- * @package GrumPHP\Linter\Json
- */
 class JsonLintError extends LintError
 {
     /**

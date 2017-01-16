@@ -4,11 +4,6 @@ namespace GrumPHP\Task\Context;
 
 use GrumPHP\Collection\FilesCollection;
 
-/**
- * Class GitPreCommitContext
- *
- * @package GrumPHP\Task\Context
- */
 class GitPreCommitContext implements ContextInterface
 {
     /**

@@ -10,8 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Git Conflict Task
- *
- * @package GrumPHP\Task\Git
  */
 class Conflict extends AbstractExternalTask
 {

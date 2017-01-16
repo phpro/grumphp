@@ -7,9 +7,6 @@ use GrumPHP\Task\PhpParser;
 use PhpParser\Parser;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class ParserFactorySpec
- */
 class ParserFactorySpec extends ObjectBehavior
 {
     function it_is_initializable()

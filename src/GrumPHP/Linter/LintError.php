@@ -2,11 +2,6 @@
 
 namespace GrumPHP\Linter;
 
-/**
- * Class LintError
- *
- * @package GrumPHP\Linter
- */
 class LintError
 {
     const TYPE_NONE = 'none';

@@ -4,11 +4,6 @@ namespace GrumPHP\Runner;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 
-/**
- * Class TaskResult
- *
- * @package GrumPHP\Runner
- */
 interface TaskResultInterface
 {
     /**

@@ -6,11 +6,6 @@ use GrumPHP\Parser\Php\Configurator\TraverserConfigurator;
 use GrumPHP\Parser\Php\Context\ParserContext;
 use PhpParser\NodeTraverser;
 
-/**
- * Class TraverserFactory
- *
- * @package GrumPHP\Parser\Php\Factory
- */
 class TraverserFactory
 {
     /**

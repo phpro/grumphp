@@ -7,9 +7,6 @@ use GrumPHP\TestSuite\TestSuiteInterface;
 use PhpSpec\ObjectBehavior;
 use GrumPHP\Runner\TaskRunnerContext;
 
-/**
- * Class TaskRunnerContextSpec
- */
 class TaskRunnerContextSpec extends ObjectBehavior
 {
     function let(ContextInterface $context, TestSuiteInterface $testSuite)

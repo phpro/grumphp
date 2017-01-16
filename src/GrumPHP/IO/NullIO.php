@@ -2,11 +2,6 @@
 
 namespace GrumPHP\IO;
 
-/**
- * Class NullIO
- *
- * @package GrumPHP\IO
- */
 class NullIO implements IOInterface
 {
     /**

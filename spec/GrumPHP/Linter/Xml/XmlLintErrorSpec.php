@@ -6,9 +6,6 @@ use GrumPHP\Linter\LintError;
 use GrumPHP\Linter\Xml\XmlLintError;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class XmlLintErrorSpec
- */
 class XmlLintErrorSpec extends ObjectBehavior
 {
     function let()

@@ -8,9 +8,6 @@ use GrumPHP\Collection\FilesCollection;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Finder\SplFileInfo;
 
-/**
- * Class FilesCollectionSpec
- */
 class FilesCollectionSpec extends ObjectBehavior
 {
     /**

@@ -6,9 +6,6 @@ use GrumPHP\Exception\RuntimeException;
 use PhpSpec\ObjectBehavior;
 use GrumPHP\Exception\InvalidArgumentException;
 
-/**
- * Class InvalidArgumentExceptionSpec
- */
 class InvalidArgumentExceptionSpec extends ObjectBehavior
 {
     function it_is_initializable()

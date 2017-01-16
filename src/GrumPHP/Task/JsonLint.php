@@ -10,11 +10,6 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class JsonLint
- *
- * @package GrumPHP\Task
- */
 class JsonLint extends AbstractLinterTask
 {
     /**

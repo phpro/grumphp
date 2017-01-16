@@ -5,9 +5,6 @@ namespace spec\GrumPHP\Linter;
 use GrumPHP\Linter\LintError;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class LintErrorSpec
- */
 class LintErrorSpec extends ObjectBehavior
 {
     function let()

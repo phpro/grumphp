@@ -7,11 +7,6 @@ use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Linter\LinterInterface;
 use SplFileInfo;
 
-/**
- * Class XmlLinter
- *
- * @package GrumPHP\Linter\Xml
- */
 class XmlLinter implements LinterInterface
 {
     const XSI_NAMESPACE = 'http://www.w3.org/2001/XMLSchema-instance';

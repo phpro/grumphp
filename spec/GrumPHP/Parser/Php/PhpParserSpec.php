@@ -15,9 +15,6 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use SplFileInfo;
 
-/**
- * Class PhpParserSpec
- */
 class PhpParserSpec extends ObjectBehavior
 {
     function let(

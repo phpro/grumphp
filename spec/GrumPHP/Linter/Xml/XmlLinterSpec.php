@@ -6,9 +6,6 @@ use GrumPHP\Linter\LinterInterface;
 use GrumPHP\Linter\Xml\XmlLinter;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class XmlLinterSpec
- */
 class XmlLinterSpec extends ObjectBehavior
 {
     function it_is_initializable()

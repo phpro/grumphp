@@ -4,9 +4,6 @@ namespace spec\GrumPHP\Util;
 
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class RegexSpec
- */
 class RegexSpec extends ObjectBehavior
 {
     function it_will_handle_regex_input()

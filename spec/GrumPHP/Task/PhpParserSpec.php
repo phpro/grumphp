@@ -9,9 +9,6 @@ use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\PhpParser;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class PhpParserSpec
- */
 class PhpParserSpec extends AbstractParserTaskSpec
 {
     function let(GrumPHP $grumPHP, ParserInterface $parser)

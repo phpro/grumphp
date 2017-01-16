@@ -9,11 +9,6 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Linter\LinterInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class AbstractLinter
- *
- * @package GrumPHP\Task
- */
 abstract class AbstractLinterTask implements TaskInterface
 {
     /**

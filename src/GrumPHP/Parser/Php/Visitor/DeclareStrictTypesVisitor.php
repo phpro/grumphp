@@ -4,11 +4,6 @@ namespace GrumPHP\Parser\Php\Visitor;
 
 use PhpParser\Node;
 
-/**
- * Class DeclareStrictTypesVisitor
- *
- * @package GrumPHP\Parser\Php\Visitor
- */
 class DeclareStrictTypesVisitor extends AbstractVisitor
 {
     /**

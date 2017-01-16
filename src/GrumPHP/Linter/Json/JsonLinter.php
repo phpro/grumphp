@@ -9,11 +9,6 @@ use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
 use SplFileInfo;
 
-/**
- * Class JsonLinter
- *
- * @package GrumPHP\Linter\Json
- */
 class JsonLinter implements LinterInterface
 {
     /**

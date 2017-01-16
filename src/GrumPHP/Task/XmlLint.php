@@ -10,11 +10,6 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class XmlLint
- *
- * @package GrumPHP\Task
- */
 class XmlLint extends AbstractLinterTask
 {
     /**

@@ -8,9 +8,6 @@ use GrumPHP\Util\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-/**
- * Class ConfigurationFileSpec
- */
 class ConfigurationFileSpec extends ObjectBehavior
 {
     function let(Filesystem $filesystem)

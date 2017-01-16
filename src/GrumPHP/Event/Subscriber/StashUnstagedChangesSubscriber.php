@@ -15,11 +15,6 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/**
- * Class StashUnstagedChangesSubscriber
- *
- * @package GrumPHP\Event\Subscriber
- */
 class StashUnstagedChangesSubscriber implements EventSubscriberInterface
 {
     /**

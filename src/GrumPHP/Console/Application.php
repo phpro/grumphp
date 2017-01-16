@@ -18,11 +18,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Process\ProcessBuilder;
 
-/**
- * Class Application
- *
- * @package GrumPHP\Console
- */
 class Application extends SymfonyConsole
 {
     const APP_NAME = 'GrumPHP';

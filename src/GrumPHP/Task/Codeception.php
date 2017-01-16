@@ -10,8 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Codeception task
- *
- * @package GrumPHP\Task
  */
 class Codeception extends AbstractExternalTask
 {

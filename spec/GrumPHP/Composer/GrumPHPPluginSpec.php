@@ -7,9 +7,6 @@ use Composer\Plugin\PluginInterface;
 use GrumPHP\Composer\GrumPHPPlugin;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class GrumPHPPluginSpec
- */
 class GrumPHPPluginSpec extends ObjectBehavior
 {
     function it_is_initializable()

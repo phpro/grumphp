@@ -9,9 +9,6 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class TaskFailedEventSpec
- */
 class TaskFailedEventSpec extends ObjectBehavior
 {
     function let(TaskInterface $task, ContextInterface $context, Exception $exception)

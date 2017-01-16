@@ -8,9 +8,6 @@ use GrumPHP\Util\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Seld\JsonLint\JsonParser;
 
-/**
- * Class JsonLinterSpec
- */
 class JsonLinterSpec extends ObjectBehavior
 {
     function let(Filesystem $filesystem, JsonParser $jsonParser)

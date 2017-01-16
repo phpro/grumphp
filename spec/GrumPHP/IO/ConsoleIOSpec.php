@@ -10,9 +10,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Class ConsoleIOSpec
- */
 class ConsoleIOSpec extends ObjectBehavior
 {
     function let(InputInterface $input, OutputInterface $output)

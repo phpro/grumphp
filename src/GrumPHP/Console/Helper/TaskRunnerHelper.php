@@ -11,11 +11,6 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * Class TaskRunnerHelper
- *
- * @package GrumPHP\Console\Helper
- */
 class TaskRunnerHelper extends Helper
 {
     const HELPER_NAME = 'taskrunner';

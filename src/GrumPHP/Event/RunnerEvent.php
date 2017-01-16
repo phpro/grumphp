@@ -7,11 +7,6 @@ use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Task\Context\ContextInterface;
 use Symfony\Component\EventDispatcher\Event;
 
-/**
- * Class RunnerEvent
- *
- * @package GrumPHP\Event
- */
 class RunnerEvent extends Event
 {
     /**

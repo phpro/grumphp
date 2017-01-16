@@ -12,11 +12,6 @@ use PhpParser\ParserFactory;
 use PHPUnit_Framework_TestCase;
 use SplFileInfo;
 
-/**
- * Class AbstractVisitorTest
- *
- * @package GrumPHPTest\Parser\Php\Visitor
- */
 abstract class AbstractVisitorTest extends PHPUnit_Framework_TestCase
 {
     /**

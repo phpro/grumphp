@@ -17,11 +17,6 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * Class TaskRunner
- *
- * @package GrumPHP\Runner
- */
 class TaskRunner
 {
     /**

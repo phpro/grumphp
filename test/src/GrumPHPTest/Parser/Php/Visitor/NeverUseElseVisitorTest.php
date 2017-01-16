@@ -5,11 +5,6 @@ namespace GrumPHPTest\Parser\Php\Visitor;
 use GrumPHP\Parser\ParseError;
 use GrumPHP\Parser\Php\Visitor\NeverUseElseVisitor;
 
-/**
- * Class NeverUseElseVisitorTest
- *
- * @package GrumPHPTest\Parser\Php\Visitor
- */
 class NeverUseElseVisitorTest extends AbstractVisitorTest
 {
     /**

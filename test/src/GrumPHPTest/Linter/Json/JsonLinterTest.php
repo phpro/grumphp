@@ -11,11 +11,6 @@ use RuntimeException;
 use Seld\JsonLint\JsonParser;
 use SplFileInfo;
 
-/**
- * Class JsonLinterTest
- *
- * @package GrumPHPTest\Linter\Json
- */
 class JsonLinterTest extends PHPUnit_Framework_TestCase
 {
     /**

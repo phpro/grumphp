@@ -6,9 +6,6 @@ use GrumPHP\Linter\Json\JsonLintError;
 use GrumPHP\Linter\LintError;
 use PhpSpec\ObjectBehavior;
 
-/**
- * Class JsonLintErrorSpec
- */
 class JsonLintErrorSpec extends ObjectBehavior
 {
     function let()
