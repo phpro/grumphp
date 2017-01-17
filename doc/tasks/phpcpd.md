@@ -10,6 +10,7 @@ parameters:
         phpcpd:
             directory: '.'
             exclude: ['vendor']
+            names_exclude: []
             fuzzy: false
             min_lines: 5
             min_tokens: 70
@@ -27,6 +28,12 @@ With this parameter you can define which directory you want to run `phpcpd` in (
 *Default: [vendor]*
 
 With this parameter you will be able to exclude one or multiple directories from code analysis (must be relative to `directory`).
+
+**names_exclude**
+
+*Default: []*
+
+With this parameter you will be able to exclude one or multiple files from code analysis (must be relative to `directory`).
 
 **fuzzy**
 

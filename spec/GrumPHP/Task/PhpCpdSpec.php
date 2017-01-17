@@ -42,6 +42,7 @@ class PhpCpdSpec extends ObjectBehavior
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('directory');
         $options->getDefinedOptions()->shouldContain('exclude');
+        $options->getDefinedOptions()->shouldContain('names_exclude');
         $options->getDefinedOptions()->shouldContain('fuzzy');
         $options->getDefinedOptions()->shouldContain('min_lines');
         $options->getDefinedOptions()->shouldContain('min_tokens');
