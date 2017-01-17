@@ -5,7 +5,7 @@ namespace GrumPHP\Task\Context;
 use GrumPHP\Collection\FilesCollection;
 
 /**
- * Class GitPrePushontext
+ * Class GitPrePushContext
  *
  * @package GrumPHP\Task\Context
  */

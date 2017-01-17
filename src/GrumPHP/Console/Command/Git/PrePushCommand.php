@@ -50,12 +50,6 @@ class PrePushCommand extends Command
     protected function configure()
     {
         $this->setName(self::COMMAND_NAME);
-        $this->addOption(
-            'skip-success-output',
-            null,
-            InputOption::VALUE_NONE,
-            'Skips the success output. This will be shown by another command in the git push hook chain.'
-        );
     }
 
     /**
@@ -67,7 +61,7 @@ class PrePushCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new ConsoleIO($input, $output);
-        $files = $this->getCommittedFiles($io);
+        $files = $this->getPushedFiles($io);
 
         $context = new TaskRunnerContext(
             new GitPrePushContext($files),
@@ -82,13 +76,13 @@ class PrePushCommand extends Command
     /**
      * @return FilesCollection
      */
-    protected function getCommittedFiles(ConsoleIO $io)
+    protected function getPushedFiles(ConsoleIO $io)
     {
         if ($stdin = $io->readCommandInput(STDIN)) {
             return $this->changedFilesLocator->locateFromRawDiffInput($stdin);
         }
 
-        return $this->changedFilesLocator->locateFromGitRepository();
+        return $this->changedFilesLocator->locateFromGitPushedRepository();
     }
 
     /**

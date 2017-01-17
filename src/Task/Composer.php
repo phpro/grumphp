@@ -82,8 +82,8 @@ class Composer extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context)
     {
-        return ($context instanceof GitPreCommitContext 
-                || $context instanceof GitPrePushContext 
+        return ($context instanceof GitPreCommitContext
+                || $context instanceof GitPrePushContext
                 || $context instanceof RunContext);
     }
 

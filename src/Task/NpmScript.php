@@ -48,7 +48,7 @@ class NpmScript extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context)
     {
-       return ($context instanceof GitPreCommitContext
+        return ($context instanceof GitPreCommitContext
                 || $context instanceof GitPrePushContext
                 || $context instanceof RunContext);
     }

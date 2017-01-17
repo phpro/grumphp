@@ -112,7 +112,7 @@ class Application extends SymfonyConsole
         );
         $commands[] = new Command\Git\PrePushCommand(
             $container->get('config'),
-            $container->get('locator.changed_files')
+            $container->get('locator.changed_files_before_push')
         );
 
         return $commands;
