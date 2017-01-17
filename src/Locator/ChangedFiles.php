@@ -47,8 +47,7 @@ class ChangedFiles
      */
     public function locateFromGitPushedRepository()
     {
-        $actualbranch = \Gitonomy\Git\Repository::run('git name-rev --name-only HEAD');
-        $diff = explode("\n", \Gitonomy\Git\Repository::run('git diff origin/' . $actualbranch . '..HEAD --name-only --oneline'));
+        $diff = explode("\n", \Gitonomy\Git\Repository::run('diff origin/master..HEAD --name-only --oneline'));
         foreach ($diff as $file) {
             $fileObject = new SplFileInfo($file, dirname($file), $file);
             $files[] = $fileObject;
