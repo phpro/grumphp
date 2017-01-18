@@ -6,13 +6,11 @@ while read local_ref local_sha remote_ref remote_sha
 do
     # Get the branch name
     local_ref=$(basename $local_ref)
-    
-    # Fetch the GIT diff and format it as command input:
-    DIFF=$(git diff --name-only "$remote"/"$local_ref"..HEAD --oneline)
-        
-    # Run GrumPHP
-    (cd "./" && printf "%s\n" "${DIFF}" | exec 'vendor/phpro/grumphp/bin/grumphp' 'git:pre-push')
+    break
 done
+    
+# Fetch the GIT diff and format it as command input:
+DIFF=$(git diff --name-only "$remote"/"$local_ref"..HEAD --oneline)
 
-# Clean exit:
-exit 0;
+# Run GrumPHP and Clean exit:
+exit (cd "./" && printf "%s\n" "${DIFF}" | exec 'vendor/phpro/grumphp/bin/grumphp' 'git:pre-push');
