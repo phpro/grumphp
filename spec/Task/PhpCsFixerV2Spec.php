@@ -54,6 +54,7 @@ class PhpCsFixerV2Spec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('using_cache');
         $options->getDefinedOptions()->shouldContain('path_mode');
         $options->getDefinedOptions()->shouldContain('verbose');
+        $options->getDefinedOptions()->shouldContain('diff');
     }
 
     function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
