@@ -66,7 +66,7 @@ class CloverCoverageSpec extends ObjectBehavior
 
     function it_runs_the_suite(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
-        $filename = dirname(dirname(dirname(__DIR__))) . '/test/fixtures/clover_coverage/60-percent-coverage.xml';
+        $filename = dirname(dirname(__DIR__)) . '/test/fixtures/clover_coverage/60-percent-coverage.xml';
         $grumPHP->getTaskConfiguration('clover_coverage')->willReturn([
             'clover_file' => $filename,
             'level' => 50,
@@ -78,7 +78,7 @@ class CloverCoverageSpec extends ObjectBehavior
 
     function it_runs_the_suite_but_not_reaching_coverage(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
-        $filename = dirname(dirname(dirname(__DIR__))) . '/test/fixtures/clover_coverage/60-percent-coverage.xml';
+        $filename = dirname(dirname(__DIR__)) . '/test/fixtures/clover_coverage/60-percent-coverage.xml';
         $grumPHP->getTaskConfiguration('clover_coverage')->willReturn([
             'clover_file' => $filename,
             'level' => 100,

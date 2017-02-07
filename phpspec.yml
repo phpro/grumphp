@@ -1,1 +1,6 @@
+suites:
+  default:
+    namespace: GrumPHP
+    psr4_prefix: GrumPHP
+
 formatter.name: pretty

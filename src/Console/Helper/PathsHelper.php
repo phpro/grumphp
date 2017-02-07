@@ -64,7 +64,7 @@ class PathsHelper extends Helper
      */
     public function getGrumPHPPath()
     {
-        $path = __DIR__ . '/../../../../';
+        $path = __DIR__ . '/../../..';
 
         return $this->getRelativePath($path);
     }

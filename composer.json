@@ -70,13 +70,13 @@
       "class": "GrumPHP\\Composer\\GrumPHPPlugin"
     },
     "autoload": {
-        "psr-0": {
-            "GrumPHP\\": "src/"
+        "psr-4": {
+            "GrumPHP\\": "src"
         }
     },
     "autoload-dev": {
-        "psr-0": {
-            "GrumPHPTest\\": "test/src/"
+        "psr-4": {
+            "GrumPHPTest\\": "test"
         }
     },
     "bin": ["bin/grumphp"]
