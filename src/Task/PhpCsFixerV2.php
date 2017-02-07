@@ -65,6 +65,7 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
         $this->formatter->resetCounter();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('php-cs-fixer');
+        $arguments->add('--format=json');
         $arguments->add('--dry-run');
         $arguments->addOptionalArgument('--allow-risky=%s', $config['allow_risky'] ? 'yes' : 'no');
         $arguments->addOptionalArgument('--cache-file=%s', $config['cache_file']);

@@ -59,6 +59,15 @@ class PhpCsFixerFormatterSpec extends ObjectBehavior
         $this->format($process)->shouldBe('1) name1' . PHP_EOL . '2) name2 (fixer1,fixer2)');
     }
 
+    function it_formats_php_cs_fixer_json_output_for_diff(Process $process)
+    {
+        $json = $this->parseJson([
+            ['name' => 'name1', 'diff' => 'diff1'],
+        ]);
+        $process->getOutput()->willReturn($json);
+        $this->format($process)->shouldBe('1) name1' . PHP_EOL . PHP_EOL . 'diff1');
+    }
+
     function it_should_be_possible_to_reset_the_counter(Process $process)
     {
         $json = $this->parseJson([['name' => 'name1']]);
