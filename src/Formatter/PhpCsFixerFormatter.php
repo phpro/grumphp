@@ -101,12 +101,14 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
         }
 
         $hasFixers = isset($file['appliedFixers']);
+        $hasDiff = isset($file['diff']);
 
         return sprintf(
-            '%s) %s%s',
+            '%s) %s%s%s',
             ++$this->counter,
             $file['name'],
-            $hasFixers ? ' (' . implode(',', $file['appliedFixers']) . ')' : ''
+            $hasFixers ? ' (' . implode(',', $file['appliedFixers']) . ')' : '',
+            $hasDiff ? PHP_EOL . PHP_EOL . $file['diff'] : ''
         );
     }
 }

@@ -34,6 +34,7 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
             'using_cache' => true,
             'path_mode' => null,
             'verbose' => true,
+            'diff' => false,
         ]);
 
         $resolver->addAllowedTypes('allow_risky', ['bool']);
@@ -43,6 +44,7 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
         $resolver->addAllowedTypes('using_cache', ['bool']);
         $resolver->addAllowedTypes('path_mode', ['null', 'string']);
         $resolver->addAllowedTypes('verbose', ['bool']);
+        $resolver->addAllowedTypes('diff', ['bool']);
 
         $resolver->setAllowedValues('path_mode', [null, 'override', 'intersection']);
 
@@ -72,6 +74,7 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
         $arguments->addOptionalArgument('--using-cache=%s', $config['using_cache'] ? 'yes' : 'no');
         $arguments->addOptionalArgument('--path-mode=%s', $config['path_mode']);
         $arguments->addOptionalArgument('--verbose', $config['verbose']);
+        $arguments->addOptionalArgument('--diff', $config['diff']);
         $arguments->add('fix');
 
         if ($context instanceof RunContext && $config['config'] !== null) {

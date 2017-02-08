@@ -15,6 +15,7 @@ parameters:
             using_cache: true
             path_mode: ~
             verbose: true
+            diff: false
 ```
 
 
@@ -22,8 +23,8 @@ parameters:
 
 *Default: false*
 
-The allow_risky option allows you to set whether riskys fixer may run. 
-Risky fixer is a fixer, which could change code behaviour. 
+The allow_risky option allows you to set whether riskys fixer may run.
+Risky fixer is a fixer, which could change code behaviour.
 By default no risky fixers are run.
 
 
@@ -55,9 +56,9 @@ The rules option lets you choose the exact fixers to apply.
 
 *Default: true*
 
-The caching mechanism is enabled by default. 
-This will speed up further runs by fixing only files that were modified since the last run. 
-The tool will fix all files if the tool version has changed or the list of fixers has changed. 
+The caching mechanism is enabled by default.
+This will speed up further runs by fixing only files that were modified since the last run.
+The tool will fix all files if the tool version has changed or the list of fixers has changed.
 Cache is supported only for tool downloaded as phar file or installed via composer.
 
 
@@ -73,3 +74,9 @@ Specify path mode (can be override or intersection).
 *Default: true*
 
 Show applied fixers.
+
+**diff**
+
+*Default: false*
+
+Show the full diff that will be applied.
