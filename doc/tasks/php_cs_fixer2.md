@@ -50,6 +50,9 @@ You can specify an alternate location for this file by changing this option.
 
 You can limit the amount of rules that are being checked.
 The rules option lets you choose the exact fixers to apply.
+Using the introduced rules from php cs fixer 2 you will have to escape the rules with another @ character, e.g.
+
+rules: ['@@PSR2','@@Symfony']
 
 
 **using_cache**
