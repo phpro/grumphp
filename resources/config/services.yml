@@ -55,6 +55,12 @@ services:
         arguments:
           - '@git.repository'
           - '@filesystem'
+          
+    locator.changed_files_before_push:
+        class: GrumPHP\Locator\ChangedFiles
+        arguments:
+          - '@git.repository'
+          - '@filesystem'
 
     locator.registered_files:
         class: GrumPHP\Locator\RegisteredFiles
