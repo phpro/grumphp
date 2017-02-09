@@ -52,8 +52,9 @@ You can limit the amount of rules that are being checked.
 The rules option lets you choose the exact fixers to apply.
 Using the newly introduced rules (@PSR2 or @Symfony etc) you will have to escape those with another @ character, e.g.
 
-rules: ['@@PSR2','@@Symfony']
-
+```yml
+rules: ['@@PSR2', '@@Symfony']
+```
 
 **using_cache**
 
