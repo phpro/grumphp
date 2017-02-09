@@ -72,6 +72,12 @@ class PrePushCommand extends Command
             new GitPrePushContext($files),
             $this->grumPHP->getTestSuites()->getOptional('git_pre_push')
         );
+        $this->addOption(
+            'skip-success-output',
+            null,
+            InputOption::VALUE_NONE,
+            $this->grumPHP->getTestSuites()->getOptional('git_pre_push')
+        );
         $context->setSkipSuccessOutput((bool) $input->getOption('skip-success-output'));
 
         $output->writeln('<fg=yellow>GrumPHP detected a pre-push command.</fg=yellow>');
