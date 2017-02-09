@@ -62,7 +62,12 @@ class PrePushCommand extends Command
     {
         $io = new ConsoleIO($input, $output);
         $files = $this->getPushedFiles($io);
-
+        
+        if (empty($files)) {
+            $output->writeln('<fg=red>GrumPHP was not able to detect a commit.</fg=red>');
+            return false;
+        }
+        
         $context = new TaskRunnerContext(
             new GitPrePushContext($files),
             $this->grumPHP->getTestSuites()->getOptional('git_pre_push')

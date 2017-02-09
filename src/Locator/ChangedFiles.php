@@ -50,7 +50,12 @@ class ChangedFiles
         $local_branch = explode("\n", $this->repository->run('name-rev', array('--name-only', 'HEAD')));
         $tracking_branch = explode("\n", str_replace('refs/heads/', '', $this->repository->run('config', array('branch.'.$local_branch[0].'.merge'))));
         $tracking_remote = explode("\n", $this->repository->run('config', array('branch.'.$local_branch[0].'.remote')));
-        $diff = explode("\n", $this->repository->run('diff', array($tracking_branch[0].'/'.$tracking_remote[0].'..HEAD', '--name-only', '--oneline')));
+        $diff = explode("\n", $this->repository->run('diff', array($tracking_remote[0].'/'.$tracking_branch[0].'..HEAD', '--name-only', '--oneline')));
+        // In case there are no commit
+        if(empty($diff[0])) {
+            return false;
+        }
+        
         foreach ($diff as $file) {
             $fileObject = new SplFileInfo($file, dirname($file), $file);
             $files[] = $fileObject;
