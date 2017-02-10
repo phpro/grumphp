@@ -86,8 +86,10 @@ Show applied fixers.
 
 Show the full diff that will be applied.
 
+
 **triggered_by**
 
 *Default: [php]*
 
 This option will specify which file extensions will trigger the phpcsfixer2 task.
+
