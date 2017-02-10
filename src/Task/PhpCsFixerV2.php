@@ -35,6 +35,7 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
             'path_mode' => null,
             'verbose' => true,
             'diff' => false,
+            'triggered_by' => ['php'],
         ]);
 
         $resolver->addAllowedTypes('allow_risky', ['bool']);
@@ -45,6 +46,7 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
         $resolver->addAllowedTypes('path_mode', ['null', 'string']);
         $resolver->addAllowedTypes('verbose', ['bool']);
         $resolver->addAllowedTypes('diff', ['bool']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
 
         $resolver->setAllowedValues('path_mode', [null, 'override', 'intersection']);
 
@@ -56,12 +58,12 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
      */
     public function run(ContextInterface $context)
     {
-        $files = $context->getFiles()->name('*.php');
+        $config = $this->getConfiguration();
+        $files = $context->getFiles()->extensions($config['triggered_by']);
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 
-        $config = $this->getConfiguration();
         $this->formatter->resetCounter();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('php-cs-fixer');
