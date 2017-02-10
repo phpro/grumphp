@@ -16,6 +16,7 @@ parameters:
             path_mode: ~
             verbose: true
             diff: false
+            triggered_by: ['php']
 ```
 
 
@@ -84,3 +85,9 @@ Show applied fixers.
 *Default: false*
 
 Show the full diff that will be applied.
+
+**triggered_by**
+
+*Default: [php]*
+
+This option will specify which file extensions will trigger the phpcsfixer2 task.
