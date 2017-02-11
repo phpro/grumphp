@@ -9,6 +9,7 @@ parameters:
     hooks_preset: local
     stop_on_failure: false
     ignore_unstaged_changes: false
+    hide_circumvention_tip: false
     process_async_limit: 10
     process_async_wait: 1000
     process_timeout: 60
@@ -77,6 +78,12 @@ By enabling this option, GrumPHP will stash your unstaged changes in git before 
 This way the tasks will run with the code that is actually committed without the unstaged changes.
 Note that during the commit, the unstaged changes will be stored in git stash.
 This may mess with your working copy and result in unexpected merge conflicts.
+
+**hide_circumvention_tip**
+
+*Default: false*
+
+Hides the tip describing how to circumvent the Git commit hook and bypass GrumPHP when a task fails.
 
 **process_async_limit**
 
