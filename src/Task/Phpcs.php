@@ -13,14 +13,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Phpcs task
+ *
+ * @property PhpcsFormatter $formatter
  */
 class Phpcs extends AbstractExternalTask
 {
-    /**
-     * @var PhpcsFormatter
-     */
-    protected $formatter;
-
     /**
      * @return string
      */

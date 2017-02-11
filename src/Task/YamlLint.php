@@ -10,13 +10,11 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @property YamlLinter $linter
+ */
 class YamlLint extends AbstractLinterTask
 {
-    /**
-     * @var YamlLinter
-     */
-    protected $linter;
-
     /**
      * @return string
      */
