@@ -50,7 +50,7 @@ class ForbiddenClassMethodCallsVisitor extends AbstractVisitor implements Config
 
         $this->addError(
             sprintf('Found blacklisted "%s" method call', $normalized),
-            $node->getline(),
+            $node->getLine(),
             ParseError::TYPE_ERROR
         );
     }

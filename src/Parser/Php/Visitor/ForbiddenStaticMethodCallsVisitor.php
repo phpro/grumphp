@@ -51,7 +51,7 @@ class ForbiddenStaticMethodCallsVisitor extends AbstractVisitor implements Confi
 
         $this->addError(
             sprintf('Found blacklisted "%s" static method call', $normalized),
-            $node->getline(),
+            $node->getLine(),
             ParseError::TYPE_ERROR
         );
     }

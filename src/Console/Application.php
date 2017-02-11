@@ -85,8 +85,7 @@ class Application extends SymfonyConsole
         $commands[] = new Command\ConfigureCommand(
             $container->get('config'),
             $container->get('grumphp.util.filesystem'),
-            $container->get('git.repository'),
-            $container->get('task_runner')
+            $container->get('git.repository')
         );
         $commands[] = new Command\RunCommand(
             $container->get('config'),
@@ -129,8 +128,7 @@ class Application extends SymfonyConsole
         ));
         $helperSet->set(new Helper\TaskRunnerHelper(
             $container->get('task_runner'),
-            $container->get('event_dispatcher'),
-            $container->get('config')
+            $container->get('event_dispatcher')
         ));
 
         return $helperSet;

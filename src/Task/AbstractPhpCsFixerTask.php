@@ -113,6 +113,7 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
         $hasErrors = false;
         $messages = [];
         $suggestions = [];
+        $processes = [];
 
         foreach ($files as $file) {
             $fileArguments = new ProcessArgumentsCollection($arguments->getValues());
