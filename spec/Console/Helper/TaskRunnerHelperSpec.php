@@ -35,7 +35,8 @@ class TaskRunnerHelperSpec extends ObjectBehavior
 
         $runnerContext->getTaskContext()->willReturn($taskContext);
         $runnerContext->hasTestSuite()->willReturn(false);
-        $runnerContext->isSkipSuccessOutput()->willReturn(false);
+        $runnerContext->shouldSkipSuccessOutput()->willReturn(false);
+        $runnerContext->shouldHideCircumventionTip()->willReturn(false);
     }
 
     function it_is_a_console_helper()

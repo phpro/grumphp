@@ -41,7 +41,7 @@ class TaskRunnerHelper extends Helper
     /**
      * @return PathsHelper
      */
-    private function paths()
+    private function getPathsHelper()
     {
         return $this->getHelperSet()->get(PathsHelper::HELPER_NAME);
     }
@@ -65,23 +65,30 @@ class TaskRunnerHelper extends Helper
         }
 
         $taskResults = $this->taskRunner->run($context);
-
         $warnings = $taskResults->filterByResultCode(TaskResult::NONBLOCKING_FAILED);
+
         if ($taskResults->isFailed()) {
             $failed = $taskResults->filterByResultCode(TaskResult::FAILED);
-            return $this->returnErrorMessages($output, $failed->getAllMessages(), $warnings->getAllMessages());
+            $this->printErrorMessages($output, $failed->getAllMessages(), $warnings->getAllMessages());
+
+            $context->shouldHideCircumventionTip() || $this->printCircumventionTip($output);
+
+            return self::CODE_ERROR;
         }
 
-        if ($context->isSkipSuccessOutput()) {
-            $this->returnWarningMessages($output, $warnings->getAllMessages());
-            return self::CODE_SUCCESS;
+        if ($context->shouldSkipSuccessOutput()) {
+            $this->printWarningMessages($output, $warnings->getAllMessages());
         }
 
-        return $this->returnSuccessMessage($output, $warnings->getAllMessages());
+        if (!$context->shouldSkipSuccessOutput()) {
+            $this->printSuccessMessage($output, $warnings->getAllMessages());
+        }
+
+        return self::CODE_SUCCESS;
     }
 
     /**
-     * @param OutputInterface  $output
+     * @param OutputInterface $output
      */
     private function registerEventListeners(OutputInterface $output)
     {
@@ -90,58 +97,53 @@ class TaskRunnerHelper extends Helper
 
     /**
      * @param OutputInterface $output
-     * @param array           $errorMessages
-     *
-     * @return int
+     * @param array $errorMessages
+     * @param array $warnings
      */
-    private function returnErrorMessages(OutputInterface $output, array $errorMessages, array $warnings)
+    private function printErrorMessages(OutputInterface $output, array $errorMessages, array $warnings)
     {
-        $failed = $this->paths()->getAsciiContent('failed');
+        $failed = $this->getPathsHelper()->getAsciiContent('failed');
         if ($failed) {
             $output->writeln('<fg=red>' . $failed . '</fg=red>');
         }
 
-        $this->returnWarningMessages($output, $warnings);
+        $this->printWarningMessages($output, $warnings);
 
         foreach ($errorMessages as $errorMessage) {
             $output->writeln('<fg=red>' . $errorMessage . '</fg=red>');
         }
-
-        $output->writeln(
-            '<fg=yellow>To skip commit checks, add -n or --no-verify flag to commit command</fg=yellow>'
-        );
-
-        return self::CODE_ERROR;
     }
 
     /**
      * @param OutputInterface $output
-     *
      * @param array           $warnings
-     *
-     * @return int
      */
-    private function returnSuccessMessage(OutputInterface $output, array $warnings)
+    private function printSuccessMessage(OutputInterface $output, array $warnings)
     {
-        $succeeded = $this->paths()->getAsciiContent('succeeded');
+        $succeeded = $this->getPathsHelper()->getAsciiContent('succeeded');
         if ($succeeded) {
             $output->write('<fg=green>' . $succeeded . '</fg=green>');
         }
 
-        $this->returnWarningMessages($output, $warnings);
-
-        return self::CODE_SUCCESS;
+        $this->printWarningMessages($output, $warnings);
     }
 
     /**
      * @param OutputInterface $output
      * @param array $warningMessages
      */
-    private function returnWarningMessages($output, array $warningMessages)
+    private function printWarningMessages(OutputInterface $output, array $warningMessages)
     {
         foreach ($warningMessages as $warningMessage) {
             $output->writeln('<fg=yellow>' . $warningMessage . '</fg=yellow>');
         }
+    }
+
+    private function printCircumventionTip(OutputInterface $output)
+    {
+        $output->writeln(
+            '<fg=yellow>To skip commit checks add -n or --no-verify flag to commit command</fg=yellow>'
+        );
     }
 
     /**

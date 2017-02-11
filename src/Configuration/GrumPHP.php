@@ -110,6 +110,16 @@ class GrumPHP
     }
 
     /**
+     * Gets a value indicating whether the Git commit hook circumvention tip should be shown when a task fails.
+     *
+     * @return bool True to hide the tip, otherwise false.
+     */
+    public function shouldHideCircumventionTip()
+    {
+        return (bool)$this->container->getParameter('hide_circumvention_tip');
+    }
+
+    /**
      * @param string $taskName
      *
      * @return array
