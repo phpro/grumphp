@@ -5,6 +5,7 @@ namespace GrumPHP\Task;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\RunContext;
+use ScriptFUSION\Type\ArrayType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -72,7 +73,13 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
         $arguments->addOptionalArgument('--allow-risky=%s', $config['allow_risky'] ? 'yes' : 'no');
         $arguments->addOptionalArgument('--cache-file=%s', $config['cache_file']);
         $arguments->addOptionalArgument('--config=%s', $config['config']);
-        $arguments->addOptionalCommaSeparatedArgument('--rules=%s', $config['rules']);
+
+        if (is_array($rules = $config['rules']) && ArrayType::isMap($rules)) {
+            $arguments->addOptionalArgument('--rules=\'%s\'', json_encode($rules));
+        } else {
+            $arguments->addOptionalCommaSeparatedArgument('--rules=%s', $rules);
+        }
+
         $arguments->addOptionalArgument('--using-cache=%s', $config['using_cache'] ? 'yes' : 'no');
         $arguments->addOptionalArgument('--path-mode=%s', $config['path_mode']);
         $arguments->addOptionalArgument('--verbose', $config['verbose']);
