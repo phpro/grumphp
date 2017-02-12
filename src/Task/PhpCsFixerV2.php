@@ -75,7 +75,7 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
         $arguments->addOptionalArgument('--config=%s', $config['config']);
 
         if (is_array($rules = $config['rules']) && ArrayType::isMap($rules)) {
-            $arguments->addOptionalArgument('--rules=\'%s\'', json_encode($rules));
+            $arguments->addOptionalArgument('--rules=\'%s\'', str_replace('\'', '\'\\\'\'', json_encode($rules)));
         } else {
             $arguments->addOptionalCommaSeparatedArgument('--rules=%s', $rules);
         }
