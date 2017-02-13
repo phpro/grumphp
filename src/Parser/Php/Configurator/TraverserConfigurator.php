@@ -27,6 +27,11 @@ class TraverserConfigurator
     private $options = [];
 
     /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    /**
      * @var ParserContext
      */
     private $context;

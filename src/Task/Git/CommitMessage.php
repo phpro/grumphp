@@ -17,6 +17,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CommitMessage implements TaskInterface
 {
     /**
+     * @var GrumPHP
+     */
+    private $grumPHP;
+
+    /**
      * @param GrumPHP $grumPHP
      */
     public function __construct(GrumPHP $grumPHP)
