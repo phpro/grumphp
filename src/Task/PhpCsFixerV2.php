@@ -5,7 +5,6 @@ namespace GrumPHP\Task;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\RunContext;
-use ScriptFUSION\Type\ArrayType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -74,8 +73,10 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
         $arguments->addOptionalArgument('--cache-file=%s', $config['cache_file']);
         $arguments->addOptionalArgument('--config=%s', $config['config']);
 
-        if (is_array($rules = $config['rules']) && ArrayType::isMap($rules)) {
-            $arguments->addOptionalArgument('--rules=\'%s\'', str_replace('\'', '\'\\\'\'', json_encode($rules)));
+        $rules = $config['rules'];
+        // JSON-encode rules if specified as a map.
+        if (array_values($rules) !== $rules) {
+            $arguments->addOptionalArgument('--rules=%s', json_encode($rules));
         } else {
             $arguments->addOptionalCommaSeparatedArgument('--rules=%s', $rules);
         }
