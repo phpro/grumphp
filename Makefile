@@ -9,8 +9,8 @@ run:
 tag:
 	$(if $(TAG),,$(error TAG is not defined. Pass via "make tag TAG=4.2.1"))
 	@echo Tagging $(TAG)
-	sed -i '' -e "s/APP_VERSION = '.*'/APP_VERSION = '$(TAG)'/" src/GrumPHP/Console/Application.php
-	php -l src/GrumPHP/Console/Application.php
+	sed -i '' -e "s/APP_VERSION = '.*'/APP_VERSION = '$(TAG)'/" src/Console/Application.php
+	php -l src/Console/Application.php
 	git add -A
 	git commit -m '$(TAG) release'
 	git tag -s 'v$(TAG)' -m'Version $(TAG)'
