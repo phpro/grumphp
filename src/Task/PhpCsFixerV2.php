@@ -73,12 +73,12 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
         $arguments->addOptionalArgument('--cache-file=%s', $config['cache_file']);
         $arguments->addOptionalArgument('--config=%s', $config['config']);
 
-        $rules = $config['rules'];
-        // JSON-encode rules if specified as a map.
-        if (array_values($rules) !== $rules) {
-            $arguments->addOptionalArgument('--rules=%s', json_encode($rules));
-        } else {
-            $arguments->addOptionalCommaSeparatedArgument('--rules=%s', $rules);
+        if ($rules = $config['rules']) {
+            $arguments->add(sprintf(
+                '--rules=%s',
+                // Comma-delimit rules if specified as a list; otherwise JSON-encode.
+                array_values($rules) === $rules ? implode(',', $rules) : json_encode($rules)
+            ));
         }
 
         $arguments->addOptionalArgument('--using-cache=%s', $config['using_cache'] ? 'yes' : 'no');
