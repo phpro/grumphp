@@ -1,6 +1,6 @@
 | Q               | A
 | --------------- | ---
-| Branch          | master for features and deprecations
+| Version         | `grumphp -V`
 | Bug?            | yes/no
 | New feature?    | yes/no
 | Question?       | yes/no
