@@ -8,16 +8,13 @@ use GrumPHP\Runner\TaskResult;
 
 /**
  * Php Parser task
+ *
+ * @property \GrumPHP\Parser\Php\PhpParser $parser
  */
 class PhpParser extends AbstractParserTask
 {
     const KIND_PHP5 = 'php5';
     const KIND_PHP7 = 'php7';
-
-    /**
-     * @var \GrumPHP\Parser\Php\PhpParser
-     */
-    protected $parser;
 
     /**
      * @return string
