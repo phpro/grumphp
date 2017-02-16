@@ -126,7 +126,7 @@ class PhpCsFixerV2Spec extends ObjectBehavior
         }))->willReturn($process);
 
         $processRunner->run(Argument::type('array'))->shouldBeCalled();
-    $process->isSuccessful()->willReturn(true);
+        $process->isSuccessful()->willReturn(true);
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf(TaskResultInterface::class);
@@ -147,7 +147,7 @@ class PhpCsFixerV2Spec extends ObjectBehavior
         $processBuilder->buildProcess(Argument::type(ProcessArgumentsCollection::class))->willReturn($process);
 
         $processRunner->run(Argument::type('array'))->shouldBeCalled();
-    $process->isSuccessful()->willReturn(false);
+        $process->isSuccessful()->willReturn(false);
 
         $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('file1.php', '.', 'file1.php'),
@@ -156,5 +156,65 @@ class PhpCsFixerV2Spec extends ObjectBehavior
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(false);
+    }
+
+    function it_composes_a_rule_list(
+        GrumPHP $grumPHP,
+        ProcessBuilder $processBuilder,
+        Process $process,
+        RunContext $context,
+        PhpCsFixerFormatter $formatter
+    )
+    {
+        $formatter->resetCounter()->shouldBeCalled();
+        $grumPHP->getTaskConfiguration('phpcsfixer2')->willReturn([
+            'config' => 'foo',
+            'rules' => ['foo', 'bar'],
+        ]);
+        $context->getFiles()->willReturn(new FilesCollection([new SplFileInfo('file1.php', '.', 'file1.php')]));
+
+        $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn(new ProcessArgumentsCollection);
+        $processBuilder->buildProcess(Argument::that(
+            function (ProcessArgumentsCollection $args) {
+                return $args->contains('--rules=foo,bar');
+            }
+        ))->willReturn($process);
+
+        $process->run()->shouldBeCalled();
+        $process->isSuccessful()->willReturn(true);
+
+        $this->run($context)->isPassed()->shouldBe(true);
+    }
+
+    function it_composes_a_rule_dictionary(
+        GrumPHP $grumPHP,
+        ProcessBuilder $processBuilder,
+        Process $process,
+        RunContext $context,
+        PhpCsFixerFormatter $formatter
+    )
+    {
+        $formatter->resetCounter()->shouldBeCalled();
+        $grumPHP->getTaskConfiguration('phpcsfixer2')->willReturn([
+            'config' => 'foo',
+            'rules' => $rules = [
+                'foo' => [
+                    'bar',
+                ],
+            ],
+        ]);
+        $context->getFiles()->willReturn(new FilesCollection([new SplFileInfo('file1.php', '.', 'file1.php')]));
+
+        $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn(new ProcessArgumentsCollection);
+        $processBuilder->buildProcess(Argument::that(
+            function (ProcessArgumentsCollection $args) use ($rules) {
+                return $args->contains('--rules={"foo":["bar"]}');
+            }
+        ))->willReturn($process);
+
+        $process->run()->shouldBeCalled();
+        $process->isSuccessful()->willReturn(true);
+
+        $this->run($context)->isPassed()->shouldBe(true);
     }
 }
