@@ -125,7 +125,9 @@ class TaskRunner
             $this->eventDispatcher->dispatch(TaskEvents::TASK_RUN, new TaskEvent($task, $context));
             $result = $task->run($context);
         } catch (PlatformException $e) {
-            $result = TaskResult::createNonBlockingFailed($task, $context, $e->getMessage());
+            $this->eventDispatcher->dispatch(TaskEvents::TASK_SKIPPED, new TaskEvent($task, $context));
+
+            return TaskResult::createSkipped($task, $context);
         } catch (RuntimeException $e) {
             $result = TaskResult::createFailed($task, $context, $e->getMessage());
         }
@@ -142,7 +144,7 @@ class TaskRunner
             );
         }
 
-        if (!$result->isPassed()) {
+        if ($result->hasFailed()) {
             $e = new RuntimeException($result->getMessage());
             $this->eventDispatcher->dispatch(TaskEvents::TASK_FAILED, new TaskFailedEvent($task, $context, $e));
 

@@ -50,6 +50,7 @@ class ProgressSubscriber implements EventSubscriberInterface
             TaskEvents::TASK_RUN => 'advanceProgress',
             TaskEvents::TASK_COMPLETE => 'onTaskProgress',
             TaskEvents::TASK_FAILED => 'onTaskProgress',
+            TaskEvents::TASK_SKIPPED => 'onTaskProgress',
             RunnerEvents::RUNNER_COMPLETE => 'finishProgress',
             RunnerEvents::RUNNER_FAILED => 'finishProgress',
         ];
@@ -93,6 +94,11 @@ class ProgressSubscriber implements EventSubscriberInterface
             case TaskEvents::TASK_FAILED:
                 $this->output->write('<fg=red>✘</fg=red>');
                 break;
+
+            case TaskEvents::TASK_SKIPPED:
+                $this->output->write('', true);
+                $this->output->write('<fg=yellow>Oh no, we hit the windows cmd input limit!</fg=yellow>', true);
+                $this->output->write('<fg=yellow>Skipping task...</fg=yellow>');
         }
     }
 

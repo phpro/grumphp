@@ -126,7 +126,7 @@ class TaskRunnerSpec extends ObjectBehavior
         $results->shouldContainFailedTaskResult();
     }
 
-    function it_returns_non_blocking_faled_when_tasks_throws_a_platform_exception(
+    function it_returns_skipped_when_tasks_throws_a_platform_exception(
         TaskInterface $task1,
         TaskInterface $task2,
         TaskRunnerContext $runnerContext,
@@ -137,8 +137,8 @@ class TaskRunnerSpec extends ObjectBehavior
 
         $results = $this->run($runnerContext);
         $results->shouldReturnAnInstanceOf(TaskResultCollection::class);
-        $results->shouldNotBePassed();
-        $results->shouldContainNonBlockingFailedTaskResult();
+        $results->shouldBePassed();
+        $results->shouldContainSkippedTaskResult();
     }
 
     function it_returns_a_failed_tasks_result_if_a_non_blocking_task_fails(
@@ -238,16 +238,21 @@ class TaskRunnerSpec extends ObjectBehavior
     public function getMatchers()
     {
         return [
-            'containFailedTaskResult' => function ($taskResultCollection) {
-                return $taskResultCollection->exists(function ($key, $taskResult) {
+            'containFailedTaskResult' => function (TaskResultCollection $taskResultCollection) {
+                return $taskResultCollection->exists(function ($key, TaskResult $taskResult) {
                     return TaskResult::FAILED === $taskResult->getResultCode();
                 });
             },
-            'containNonBlockingFailedTaskResult' => function ($taskResultCollection) {
-                return $taskResultCollection->exists(function ($key, $taskResult) {
+            'containNonBlockingFailedTaskResult' => function (TaskResultCollection $taskResultCollection) {
+                return $taskResultCollection->exists(function ($key, TaskResult $taskResult) {
                     return TaskResult::NONBLOCKING_FAILED === $taskResult->getResultCode();
                 });
             },
+            'containSkippedTaskResult' => function (TaskResultCollection $taskResultCollection) {
+                return $taskResultCollection->exists(function ($key, TaskResult $taskResult) {
+                    return TaskResult::SKIPPED === $taskResult->getResultCode();
+                });
+            }
         ];
     }
 }
