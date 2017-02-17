@@ -34,7 +34,7 @@ install:
 
 before_test:
     - cd C:\projects\grumphp
-    - php C:\tools\composer.phar update --no-progress --profile --prefer-dist --no-scripts --no-interaction
+    - php C:\tools\composer.phar update --no-progress --profile --prefer-dist --no-scripts --no-interaction --no-suggest
 
 test_script:
     - cd c:\projects\grumphp
