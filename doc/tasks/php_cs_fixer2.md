@@ -49,13 +49,34 @@ You can specify an alternate location for this file by changing this option.
 
 *Default: []*
 
-You can limit the amount of rules that are being checked.
-The rules option lets you choose the exact fixers to apply.
-Using the newly introduced rules (@PSR2 or @Symfony etc) you will have to escape those with another @ character, e.g.
+Rules may be specified as either a list or map. A list of rules may only turn certain rules on or off whereas
+a map may also configure rules where applicable.
 
-```yml
-rules: ['@@PSR2', '@@Symfony']
+In the following list-style example, PSR-2 rules are enabled but the `line_ending` rule is removed from the
+set, while the `array_syntax` rule is added.
+
+```yaml
+rules:
+  - '@@PSR2'
+  - -line_ending
+  - array_syntax
 ```
+
+The following map-style example is the same as the previous, except we take advantage of rule configuration
+to change the `array_syntax` validation mode to short array syntax (`[]`) instead of the default long syntax
+(`array()`).
+
+```yaml
+rules:
+  '@PSR2': true
+  line_ending: false
+  array_syntax:
+    syntax: short
+```
+
+Note that rule sets, beginning with the *at* symbol (`@`), must be escaped by being quoted and doubled due to
+limitations of the parser. However, when appearing in the *key* position as in the previous example, doubling
+is incorrect.
 
 **using_cache**
 
