@@ -74,6 +74,7 @@ class Php7ccSpec extends ObjectBehavior
 
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
+        $process->getOutput()->willReturn('');
 
         $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('test.php', '.', 'test.php')
@@ -90,8 +91,17 @@ class Php7ccSpec extends ObjectBehavior
         $processBuilder->createArgumentsForCommand('php7cc')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
+        $failedOutput = <<<'OUTPUT'
+File: /path/to/bad.php
+> Line 3: Removed argument $is_dst used for function "mktime"
+    mktime(5, 5, 5, 5, 5, 2000, -1);
+
+Checked 2 files in 0.040 second
+OUTPUT;
+
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(false);
+        $process->getOutput()->willReturn($failedOutput);
 
         $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('test.php', '.', 'test.php')
