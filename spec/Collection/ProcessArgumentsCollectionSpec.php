@@ -10,19 +10,19 @@ use SplFileInfo;
 
 class ProcessArgumentsCollectionSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(ProcessArgumentsCollection::class);
     }
 
-    function it_should_be_able_to_create_a_new_collection_based_on_a_command()
+    public function it_should_be_able_to_create_a_new_collection_based_on_a_command()
     {
         $result = $this->forExecutable('exec');
         $result->shouldBeAnInstanceOf(ProcessArgumentsCollection::class);
         $result->first()->shouldBe('exec');
     }
 
-    function it_should_be_able_to_add_optional_argument()
+    public function it_should_be_able_to_add_optional_argument()
     {
         $this->addOptionalArgument('--argument=%s', null);
         $this->getValues()->shouldBe([]);
@@ -31,7 +31,7 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
         $this->getValues()->shouldBe(['--argument=value']);
     }
 
-    function it_should_be_able_to_add_optional_argument_with_separated_value()
+    public function it_should_be_able_to_add_optional_argument_with_separated_value()
     {
         $this->addOptionalArgumentWithSeparatedValue('--argument', null);
         $this->getValues()->shouldBe([]);
@@ -40,7 +40,7 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
         $this->getValues()->shouldBe(['--argument', 'value']);
     }
 
-    function it_should_be_able_to_add_optional_comma_separated_argument()
+    public function it_should_be_able_to_add_optional_comma_separated_argument()
     {
         $this->addOptionalCommaSeparatedArgument('--argument=%s', []);
         $this->getValues()->shouldBe([]);
@@ -49,7 +49,7 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
         $this->getValues()->shouldBe(['--argument=1,2']);
     }
 
-    function it_should_be_able_to_add_an_argument_array()
+    public function it_should_be_able_to_add_an_argument_array()
     {
         $this->addArgumentArray('--item=%s', [1, 2]);
         $this->getValues()->shouldBe([
@@ -58,7 +58,7 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
         ]);
     }
 
-    function it_should_be_able_to_add_an_argument_array_with_separated_values()
+    public function it_should_be_able_to_add_an_argument_array_with_separated_values()
     {
         $this->addArgumentArrayWithSeparatedValue('--item', [1, 2]);
         $this->getValues()->shouldBe([
@@ -69,7 +69,7 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
         ]);
     }
 
-    function it_should_be_able_to_add_separated_argument_array()
+    public function it_should_be_able_to_add_separated_argument_array()
     {
         $this->addSeparatedArgumentArray('--item', [1, 2]);
         $this->getValues()->shouldBe([
@@ -79,7 +79,7 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
         ]);
     }
 
-    function it_should_be_able_to_add_required_argument()
+    public function it_should_be_able_to_add_required_argument()
     {
         $this->shouldThrow(InvalidArgumentException::class)->duringAddRequiredArgument('--argument=%s', false);
 
@@ -87,7 +87,7 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
         $this->getValues()->shouldBe(['--argument=value']);
     }
 
-    function it_should_be_able_to_add_files()
+    public function it_should_be_able_to_add_files()
     {
         $files = new FilesCollection([
             new SplFileInfo('file1.txt'),
@@ -101,7 +101,7 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
         ]);
     }
 
-    function it_should_be_able_to_add_comma_separated_files()
+    public function it_should_be_able_to_add_comma_separated_files()
     {
         $files = new FilesCollection([
             new SplFileInfo('file1.txt'),

@@ -14,29 +14,29 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class TraverserConfiguratorSpec extends ObjectBehavior
 {
-    function let(ContainerInterface $container)
+    public function let(ContainerInterface $container)
     {
         $this->beConstructedWith($container);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(TraverserConfigurator::class);
     }
 
-    function it_throws_an_exception_if_a_context_is_not_set(NodeTraverserInterface $traverser)
+    public function it_throws_an_exception_if_a_context_is_not_set(NodeTraverserInterface $traverser)
     {
         $this->registerOptions(['visitors' => []]);
         $this->shouldThrow(RuntimeException::class)->duringConfigure($traverser);
     }
 
-    function it_throws_an_exception_if_no_visitors_are_configured(ParserContext $context, NodeTraverserInterface $traverser)
+    public function it_throws_an_exception_if_no_visitors_are_configured(ParserContext $context, NodeTraverserInterface $traverser)
     {
         $this->registerContext($context);
         $this->shouldThrow(RuntimeException::class)->duringConfigure($traverser);
     }
 
-    function it_loads_standard_enabled_visitors(
+    public function it_loads_standard_enabled_visitors(
         ContainerInterface $container,
         ParserContext $context,
         NodeTraverserInterface $traverser,
@@ -54,7 +54,7 @@ class TraverserConfiguratorSpec extends ObjectBehavior
         $this->configure($traverser);
     }
 
-    function it_loads_configured_visitors_from_task_configuration(
+    public function it_loads_configured_visitors_from_task_configuration(
         ContainerInterface $container,
         ParserContext $context,
         NodeTraverserInterface $traverser,
@@ -75,7 +75,7 @@ class TraverserConfiguratorSpec extends ObjectBehavior
         $this->configure($traverser);
     }
 
-    function it_throws_an_exception_if_the_configured_visitor_could_not_be_found(
+    public function it_throws_an_exception_if_the_configured_visitor_could_not_be_found(
         ParserContext $context,
         NodeTraverserInterface $traverser
     ) {
@@ -90,7 +90,7 @@ class TraverserConfiguratorSpec extends ObjectBehavior
         $this->shouldThrow(RuntimeException::class)->duringConfigure($traverser);
     }
 
-    function it_does_not_load_unused_visitors(
+    public function it_does_not_load_unused_visitors(
         ContainerInterface $container,
         ParserContext $context,
         NodeTraverserInterface $traverser,
@@ -107,7 +107,7 @@ class TraverserConfiguratorSpec extends ObjectBehavior
         $this->configure($traverser);
     }
 
-    function it_should_append_the_context_to_a_context_aware_visitor(
+    public function it_should_append_the_context_to_a_context_aware_visitor(
         ContainerInterface $container,
         ParserContext $context,
         NodeTraverserInterface $traverser,
@@ -129,7 +129,7 @@ class TraverserConfiguratorSpec extends ObjectBehavior
         $this->configure($traverser);
     }
 
-    function it_should_pass_visitor_configuration_to_a_configuration_aware_visitor(
+    public function it_should_pass_visitor_configuration_to_a_configuration_aware_visitor(
         ContainerInterface $container,
         ParserContext $context,
         NodeTraverserInterface $traverser,

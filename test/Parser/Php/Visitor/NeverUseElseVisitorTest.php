@@ -18,7 +18,7 @@ class NeverUseElseVisitorTest extends AbstractVisitorTest
     /**
      * @test
      */
-    function it_does_not_allow_else_statements()
+    public function it_does_not_allow_else_statements()
     {
         $code = <<<EOC
 <?php
@@ -41,7 +41,7 @@ EOC;
     /**
      * @test
      */
-    function it_allows_code_with_no_else_statements()
+    public function it_allows_code_with_no_else_statements()
     {
         $code = <<<EOC
 <?php

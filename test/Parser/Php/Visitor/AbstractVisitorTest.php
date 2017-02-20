@@ -17,7 +17,7 @@ abstract class AbstractVisitorTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    function it_is_a_visitor()
+    public function it_is_a_visitor()
     {
         self::assertInstanceOf(NodeVisitorAbstract::class, $this->getVisitor());
     }
@@ -25,7 +25,7 @@ abstract class AbstractVisitorTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    function it_is_a_context_aware_visitor()
+    public function it_is_a_context_aware_visitor()
     {
         self::assertInstanceOf(ContextAwareVisitorInterface::class, $this->getVisitor());
     }

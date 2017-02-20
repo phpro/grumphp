@@ -19,35 +19,35 @@ use Symfony\Component\Process\Process;
 
 class ConflictSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
+    public function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
         $grumPHP->getTaskConfiguration('git_conflict')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(Conflict::class);
     }
 
-    function it_should_have_a_name()
+    public function it_should_have_a_name()
     {
         $this->getName()->shouldBe('git_conflict');
     }
 
-    function it_should_have_configurable_options()
+    public function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldBe([]);
     }
 
-    function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
+    public function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_lists_nothing_when_there_are_no_files(ContextInterface $context)
+    public function it_lists_nothing_when_there_are_no_files(ContextInterface $context)
     {
         $context->getFiles()->willReturn(new FilesCollection());
 
@@ -56,7 +56,7 @@ class ConflictSpec extends ObjectBehavior
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
-    function it_lists_files_with_merge_conflicts(ProcessBuilder $processBuilder, ContextInterface $context, Process $process)
+    public function it_lists_files_with_merge_conflicts(ProcessBuilder $processBuilder, ContextInterface $context, Process $process)
     {
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('git')->willReturn($arguments);

@@ -56,7 +56,7 @@ class YamlLinterTest extends PHPUnit_Framework_TestCase
      * @test
      * @dataProvider provideYamlValidation
      */
-    function it_should_validate_yaml_for_syntax_errors($fixture, $errors)
+    public function it_should_validate_yaml_for_syntax_errors($fixture, $errors)
     {
         $this->validateFixture($fixture, $errors);
     }
@@ -64,7 +64,7 @@ class YamlLinterTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    function it_should_be_able_to_handle_object_support()
+    public function it_should_be_able_to_handle_object_support()
     {
         $this->linter->setObjectSupport(true);
         $fixture = YamlLinter::supportsFlags() ? 'object-support.yml' : 'object-support-old.yml';
@@ -74,7 +74,7 @@ class YamlLinterTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    function it_should_handle_exceptions_on_invalid_type()
+    public function it_should_handle_exceptions_on_invalid_type()
     {
         $this->linter->setObjectSupport(false);
         $this->linter->setExceptionOnInvalidType(true);
@@ -85,7 +85,7 @@ class YamlLinterTest extends PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    function provideYamlValidation()
+    public function provideYamlValidation()
     {
         return [
             ['fixture' => 'valid.yml', 'errors' => 0],

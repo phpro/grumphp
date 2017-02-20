@@ -12,64 +12,64 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ConsoleIOSpec extends ObjectBehavior
 {
-    function let(InputInterface $input, OutputInterface $output)
+    public function let(InputInterface $input, OutputInterface $output)
     {
         $this->beConstructedWith($input, $output);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(ConsoleIO::class);
     }
 
-    function it_should_be_a_IO()
+    public function it_should_be_a_IO()
     {
         $this->shouldImplement(IOInterface::class);
     }
 
-    function it_should_know_if_the_input_is_interactive_modus(InputInterface $input)
+    public function it_should_know_if_the_input_is_interactive_modus(InputInterface $input)
     {
         $input->isInteractive()->willReturn(true);
         $this->isInteractive()->shouldBe(true);
     }
 
-    function it_should_know_if_the_output_is_verbose(OutputInterface $output)
+    public function it_should_know_if_the_output_is_verbose(OutputInterface $output)
     {
         $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_VERBOSE);
         $this->isVerbose()->shouldBe(true);
     }
 
-    function it_should_know_if_the_output_is_very_verbose(OutputInterface $output)
+    public function it_should_know_if_the_output_is_very_verbose(OutputInterface $output)
     {
         $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $this->isVeryVerbose()->shouldBe(true);
     }
 
-    function it_should_know_if_the_output_is_debug(OutputInterface $output)
+    public function it_should_know_if_the_output_is_debug(OutputInterface $output)
     {
         $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_DEBUG);
         $this->isDebug()->shouldBe(true);
     }
 
-    function it_should_know_if_the_output_is_decorated(OutputInterface $output)
+    public function it_should_know_if_the_output_is_decorated(OutputInterface $output)
     {
         $output->isDecorated()->willReturn(true);
         $this->isDecorated()->shouldBe(true);
     }
 
-    function it_should_write_messages(OutputInterface $output)
+    public function it_should_write_messages(OutputInterface $output)
     {
         $output->write('test', true)->shouldBeCalled();
         $this->write('test');
     }
 
-    function it_should_write_error_messages(OutputInterface $output)
+    public function it_should_write_error_messages(OutputInterface $output)
     {
         $output->write('test', true)->shouldBeCalled();
         $this->writeError('test');
     }
 
-    function it_should_write_error_messages_to_stderr(ConsoleOutput $cliOutput, OutputInterface $output, InputInterface $input)
+    public function it_should_write_error_messages_to_stderr(ConsoleOutput $cliOutput, OutputInterface $output, InputInterface $input)
     {
         $this->beConstructedWith($input, $cliOutput);
         $cliOutput->getErrorOutput()->willReturn($output);
@@ -78,13 +78,13 @@ class ConsoleIOSpec extends ObjectBehavior
         $this->writeError('test');
     }
 
-    function it_reads_command_input()
+    public function it_reads_command_input()
     {
         $handle = $this->mockHandle('input');
         $this->readCommandInput($handle)->shouldBe('input');
     }
 
-    function it_reads_actual_diffs_from_input()
+    public function it_reads_actual_diffs_from_input()
     {
         $diff = <<<EOD
 diff --git a/src/test.php b/src/test.php
@@ -103,13 +103,13 @@ EOD;
         $this->readCommandInput($handle)->shouldBe($diff);
     }
 
-    function it_knows_empty_command_input()
+    public function it_knows_empty_command_input()
     {
         $handle = $this->mockHandle(" \r\n\t\f ");
         $this->readCommandInput($handle)->shouldBe('');
     }
 
-    function it_only_reads_valid_command_input_resource_streams()
+    public function it_only_reads_valid_command_input_resource_streams()
     {
         $this->shouldThrow(RuntimeException::class)->duringReadCommandInput('string');
     }

@@ -9,17 +9,17 @@ use PhpSpec\ObjectBehavior;
 
 class RegisteredFilesSpec extends ObjectBehavior
 {
-    function let(Repository $repository)
+    public function let(Repository $repository)
     {
         $this->beConstructedWith($repository);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(RegisteredFiles::class);
     }
 
-    function it_will_list_all_diffed_files(Repository $repository)
+    public function it_will_list_all_diffed_files(Repository $repository)
     {
         $files = ['file1.txt', 'file2.txt'];
         $repository->run('ls-files')->willReturn(implode(PHP_EOL, $files));
