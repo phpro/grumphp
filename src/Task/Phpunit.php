@@ -29,13 +29,13 @@ class Phpunit extends AbstractExternalTask
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'config_file' => null,
-            'suite' => null,
+            'testsuite' => null,
             'group' => [],
             'always_execute' => false,
         ]);
 
         $resolver->addAllowedTypes('config_file', ['null', 'string']);
-        $resolver->addAllowedTypes('suite', ['null', 'string']);
+        $resolver->addAllowedTypes('testsuite', ['null', 'string']);
         $resolver->addAllowedTypes('group', ['array']);
         $resolver->addAllowedTypes('always_execute', ['bool']);
 
@@ -64,7 +64,7 @@ class Phpunit extends AbstractExternalTask
 
         $arguments = $this->processBuilder->createArgumentsForCommand('phpunit');
         $arguments->addOptionalArgument('--configuration=%s', $config['config_file']);
-        $arguments->addOptionalArgument('--testsuite=%s', $config['suite']);
+        $arguments->addOptionalArgument('--testsuite=%s', $config['testsuite']);
         $arguments->addOptionalCommaSeparatedArgument('--group=%s', $config['group']);
 
         $process = $this->processBuilder->buildProcess($arguments);
