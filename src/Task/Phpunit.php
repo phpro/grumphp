@@ -64,7 +64,7 @@ class Phpunit extends AbstractExternalTask
 
         $arguments = $this->processBuilder->createArgumentsForCommand('phpunit');
         $arguments->addOptionalArgument('--configuration=%s', $config['config_file']);
-        $arguments->addOptionalArgument('--testsuite=%s', $config['config_file']);
+        $arguments->addOptionalArgument('--testsuite=%s', $config['suite']);
         $arguments->addOptionalCommaSeparatedArgument('--group=%s', $config['group']);
 
         $process = $this->processBuilder->buildProcess($arguments);
