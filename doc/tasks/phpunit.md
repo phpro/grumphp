@@ -9,6 +9,7 @@ parameters:
     tasks:
         phpunit:
             config_file: ~
+            suite: ~
             group: []
             always_execute: false
 ```
@@ -20,6 +21,13 @@ parameters:
 If your phpunit.xml file is located at an exotic location, you can specify your custom config file location with this option.
 This option is set to `null` by default.
 This means that `phpunit.xml` or `phpunit.xml.dist` are automatically loaded if one of them exist in the current directory.
+
+**suite**
+
+*Default: null
+
+If you wish to only run tests from a certain Suite.
+`suite: unit`
 
 **group**
 
