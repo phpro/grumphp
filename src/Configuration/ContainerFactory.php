@@ -2,7 +2,6 @@
 
 namespace GrumPHP\Configuration;
 
-use GrumPHP\Configuration\Compiler;
 use GrumPHP\Util\Filesystem;
 use Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator;
 use Symfony\Component\Config\FileLocator;
