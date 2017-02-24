@@ -15,28 +15,28 @@ class FilesCollectionSpec extends ObjectBehavior
      */
     protected $tempFile;
 
-    function let(SplFileInfo $file1, SplFileInfo $file2)
+    public function let(SplFileInfo $file1, SplFileInfo $file2)
     {
         $this->tempFile = tempnam(sys_get_temp_dir(), 'phpspec');
         $this->beConstructedWith([$file1, $file2]);
     }
 
-    function letgo()
+    public function letgo()
     {
         unlink($this->tempFile);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(FilesCollection::class);
     }
 
-    function it_is_an_array_collection()
+    public function it_is_an_array_collection()
     {
         $this->shouldHaveType(ArrayCollection::class);
     }
 
-    function it_should_filter_by_name(SplFileInfo $file1, SplFileInfo $file2)
+    public function it_should_filter_by_name(SplFileInfo $file1, SplFileInfo $file2)
     {
         $file1->getFilename()->willReturn('file.php');
         $file2->getFilename()->willReturn('file.png');
@@ -48,7 +48,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $files[0]->shouldBe($file1);
     }
 
-    function it_should_filter_by_not_name(SplFileInfo $file1, SplFileInfo $file2)
+    public function it_should_filter_by_not_name(SplFileInfo $file1, SplFileInfo $file2)
     {
         $file1->getFilename()->willReturn('file.php');
         $file2->getFilename()->willReturn('file.png');
@@ -60,7 +60,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $files[0]->shouldBe($file1);
     }
 
-    function it_should_filter_by_path(SplFileInfo $file1, SplFileInfo $file2)
+    public function it_should_filter_by_path(SplFileInfo $file1, SplFileInfo $file2)
     {
         $file1->getRelativePathname()->willReturn('path1/file.php');
         $file2->getRelativePathname()->willReturn('path2/file.png');
@@ -72,7 +72,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $files[0]->shouldBe($file1);
     }
 
-    function it_should_filter_by_paths(SplFileInfo $file1, SplFileInfo $file2)
+    public function it_should_filter_by_paths(SplFileInfo $file1, SplFileInfo $file2)
     {
         $file1->getRelativePathname()->willReturn('path1/file.php');
         $file2->getRelativePathname()->willReturn('path2/file.png');
@@ -85,7 +85,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $files[1]->shouldBe($file2);
     }
 
-    function it_should_filter_by_not_path(SplFileInfo $file1, SplFileInfo $file2)
+    public function it_should_filter_by_not_path(SplFileInfo $file1, SplFileInfo $file2)
     {
         $file1->getRelativePathname()->willReturn('path1/file.php');
         $file2->getRelativePathname()->willReturn('path2/file.png');
@@ -97,7 +97,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $files[0]->shouldBe($file1);
     }
 
-    function it_should_filter_by_size(SplFileInfo $file1, SplFileInfo $file2)
+    public function it_should_filter_by_size(SplFileInfo $file1, SplFileInfo $file2)
     {
         $file1->isFile()->willReturn(true);
         $file2->isFile()->willReturn(true);
@@ -113,7 +113,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $files[0]->shouldBe($file1);
     }
 
-    function it_should_filter_by_date(SplFileInfo $file1, SplFileInfo $file2)
+    public function it_should_filter_by_date(SplFileInfo $file1, SplFileInfo $file2)
     {
         $file1->isFile()->willReturn(true);
         $file2->isFile()->willReturn(true);
@@ -131,7 +131,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $files[0]->shouldBe($file1);
     }
 
-    function it_should_filter_by_callback(SplFileInfo $file1, SplFileInfo $file2)
+    public function it_should_filter_by_callback(SplFileInfo $file1, SplFileInfo $file2)
     {
         $file1->getRelativePathname()->willReturn('path1/file.php');
         $file2->getRelativePathname()->willReturn('path2/file.png');
@@ -145,7 +145,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $files[0]->shouldBe($file1);
     }
 
-    function it_should_filter_by_a_list_of_files(SplFileInfo $file1, SplFileInfo $file2)
+    public function it_should_filter_by_a_list_of_files(SplFileInfo $file1, SplFileInfo $file2)
     {
         $file1->getPathname()->willReturn('path1/file.php');
         $file2->getPathname()->willReturn('path2/file.php');
@@ -157,7 +157,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $files[0]->shouldBe($file1);
     }
 
-    function it_should_filter_by_extension(SplFileInfo $file1, SplFileInfo $file2)
+    public function it_should_filter_by_extension(SplFileInfo $file1, SplFileInfo $file2)
     {
         $file1->getFilename()->willReturn('file.php');
         $file2->getFilename()->willReturn('file.jpg');
@@ -168,7 +168,7 @@ class FilesCollectionSpec extends ObjectBehavior
         $files[0]->shouldBe($file1);
     }
 
-    function it_should_return_an_empty_list_when_filtering_by_no_extension(SplFileInfo $file1, SplFileInfo $file2)
+    public function it_should_return_an_empty_list_when_filtering_by_no_extension(SplFileInfo $file1, SplFileInfo $file2)
     {
         $file1->getFilename()->willReturn('file.php');
         $file2->getFilename()->willReturn('file.jpg');

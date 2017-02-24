@@ -9,22 +9,22 @@ use SplFileInfo;
 
 class ParserContextSpec extends ObjectBehavior
 {
-    function let(SplFileInfo $file, ParseErrorsCollection $errors)
+    public function let(SplFileInfo $file, ParseErrorsCollection $errors)
     {
         $this->beConstructedWith($file, $errors);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(ParserContext::class);
     }
 
-    function it_contains_a_file(SplFileInfo $file)
+    public function it_contains_a_file(SplFileInfo $file)
     {
         $this->getFile()->shouldBe($file);
     }
 
-    function it_contains_parse_errors(ParseErrorsCollection $errors)
+    public function it_contains_parse_errors(ParseErrorsCollection $errors)
     {
         $this->getErrors()->shouldBe($errors);
     }

@@ -15,27 +15,27 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ProgressSubscriberSpec extends ObjectBehavior
 {
-    function let(OutputInterface $output, ProgressBar $progressBar)
+    public function let(OutputInterface $output, ProgressBar $progressBar)
     {
         $this->beConstructedWith($output, $progressBar);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(ProgressSubscriber::class);
     }
 
-    function it_is_an_event_subscriber()
+    public function it_is_an_event_subscriber()
     {
         $this->shouldImplement(EventSubscriberInterface::class);
     }
 
-    function it_should_subscribe_to_events()
+    public function it_should_subscribe_to_events()
     {
         $this->getSubscribedEvents()->shouldBeArray();
     }
 
-    function it_starts_progress(ProgressBar $progressBar, RunnerEvent $event, TasksCollection $tasks)
+    public function it_starts_progress(ProgressBar $progressBar, RunnerEvent $event, TasksCollection $tasks)
     {
         $tasks->count()->willReturn(2);
         $event->getTasks()->willReturn($tasks);
@@ -48,7 +48,7 @@ class ProgressSubscriberSpec extends ObjectBehavior
         $this->startProgress($event);
     }
 
-    function it_should_advance_progress(ProgressBar $progressBar, TaskEvent $event, TaskInterface $task)
+    public function it_should_advance_progress(ProgressBar $progressBar, TaskEvent $event, TaskInterface $task)
     {
         $event->getTask()->willReturn($task);
 
@@ -60,7 +60,7 @@ class ProgressSubscriberSpec extends ObjectBehavior
         $this->advanceProgress($event);
     }
 
-    function it_finishes_progress(OutputInterface $output, ProgressBar $progressBar, RunnerEvent $event)
+    public function it_finishes_progress(OutputInterface $output, ProgressBar $progressBar, RunnerEvent $event)
     {
         $progressBar->getProgress()->willReturn(1);
         $progressBar->getMaxSteps()->willReturn(1);
@@ -72,7 +72,7 @@ class ProgressSubscriberSpec extends ObjectBehavior
         $this->finishProgress($event);
     }
 
-    function it_finishes_progress_early(OutputInterface $output, ProgressBar $progressBar, RunnerEvent $event)
+    public function it_finishes_progress_early(OutputInterface $output, ProgressBar $progressBar, RunnerEvent $event)
     {
         $progressBar->getProgress()->willReturn(1);
         $progressBar->getMaxSteps()->willReturn(2);

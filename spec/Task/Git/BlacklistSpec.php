@@ -20,23 +20,23 @@ use Symfony\Component\Process\Process;
 
 class BlacklistSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter, ConsoleIO $consoleIO)
+    public function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter, ConsoleIO $consoleIO)
     {
         $grumPHP->getTaskConfiguration('git_blacklist')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter, $consoleIO);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(Blacklist::class);
     }
 
-    function it_should_have_a_name()
+    public function it_should_have_a_name()
     {
         $this->getName()->shouldBe('git_blacklist');
     }
 
-    function it_should_have_configurable_options()
+    public function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
@@ -44,12 +44,12 @@ class BlacklistSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('triggered_by');
     }
 
-    function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
+    public function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
+    public function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
     {
         $processBuilder->createArgumentsForCommand('git')->shouldNotBeCalled();
         $processBuilder->buildProcess()->shouldNotBeCalled();
@@ -60,7 +60,7 @@ class BlacklistSpec extends ObjectBehavior
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
-    function it_does_not_do_anything_if_there_are_no_keywords(ProcessBuilder $processBuilder, ContextInterface $context)
+    public function it_does_not_do_anything_if_there_are_no_keywords(ProcessBuilder $processBuilder, ContextInterface $context)
     {
         $processBuilder->createArgumentsForCommand('git')->shouldNotBeCalled();
         $processBuilder->buildProcess()->shouldNotBeCalled();
@@ -74,7 +74,7 @@ class BlacklistSpec extends ObjectBehavior
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
-    function it_runs_the_suite(
+    public function it_runs_the_suite(
         GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,
         Process $process,
@@ -102,7 +102,7 @@ class BlacklistSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_throws_exception_if_the_process_is_successfull(
+    public function it_throws_exception_if_the_process_is_successfull(
         GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,
         Process $process,

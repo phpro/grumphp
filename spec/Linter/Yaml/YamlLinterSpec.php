@@ -9,17 +9,17 @@ use PhpSpec\ObjectBehavior;
 
 class YamlLinterSpec extends ObjectBehavior
 {
-    function let(Filesystem $filesystem)
+    public function let(Filesystem $filesystem)
     {
         $this->beConstructedWith($filesystem);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(YamlLinter::class);
     }
 
-    function it_is_a_linter()
+    public function it_is_a_linter()
     {
         $this->shouldImplement(LinterInterface::class);
     }

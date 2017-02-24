@@ -24,7 +24,7 @@ class ForbiddenFunctionCallsVisitorTest extends AbstractVisitorTest
     /**
      * @test
      */
-    function it_is_a_configurable_visitor()
+    public function it_is_a_configurable_visitor()
     {
         $this->assertInstanceOf(ConfigurableVisitorInterface::class, $this->getVisitor());
     }
@@ -32,7 +32,7 @@ class ForbiddenFunctionCallsVisitorTest extends AbstractVisitorTest
     /**
      * @test
      */
-    function it_does_not_allow_blacklisted_functions()
+    public function it_does_not_allow_blacklisted_functions()
     {
         $code = <<<EOC
 <?php
@@ -48,7 +48,7 @@ EOC;
     /**
      * @test
      */
-    function it_allows_code_that_does_not_use_invalid_functions()
+    public function it_allows_code_that_does_not_use_invalid_functions()
     {
         $code = <<<EOC
 <?php

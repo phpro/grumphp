@@ -11,32 +11,32 @@ use Symfony\Component\EventDispatcher\Event;
 
 class RunnerEventSpec extends ObjectBehavior
 {
-    function let(TasksCollection $tasks, ContextInterface $context, TaskResultCollection $taskResults)
+    public function let(TasksCollection $tasks, ContextInterface $context, TaskResultCollection $taskResults)
     {
         $this->beConstructedWith($tasks, $context, $taskResults);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(RunnerEvent::class);
     }
 
-    function it_is_an_event()
+    public function it_is_an_event()
     {
         $this->shouldHaveType(Event::class);
     }
 
-    function it_has_tasks(TasksCollection $tasks)
+    public function it_has_tasks(TasksCollection $tasks)
     {
         $this->getTasks()->shouldBe($tasks);
     }
 
-    function it_should_have_a_context(ContextInterface $context)
+    public function it_should_have_a_context(ContextInterface $context)
     {
         $this->getContext()->shouldBe($context);
     }
 
-    function it_should_have_a_task_result_collection(TaskResultCollection $taskResults)
+    public function it_should_have_a_task_result_collection(TaskResultCollection $taskResults)
     {
         $this->getTaskResults()->shouldBe($taskResults);
     }

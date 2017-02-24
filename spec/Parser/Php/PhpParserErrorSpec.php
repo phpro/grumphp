@@ -9,38 +9,38 @@ use PhpSpec\ObjectBehavior;
 
 class PhpParserErrorSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $exception = new Error('syntax error', ['startLine' => 61]);
         $this->beConstructedThrough('fromParseException', [$exception, 'JsonLint.php']);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(PhpParserError::class);
     }
 
-    function it_has_an_error_type()
+    public function it_has_an_error_type()
     {
         $this->getType()->shouldBe(ParseError::TYPE_FATAL);
     }
 
-    function it_has_an_error_message()
+    public function it_has_an_error_message()
     {
         $this->getError()->shouldBe('syntax error');
     }
 
-    function it_has_a_file()
+    public function it_has_a_file()
     {
         $this->getFile()->shouldBe('JsonLint.php');
     }
 
-    function it_has_a_line_number()
+    public function it_has_a_line_number()
     {
         $this->getLine()->shouldBe(61);
     }
 
-    function it_can_be_parsed_as_string()
+    public function it_can_be_parsed_as_string()
     {
         $this->__toString()->shouldBe('[FATAL] JsonLint.php: syntax error on line 61');
     }

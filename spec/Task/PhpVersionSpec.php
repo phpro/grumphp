@@ -17,39 +17,39 @@ use GrumPHP\Util\PhpVersion as PhpVersionUtility;
  */
 class PhpVersionSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, PhpVersion $version, PhpVersionUtility $phpVersionUtility)
+    public function let(GrumPHP $grumPHP, PhpVersion $version, PhpVersionUtility $phpVersionUtility)
     {
         $grumPHP->getTaskConfiguration('phpversion')->willReturn([]);
         $this->beConstructedWith($grumPHP, $phpVersionUtility);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(PhpVersion::class);
     }
 
-    function it_should_have_a_name()
+    public function it_should_have_a_name()
     {
         $this->getName()->shouldBe('phpversion');
     }
 
-    function it_should_have_configurable_options()
+    public function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
     }
 
-    function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
+    public function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_should_run_in_run_context(RunContext $context)
+    public function it_should_run_in_run_context(RunContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_runs_the_suite(PhpVersion $version, ContextInterface $context)
+    public function it_runs_the_suite(PhpVersion $version, ContextInterface $context)
     {
         $result = $this->run($context);
         $result->isPassed()->shouldBeBool();

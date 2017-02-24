@@ -20,23 +20,23 @@ use Symfony\Component\Process\Process;
 
 class PhpunitSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
+    public function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
         $grumPHP->getTaskConfiguration('phpunit')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(Phpunit::class);
     }
 
-    function it_should_have_a_name()
+    public function it_should_have_a_name()
     {
         $this->getName()->shouldBe('phpunit');
     }
 
-    function it_should_have_configurable_options()
+    public function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
@@ -45,17 +45,17 @@ class PhpunitSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('always_execute');
     }
 
-    function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
+    public function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_should_run_in_run_context(RunContext $context)
+    public function it_should_run_in_run_context(RunContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
+    public function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
     {
         $processBuilder->buildProcess('phpunit')->shouldNotBeCalled();
         $processBuilder->buildProcess()->shouldNotBeCalled();
@@ -66,7 +66,7 @@ class PhpunitSpec extends ObjectBehavior
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
-    function it_runs_if_there_are_no_files_but_always_execute_is_passed(GrumPHP $grumPHP, Process $process, ProcessBuilder $processBuilder, ContextInterface $context)
+    public function it_runs_if_there_are_no_files_but_always_execute_is_passed(GrumPHP $grumPHP, Process $process, ProcessBuilder $processBuilder, ContextInterface $context)
     {
         $grumPHP->getTaskConfiguration('phpunit')->willReturn([
             'always_execute' => true,
@@ -86,7 +86,7 @@ class PhpunitSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
+    public function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('phpunit')->willReturn($arguments);
@@ -104,7 +104,7 @@ class PhpunitSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_throws_exception_if_the_process_fails(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
+    public function it_throws_exception_if_the_process_fails(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('phpunit')->willReturn($arguments);
