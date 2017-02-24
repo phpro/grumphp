@@ -73,6 +73,7 @@ class PreCommitCommand extends Command
             new GitPreCommitContext($files),
             $this->grumPHP->getTestSuites()->getOptional('git_pre_commit')
         );
+        $context->setSkipSuccessOutput((bool) $input->getOption('skip-success-output'));
 
         $output->writeln('<fg=yellow>GrumPHP detected a pre-commit command.</fg=yellow>');
         return $this->taskRunner()->run($output, $context);
