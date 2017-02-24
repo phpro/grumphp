@@ -21,7 +21,7 @@ You can specify one or more scripts.
 You also can specify one or more shell commands.
 All scripts / shell commands need to succeed for the task to complete.
 
-**Configuration example**
+Configuration example:
 
 ```yaml
 # grumphp.yml
@@ -30,7 +30,7 @@ parameters:
         shell:
             scripts:
                - script.sh
-               - ["./bin/command", "arg1", "arg2", ["arg-n"]]
+               - ["./bin/command", "arg1", "arg2"]
 ```
 
 **triggered_by**
