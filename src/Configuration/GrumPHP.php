@@ -114,7 +114,7 @@ class GrumPHP
      *
      * @return bool True to hide the tip, otherwise false.
      */
-    public function shouldHideCircumventionTip()
+    public function hideCircumventionTip()
     {
         return (bool)$this->container->getParameter('hide_circumvention_tip');
     }

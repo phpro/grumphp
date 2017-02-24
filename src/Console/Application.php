@@ -127,6 +127,7 @@ class Application extends SymfonyConsole
             $this->getDefaultConfigPath()
         ));
         $helperSet->set(new Helper\TaskRunnerHelper(
+            $container->get('config'),
             $container->get('task_runner'),
             $container->get('event_dispatcher')
         ));

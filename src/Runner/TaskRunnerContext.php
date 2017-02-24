@@ -18,11 +18,6 @@ class TaskRunnerContext
     private $skipSuccessOutput = false;
 
     /**
-     * @var bool
-     */
-    private $hideCircumventionTip = false;
-
-    /**
      * @var null|TestSuiteInterface
      */
     private $testSuite = null;
@@ -50,7 +45,7 @@ class TaskRunnerContext
     /**
      * @return bool
      */
-    public function shouldSkipSuccessOutput()
+    public function skipSuccessOutput()
     {
         return $this->skipSuccessOutput;
     }
@@ -69,22 +64,6 @@ class TaskRunnerContext
     public function hasTestSuite()
     {
         return $this->testSuite !== null;
-    }
-
-    /**
-     * @return bool
-     */
-    public function shouldHideCircumventionTip()
-    {
-        return $this->hideCircumventionTip;
-    }
-
-    /**
-     * @param bool $hideCircumventionTip
-     */
-    public function setHideCircumventionTip($hideCircumventionTip)
-    {
-        $this->hideCircumventionTip = (bool)$hideCircumventionTip;
     }
 
     /**

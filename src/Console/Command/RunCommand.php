@@ -70,7 +70,6 @@ class RunCommand extends Command
             new RunContext($files),
             (bool) $input->getOption('testsuite') ? $testSuites->getRequired($input->getOption('testsuite')) : null
         );
-        $context->setHideCircumventionTip($this->grumPHP->shouldHideCircumventionTip());
 
         return $this->taskRunner()->run($output, $context);
     }

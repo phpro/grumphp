@@ -39,8 +39,8 @@ class TaskRunnerContextSpec extends ObjectBehavior
 
     function it_knows_to_skip_the_success_message()
     {
-        $this->shouldSkipSuccessOutput()->shouldBe(false);
+        $this->skipSuccessOutput()->shouldBe(false);
         $this->setSkipSuccessOutput(true);
-        $this->shouldSkipSuccessOutput()->shouldBe(true);
+        $this->skipSuccessOutput()->shouldBe(true);
     }
 }

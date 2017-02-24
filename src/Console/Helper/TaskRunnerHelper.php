@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Console\Helper;
 
+use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\Subscriber\ProgressSubscriber;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskRunner;
@@ -29,11 +30,18 @@ class TaskRunnerHelper extends Helper
     private $eventDispatcher;
 
     /**
-     * @param TaskRunner $taskRunner
+     * @var GrumPHP
+     */
+    private $config;
+
+    /**
+     * @param GrumPHP                  $config
+     * @param TaskRunner               $taskRunner
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(TaskRunner $taskRunner, EventDispatcherInterface $eventDispatcher)
+    public function __construct(GrumPHP $config, TaskRunner $taskRunner, EventDispatcherInterface $eventDispatcher)
     {
+        $this->config = $config;
         $this->taskRunner = $taskRunner;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -41,7 +49,7 @@ class TaskRunnerHelper extends Helper
     /**
      * @return PathsHelper
      */
-    private function getPathsHelper()
+    private function paths()
     {
         return $this->getHelperSet()->get(PathsHelper::HELPER_NAME);
     }
@@ -65,30 +73,23 @@ class TaskRunnerHelper extends Helper
         }
 
         $taskResults = $this->taskRunner->run($context);
-        $warnings = $taskResults->filterByResultCode(TaskResult::NONBLOCKING_FAILED);
 
+        $warnings = $taskResults->filterByResultCode(TaskResult::NONBLOCKING_FAILED);
         if ($taskResults->isFailed()) {
             $failed = $taskResults->filterByResultCode(TaskResult::FAILED);
-            $this->printErrorMessages($output, $failed->getAllMessages(), $warnings->getAllMessages());
-
-            $context->shouldHideCircumventionTip() || $this->printCircumventionTip($output);
-
-            return self::CODE_ERROR;
+            return $this->returnErrorMessages($output, $failed->getAllMessages(), $warnings->getAllMessages());
         }
 
-        if ($context->shouldSkipSuccessOutput()) {
-            $this->printWarningMessages($output, $warnings->getAllMessages());
+        if ($context->skipSuccessOutput()) {
+            $this->returnWarningMessages($output, $warnings->getAllMessages());
+            return self::CODE_SUCCESS;
         }
 
-        if (!$context->shouldSkipSuccessOutput()) {
-            $this->printSuccessMessage($output, $warnings->getAllMessages());
-        }
-
-        return self::CODE_SUCCESS;
+        return $this->returnSuccessMessage($output, $warnings->getAllMessages());
     }
 
     /**
-     * @param OutputInterface $output
+     * @param OutputInterface  $output
      */
     private function registerEventListeners(OutputInterface $output)
     {
@@ -97,53 +98,61 @@ class TaskRunnerHelper extends Helper
 
     /**
      * @param OutputInterface $output
-     * @param array $errorMessages
-     * @param array $warnings
+     * @param array           $errorMessages
+     *
+     * @return int
      */
-    private function printErrorMessages(OutputInterface $output, array $errorMessages, array $warnings)
+    private function returnErrorMessages(OutputInterface $output, array $errorMessages, array $warnings)
     {
-        $failed = $this->getPathsHelper()->getAsciiContent('failed');
+        $failed = $this->paths()->getAsciiContent('failed');
         if ($failed) {
             $output->writeln('<fg=red>' . $failed . '</fg=red>');
         }
 
-        $this->printWarningMessages($output, $warnings);
+        $this->returnWarningMessages($output, $warnings);
 
         foreach ($errorMessages as $errorMessage) {
             $output->writeln('<fg=red>' . $errorMessage . '</fg=red>');
         }
+
+        if (!$this->config->hideCircumventionTip()) {
+            $output->writeln(
+                '<fg=yellow>To skip commit checks, add -n or --no-verify flag to commit command</fg=yellow>'
+            );
+        }
+
+        return self::CODE_ERROR;
     }
 
     /**
      * @param OutputInterface $output
+     *
      * @param array           $warnings
+     *
+     * @return int
      */
-    private function printSuccessMessage(OutputInterface $output, array $warnings)
+    private function returnSuccessMessage(OutputInterface $output, array $warnings)
     {
-        $succeeded = $this->getPathsHelper()->getAsciiContent('succeeded');
+        $succeeded = $this->paths()->getAsciiContent('succeeded');
         if ($succeeded) {
             $output->write('<fg=green>' . $succeeded . '</fg=green>');
         }
 
-        $this->printWarningMessages($output, $warnings);
+
+        $this->returnWarningMessages($output, $warnings);
+
+        return self::CODE_SUCCESS;
     }
 
     /**
      * @param OutputInterface $output
      * @param array $warningMessages
      */
-    private function printWarningMessages(OutputInterface $output, array $warningMessages)
+    private function returnWarningMessages($output, array $warningMessages)
     {
         foreach ($warningMessages as $warningMessage) {
             $output->writeln('<fg=yellow>' . $warningMessage . '</fg=yellow>');
         }
-    }
-
-    private function printCircumventionTip(OutputInterface $output)
-    {
-        $output->writeln(
-            '<fg=yellow>To skip commit checks add -n or --no-verify flag to commit command</fg=yellow>'
-        );
     }
 
     /**
