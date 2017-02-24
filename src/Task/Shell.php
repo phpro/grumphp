@@ -35,6 +35,11 @@ class Shell extends AbstractExternalTask
 
         $resolver->addAllowedTypes('scripts', ['array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
+        $resolver->setNormalizer('scripts', function ($resolver, $scripts) {
+            return array_map(function ($script) {
+                return is_string($script) ? (array) $script : $script;
+            }, $scripts);
+        });
 
         return $resolver;
     }
@@ -75,12 +80,12 @@ class Shell extends AbstractExternalTask
     }
 
     /**
-     * @param $script
+     * @param array $scriptArguments
      */
-    private function runShell($script)
+    private function runShell(array $scriptArguments = array())
     {
         $arguments = $this->processBuilder->createArgumentsForCommand('sh');
-        $arguments->add($script);
+        $arguments->addArgumentArray('%s', $scriptArguments);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();

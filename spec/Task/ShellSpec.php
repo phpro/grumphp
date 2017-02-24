@@ -46,6 +46,28 @@ class ShellSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('triggered_by');
     }
 
+    function it_should_normalize_the_scripts_option()
+    {
+        $options = $this->getConfigurableOptions();
+        $options->shouldBeAnInstanceOf(OptionsResolver::class);
+        $options->getDefinedOptions()->shouldContain('scripts');
+
+        $config = [
+            'scripts' => [
+                'script.sh',
+                [
+                    'command',
+                    'arg1',
+                    'arg2'
+                ]
+            ]
+        ];
+
+        $scripts = $options->resolve($config)['scripts'];
+        $scripts[0]->shouldBe(['script.sh']);
+        $scripts[1]->shouldBe(['command', 'arg1', 'arg2']);
+    }
+
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
