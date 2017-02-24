@@ -19,6 +19,7 @@ init:
     - SET ANSICON=121x90 (121x90)
 
 install:
+    - ps: Set-Service wuauserv -StartupType Manual
     - IF EXIST c:\tools\php71 (SET PHP=0)
     - IF %PHP%==1 cinst -y OpenSSL.Light
     - IF %PHP%==1 cinst -y php -version %php_ver%
