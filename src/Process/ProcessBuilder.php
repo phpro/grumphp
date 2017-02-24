@@ -86,10 +86,6 @@ class ProcessBuilder
             return;
         }
 
-        $this->io->write('', true);
-        $this->io->write('<fg=yellow>Oh no, we hit the windows cmd input limit!</fg=yellow>', true);
-        $this->io->write('<fg=yellow>Skipping task ...</fg=yellow>');
-
         throw PlatformException::commandLineStringLimit($process);
     }
 

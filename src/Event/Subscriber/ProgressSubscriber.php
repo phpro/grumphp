@@ -37,7 +37,7 @@ class ProgressSubscriber implements EventSubscriberInterface
         $this->output = $output;
         $this->progressBar = $progressBar ?: new ProgressBar($output);
         $this->progressBar->setOverwrite(false);
-        $this->progressFormat = "<fg=yellow>Running task %current%/%max%:</fg=yellow> %message%";
+        $this->progressFormat = '<fg=yellow>Running task %current%/%max%:</fg=yellow> %message%... ';
     }
 
     /**
@@ -48,6 +48,9 @@ class ProgressSubscriber implements EventSubscriberInterface
         return [
             RunnerEvents::RUNNER_RUN => 'startProgress',
             TaskEvents::TASK_RUN => 'advanceProgress',
+            TaskEvents::TASK_COMPLETE => 'onTaskProgress',
+            TaskEvents::TASK_FAILED => 'onTaskProgress',
+            TaskEvents::TASK_SKIPPED => 'onTaskProgress',
             RunnerEvents::RUNNER_COMPLETE => 'finishProgress',
             RunnerEvents::RUNNER_FAILED => 'finishProgress',
         ];
@@ -78,11 +81,33 @@ class ProgressSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * @param TaskEvent $task
+     * @param string $event
+     */
+    public function onTaskProgress(TaskEvent $task, $event)
+    {
+        switch ($event) {
+            case TaskEvents::TASK_COMPLETE:
+                $this->output->write('<fg=green>✔</fg=green>');
+                break;
+
+            case TaskEvents::TASK_FAILED:
+                $this->output->write('<fg=red>✘</fg=red>');
+                break;
+
+            case TaskEvents::TASK_SKIPPED:
+                $this->output->write('', true);
+                $this->output->write('<fg=yellow>Oh no, we hit the windows cmd input limit!</fg=yellow>', true);
+                $this->output->write('<fg=yellow>Skipping task...</fg=yellow>');
+        }
+    }
+
+    /**
      * @param RunnerEvent $runnerEvent
      */
     public function finishProgress(RunnerEvent $runnerEvent)
     {
-        if ($this->progressBar->getProgress() != $this->progressBar->getMaxSteps()) {
+        if ($this->progressBar->getProgress() !== $this->progressBar->getMaxSteps()) {
             $this->progressBar->setFormat('<fg=red>%message%</fg=red>');
             $this->progressBar->setMessage('Aborted ...');
         }
