@@ -184,6 +184,9 @@ of how to build your own conventions checker.
 
 - [GrumPHP does not work with submodules](doc/issues/grumphp-is-not-working-with-submodules.md)
 
+## FAQ
+- [FAQ](doc/faq.md)
+
 ## About
 
 ### Submitting bugs and feature requests
