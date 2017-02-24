@@ -25,7 +25,15 @@ class DevelopmentIntegrator
 
         $process = (ProcessBuilder::create([$composerExecutable, 'git:init']))->getProcess();
         $process->run();
-        $event->getIO()->write($process->isSuccessful() ? $process->getOutput() : $process->getErrorOutput());
+        if (!$process->isSuccessful()) {
+            $event->getIO()->write(
+                '<fg=red>GrumPHP can not sniff your commits. Did you specify the correct git-dir?</fg=red>'
+            );
+            $event->getIO()->write('<fg=red>' . $process->getErrorOutput() . '</fg=red>');
+            return;
+        }
+
+        $event->getIO()->write('<fg=yellow>' . $process->getOutput() . '</fg=yellow>');
     }
 
     /**
