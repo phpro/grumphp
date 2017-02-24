@@ -20,8 +20,8 @@ This options specifies the paths to your shell scripts.
 You can specify one or more scripts. 
 
 You also can specify one or more shell commands:
-- In a string ``"./bin/command arg1 arg2 ... arg-n"``
-- In an array ``["./bin/command", "arg1", "arg2", ["arg-n"]]``
+- As a string 
+- As an array 
 
 All scripts / shell commands need to succeed for the task to complete.
 
@@ -32,3 +32,52 @@ All scripts / shell commands need to succeed for the task to complete.
 This option will specify which file extensions will trigger the shell tasks.
 By default Shell will be triggered by altering a PHP file. 
 You can overwrite this option to whatever file you want to use!
+
+**Configuration examples**
+
+Shell scripts:
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        shell:
+            scripts: ["script.sh"]
+            triggered_by: [php]
+```
+
+Shell commands string based:
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        shell:
+            scripts: ["./bin/command arg1 arg2 ... arg-n"]
+            triggered_by: [php]
+```
+
+Shell commands array based:
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        shell:
+            scripts: [
+                [
+                    "./bin/command",
+                    "arg1",
+                    "arg2", 
+                    ["arg-n"]
+                ]
+            ]
+            triggered_by: [php]
+```
+
+Combination of scripts and commands:
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        shell:
+            scripts: ["script1.sh", "./bin/command arg1 arg2 ... arg-n"]
+            triggered_by: [php]
+```
