@@ -70,6 +70,14 @@
     "extra": {
       "class": "GrumPHP\\Composer\\GrumPHPPlugin"
     },
+    "scripts": {
+        "post-install-cmd": [
+            "GrumPHP\\Composer\\DevelopmentIntegrator::integrate"
+        ],
+        "post-update-cmd": [
+            "GrumPHP\\Composer\\DevelopmentIntegrator::integrate"
+        ]
+    },
     "autoload": {
         "psr-4": {
             "GrumPHP\\": "src"
