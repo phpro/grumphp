@@ -69,7 +69,7 @@ class Php7cc extends AbstractExternalTask
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
 
-        if (!$process->isSuccessful()) {
+        if (preg_match('/^File: /m', $process->getOutput()) === 1) {
             return TaskResult::createFailed($this, $context, $this->formatter->format($process));
         }
 
