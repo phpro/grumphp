@@ -23,7 +23,7 @@ class DevelopmentIntegrator
             self::noramlizePath($composerExecutable)
         );
 
-        $process = (ProcessBuilder::create([$composerExecutable, 'git:init']))->getProcess();
+        $process = ProcessBuilder::create([$composerExecutable, 'git:init'])->getProcess();
         $process->run();
         if (!$process->isSuccessful()) {
             $event->getIO()->write(
