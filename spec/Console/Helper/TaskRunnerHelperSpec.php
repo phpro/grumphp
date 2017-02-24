@@ -2,6 +2,7 @@
 
 namespace spec\GrumPHP\Console\Helper;
 
+use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\Event\Subscriber\ProgressSubscriber;
@@ -21,6 +22,7 @@ use Prophecy\Argument;
 class TaskRunnerHelperSpec extends ObjectBehavior
 {
     function let(
+        GrumPHP $config,
         TaskRunner $taskRunner,
         EventDispatcherInterface $eventDispatcher,
         HelperSet $helperSet,
@@ -28,14 +30,16 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         TaskRunnerContext $runnerContext,
         ContextInterface $taskContext
     ) {
-        $this->beConstructedWith($taskRunner, $eventDispatcher);
+        $this->beConstructedWith($config, $taskRunner, $eventDispatcher);
 
         $helperSet->get(PathsHelper::HELPER_NAME)->willreturn($pathsHelper);
         $this->setHelperSet($helperSet);
 
         $runnerContext->getTaskContext()->willReturn($taskContext);
         $runnerContext->hasTestSuite()->willReturn(false);
-        $runnerContext->isSkipSuccessOutput()->willReturn(false);
+        $runnerContext->skipSuccessOutput()->willReturn(false);
+
+        $config->hideCircumventionTip()->willReturn(false);
     }
 
     function it_is_a_console_helper()

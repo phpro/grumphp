@@ -45,7 +45,7 @@ class TaskRunnerContext
     /**
      * @return bool
      */
-    public function isSkipSuccessOutput()
+    public function skipSuccessOutput()
     {
         return $this->skipSuccessOutput;
     }
@@ -55,7 +55,7 @@ class TaskRunnerContext
      */
     public function setSkipSuccessOutput($skipSuccessOutput)
     {
-        $this->skipSuccessOutput = $skipSuccessOutput;
+        $this->skipSuccessOutput = (bool)$skipSuccessOutput;
     }
 
     /**

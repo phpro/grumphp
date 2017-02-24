@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Console\Helper;
 
+use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\Subscriber\ProgressSubscriber;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskRunner;
@@ -29,11 +30,18 @@ class TaskRunnerHelper extends Helper
     private $eventDispatcher;
 
     /**
-     * @param TaskRunner $taskRunner
+     * @var GrumPHP
+     */
+    private $config;
+
+    /**
+     * @param GrumPHP                  $config
+     * @param TaskRunner               $taskRunner
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(TaskRunner $taskRunner, EventDispatcherInterface $eventDispatcher)
+    public function __construct(GrumPHP $config, TaskRunner $taskRunner, EventDispatcherInterface $eventDispatcher)
     {
+        $this->config = $config;
         $this->taskRunner = $taskRunner;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -72,7 +80,7 @@ class TaskRunnerHelper extends Helper
             return $this->returnErrorMessages($output, $failed->getAllMessages(), $warnings->getAllMessages());
         }
 
-        if ($context->isSkipSuccessOutput()) {
+        if ($context->skipSuccessOutput()) {
             $this->returnWarningMessages($output, $warnings->getAllMessages());
             return self::CODE_SUCCESS;
         }
@@ -107,9 +115,11 @@ class TaskRunnerHelper extends Helper
             $output->writeln('<fg=red>' . $errorMessage . '</fg=red>');
         }
 
-        $output->writeln(
-            '<fg=yellow>To skip commit checks, add -n or --no-verify flag to commit command</fg=yellow>'
-        );
+        if (!$this->config->hideCircumventionTip()) {
+            $output->writeln(
+                '<fg=yellow>To skip commit checks, add -n or --no-verify flag to commit command</fg=yellow>'
+            );
+        }
 
         return self::CODE_ERROR;
     }
@@ -127,6 +137,7 @@ class TaskRunnerHelper extends Helper
         if ($succeeded) {
             $output->write('<fg=green>' . $succeeded . '</fg=green>');
         }
+
 
         $this->returnWarningMessages($output, $warnings);
 

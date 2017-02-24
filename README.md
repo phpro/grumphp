@@ -82,6 +82,7 @@ parameters:
     hooks_preset: local
     stop_on_failure: false
     ignore_unstaged_changes: false
+    hide_circumvention_tip: false
     process_async_limit: 10
     process_async_wait: 1000
     process_timeout: 60
@@ -128,13 +129,13 @@ parameters:
     extensions: []
 ```
 
-You can find a detailed overview of the configurable options in these sections:
+Details of the configuration are broken down into the following sections.
 
-- [Parameters](doc/parameters.md)
-- [Tasks](doc/tasks.md)
-- [Events](doc/events.md)
+- [Parameters](doc/parameters.md) &ndash; Configuration settings for GrumPHP itself.
+- [Tasks](doc/tasks.md) &ndash; External tasks performing code validation and their respective configurations.
 - [TestSuites](doc/testsuites.md)
 - [Extensions](doc/extensions.md)
+- [Events](doc/events.md)
 
 ## Commands
 
@@ -163,7 +164,7 @@ This package has been tested with following git clients:
 ## Roadmap
 
 Lots of tasks are already available to make sure your team writes great code.
-There are still 1 major parts that are missing before we can release a v1.0.0:
+There is one major part missing before we can release v1.0.0:
 
 - [A PHAR executable](https://github.com/phpro//grumphp/issues/61)
 
@@ -192,4 +193,4 @@ Please take a look at our rules before [contributing your code](CONTRIBUTING.md)
 
 ### License
 
-GrumPHP is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+GrumPHP is licensed under the [MIT License](LICENSE).

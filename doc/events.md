@@ -3,7 +3,7 @@
 It is possible to hook in to GrumPHP with events.
 Internally the Symfony event dispatcher is being used. 
 
-Following events are triggered during execution:
+The following events are triggered during execution:
 
 | Event name              | Event class           | Triggered
 | ----------------------- | --------------------- | ----------
@@ -17,7 +17,7 @@ Following events are triggered during execution:
 | console.terminate       | ConsoleTerminateEvent | before a CLI command terminates
 | console.exception       | ConsoleExceptionEvent | when a CLI command throws an unhandled exception.
 
-Configured events just like you would in Symfony: 
+Configure events just like you would in Symfony:
 
 ```yml
 # grumphp.yml

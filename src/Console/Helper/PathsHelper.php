@@ -12,8 +12,6 @@ use Symfony\Component\Console\Helper\Helper;
 
 /**
  * This class will return all configured paths relative to the working directory.
- *
- * Class PathsHelper
  */
 class PathsHelper extends Helper
 {
