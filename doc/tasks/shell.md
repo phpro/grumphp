@@ -18,11 +18,7 @@ parameters:
 
 This options specifies the paths to your shell scripts.
 You can specify one or more scripts. 
-
-You also can specify one or more shell commands:
-- As a string 
-- As an array 
-
+You also can specify one or more shell commands
 All scripts / shell commands need to succeed for the task to complete.
 
 **Configuration example**
