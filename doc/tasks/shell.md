@@ -1,6 +1,6 @@
 # Shell
 
-The Shell task will run your automated shell scripts.
+The Shell task will run your automated shell scripts / commands.
 It lives under the `shell` namespace and has following configurable parameters:
 
 ```yaml
@@ -18,7 +18,20 @@ parameters:
 
 This options specifies the paths to your shell scripts.
 You can specify one or more scripts. 
-All scripts need to succeed for the task to complete.
+You also can specify one or more shell commands.
+All scripts / shell commands need to succeed for the task to complete.
+
+Configuration example:
+
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        shell:
+            scripts:
+               - script.sh
+               - ["./bin/command", "arg1", "arg2"]
+```
 
 **triggered_by**
 
