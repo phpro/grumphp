@@ -1,6 +1,6 @@
 # Shell
 
-The Shell task will run your automated shell scripts.
+The Shell task will run your automated shell scripts / commands.
 It lives under the `shell` namespace and has following configurable parameters:
 
 ```yaml
@@ -18,7 +18,12 @@ parameters:
 
 This options specifies the paths to your shell scripts.
 You can specify one or more scripts. 
-All scripts need to succeed for the task to complete.
+
+You also can specify one or more shell commands:
+- In a string ``"./bin/command arg1 arg2 ... arg-n"``
+- In an array ``["./bin/command", "arg1", "arg2", ["arg-n"]]``
+
+All scripts / shell commands need to succeed for the task to complete.
 
 **triggered_by**
 
