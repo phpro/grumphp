@@ -41,7 +41,7 @@ class PhpunitSpec extends ObjectBehavior
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('config_file');
-        $options->getDefinedOptions()->shouldContain('suite');
+        $options->getDefinedOptions()->shouldContain('testsuite');
         $options->getDefinedOptions()->shouldContain('group');
         $options->getDefinedOptions()->shouldContain('always_execute');
     }
