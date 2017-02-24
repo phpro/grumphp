@@ -3,7 +3,6 @@
 namespace GrumPHP\Task;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
-use GrumPHP\Formatter\PhpcsFormatter;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -14,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Phpcs task
  *
- * @property PhpcsFormatter $formatter
+ * @property \GrumPHP\Formatter\PhpcsFormatter $formatter
  */
 class Phpcs extends AbstractExternalTask
 {

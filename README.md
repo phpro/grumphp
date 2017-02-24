@@ -1,6 +1,6 @@
-[![Build status](https://api.travis-ci.org/phpro/grumphp.svg)](http://travis-ci.org/phpro/grumphp)
+[![Travic](https://img.shields.io/travis/phpro/grumphp/master.svg)](http://travis-ci.org/phpro/grumphp)
 [![Insight](https://img.shields.io/sensiolabs/i/9a345021-c8a1-4f48-948a-d15de51d9909.svg)](https://insight.sensiolabs.com/projects/9a345021-c8a1-4f48-948a-d15de51d9909)
-[![AppVeyor](https://img.shields.io/appveyor/ci/veewee/grumphp.svg)](https://ci.appveyor.com/project/veewee/grumphp)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/ttlbau2sjg36ep01/branch/master?svg=true)](https://ci.appveyor.com/project/veewee/grumphp/branch/master)
 [![Installs](https://img.shields.io/packagist/dt/phpro/grumphp.svg)](https://packagist.org/packages/phpro/grumphp/stats)
 [![Packagist](https://img.shields.io/packagist/v/phpro/grumphp.svg)](https://packagist.org/packages/phpro/grumphp)
 [![Twitter](https://img.shields.io/badge/Twitter-%40grumphp-blue.svg)](https://twitter.com/intent/user?screen_name=grumphp)

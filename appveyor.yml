@@ -7,22 +7,23 @@ clone_folder: c:\projects\grumphp
 
 environment:
     matrix:
-        - php_ver: 5.6.3
+        - php_ver: 7.1.2
 
 cache:
     - '%APPDATA%\Composer'
     - c:\tools\php -> appveyor.yml
 init:
-    - SET PATH=C:\Program Files\OpenSSL;c:\tools\php;%PATH%
+    - SET PATH=C:\Program Files\OpenSSL;c:\tools\php71;%PATH%
     - SET COMPOSER_NO_INTERACTION=1
     - SET PHP=1
     - SET ANSICON=121x90 (121x90)
 
 install:
-    - IF EXIST c:\tools\php (SET PHP=0)
+    - ps: Set-Service wuauserv -StartupType Manual
+    - IF EXIST c:\tools\php71 (SET PHP=0)
     - IF %PHP%==1 cinst -y OpenSSL.Light
     - IF %PHP%==1 cinst -y php -version %php_ver%
-    - cd C:\tools\php
+    - cd C:\tools\php71
     - IF %PHP%==1 copy php.ini-production php.ini
     - IF %PHP%==1 echo date.timezone="UTC" >> php.ini
     - IF %PHP%==1 echo memory_limit=1024M >> php.ini
