@@ -24,7 +24,7 @@ before_install:
   - composer global require hirak/prestissimo
 
 install:
-  - travis_retry composer update --no-progress --profile --no-scripts $DEPENDENCIES
+  - travis_retry composer update --no-progress --profile --no-scripts --no-suggest $DEPENDENCIES
 
 script:
    - bin/grumphp run
