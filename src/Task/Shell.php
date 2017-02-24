@@ -82,7 +82,7 @@ class Shell extends AbstractExternalTask
     /**
      * @param array $scriptArguments
      */
-    private function runShell(array $scriptArguments = array())
+    private function runShell(array $scriptArguments)
     {
         $arguments = $this->processBuilder->createArgumentsForCommand('sh');
         $arguments->addArgumentArray('%s', $scriptArguments);
