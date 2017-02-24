@@ -9,6 +9,7 @@ parameters:
     tasks:
         phpunit:
             config_file: ~
+            testsuite: ~
             group: []
             always_execute: false
 ```
@@ -21,6 +22,15 @@ If your phpunit.xml file is located at an exotic location, you can specify your 
 This option is set to `null` by default.
 This means that `phpunit.xml` or `phpunit.xml.dist` are automatically loaded if one of them exist in the current directory.
 
+
+**testsuite**
+
+*Default: null
+
+If you wish to only run tests from a certain Suite.
+`testsuite: unit`
+
+
 **group**
 
 *Default: array()*
@@ -28,8 +38,10 @@ This means that `phpunit.xml` or `phpunit.xml.dist` are automatically loaded if 
 If you wish to only run tests from a certain Group.
 `group: [fast,quick,small]`
 
+
 **always_execute**
 
 *Default: false*
 
 Always run the whole test suite, even if no PHP files were changed.
+
