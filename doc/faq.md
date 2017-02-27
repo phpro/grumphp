@@ -4,7 +4,7 @@
 - [How can I bypass GrumPHP](#how-can-i-bypass-grumphp)
 - [Which parts of the code does GrumPHP scan?](#which-parts-of-the-code-does-grumphp-scan)
 - [Does GrumPHP support automatic fixing](#does-grumphp-support-automatic-fixing)
-- [Does GrumPHP support Windows](#does-grumphp-support-winows)
+- [Does GrumPHP support Windows](#does-grumphp-support-windows)
 
 ### How can I bypass GrumPHP
 
@@ -41,7 +41,7 @@ Yes, he does. But there are some limitations.
 
 **PHPCS and PHPLint tasks fail on Windows 7**
 
-This is due to the windows cmd input limit
+This is due to the cmd input limit on windows.
 The problem is that the CLI input string on cmd.exe 
 is limited to 8191 characters. Tasks like phplint 
 and phpcs contain the paths to the files that are 
