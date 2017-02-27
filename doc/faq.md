@@ -4,6 +4,7 @@
 - [How can I bypass GrumPHP](#how-can-i-bypass-grumphp)
 - [Which parts of the code does GrumPHP scan?](#which-parts-of-the-code-does-grumphp-scan)
 - [Does GrumPHP support automatic fixing](#does-grumphp-support-automatic-fixing)
+- [Does GrumPHP support Windows](#does-grumphp-support-winows)
 
 ### How can I bypass GrumPHP
 
@@ -29,7 +30,23 @@ that are able to check only the committed lines.
 
 ### Does GrumPHP support automatic fixing
 
-No, GrumPHP doesn't fix things for you. He wants you to have full
-control of the code you commit and not manipulate it in anyway.
+No, he doesn't fix things for you. He wants you to have full
+control of the code you commit and not manipulate it in any way.
+
+[up](#table-of-content)
+
+### Does GrumPHP support Windows
+
+Yes, he does. But there are some limitations.
+
+**PHPCS and PHPLint tasks fail on Windows 7**
+
+This is due to the windows cmd input limit
+The problem is that the CLI input string on cmd.exe 
+is limited to 8191 characters. Tasks like phplint 
+and phpcs contain the paths to the files that are 
+being checked. During a run command, the list of 
+files wil exceed this amount which results in some 
+strange errors on windows.
 
 [up](#table-of-content)
