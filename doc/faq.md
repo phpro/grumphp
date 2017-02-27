@@ -30,6 +30,6 @@ that are able to check only the committed lines.
 ### Does GrumPHP support automatic fixing
 
 No, GrumPHP doesn't fix things for you. He wants you to have full
-control of the code you commit and not manipulate it in any way.
+control of the code you commit and not manipulate it in anyway.
 
 [up](#table-of-content)
