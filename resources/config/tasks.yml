@@ -106,6 +106,13 @@ services:
         tags:
             - {name: grumphp.task, config: git_commit_message}
 
+    task.git.conflict:
+        class: GrumPHP\Task\Git\Conflict
+        arguments:
+            - '@config'
+        tags:
+            - {name: grumphp.task, config: git_conflict}
+
     task.grunt:
         class: GrumPHP\Task\Grunt
         arguments:
