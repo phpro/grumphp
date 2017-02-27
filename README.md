@@ -105,13 +105,19 @@ parameters:
         gherkin: ~
         git_blacklist: ~
         git_branch_name: ~
+        git_capitalized_subject: ~
         git_commit_message: ~
+        git_conflict: ~
+        git_empty_message: ~
+        git_single_line_subject: ~
+        git_text_width: ~
+        git_trailing_period: ~
         grunt: ~
         gulp: ~
         jsonlint: ~
         kahlan: ~
         npm_script: ~
-        phan: ~        
+        phan: ~
         phing: ~
         php7cc: ~
         phpcpd: ~

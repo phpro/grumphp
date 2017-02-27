@@ -20,7 +20,13 @@ parameters:
         gherkin: ~
         git_blacklist: ~
         git_branch_name: ~
+        git_capitalized_subject: ~
         git_commit_message: ~
+        git_conflict: ~
+        git_empty_message: ~
+        git_single_line_subject: ~
+        git_text_width: ~
+        git_trailing_period: ~
         grunt: ~
         gulp: ~
         jsonlint: ~
@@ -65,8 +71,18 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Deptrac](tasks/deptrac.md)
 - [Gherkin](tasks/gherkin.md)
 - [Git blacklist](tasks/git_blacklist.md)
+<<<<<<< HEAD
 - [Git branch name](tasks/git_branch_name.md)
 - [Git commit message](tasks/git_commit_message.md)
+=======
+- [Git capitalized subject](tasks/git_capitalized_subject.md)
+- [Git commit message](tasks/git_commit_message.md)
+- [Git conflict](tasks/git_conflict.md)
+- [Git empty message](tasks/git_empty_message.md)
+- [Git single line subject](tasks/git_single_line_subject.md)
+- [Git text width](tasks/git_text_width.md)
+- [Git trailing_period](tasks/git_trailing_period.md)
+>>>>>>> 3c705e7... Add various commit message tasks
 - [Grunt](tasks/grunt.md)
 - [Gulp](tasks/gulp.md)
 - [JsonLint](tasks/jsonlint.md)
