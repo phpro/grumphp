@@ -1,8 +1,8 @@
 ## FAQ
 
 ### Table of content
-- [How can I bypass GrumPHP](how-can-i-bypass-grumphp)
-- [Which parts of the code does GrumPHP scan?](which-parts-of-the-code-does-grumphp-scan)
+- [How can I bypass GrumPHP](#how-can-i-bypass-grumphp)
+- [Which parts of the code does GrumPHP scan?](#which-parts-of-the-code-does-grumphp-scan)
 
 ### How can I bypass GrumPHP
 
