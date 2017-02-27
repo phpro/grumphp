@@ -11,7 +11,7 @@ You shouldn't! Its to maintain clean and well formatted code. Don't make your co
 *Note: use `--no-verify` or `-n` flag when you commit, 
 this will bypass the pre-commit and commit-msg*
 
-[up](table-of-content)
+[up](#table-of-content)
 
 ### Which parts of the code does GrumPHP scan
 
@@ -23,6 +23,6 @@ Most tasks work directly with these files,
 but there are some commands like `git_blacklist` 
 that are able to check only the committed lines.
 
-[up](table-of-content)
+[up](#table-of-content)
 
 ### 
