@@ -1,12 +1,13 @@
-## FAQ
+# FAQ
 
-### Table of content
+## Table of content
 - [How can I bypass GrumPHP](#how-can-i-bypass-grumphp)
 - [Which parts of the code does GrumPHP scan?](#which-parts-of-the-code-does-grumphp-scan)
 - [Does GrumPHP support automatic fixing](#does-grumphp-support-automatic-fixing)
 - [Does GrumPHP support Windows](#does-grumphp-support-windows)
 
-### How can I bypass GrumPHP
+
+## How can I bypass GrumPHP
 
 You shouldn't! Its to maintain clean and well formatted code.
 Don't make your co-worker pissed off again...
@@ -16,7 +17,8 @@ this will bypass the pre-commit and commit-msg*
 
 [up](#table-of-content)
 
-### Which parts of the code does GrumPHP scan
+
+## Which parts of the code does GrumPHP scan
 
 When running `./vendor/bin/grumphp run` all 
 files in the repository will be scanned.
@@ -28,14 +30,16 @@ that are able to check only the committed lines.
 
 [up](#table-of-content)
 
-### Does GrumPHP support automatic fixing
+
+## Does GrumPHP support automatic fixing
 
 No, he doesn't fix things for you. He wants you to have full
 control of the code you commit and not manipulate it in any way.
 
 [up](#table-of-content)
 
-### Does GrumPHP support Windows
+
+## Does GrumPHP support Windows
 
 Yes, he does. But there are some limitations.
 
