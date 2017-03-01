@@ -107,7 +107,7 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
             '%s) %s%s%s',
             ++$this->counter,
             $file['name'],
-            $hasFixers ? ' (' . implode(',', $file['appliedFixers']) . ')' : '',
+            $hasFixers ? ' (' . implode(', ', $file['appliedFixers']) . ')' : '',
             $hasDiff ? PHP_EOL . PHP_EOL . $file['diff'] : ''
         );
     }
