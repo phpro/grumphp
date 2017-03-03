@@ -96,7 +96,18 @@ class CommitMessage implements TaskInterface
         }
 
         if (count($exceptions)) {
-            return TaskResult::createFailed($this, $context, implode(PHP_EOL, $exceptions));
+            return TaskResult::createFailed(
+                $this,
+                $context,
+                implode(PHP_EOL, $exceptions) . <<<KAWAii
+</>
+
+Original commit message follows
+_______________________________
+
+$commitMessage
+KAWAii
+            );
         }
 
         return TaskResult::createPassed($this, $context);
