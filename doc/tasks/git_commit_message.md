@@ -1,7 +1,6 @@
 # Git commit message
 
-The git comit message can be used in combination with the git hook `git:commit-msg`.
-It can be used to enforce patterns in a commit message.
+The Git commit message task ensures commit messages match the specified patterns.  
 For example: if you are working with JIRA, it is possible to add a pattern for the JIRA issue number.
 
 ```yaml
@@ -10,7 +9,7 @@ parameters:
     tasks:
         git_commit_message:
             matchers:
-                - /JIRA-([0-9]*)/
+                Must contain JIRA issue number: /JIRA-\d+/
             case_insensitive: true
             multiline: true
             additional_modifiers: ''

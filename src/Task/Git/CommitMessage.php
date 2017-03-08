@@ -80,6 +80,8 @@ class CommitMessage implements TaskInterface
 
     /**
      * @param ContextInterface|GitCommitMsgContext $context
+     *
+     * @return TaskResult
      */
     public function run(ContextInterface $context)
     {
@@ -87,9 +89,9 @@ class CommitMessage implements TaskInterface
         $commitMessage = $context->getCommitMessage();
         $exceptions = [];
 
-        foreach ($config['matchers'] as $rule) {
+        foreach ($config['matchers'] as $ruleName => $rule) {
             try {
-                $this->runMatcher($config, $commitMessage, $rule);
+                $this->runMatcher($config, $commitMessage, $rule, $ruleName);
             } catch (RuntimeException $e) {
                 $exceptions[] = $e->getMessage();
             }
@@ -103,13 +105,14 @@ class CommitMessage implements TaskInterface
     }
 
     /**
-     * @param array  $config
+     * @param array $config
      * @param string $commitMessage
      * @param string $rule
+     * @param string $ruleName
      *
      * @throws RuntimeException
      */
-    private function runMatcher(array $config, $commitMessage, $rule)
+    private function runMatcher(array $config, $commitMessage, $rule, $ruleName)
     {
         $regex = new Regex($rule);
 
@@ -125,9 +128,7 @@ class CommitMessage implements TaskInterface
         array_map([$regex, 'addPatternModifier'], $additionalModifiersArray);
 
         if (!preg_match((string) $regex, $commitMessage)) {
-            throw new RuntimeException(
-                sprintf('The commit message does not match the rule: %s', $rule)
-            );
+            throw new RuntimeException("Rule not matched: \"$ruleName\" $rule");
         }
     }
 }
