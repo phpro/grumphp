@@ -35,13 +35,13 @@ class BranchName extends AbstractRegex
 
     /**
      * @param array $config
-     * @param string $commitMessage
+     * @param string $name
      * @param string $rule
      * @param string $ruleName
      *
      * @throws RuntimeException
      */
-    protected function runMatcher(array $config, $commitMessage, $rule, $ruleName)
+    protected function runMatcher(array $config, $name, $rule, $ruleName)
     {
         $regex = new Regex($rule);
 
@@ -52,7 +52,7 @@ class BranchName extends AbstractRegex
         $additionalModifiersArray = array_filter(str_split((string) $config['additional_modifiers']));
         array_map([$regex, 'addPatternModifier'], $additionalModifiersArray);
 
-        if (!preg_match((string) $regex, $commitMessage)) {
+        if (!preg_match((string) $regex, $name)) {
             throw new RuntimeException("Rule not matched: \"$ruleName\" $rule");
         }
     }
@@ -64,9 +64,7 @@ class BranchName extends AbstractRegex
      */
     public function run(ContextInterface $context)
     {
-        $gitRepository = $this->grumPHP->getGitRepository();
-        $branch = new Branch($gitRepository, $gitRepository->getHead()->getRevision());
-        $name = $branch->getName();
+        $name = $this->getCurrentBranchName();
         $config = $this->getConfiguration();
         $exceptions = [];
 
@@ -83,5 +81,17 @@ class BranchName extends AbstractRegex
         }
 
         return TaskResult::createPassed($this, $context);
+    }
+
+    /**
+     * Get current branch name.
+     *
+     * @return string
+     */
+    public function getCurrentBranchName()
+    {
+        $gitRepository = $this->grumPHP->getGitRepository();
+        $branch = new Branch($gitRepository, $gitRepository->getHead()->getRevision());
+        return $branch->getName();
     }
 }
