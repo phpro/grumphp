@@ -6,7 +6,8 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Task\TaskInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-abstract class AbstractRegex implements TaskInterface {
+abstract class AbstractRegex implements TaskInterface
+{
 
     /**
      * @var GrumPHP
