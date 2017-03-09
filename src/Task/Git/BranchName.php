@@ -2,16 +2,17 @@
 
 namespace GrumPHP\Task\Git;
 
+use Gitonomy\Git\Reference\Branch;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
-use GrumPHP\Task\Context\GitCommitMsgContext;
+use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Util\Regex;
 use GrumPHP\Exception\RuntimeException;
 
 /**
- * Git CommitMessage Task
+ * Git BranchName Task
  */
-class CommitMessage extends AbstractRegex
+class BranchName extends AbstractRegex
 {
 
     /**
@@ -19,7 +20,7 @@ class CommitMessage extends AbstractRegex
      */
     public function getName()
     {
-        return 'git_commit_message';
+        return 'git_branch_name';
     }
 
     /**
@@ -29,20 +30,7 @@ class CommitMessage extends AbstractRegex
      */
     public function canRunInContext(ContextInterface $context)
     {
-        return $context instanceof GitCommitMsgContext;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurableOptions()
-    {
-        $resolver = parent::getConfigurableOptions();
-        $resolver->setDefault('multiline', true);
-
-        $resolver->addAllowedTypes('multiline', ['bool']);
-
-        return $resolver;
+        return $context instanceof RunContext;
     }
 
     /**
@@ -61,10 +49,6 @@ class CommitMessage extends AbstractRegex
             $regex->addPatternModifier('i');
         }
 
-        if ((bool) $config['multiline']) {
-            $regex->addPatternModifier('m');
-        }
-
         $additionalModifiersArray = array_filter(str_split((string) $config['additional_modifiers']));
         array_map([$regex, 'addPatternModifier'], $additionalModifiersArray);
 
@@ -74,19 +58,21 @@ class CommitMessage extends AbstractRegex
     }
 
     /**
-     * @param ContextInterface|GitCommitMsgContext $context
+     * @param ContextInterface|RunContext $context
      *
      * @return TaskResult
      */
     public function run(ContextInterface $context)
     {
+        $gitRepository = $this->grumPHP->getGitRepository();
+        $branch = new Branch($gitRepository, $gitRepository->getHead()->getRevision());
+        $name = $branch->getName();
         $config = $this->getConfiguration();
-        $commitMessage = $context->getCommitMessage();
         $exceptions = [];
 
         foreach ($config['matchers'] as $ruleName => $rule) {
             try {
-                $this->runMatcher($config, $commitMessage, $rule, $ruleName);
+                $this->runMatcher($config, $name, $rule, $ruleName);
             } catch (RuntimeException $e) {
                 $exceptions[] = $e->getMessage();
             }

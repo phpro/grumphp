@@ -19,6 +19,7 @@ parameters:
         gherkin: ~
         git_blacklist: ~
         git_commit_message: ~
+        git_branch_name: ~
         git_conflict: ~
         grunt: ~
         gulp: ~
@@ -61,6 +62,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Gherkin](tasks/gherkin.md)
 - [Git blacklist](tasks/git_blacklist.md)
 - [Git commit message](tasks/git_commit_message.md)
+- [Git branch name](tasks/git_branch_name.md)
 - [Git conflict](tasks/git_conflict.md)
 - [Grunt](tasks/grunt.md)
 - [Gulp](tasks/gulp.md)
