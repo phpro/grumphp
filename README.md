@@ -27,7 +27,7 @@ We don't want to bore you with all the details, so quick: install it yourself an
 
 *If you are trying to install GrumPHP on Windows: please read the windows pre-install section.*
 
-This package is a composgit_commit_messageer plugin and should be installed to your project's dev dependency using composer:
+This package is a composer plugin and should be installed to your project's dev dependency using composer:
 
 ```sh
 composer require --dev phpro/grumphp
