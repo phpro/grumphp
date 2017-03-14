@@ -5,6 +5,7 @@ namespace spec\GrumPHP\Task\Git;
 use Gitonomy\Git\Repository;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Runner\TaskResultInterface;
+use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\Git\BranchName;
 use GrumPHP\Task\TaskInterface;
@@ -44,6 +45,11 @@ class BranchNameSpec extends ObjectBehavior
     function it_is_a_grumphp_task()
     {
         $this->shouldImplement(TaskInterface::class);
+    }
+
+    function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
+    {
+        $this->canRunInContext($context)->shouldReturn(true);
     }
 
     function it_should_run_in_run_context(RunContext $context)
