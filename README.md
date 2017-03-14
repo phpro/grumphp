@@ -101,8 +101,8 @@ parameters:
         doctrine_orm: ~
         gherkin: ~
         git_blacklist: ~
-        git_commit_message: ~
         git_branch_name: ~
+        git_commit_message: ~
         git_conflict: ~
         grunt: ~
         gulp: ~

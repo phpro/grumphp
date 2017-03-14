@@ -2,7 +2,6 @@
 
 namespace spec\GrumPHP\Task\Git;
 
-use Gitonomy\Git\Reference;
 use Gitonomy\Git\Repository;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Runner\TaskResultInterface;
@@ -14,15 +13,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BranchNameSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, Repository $repository, Reference $reference)
+    function let(GrumPHP $grumPHP, Repository $repository)
     {
-        $this->beConstructedWith($grumPHP);
+        $this->beConstructedWith($grumPHP, $repository);
         $grumPHP->getTaskConfiguration('git_branch_name')->willReturn([
-            'matchers' => ['test', '*es*', 'te[s][t]', '/^te(.*)/', '/(.*)st$/', '/t(e|a)st/', 'TEST']
+            'matchers' => ['test', '*es*', 'te[s][t]', '/^te(.*)/', '/(.*)st$/', '/t(e|a)st/', 'TEST'],
+            'additional_modifiers' => 'i',
         ]);
-        $reference->getRevision()->willReturn('refs/heads/test');
-        $repository->getHead()->willReturn($reference);
-        $grumPHP->getGitRepository()->willReturn($repository);
+        $repository->run('symbolic-ref', ['HEAD', '--short'])->willReturn('test');
     }
 
     function it_should_have_a_name()
@@ -34,8 +32,6 @@ class BranchNameSpec extends ObjectBehavior
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
-        $options->getDefinedOptions()->shouldContain('case_insensitive');
-        $options->getDefinedOptions()->shouldNotContain('multiline');
         $options->getDefinedOptions()->shouldContain('matchers');
         $options->getDefinedOptions()->shouldContain('additional_modifiers');
     }
@@ -62,23 +58,23 @@ class BranchNameSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_throws_exception_if_the_process_fails(RunContext $context, Reference $reference)
+    function it_throws_exception_if_the_process_fails(RunContext $context, Repository $repository)
     {
-        $reference->getRevision()->willReturn('refs/heads/not-good');
+        $repository->run('symbolic-ref', ['HEAD', '--short'])->willReturn('not-good');
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(false);
     }
 
-    function it_runs_with_additional_modifiers(RunContext $context, GrumPHP $grumPHP, Reference $reference)
+    function it_runs_with_additional_modifiers(RunContext $context, GrumPHP $grumPHP, Repository $repository)
     {
         $grumPHP->getTaskConfiguration('git_branch_name')->willReturn([
-            'matchers' => ['/good/'],
+            'matchers' => ['/^ümlaut/'],
             'additional_modifiers' => 'u',
         ]);
 
-        $reference->getRevision()->willReturn('refs/heads/good');
+        $repository->run('symbolic-ref', ['HEAD', '--short'])->willReturn('ümlaut-branch-name');
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf(TaskResultInterface::class);

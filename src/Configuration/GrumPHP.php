@@ -41,14 +41,6 @@ class GrumPHP
     }
 
     /**
-     * @return \Gitonomy\Git\Repository
-     */
-    public function getGitRepository()
-    {
-        return $this->container->get('git.repository');
-    }
-
-    /**
      * @return string
      */
     public function getHooksDir()

@@ -2,18 +2,40 @@
 
 namespace GrumPHP\Task\Git;
 
-use Gitonomy\Git\Reference\Branch;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Util\Regex;
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Task\TaskInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Gitonomy\Git\Repository;
 
 /**
  * Git BranchName Task
  */
-class BranchName extends AbstractRegex
+class BranchName implements TaskInterface
 {
+
+    /**
+     * @var GrumPHP
+     */
+    protected $grumPHP;
+
+    /**
+     * @var Repository
+     */
+    protected $repository;
+
+    /**
+     * @param GrumPHP $grumPHP
+     */
+    public function __construct(GrumPHP $grumPHP, Repository $repository)
+    {
+        $this->grumPHP = $grumPHP;
+        $this->repository = $repository;
+    }
 
     /**
      * @return string
@@ -21,6 +43,33 @@ class BranchName extends AbstractRegex
     public function getName()
     {
         return 'git_branch_name';
+    }
+
+    /**
+     * @return array
+     */
+    public function getConfiguration()
+    {
+        $configured = $this->grumPHP->getTaskConfiguration($this->getName());
+
+        return $this->getConfigurableOptions()->resolve($configured);
+    }
+
+    /**
+     * @return OptionsResolver
+     */
+    public function getConfigurableOptions()
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults([
+          'matchers' => [],
+          'additional_modifiers' => ''
+        ]);
+
+        $resolver->addAllowedTypes('matchers', ['array']);
+        $resolver->addAllowedTypes('additional_modifiers', ['string']);
+
+        return $resolver;
     }
 
     /**
@@ -41,13 +90,9 @@ class BranchName extends AbstractRegex
      *
      * @throws RuntimeException
      */
-    protected function runMatcher(array $config, $name, $rule, $ruleName)
+    private function runMatcher(array $config, $name, $rule, $ruleName)
     {
         $regex = new Regex($rule);
-
-        if ((bool) $config['case_insensitive']) {
-            $regex->addPatternModifier('i');
-        }
 
         $additionalModifiersArray = array_filter(str_split((string) $config['additional_modifiers']));
         array_map([$regex, 'addPatternModifier'], $additionalModifiersArray);
@@ -64,7 +109,7 @@ class BranchName extends AbstractRegex
      */
     public function run(ContextInterface $context)
     {
-        $name = $this->getCurrentBranchName();
+        $name = trim($this->repository->run('symbolic-ref', ['HEAD', '--short']));
         $config = $this->getConfiguration();
         $exceptions = [];
 
@@ -81,17 +126,5 @@ class BranchName extends AbstractRegex
         }
 
         return TaskResult::createPassed($this, $context);
-    }
-
-    /**
-     * Get current branch name.
-     *
-     * @return string
-     */
-    public function getCurrentBranchName()
-    {
-        $gitRepository = $this->grumPHP->getGitRepository();
-        $branch = new Branch($gitRepository, $gitRepository->getHead()->getRevision());
-        return $branch->getName();
     }
 }

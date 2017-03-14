@@ -9,8 +9,7 @@ parameters:
     tasks:
         git_branch_name:
             matchers:
-                Must contain JIRA issue number: /JIRA-\d+/
-            case_insensitive: true
+                Branch name nust contain JIRA issue number: /JIRA-\d+/
             additional_modifiers: ''
 ```
 
@@ -25,12 +24,6 @@ Here are some example matchers:
 - pre-fix*
 - *suffix
 - ...
-
-**case_insensitive**
-
-*Default: true*
-
-Mark the matchers as case sensitive.
 
 **additional_modifiers**
 
