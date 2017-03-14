@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Task\Git;
 
+use Gitonomy\Git\Exception\ProcessException;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -63,12 +64,14 @@ class BranchName implements TaskInterface
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-          'matchers' => [],
-          'additional_modifiers' => ''
+            'matchers' => [],
+            'additional_modifiers' => '',
+            'allow_symbolic_references' => true,
         ]);
 
         $resolver->addAllowedTypes('matchers', ['array']);
         $resolver->addAllowedTypes('additional_modifiers', ['string']);
+        $resolver->addAllowedTypes('allow_symbolic_references', ['boolean']);
 
         return $resolver;
     }
@@ -110,9 +113,17 @@ class BranchName implements TaskInterface
      */
     public function run(ContextInterface $context)
     {
-        $name = trim($this->repository->run('symbolic-ref', ['HEAD', '--short']));
         $config = $this->getConfiguration();
         $exceptions = [];
+
+        try {
+            $name = trim($this->repository->run('symbolic-ref', ['HEAD', '--short']));
+        } catch (ProcessException $e) {
+            if ($config['allow_symbolic_references'] === false) {
+                $message = "Branch naming convention task is not allowed to run on symbolic references.";
+                return TaskResult::createFailed($this, $context, $message);
+            }
+        }
 
         foreach ($config['matchers'] as $ruleName => $rule) {
             try {
