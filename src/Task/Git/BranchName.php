@@ -4,6 +4,7 @@ namespace GrumPHP\Task\Git;
 
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
+use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Util\Regex;
 use GrumPHP\Exception\RuntimeException;
@@ -79,7 +80,7 @@ class BranchName implements TaskInterface
      */
     public function canRunInContext(ContextInterface $context)
     {
-        return $context instanceof RunContext;
+        return $context instanceof RunContext || $context instanceof GitPreCommitContext;
     }
 
     /**
@@ -94,7 +95,7 @@ class BranchName implements TaskInterface
     {
         $regex = new Regex($rule);
 
-        $additionalModifiersArray = array_filter(str_split((string) $config['additional_modifiers']));
+        $additionalModifiersArray = array_filter(str_split($config['additional_modifiers']));
         array_map([$regex, 'addPatternModifier'], $additionalModifiersArray);
 
         if (!preg_match((string) $regex, $name)) {
