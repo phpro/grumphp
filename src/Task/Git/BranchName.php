@@ -121,10 +121,9 @@ class BranchName implements TaskInterface
         } catch (ProcessException $e) {
             if ($config['allow_detached_head']) {
                 return TaskResult::createPassed($this, $context);
-            } else {
-                $message = "Branch naming convention task is not allowed on a detached HEAD.";
-                return TaskResult::createFailed($this, $context, $message);
             }
+            $message = "Branch naming convention task is not allowed on a detached HEAD.";
+            return TaskResult::createFailed($this, $context, $message);
         }
 
         foreach ($config['matchers'] as $ruleName => $rule) {
