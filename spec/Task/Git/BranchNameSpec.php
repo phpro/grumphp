@@ -2,6 +2,7 @@
 
 namespace spec\GrumPHP\Task\Git;
 
+use Gitonomy\Git\Exception\ProcessException;
 use Gitonomy\Git\Repository;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Runner\TaskResultInterface;
@@ -85,5 +86,24 @@ class BranchNameSpec extends ObjectBehavior
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(true);
+    }
+
+    function it_runs_with_detached_head_setting(RunContext $context, GrumPHP $grumPHP, Repository $repository)
+    {
+        $repository->run('symbolic-ref', ['HEAD', '--short'])->willThrow(ProcessException::class);
+
+        $grumPHP->getTaskConfiguration('git_branch_name')->willReturn([
+          'allow_detached_head' => true,
+        ]);
+
+        $result = $this->run($context);
+        $result->isPassed()->shouldBe(true);
+
+        $grumPHP->getTaskConfiguration('git_branch_name')->willReturn([
+          'allow_detached_head' => false,
+        ]);
+
+        $result = $this->run($context);
+        $result->isPassed()->shouldBe(false);
     }
 }

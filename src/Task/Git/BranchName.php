@@ -66,12 +66,12 @@ class BranchName implements TaskInterface
         $resolver->setDefaults([
             'matchers' => [],
             'additional_modifiers' => '',
-            'allow_symbolic_references' => true,
+            'allow_detached_head' => true,
         ]);
 
         $resolver->addAllowedTypes('matchers', ['array']);
         $resolver->addAllowedTypes('additional_modifiers', ['string']);
-        $resolver->addAllowedTypes('allow_symbolic_references', ['boolean']);
+        $resolver->addAllowedTypes('allow_detached_head', ['boolean']);
 
         return $resolver;
     }
@@ -119,8 +119,10 @@ class BranchName implements TaskInterface
         try {
             $name = trim($this->repository->run('symbolic-ref', ['HEAD', '--short']));
         } catch (ProcessException $e) {
-            if ($config['allow_symbolic_references'] === false) {
-                $message = "Branch naming convention task is not allowed to run on symbolic references.";
+            if ($config['allow_detached_head']) {
+                return TaskResult::createPassed($this, $context);
+            } else {
+                $message = "Branch naming convention task is not allowed on a detached HEAD.";
                 return TaskResult::createFailed($this, $context, $message);
             }
         }

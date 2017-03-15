@@ -38,3 +38,9 @@ additional_modifiers: 'u'
 
 additional_modifiers: 'xu'
 ```
+
+**allow_detached_head**
+
+*Default: true*
+
+Set this to `false` if you wish the task to fail when ran on a detached HEAD. If set to `true` the task will always pass.
