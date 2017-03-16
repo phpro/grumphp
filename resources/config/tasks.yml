@@ -106,6 +106,14 @@ services:
         tags:
             - {name: grumphp.task, config: git_commit_message}
 
+    task.git.branchname:
+        class: GrumPHP\Task\Git\BranchName
+        arguments:
+            - '@config'
+            - '@git.repository'
+        tags:
+            - {name: grumphp.task, config: git_branch_name}
+
     task.git.conflict:
         class: GrumPHP\Task\Git\Conflict
         arguments:

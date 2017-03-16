@@ -18,6 +18,7 @@ parameters:
         doctrine_orm: ~
         gherkin: ~
         git_blacklist: ~
+        git_branch_name: ~
         git_commit_message: ~
         git_conflict: ~
         grunt: ~
@@ -60,6 +61,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Doctrine ORM](tasks/doctrine_orm.md)
 - [Gherkin](tasks/gherkin.md)
 - [Git blacklist](tasks/git_blacklist.md)
+- [Git branch name](tasks/git_branch_name.md)
 - [Git commit message](tasks/git_commit_message.md)
 - [Git conflict](tasks/git_conflict.md)
 - [Grunt](tasks/grunt.md)
