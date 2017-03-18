@@ -30,11 +30,13 @@ class Shell extends AbstractExternalTask
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'scripts' => [],
+            'timeout' => 60,
             'triggered_by' => ['php']
         ]);
 
         $resolver->addAllowedTypes('scripts', ['array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
+        $resolver->addAllowedTypes('timeout', ['int']);
         $resolver->setNormalizer('scripts', function ($resolver, $scripts) {
             return array_map(function ($script) {
                 return is_string($script) ? (array) $script : $script;
@@ -84,10 +86,12 @@ class Shell extends AbstractExternalTask
      */
     private function runShell(array $scriptArguments)
     {
+        $config = $this->getConfiguration();
         $arguments = $this->processBuilder->createArgumentsForCommand('sh');
         $arguments->addArgumentArray('%s', $scriptArguments);
 
         $process = $this->processBuilder->buildProcess($arguments);
+        $process->setTimeout($config['timeout']);
         $process->run();
 
         if (!$process->isSuccessful()) {
