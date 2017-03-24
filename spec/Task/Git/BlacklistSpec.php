@@ -42,6 +42,7 @@ class BlacklistSpec extends ObjectBehavior
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('keywords');
         $options->getDefinedOptions()->shouldContain('triggered_by');
+        $options->getDefinedOptions()->shouldContain('regexp_type');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)

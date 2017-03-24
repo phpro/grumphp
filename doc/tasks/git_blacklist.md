@@ -13,6 +13,7 @@ parameters:
                 - "var_dump("
                 - "exit;"
             triggered_by: [php]
+            regexp_type: G
 ```
 
 **keywords**
@@ -29,3 +30,9 @@ Use this parameter to specify your blacklisted keywords list.
 This option will specify which file extensions will trigger the git blacklist task.
 By default git blacklist will be triggered by altering a php file. 
 You can overwrite this option to whatever filetype you want to validate!
+
+**regexp_type**
+
+*Default: G*
+
+This option allows you to choose the type of regexp you want to use for patterns (can be G for POSIX basic, E for POSIX extended or P for Perl Compatible).
