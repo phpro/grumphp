@@ -67,9 +67,9 @@ class Phan extends AbstractExternalTask
 
         $arguments = $this->processBuilder->createArgumentsForCommand('phan');
 
-        $arguments->addOptionalArgumentWithSeparatedValue('-k', $config['config_file']);
-        $arguments->addOptionalArgumentWithSeparatedValue('-m', $config['output_mode']);
-        $arguments->addOptionalArgumentWithSeparatedValue('-o', $config['output']);
+        $arguments->addOptionalArgumentWithSeparatedValue('-config-file', $config['config_file']);
+        $arguments->addOptionalArgumentWithSeparatedValue('-output-mode', $config['output_mode']);
+        $arguments->addOptionalArgumentWithSeparatedValue('-output', $config['output']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
