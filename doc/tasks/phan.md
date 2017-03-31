@@ -1,7 +1,16 @@
 # Phan
 
 The Phan task will run your automated PHP tasks.
-It lives under the `phan` namespace and has following configurable parameters:
+
+***Composer***
+
+```
+composer require --dev etsy/phan
+```
+
+***Config***
+
+The task lives under the `phan` namespace and has following configurable parameters.
 
 ```yaml
 # grumphp.yml
