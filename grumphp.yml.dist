@@ -7,7 +7,6 @@ parameters:
         ignore_patterns:
           - "spec/*Spec.php"
           - "test/*.php"
-          - ".phan/*.php"
         metadata:
           priority: 300
       phpspec:
