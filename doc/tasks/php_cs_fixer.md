@@ -1,7 +1,16 @@
 # PHP-CS-Fixer
 
 The PHP-CS-Fixer task will run codestyle checks.
-It lives under the `phpcsfixer` namespace and has following configurable parameters:
+
+***Composer***
+
+```
+composer require --dev friendsofphp/php-cs-fixer
+```
+
+***Config***
+
+The task lives under the `phpcsfixer` namespace and has following configurable parameters:
 
 ```yaml
 # grumphp.yml

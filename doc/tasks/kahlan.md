@@ -1,7 +1,16 @@
 # Phpspec
 
 Kahlan is a full-featured Unit & BDD test framework a la RSpec/JSpec which uses a describe-it syntax and moves testing in PHP one step forward.
-It lives under the `kahlan` namespace and has following configurable parameters:
+
+***Composer***
+
+```
+composer require --dev kahlan/kahlan
+```
+
+***Config***
+
+The task lives under the `kahlan` namespace and has following configurable parameters:
 
 ```yaml
 # grumphp.yml

@@ -1,7 +1,16 @@
 # Php7cc
 
 The Php7cc task will check PHP 5.3 - 5.6 code compatibility with PHP 7.
-It lives under the `php7cc` namespace and has following configurable parameters:
+
+***Composer***
+
+```
+composer require --dev sstalle/php7cc
+```
+
+***Config***
+
+The task lives under the `php7cc` namespace and has following configurable parameters:
 
 ```yaml
 # grumphp.yml

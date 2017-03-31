@@ -1,7 +1,16 @@
 # Phing
 
 The Phing task will run your automated PHP tasks.
-It lives under the `phing` namespace and has following configurable parameters:
+
+***Composer***
+
+```
+composer require --dev phing/phing
+```
+
+***Config***
+
+The task lives under the `phing` namespace and has following configurable parameters:
 
 ```yaml
 # grumphp.yml

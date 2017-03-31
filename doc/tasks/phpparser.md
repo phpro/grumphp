@@ -1,8 +1,17 @@
 # Phpparser
 
-The Phpparser task will run static code analyses on your PHP code. 
-You can specify which code visitors should run on your code or write your own code visitor. 
-It lives under the `php_parser` namespace and has following configurable parameters:
+The Phpparser task will run static code analyses on your PHP code.
+You can specify which code visitors should run on your code or write your own code visitor.
+ 
+ ***Composer***
+ 
+ ```
+ composer require --dev nikic/php-parser
+ ```
+ 
+ ***Config***
+ 
+The task lives under the `php_parser` namespace and has following configurable parameters:
 
 ```yaml
 # grumphp.yml

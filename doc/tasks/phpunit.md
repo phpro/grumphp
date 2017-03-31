@@ -1,7 +1,16 @@
 # Phpunit
 
 The Phpunit task will run your unit tests.
-It lives under the `phpunit` namespace and has following configurable parameters:
+
+***Composer***
+
+```
+composer require --dev phpunit/phpunit
+```
+
+***Config***
+
+The task lives under the `phpunit` namespace and has following configurable parameters:
 
 ```yaml
 # grumphp.yml

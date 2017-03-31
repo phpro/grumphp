@@ -1,7 +1,16 @@
 # Security Checker
 
 The Security Checker will check your `composer.lock` file for known security vulnerabilities.
-It lives under the `securitychecker` namespace and has the following configurable parameters:
+
+***Composer***
+
+```
+composer require --dev sensiolabs/security-checker
+```
+
+***Config***
+
+The task lives under the `securitychecker` namespace and has the following configurable parameters:
 
 ```yaml
 # grumphp.yml
