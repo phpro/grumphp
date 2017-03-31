@@ -1,7 +1,16 @@
 #  Behat
 
 The Behat task will run your Behat tests.
-It lives under the `behat` namespace and has following configurable parameters:
+
+***Composer***
+
+```
+composer require --dev behat/behat
+```
+
+***Config***
+
+The task lives under the `behat` namespace and has following configurable parameters:
 
 ```yaml
 # grumphp.yml

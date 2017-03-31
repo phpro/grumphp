@@ -1,7 +1,16 @@
 # Phpspec
 
 The Phpspec task will spec your code with Phpspec.
-It lives under the `phpspec` namespace and has following configurable parameters:
+
+***Composer***
+
+```
+composer require --dev phpspec/phpspec
+```
+
+***Config***
+
+The task lives under the `phpspec` namespace and has following configurable parameters:
 
 ```yaml
 # grumphp.yml

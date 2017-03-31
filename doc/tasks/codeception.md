@@ -1,5 +1,15 @@
 # Codeception
-The Codeception task will run your full-stack tests. It live under the `codeception` namespace and has the following configurable parameters:
+The Codeception task will run your full-stack tests.
+
+***Composer***
+
+```
+composer require --dev codeception/codeception
+```
+
+***Config***
+
+The task lives under the `codeception` namespace and has the following configurable parameters:
 
 ```yaml
 # grumphp.yml

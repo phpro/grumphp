@@ -1,7 +1,18 @@
 # Phpcs
 
 The Phpcs task will sniff your code for bad coding standards.
-It lives under the `phpcs` namespace and has following configurable parameters:
+
+***Composer***
+
+```
+composer require --dev squizlabs/php_codesniffer
+```
+
+***Config***
+
+The task lives under the `phpcs` namespace and has following configurable parameters:
+
+sebastian/phpcpd
 
 ```yaml
 # grumphp.yml

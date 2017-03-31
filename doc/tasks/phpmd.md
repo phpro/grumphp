@@ -1,7 +1,16 @@
 # PhpMd
 
 The PhpMd task will sniff your code for bad coding standards.
-It lives under the `phpmd` namespace and has following configurable parameters:
+
+***Composer***
+
+```
+composer require --dev phpmd/phpmd
+```
+
+***Config***
+
+The task lives under the `phpmd` namespace and has following configurable parameters:
 
 ```yaml
 # grumphp.yml

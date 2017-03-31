@@ -1,7 +1,16 @@
 # Robo
 
 The Robo task will run your automated PHP tasks.
-It lives under the `robo` namespace and has following configurable parameters:
+
+***Composer***
+
+```
+composer require --dev consolidation/robo
+```
+
+***Config***
+
+The task lives under the `robo` namespace and has following configurable parameters:
 
 ```yaml
 # grumphp.yml
