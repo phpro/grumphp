@@ -40,6 +40,11 @@ class DeptracSpec extends ObjectBehavior
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
+        $options->getDefinedOptions()->shouldContain('formatter_graphviz');
+        $options->getDefinedOptions()->shouldContain('formatter_graphviz_display');
+        $options->getDefinedOptions()->shouldContain('formatter_graphviz_dump_image');
+        $options->getDefinedOptions()->shouldContain('formatter_graphviz_dump_dot');
+        $options->getDefinedOptions()->shouldContain('formatter_graphviz_dump_html');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)

@@ -28,6 +28,19 @@ class Deptrac extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
+        $resolver->setDefaults([
+            'formatter_graphviz' => 0,
+            'formatter_graphviz_display' => false,
+            'formatter_graphviz_dump_image' => null,
+            'formatter_graphviz_dump_dot' => null,
+            'formatter_graphviz_dump_html' => null,
+        ]);
+
+        $resolver->addAllowedTypes('formatter_graphviz', ['int']);
+        $resolver->addAllowedTypes('formatter_graphviz_display', ['bool']);
+        $resolver->addAllowedTypes('formatter_graphviz_dump_image', ['null', 'string']);
+        $resolver->addAllowedTypes('formatter_graphviz_dump_dot', ['null', 'string']);
+        $resolver->addAllowedTypes('formatter_graphviz_dump_html', ['null', 'string']);
 
         return $resolver;
     }
@@ -51,7 +64,7 @@ class Deptrac extends AbstractExternalTask
      */
     public function run(ContextInterface $context)
     {
-//        $config = $this->getConfiguration();
+        $config = $this->getConfiguration();
 
         $files = $context->getFiles()->name('*.php');
         if (0 === count($files)) {
@@ -59,6 +72,12 @@ class Deptrac extends AbstractExternalTask
         }
 
         $arguments = $this->processBuilder->createArgumentsForCommand('deptrac');
+        $arguments->add('analyze');
+        $arguments->add('--formatter-graphviz=' . $config['formatter_graphviz']);
+        $arguments->addOptionalArgument('--formatter-graphviz-display=%s', $config['formatter_graphviz_display']);
+        $arguments->addOptionalArgument('--formatter-graphviz-dump-image=%s', $config['formatter_graphviz_dump_image']);
+        $arguments->addOptionalArgument('--formatter-graphviz-dump-dot=%s', $config['formatter_graphviz_dump_dot']);
+        $arguments->addOptionalArgument('--formatter-graphviz-dump-html=%s', $config['formatter_graphviz_dump_html']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
