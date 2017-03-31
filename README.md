@@ -58,7 +58,7 @@ To make GrumPHP even more awesome, it will suggest installing some extra package
 - phpmd/phpmd : ~2.4
 - nikic/php-parser : ~2.1
 - kahlan/kahlan : ~3
-- etsy/phan : dev-master@dev
+- etsy/phan : ~0.9
 
 GrumPHP will never push you into using a specific task. You can choose the tasks that fit your needs, and activate or
 deactivate any task in no time!
