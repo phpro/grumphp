@@ -28,6 +28,7 @@ parameters:
         make: ~
         npm_script: ~
         phing: ~
+        phan: ~
         php7cc: ~
         phpcpd: ~
         phpcs: ~
@@ -70,6 +71,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Kahlan](tasks/kahlan.md)
 - [Make](tasks/make.md)
 - [NPM script](tasks/npm_script.md)
+- [Phan](tasks/phan.md)
 - [Phing](tasks/phing.md)
 - [Php7cc](tasks/php7cc.md) 
 - [PhpCpd](tasks/phpcpd.md)
