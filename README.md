@@ -115,6 +115,7 @@ parameters:
         phpcs: ~
         phpcsfixer: ~
         phpcsfixer2: ~
+        phpdoc: ~
         phplint: ~
         phpmd: ~
         phpparser: ~

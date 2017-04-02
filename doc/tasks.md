@@ -33,6 +33,7 @@ parameters:
         phpcs: ~
         phpcsfixer: ~
         phpcsfixer2: ~
+        phpdoc: ~
         phplint: ~
         phpmd: ~
         phpparser: ~
@@ -76,6 +77,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Phpcs](tasks/phpcs.md)
 - [PHP-CS-Fixer](tasks/php_cs_fixer.md)
 - [PHP-CS-Fixer 2](tasks/php_cs_fixer2.md)
+- [Phpdoc](tasks/phpdoc.md)
 - [PHPLint](tasks/phplint.md)
 - [PhpMd](tasks/phpmd.md)
 - [PhpParser](tasks/phpparser.md)
