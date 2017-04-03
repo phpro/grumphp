@@ -55,11 +55,15 @@ class Blacklist extends AbstractExternalTask
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'keywords' => [],
-            'triggered_by' => ['php']
+            'triggered_by' => ['php'],
+            'regexp_type' => 'G'
         ]);
 
         $resolver->addAllowedTypes('keywords', ['array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
+        $resolver->addAllowedTypes('regexp_type', ['string']);
+
+        $resolver->setAllowedValues('regexp_type', ['G', 'E', 'P']);
 
         return $resolver;
     }
@@ -90,6 +94,7 @@ class Blacklist extends AbstractExternalTask
         $arguments->add('--break');
         $arguments->add('--heading');
         $arguments->addOptionalArgument('--color', $this->IO->isDecorated());
+        $arguments->addOptionalArgument('-%s', $config['regexp_type']);
         $arguments->addArgumentArrayWithSeparatedValue('-e', $config['keywords']);
         $arguments->addFiles($files);
 
