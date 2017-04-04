@@ -173,6 +173,15 @@ services:
         tags:
             - {name: grumphp.task, config: npm_script}
 
+    task.phan:
+        class: GrumPHP\Task\Phan
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: phan}
+
     task.phing:
         class: GrumPHP\Task\Phing
         arguments:
