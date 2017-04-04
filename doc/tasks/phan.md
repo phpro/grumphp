@@ -17,9 +17,9 @@ The task lives under the `phan` namespace and has following configurable paramet
 parameters:
     tasks:
         phan:
-            config_file: ~
-            output_mode: ~
-            output: ~
+            config_file: .phan/config.php
+            output_mode: text
+            output: null
             triggered_by: [php]
 ```
 
