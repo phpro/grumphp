@@ -40,6 +40,7 @@
         "codeception/codeception": "Lets GrumPHP run your project's full stack tests",
         "codegyre/robo": "Lets GrumPHP run your automated PHP tasks.",
         "doctrine/orm": "Lets GrumPHP validate your Doctrine mapping files.",
+        "etsy/phan": "Lets GrumPHP unleash a static analyzer on your code"
         "friendsofphp/php-cs-fixer": "Lets GrumPHP automatically fix your codestyle.",
         "jakub-onderka/php-parallel-lint": "Lets GrumPHP quickly lint your entire code base.",
         "malukenho/kawaii-gherkin": "Lets GrumPHP lint your Gherkin files.",
@@ -53,7 +54,6 @@
         "sensiolabs/security-checker": "Lets GrumPHP be sure that there are no known security issues.",
         "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",
         "sstalle/php7cc": "Lets GrumPHP check PHP 5.3 - 5.6 code compatibility with PHP 7.",
-        "etsy/phan": "Lets GrumPHP unleash a static analyzer on your code"
     },
     "authors": [
         {
