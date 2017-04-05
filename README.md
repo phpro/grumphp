@@ -49,6 +49,7 @@ To make GrumPHP even more awesome, it will suggest installing some extra package
 - phing/phing : ~2.0
 - sstalle/php7cc : ~1.1
 - phpspec/phpspec : ~2.1
+- phpstan/phpstan : ^0.6
 - phpunit/phpunit : ~4.5
 - roave/security-advisories : dev-master@dev
 - sebastian/phpcpd : ~2.0
@@ -121,8 +122,9 @@ parameters:
         phpmd: ~
         phpparser: ~
         phpspec: ~
+        phpstan: ~
         phpunit: ~
-        phpversion: ~        
+        phpversion: ~
         robo: ~
         securitychecker: ~
         shell: ~
@@ -171,7 +173,7 @@ There is one major part missing before we can release v1.0.0:
 
 - [A PHAR executable](https://github.com/phpro//grumphp/issues/61)
 
-We are always looking to support new tasks. 
+We are always looking to support new tasks.
 Feel free to log an issue or create a pull request for a task we forgot.
 
 Are you missing a feature or did you find a bug?

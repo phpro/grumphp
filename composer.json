@@ -32,7 +32,7 @@
         "phpunit/phpunit": "^4.8.31",
         "sebastian/comparator": "^1.2.4",
         "sensiolabs/security-checker": "^3.0",
-        "squizlabs/php_codesniffer": "~2.3"
+        "squizlabs/php_codesniffer": "~2.4"
     },
     "suggest": {
         "atoum/atoum": "Lets GrumPHP run your unit tests.",
@@ -48,6 +48,7 @@
         "phing/phing": "Lets GrumPHP run your automated PHP tasks.",
         "phpmd/phpmd": "Lets GrumPHP sort out the mess in your code",
         "phpspec/phpspec": "Lets GrumPHP spec your code.",
+        "phpstan/phpstan": "Lets GrumPHP discover bugs in your code without running it.",
         "phpunit/phpunit": "Lets GrumPHP run your unit tests.",
         "roave/security-advisories": "Lets GrumPHP be sure that there are no known security issues.",
         "sebastian/phpcpd": "Lets GrumPHP find duplicated code.",

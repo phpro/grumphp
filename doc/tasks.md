@@ -38,8 +38,9 @@ parameters:
         phpmd: ~
         phpparser: ~
         phpspec: ~
+        phpstan: ~
         phpunit: ~
-        phpversion: ~        
+        phpversion: ~
         robo: ~
         securitychecker: ~
         shell: ~
@@ -73,7 +74,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [NPM script](tasks/npm_script.md)
 - [Phan](tasks/phan.md)
 - [Phing](tasks/phing.md)
-- [Php7cc](tasks/php7cc.md) 
+- [Php7cc](tasks/php7cc.md)
 - [PhpCpd](tasks/phpcpd.md)
 - [Phpcs](tasks/phpcs.md)
 - [PHP-CS-Fixer](tasks/php_cs_fixer.md)
@@ -82,6 +83,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [PhpMd](tasks/phpmd.md)
 - [PhpParser](tasks/phpparser.md)
 - [Phpspec](tasks/phpspec.md)
+- [PHPStan](tasks/phpstan.md)
 - [Phpunit](tasks/phpunit.md)
 - [PhpVersion](tasks/phpversion.md)
 - [Robo](tasks/robo.md)
