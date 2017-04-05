@@ -273,6 +273,15 @@ services:
         tags:
           - {name: grumphp.task, config: phpspec}
 
+    task.phpstan:
+        class: GrumPHP\Task\PhpStan
+        arguments:
+          - '@config'
+          - '@process_builder'
+          - '@formatter.raw_process'
+        tags:
+          - {name: grumphp.task, config: phpstan}
+
     task.phpunit:
         class: GrumPHP\Task\Phpunit
         arguments:
