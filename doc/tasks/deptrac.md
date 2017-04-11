@@ -12,6 +12,7 @@ namespace and has following configurable parameters:
 parameters:
     tasks:
         deptrac:
+            depfile: ~
             formatter_graphviz: ~
             formatter_graphviz_display: ~
             formatter_graphviz_dump_image: ~
@@ -19,12 +20,17 @@ parameters:
             formatter_graphviz_dump_html: ~
 ```
 
+**depfile**
+
+*Default: null*
+
+Set path to deptrac configuration file. Example: `/var/www/src/depfile.yml`
 
 **formatter_graphviz**
 
-*Default: 0*
+*Default: false*
 
-Set to `1` to enable the graphviz formatter.
+Set to `true` to enable the graphviz formatter.
 
 **formatter_graphviz_display**
 

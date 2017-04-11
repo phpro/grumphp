@@ -40,6 +40,7 @@ class DeptracSpec extends ObjectBehavior
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
+        $options->getDefinedOptions()->shouldContain('depfile');
         $options->getDefinedOptions()->shouldContain('formatter_graphviz');
         $options->getDefinedOptions()->shouldContain('formatter_graphviz_display');
         $options->getDefinedOptions()->shouldContain('formatter_graphviz_dump_image');
