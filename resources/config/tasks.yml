@@ -71,6 +71,15 @@ services:
         tags:
             - {name: grumphp.task, config: composer_script}
 
+    task.deptrac:
+        class: GrumPHP\Task\Deptrac
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: deptrac}
+
     task.doctrine_orm:
         class: GrumPHP\Task\DoctrineOrm
         arguments:

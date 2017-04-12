@@ -14,6 +14,7 @@ parameters:
         clover_coverage: ~
         codeception: ~
         composer: ~
+        deptrac: ~
         composer_script: ~
         doctrine_orm: ~
         gherkin: ~
@@ -61,6 +62,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Composer](tasks/composer.md)
 - [Composer Script](tasks/composer_script.md)
 - [Doctrine ORM](tasks/doctrine_orm.md)
+- [Deptrac](tasks/deptrac.md)
 - [Gherkin](tasks/gherkin.md)
 - [Git blacklist](tasks/git_blacklist.md)
 - [Git branch name](tasks/git_branch_name.md)

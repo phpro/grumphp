@@ -100,6 +100,7 @@ parameters:
         codeception: ~
         composer: ~
         composer_script: ~
+        deptrac: ~
         doctrine_orm: ~
         gherkin: ~
         git_blacklist: ~
