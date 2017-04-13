@@ -127,6 +127,8 @@ services:
         class: GrumPHP\Task\Git\Conflict
         arguments:
             - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, config: git_conflict}
 
