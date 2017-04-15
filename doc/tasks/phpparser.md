@@ -1,6 +1,6 @@
-# Phpparser
+# PHP parser
 
-The Phpparser task will run static code analyses on your PHP code.
+The PHP parser task will run static code analyses on your PHP code.
 You can specify which code visitors should run on your code or write your own code visitor.
  
  ***Composer***
@@ -28,8 +28,8 @@ parameters:
 
 *Default: [php]*
 
-This option will specify which file extensions will trigger the php blacklist task.
-By default php blacklist will be triggered by altering a php file.
+This option will specify which file extensions will trigger the PHP parser task.
+By default PHP parser will be triggered by altering a php file.
 You can overwrite this option to whatever filetype you want to validate!
 
 **ignore_patterns**
