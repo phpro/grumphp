@@ -9,7 +9,7 @@ parameters:
     tasks:
         git_branch_name:
             matchers:
-                Branch name nust contain JIRA issue number: /JIRA-\d+/
+                Branch name must contain JIRA issue number: /JIRA-\d+/
             additional_modifiers: ''
 ```
 
