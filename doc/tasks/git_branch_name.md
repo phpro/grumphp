@@ -1,4 +1,4 @@
-# Git commit message
+# Git branch name
 
 The Git branch name task ensures that the current branch name matches the specified patterns.  
 For example: if you are working with JIRA, it is possible to add a pattern for the JIRA issue number.
