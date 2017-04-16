@@ -1,6 +1,6 @@
-# Phpparser
+# PHP parser
 
-The Phpparser task will run static code analyses on your PHP code.
+The PHP parser task will run static code analyses on your PHP code.
 You can specify which code visitors should run on your code or write your own code visitor.
  
  ***Composer***
