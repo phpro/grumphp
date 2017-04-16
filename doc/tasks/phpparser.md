@@ -20,17 +20,9 @@ parameters:
         phpparser:
             ignore_patterns: []
             kind: php7
-            triggered_by: [php]
             visitors: {}
+            triggered_by: [php]
 ```
-
-**triggered_by**
-
-*Default: [php]*
-
-This option will specify which file extensions will trigger the PHP parser task.
-By default PHP parser will be triggered by altering a php file.
-You can overwrite this option to whatever filetype you want to validate!
 
 **ignore_patterns**
 
@@ -56,6 +48,13 @@ Without any visitors specified, PHP Parser will only check code syntax (similar 
 In the next chapter, you can find a list of built-in visitors. 
 It's also possible to write your own visitor!
 
+**triggered_by**
+
+*Default: [php]*
+
+This option will specify which file extensions will trigger the php blacklist task.
+By default php blacklist will be triggered by altering a php file.
+You can overwrite this option to whatever filetype you want to validate!
 
 ## Built-in visitors
 
