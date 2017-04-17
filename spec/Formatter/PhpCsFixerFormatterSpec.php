@@ -40,7 +40,7 @@ class PhpCsFixerFormatterSpec extends ObjectBehavior
         $this->format($process)->shouldStartWith('Invalid file: ');
     }
 
-    function it_formats_php_cs_fixer_json_output_for_single_file(Process $process)
+    function it_formats_phpcsfixer_json_output_for_single_file(Process $process)
     {
         $json = $this->parseJson([
             ['name' => 'name1',],
@@ -49,7 +49,7 @@ class PhpCsFixerFormatterSpec extends ObjectBehavior
         $this->format($process)->shouldBe('1) name1');
     }
 
-    function it_formats_php_cs_fixer_json_output_for_multiple_files(Process $process)
+    function it_formats_phpcsfixer_json_output_for_multiple_files(Process $process)
     {
         $json = $this->parseJson([
             ['name' => 'name1',],
@@ -59,7 +59,7 @@ class PhpCsFixerFormatterSpec extends ObjectBehavior
         $this->format($process)->shouldBe('1) name1' . PHP_EOL . '2) name2 (fixer1, fixer2)');
     }
 
-    function it_formats_php_cs_fixer_json_output_for_diff(Process $process)
+    function it_formats_phpcsfixer_json_output_for_diff(Process $process)
     {
         $json = $this->parseJson([
             ['name' => 'name1', 'diff' => 'diff1'],
