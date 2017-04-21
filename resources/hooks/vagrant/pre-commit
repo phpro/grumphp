@@ -17,5 +17,5 @@ vagrant ssh --command '$(which sh)' << COMMANDS
 	__GRUMPHP_DIFF_HEREDOC__
   )
 
-  printf "%s\n" "\${DIFF}" | exec $(HOOK_COMMAND) '--ansi' '--skip-success-output'
+  printf "%s\n" "\${DIFF}" | $(HOOK_COMMAND) '--ansi' '--skip-success-output'
 COMMANDS
