@@ -123,15 +123,6 @@ services:
         tags:
             - {name: grumphp.task, config: git_branch_name}
 
-    task.git.conflict:
-        class: GrumPHP\Task\Git\Conflict
-        arguments:
-            - '@config'
-            - '@process_builder'
-            - '@formatter.raw_process'
-        tags:
-            - {name: grumphp.task, config: git_conflict}
-
     task.grunt:
         class: GrumPHP\Task\Grunt
         arguments:
