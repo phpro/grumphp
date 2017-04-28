@@ -141,6 +141,7 @@ Details of the configuration are broken down into the following sections.
 - [TestSuites](doc/testsuites.md)
 - [Extensions](doc/extensions.md)
 - [Events](doc/events.md)
+- [Conventions checker](doc/conventions.md)
 
 ## Commands
 
@@ -179,11 +180,6 @@ Feel free to log an issue or create a pull request for a task we forgot.
 Are you missing a feature or did you find a bug?
 Log it in the [issue tracker](https://github.com/phpro/grumphp/issues)!
 Want to help out? Feel free to contact us!
-
-## Build your own conventions checker
-
-You can see an [example](https://github.com/linkorb/conventions-checker)
-of how to build your own conventions checker.
 
 ## Solving issues
 
