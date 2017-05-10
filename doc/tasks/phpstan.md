@@ -3,6 +3,12 @@
 The PHPStan task focuses on finding errors in your code without actually running it. It catches whole classes of bugs even before you write tests for the code.
 It lives under the `phpstan` namespace and has following configurable parameters:
 
+## Composer
+```bash
+composer require --dev phpstan/phpstan
+```
+
+## Config
 ```yaml
 # grumphp.yml
 parameters:
