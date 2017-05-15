@@ -9,7 +9,7 @@
         "composer/composer": "^1.0",
         "doctrine/collections": "~1.2",
         "gitonomy/gitlib": "~1.0",
-        "monolog/monolog": "~1.17",
+        "monolog/monolog": "~1.16",
         "ocramius/proxy-manager": "~0.4|~1.0|~2.0",
         "seld/jsonlint": "~1.1",
         "symfony/config": "~2.7|~3.0",
