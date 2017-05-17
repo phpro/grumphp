@@ -258,6 +258,15 @@ services:
         tags:
           - {name: grumphp.task, config: phpmd}
 
+    task.phpmnd:
+        class: GrumPHP\Task\PhpMnd
+        arguments:
+          - '@config'
+          - '@process_builder'
+          - '@formatter.raw_process'
+        tags:
+          - {name: grumphp.task, config: phpmnd}
+
     task.phpparser:
         class: GrumPHP\Task\PhpParser
         arguments:
