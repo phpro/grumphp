@@ -60,41 +60,41 @@ This parameter will allow you to exclude paths from the code analysis (must be r
 By default PHP Magic Number Detector analyses conditions, return statements and switch cases. This parameter lets you extend the code analysis.
 
 * **argument**
-    ```php
+```php
 round($number, 4);
-    ```
+```
 * **array**
-    ```php
+```php
 $array = [200, 201];
-    ```
+```
 * **assign**
-    ```php
+```php
 $var = 10;
-    ```
+```
 * **default_parameter**
-    ```php
+```php
 function foo($default = 3);
-    ```
+```
 * **operation**
-    ```php
+```php
 $bar = $foo * 20;
-    ```
+```
 * **property**
-    ```php
+```php
 private $bar = 10;
-    ```
+```
 * **return(default)**
-    ```php
+```php
 return 5;
-    ```
+```
 * **condition(default)**
-    ```php
+```php
 $var < 7;
-    ```
+```
 * **switch_case(default)**
-    ```php
+```php
 case 3;
-    ```
+```
 
 You can use `all` to include all extensions. If an extension starts with minus (`-`) that means it will be removed from the code analysis.
 
