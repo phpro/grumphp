@@ -9,4 +9,4 @@
 DIFF=$(git diff -r -p -m -M --full-index --staged | cat)
 
 # Run GrumPHP
-(cd "${HOOK_EXEC_PATH}" && printf "%s\n" "${DIFF}" | exec $(HOOK_COMMAND) '--skip-success-output')
+(cd "${HOOK_EXEC_PATH}" && printf "%s\n" "${DIFF}" | $(HOOK_COMMAND) '--skip-success-output')
