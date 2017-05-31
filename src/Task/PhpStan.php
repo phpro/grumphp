@@ -2,14 +2,11 @@
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
-use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Process\Process;
 
 /**
  * PhpStan task
