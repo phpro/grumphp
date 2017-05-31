@@ -9,14 +9,21 @@ use GrumPHP\Event\TaskEvent;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ProgressSubscriberSpec extends ObjectBehavior
 {
-    function let(OutputInterface $output, ProgressBar $progressBar)
+    function let(OutputInterface $output)
     {
+        $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
+        $output->isDecorated()->willReturn(false);
+        $output->getFormatter()->willReturn(new OutputFormatter());
+
+        $progressBar = new ProgressBar($output->getWrappedObject());
+
         $this->beConstructedWith($output, $progressBar);
     }
 
@@ -35,53 +42,42 @@ class ProgressSubscriberSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldBeArray();
     }
 
-    function it_starts_progress(ProgressBar $progressBar, RunnerEvent $event, TasksCollection $tasks)
+    function it_starts_progress(OutputInterface $output, RunnerEvent $event, TasksCollection $tasks)
     {
         $tasks->count()->willReturn(2);
         $event->getTasks()->willReturn($tasks);
 
-        $progressBar->setFormat(Argument::type('string'))->shouldBeCalled();
-        $progressBar->setOverwrite(false)->shouldBeCalled();
-        $progressBar->setMessage(Argument::type('string'))->shouldBeCalled();
-        $progressBar->start(2)->shouldBeCalled();
+        $output->write('<fg=yellow>GrumPHP is sniffing your code!</fg=yellow>')->shouldBeCalled();
 
         $this->startProgress($event);
     }
 
-    function it_should_advance_progress(ProgressBar $progressBar, TaskEvent $event, TaskInterface $task)
+    function it_should_advance_progress(OutputInterface $output, TaskEvent $event, TaskInterface $task)
     {
+        $this->beConstructedWith($output, $progress = new ProgressBar($output->getWrappedObject(), 2));
+
         $event->getTask()->willReturn($task);
 
-        $progressBar->setFormat(Argument::type('string'))->shouldBeCalled();
-        $progressBar->setOverwrite(false)->shouldBeCalled();
-        $progressBar->setMessage(Argument::type('string'))->shouldBeCalled();
-        $progressBar->advance()->shouldBeCalled();
+        $output->writeln('')->shouldBeCalled();
+        $output->write(Argument::containingString('Running task'))->shouldBeCalled();
+        $output->write(Argument::containingString('1/2'))->shouldBeCalled();
 
         $this->advanceProgress($event);
     }
 
-    function it_finishes_progress(OutputInterface $output, ProgressBar $progressBar, RunnerEvent $event)
+    function it_finishes_progress(OutputInterface $output, RunnerEvent $event)
     {
-        $progressBar->getProgress()->willReturn(1);
-        $progressBar->getMaxSteps()->willReturn(1);
+        $this->beConstructedWith($output, $progress = new ProgressBar($output->getWrappedObject(), 0));
 
-        $progressBar->setOverwrite(false)->shouldBeCalled();
-        $progressBar->finish()->shouldBeCalled();
         $output->writeln('')->shouldBeCalled();
 
         $this->finishProgress($event);
     }
 
-    function it_finishes_progress_early(OutputInterface $output, ProgressBar $progressBar, RunnerEvent $event)
+    function it_finishes_progress_early(OutputInterface $output, RunnerEvent $event)
     {
-        $progressBar->getProgress()->willReturn(1);
-        $progressBar->getMaxSteps()->willReturn(2);
-
-        $progressBar->setFormat(Argument::type('string'))->shouldBeCalled();
-        $progressBar->setMessage(Argument::type('string'))->shouldBeCalled();
-
-        $progressBar->setOverwrite(false)->shouldBeCalled();
-        $progressBar->finish()->shouldBeCalled();
+        $this->beConstructedWith($output, $progress = new ProgressBar($output->getWrappedObject(), 2));
+        $output->write('<fg=red>Aborted ...</fg=red>')->shouldBeCalled();
         $output->writeln('')->shouldBeCalled();
 
         $this->finishProgress($event);
