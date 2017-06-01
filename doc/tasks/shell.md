@@ -9,6 +9,7 @@ parameters:
     tasks:
         shell:
             scripts: []
+            timeout: 60
             triggered_by: [php]
 ```
 
@@ -32,6 +33,13 @@ parameters:
                - script.sh
                - ["./bin/command", "arg1", "arg2"]
 ```
+
+**timeout**
+
+*Default: 60*
+
+This option (in seconds) will specify the maximum time of execution of your shell scripts.
+You can overwrite this option to whatever time in seconds you want (you can use 0 for unlimited timeout)
 
 **triggered_by**
 
