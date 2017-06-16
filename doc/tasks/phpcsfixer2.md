@@ -22,7 +22,6 @@ parameters:
             config: ~
             rules: []
             using_cache: true
-            path_mode: ~
             verbose: true
             diff: false
             triggered_by: ['php']
@@ -95,14 +94,6 @@ The caching mechanism is enabled by default.
 This will speed up further runs by fixing only files that were modified since the last run.
 The tool will fix all files if the tool version has changed or the list of fixers has changed.
 Cache is supported only for tool downloaded as phar file or installed via composer.
-
-
-**path_mode**
-
-*Default: null*
-
-Specify path mode (can be override or intersection).
-
 
 **verbose**
 

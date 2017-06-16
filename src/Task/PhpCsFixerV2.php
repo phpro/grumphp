@@ -32,7 +32,6 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
             'config' => null,
             'rules' => [],
             'using_cache' => true,
-            'path_mode' => null,
             'verbose' => true,
             'diff' => false,
             'triggered_by' => ['php'],
@@ -43,12 +42,9 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
         $resolver->addAllowedTypes('config', ['null', 'string']);
         $resolver->addAllowedTypes('rules', ['array']);
         $resolver->addAllowedTypes('using_cache', ['bool']);
-        $resolver->addAllowedTypes('path_mode', ['null', 'string']);
         $resolver->addAllowedTypes('verbose', ['bool']);
         $resolver->addAllowedTypes('diff', ['bool']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
-
-        $resolver->setAllowedValues('path_mode', [null, 'override', 'intersection']);
 
         return $resolver;
     }
@@ -82,7 +78,6 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
         }
 
         $arguments->addOptionalArgument('--using-cache=%s', $config['using_cache'] ? 'yes' : 'no');
-        $arguments->addOptionalArgument('--path-mode=%s', $config['path_mode']);
         $arguments->addOptionalArgument('--verbose', $config['verbose']);
         $arguments->addOptionalArgument('--diff', $config['diff']);
         $arguments->add('fix');
@@ -90,6 +85,8 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
         if ($context instanceof RunContext && $config['config'] !== null) {
             return $this->runOnAllFiles($context, $arguments);
         }
+
+        $arguments->add('--path-mode=intersection');
 
         return $this->runOnChangedFiles($context, $arguments, $files);
     }

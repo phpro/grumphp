@@ -52,7 +52,6 @@ class PhpCsFixerV2Spec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('config');
         $options->getDefinedOptions()->shouldContain('rules');
         $options->getDefinedOptions()->shouldContain('using_cache');
-        $options->getDefinedOptions()->shouldContain('path_mode');
         $options->getDefinedOptions()->shouldContain('verbose');
         $options->getDefinedOptions()->shouldContain('diff');
         $options->getDefinedOptions()->shouldContain('triggered_by');
