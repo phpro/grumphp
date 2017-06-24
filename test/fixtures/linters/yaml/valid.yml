@@ -1,2 +1,2 @@
 services:
-    test: "Invalid identation"
+    test: "Valid identation"
