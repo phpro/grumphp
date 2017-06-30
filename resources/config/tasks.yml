@@ -108,6 +108,21 @@ services:
         tags:
             - {name: grumphp.task, config: git_blacklist}
 
+    task.git.branchname:
+      class: GrumPHP\Task\Git\BranchName
+      arguments:
+          - '@config'
+          - '@git.repository'
+      tags:
+          - {name: grumphp.task, config: git_branch_name}
+
+    task.git.capitalizedsubject:
+        class: GrumPHP\Task\Git\CapitalizedSubject
+        arguments:
+            - '@config'
+        tags:
+            - {name: grumphp.task, config: git_capitalized_subject}
+
     task.git.commitmessage:
         class: GrumPHP\Task\Git\CommitMessage
         arguments:
@@ -115,13 +130,33 @@ services:
         tags:
             - {name: grumphp.task, config: git_commit_message}
 
-    task.git.branchname:
-        class: GrumPHP\Task\Git\BranchName
+    task.git.emptymessage:
+        class: GrumPHP\Task\Git\EmptyMessage
         arguments:
             - '@config'
-            - '@git.repository'
         tags:
-            - {name: grumphp.task, config: git_branch_name}
+            - {name: grumphp.task, config: git_empty_message}
+
+    task.git.singlelinesubject:
+        class: GrumPHP\Task\Git\SingleLineSubject
+        arguments:
+            - '@config'
+        tags:
+            - {name: grumphp.task, config: git_single_line_subject}
+
+    task.git.textwidth:
+        class: GrumPHP\Task\Git\TextWidth
+        arguments:
+            - '@config'
+        tags:
+            - {name: grumphp.task, config: git_text_width}
+
+    task.git.trailingperiod:
+        class: GrumPHP\Task\Git\TrailingPeriod
+        arguments:
+            - '@config'
+        tags:
+            - {name: grumphp.task, config: git_trailing_period}
 
     task.grunt:
         class: GrumPHP\Task\Grunt
