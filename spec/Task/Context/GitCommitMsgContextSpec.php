@@ -2,21 +2,15 @@
 
 namespace spec\GrumPHP\Task\Context;
 
-use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use PhpSpec\ObjectBehavior;
 
 class GitCommitMsgContextSpec extends ObjectBehavior
 {
-    /**
-     * @var string
-     */
-    protected $tempFile;
-
-    function let(FilesCollection $files)
+    function let()
     {
-        $this->beConstructedWith($files, 'message', 'user', 'user@email.com');
+        $this->beConstructedWith('message', 'user', 'user@email.com');
     }
 
     function it_is_initializable()
@@ -29,9 +23,9 @@ class GitCommitMsgContextSpec extends ObjectBehavior
         $this->shouldImplement(ContextInterface::class);
     }
 
-    function it_should_have_files(FilesCollection $files)
+    function it_should_have_files()
     {
-        $this->getFiles()->shouldBe($files);
+        $this->getFiles()->shouldHaveCount(0);
     }
 
     function it_should_know_the_git_user()

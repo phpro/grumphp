@@ -69,12 +69,10 @@ class CommitMsgCommand extends Command
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return int|void
+     * @return int
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $io = new ConsoleIO($input, $output);
-        $files = $this->getCommittedFiles($io);
         $gitUser = $input->getOption('git-user');
         $gitEmail = $input->getOption('git-email');
         $commitMsgPath = $input->getArgument('commit-msg-file');
@@ -84,7 +82,7 @@ class CommitMsgCommand extends Command
         $output->writeln('<fg=yellow>GrumPHP detected a commit-msg command.</fg=yellow>');
 
         $context = new TaskRunnerContext(
-            new GitCommitMsgContext($files, $commitMsg, $gitUser, $gitEmail),
+            new GitCommitMsgContext($commitMsg, $gitUser, $gitEmail),
             $this->grumPHP->getTestSuites()->getOptional('git_commit_msg')
         );
 
