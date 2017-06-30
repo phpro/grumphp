@@ -93,6 +93,10 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
             } while ($pos2 < $pos);
 
             $pos -= static::SPACE_BEFORE;
+            //$pos can't be lower then 0 else we start at the end of the string instead of the beginning
+            if ($pos < 0) {
+                $pos = 0;
+            }
             $pos2 += static::SPACE_AFTER;
 
             $part = '  ' . $lineNumber . static::COLON_COLOR . ':' . static::RESET_COLOR;
