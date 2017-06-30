@@ -64,4 +64,14 @@ class GitBlacklistFormatterSpec extends ObjectBehavior
             . "  1\033[36m:\033[m149\033[36m:\033[m options.debug===!0&&\033[1;31mvar_dump(\033[m\"Pushed state \"+g\033[m"
         );
     }
+
+    function it_displays_stdout_special_correctly(Process $process)
+    {
+        $process->getOutput()->willReturn('normal/file.php' . "\n" . "8\033[36m:\033[m\t\033[1;31mprivate $\033[m' . \$this->callSomeVeryVeryVeryLongMethodName() . ' = null;" . "\n");
+        $process->getErrorOutput()->willReturn('');
+        $this->format($process)->shouldReturn(
+            "\033[mnormal/file.php" . PHP_EOL
+            . "  1\033[36m:\033[m20\033[36m:\033[m 8\033[36m:\033[m\t\033[1;31mprivate $\033[m' . \$this->callSo\033[m"
+        );
+    }
 }
