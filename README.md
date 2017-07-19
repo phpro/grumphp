@@ -102,6 +102,7 @@ parameters:
         composer_script: ~
         deptrac: ~
         doctrine_orm: ~
+        file_size: ~
         gherkin: ~
         git_blacklist: ~
         git_branch_name: ~

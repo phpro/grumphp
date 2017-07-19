@@ -123,6 +123,13 @@ services:
         tags:
             - {name: grumphp.task, config: git_branch_name}
 
+    task.git.filesize:
+        class: GrumPHP\Task\FileSize
+        arguments:
+            - '@config'
+        tags:
+            - {name: grumphp.task, config: file_size}
+
     task.grunt:
         class: GrumPHP\Task\Grunt
         arguments:
