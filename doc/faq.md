@@ -5,6 +5,7 @@
 - [Which parts of the code does GrumPHP scan?](#which-parts-of-the-code-does-grumphp-scan)
 - [Does GrumPHP support automatic fixing](#does-grumphp-support-automatic-fixing)
 - [Does GrumPHP support Windows](#does-grumphp-support-windows)
+- [How can I fix Composer require conflicts?](#how-can-i-fix-composer-require-conflicts)
 
 
 ## How can I bypass GrumPHP
@@ -52,5 +53,28 @@ and phpcs contain the paths to the files that are
 being checked. During a run command, the list of 
 files wil exceed this amount which results in some 
 strange errors on windows.
+
+[up](#table-of-content)
+
+
+## How can I fix Composer require conflicts?
+
+In some cases, you might get require conflicts between your project and GrumPHP for Composer packages.
+
+For example, Magento 2 has the following requirement for `symfony/console`
+
+    "symfony/console": "~2.3, !=2.7.0"
+    
+On the other hand, grumPHP has this requirement
+
+    "symfony/console": "~2.7|~3.0"
+
+If you run composer, you will get the following error message
+
+    Your requirements could not be resolved to an installable set of packages.
+
+You can resolve this problem by adding the following (or similar) to the composer.json file of your project
+
+    "symfony/console": "v2.8.20 as v2.6.13"
 
 [up](#table-of-content)
