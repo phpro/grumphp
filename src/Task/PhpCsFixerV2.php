@@ -4,13 +4,14 @@ namespace GrumPHP\Task;
 
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
+use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Php-cs-fixer task v2
  */
-class PhpCsFixerV2 extends AbstractPhpCsFixerTask
+class PhpCsFixerV2 extends AbstractExternalTask
 {
     /**
      * @return string
@@ -32,7 +33,7 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
             'config' => null,
             'rules' => [],
             'using_cache' => true,
-            'path_mode' => null,
+            'can_intersect' => true,
             'verbose' => true,
             'diff' => false,
             'triggered_by' => ['php'],
@@ -43,14 +44,20 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
         $resolver->addAllowedTypes('config', ['null', 'string']);
         $resolver->addAllowedTypes('rules', ['array']);
         $resolver->addAllowedTypes('using_cache', ['bool']);
-        $resolver->addAllowedTypes('path_mode', ['null', 'string']);
+        $resolver->addAllowedTypes('can_intersect', ['bool']);
         $resolver->addAllowedTypes('verbose', ['bool']);
         $resolver->addAllowedTypes('diff', ['bool']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
 
-        $resolver->setAllowedValues('path_mode', [null, 'override', 'intersection']);
-
         return $resolver;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function canRunInContext(ContextInterface $context)
+    {
+        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
     }
 
     /**
@@ -82,15 +89,23 @@ class PhpCsFixerV2 extends AbstractPhpCsFixerTask
         }
 
         $arguments->addOptionalArgument('--using-cache=%s', $config['using_cache'] ? 'yes' : 'no');
-        $arguments->addOptionalArgument('--path-mode=%s', $config['path_mode']);
+        $arguments->addOptionalArgument('--path-mode=intersect', $config['can_intersect']);
         $arguments->addOptionalArgument('--verbose', $config['verbose']);
         $arguments->addOptionalArgument('--diff', $config['diff']);
         $arguments->add('fix');
+        $arguments->addFiles($files);
 
-        if ($context instanceof RunContext && $config['config'] !== null) {
-            return $this->runOnAllFiles($context, $arguments);
+        $process = $this->processBuilder->buildProcess($arguments);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            $messages = [$this->formatter->format($process)];
+            $suggestions = [$this->formatter->formatSuggestion($process)];
+            $errorMessage = $this->formatter->formatErrorMessage($messages, $suggestions);
+
+            return TaskResult::createFailed($this, $context, $errorMessage);
         }
 
-        return $this->runOnChangedFiles($context, $arguments, $files);
+        return TaskResult::createPassed($this, $context);
     }
 }
