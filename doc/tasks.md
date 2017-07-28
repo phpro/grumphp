@@ -17,6 +17,7 @@ parameters:
         deptrac: ~
         composer_script: ~
         doctrine_orm: ~
+        file_size: 
         gherkin: ~
         git_blacklist: ~
         git_branch_name: ~
@@ -62,6 +63,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Composer](tasks/composer.md)
 - [Composer Script](tasks/composer_script.md)
 - [Doctrine ORM](tasks/doctrine_orm.md)
+- [File size](tasks/file_size.md)
 - [Deptrac](tasks/deptrac.md)
 - [Gherkin](tasks/gherkin.md)
 - [Git blacklist](tasks/git_blacklist.md)
