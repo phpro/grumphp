@@ -89,11 +89,14 @@ class PhpCsFixerV2 extends AbstractExternalTask
         }
 
         $arguments->addOptionalArgument('--using-cache=%s', $config['using_cache'] ? 'yes' : 'no');
-        $arguments->addOptionalArgument('--path-mode=intersect', $config['can_intersect']);
+        $arguments->addOptionalArgument('--path-mode=intersection', $config['can_intersect']);
         $arguments->addOptionalArgument('--verbose', $config['verbose']);
         $arguments->addOptionalArgument('--diff', $config['diff']);
         $arguments->add('fix');
-        $arguments->addFiles($files);
+
+        if ($context instanceof GitPreCommitContext || !$config['can_intersect']) {
+            $arguments->addFiles($files);
+        }
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();

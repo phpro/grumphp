@@ -78,16 +78,79 @@ class PhpCsFixerV2Spec extends ObjectBehavior
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_runs_phpcsfixer2(
+    function it_runs_phpcsfixer2_on_finder_in_run_context_with_intersection(
         GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,
         Process $process,
         RunContext $context,
         PhpCsFixerFormatter $formatter
     ) {
-        $grumPHP->getTaskConfiguration('phpcsfixer2')->willReturn(['config' => '.php_cs']);
+        $grumPHP->getTaskConfiguration('phpcsfixer2')->willReturn([
+            'config' => '.php_cs',
+            'can_intersect' => true,
+        ]);
         $formatter->resetCounter()->shouldBeCalled();
 
+        $context->getFiles()->willReturn(new FilesCollection([
+            $file1 = new SplFileInfo('file1.php', '.', 'file1.php'),
+            $file2 = new SplFileInfo('file2.php', '.', 'file2.php'),
+        ]));
+
+        $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn(new ProcessArgumentsCollection());
+        $processBuilder->buildProcess(Argument::that(function (ProcessArgumentsCollection $args) use ($file1, $file2) {
+            return $args->contains('--path-mode=intersection')
+                && !$args->contains($file1->getPathname())
+                && !$args->contains($file2->getPathname());
+        }))->willReturn($process);
+
+        $process->run()->shouldBeCalled();
+        $process->isSuccessful()->willReturn(true);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
+        $result->isPassed()->shouldBe(true);
+    }
+
+    function it_runs_phpcsfixer2_on_all_files_in_run_context_without_intersection(
+        GrumPHP $grumPHP,
+        ProcessBuilder $processBuilder,
+        Process $process,
+        RunContext $context,
+        PhpCsFixerFormatter $formatter
+    ) {
+        $grumPHP->getTaskConfiguration('phpcsfixer2')->willReturn([
+            'config' => '.php_cs',
+            'can_intersect' => false,
+        ]);
+        $formatter->resetCounter()->shouldBeCalled();
+
+        $context->getFiles()->willReturn(new FilesCollection([
+            $file1 = new SplFileInfo('file1.php', '.', 'file1.php'),
+            $file2 = new SplFileInfo('file2.php', '.', 'file2.php'),
+        ]));
+
+        $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn(new ProcessArgumentsCollection());
+        $processBuilder->buildProcess(Argument::that(function (ProcessArgumentsCollection $args) use ($file1, $file2) {
+            return !$args->contains('--path-mode=intersection')
+                && $args->contains($file1->getPathname())
+                && $args->contains($file2->getPathname());
+        }))->willReturn($process);
+
+        $process->run()->shouldBeCalled();
+        $process->isSuccessful()->willReturn(true);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
+        $result->isPassed()->shouldBe(true);
+    }
+
+    function it_runs_the_suite_for_changed_files_on_pre_commit(
+        ProcessBuilder $processBuilder,
+        Process $process,
+        GitPreCommitContext $context,
+        PhpCsFixerFormatter $formatter
+    ) {
+        $formatter->resetCounter()->shouldBeCalled();
         $context->getFiles()->willReturn(new FilesCollection([
             $file1 = new SplFileInfo('file1.php', '.', 'file1.php'),
             $file2 = new SplFileInfo('file2.php', '.', 'file2.php'),

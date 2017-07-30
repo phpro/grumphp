@@ -103,7 +103,8 @@ Cache is supported only for tool downloaded as phar file or installed via compos
 
 Intersection mode can only be used when you have a configuration file which contains a Finder.
 This mode works best since only files that are being commit and are in your configuration will be checked.
-When there is no Finder in your configuration, all committed files will be checked.
+When there is no Finder in your configuration, you'll have set this parameter to false. 
+Otherwise php-cs-fixer will crash the execution.
 
 **verbose**
 
