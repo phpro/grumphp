@@ -12,7 +12,7 @@ parameters:
                 - "die("
                 - "var_dump("
                 - "exit;"
-            triggered_by: [php]
+            triggered_by: ['php']
             regexp_type: G
 ```
 
