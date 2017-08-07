@@ -13,7 +13,7 @@ parameters:
             x_include: false
             dtd_validation: false
             scheme_validation: false
-            triggered_by: [xml]
+            triggered_by: ['xml']
 ```
 
 **ignore_patterns**
