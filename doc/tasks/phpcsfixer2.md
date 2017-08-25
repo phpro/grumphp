@@ -22,7 +22,7 @@ parameters:
             config: ~
             rules: []
             using_cache: true
-            path_mode: ~
+            config_contains_finder: true
             verbose: true
             diff: false
             triggered_by: ['php']
@@ -97,7 +97,7 @@ The tool will fix all files if the tool version has changed or the list of fixer
 Cache is supported only for tool downloaded as phar file or installed via composer.
 
 
-**can_intersect**
+**config_contains_finder**
 
 *Default: true*
 

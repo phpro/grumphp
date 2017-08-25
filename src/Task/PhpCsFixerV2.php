@@ -33,7 +33,7 @@ class PhpCsFixerV2 extends AbstractExternalTask
             'config' => null,
             'rules' => [],
             'using_cache' => true,
-            'can_intersect' => true,
+            'config_contains_finder' => true,
             'verbose' => true,
             'diff' => false,
             'triggered_by' => ['php'],
@@ -44,7 +44,7 @@ class PhpCsFixerV2 extends AbstractExternalTask
         $resolver->addAllowedTypes('config', ['null', 'string']);
         $resolver->addAllowedTypes('rules', ['array']);
         $resolver->addAllowedTypes('using_cache', ['bool']);
-        $resolver->addAllowedTypes('can_intersect', ['bool']);
+        $resolver->addAllowedTypes('config_contains_finder', ['bool']);
         $resolver->addAllowedTypes('verbose', ['bool']);
         $resolver->addAllowedTypes('diff', ['bool']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
@@ -88,13 +88,15 @@ class PhpCsFixerV2 extends AbstractExternalTask
             ));
         }
 
+        $canUseIntersection = !($context instanceof RunContext) && $config['config_contains_finder'];
+
         $arguments->addOptionalArgument('--using-cache=%s', $config['using_cache'] ? 'yes' : 'no');
-        $arguments->addOptionalArgument('--path-mode=intersection', $config['can_intersect']);
+        $arguments->addOptionalArgument('--path-mode=intersection', $canUseIntersection);
         $arguments->addOptionalArgument('--verbose', $config['verbose']);
         $arguments->addOptionalArgument('--diff', $config['diff']);
         $arguments->add('fix');
 
-        if ($context instanceof GitPreCommitContext || !$config['can_intersect']) {
+        if ($context instanceof GitPreCommitContext || !$config['config_contains_finder']) {
             $arguments->addFiles($files);
         }
 

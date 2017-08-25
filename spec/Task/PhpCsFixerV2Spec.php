@@ -51,7 +51,7 @@ class PhpCsFixerV2Spec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('config');
         $options->getDefinedOptions()->shouldContain('rules');
         $options->getDefinedOptions()->shouldContain('using_cache');
-        $options->getDefinedOptions()->shouldContain('can_intersect');
+        $options->getDefinedOptions()->shouldContain('config_contains_finder');
         $options->getDefinedOptions()->shouldContain('verbose');
         $options->getDefinedOptions()->shouldContain('diff');
         $options->getDefinedOptions()->shouldContain('triggered_by');
@@ -78,7 +78,7 @@ class PhpCsFixerV2Spec extends ObjectBehavior
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_runs_phpcsfixer2_on_finder_in_run_context_with_intersection(
+    function it_runs_phpcsfixer2_on_finder_in_run_context_with_finder_config(
         GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,
         Process $process,
@@ -87,7 +87,7 @@ class PhpCsFixerV2Spec extends ObjectBehavior
     ) {
         $grumPHP->getTaskConfiguration('phpcsfixer2')->willReturn([
             'config' => '.php_cs',
-            'can_intersect' => true,
+            'config_contains_finder' => true,
         ]);
         $formatter->resetCounter()->shouldBeCalled();
 
@@ -98,8 +98,7 @@ class PhpCsFixerV2Spec extends ObjectBehavior
 
         $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn(new ProcessArgumentsCollection());
         $processBuilder->buildProcess(Argument::that(function (ProcessArgumentsCollection $args) use ($file1, $file2) {
-            return $args->contains('--path-mode=intersection')
-                && !$args->contains($file1->getPathname())
+            return !$args->contains($file1->getPathname())
                 && !$args->contains($file2->getPathname());
         }))->willReturn($process);
 
@@ -111,7 +110,7 @@ class PhpCsFixerV2Spec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_runs_phpcsfixer2_on_all_files_in_run_context_without_intersection(
+    function it_runs_phpcsfixer2_on_all_files_in_run_context_without_finder_config(
         GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,
         Process $process,
@@ -120,7 +119,7 @@ class PhpCsFixerV2Spec extends ObjectBehavior
     ) {
         $grumPHP->getTaskConfiguration('phpcsfixer2')->willReturn([
             'config' => '.php_cs',
-            'can_intersect' => false,
+            'config_contains_finder' => false,
         ]);
         $formatter->resetCounter()->shouldBeCalled();
 
