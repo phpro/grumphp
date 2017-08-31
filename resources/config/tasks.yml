@@ -232,7 +232,6 @@ services:
         arguments:
           - '@config'
           - '@process_builder'
-          - '@async_process_runner'
           - '@formatter.phpcsfixer'
         tags:
           - {name: grumphp.task, config: phpcsfixer}

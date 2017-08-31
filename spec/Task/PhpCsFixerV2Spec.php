@@ -6,7 +6,6 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\PhpCsFixerFormatter;
-use GrumPHP\Process\AsyncProcessRunner;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
@@ -22,7 +21,7 @@ use Symfony\Component\Process\Process;
 
 class PhpCsFixerV2Spec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, AsyncProcessRunner $processRunner, PhpCsFixerFormatter $formatter)
+    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, PhpCsFixerFormatter $formatter)
     {
         $grumPHP->getTaskConfiguration('phpcsfixer2')->willReturn([]);
 
@@ -30,7 +29,7 @@ class PhpCsFixerV2Spec extends ObjectBehavior
         $formatter->formatSuggestion(Argument::any())->willReturn('');
         $formatter->formatErrorMessage(Argument::cetera())->willReturn('');
 
-        $this->beConstructedWith($grumPHP, $processBuilder, $processRunner, $formatter);
+        $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
     function it_is_initializable()
@@ -52,7 +51,7 @@ class PhpCsFixerV2Spec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('config');
         $options->getDefinedOptions()->shouldContain('rules');
         $options->getDefinedOptions()->shouldContain('using_cache');
-        $options->getDefinedOptions()->shouldContain('path_mode');
+        $options->getDefinedOptions()->shouldContain('can_intersect');
         $options->getDefinedOptions()->shouldContain('verbose');
         $options->getDefinedOptions()->shouldContain('diff');
         $options->getDefinedOptions()->shouldContain('triggered_by');
@@ -79,14 +78,17 @@ class PhpCsFixerV2Spec extends ObjectBehavior
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_runs_the_suite_for_all_files(
+    function it_runs_phpcsfixer2_on_finder_in_run_context_with_intersection(
         GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,
         Process $process,
         RunContext $context,
         PhpCsFixerFormatter $formatter
     ) {
-        $grumPHP->getTaskConfiguration('phpcsfixer2')->willReturn(['config' => '.php_cs']);
+        $grumPHP->getTaskConfiguration('phpcsfixer2')->willReturn([
+            'config' => '.php_cs',
+            'can_intersect' => true,
+        ]);
         $formatter->resetCounter()->shouldBeCalled();
 
         $context->getFiles()->willReturn(new FilesCollection([
@@ -96,7 +98,9 @@ class PhpCsFixerV2Spec extends ObjectBehavior
 
         $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn(new ProcessArgumentsCollection());
         $processBuilder->buildProcess(Argument::that(function (ProcessArgumentsCollection $args) use ($file1, $file2) {
-            return !($args->contains($file1) || $args->contains($file2));
+            return $args->contains('--path-mode=intersection')
+                && !$args->contains($file1->getPathname())
+                && !$args->contains($file2->getPathname());
         }))->willReturn($process);
 
         $process->run()->shouldBeCalled();
@@ -107,11 +111,43 @@ class PhpCsFixerV2Spec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_runs_the_suite_for_changed_files(
+    function it_runs_phpcsfixer2_on_all_files_in_run_context_without_intersection(
+        GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,
-        AsyncProcessRunner $processRunner,
         Process $process,
-        ContextInterface $context,
+        RunContext $context,
+        PhpCsFixerFormatter $formatter
+    ) {
+        $grumPHP->getTaskConfiguration('phpcsfixer2')->willReturn([
+            'config' => '.php_cs',
+            'can_intersect' => false,
+        ]);
+        $formatter->resetCounter()->shouldBeCalled();
+
+        $context->getFiles()->willReturn(new FilesCollection([
+            $file1 = new SplFileInfo('file1.php', '.', 'file1.php'),
+            $file2 = new SplFileInfo('file2.php', '.', 'file2.php'),
+        ]));
+
+        $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn(new ProcessArgumentsCollection());
+        $processBuilder->buildProcess(Argument::that(function (ProcessArgumentsCollection $args) use ($file1, $file2) {
+            return !$args->contains('--path-mode=intersection')
+                && $args->contains($file1->getPathname())
+                && $args->contains($file2->getPathname());
+        }))->willReturn($process);
+
+        $process->run()->shouldBeCalled();
+        $process->isSuccessful()->willReturn(true);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
+        $result->isPassed()->shouldBe(true);
+    }
+
+    function it_runs_the_suite_for_changed_files_on_pre_commit(
+        ProcessBuilder $processBuilder,
+        Process $process,
+        GitPreCommitContext $context,
         PhpCsFixerFormatter $formatter
     ) {
         $formatter->resetCounter()->shouldBeCalled();
@@ -122,10 +158,10 @@ class PhpCsFixerV2Spec extends ObjectBehavior
 
         $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn(new ProcessArgumentsCollection());
         $processBuilder->buildProcess(Argument::that(function (ProcessArgumentsCollection $args) use ($file1, $file2) {
-            return $args->contains($file1) || $args->contains($file2);
+            return $args->contains($file1->getPathname()) && $args->contains($file2->getPathname());
         }))->willReturn($process);
 
-        $processRunner->run(Argument::type('array'))->shouldBeCalled();
+        $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
         $result = $this->run($context);
@@ -135,7 +171,6 @@ class PhpCsFixerV2Spec extends ObjectBehavior
 
     function it_throws_exception_if_the_process_fails(
         ProcessBuilder $processBuilder,
-        AsyncProcessRunner $processRunner,
         Process $process,
         ContextInterface $context,
         PhpCsFixerFormatter $formatter
@@ -146,7 +181,7 @@ class PhpCsFixerV2Spec extends ObjectBehavior
         $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn($arguments);
         $processBuilder->buildProcess(Argument::type(ProcessArgumentsCollection::class))->willReturn($process);
 
-        $processRunner->run(Argument::type('array'))->shouldBeCalled();
+        $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(false);
 
         $context->getFiles()->willReturn(new FilesCollection([
