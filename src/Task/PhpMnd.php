@@ -77,9 +77,9 @@ class PhpMnd extends AbstractExternalTask
         $config = $this->getConfiguration();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('phpmnd');
-        $arguments->addOptionalCommaSeparatedArgument('--exclude=%s', $config['exclude']);
-        $arguments->addOptionalCommaSeparatedArgument('--exclude-file=%s', $config['exclude_name']);
-        $arguments->addOptionalCommaSeparatedArgument('--exclude-path=%s', $config['exclude_path']);
+        $arguments->addArgumentArray('--exclude=%s', $config['exclude']);
+        $arguments->addArgumentArray('--exclude-file=%s', $config['exclude_name']);
+        $arguments->addArgumentArray('--exclude-path=%s', $config['exclude_path']);
         $arguments->addOptionalCommaSeparatedArgument('--extensions=%s', $config['extensions']);
         $arguments->addOptionalArgument('--hint', $config['hint']);
         $arguments->addOptionalCommaSeparatedArgument('--ignore-numbers=%s', $config['ignore_numbers']);
