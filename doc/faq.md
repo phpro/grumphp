@@ -6,6 +6,7 @@
 - [Does GrumPHP support automatic fixing](#does-grumphp-support-automatic-fixing)
 - [Does GrumPHP support Windows](#does-grumphp-support-windows)
 - [How can I fix Composer require conflicts?](#how-can-i-fix-composer-require-conflicts)
+- [Why is the unstaged file state being used?](#why-is-the-unstaged-file-state-being-used)
 
 
 ## How can I bypass GrumPHP
@@ -76,5 +77,12 @@ If you run composer, you will get the following error message
 You can resolve this problem by adding the following (or similar) to the composer.json file of your project
 
     "symfony/console": "v2.8.20 as v2.6.13"
+
+[up](#table-of-content)
+
+
+## Why is the unstaged file state being used?
+
+GrumPHP can only work with the actual files on the filesystem. This means that your unstaged changes will be staged when GrumPHP checks your codebase. It is possible to use the staged files by stashing your changes with the `ignore_unstaged_changes` parameter. Do note that this parameter is risky and won't work with partial commits. [More information can be found here](https://github.com/phpro/grumphp/blob/master/doc/parameters.md).
 
 [up](#table-of-content)
