@@ -22,7 +22,7 @@ parameters:
             config: ~
             rules: []
             using_cache: true
-            path_mode: ~
+            config_contains_finder: true
             verbose: true
             diff: false
             triggered_by: ['php']
@@ -97,12 +97,14 @@ The tool will fix all files if the tool version has changed or the list of fixer
 Cache is supported only for tool downloaded as phar file or installed via composer.
 
 
-**path_mode**
+**config_contains_finder**
 
-*Default: null*
+*Default: true*
 
-Specify path mode (can be override or intersection).
-
+Intersection mode can only be used when you have a configuration file which contains a Finder.
+This mode works best since only files that are being commit and are in your configuration will be checked.
+When there is no Finder in your configuration, you'll have set this parameter to false. 
+Otherwise php-cs-fixer will crash the execution.
 
 **verbose**
 
