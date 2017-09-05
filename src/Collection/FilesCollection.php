@@ -104,6 +104,24 @@ class FilesCollection extends ArrayCollection
     }
 
     /**
+     * Adds rules that filenames must not match.
+     *
+     * You can use patterns (delimited with / sign) or simple strings.
+     *
+     * $collection->notPaths(['/^spec\/','/^src\/'])
+     *
+     * @param array $pattern
+     *
+     * @return FilesCollection
+     */
+    public function notPaths(array $pattern)
+    {
+        $filter = new Iterator\PathFilterIterator($this->getIterator(), [], $pattern);
+
+        return new FilesCollection(iterator_to_array($filter));
+    }
+
+    /**
      * @param array $extensions
      *
      * @return FilesCollection

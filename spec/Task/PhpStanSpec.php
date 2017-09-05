@@ -42,6 +42,8 @@ class PhpStanSpec extends ObjectBehavior
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('autoload_file');
         $options->getDefinedOptions()->shouldContain('configuration');
+        $options->getDefinedOptions()->shouldContain('ignore_patterns');
+        $options->getDefinedOptions()->shouldContain('force_patterns');
         $options->getDefinedOptions()->shouldContain('level');
         $options->getDefinedOptions()->shouldContain('triggered_by');
     }

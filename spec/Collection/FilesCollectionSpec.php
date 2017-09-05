@@ -97,6 +97,19 @@ class FilesCollectionSpec extends ObjectBehavior
         $files[0]->shouldBe($file1);
     }
 
+    function it_should_filter_by_not_paths(SplFileInfo $file1, SplFileInfo $file2, SplFileInfo $file3)
+    {
+        $file1->getRelativePathname()->willReturn('path1/file.php');
+        $file2->getRelativePathname()->willReturn('path2/file.php');
+        $file3->getRelativePathname()->willReturn('path3/file.png');
+
+        $result = $this->notPaths(['path2', 'path3']);
+        $result->shouldBeAnInstanceOf(FilesCollection::class);
+        $result->count()->shouldBe(1);
+        $files = $result->toArray();
+        $files[0]->shouldBe($file1);
+    }
+
     function it_should_filter_by_size(SplFileInfo $file1, SplFileInfo $file2)
     {
         $file1->isFile()->willReturn(true);
