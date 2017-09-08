@@ -40,7 +40,7 @@ With this parameter you can specify the path your project's configuration file.
 
 With this parameter you can set the level of rule options - the higher the stricter.
 
-**ignore_patterns**
+**force_patterns**
 
 *Default: []*
 
