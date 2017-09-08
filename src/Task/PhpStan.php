@@ -67,7 +67,9 @@ class PhpStan extends AbstractExternalTask
 
         $forcedFiles = $context->getFiles()->paths($config['force_patterns']);
         foreach ($forcedFiles as $forcedFile) {
-            $files->add($forcedFile);
+            if (!$files->contains($forcedFile)) {
+                $files->add($forcedFile);
+            }
         }
 
         if (0 === count($files)) {
