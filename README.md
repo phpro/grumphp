@@ -111,6 +111,7 @@ parameters:
         git_commit_message: ~
         grunt: ~
         gulp: ~
+        infection: ~
         jsonlint: ~
         kahlan: ~
         make: ~

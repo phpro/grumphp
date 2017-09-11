@@ -135,4 +135,19 @@ class ProcessArgumentsCollection extends ArrayCollection
 
         $this->add(implode(',', $paths));
     }
+
+    /**
+     * @param string $argument
+     * @param FilesCollection|\SplFileInfo[] $files
+     */
+    public function addArgumentWithCommaSeparatedFiles($argument, FilesCollection $files)
+    {
+        $paths = [];
+
+        foreach ($files as $file) {
+            $paths[] = $file->getPathname();
+        }
+
+        $this->add(sprintf($argument, implode(',', $paths)));
+    }
 }

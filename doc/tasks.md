@@ -25,6 +25,7 @@ parameters:
         git_commit_message: ~
         grunt: ~
         gulp: ~
+        infection: ~
         jsonlint: ~
         kahlan: ~
         make: ~
@@ -73,6 +74,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Git commit message](tasks/git_commit_message.md)
 - [Grunt](tasks/grunt.md)
 - [Gulp](tasks/gulp.md)
+- [Infection](tasks/infection.md)
 - [JsonLint](tasks/jsonlint.md)
 - [Kahlan](tasks/kahlan.md)
 - [Make](tasks/make.md)
