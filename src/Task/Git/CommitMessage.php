@@ -164,6 +164,12 @@ class CommitMessage implements TaskInterface
 
         $errors = [];
         $lines = preg_split('/\R/u', $commitMessage);
+        foreach ($lines as $index => $line) {
+            if (strpos($line, '#') === 0) {
+                unset($lines[$index]);
+            }
+        }
+
         $subject = rtrim($lines[0]);
         $maxSubjectWidth = $config['max_subject_width'] + $this->getSpecialPrefixLength($subject);
 
@@ -172,10 +178,6 @@ class CommitMessage implements TaskInterface
         }
 
         foreach (array_slice($lines, 2) as $index => $line) {
-            if (strpos($line, '#') === 0) {
-                continue;
-            }
-
             if (mb_strlen(rtrim($line)) > $config['max_body_width']) {
                 $errors[] = sprintf(
                     'Line %u of commit message has > %u characters.',
