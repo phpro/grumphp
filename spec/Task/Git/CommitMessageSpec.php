@@ -360,6 +360,27 @@ MSG;
         $result->isPassed()->shouldBe(false);
     }
 
+    function it_should_pass_when_commit_message_starts_with_a_comment(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    {
+        $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
+            'allow_empty_message' => false,
+            'enforce_capitalized_subject' => false,
+            'enforce_no_subject_trailing_period' => false,
+            'enforce_single_lined_subject' => false,
+        ]);
+
+        $commitMessage = <<<'MSG'
+# Starts with a comment
+
+Another reasonable line.
+MSG;
+        $context->getCommitMessage()->willReturn($commitMessage);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
+        $result->isPassed()->shouldBe(true);
+    }
+
     function it_should_pass_when_commit_message_is_not_empty(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([

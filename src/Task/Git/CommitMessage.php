@@ -163,12 +163,7 @@ class CommitMessage implements TaskInterface
         }
 
         $errors = [];
-        $lines = preg_split('/\R/u', $commitMessage);
-        foreach ($lines as $index => $line) {
-            if (strpos($line, '#') === 0) {
-                unset($lines[$index]);
-            }
-        }
+        $lines = $this->getCommitMessageLinesWithoutComments($commitMessage);
 
         $subject = rtrim($lines[0]);
         $maxSubjectWidth = $config['max_subject_width'] + $this->getSpecialPrefixLength($subject);
@@ -249,7 +244,7 @@ class CommitMessage implements TaskInterface
             return false;
         }
 
-        $lines = preg_split('/\R/u', $commitMessage);
+        $lines = $this->getCommitMessageLinesWithoutComments($commitMessage);
 
         if (mb_substr(rtrim($lines[0]), -1) !== '.') {
             return false;
@@ -271,7 +266,7 @@ class CommitMessage implements TaskInterface
             return true;
         }
 
-        $lines = preg_split('/\R/u', $commitMessage);
+        $lines = $this->getCommitMessageLinesWithoutComments($commitMessage);
         $subject = array_reduce($lines, function ($subject, $line) {
             if ($subject !== null) {
                 return $subject;
@@ -311,12 +306,26 @@ class CommitMessage implements TaskInterface
             return true;
         }
 
-        $lines = preg_split('/\R/u', $commitMessage);
+        $lines = $this->getCommitMessageLinesWithoutComments($commitMessage);
 
         if (array_key_exists(1, $lines) && trim($lines[1]) !== '') {
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * @param string $commitMessage
+     *
+     * @return array
+     */
+    private function getCommitMessageLinesWithoutComments($commitMessage)
+    {
+        $lines = preg_split('/\R/u', $commitMessage);
+
+        return array_values(array_filter($lines, function ($line) {
+            return strpos($line, '#') !== 0;
+        }));
     }
 }
