@@ -189,4 +189,18 @@ class FilesCollectionSpec extends ObjectBehavior
         $result = $this->extensions([]);
         $result->count()->shouldBe(0);
     }
+
+    function it_should_combine_two_collections_with_ensured_files()
+    {
+        $file1 = new \SplFileInfo('path1/file1.php');
+        $file2 = new \SplFileInfo('path1/file2.php');
+        $file3 = new \SplFileInfo('path1/file3.php');
+
+        $this->beConstructedWith([$file2, $file3]);
+        $ensureFiles = new FilesCollection([$file1, $file2]);
+
+        $result = $this->ensureFiles($ensureFiles);
+        $result->shouldIterateAs([$file2, $file3, $file1]);
+        $result->shouldHaveCount(3);
+    }
 }

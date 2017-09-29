@@ -212,4 +212,22 @@ class FilesCollection extends ArrayCollection
             return in_array($file->getPathname(), $allowedFiles);
         });
     }
+
+    /**
+     * @param FilesCollection $files
+     *
+     * @return FilesCollection
+     */
+    public function ensureFiles(FilesCollection $files)
+    {
+        $newFiles = new self($this->toArray());
+
+        foreach ($files as $file) {
+            if (!$newFiles->contains($file)) {
+                $newFiles->add($file);
+            }
+        }
+
+        return $newFiles;
+    }
 }

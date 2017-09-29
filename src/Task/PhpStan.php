@@ -60,17 +60,12 @@ class PhpStan extends AbstractExternalTask
     public function run(ContextInterface $context)
     {
         $config = $this->getConfiguration();
+        $forcedFiles = $context->getFiles()->paths($config['force_patterns']);
         $files = $context
             ->getFiles()
             ->notPaths($config['ignore_patterns'])
-            ->extensions($config['triggered_by']);
-
-        $forcedFiles = $context->getFiles()->paths($config['force_patterns']);
-        foreach ($forcedFiles as $forcedFile) {
-            if (!$files->contains($forcedFile)) {
-                $files->add($forcedFile);
-            }
-        }
+            ->extensions($config['triggered_by'])
+            ->ensureFiles($forcedFiles);
 
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);
