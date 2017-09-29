@@ -31,7 +31,7 @@ class Infection extends AbstractExternalTask
         $resolver->setDefaults([
             'threads' => null,
             'test_framework' => null,
-            'only_covered' => null,
+            'only_covered' => false,
             'configuration' => null,
             'min_msi' => null,
             'min_covered_msi' => null,
@@ -41,7 +41,7 @@ class Infection extends AbstractExternalTask
 
         $resolver->addAllowedTypes('threads', ['null', 'int']);
         $resolver->addAllowedTypes('test_framework', ['null', 'string']);
-        $resolver->addAllowedTypes('only_covered', ['null', 'bool']);
+        $resolver->addAllowedTypes('only_covered', ['bool']);
         $resolver->addAllowedTypes('configuration', ['null', 'string']);
         $resolver->addAllowedTypes('min_msi', ['null', 'integer']);
         $resolver->addAllowedTypes('min_covered_msi', ['null', 'integer']);

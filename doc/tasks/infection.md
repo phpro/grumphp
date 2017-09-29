@@ -11,7 +11,7 @@ parameters:
         infection:
             threads: ~
             test_framework: ~
-            only_covered: ~
+            only_covered: false
             configuration: ~
             min_msi: ~
             min_covered_msi: ~
@@ -37,7 +37,7 @@ This is the name of a test framework to use. Currently Infection supports `PhpUn
 
 **only_covered**
 
-*Default: null*
+*Default: false*
 
 Run the mutation testing only for covered by tests files.
 
