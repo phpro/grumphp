@@ -360,6 +360,27 @@ MSG;
         $result->isPassed()->shouldBe(false);
     }
 
+    function it_should_pass_when_commit_message_starts_with_a_comment(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    {
+        $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
+            'allow_empty_message' => false,
+            'enforce_capitalized_subject' => false,
+            'enforce_no_subject_trailing_period' => false,
+            'enforce_single_lined_subject' => false,
+        ]);
+
+        $commitMessage = <<<'MSG'
+# Starts with a comment
+
+Another reasonable line.
+MSG;
+        $context->getCommitMessage()->willReturn($commitMessage);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
+        $result->isPassed()->shouldBe(true);
+    }
+
     function it_should_pass_when_commit_message_is_not_empty(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
@@ -503,6 +524,21 @@ MSG;
         $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(false);
         $result->getMessage()->shouldBe('Line 3 of commit message has > 72 characters.');
+    }
+
+    function it_should_pass_when_a_line_in_the_message_is_commented_but_longer_than_72_characters(GitCommitMsgContext $context)
+    {
+        $commitMessage = <<<'MSG'
+Some summary
+
+# This line is longer than 72 characters which is clearly be seen by count.
+MSG;
+
+        $context->getCommitMessage()->willReturn($commitMessage);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
+        $result->isPassed()->shouldBe(true);
     }
 
     function it_should_pass_when_all_lines_in_the_message_are_fewer_than_72_characters(GitCommitMsgContext $context)
