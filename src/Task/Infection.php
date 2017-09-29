@@ -35,7 +35,7 @@ class Infection extends AbstractExternalTask
             'configuration' => null,
             'min_msi' => null,
             'min_covered_msi' => null,
-            'mutators' => null,
+            'mutators' => [],
             'triggered_by' => ['php'],
         ]);
 
@@ -45,7 +45,7 @@ class Infection extends AbstractExternalTask
         $resolver->addAllowedTypes('configuration', ['null', 'string']);
         $resolver->addAllowedTypes('min_msi', ['null', 'integer']);
         $resolver->addAllowedTypes('min_covered_msi', ['null', 'integer']);
-        $resolver->addAllowedTypes('mutators', ['null', 'string']);
+        $resolver->addAllowedTypes('mutators', ['array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
@@ -79,7 +79,7 @@ class Infection extends AbstractExternalTask
         $arguments->addOptionalArgument('--configuration=%s', $config['configuration']);
         $arguments->addOptionalArgument('--min-msi=%s', $config['min_msi']);
         $arguments->addOptionalArgument('--min-covered-msi=%s', $config['min_covered_msi']);
-        $arguments->addOptionalArgument('--mutators=%s', $config['mutators']);
+        $arguments->addOptionalCommaSeparatedArgument('--mutators=%s', $config['mutators']);
 
         if ($context instanceof GitPreCommitContext) {
             $arguments->addArgumentWithCommaSeparatedFiles('--filter=%s', $files);

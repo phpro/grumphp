@@ -15,7 +15,7 @@ parameters:
             configuration: ~
             min_msi: ~
             min_covered_msi: ~
-            mutators: ~
+            mutators: []
             triggered_by: [php]
 ```
 
@@ -65,9 +65,9 @@ This is a minimum threshold of Covered Code Mutation Score Indicator (MSI) in pe
 
 **mutators**
 
-*Default: null*
+*Default: []*
 
-This is a comma separated option to specify a particular set of mutators that needs to be executed. 
+This is a list separated options to specify a particular set of mutators that needs to be executed. 
 
 
 **triggered_by**
