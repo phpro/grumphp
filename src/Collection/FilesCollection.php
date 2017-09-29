@@ -98,9 +98,7 @@ class FilesCollection extends ArrayCollection
      */
     public function notPath($pattern)
     {
-        $filter = new Iterator\PathFilterIterator($this->getIterator(), [], [$pattern]);
-
-        return new FilesCollection(iterator_to_array($filter));
+        return $this->notPaths([$pattern]);
     }
 
     /**
