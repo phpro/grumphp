@@ -48,6 +48,20 @@ class FilesCollectionSpec extends ObjectBehavior
         $files[0]->shouldBe($file1);
     }
 
+    function it_should_filter_by_names(SplFileInfo $file1, SplFileInfo $file2, SplFileInfo $file3)
+    {
+        $file1->getFilename()->willReturn('file.json');
+        $file2->getFilename()->willReturn('file.php');
+        $file3->getFilename()->willReturn('file.png');
+
+        $result = $this->names(['*.json', '*.php']);
+        $result->shouldBeAnInstanceOf(FilesCollection::class);
+        $result->count()->shouldBe(2);
+        $files = $result->toArray();
+        $files[0]->shouldBe($file1);
+        $files[1]->shouldBe($file2);
+    }
+
     function it_should_filter_by_not_name(SplFileInfo $file1, SplFileInfo $file2)
     {
         $file1->getFilename()->willReturn('file.php');
