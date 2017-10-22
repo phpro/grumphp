@@ -14,6 +14,7 @@ parameters:
         clover_coverage: ~
         codeception: ~
         composer: ~
+        composer_require_checker: ~
         composer_script: ~
         deptrac: ~
         doctrine_orm: ~
@@ -61,6 +62,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Clover Coverage](tasks/clover_coverage.md)
 - [Codeception](tasks/codeception.md)
 - [Composer](tasks/composer.md)
+- [Composer Require Checker](tasks/composer_require_checker.md)
 - [Composer Script](tasks/composer_script.md)
 - [Doctrine ORM](tasks/doctrine_orm.md)
 - [File size](tasks/file_size.md)
