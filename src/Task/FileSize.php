@@ -12,6 +12,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class FileSize implements TaskInterface
 {
     /**
+     * @var GrumPHP
+     */
+    protected $grumPHP;
+
+    /**
      * @param GrumPHP $grumPHP
      */
     public function __construct(GrumPHP $grumPHP)
