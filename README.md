@@ -111,6 +111,7 @@ parameters:
         gulp: ~
         jsonlint: ~
         kahlan: ~
+        make: ~
         npm_script: ~
         phan: ~        
         phing: ~
@@ -121,6 +122,7 @@ parameters:
         phpcsfixer2: ~
         phplint: ~
         phpmd: ~
+        phpmnd: ~
         phpparser: ~
         phpspec: ~
         phpstan: ~
