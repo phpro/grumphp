@@ -237,7 +237,10 @@ class XmlLinter implements LinterInterface
             return $this->loadFromNet ? $scheme : null;
         }
 
-        $schemeFile = new SplFileInfo($xmlFile->getPath() . DIRECTORY_SEPARATOR . $scheme);
+        $xmlFilePath = $xmlFile->getPath();
+        $schemePath = empty($xmlFilePath) ? $scheme : rtrim($xmlFilePath, '/') . DIRECTORY_SEPARATOR . $scheme;
+
+        $schemeFile = new SplFileInfo($schemePath);
 
         return $schemeFile->isReadable() ? $schemeFile->getPathname() : null;
     }
