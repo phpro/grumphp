@@ -71,6 +71,15 @@ services:
         tags:
             - {name: grumphp.task, config: composer_script}
 
+    task.composer_require_checker:
+        class: GrumPHP\Task\ComposerRequireChecker
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: composer_require_checker}
+
     task.deptrac:
         class: GrumPHP\Task\Deptrac
         arguments:

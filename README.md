@@ -45,6 +45,7 @@ To make GrumPHP even more awesome, it will suggest installing some extra package
 - codegyre/robo : ~0.7
 - doctrine/orm: ~2.5
 - friendsofphp/php-cs-fixer : ~1|~2
+- maglnet/composer-require-checker : ~0.1
 - malukenho/kawaii-gherkin : ~0.1
 - phing/phing : ~2.0
 - sstalle/php7cc : ~1.1
@@ -99,6 +100,7 @@ parameters:
         clover_coverage: ~
         codeception: ~
         composer: ~
+        composer_require_checker: ~
         composer_script: ~
         deptrac: ~
         doctrine_orm: ~

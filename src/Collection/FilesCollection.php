@@ -16,9 +16,9 @@ use Traversable;
 class FilesCollection extends ArrayCollection
 {
     /**
-     * Adds rules that files must match.
+     * Adds a rule that files must match.
      *
-     * You can use patterns (delimited with / sign), globs or simple strings.
+     * You can use a pattern (delimited with / sign), a glob or a simple string.
      *
      * $collection->name('*.php')
      * $collection->name('/\.php$/') // same as above
@@ -30,7 +30,25 @@ class FilesCollection extends ArrayCollection
      */
     public function name($pattern)
     {
-        $filter = new Iterator\FilenameFilterIterator($this->getIterator(), [$pattern], []);
+        return $this->names([$pattern]);
+    }
+
+    /**
+     * Adds rules that files must match.
+     *
+     * You can use patterns (delimited with / sign), globs or simple strings.
+     *
+     * $collection->names(['*.php'])
+     * $collection->names(['/\.php$/']) // same as above
+     * $collection->names(['test.php'])
+     *
+     * @param array $patterns Patterns (regexps, globs, or strings)
+     *
+     * @return FilesCollection
+     */
+    public function names(array $patterns)
+    {
+        $filter = new Iterator\FilenameFilterIterator($this->getIterator(), $patterns, []);
 
         return new FilesCollection(iterator_to_array($filter));
     }
