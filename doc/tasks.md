@@ -14,10 +14,10 @@ parameters:
         clover_coverage: ~
         codeception: ~
         composer: ~
-        deptrac: ~
         composer_script: ~
+        deptrac: ~
         doctrine_orm: ~
-        file_size: 
+        file_size: ~
         gherkin: ~
         git_blacklist: ~
         git_branch_name: ~
@@ -28,8 +28,8 @@ parameters:
         kahlan: ~
         make: ~
         npm_script: ~
+        phan: ~        
         phing: ~
-        phan: ~
         php7cc: ~
         phpcpd: ~
         phpcs: ~
