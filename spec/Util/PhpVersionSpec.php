@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 
 class PhpVersionSpec extends ObjectBehavior
 {
-    function let(PhpVersion $phpVersion)
+    public function let(PhpVersion $phpVersion)
     {
         $nextYear = new DateTime();
         $previousYear = new DateTime();
@@ -22,13 +22,13 @@ class PhpVersionSpec extends ObjectBehavior
         );
     }
 
-    function it_should_validate_php_version()
+    public function it_should_validate_php_version()
     {
         $this->isSupportedVersion(5.3)->shouldReturn(false);
         $this->isSupportedVersion(5.6)->shouldReturn(true);
     }
 
-    function it_should_validate_project_version()
+    public function it_should_validate_project_version()
     {
         $this->isSupportedProjectVersion(5.3, 5.6)->shouldReturn(false);
         $this->isSupportedProjectVersion(7, 5.6)->shouldReturn(true);

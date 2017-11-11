@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, Repository $repository, IOInterface $io, WorkingCopy $workingCopy, Diff $unstaged)
+    public function let(GrumPHP $grumPHP, Repository $repository, IOInterface $io, WorkingCopy $workingCopy, Diff $unstaged)
     {
         $grumPHP->ignoreUnstagedChanges()->willReturn(true);
         $repository->getWorkingCopy()->willReturn($workingCopy);
@@ -31,22 +31,22 @@ class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($grumPHP, $repository, $io);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(StashUnstagedChangesSubscriber::class);
     }
 
-    function it_is_an_event_subscriber()
+    public function it_is_an_event_subscriber()
     {
         $this->shouldImplement(EventSubscriberInterface::class);
     }
 
-    function it_should_subscribe_to_events()
+    public function it_should_subscribe_to_events()
     {
         $this->getSubscribedEvents()->shouldBeArray();
     }
 
-    function it_should_not_run_when_disabled(GrumPHP $grumPHP, Repository $repository)
+    public function it_should_not_run_when_disabled(GrumPHP $grumPHP, Repository $repository)
     {
         $event = new RunnerEvent(new TasksCollection(), new GitPreCommitContext(new FilesCollection()), new TaskResultCollection());
         $grumPHP->ignoreUnstagedChanges()->willReturn(false);
@@ -57,7 +57,7 @@ class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
         $repository->run(Argument::cetera())->shouldNotBeCalled();
     }
 
-    function it_should_not_run_in_invalid_context(Repository $repository)
+    public function it_should_not_run_in_invalid_context(Repository $repository)
     {
         $event = new RunnerEvent(new TasksCollection(), new RunContext(new FilesCollection()), new TaskResultCollection());
 
@@ -67,7 +67,7 @@ class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
         $repository->run(Argument::cetera())->shouldNotBeCalled();
     }
 
-    function it_should_not_run_when_there_are_no_unstaged_changes(Repository $repository, Diff $unstaged)
+    public function it_should_not_run_when_there_are_no_unstaged_changes(Repository $repository, Diff $unstaged)
     {
         $event = new RunnerEvent(new TasksCollection(), new RunContext(new FilesCollection()), new TaskResultCollection());
         $unstaged->getFiles()->willReturn([]);
@@ -78,7 +78,7 @@ class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
         $repository->run(Argument::cetera())->shouldNotBeCalled();
     }
 
-    function it_should_not_try_to_pop_when_stash_saving_failed(Repository $repository)
+    public function it_should_not_try_to_pop_when_stash_saving_failed(Repository $repository)
     {
         $event = new RunnerEvent(new TasksCollection(), new GitPreCommitContext(new FilesCollection()), new TaskResultCollection());
 
@@ -89,7 +89,7 @@ class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
         $this->popStash($event);
     }
 
-    function it_should_display_exception_when_pop_fails(Repository $repository)
+    public function it_should_display_exception_when_pop_fails(Repository $repository)
     {
         $event = new RunnerEvent(new TasksCollection(), new GitPreCommitContext(new FilesCollection()), new TaskResultCollection());
 
@@ -100,7 +100,7 @@ class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
         $this->shouldThrow(RuntimeException::class)->duringPopStash($event);
     }
 
-    function it_should_stash_changes(Repository $repository)
+    public function it_should_stash_changes(Repository $repository)
     {
         $event = new RunnerEvent(new TasksCollection(), new GitPreCommitContext(new FilesCollection()), new TaskResultCollection());
 
@@ -109,7 +109,7 @@ class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
         $this->saveStash($event);
     }
 
-    function it_should_pop_changes(Repository $repository)
+    public function it_should_pop_changes(Repository $repository)
     {
         $event = new RunnerEvent(new TasksCollection(), new GitPreCommitContext(new FilesCollection()), new TaskResultCollection());
 
@@ -120,7 +120,7 @@ class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
         $this->popStash($event);
     }
 
-    function it_should_pop_changes_when_an_error_occurs(Repository $repository)
+    public function it_should_pop_changes_when_an_error_occurs(Repository $repository)
     {
         $event = new RunnerEvent(new TasksCollection(), new GitPreCommitContext(new FilesCollection()), new TaskResultCollection());
 

@@ -14,12 +14,12 @@ use Prophecy\Prophet;
 
 class ChangedFilesSpec extends ObjectBehavior
 {
-    function let(Repository $repository, Filesystem $filesystem)
+    public function let(Repository $repository, Filesystem $filesystem)
     {
         $this->beConstructedWith($repository, $filesystem);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(ChangedFiles::class);
     }
@@ -35,7 +35,7 @@ class ChangedFilesSpec extends ObjectBehavior
         return $file->reveal();
     }
 
-    function it_will_list_all_diffed_files(Repository $repository, Filesystem $filesystem, Diff $diff, WorkingCopy $workingCopy)
+    public function it_will_list_all_diffed_files(Repository $repository, Filesystem $filesystem, Diff $diff, WorkingCopy $workingCopy)
     {
         $changedFile = $this->mockFile('file1.txt');
         $movedFile = $this->mockFile('file2.txt', true);
@@ -56,7 +56,7 @@ class ChangedFilesSpec extends ObjectBehavior
         $result->getIterator()->count()->shouldBe(2);
     }
 
-    function it_will_not_list_non_existing_files(Repository $repository, Filesystem $filesystem, Diff $diff, WorkingCopy $workingCopy)
+    public function it_will_not_list_non_existing_files(Repository $repository, Filesystem $filesystem, Diff $diff, WorkingCopy $workingCopy)
     {
         $changedFile = $this->mockFile('file1.txt');
         $filesystem->exists('file1.txt')->willReturn(false);
@@ -70,7 +70,7 @@ class ChangedFilesSpec extends ObjectBehavior
         $result->getIterator()->count()->shouldBe(0);
     }
 
-    function it_will_list_all_diffed_files_from_raw_diff_input(Filesystem $filesystem)
+    public function it_will_list_all_diffed_files_from_raw_diff_input(Filesystem $filesystem)
     {
         $rawDiff = 'diff --git a/file.txt b/file.txt
 new file mode 100644

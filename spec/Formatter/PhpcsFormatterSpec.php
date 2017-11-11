@@ -11,30 +11,30 @@ use Symfony\Component\Process\Process;
 
 class PhpcsFormatterSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(PhpcsFormatter::class);
     }
 
-    function it_is_a_process_formatter()
+    public function it_is_a_process_formatter()
     {
         $this->shouldHaveType(ProcessFormatterInterface::class);
     }
 
-    function it_handles_command_exceptions(Process $process)
+    public function it_handles_command_exceptions(Process $process)
     {
         $process->getOutput()->willReturn('');
         $process->getErrorOutput()->willReturn('stderr');
         $this->format($process)->shouldReturn('stderr');
     }
 
-    function it_handles_invalid_json(Process $process)
+    public function it_handles_invalid_json(Process $process)
     {
         $process->getOutput()->willReturn('invalid');
         $this->format($process)->shouldReturn('invalid');
     }
 
-    function it_formats_phpcs_json_output_for_single_file(Process $process, ProcessBuilder $processBuilder)
+    public function it_formats_phpcs_json_output_for_single_file(Process $process, ProcessBuilder $processBuilder)
     {
         $json = $this->parseJson([
             '/var/www/Classes/Command/CacheCommandController.php' => ['messages' => [['fixable' => true],],],
@@ -56,7 +56,7 @@ class PhpcsFormatterSpec extends ObjectBehavior
             ));
     }
 
-    function it_formats_phpcs_json_output_for_multiple_files(Process $process, ProcessBuilder $processBuilder)
+    public function it_formats_phpcs_json_output_for_multiple_files(Process $process, ProcessBuilder $processBuilder)
     {
         $json = $this->parseJson([
             '/var/www/Classes/Command/CacheCommandController.php' => ['messages' => [['fixable' => true],],],

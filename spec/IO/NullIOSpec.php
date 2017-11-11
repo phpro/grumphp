@@ -8,37 +8,37 @@ use PhpSpec\ObjectBehavior;
 
 class NullIOSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(NullIO::class);
     }
 
-    function it_should_be_a_IO()
+    public function it_should_be_a_IO()
     {
         $this->shouldImplement(IOInterface::class);
     }
 
-    function it_should_know_if_the_input_is_interactive_modus()
+    public function it_should_know_if_the_input_is_interactive_modus()
     {
         $this->isInteractive()->shouldBe(false);
     }
 
-    function it_should_know_if_the_output_is_verbose()
+    public function it_should_know_if_the_output_is_verbose()
     {
         $this->isVerbose()->shouldBe(false);
     }
 
-    function it_should_know_if_the_output_is_very_verbose()
+    public function it_should_know_if_the_output_is_very_verbose()
     {
         $this->isVeryVerbose()->shouldBe(false);
     }
 
-    function it_should_know_if_the_output_is_debug()
+    public function it_should_know_if_the_output_is_debug()
     {
         $this->isDebug()->shouldBe(false);
     }
 
-    function it_should_know_if_the_output_is_decorated()
+    public function it_should_know_if_the_output_is_decorated()
     {
         $this->isDecorated()->shouldBe(false);
     }

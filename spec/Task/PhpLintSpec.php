@@ -19,23 +19,23 @@ use Symfony\Component\Process\Process;
 
 class PhpLintSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
+    public function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
         $grumPHP->getTaskConfiguration('phplint')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(PhpLint::class);
     }
 
-    function it_should_have_a_name()
+    public function it_should_have_a_name()
     {
         $this->getName()->shouldBe('phplint');
     }
 
-    function it_should_have_configurable_options()
+    public function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
@@ -44,17 +44,17 @@ class PhpLintSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('triggered_by');
     }
 
-    function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
+    public function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_should_run_in_run_context(RunContext $context)
+    public function it_should_run_in_run_context(RunContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_runs_the_linter(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
+    public function it_runs_the_linter(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('parallel-lint')->willReturn($arguments);
@@ -72,7 +72,7 @@ class PhpLintSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_throws_exception_if_the_process_fails(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
+    public function it_throws_exception_if_the_process_fails(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('parallel-lint')->willReturn($arguments);

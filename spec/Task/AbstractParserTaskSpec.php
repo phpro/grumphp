@@ -7,12 +7,12 @@ use PhpSpec\ObjectBehavior;
 
 abstract class AbstractParserTaskSpec extends ObjectBehavior
 {
-    function it_is_a_task()
+    public function it_is_a_task()
     {
         $this->shouldImplement(TaskInterface::class);
     }
 
-    function it_should_handle_ignore_patterns()
+    public function it_should_handle_ignore_patterns()
     {
         $options = $this->getConfigurableOptions();
         $options->getDefinedOptions()->shouldContain('ignore_patterns');

@@ -20,23 +20,23 @@ use Symfony\Component\Process\Process;
 
 class PhanSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
+    public function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
         $grumPHP->getTaskConfiguration('phan')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(Phan::class);
     }
 
-    function it_should_have_a_name()
+    public function it_should_have_a_name()
     {
         $this->getName()->shouldBe('phan');
     }
 
-    function it_should_have_configurable_options()
+    public function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
@@ -46,17 +46,17 @@ class PhanSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('triggered_by');
     }
 
-    function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
+    public function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_should_run_in_run_context(RunContext $context)
+    public function it_should_run_in_run_context(RunContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
+    public function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
     {
         $processBuilder->createArgumentsForCommand('phan')->shouldNotBeCalled();
         $processBuilder->buildProcess()->shouldNotBeCalled();
@@ -67,7 +67,7 @@ class PhanSpec extends ObjectBehavior
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
-    function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
+    public function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('phan')->willReturn($arguments);
@@ -85,7 +85,7 @@ class PhanSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_throws_exception_if_the_process_fails(
+    public function it_throws_exception_if_the_process_fails(
         ProcessBuilder $processBuilder,
         Process $process,
         ContextInterface $context

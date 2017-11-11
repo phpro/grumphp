@@ -20,23 +20,23 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class YamlLintSpec extends AbstractLinterTaskSpec
 {
-    function let(GrumPHP $grumPHP, YamlLinter $linter)
+    public function let(GrumPHP $grumPHP, YamlLinter $linter)
     {
         $grumPHP->getTaskConfiguration('yamllint')->willReturn([]);
         $this->beConstructedWith($grumPHP, $linter);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(YamlLint::class);
     }
 
-    function it_should_have_a_name()
+    public function it_should_have_a_name()
     {
         $this->getName()->shouldBe('yamllint');
     }
 
-    function it_should_have_configurable_options()
+    public function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
@@ -44,17 +44,17 @@ class YamlLintSpec extends AbstractLinterTaskSpec
         $options->getDefinedOptions()->shouldContain('exception_on_invalid_type');
     }
 
-    function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
+    public function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_should_run_in_run_context(RunContext $context)
+    public function it_should_run_in_run_context(RunContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_does_not_do_anything_if_there_are_no_files(YamlLinter $linter, ContextInterface $context)
+    public function it_does_not_do_anything_if_there_are_no_files(YamlLinter $linter, ContextInterface $context)
     {
         $linter->isInstalled()->willReturn(true);
         $linter->lint(Argument::any())->shouldNotBeCalled();
@@ -65,7 +65,7 @@ class YamlLintSpec extends AbstractLinterTaskSpec
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
-    function it_runs_the_suite(YamlLinter $linter, ContextInterface $context)
+    public function it_runs_the_suite(YamlLinter $linter, ContextInterface $context)
     {
         $linter->isInstalled()->willReturn(true);
         $linter->setObjectSupport(false)->shouldBeCalled();
@@ -81,7 +81,7 @@ class YamlLintSpec extends AbstractLinterTaskSpec
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_throws_exception_if_the_process_fails(YamlLinter $linter, ContextInterface $context)
+    public function it_throws_exception_if_the_process_fails(YamlLinter $linter, ContextInterface $context)
     {
         $linter->isInstalled()->willReturn(true);
         $linter->setObjectSupport(false)->shouldBeCalled();

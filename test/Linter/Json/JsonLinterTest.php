@@ -58,7 +58,7 @@ class JsonLinterTest extends PHPUnit_Framework_TestCase
      * @test
      * @dataProvider provideJsonValidation
      */
-    function it_should_validate_json_for_syntax_errors($fixture, $errors)
+    public function it_should_validate_json_for_syntax_errors($fixture, $errors)
     {
         $this->validateFixture($fixture, $errors);
     }
@@ -66,7 +66,7 @@ class JsonLinterTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    function it_should_be_able_to_detect_duplicate_keys()
+    public function it_should_be_able_to_detect_duplicate_keys()
     {
         $this->linter->setDetectKeyConflicts(true);
         $this->validateFixture('duplicate-keys.json', 1);
@@ -75,7 +75,7 @@ class JsonLinterTest extends PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    function provideJsonValidation()
+    public function provideJsonValidation()
     {
         return [
             ['fixture' => 'valid.json', 'errors' => 0],

@@ -17,17 +17,17 @@ class TasksCollectionSpec extends ObjectBehavior
         $this->beConstructedWith([$task1, $task2]);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(TasksCollection::class);
     }
 
-    function it_is_an_array_collection()
+    public function it_is_an_array_collection()
     {
         $this->shouldHaveType(ArrayCollection::class);
     }
 
-    function it_should_filter_by_context(TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
+    public function it_should_filter_by_context(TaskInterface $task1, TaskInterface $task2, ContextInterface $context)
     {
         $task1->canRunInContext($context)->willReturn(true);
         $task2->canRunInContext($context)->willReturn(false);
@@ -39,7 +39,7 @@ class TasksCollectionSpec extends ObjectBehavior
         $tasks[0]->shouldBe($task1);
     }
 
-    function it_can_filter_by_testsuite(TaskInterface $task1, TaskInterface $task2, TestSuiteInterface $testSuite)
+    public function it_can_filter_by_testsuite(TaskInterface $task1, TaskInterface $task2, TestSuiteInterface $testSuite)
     {
         $task1->getName()->willReturn('task1');
         $task2->getName()->willReturn('task2');
@@ -52,7 +52,7 @@ class TasksCollectionSpec extends ObjectBehavior
         $tasks[0]->shouldBe($task1);
     }
 
-    function it_can_filter_by_empty_testsuite(TaskInterface $task1, TaskInterface $task2)
+    public function it_can_filter_by_empty_testsuite(TaskInterface $task1, TaskInterface $task2)
     {
         $result = $this->filterByTestSuite(null);
         $result->shouldBeAnInstanceOf(TasksCollection::class);
@@ -62,7 +62,7 @@ class TasksCollectionSpec extends ObjectBehavior
         $tasks[1]->shouldBe($task2);
     }
 
-    function it_should_sort_on_priority(TaskInterface $task1, TaskInterface $task2, TaskInterface $task3, GrumPHP $grumPHP)
+    public function it_should_sort_on_priority(TaskInterface $task1, TaskInterface $task2, TaskInterface $task3, GrumPHP $grumPHP)
     {
         $this->beConstructedWith([$task1, $task2, $task3]);
 

@@ -21,23 +21,23 @@ use Symfony\Component\Process\Process;
 
 class ComposerSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter, Filesystem $filesystem)
+    public function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter, Filesystem $filesystem)
     {
         $grumPHP->getTaskConfiguration('composer')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter, $filesystem);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(Composer::class);
     }
 
-    function it_should_have_a_name()
+    public function it_should_have_a_name()
     {
         $this->getName()->shouldBe('composer');
     }
 
-    function it_should_have_configurable_options()
+    public function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
@@ -50,17 +50,17 @@ class ComposerSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('strict');
     }
 
-    function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
+    public function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_should_run_in_run_context(RunContext $context)
+    public function it_should_run_in_run_context(RunContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
+    public function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
     {
         $processBuilder->createArgumentsForCommand('composer')->shouldNotBeCalled();
         $processBuilder->buildProcess()->shouldNotBeCalled();
@@ -71,7 +71,7 @@ class ComposerSpec extends ObjectBehavior
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
-    function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
+    public function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('composer')->willReturn($arguments);
@@ -89,7 +89,7 @@ class ComposerSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_throws_exception_if_the_process_fails(
+    public function it_throws_exception_if_the_process_fails(
         ProcessBuilder $processBuilder,
         Process $process,
         ContextInterface $context
@@ -110,14 +110,13 @@ class ComposerSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(false);
     }
 
-    function it_fails_when_it_has_local_repositories(
+    public function it_fails_when_it_has_local_repositories(
         GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,
         Filesystem $filesystem,
         Process $process,
         ContextInterface $context
-    )
-    {
+    ) {
         $composerFile = 'composer.json';
         $grumPHP->getTaskConfiguration('composer')->willReturn([
             'file' => $composerFile,
@@ -142,14 +141,13 @@ class ComposerSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(false);
     }
 
-    function it_succeeds_when_it_has_no_local_repositories(
+    public function it_succeeds_when_it_has_no_local_repositories(
         GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,
         Filesystem $filesystem,
         Process $process,
         ContextInterface $context
-    )
-    {
+    ) {
         $composerFile = 'composer.json';
         $grumPHP->getTaskConfiguration('composer')->willReturn([
             'file' => $composerFile,

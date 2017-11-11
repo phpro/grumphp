@@ -11,17 +11,17 @@ use Prophecy\Argument;
 
 class TraverserFactorySpec extends ObjectBehavior
 {
-    function let(TraverserConfigurator $configurator)
+    public function let(TraverserConfigurator $configurator)
     {
         $this->beConstructedWith($configurator);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(TraverserFactory::class);
     }
 
-    function it_can_create_a_task_and_context_specific_traverser(TraverserConfigurator $configurator, ParserContext $context)
+    public function it_can_create_a_task_and_context_specific_traverser(TraverserConfigurator $configurator, ParserContext $context)
     {
         $taskOptions = ['visitors' => []];
 

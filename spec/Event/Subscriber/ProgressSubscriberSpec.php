@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ProgressSubscriberSpec extends ObjectBehavior
 {
-    function let(OutputInterface $output)
+    public function let(OutputInterface $output)
     {
         $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
         $output->isDecorated()->willReturn(false);
@@ -27,22 +27,22 @@ class ProgressSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($output, $progressBar);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(ProgressSubscriber::class);
     }
 
-    function it_is_an_event_subscriber()
+    public function it_is_an_event_subscriber()
     {
         $this->shouldImplement(EventSubscriberInterface::class);
     }
 
-    function it_should_subscribe_to_events()
+    public function it_should_subscribe_to_events()
     {
         $this->getSubscribedEvents()->shouldBeArray();
     }
 
-    function it_starts_progress(OutputInterface $output, RunnerEvent $event, TasksCollection $tasks)
+    public function it_starts_progress(OutputInterface $output, RunnerEvent $event, TasksCollection $tasks)
     {
         $tasks->count()->willReturn(2);
         $event->getTasks()->willReturn($tasks);
@@ -52,7 +52,7 @@ class ProgressSubscriberSpec extends ObjectBehavior
         $this->startProgress($event);
     }
 
-    function it_should_advance_progress(OutputInterface $output, TaskEvent $event, TaskInterface $task)
+    public function it_should_advance_progress(OutputInterface $output, TaskEvent $event, TaskInterface $task)
     {
         $this->beConstructedWith($output, $progress = new ProgressBar($output->getWrappedObject(), 2));
 
@@ -65,7 +65,7 @@ class ProgressSubscriberSpec extends ObjectBehavior
         $this->advanceProgress($event);
     }
 
-    function it_finishes_progress(OutputInterface $output, RunnerEvent $event)
+    public function it_finishes_progress(OutputInterface $output, RunnerEvent $event)
     {
         $this->beConstructedWith($output, $progress = new ProgressBar($output->getWrappedObject(), 0));
 
@@ -74,7 +74,7 @@ class ProgressSubscriberSpec extends ObjectBehavior
         $this->finishProgress($event);
     }
 
-    function it_finishes_progress_early(OutputInterface $output, RunnerEvent $event)
+    public function it_finishes_progress_early(OutputInterface $output, RunnerEvent $event)
     {
         $this->beConstructedWith($output, $progress = new ProgressBar($output->getWrappedObject(), 2));
         $output->write('<fg=red>Aborted ...</fg=red>')->shouldBeCalled();

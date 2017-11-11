@@ -10,27 +10,27 @@ use Symfony\Component\EventDispatcher\Event;
 
 class TaskEventSpec extends ObjectBehavior
 {
-    function let(TaskInterface $task, ContextInterface $context)
+    public function let(TaskInterface $task, ContextInterface $context)
     {
         $this->beConstructedWith($task, $context);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(TaskEvent::class);
     }
 
-    function it_is_an_event()
+    public function it_is_an_event()
     {
         $this->shouldHaveType(Event::class);
     }
 
-    function it_has_a_task(TaskInterface $task)
+    public function it_has_a_task(TaskInterface $task)
     {
         $this->getTask()->shouldBe($task);
     }
 
-    function it_should_have_a_context(ContextInterface $context)
+    public function it_should_have_a_context(ContextInterface $context)
     {
         $this->getContext()->shouldBe($context);
     }
