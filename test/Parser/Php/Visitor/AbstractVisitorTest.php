@@ -9,10 +9,10 @@ use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\NodeVisitorAbstract;
 use PhpParser\ParserFactory;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use SplFileInfo;
 
-abstract class AbstractVisitorTest extends PHPUnit_Framework_TestCase
+abstract class AbstractVisitorTest extends TestCase
 {
     /**
      * @test

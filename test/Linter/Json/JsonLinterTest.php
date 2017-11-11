@@ -6,12 +6,12 @@ use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Linter\Json\JsonLinter;
 use GrumPHP\Linter\Json\JsonLintError;
 use GrumPHP\Util\Filesystem;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Seld\JsonLint\JsonParser;
 use SplFileInfo;
 
-class JsonLinterTest extends PHPUnit_Framework_TestCase
+class JsonLinterTest extends TestCase
 {
     /**
      * @var JsonLinter

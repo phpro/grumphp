@@ -6,11 +6,11 @@ use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Linter\Yaml\YamlLinter;
 use GrumPHP\Linter\Yaml\YamlLintError;
 use GrumPHP\Util\Filesystem;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use SplFileInfo;
 
-class YamlLinterTest extends PHPUnit_Framework_TestCase
+class YamlLinterTest extends TestCase
 {
     /**
      * @var YamlLinter
