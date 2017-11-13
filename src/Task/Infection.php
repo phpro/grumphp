@@ -72,7 +72,7 @@ class Infection extends AbstractExternalTask
         }
 
         $arguments = $this->processBuilder->createArgumentsForCommand('infection');
-
+        $arguments->add('--no-interaction');
         $arguments->addOptionalArgument('--threads=%s', $config['threads']);
         $arguments->addOptionalArgument('--test-framework=%s', $config['test_framework']);
         $arguments->addOptionalArgument('--only-covered', $config['only_covered']);
