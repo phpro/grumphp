@@ -110,6 +110,10 @@ class CloverCoverage implements TaskInterface
         $totalElements   = (string)current($xml->xpath('/coverage/project/metrics/@elements'));
         $checkedElements = (string)current($xml->xpath('/coverage/project/metrics/@coveredelements'));
 
+        if ((int)$totalElements === 0) {
+            return TaskResult::createSkipped($this, $context);
+        }
+        
         $coverage = round(($checkedElements / $totalElements) * 100, 2);
 
         if ($coverage < $percentage) {
