@@ -10,9 +10,6 @@ use Symfony\Component\Finder\Iterator;
 use SplFileInfo;
 use Traversable;
 
-/**
- * Class FileSequence
- */
 class FilesCollection extends ArrayCollection
 {
     /**
