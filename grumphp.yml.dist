@@ -1,0 +1,33 @@
+parameters:
+  bin_dir: "./vendor/bin"
+  git_dir: "."
+  tasks:
+      phpcs:
+        standard: PSR2
+        ignore_patterns:
+          - "spec/*Spec.php"
+          - "test/*.php"
+        metadata:
+          priority: 300
+      phpspec:
+        format: progress
+        verbose: true
+        metadata:
+          priority: 200
+      phpunit:
+        metadata:
+          priority: 100
+      composer:
+        no_check_lock: true
+      yamllint:
+        ignore_patterns:
+          - "#test/(.*).yml#"
+      phplint: ~
+      phpparser:
+        visitors:
+          no_exit_statements: ~
+          never_use_else: ~
+          forbidden_function_calls:
+            blacklist: [var_dump]
+        metadata:
+          priority: 100000
