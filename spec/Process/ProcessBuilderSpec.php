@@ -14,18 +14,18 @@ use Symfony\Component\Process\ProcessUtils;
 
 class ProcessBuilderSpec extends ObjectBehavior
 {
-    function let(GrumPHP $config, ExternalCommand $externalCommandLocator, IOInterface $io)
+    public function let(GrumPHP $config, ExternalCommand $externalCommandLocator, IOInterface $io)
     {
         $this->beConstructedWith($config, $externalCommandLocator, $io);
         $config->getProcessTimeout()->willReturn(60);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(ProcessBuilder::class);
     }
 
-    function it_should_be_able_to_create_process_arguments_based_on_taskname(ExternalCommand $externalCommandLocator)
+    public function it_should_be_able_to_create_process_arguments_based_on_taskname(ExternalCommand $externalCommandLocator)
     {
         $externalCommandLocator->locate('grumphp')->willReturn('/usr/bin/grumphp');
 
@@ -35,7 +35,7 @@ class ProcessBuilderSpec extends ObjectBehavior
         $arguments->count()->shouldBe(1);
     }
 
-    function it_should_build_process_based_on_process_arguments()
+    public function it_should_build_process_based_on_process_arguments()
     {
         $arguments = new ProcessArgumentsCollection(['/usr/bin/grumphp']);
         $process = $this->buildProcess($arguments);
@@ -44,12 +44,11 @@ class ProcessBuilderSpec extends ObjectBehavior
         $process->getCommandLine()->shouldBeQuoted('/usr/bin/grumphp');
     }
 
-    function it_should_be_possible_to_configure_the_process_timeout(
+    public function it_should_be_possible_to_configure_the_process_timeout(
         GrumPHP $config,
         ExternalCommand $externalCommandLocator,
         IOInterface $io
-    )
-    {
+    ) {
         $config->getProcessTimeout()->willReturn(120);
 
         $arguments = new ProcessArgumentsCollection(['/usr/bin/grumphp']);
@@ -57,7 +56,7 @@ class ProcessBuilderSpec extends ObjectBehavior
         $process->getTimeout()->shouldBe(120.0);
     }
 
-    function it_outputs_the_command_when_run_very_very_verbose(
+    public function it_outputs_the_command_when_run_very_very_verbose(
         GrumPHP $config,
         ExternalCommand $externalCommandLocator,
         IOInterface $io
@@ -70,7 +69,7 @@ class ProcessBuilderSpec extends ObjectBehavior
         $process = $this->buildProcess($arguments);
     }
 
-    function getMatchers()
+    public function getMatchers()
     {
         return [
             'beQuoted' => function ($subject, $string) {
@@ -78,7 +77,8 @@ class ProcessBuilderSpec extends ObjectBehavior
                 if (!preg_match($regex, $subject)) {
                     throw new FailureException(sprintf(
                         'Expected a quoted version of %s, got %s.',
-                        $string, $subject
+                        $string,
+                        $subject
                     ));
                 }
 

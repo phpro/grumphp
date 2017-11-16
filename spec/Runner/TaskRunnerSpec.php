@@ -53,24 +53,24 @@ class TaskRunnerSpec extends ObjectBehavior
         $this->addTask($task2);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(TaskRunner::class);
     }
 
-    function it_holds_tasks(TaskInterface $task1, TaskInterface $task2)
+    public function it_holds_tasks(TaskInterface $task1, TaskInterface $task2)
     {
         $this->getTasks()->toArray()->shouldEqual([$task1, $task2]);
     }
 
-    function it_does_not_add_the_same_task_twice(TaskInterface $task1, TaskInterface $task2)
+    public function it_does_not_add_the_same_task_twice(TaskInterface $task1, TaskInterface $task2)
     {
         $this->addTask($task1);
 
         $this->getTasks()->toArray()->shouldEqual([$task1, $task2]);
     }
 
-    function it_runs_all_tasks(
+    public function it_runs_all_tasks(
         TaskInterface $task1,
         TaskInterface $task2,
         TaskRunnerContext $runnerContext,
@@ -82,7 +82,7 @@ class TaskRunnerSpec extends ObjectBehavior
         $this->run($runnerContext);
     }
 
-    function it_returns_a_passed_tasks_result_if_all_tasks_passed(
+    public function it_returns_a_passed_tasks_result_if_all_tasks_passed(
         TaskInterface $task1,
         TaskInterface $task2,
         TaskRunnerContext $runnerContext,
@@ -96,7 +96,7 @@ class TaskRunnerSpec extends ObjectBehavior
         $results->shouldBePassed();
     }
 
-    function it_returns_a_failed_tasks_result_if_a_task_fails(
+    public function it_returns_a_failed_tasks_result_if_a_task_fails(
         TaskInterface $task1,
         TaskInterface $task2,
         TaskRunnerContext $runnerContext,
@@ -111,7 +111,7 @@ class TaskRunnerSpec extends ObjectBehavior
         $results->shouldContainFailedTaskResult();
     }
 
-    function it_returns_a_failed_tasks_throws_an_exception(
+    public function it_returns_a_failed_tasks_throws_an_exception(
         TaskInterface $task1,
         TaskInterface $task2,
         TaskRunnerContext $runnerContext,
@@ -126,7 +126,7 @@ class TaskRunnerSpec extends ObjectBehavior
         $results->shouldContainFailedTaskResult();
     }
 
-    function it_returns_skipped_when_tasks_throws_a_platform_exception(
+    public function it_returns_skipped_when_tasks_throws_a_platform_exception(
         TaskInterface $task1,
         TaskInterface $task2,
         TaskRunnerContext $runnerContext,
@@ -141,7 +141,7 @@ class TaskRunnerSpec extends ObjectBehavior
         $results->shouldContainSkippedTaskResult();
     }
 
-    function it_returns_a_failed_tasks_result_if_a_non_blocking_task_fails(
+    public function it_returns_a_failed_tasks_result_if_a_non_blocking_task_fails(
         GrumPHP $grumPHP,
         TaskInterface $task1,
         TaskInterface $task2,
@@ -158,7 +158,7 @@ class TaskRunnerSpec extends ObjectBehavior
         $results->shouldContainNonBlockingFailedTaskResult();
     }
 
-    function it_runs_subsequent_tasks_if_one_fails(
+    public function it_runs_subsequent_tasks_if_one_fails(
         TaskInterface $task1,
         TaskInterface $task2,
         TaskRunnerContext $runnerContext,
@@ -170,7 +170,7 @@ class TaskRunnerSpec extends ObjectBehavior
         $this->run($runnerContext);
     }
 
-    function it_stops_on_a_failed_task_if_stop_on_failure(
+    public function it_stops_on_a_failed_task_if_stop_on_failure(
         GrumPHP $grumPHP,
         TaskInterface $task1,
         TaskInterface $task2,
@@ -184,7 +184,7 @@ class TaskRunnerSpec extends ObjectBehavior
         $this->run($runnerContext)->shouldHaveCount(1);
     }
 
-    function it_does_not_stop_on_a_non_blocking_failed_task_if_stop_on_failure(
+    public function it_does_not_stop_on_a_non_blocking_failed_task_if_stop_on_failure(
         GrumPHP $grumPHP,
         TaskInterface $task1,
         TaskInterface $task2,
@@ -199,7 +199,7 @@ class TaskRunnerSpec extends ObjectBehavior
         $this->run($runnerContext)->shouldHaveCount(2);
     }
 
-    function it_triggers_events_during_happy_flow(
+    public function it_triggers_events_during_happy_flow(
         EventDispatcherInterface $eventDispatcher,
         TaskInterface $task1,
         TaskInterface $task2,
@@ -217,7 +217,7 @@ class TaskRunnerSpec extends ObjectBehavior
         $this->run($runnerContext);
     }
 
-    function it_triggers_events_during_error_flow(
+    public function it_triggers_events_during_error_flow(
         EventDispatcherInterface $eventDispatcher,
         TaskInterface $task1,
         TaskInterface $task2,

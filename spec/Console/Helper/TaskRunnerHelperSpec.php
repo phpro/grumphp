@@ -21,7 +21,7 @@ use Prophecy\Argument;
 
 class TaskRunnerHelperSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         GrumPHP $config,
         TaskRunner $taskRunner,
         EventDispatcherInterface $eventDispatcher,
@@ -42,19 +42,18 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         $config->hideCircumventionTip()->willReturn(false);
     }
 
-    function it_is_a_console_helper()
+    public function it_is_a_console_helper()
     {
         $this->shouldHaveType(Helper::class);
     }
 
-    function it_should_return_error_code_with_a_failed_task(
+    public function it_should_return_error_code_with_a_failed_task(
         OutputInterface $output,
         TaskRunner $taskRunner,
         TaskInterface $task,
         TaskRunnerContext $runnerContext,
         ContextInterface $taskContext
-    )
-    {
+    ) {
         $taskResults = new TaskResultCollection();
         $taskResults->add(TaskResult::createPassed($task->getWrappedObject(), $taskContext->getWrappedObject()));
         $taskResults->add(TaskResult::createFailed($task->getWrappedObject(), $taskContext->getWrappedObject(), 'failed task message'));
@@ -62,42 +61,39 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         $this->run($output, $runnerContext)->shouldReturn(TaskRunnerHelper::CODE_ERROR);
     }
 
-    function it_should_return_success_code_with_no_failed_task(
+    public function it_should_return_success_code_with_no_failed_task(
         OutputInterface $output,
         TaskRunner $taskRunner,
         TaskInterface $task,
         TaskRunnerContext $runnerContext,
         ContextInterface $taskContext
-    )
-    {
+    ) {
         $taskResults = new TaskResultCollection();
         $taskResults->add(TaskResult::createPassed($task->getWrappedObject(), $taskContext->getWrappedObject()));
         $taskRunner->run($runnerContext)->willReturn($taskResults);
         $this->run($output, $runnerContext)->shouldReturn(TaskRunnerHelper::CODE_SUCCESS);
     }
 
-    function it_should_return_success_code_during_a_failed_of_a_nonblocking_task(
+    public function it_should_return_success_code_during_a_failed_of_a_nonblocking_task(
         OutputInterface $output,
         TaskRunner $taskRunner,
         TaskInterface $task,
         TaskRunnerContext $runnerContext,
         ContextInterface $taskContext
-    )
-    {
+    ) {
         $testResults = new TaskResultCollection();
         $testResults->add(TaskResult::createNonBlockingFailed($task->getWrappedObject(), $taskContext->getWrappedObject(), 'failed task message'));
         $taskRunner->run($runnerContext)->willReturn($testResults);
         $this->run($output, $runnerContext)->shouldReturn(TaskRunnerHelper::CODE_SUCCESS);
     }
 
-    function it_should_display_all_errors_of_failed_tasks(
+    public function it_should_display_all_errors_of_failed_tasks(
         OutputInterface $output,
         TaskRunner $taskRunner,
         TaskInterface $task,
         TaskRunnerContext $runnerContext,
         ContextInterface $taskContext
-    )
-    {
+    ) {
         $taskResults = new TaskResultCollection();
         $taskResults->add(TaskResult::createFailed($task->getWrappedObject(), $taskContext->getWrappedObject(), 'failed task message'));
         $taskResults->add(TaskResult::createFailed($task->getWrappedObject(), $taskContext->getWrappedObject(), 'another failed task message'));
@@ -112,14 +108,13 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         $this->run($output, $runnerContext);
     }
 
-    function it_should_display_warning_of_non_blocking_failed_tasks(
+    public function it_should_display_warning_of_non_blocking_failed_tasks(
         OutputInterface $output,
         TaskRunner $taskRunner,
         TaskInterface $task,
         TaskRunnerContext $runnerContext,
         ContextInterface $taskContext
-    )
-    {
+    ) {
         $taskResults = new TaskResultCollection();
         $taskResults->add(TaskResult::createNonBlockingFailed($task->getWrappedObject(), $taskContext->getWrappedObject(), 'non blocking task message'));
         $taskRunner->run($runnerContext)->willReturn($taskResults);
@@ -132,7 +127,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         $this->run($output, $runnerContext);
     }
 
-    function it_should_add_a_progress_listener_during_run(
+    public function it_should_add_a_progress_listener_during_run(
         OutputInterface $output,
         TaskRunner $taskRunner,
         TaskRunnerContext $runnerContext,

@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CommitMessageSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP)
+    public function let(GrumPHP $grumPHP)
     {
         $this->beConstructedWith($grumPHP);
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
@@ -23,12 +23,12 @@ class CommitMessageSpec extends ObjectBehavior
         ]);
     }
 
-    function it_should_have_a_name()
+    public function it_should_have_a_name()
     {
         $this->getName()->shouldBe('git_commit_message');
     }
 
-    function it_should_have_configurable_options()
+    public function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
@@ -44,22 +44,22 @@ class CommitMessageSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('additional_modifiers');
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(CommitMessage::class);
     }
 
-    function it_is_a_grumphp_task()
+    public function it_is_a_grumphp_task()
     {
         $this->shouldImplement(TaskInterface::class);
     }
 
-    function it_should_run_in_git_commit_msg_context(GitCommitMsgContext $context)
+    public function it_should_run_in_git_commit_msg_context(GitCommitMsgContext $context)
     {
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_runs_the_suite(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_runs_the_suite(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => true,
@@ -76,7 +76,8 @@ class CommitMessageSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_throws_exception_if_the_process_fails(GrumPHP $grumPHP, GitCommitMsgContext $context) {
+    public function it_throws_exception_if_the_process_fails(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => true,
             'enforce_capitalized_subject' => false,
@@ -92,7 +93,7 @@ class CommitMessageSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(false);
     }
 
-    function it_runs_with_additional_modifiers(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_runs_with_additional_modifiers(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => true,
@@ -110,7 +111,7 @@ class CommitMessageSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_should_pass_when_commit_message_is_empty(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_should_pass_when_commit_message_is_empty(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => true,
@@ -126,7 +127,7 @@ class CommitMessageSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_should_pass_when_subject_starts_with_a_capital_letter(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_should_pass_when_subject_starts_with_a_capital_letter(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => true,
@@ -148,7 +149,7 @@ MSG;
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_should_pass_when_subject_starts_with_a_utf8_capital_letter(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_should_pass_when_subject_starts_with_a_utf8_capital_letter(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => true,
@@ -170,7 +171,7 @@ MSG;
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_should_pass_when_subject_starts_with_punctuation_and_a_capital_letter(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_should_pass_when_subject_starts_with_punctuation_and_a_capital_letter(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => true,
@@ -192,7 +193,7 @@ MSG;
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_should_fail_when_subject_starts_with_a_lowercase_letter(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_should_fail_when_subject_starts_with_a_lowercase_letter(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => true,
@@ -215,7 +216,7 @@ MSG;
         $result->isPassed()->shouldBe(false);
     }
 
-    function it_should_fail_when_subject_starts_with_a_utf8_lowercase_letter(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_should_fail_when_subject_starts_with_a_utf8_lowercase_letter(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => true,
@@ -238,7 +239,7 @@ MSG;
         $result->isPassed()->shouldBe(false);
     }
 
-    function it_should_fail_when_subject_starts_with_punctuation_and_a_lowercase_letter(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_should_fail_when_subject_starts_with_punctuation_and_a_lowercase_letter(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => true,
@@ -261,7 +262,7 @@ MSG;
         $result->isPassed()->shouldBe(false);
     }
 
-    function it_should_pass_when_subject_starts_with_special_fixup_prefix(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_should_pass_when_subject_starts_with_special_fixup_prefix(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => true,
@@ -283,7 +284,7 @@ MSG;
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_should_pass_when_subject_starts_with_special_squash_prefix(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_should_pass_when_subject_starts_with_special_squash_prefix(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => true,
@@ -305,7 +306,7 @@ MSG;
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_should_pass_when_first_line_of_commit_message_is_an_empty_line(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_should_pass_when_first_line_of_commit_message_is_an_empty_line(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => true,
@@ -328,7 +329,7 @@ MSG;
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_should_fail_when_commit_message_is_empty(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_should_fail_when_commit_message_is_empty(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => false,
@@ -344,7 +345,7 @@ MSG;
         $result->isPassed()->shouldBe(false);
     }
 
-    function it_should_fail_when_commit_message_contains_only_whitespace(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_should_fail_when_commit_message_contains_only_whitespace(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => false,
@@ -360,7 +361,7 @@ MSG;
         $result->isPassed()->shouldBe(false);
     }
 
-    function it_should_pass_when_commit_message_starts_with_a_comment(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_should_pass_when_commit_message_starts_with_a_comment(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => false,
@@ -381,7 +382,7 @@ MSG;
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_should_pass_when_commit_message_is_not_empty(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_should_pass_when_commit_message_is_not_empty(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => false,
@@ -397,7 +398,7 @@ MSG;
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_should_pass_when_subject_is_separated_from_body_by_a_blank_line(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_should_pass_when_subject_is_separated_from_body_by_a_blank_line(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => true,
@@ -419,7 +420,7 @@ MSG;
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_should_fail_when_subject_is_not_kept_to_one_line(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_should_fail_when_subject_is_not_kept_to_one_line(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => true,
@@ -442,7 +443,7 @@ MSG;
         $result->isPassed()->shouldBe(false);
     }
 
-    function it_should_fail_when_subject_is_longer_than_60_characters(GitCommitMsgContext $context)
+    public function it_should_fail_when_subject_is_longer_than_60_characters(GitCommitMsgContext $context)
     {
         $context->getCommitMessage()->willReturn(str_repeat('A', 61));
 
@@ -452,7 +453,7 @@ MSG;
         $result->getMessage()->shouldMatch('/subject/');
     }
 
-    function it_should_pass_when_subject_is_60_characters_or_fewer(GitCommitMsgContext $context)
+    public function it_should_pass_when_subject_is_60_characters_or_fewer(GitCommitMsgContext $context)
     {
         $context->getCommitMessage()->willReturn(str_repeat('A', 60));
 
@@ -461,7 +462,7 @@ MSG;
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_should_pass_when_subject_starts_with_special_fixup_and_is_longer_than_60_characters(GitCommitMsgContext $context)
+    public function it_should_pass_when_subject_starts_with_special_fixup_and_is_longer_than_60_characters(GitCommitMsgContext $context)
     {
         $context->getCommitMessage()->willReturn('fixup! '.str_repeat('A', 60));
 
@@ -470,7 +471,7 @@ MSG;
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_should_pass_when_subject_starts_with_special_squash_and_is_longer_than_60_characters(GitCommitMsgContext $context)
+    public function it_should_pass_when_subject_starts_with_special_squash_and_is_longer_than_60_characters(GitCommitMsgContext $context)
     {
         $context->getCommitMessage()->willReturn('squash! '.str_repeat('A', 60));
 
@@ -479,7 +480,7 @@ MSG;
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_should_pass_when_the_subject_is_60_characters_followed_by_a_newline(GitCommitMsgContext $context)
+    public function it_should_pass_when_the_subject_is_60_characters_followed_by_a_newline(GitCommitMsgContext $context)
     {
         $commitMessage = <<<'MSG'
 This is 60 characters, or 61 if the newline is counted
@@ -494,7 +495,7 @@ MSG;
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_should_pass_when_a_line_in_the_message_is_72_characters_followed_by_a_newline(GitCommitMsgContext $context)
+    public function it_should_pass_when_a_line_in_the_message_is_72_characters_followed_by_a_newline(GitCommitMsgContext $context)
     {
         $commitMessage = <<<'MSG'
 Some summary
@@ -510,7 +511,7 @@ MSG;
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_should_fail_when_a_line_in_the_message_is_longer_than_72_characters(GitCommitMsgContext $context)
+    public function it_should_fail_when_a_line_in_the_message_is_longer_than_72_characters(GitCommitMsgContext $context)
     {
         $commitMessage = <<<'MSG'
 Some summary
@@ -526,7 +527,7 @@ MSG;
         $result->getMessage()->shouldBe('Line 3 of commit message has > 72 characters.');
     }
 
-    function it_should_pass_when_a_line_in_the_message_is_commented_but_longer_than_72_characters(GitCommitMsgContext $context)
+    public function it_should_pass_when_a_line_in_the_message_is_commented_but_longer_than_72_characters(GitCommitMsgContext $context)
     {
         $commitMessage = <<<'MSG'
 Some summary
@@ -541,7 +542,7 @@ MSG;
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_should_pass_when_all_lines_in_the_message_are_fewer_than_72_characters(GitCommitMsgContext $context)
+    public function it_should_pass_when_all_lines_in_the_message_are_fewer_than_72_characters(GitCommitMsgContext $context)
     {
         $commitMessage = <<<'MSG'
 Some summary
@@ -558,7 +559,7 @@ MSG;
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_should_fail_when_subject_and_a_line_in_the_message_is_longer_than_the_limits(GitCommitMsgContext $context)
+    public function it_should_fail_when_subject_and_a_line_in_the_message_is_longer_than_the_limits(GitCommitMsgContext $context)
     {
         $commitMessage = <<<'MSG'
 A subject line that is way too long. A subject line that is way too long.
@@ -574,7 +575,7 @@ MSG;
         $result->getMessage()->shouldMatch('/keep.*subject <= 60.*\n.*line 3.*> 72.*/im');
     }
 
-    function it_should_fail_when_subject_contains_a_trailing_period(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_should_fail_when_subject_contains_a_trailing_period(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => true,
@@ -590,7 +591,7 @@ MSG;
         $result->isPassed()->shouldBe(false);
     }
 
-    function it_should_pass_when_subject_does_not_contain_a_trailing_period(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    public function it_should_pass_when_subject_does_not_contain_a_trailing_period(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => true,

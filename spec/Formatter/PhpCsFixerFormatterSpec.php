@@ -10,37 +10,37 @@ use Symfony\Component\Process\ProcessUtils;
 
 class PhpCsFixerFormatterSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(PhpCsFixerFormatter::class);
     }
 
-    function it_is_a_process_formatter()
+    public function it_is_a_process_formatter()
     {
         $this->shouldHaveType(ProcessFormatterInterface::class);
     }
 
-    function it_handles_command_exceptions(Process $process)
+    public function it_handles_command_exceptions(Process $process)
     {
         $process->getOutput()->willReturn('');
         $process->getErrorOutput()->willReturn('stderr');
         $this->format($process)->shouldReturn('stderr');
     }
 
-    function it_handles_invalid_json(Process $process)
+    public function it_handles_invalid_json(Process $process)
     {
         $process->getOutput()->willReturn('invalid');
         $this->format($process)->shouldReturn('invalid');
     }
 
-    function it_handles_invalid_file_formats(Process $process)
+    public function it_handles_invalid_file_formats(Process $process)
     {
         $json = $this->parseJson(['invalid']);
         $process->getOutput()->willReturn($json);
         $this->format($process)->shouldStartWith('Invalid file: ');
     }
 
-    function it_formats_phpcsfixer_json_output_for_single_file(Process $process)
+    public function it_formats_phpcsfixer_json_output_for_single_file(Process $process)
     {
         $json = $this->parseJson([
             ['name' => 'name1',],
@@ -49,7 +49,7 @@ class PhpCsFixerFormatterSpec extends ObjectBehavior
         $this->format($process)->shouldBe('1) name1');
     }
 
-    function it_formats_phpcsfixer_json_output_for_multiple_files(Process $process)
+    public function it_formats_phpcsfixer_json_output_for_multiple_files(Process $process)
     {
         $json = $this->parseJson([
             ['name' => 'name1',],
@@ -59,7 +59,7 @@ class PhpCsFixerFormatterSpec extends ObjectBehavior
         $this->format($process)->shouldBe('1) name1' . PHP_EOL . '2) name2 (fixer1, fixer2)');
     }
 
-    function it_formats_phpcsfixer_json_output_for_diff(Process $process)
+    public function it_formats_phpcsfixer_json_output_for_diff(Process $process)
     {
         $json = $this->parseJson([
             ['name' => 'name1', 'diff' => 'diff1'],
@@ -68,7 +68,7 @@ class PhpCsFixerFormatterSpec extends ObjectBehavior
         $this->format($process)->shouldBe('1) name1' . PHP_EOL . PHP_EOL . 'diff1');
     }
 
-    function it_should_be_possible_to_reset_the_counter(Process $process)
+    public function it_should_be_possible_to_reset_the_counter(Process $process)
     {
         $json = $this->parseJson([['name' => 'name1']]);
         $process->getOutput()->willReturn($json);
@@ -78,7 +78,7 @@ class PhpCsFixerFormatterSpec extends ObjectBehavior
         $this->format($process)->shouldBe('1) name1');
     }
 
-    function it_formats_suggestions(Process $process)
+    public function it_formats_suggestions(Process $process)
     {
         $dryRun = ProcessUtils::escapeArgument('--dry-run');
         $formatJson = ProcessUtils::escapeArgument('--format=json');
@@ -89,7 +89,7 @@ class PhpCsFixerFormatterSpec extends ObjectBehavior
         $this->formatSuggestion($process)->shouldReturn('phpcsfixer .');
     }
 
-    function it_formats_the_error_message()
+    public function it_formats_the_error_message()
     {
         $this->formatErrorMessage(['message1'], ['message2'])->shouldBeString();
     }

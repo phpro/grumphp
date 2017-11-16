@@ -10,19 +10,20 @@ use Symfony\Component\Process\Process;
 
 class AsyncProcessRunnerSpec extends ObjectBehavior
 {
-    public function let(GrumPHP $grumPHP) {
+    public function let(GrumPHP $grumPHP)
+    {
         $this->beConstructedWith($grumPHP);
 
         $grumPHP->getProcessAsyncWaitTime()->willReturn(0);
         $grumPHP->getProcessAsyncLimit()->willReturn(5);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(AsyncProcessRunner::class);
     }
 
-    function it_should_be_able_to_run_processes()
+    public function it_should_be_able_to_run_processes()
     {
         $prophet = new Prophet();
         $processes = [];

@@ -17,7 +17,7 @@ use SplFileInfo;
 
 class PhpParserSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         ParserFactory $parserFactory,
         TraverserFactory $traverserFactory,
         Parser $parser,
@@ -30,12 +30,12 @@ class PhpParserSpec extends ObjectBehavior
         $parser->parse(Argument::any())->willReturn([]);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(PhpParser::class);
     }
 
-    function it_uses_parser_options(
+    public function it_uses_parser_options(
         ParserFactory $parserFactory,
         TraverserFactory $traverserFactory,
         Parser $parser,
@@ -53,7 +53,7 @@ class PhpParserSpec extends ObjectBehavior
         $this->parse($file);
     }
 
-    function it_parses_a_file(NodeTraverserInterface $traverser)
+    public function it_parses_a_file(NodeTraverserInterface $traverser)
     {
         $file = new SplFileInfo('php://memory');
         $traverser->traverse([])->shouldBeCalled();
@@ -63,7 +63,7 @@ class PhpParserSpec extends ObjectBehavior
         $errors->count()->shouldBe(0);
     }
 
-    function it_catches_parse_exceptions(Parser $parser)
+    public function it_catches_parse_exceptions(Parser $parser)
     {
         $file = new SplFileInfo('php://memory');
         $parser->parse(Argument::any())->willThrow(new Error('Error ....'));
