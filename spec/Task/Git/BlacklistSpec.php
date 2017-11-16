@@ -82,8 +82,8 @@ class BlacklistSpec extends ObjectBehavior
         ContextInterface $context
     ) {
         $grumPHP->getTaskConfiguration('git_blacklist')->willReturn([
-            'keywords'=> ['var_dump(']]
-        );
+            'keywords'=> ['var_dump('],
+        ]);
 
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('git')->willReturn($arguments);
@@ -110,8 +110,8 @@ class BlacklistSpec extends ObjectBehavior
         ContextInterface $context
     ) {
         $grumPHP->getTaskConfiguration('git_blacklist')->willReturn([
-            'keywords'=> ['var_dump(']]
-        );
+            'keywords'=> ['var_dump('],
+        ]);
 
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('git')->willReturn($arguments);

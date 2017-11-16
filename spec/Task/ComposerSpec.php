@@ -116,8 +116,7 @@ class ComposerSpec extends ObjectBehavior
         Filesystem $filesystem,
         Process $process,
         ContextInterface $context
-    )
-    {
+    ) {
         $composerFile = 'composer.json';
         $grumPHP->getTaskConfiguration('composer')->willReturn([
             'file' => $composerFile,
@@ -148,8 +147,7 @@ class ComposerSpec extends ObjectBehavior
         Filesystem $filesystem,
         Process $process,
         ContextInterface $context
-    )
-    {
+    ) {
         $composerFile = 'composer.json';
         $grumPHP->getTaskConfiguration('composer')->willReturn([
             'file' => $composerFile,

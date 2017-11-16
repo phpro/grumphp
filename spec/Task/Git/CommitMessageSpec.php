@@ -76,7 +76,8 @@ class CommitMessageSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_throws_exception_if_the_process_fails(GrumPHP $grumPHP, GitCommitMsgContext $context) {
+    function it_throws_exception_if_the_process_fails(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => true,
             'enforce_capitalized_subject' => false,

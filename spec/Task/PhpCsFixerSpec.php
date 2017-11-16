@@ -122,7 +122,7 @@ class PhpCsFixerSpec extends ObjectBehavior
         }))->willReturn($process);
 
         $processRunner->run(Argument::type('array'))->shouldBeCalled();
-    $process->isSuccessful()->willReturn(true);
+        $process->isSuccessful()->willReturn(true);
 
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf(TaskResultInterface::class);
@@ -143,7 +143,7 @@ class PhpCsFixerSpec extends ObjectBehavior
         $processBuilder->buildProcess(Argument::type(ProcessArgumentsCollection::class))->willReturn($process);
 
         $processRunner->run(Argument::type('array'))->shouldBeCalled();
-    $process->isSuccessful()->willReturn(false);
+        $process->isSuccessful()->willReturn(false);
 
         $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('file1.php', '.', 'file1.php'),

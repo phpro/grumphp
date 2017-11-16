@@ -102,7 +102,7 @@ class ConfigurationFileSpec extends ObjectBehavior
     {
         $regex = $this->pathRegex($expected);
 
-        return Argument::that(function($path) use ($regex) {
+        return Argument::that(function ($path) use ($regex) {
             return preg_match($regex, $path);
         });
     }

@@ -42,8 +42,7 @@ class RunnerFailedEventSpec extends ObjectBehavior
         ContextInterface $context,
         TaskResult $passedTaskResult,
         TaskResult $failedTaskResult
-    )
-    {
+    ) {
         $taskResults = new TaskResultCollection();
         $taskResults->add($passedTaskResult->getWrappedObject());
         $failedTaskResult->getMessage()->willReturn('message 1');
