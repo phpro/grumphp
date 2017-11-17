@@ -2,6 +2,14 @@
 
 Infection is a PHP mutation testing framework based on Abstract Syntax Tree.
 
+***Composer***
+
+```
+composer require --dev infection/infection
+```
+
+***Config***
+
 It lives under the `infection` namespace and has following configurable parameters:
 
 ```yaml
