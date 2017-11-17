@@ -13,25 +13,15 @@ use ReflectionClass;
 
 class ProgressSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var ProgressBar
-     */
+    /** @var ProgressBar */
     private $progressBar;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $progressFormat;
 
-    /**
-     * @var OutputInterface
-     */
+    /** @var OutputInterface */
     private $output;
 
-    /**
-     * @param OutputInterface  $output
-     * @param ProgressBar $progressBar
-     */
     public function __construct(OutputInterface $output, ProgressBar $progressBar)
     {
         $this->output = $output;
@@ -56,9 +46,6 @@ class ProgressSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param RunnerEvent $event
-     */
     public function startProgress(RunnerEvent $event)
     {
         $numberOftasks = $event->getTasks()->count();
@@ -67,9 +54,6 @@ class ProgressSubscriber implements EventSubscriberInterface
         $this->progressBar->start($numberOftasks);
     }
 
-    /**
-     * @param TaskEvent $event
-     */
     public function advanceProgress(TaskEvent $event)
     {
         $taskReflection = new ReflectionClass($event->getTask());
@@ -80,10 +64,6 @@ class ProgressSubscriber implements EventSubscriberInterface
         $this->progressBar->advance();
     }
 
-    /**
-     * @param TaskEvent $task
-     * @param string $event
-     */
     public function onTaskProgress(TaskEvent $task, $event)
     {
         switch ($event) {
@@ -102,9 +82,6 @@ class ProgressSubscriber implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @param RunnerEvent $runnerEvent
-     */
     public function finishProgress(RunnerEvent $runnerEvent)
     {
         if ($this->progressBar->getProgress() !== $this->progressBar->getMaxSteps()) {

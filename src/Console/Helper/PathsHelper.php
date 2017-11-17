@@ -17,30 +17,19 @@ class PathsHelper extends Helper
 {
     const HELPER_NAME = 'paths';
 
-    /**
-     * @var GrumPHP
-     */
+    /** @var GrumPHP */
     protected $config;
 
-    /**
-     * @var Filesystem
-     */
+    /** @var Filesystem */
     protected $fileSystem;
 
-    /**
-     * @var ExternalCommand
-     */
+    /** @var ExternalCommand */
     private $externalCommandLocator;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $defaultConfigPath;
 
     /**
-     * @param GrumPHP         $config
-     * @param Filesystem      $fileSystem
-     * @param ExternalCommand $externalCommandLocator
      * @param string          $defaultConfigPath
      */
     public function __construct(
@@ -195,8 +184,8 @@ class PathsHelper extends Helper
      * Search a command in the bin folder
      * Note: the command locator is not injected because it needs the relative bin path
      *
-     * @param $command
-     * @param $forceUnix
+     * @param string $command
+     * @param bool $forceUnix
      *
      * @return string
      */
@@ -209,6 +198,7 @@ class PathsHelper extends Helper
      * @param $path
      *
      * @return string
+     *
      * @throws FileNotFoundException If file doesn't exists
      */
     public function getRelativePath($path)
@@ -239,7 +229,7 @@ class PathsHelper extends Helper
     }
 
     /**
-     * @param $path
+     * @param string $path
      *
      * @return mixed
      */

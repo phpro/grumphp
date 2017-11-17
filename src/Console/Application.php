@@ -23,29 +23,18 @@ class Application extends SymfonyConsole
     const APP_NAME = 'GrumPHP';
     const APP_VERSION = '0.12.0';
 
-    /**
-     * @var ContainerBuilder
-     */
+    /** @var ContainerBuilder */
     protected $container;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $configDefaultPath;
 
-    /**
-     * @var Filesystem
-     */
+    /** @var Filesystem */
     protected $filesystem;
 
-    /**
-     * @var Helper\ComposerHelper
-     */
+    /** @var Helper\ComposerHelper */
     protected $composerHelper;
 
-    /**
-     * Set up application:
-     */
     public function __construct()
     {
         $this->filesystem = new Filesystem();
@@ -156,9 +145,6 @@ class Application extends SymfonyConsole
 
     /**
      * Configure IO of GrumPHP objects
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      */
     protected function configureIO(InputInterface $input, OutputInterface $output)
     {

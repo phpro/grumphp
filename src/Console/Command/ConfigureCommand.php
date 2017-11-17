@@ -24,31 +24,18 @@ class ConfigureCommand extends Command
 {
     const COMMAND_NAME = 'configure';
 
-    /**
-     * @var GrumPHP
-     */
+    /** @var GrumPHP */
     protected $config;
 
-    /**
-     * @var Filesystem
-     */
+    /** @var Filesystem */
     protected $filesystem;
 
-    /**
-     * @var Repository
-     */
+    /** @var Repository */
     protected $repository;
 
-    /**
-     * @var InputInterface
-     */
+    /** @var InputInterface */
     protected $input;
 
-    /**
-     * @param GrumPHP    $config
-     * @param Filesystem $filesystem
-     * @param Repository $repository
-     */
     public function __construct(GrumPHP $config, Filesystem $filesystem, Repository $repository)
     {
         parent::__construct();
@@ -58,9 +45,6 @@ class ConfigureCommand extends Command
         $this->repository = $repository;
     }
 
-    /**
-     * Configure command
-     */
     protected function configure()
     {
         $this->setName(self::COMMAND_NAME);
@@ -73,9 +57,6 @@ class ConfigureCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
      * @return int|void
      */
     public function execute(InputInterface $input, OutputInterface $output)
@@ -99,7 +80,7 @@ class ConfigureCommand extends Command
         }
 
         // Check write action
-        $written = $this->writeConfiguration($configuration);
+        $this->writeConfiguration($configuration);
         if (!$written) {
             $output->writeln('<fg=red>The configuration file could not be saved. Give me some permissions!</fg=red>');
             return;
@@ -112,9 +93,6 @@ class ConfigureCommand extends Command
 
     /**
      * This method will ask the developer for it's input and will result in a configuration array.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      *
      * @return array
      */
@@ -182,8 +160,6 @@ class ConfigureCommand extends Command
     }
 
     /**
-     * @param array $configuration
-     *
      * @return bool
      */
     protected function writeConfiguration(array $configuration)

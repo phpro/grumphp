@@ -183,9 +183,9 @@ class FilesCollection extends ArrayCollection
      * The anonymous function receives a \SplFileInfo and must return false
      * to remove files.
      *
-     * @param Closure $closure An anonymous function
+     * @param Closure $closure closure to filter through FilesCollection
      *
-     * @return FilesCollection The current Finder instance
+     * @return FilesCollection
      *
      * @see CustomFilterIterator
      */
