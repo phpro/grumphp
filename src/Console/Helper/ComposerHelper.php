@@ -15,22 +15,12 @@ class ComposerHelper extends Helper
 {
     const HELPER_NAME = 'composer';
 
-    /**
-     * @var RootPackageInterface
-     */
+    /** @var RootPackageInterface */
     private $rootPackage;
 
-    /**
-     * @var Config
-     */
+    /** @var Config */
     private $configuration;
 
-    /**
-     * ComposerHelper constructor.
-     *
-     * @param Config|null      $configuration
-     * @param RootPackageInterface|null $rootPackage
-     */
     public function __construct(Config $configuration = null, RootPackageInterface $rootPackage = null)
     {
         $this->rootPackage = $rootPackage;

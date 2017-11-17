@@ -80,7 +80,7 @@ class ConfigureCommand extends Command
         }
 
         // Check write action
-        $written = $this->writeConfiguration($configuration);
+        $this->writeConfiguration($configuration);
         if (!$written) {
             $output->writeln('<fg=red>The configuration file could not be saved. Give me some permissions!</fg=red>');
             return;

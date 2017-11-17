@@ -55,9 +55,6 @@ class TaskRunnerHelper extends Helper
     }
 
     /**
-     * @param OutputInterface  $output
-     * @param TaskRunnerContext $context
-     *
      * @return int
      */
     public function run(OutputInterface $output, TaskRunnerContext $context)
@@ -88,18 +85,12 @@ class TaskRunnerHelper extends Helper
         return $this->returnSuccessMessage($output, $warnings->getAllMessages());
     }
 
-    /**
-     * @param OutputInterface  $output
-     */
     private function registerEventListeners(OutputInterface $output)
     {
         $this->eventDispatcher->addSubscriber(new ProgressSubscriber($output, new ProgressBar($output)));
     }
 
     /**
-     * @param OutputInterface $output
-     * @param array           $errorMessages
-     *
      * @return int
      */
     private function returnErrorMessages(OutputInterface $output, array $errorMessages, array $warnings)
@@ -125,10 +116,6 @@ class TaskRunnerHelper extends Helper
     }
 
     /**
-     * @param OutputInterface $output
-     *
-     * @param array           $warnings
-     *
      * @return int
      */
     private function returnSuccessMessage(OutputInterface $output, array $warnings)
@@ -144,11 +131,7 @@ class TaskRunnerHelper extends Helper
         return self::CODE_SUCCESS;
     }
 
-    /**
-     * @param OutputInterface $output
-     * @param array $warningMessages
-     */
-    private function returnWarningMessages($output, array $warningMessages)
+    private function returnWarningMessages(OutputInterface $output, array $warningMessages)
     {
         foreach ($warningMessages as $warningMessage) {
             $output->writeln('<fg=yellow>' . $warningMessage . '</fg=yellow>');

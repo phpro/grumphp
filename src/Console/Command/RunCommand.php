@@ -18,14 +18,10 @@ class RunCommand extends Command
 {
     const COMMAND_NAME = 'run';
 
-    /**
-     * @var GrumPHP
-     */
+    /** @var GrumPHP */
     protected $grumPHP;
 
-    /**
-     * @var RegisteredFiles
-     */
+    /** @var RegisteredFiles */
     protected $registeredFilesLocator;
 
     public function __construct(GrumPHP $grumPHP, RegisteredFiles $registeredFilesLocator)
@@ -36,9 +32,6 @@ class RunCommand extends Command
         $this->registeredFilesLocator = $registeredFilesLocator;
     }
 
-    /**
-     * Configure command
-     */
     protected function configure()
     {
         $this->setName(self::COMMAND_NAME);
