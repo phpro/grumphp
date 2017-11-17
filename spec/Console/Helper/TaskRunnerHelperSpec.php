@@ -53,8 +53,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         TaskInterface $task,
         TaskRunnerContext $runnerContext,
         ContextInterface $taskContext
-    )
-    {
+    ) {
         $taskResults = new TaskResultCollection();
         $taskResults->add(TaskResult::createPassed($task->getWrappedObject(), $taskContext->getWrappedObject()));
         $taskResults->add(TaskResult::createFailed($task->getWrappedObject(), $taskContext->getWrappedObject(), 'failed task message'));
@@ -68,8 +67,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         TaskInterface $task,
         TaskRunnerContext $runnerContext,
         ContextInterface $taskContext
-    )
-    {
+    ) {
         $taskResults = new TaskResultCollection();
         $taskResults->add(TaskResult::createPassed($task->getWrappedObject(), $taskContext->getWrappedObject()));
         $taskRunner->run($runnerContext)->willReturn($taskResults);
@@ -82,8 +80,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         TaskInterface $task,
         TaskRunnerContext $runnerContext,
         ContextInterface $taskContext
-    )
-    {
+    ) {
         $testResults = new TaskResultCollection();
         $testResults->add(TaskResult::createNonBlockingFailed($task->getWrappedObject(), $taskContext->getWrappedObject(), 'failed task message'));
         $taskRunner->run($runnerContext)->willReturn($testResults);
@@ -96,8 +93,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         TaskInterface $task,
         TaskRunnerContext $runnerContext,
         ContextInterface $taskContext
-    )
-    {
+    ) {
         $taskResults = new TaskResultCollection();
         $taskResults->add(TaskResult::createFailed($task->getWrappedObject(), $taskContext->getWrappedObject(), 'failed task message'));
         $taskResults->add(TaskResult::createFailed($task->getWrappedObject(), $taskContext->getWrappedObject(), 'another failed task message'));
@@ -118,8 +114,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         TaskInterface $task,
         TaskRunnerContext $runnerContext,
         ContextInterface $taskContext
-    )
-    {
+    ) {
         $taskResults = new TaskResultCollection();
         $taskResults->add(TaskResult::createNonBlockingFailed($task->getWrappedObject(), $taskContext->getWrappedObject(), 'non blocking task message'));
         $taskRunner->run($runnerContext)->willReturn($taskResults);

@@ -198,8 +198,7 @@ class PhpCsFixerV2Spec extends ObjectBehavior
         Process $process,
         RunContext $context,
         PhpCsFixerFormatter $formatter
-    )
-    {
+    ) {
         $formatter->resetCounter()->shouldBeCalled();
         $grumPHP->getTaskConfiguration('phpcsfixer2')->willReturn([
             'config' => 'foo',
@@ -226,8 +225,7 @@ class PhpCsFixerV2Spec extends ObjectBehavior
         Process $process,
         RunContext $context,
         PhpCsFixerFormatter $formatter
-    )
-    {
+    ) {
         $formatter->resetCounter()->shouldBeCalled();
         $grumPHP->getTaskConfiguration('phpcsfixer2')->willReturn([
             'config' => 'foo',

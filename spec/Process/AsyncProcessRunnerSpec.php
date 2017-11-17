@@ -10,7 +10,8 @@ use Symfony\Component\Process\Process;
 
 class AsyncProcessRunnerSpec extends ObjectBehavior
 {
-    public function let(GrumPHP $grumPHP) {
+    public function let(GrumPHP $grumPHP)
+    {
         $this->beConstructedWith($grumPHP);
 
         $grumPHP->getProcessAsyncWaitTime()->willReturn(0);

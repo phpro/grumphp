@@ -48,8 +48,7 @@ class ProcessBuilderSpec extends ObjectBehavior
         GrumPHP $config,
         ExternalCommand $externalCommandLocator,
         IOInterface $io
-    )
-    {
+    ) {
         $config->getProcessTimeout()->willReturn(120);
 
         $arguments = new ProcessArgumentsCollection(['/usr/bin/grumphp']);
@@ -78,7 +77,8 @@ class ProcessBuilderSpec extends ObjectBehavior
                 if (!preg_match($regex, $subject)) {
                     throw new FailureException(sprintf(
                         'Expected a quoted version of %s, got %s.',
-                        $string, $subject
+                        $string,
+                        $subject
                     ));
                 }
 
