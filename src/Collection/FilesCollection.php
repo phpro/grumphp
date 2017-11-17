@@ -113,7 +113,23 @@ class FilesCollection extends ArrayCollection
      */
     public function notPath($pattern)
     {
-        $filter = new Iterator\PathFilterIterator($this->getIterator(), [], [$pattern]);
+        return $this->notPaths([$pattern]);
+    }
+
+    /**
+     * Adds rules that filenames must not match.
+     *
+     * You can use patterns (delimited with / sign) or simple strings.
+     *
+     * $collection->notPaths(['/^spec\/','/^src\/'])
+     *
+     * @param array $pattern
+     *
+     * @return FilesCollection
+     */
+    public function notPaths(array $pattern)
+    {
+        $filter = new Iterator\PathFilterIterator($this->getIterator(), [], $pattern);
 
         return new FilesCollection(iterator_to_array($filter));
     }
@@ -210,5 +226,23 @@ class FilesCollection extends ArrayCollection
         return $this->filter(function (SplFileInfo $file) use ($allowedFiles) {
             return in_array($file->getPathname(), $allowedFiles);
         });
+    }
+
+    /**
+     * @param FilesCollection $files
+     *
+     * @return FilesCollection
+     */
+    public function ensureFiles(FilesCollection $files)
+    {
+        $newFiles = new self($this->toArray());
+
+        foreach ($files as $file) {
+            if (!$newFiles->contains($file)) {
+                $newFiles->add($file);
+            }
+        }
+
+        return $newFiles;
     }
 }

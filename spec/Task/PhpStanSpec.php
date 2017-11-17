@@ -42,6 +42,8 @@ class PhpStanSpec extends ObjectBehavior
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('autoload_file');
         $options->getDefinedOptions()->shouldContain('configuration');
+        $options->getDefinedOptions()->shouldContain('ignore_patterns');
+        $options->getDefinedOptions()->shouldContain('force_patterns');
         $options->getDefinedOptions()->shouldContain('level');
         $options->getDefinedOptions()->shouldContain('triggered_by');
     }
@@ -59,7 +61,6 @@ class PhpStanSpec extends ObjectBehavior
     function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
     {
         $processBuilder->buildProcess('phpstan')->shouldNotBeCalled();
-        $processBuilder->buildProcess()->shouldNotBeCalled();
         $context->getFiles()->willReturn(new FilesCollection());
 
         $result = $this->run($context);
@@ -85,6 +86,58 @@ class PhpStanSpec extends ObjectBehavior
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(true);
+    }
+
+    function it_runs_the_suite_with_ignored_files(ProcessBuilder $processBuilder, Process $process, ContextInterface $context, GrumPHP $grumPHP)
+    {
+        $grumPHP->getTaskConfiguration('phpstan')->willReturn([
+            'ignore_patterns' => ['TaskResultCollection.php'],
+        ]);
+
+        $context->getFiles()->willReturn(new FilesCollection([
+            new SplFileInfo('src/Collection/TaskResultCollection.php', 'src/Collection', 'TaskResultCollection.php'),
+            new SplFileInfo('src/Collection/TaskResultCollection.php', 'src/Collection', 'Passed.php'),
+        ]));
+
+        $processBuilder->buildProcess('phpstan')->shouldNotBeCalled();
+
+        $arguments = new ProcessArgumentsCollection();
+        $processBuilder->createArgumentsForCommand('phpstan')->willReturn($arguments);
+        $processBuilder->buildProcess($arguments)->willReturn($process);
+
+        $process->run()->shouldBeCalled();
+        $process->isSuccessful()->willReturn(true);
+        $process->getErrorOutput()->willReturn('');
+        $process->getOutput()->willReturn('');
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
+        $result->getResultCode()->shouldBe(TaskResult::PASSED);
+    }
+
+    function it_runs_the_suite_with_forced_files(ProcessBuilder $processBuilder, Process $process, ContextInterface $context, GrumPHP $grumPHP)
+    {
+        $grumPHP->getTaskConfiguration('phpstan')->willReturn([
+            'ignore_patterns' => ['TaskResultCollection.php'],
+            'force_patterns' => ['TaskResultCollection.php'],
+        ]);
+
+        $arguments = new ProcessArgumentsCollection();
+        $processBuilder->createArgumentsForCommand('phpstan')->willReturn($arguments);
+        $processBuilder->buildProcess($arguments)->willReturn($process);
+
+        $process->run()->shouldBeCalled();
+        $process->isSuccessful()->willReturn(true);
+        $process->getErrorOutput()->willReturn('');
+        $process->getOutput()->willReturn('');
+
+        $context->getFiles()->willReturn(new FilesCollection([
+                new SplFileInfo('src/Collection/TaskResultCollection.php', 'src/Collection', 'TaskResultCollection.php')])
+        );
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
+        $result->getResultCode()->shouldBe(TaskResult::PASSED);
     }
 
     function it_throws_exception_if_the_process_fails(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)

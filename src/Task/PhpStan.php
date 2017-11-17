@@ -31,12 +31,16 @@ class PhpStan extends AbstractExternalTask
             'autoload_file' => null,
             'configuration' => null,
             'level' => 0,
+            'ignore_patterns' => [],
+            'force_patterns' => [],
             'triggered_by' => ['php'],
         ]);
 
         $resolver->addAllowedTypes('autoload_file', ['null', 'string']);
         $resolver->addAllowedTypes('configuration', ['null', 'string']);
         $resolver->addAllowedTypes('level', ['int']);
+        $resolver->addAllowedTypes('ignore_patterns', ['array']);
+        $resolver->addAllowedTypes('force_patterns', ['array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
@@ -56,7 +60,16 @@ class PhpStan extends AbstractExternalTask
     public function run(ContextInterface $context)
     {
         $config = $this->getConfiguration();
-        $files = $context->getFiles()->extensions($config['triggered_by']);
+
+        $files = $context
+            ->getFiles()
+            ->notPaths($config['ignore_patterns'])
+            ->extensions($config['triggered_by']);
+
+        if (!empty($config['force_patterns'])) {
+            $forcedFiles = $context->getFiles()->paths($config['force_patterns']);
+            $files = $files->ensureFiles($forcedFiles);
+        }
 
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);

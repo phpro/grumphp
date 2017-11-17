@@ -17,6 +17,8 @@ parameters:
             autoload_file: ~
             configuration: ~
             level: 0
+            force_patterns: []
+            ignore_patterns: []
             triggered_by: ['php']
 ```
 
@@ -37,6 +39,18 @@ With this parameter you can specify the path your project's configuration file.
 *Default: 0*
 
 With this parameter you can set the level of rule options - the higher the stricter.
+
+**force_patterns**
+
+*Default: []*
+
+This is a list of patterns that will be forced for analysis even when the file or path is ignored.
+
+**ignore_patterns**
+
+*Default: []*
+
+This is a list of patterns that will be ignored by phpstan. With this option you can skip files like tests. Leave this option blank to run phpstan for every php file.
 
 **triggered_by**
 
