@@ -29,6 +29,7 @@ install:
     - IF %PHP%==1 echo memory_limit=1024M >> php.ini
     - IF %PHP%==1 echo extension_dir=ext >> php.ini
     - IF %PHP%==1 echo extension=php_curl.dll >> php.ini
+    - IF %PHP%==1 echo extension=php_mbstring.dll >> php.ini
     - IF %PHP%==1 echo extension=php_openssl.dll >> php.ini
     - cd C:\tools
     - appveyor DownloadFile https://getcomposer.org/composer.phar

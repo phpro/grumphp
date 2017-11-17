@@ -29,7 +29,7 @@
         "nikic/php-parser": "~2.1",
         "phpspec/phpspec": "^3.2.2",
         "phpspec/prophecy": "^1.6.2",
-        "phpunit/phpunit": "^4.8.31",
+        "phpunit/phpunit": "^5.7.25|^6.4.4",
         "sebastian/comparator": "^1.2.4",
         "sensiolabs/security-checker": "^3.0",
         "squizlabs/php_codesniffer": "~2.4"
