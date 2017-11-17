@@ -156,6 +156,16 @@ services:
             - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, config: gulp}
+
+    task.infection:
+        class: GrumPHP\Task\Infection
+        arguments:
+          - '@config'
+          - '@process_builder'
+          - '@formatter.raw_process'
+        tags:
+          - {name: grumphp.task, config: infection}
+
     task.jsonlint:
         class: GrumPHP\Task\JsonLint
         arguments:

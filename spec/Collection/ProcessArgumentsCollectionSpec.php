@@ -111,4 +111,15 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
 
         $this->getValues()->shouldBe(['file1.txt,file2.txt']);
     }
+
+    function it_should_be_able_to_add_an_argument_with_comma_separated_files()
+    {
+        $files = new FilesCollection([
+            new SplFileInfo('file1.txt'),
+            new SplFileInfo('file2.txt')
+        ]);
+        $this->addArgumentWithCommaSeparatedFiles('--argument=%s', $files);
+
+        $this->getValues()->shouldBe(['--argument=file1.txt,file2.txt']);
+    }
 }

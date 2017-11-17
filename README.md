@@ -45,6 +45,7 @@ To make GrumPHP even more awesome, it will suggest installing some extra package
 - codegyre/robo : ~0.7
 - doctrine/orm: ~2.5
 - friendsofphp/php-cs-fixer : ~1|~2
+- infection/infection: ^0.5
 - maglnet/composer-require-checker : ~0.1
 - malukenho/kawaii-gherkin : ~0.1
 - phing/phing : ~2.0
@@ -111,6 +112,7 @@ parameters:
         git_commit_message: ~
         grunt: ~
         gulp: ~
+        infection: ~
         jsonlint: ~
         kahlan: ~
         make: ~
