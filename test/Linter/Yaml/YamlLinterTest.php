@@ -67,7 +67,12 @@ class YamlLinterTest extends TestCase
     function it_should_be_able_to_handle_object_support()
     {
         $this->linter->setObjectSupport(true);
-        $fixture = YamlLinter::supportsFlags() ? 'object-support.yml' : 'object-support-old.yml';
+
+        $fixture = 'object-support-old.yml';
+        if (YamlLinter::supportsFlags()) {
+            $fixture = YamlLinter::supportsTagsWithoutColon() ? 'object-support.yml' : 'object-support-with-colon.yml';
+        }
+
         $this->validateFixture($fixture, 0);
     }
 
@@ -78,7 +83,12 @@ class YamlLinterTest extends TestCase
     {
         $this->linter->setObjectSupport(false);
         $this->linter->setExceptionOnInvalidType(true);
-        $fixture = YamlLinter::supportsFlags() ? 'object-support.yml' : 'object-support-old.yml';
+
+        $fixture = 'object-support-old.yml';
+        if (YamlLinter::supportsFlags()) {
+            $fixture = YamlLinter::supportsTagsWithoutColon() ? 'object-support.yml' : 'object-support-with-colon.yml';
+        }
+
         $this->validateFixture($fixture, 1);
     }
 

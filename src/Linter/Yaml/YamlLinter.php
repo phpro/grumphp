@@ -7,6 +7,7 @@ use GrumPHP\Linter\LinterInterface;
 use GrumPHP\Util\Filesystem;
 use ReflectionClass;
 use SplFileInfo;
+use Symfony\Component\Yaml\Dumper;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -76,6 +77,19 @@ class YamlLinter implements LinterInterface
         $params = $method->getParameters();
 
         return $params[1]->getName() === 'flags';
+    }
+
+    /**
+     * This method can be used to determine the Symfony Linter version.
+     * If this method returns true, you are using Symfony YAML >= 4.0.0.
+     *
+     * @link http://symfony.com/blog/new-in-symfony-3-1-yaml-deprecations#deprecated-the-dumper-setindentation-method
+     *
+     * @return bool
+     */
+    public static function supportsTagsWithoutColon()
+    {
+        return !method_exists(Dumper::class, 'setIndentation');
     }
 
     /**
