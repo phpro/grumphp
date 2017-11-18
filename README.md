@@ -163,7 +163,7 @@ Since GrumPHP is just a CLI tool, these commands can be triggered:
 
 ## Compatibility
 
-GrumPHP works with PHP 5.4 or above, and is also tested to work with HHVM.
+GrumPHP works with PHP 5.6 or above.
 
 This package has been tested with following git clients:
 
