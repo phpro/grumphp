@@ -10,9 +10,7 @@ services:
           - '@service_container'
 
     event_dispatcher:
-        class: Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
-        arguments:
-          - '@service_container'
+        class: Symfony\Component\EventDispatcher\EventDispatcher
 
     filesystem:
         alias: grumphp.util.filesystem
