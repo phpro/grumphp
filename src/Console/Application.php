@@ -16,7 +16,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Process\ProcessBuilder;
 
 class Application extends SymfonyConsole
 {
@@ -103,8 +102,7 @@ class Application extends SymfonyConsole
         );
         $commands[] = new Command\Git\InitCommand(
             $container->get('config'),
-            $container->get('grumphp.util.filesystem'),
-            ProcessBuilder::create()
+            $container->get('grumphp.util.filesystem')
         );
         $commands[] = new Command\Git\PreCommitCommand(
             $container->get('config'),

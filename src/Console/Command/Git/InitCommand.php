@@ -11,7 +11,7 @@ use SplFileInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Process\Process;
 
 /**
  * This command is responsible for enabling all the configured hooks.
@@ -39,11 +39,6 @@ class InitCommand extends Command
     protected $filesystem;
 
     /**
-     * @var ProcessBuilder
-     */
-    protected $processBuilder;
-
-    /**
      * @var InputInterface
      */
     protected $input;
@@ -51,15 +46,13 @@ class InitCommand extends Command
     /**
      * @param GrumPHP $grumPHP
      * @param Filesystem $filesystem
-     * @param ProcessBuilder $processBuilder
      */
-    public function __construct(GrumPHP $grumPHP, Filesystem $filesystem, ProcessBuilder $processBuilder)
+    public function __construct(GrumPHP $grumPHP, Filesystem $filesystem)
     {
         parent::__construct();
 
         $this->grumPHP = $grumPHP;
         $this->filesystem = $filesystem;
-        $this->processBuilder = $processBuilder;
     }
 
     /**
@@ -140,16 +133,24 @@ class InitCommand extends Command
     protected function generateHookCommand($command)
     {
         $executable = $this->paths()->getBinCommand('grumphp', true);
-        $this->processBuilder->setArguments([
+        $arguments = [
             $this->paths()->getRelativeProjectPath($executable),
-            $command
-        ]);
+            $command,
+        ];
 
         if ($configFile = $this->useExoticConfigFile()) {
-            $this->processBuilder->add(sprintf('--config=%s', $configFile));
+            $arguments[] = sprintf('--config=%s', $configFile);
         }
 
-        return $this->processBuilder->getProcess()->getCommandLine();
+        // Backwards compatible layer for Symfony Process up until 3.3.
+        if (class_exists('Symfony\Component\Process\ProcessBuilder')) {
+            $arguments = implode(' ', array_map(
+                ['Symfony\Component\Process\ProcessUtils', 'escapeArgument'],
+                $arguments
+            ));
+        }
+
+        return (new Process($arguments))->getCommandLine();
     }
 
     /**
