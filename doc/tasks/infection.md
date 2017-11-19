@@ -17,7 +17,6 @@ It lives under the `infection` namespace and has following configurable paramete
 parameters:
     tasks:
         infection:
-            configuration: ~
             threads: ~
             test_framework: ~
             only_covered: false
@@ -27,14 +26,6 @@ parameters:
             mutators: []
             triggered_by: [php]
 ```
-
-**configuration**
-
-*Default: null*
-
-By defaut the `infection.json.dist` wil be used.
-You can specify an alternate location for this file by changing this option.
-
 
 **threads**
 
