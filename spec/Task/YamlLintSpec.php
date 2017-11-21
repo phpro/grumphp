@@ -42,6 +42,8 @@ class YamlLintSpec extends AbstractLinterTaskSpec
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('object_support');
         $options->getDefinedOptions()->shouldContain('exception_on_invalid_type');
+        $options->getDefinedOptions()->shouldContain('parse_custom_tags');
+        $options->getDefinedOptions()->shouldContain('parse_constant');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
@@ -70,6 +72,8 @@ class YamlLintSpec extends AbstractLinterTaskSpec
         $linter->isInstalled()->willReturn(true);
         $linter->setObjectSupport(false)->shouldBeCalled();
         $linter->setExceptionOnInvalidType(false)->shouldBeCalled();
+        $linter->setParseCustomTags(false)->shouldBeCalled();
+        $linter->setParseConstants(false)->shouldBeCalled();
         $linter->lint(Argument::type('SplFileInfo'))->willReturn(new LintErrorsCollection());
 
         $context->getFiles()->willReturn(new FilesCollection([
@@ -86,6 +90,8 @@ class YamlLintSpec extends AbstractLinterTaskSpec
         $linter->isInstalled()->willReturn(true);
         $linter->setObjectSupport(false)->shouldBeCalled();
         $linter->setExceptionOnInvalidType(false)->shouldBeCalled();
+        $linter->setParseCustomTags(false)->shouldBeCalled();
+        $linter->setParseConstants(false)->shouldBeCalled();
         $linter->lint(Argument::type('SplFileInfo'))->willReturn(new LintErrorsCollection([
             new YamlLintError(LintError::TYPE_ERROR, 0, 'error', 'file.yaml', 1, 1)
         ]));

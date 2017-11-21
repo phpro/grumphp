@@ -83,6 +83,64 @@ class YamlLinterTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    function it_should_handle_exceptions_on_constants()
+    {
+        if (!YamlLinter::supportsFlags()) {
+            $this->markTestSkipped('Parsing constants is not supported by the current version of symfony/yaml');
+        }
+
+        $this->linter->setExceptionOnInvalidType(true);
+        $fixture = 'constant-support.yml';
+        $this->validateFixture($fixture, 1);
+    }
+
+    /**
+     * @test
+     */
+    function it_should_validate_constants()
+    {
+        if (!YamlLinter::supportsFlags()) {
+            $this->markTestSkipped('Parsing constants is not supported by the current version of symfony/yaml');
+        }
+
+        $this->linter->setExceptionOnInvalidType(true);
+        $this->linter->setParseConstants(true);
+        $fixture = 'constant-support.yml';
+        $this->validateFixture($fixture, 0);
+    }
+
+    /**
+     * @test
+     */
+    function it_should_handle_exceptions_on_custom_tags()
+    {
+        if (!YamlLinter::supportsFlags()) {
+            $this->markTestSkipped('Parsing custom tags is not supported by the current version of symfony/yaml');
+        }
+
+        $this->linter->setExceptionOnInvalidType(true);
+        $fixture = 'tags-support.yml';
+        $this->validateFixture($fixture, 1);
+    }
+
+    /**
+     * @test
+     */
+    function it_should_validate_custom_tags()
+    {
+        if (!YamlLinter::supportsFlags()) {
+            $this->markTestSkipped('Parsing custom tags is not supported by the current version of symfony/yaml');
+        }
+
+        $this->linter->setExceptionOnInvalidType(true);
+        $this->linter->setParseCustomTags(true);
+        $fixture = 'tags-support.yml';
+        $this->validateFixture($fixture, 0);
+    }
+
+    /**
      * @return array
      */
     function provideYamlValidation()
