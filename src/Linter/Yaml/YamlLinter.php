@@ -108,12 +108,8 @@ class YamlLinter implements LinterInterface
         $flags = 0;
         $flags |= $this->objectSupport ? Yaml::PARSE_OBJECT : 0;
         $flags |= $this->exceptionOnInvalidType ? Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE : 0;
-
-        // Yaml::PARSE_CONSTANT is only available in Symfony Yaml >= 3.2
-        $flags |= $this->parseConstants && defined('Symfony\Component\Yaml\Yaml::PARSE_CONSTANT') ? Yaml::PARSE_CONSTANT : 0;
-
-        // Yaml::PARSE_CUSTOM_TAGS is only available in Symfony Yaml >= 3.3
-        $flags |= $this->parseCustomTags && defined('Symfony\Component\Yaml\Yaml::PARSE_CUSTOM_TAGS') ? Yaml::PARSE_CUSTOM_TAGS : 0;
+        $flags |= $this->parseConstants ? Yaml::PARSE_CONSTANT : 0;
+        $flags |= $this->parseCustomTags ? Yaml::PARSE_CUSTOM_TAGS : 0;
         Yaml::parse($content, $flags);
     }
 
@@ -146,7 +142,8 @@ class YamlLinter implements LinterInterface
      */
     public function setParseCustomTags($parseCustomTags)
     {
-        $this->parseCustomTags = $parseCustomTags;
+        // Yaml::PARSE_CONSTANT is only available in Symfony Yaml >= 3.2
+        $this->parseCustomTags = $parseCustomTags && defined('Symfony\Component\Yaml\Yaml::PARSE_CONSTANT');
     }
 
     /**
@@ -154,6 +151,7 @@ class YamlLinter implements LinterInterface
      */
     public function setParseConstants($parseConstants)
     {
-        $this->parseConstants = $parseConstants;
+        // Yaml::PARSE_CUSTOM_TAGS is only available in Symfony Yaml >= 3.3
+        $this->parseConstants = $parseConstants && defined('Symfony\Component\Yaml\Yaml::PARSE_CUSTOM_TAGS');
     }
 }
