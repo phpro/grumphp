@@ -60,15 +60,7 @@ class ProcessBuilder
      */
     public function buildProcess(ProcessArgumentsCollection $arguments)
     {
-        $commandline = $arguments->getValues();
-
-        // Backwards compatibility layer for Symfony Process < 3.3
-        if (class_exists('Symfony\Component\Process\ProcessBuilder')) {
-            $commandline = join(' ', array_map(
-                ['Symfony\Component\Process\ProcessUtils', 'escapeArgument'],
-                $commandline
-            ));
-        }
+        $commandline = $arguments->generateCliCommand();
 
         $process = new Process($commandline);
         $process->setTimeout($this->config->getProcessTimeout());
