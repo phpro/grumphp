@@ -30,9 +30,6 @@ final class ContainerFactory
             new RegisterListenersPass('event_dispatcher', 'grumphp.event_listener', 'grumphp.event_subscriber')
         );
 
-        // Symfony 4.0 backward compatibility
-        $container->addCompilerPass(new Compiler\PublicServiceVisibilityCompilerPass());
-
         // Load basic service file + custom user configuration
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../resources/config'));
         $loader->load('formatter.yml');
