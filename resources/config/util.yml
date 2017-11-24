@@ -4,6 +4,7 @@ services:
 
     grumphp.util.filesystem:
         class: GrumPHP\Util\Filesystem
+        public: true
 
     grumphp.util.phpversion:
         class: GrumPHP\Util\PhpVersion

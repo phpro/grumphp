@@ -8,9 +8,11 @@ services:
         class: GrumPHP\Configuration\GrumPHP
         arguments:
           - '@service_container'
+        public: true
 
     event_dispatcher:
         class: Symfony\Component\EventDispatcher\EventDispatcher
+        public: true
 
     filesystem:
         alias: grumphp.util.filesystem
@@ -24,24 +26,28 @@ services:
         - '@config'
         - '@locator.external_command'
         - '@grumphp.io'
+      public: true
 
     git.repository:
         class: Gitonomy\Git\Repository
         arguments:
           - '%git_dir%'
           - { logger: '@grumphp.logger' }
+        public: true
 
     task_runner:
         class: GrumPHP\Runner\TaskRunner
         arguments:
           - '@config'
           - '@event_dispatcher'
+        public: true
 
     locator.external_command:
         class: GrumPHP\Locator\ExternalCommand
         arguments:
           - '%bin_dir%'
           - '@executable_finder'
+        public: true
 
     locator.configuration_file:
         class: GrumPHP\Locator\ConfigurationFile
@@ -53,11 +59,13 @@ services:
         arguments:
           - '@git.repository'
           - '@filesystem'
+        public: true
 
     locator.registered_files:
         class: GrumPHP\Locator\RegisteredFiles
         arguments:
           - '@git.repository'
+        public: true
 
     grumphp.io:
         alias: grumphp.io.console
@@ -86,10 +94,12 @@ services:
     console.input:
         class: Symfony\Component\Console\Input\ArgvInput
         synthetic: true
+        public: true
 
     console.output:
         class: Symfony\Component\Console\Output\ConsoleOutput
         synthetic: true
+        public: true
 
     json.parser:
         class: Seld\JsonLint\JsonParser

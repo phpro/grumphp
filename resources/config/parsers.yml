@@ -41,6 +41,7 @@ services:
       arguments: []
       tags:
         - {name: 'php_parser.visitor', alias: 'forbidden_function_calls'}
+      public: true
 
     grumphp.parser.php.visitor.forbidden_static_method_calls:
       class: 'GrumPHP\Parser\Php\Visitor\ForbiddenStaticMethodCallsVisitor'
@@ -53,15 +54,18 @@ services:
       arguments: []
       tags:
         - {name: 'php_parser.visitor', alias: 'nameresolver'}
+      public: true
 
     grumphp.parser.php.visitor.never_use_else:
       class: 'GrumPHP\Parser\Php\Visitor\NeverUseElseVisitor'
       arguments: []
       tags:
         - {name: 'php_parser.visitor', alias: 'never_use_else'}
+      public: true
 
     grumphp.parser.php.visitor.no_exit_statements:
       class: 'GrumPHP\Parser\Php\Visitor\NoExitStatementsVisitor'
       arguments: []
       tags:
         - {name: 'php_parser.visitor', alias: 'no_exit_statements'}
+      public: true
