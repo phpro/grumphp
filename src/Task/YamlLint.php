@@ -31,10 +31,14 @@ class YamlLint extends AbstractLinterTask
         $resolver->setDefaults([
             'object_support' => false,
             'exception_on_invalid_type' => false,
+            'parse_constant' => false,
+            'parse_custom_tags' => false,
         ]);
 
         $resolver->addAllowedTypes('object_support', ['bool']);
         $resolver->addAllowedTypes('exception_on_invalid_type', ['bool']);
+        $resolver->addAllowedTypes('parse_constant', ['bool']);
+        $resolver->addAllowedTypes('parse_custom_tags', ['bool']);
 
         return $resolver;
     }
@@ -60,6 +64,8 @@ class YamlLint extends AbstractLinterTask
         $config = $this->getConfiguration();
         $this->linter->setObjectSupport($config['object_support']);
         $this->linter->setExceptionOnInvalidType($config['exception_on_invalid_type']);
+        $this->linter->setParseCustomTags($config['parse_custom_tags']);
+        $this->linter->setParseConstants($config['parse_constant']);
 
         try {
             $lintErrors = $this->lint($files);
