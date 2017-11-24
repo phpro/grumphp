@@ -7,6 +7,7 @@
 - [Does GrumPHP support Windows](#does-grumphp-support-windows)
 - [How can I fix Composer require conflicts?](#how-can-i-fix-composer-require-conflicts)
 - [Why is the unstaged file state being used?](#why-is-the-unstaged-file-state-being-used)
+- [How can I fix the SourceTree $PATH problem?](#how-can-i-fix-the-sourcetree-path-problem)
 
 
 ## How can I bypass GrumPHP
@@ -84,5 +85,21 @@ You can resolve this problem by adding the following (or similar) to the compose
 ## Why is the unstaged file state being used?
 
 GrumPHP can only work with the actual files on the filesystem. This means that your unstaged changes will be staged when GrumPHP checks your codebase. It is possible to use the staged files by stashing your changes with the `ignore_unstaged_changes` parameter. Do note that this parameter is risky and won't work with partial commits. [More information can be found here](https://github.com/phpro/grumphp/blob/master/doc/parameters.md).
+
+[up](#table-of-content)
+
+## How can I fix the SourceTree $PATH problem?
+
+For example:
+- Warning: Unsupported declare 'strict_types' in vendor/ocramius/proxy-manager/src/ProxyManager/Configuration.php on line 19
+- Parse error: parse error, expecting ';'' or'{'' in vendor/ocramius/proxy-manager/src/ProxyManager/Configuration.php on line 87
+
+SourceTree probably doesn't import your local $PATH variable before running the scripts. This causes a lot of issues like a different PHP version than the one installed locally or exectuables that can't be found.
+
+You can fix this by adding following line to the top of the git hooks:
+
+```bash
+export PATH=/usr/local/bin:$PATH
+```
 
 [up](#table-of-content)
