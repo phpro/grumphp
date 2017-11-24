@@ -5,13 +5,13 @@ namespace GrumPHP\Console\Command\Git;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Exception\FileNotFoundException;
+use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Util\Filesystem;
 use RuntimeException;
 use SplFileInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Process;
 
 /**
  * This command is responsible for enabling all the configured hooks.
@@ -44,15 +44,22 @@ class InitCommand extends Command
     protected $input;
 
     /**
+     * @var ProcessBuilder
+     */
+    private $processBuilder;
+
+    /**
      * @param GrumPHP $grumPHP
      * @param Filesystem $filesystem
+     * @param ProcessBuilder $processBuilder
      */
-    public function __construct(GrumPHP $grumPHP, Filesystem $filesystem)
+    public function __construct(GrumPHP $grumPHP, Filesystem $filesystem, ProcessBuilder $processBuilder)
     {
         parent::__construct();
 
         $this->grumPHP = $grumPHP;
         $this->filesystem = $filesystem;
+        $this->processBuilder = $processBuilder;
     }
 
     /**
@@ -132,25 +139,15 @@ class InitCommand extends Command
      */
     protected function generateHookCommand($command)
     {
-        $executable = $this->paths()->getBinCommand('grumphp', true);
-        $arguments = [
-            $this->paths()->getRelativeProjectPath($executable),
-            $command,
-        ];
+        $configFile = $this->useExoticConfigFile();
 
-        if ($configFile = $this->useExoticConfigFile()) {
-            $arguments[] = sprintf('--config=%s', $configFile);
-        }
+        $arguments = $this->processBuilder->createArgumentsForCommand('grumphp');
+        $arguments->add($command);
+        $arguments->addOptionalArgument('--config=%s', $configFile);
 
-        // Backwards compatible layer for Symfony Process up until 3.3.
-        if (class_exists('Symfony\Component\Process\ProcessBuilder')) {
-            $arguments = implode(' ', array_map(
-                ['Symfony\Component\Process\ProcessUtils', 'escapeArgument'],
-                $arguments
-            ));
-        }
+        $process = $this->processBuilder->buildProcess($arguments);
 
-        return (new Process($arguments))->getCommandLine();
+        return $process->getCommandLine();
     }
 
     /**

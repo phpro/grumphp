@@ -102,7 +102,8 @@ class Application extends SymfonyConsole
         );
         $commands[] = new Command\Git\InitCommand(
             $container->get('config'),
-            $container->get('grumphp.util.filesystem')
+            $container->get('grumphp.util.filesystem'),
+            $container->get('process_builder')
         );
         $commands[] = new Command\Git\PreCommitCommand(
             $container->get('config'),
