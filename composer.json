@@ -31,7 +31,7 @@
         "phpspec/prophecy": "^1.6.2",
         "phpunit/phpunit": "^5.7.25|^6.4.4",
         "sebastian/comparator": "^1.2.4",
-        "sensiolabs/security-checker": "^3.0|^4.0",
+        "sensiolabs/security-checker": "^4.0",
         "squizlabs/php_codesniffer": "~2.4"
     },
     "suggest": {
