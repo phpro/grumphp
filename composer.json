@@ -11,6 +11,7 @@
         "gitonomy/gitlib": "~1.0",
         "monolog/monolog": "~1.16",
         "ocramius/proxy-manager": "~2.0.4",
+        "ocramius/package-versions": "~1.1",
         "seld/jsonlint": "~1.1",
         "symfony/config": "~2.7|~3.0",
         "symfony/console": "~2.7|~3.0",
