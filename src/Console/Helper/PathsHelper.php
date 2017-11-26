@@ -3,8 +3,8 @@
 namespace GrumPHP\Console\Helper;
 
 use GrumPHP\Configuration\GrumPHP;
-use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Exception\FileNotFoundException;
+use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Locator\ExternalCommand;
 use GrumPHP\Util\Filesystem;
 use SplFileInfo;

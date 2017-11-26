@@ -2,8 +2,8 @@
 
 namespace GrumPHP\Util;
 
-use Symfony\Component\Finder\Glob;
 use RuntimeException;
+use Symfony\Component\Finder\Glob;
 
 class Regex
 {

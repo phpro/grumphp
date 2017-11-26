@@ -3,17 +3,17 @@
 namespace GrumPHP\Task\Git;
 
 use Gitonomy\Git\Exception\ProcessException;
+use Gitonomy\Git\Repository;
+use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
-use GrumPHP\Util\Regex;
-use GrumPHP\Exception\RuntimeException;
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Task\TaskInterface;
+use GrumPHP\Util\Regex;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Gitonomy\Git\Repository;
 
 /**
  * Git BranchName Task

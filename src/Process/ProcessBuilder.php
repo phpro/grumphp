@@ -9,7 +9,7 @@ use GrumPHP\IO\IOInterface;
 use GrumPHP\Locator\ExternalCommand;
 use GrumPHP\Util\Platform;
 use Symfony\Component\Process\Process;
-use \Symfony\Component\Process\ProcessBuilder as SymfonyProcessBuilder;
+use Symfony\Component\Process\ProcessBuilder as SymfonyProcessBuilder;
 
 class ProcessBuilder
 {

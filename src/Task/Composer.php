@@ -11,8 +11,8 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Util\Filesystem;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use SplFileInfo;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Composer task

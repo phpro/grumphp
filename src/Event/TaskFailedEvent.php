@@ -5,7 +5,6 @@ namespace GrumPHP\Event;
 use Exception;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
-use Throwable;
 
 class TaskFailedEvent extends TaskEvent
 {

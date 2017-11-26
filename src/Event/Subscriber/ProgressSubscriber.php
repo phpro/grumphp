@@ -6,10 +6,10 @@ use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Event\RunnerEvents;
 use GrumPHP\Event\TaskEvent;
 use GrumPHP\Event\TaskEvents;
+use ReflectionClass;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use ReflectionClass;
 
 class ProgressSubscriber implements EventSubscriberInterface
 {
