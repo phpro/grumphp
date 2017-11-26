@@ -80,8 +80,6 @@ class PhpcsFormatterSpec extends ObjectBehavior
     }
 
     /**
-     * @param $files
-     *
      * @return string
      */
     private function parseJson(array $files)
