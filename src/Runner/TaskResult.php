@@ -53,7 +53,7 @@ class TaskResult implements TaskResultInterface
     /**
      * @return TaskResult
      */
-    public static function createSkipped(TaskInterface $task, ContextInterface $context): TaskResult
+    public static function createSkipped(TaskInterface $task, ContextInterface $context): self
     {
         return new self(self::SKIPPED, $task, $context);
     }
@@ -61,7 +61,7 @@ class TaskResult implements TaskResultInterface
     /**
      * @return TaskResult
      */
-    public static function createPassed(TaskInterface $task, ContextInterface $context): TaskResult
+    public static function createPassed(TaskInterface $task, ContextInterface $context): self
     {
         return new self(self::PASSED, $task, $context, null);
     }
@@ -73,7 +73,7 @@ class TaskResult implements TaskResultInterface
         TaskInterface $task,
         ContextInterface $context,
         string $message = null
-    ): TaskResult {
+    ): self {
         return new self(self::FAILED, $task, $context, $message);
     }
 
@@ -84,7 +84,7 @@ class TaskResult implements TaskResultInterface
         TaskInterface $task,
         ContextInterface $context,
         string $message
-    ): TaskResult {
+    ): self {
         return new self(self::NONBLOCKING_FAILED, $task, $context, $message);
     }
 

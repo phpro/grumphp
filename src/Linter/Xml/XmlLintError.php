@@ -30,7 +30,7 @@ class XmlLintError extends LintError
     /**
      * @return XmlLintError
      */
-    public static function fromLibXmlError(LibXMLError $error): XmlLintError
+    public static function fromLibXmlError(LibXMLError $error): self
     {
         $type = LintError::TYPE_NONE;
         switch ($error->level) {
@@ -45,7 +45,7 @@ class XmlLintError extends LintError
                 break;
         }
 
-        return new XmlLintError($type, $error->code, $error->message, $error->file, $error->line, $error->column);
+        return new self($type, $error->code, $error->message, $error->file, $error->line, $error->column);
     }
 
     public function getCode(): int

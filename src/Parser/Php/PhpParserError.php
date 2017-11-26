@@ -10,7 +10,7 @@ class PhpParserError extends ParseError
     /**
      * @return PhpParserError
      */
-    public static function fromParseException(Error $exception, string $filename): PhpParserError
+    public static function fromParseException(Error $exception, string $filename): self
     {
         return new self(
             ParseError::TYPE_FATAL,

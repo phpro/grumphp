@@ -11,9 +11,9 @@ class JsonLintError extends LintError
     /**
      * @return JsonLintError
      */
-    public static function fromParsingException(SplFileInfo $file, ParsingException $exception): JsonLintError
+    public static function fromParsingException(SplFileInfo $file, ParsingException $exception): self
     {
-        return new JsonLintError(LintError::TYPE_ERROR, $exception->getMessage(), $file->getPathname(), 0);
+        return new self(LintError::TYPE_ERROR, $exception->getMessage(), $file->getPathname(), 0);
     }
 
     public function __toString(): string

@@ -7,7 +7,7 @@ class InvalidArgumentException extends RuntimeException
     /**
      * @return InvalidArgumentException
      */
-    public static function unknownTestSuite($testSuiteName): InvalidArgumentException
+    public static function unknownTestSuite($testSuiteName): self
     {
         return new self(sprintf('Unknown testsuite specified: %s', $testSuiteName));
     }

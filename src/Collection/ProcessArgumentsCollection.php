@@ -10,9 +10,9 @@ class ProcessArgumentsCollection extends ArrayCollection
     /**
      * @return ProcessArgumentsCollection
      */
-    public static function forExecutable(string $executable): ProcessArgumentsCollection
+    public static function forExecutable(string $executable): self
     {
-        return new ProcessArgumentsCollection([$executable]);
+        return new self([$executable]);
     }
 
     /**

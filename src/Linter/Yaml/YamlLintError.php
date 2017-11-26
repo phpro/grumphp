@@ -24,9 +24,9 @@ class YamlLintError extends LintError
     /**
      * @return YamlLintError
      */
-    public static function fromParseException(ParseException $exception): YamlLintError
+    public static function fromParseException(ParseException $exception): self
     {
-        return new YamlLintError(
+        return new self(
             LintError::TYPE_ERROR,
             $exception->getMessage(),
             $exception->getParsedFile(),

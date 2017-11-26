@@ -10,7 +10,7 @@ class PlatformException extends RuntimeException
     /**
      * @return PlatformException
      */
-    public static function commandLineStringLimit(Process $process): PlatformException
+    public static function commandLineStringLimit(Process $process): self
     {
         return new self(sprintf(
             'The Windows maximum amount of %s input characters exceeded while running process: %s ...',
