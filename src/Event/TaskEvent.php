@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Event;
 
@@ -20,7 +20,6 @@ class TaskEvent extends Event
 
     /**
      * @param TaskInterface    $task
-     * @param ContextInterface $context
      */
     public function __construct(TaskInterface $task, ContextInterface $context)
     {
@@ -31,7 +30,7 @@ class TaskEvent extends Event
     /**
      * @return TaskInterface
      */
-    public function getTask()
+    public function getTask(): TaskInterface
     {
         return $this->task;
     }
@@ -39,7 +38,7 @@ class TaskEvent extends Event
     /**
      * @return ContextInterface
      */
-    public function getContext()
+    public function getContext(): ContextInterface
     {
         return $this->context;
     }

@@ -1,10 +1,13 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace GrumPHP\Task;
 
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Runner\TaskResult;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Php Parser task
@@ -19,7 +22,7 @@ class PhpParser extends AbstractParserTask
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'phpparser';
     }
@@ -27,7 +30,7 @@ class PhpParser extends AbstractParserTask
     /**
      * {@inheritdoc}
      */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = parent::getConfigurableOptions();
 
@@ -43,7 +46,7 @@ class PhpParser extends AbstractParserTask
     /**
      * {@inheritdoc}
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
         return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
     }
@@ -51,7 +54,7 @@ class PhpParser extends AbstractParserTask
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
 

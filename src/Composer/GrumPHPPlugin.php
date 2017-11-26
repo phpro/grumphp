@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Composer;
 
@@ -73,7 +73,6 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * When this package is updated, the git hook is also initialized
      *
-     * @param PackageEvent $event
      */
     public function postPackageInstall(PackageEvent $event)
     {
@@ -93,7 +92,6 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * When this package is updated, the git hook is also updated
      *
-     * @param PackageEvent $event
      */
     public function postPackageUpdate(PackageEvent $event)
     {
@@ -112,7 +110,6 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * When this package is uninstalled, the generated git hooks need to be removed
      *
-     * @param PackageEvent $event
      */
     public function prePackageUninstall(PackageEvent $event)
     {
@@ -142,11 +139,10 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * @param PackageInterface $package
      *
      * @return bool
      */
-    protected function guardIsGrumPhpPackage(PackageInterface $package)
+    protected function guardIsGrumPhpPackage(PackageInterface $package): bool
     {
         return $package->getName() == self::PACKAGE_NAME;
     }

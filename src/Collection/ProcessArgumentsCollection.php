@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Collection;
 
@@ -12,16 +12,16 @@ class ProcessArgumentsCollection extends ArrayCollection
      *
      * @return ProcessArgumentsCollection
      */
-    public static function forExecutable($executable)
+    public static function forExecutable(string $executable): ProcessArgumentsCollection
     {
         return new ProcessArgumentsCollection([$executable]);
     }
 
     /**
      * @param string $argument
-     * @param string $value
+     * @param string|bool|int $value
      */
-    public function addOptionalArgument($argument, $value)
+    public function addOptionalArgument(string $argument, $value)
     {
         if (!$value) {
             return;
@@ -32,9 +32,9 @@ class ProcessArgumentsCollection extends ArrayCollection
 
     /**
      * @param string $argument
-     * @param string $value
+     * @param string|null $value
      */
-    public function addOptionalArgumentWithSeparatedValue($argument, $value)
+    public function addOptionalArgumentWithSeparatedValue(string $argument, $value)
     {
         if (!$value) {
             return;
@@ -49,7 +49,7 @@ class ProcessArgumentsCollection extends ArrayCollection
      * @param array  $values
      * @param string $delimiter
      */
-    public function addOptionalCommaSeparatedArgument($argument, array $values, $delimiter = ',')
+    public function addOptionalCommaSeparatedArgument(string $argument, array $values, string $delimiter = ',')
     {
         if (!count($values)) {
             return;
@@ -62,7 +62,7 @@ class ProcessArgumentsCollection extends ArrayCollection
      * @param string $argument
      * @param array  $values
      */
-    public function addArgumentArray($argument, array $values)
+    public function addArgumentArray(string $argument, array $values)
     {
         foreach ($values as $value) {
             $this->add(sprintf($argument, $value));
@@ -87,7 +87,7 @@ class ProcessArgumentsCollection extends ArrayCollection
      * @param string $argument
      * @param array  $values
      */
-    public function addSeparatedArgumentArray($argument, array $values)
+    public function addSeparatedArgumentArray(string $argument, array $values)
     {
         if (!count($values)) {
             return;
@@ -101,9 +101,9 @@ class ProcessArgumentsCollection extends ArrayCollection
 
     /**
      * @param string $argument
-     * @param string $value
+     * @param string|int $value
      */
-    public function addRequiredArgument($argument, $value)
+    public function addRequiredArgument(string $argument, $value)
     {
         if (!$value) {
             throw new InvalidArgumentException(sprintf('The argument %s is required.', $argument));
@@ -140,7 +140,7 @@ class ProcessArgumentsCollection extends ArrayCollection
      * @param string $argument
      * @param FilesCollection|\SplFileInfo[] $files
      */
-    public function addArgumentWithCommaSeparatedFiles($argument, FilesCollection $files)
+    public function addArgumentWithCommaSeparatedFiles(string $argument, FilesCollection $files)
     {
         $paths = [];
 

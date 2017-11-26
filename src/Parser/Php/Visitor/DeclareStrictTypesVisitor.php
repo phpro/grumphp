@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Parser\Php\Visitor;
 
@@ -34,7 +34,6 @@ class DeclareStrictTypesVisitor extends AbstractVisitor
     /**
      * @param array $nodes
      *
-     * @return void
      */
     public function afterTraverse(array $nodes)
     {

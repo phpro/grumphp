@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Linter\Yaml;
 
@@ -21,18 +21,17 @@ class YamlLintError extends LintError
      * @param int    $line
      * @param string $snippet
      */
-    public function __construct($type, $error, $file, $line = -1, $snippet = null)
+    public function __construct(string $type, string $error, string $file, int $line = -1, string $snippet = null)
     {
         parent::__construct($type, $error, $file, $line);
         $this->snippet = $snippet;
     }
 
     /**
-     * @param ParseException $exception
      *
      * @return YamlLintError
      */
-    public static function fromParseException(ParseException $exception)
+    public static function fromParseException(ParseException $exception): YamlLintError
     {
         return new YamlLintError(
             LintError::TYPE_ERROR,
@@ -46,7 +45,7 @@ class YamlLintError extends LintError
     /**
      * @return string
      */
-    public function getSnippet()
+    public function getSnippet(): string
     {
         return $this->snippet;
     }
@@ -54,7 +53,7 @@ class YamlLintError extends LintError
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('[%s] %s', strtoupper($this->getType()), $this->getError());
     }

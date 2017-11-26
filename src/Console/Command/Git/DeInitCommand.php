@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Console\Command\Git;
 
@@ -56,9 +56,7 @@ class DeInitCommand extends Command
 
     /**
      * @param InputInterface  $input
-     * @param OutputInterface $output
      *
-     * @return int|void
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
@@ -79,7 +77,7 @@ class DeInitCommand extends Command
     /**
      * @return PathsHelper
      */
-    protected function paths()
+    protected function paths(): PathsHelper
     {
         return $this->getHelper(PathsHelper::HELPER_NAME);
     }

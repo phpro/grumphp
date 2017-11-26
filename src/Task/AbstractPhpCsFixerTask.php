@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -44,7 +44,6 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
      * @param GrumPHP             $grumPHP
      * @param ProcessBuilder      $processBuilder
      * @param AsyncProcessRunner  $processRunner
-     * @param PhpCsFixerFormatter $formatter
      */
     public function __construct(
         GrumPHP $grumPHP,
@@ -61,7 +60,7 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
     /**
      * {@inheritdoc}
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
         return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
     }
@@ -69,7 +68,7 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
 
@@ -78,11 +77,10 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
 
     /**
      * @param ContextInterface           $context
-     * @param ProcessArgumentsCollection $arguments
      *
      * @return TaskResult
      */
-    protected function runOnAllFiles(ContextInterface $context, ProcessArgumentsCollection $arguments)
+    protected function runOnAllFiles(ContextInterface $context, ProcessArgumentsCollection $arguments): TaskResult
     {
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
@@ -100,7 +98,6 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
 
     /**
      * @param ContextInterface           $context
-     * @param ProcessArgumentsCollection $arguments
      * @param FilesCollection            $files
      *
      * @return TaskResult
@@ -109,7 +106,7 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
         ContextInterface $context,
         ProcessArgumentsCollection $arguments,
         FilesCollection $files
-    ) {
+    ): TaskResult {
         $hasErrors = false;
         $messages = [];
         $suggestions = [];

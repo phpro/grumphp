@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Configuration\Compiler;
 
@@ -34,7 +34,7 @@ class TestSuiteCompilerPass implements CompilerPassInterface
      *
      * @return OptionsResolver
      */
-    private function createOptionsResolver(array $registeredTasks)
+    private function createOptionsResolver(array $registeredTasks): OptionsResolver
     {
         $options = new OptionsResolver();
         $options->setRequired(['tasks']);

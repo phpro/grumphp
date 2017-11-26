@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Console\Command;
 
@@ -57,7 +57,6 @@ class RunCommand extends Command
 
     /**
      * @param InputInterface  $input
-     * @param OutputInterface $output
      *
      * @return int|void
      */
@@ -77,7 +76,7 @@ class RunCommand extends Command
     /**
      * @return FilesCollection
      */
-    protected function getRegisteredFiles()
+    protected function getRegisteredFiles(): FilesCollection
     {
         return $this->registeredFilesLocator->locate();
     }
@@ -85,7 +84,7 @@ class RunCommand extends Command
     /**
      * @return TaskRunnerHelper
      */
-    protected function taskRunner()
+    protected function taskRunner(): TaskRunnerHelper
     {
         return $this->getHelper(TaskRunnerHelper::HELPER_NAME);
     }
@@ -93,7 +92,7 @@ class RunCommand extends Command
     /**
      * @return PathsHelper
      */
-    protected function paths()
+    protected function paths(): PathsHelper
     {
         return $this->getHelper(PathsHelper::HELPER_NAME);
     }

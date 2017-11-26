@@ -1,16 +1,17 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHPTest\Parser\Php\Visitor;
 
 use GrumPHP\Parser\ParseError;
 use GrumPHP\Parser\Php\Visitor\DeclareStrictTypesVisitor;
+use PhpParser\NodeVisitor;
 
 class DeclareStrictTypesVisitorTest extends AbstractVisitorTest
 {
     /**
      * @return DeclareStrictTypesVisitor
      */
-    protected function getVisitor()
+    protected function getVisitor(): NodeVisitor
     {
         return new DeclareStrictTypesVisitor();
     }

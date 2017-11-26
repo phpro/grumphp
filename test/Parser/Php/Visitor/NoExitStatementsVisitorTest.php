@@ -1,16 +1,17 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHPTest\Parser\Php\Visitor;
 
 use GrumPHP\Parser\ParseError;
 use GrumPHP\Parser\Php\Visitor\NoExitStatementsVisitor;
+use PhpParser\NodeVisitor;
 
 class NoExitStatementsVisitorTest extends AbstractVisitorTest
 {
     /**
      * @return NoExitStatementsVisitor
      */
-    protected function getVisitor()
+    protected function getVisitor(): NodeVisitor
     {
         return new NoExitStatementsVisitor();
     }

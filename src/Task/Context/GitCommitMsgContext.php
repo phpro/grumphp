@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Task\Context;
 
@@ -27,12 +27,11 @@ class GitCommitMsgContext implements ContextInterface
     private $userEmail;
 
     /**
-     * @param FilesCollection $files
      * @param string          $commitMessage
      * @param string          $userName
      * @param string          $userEmail
      */
-    public function __construct(FilesCollection $files, $commitMessage, $userName, $userEmail)
+    public function __construct(FilesCollection $files, string $commitMessage, string $userName, string $userEmail)
     {
         $this->files = $files;
         $this->commitMessage = $commitMessage;
@@ -43,7 +42,7 @@ class GitCommitMsgContext implements ContextInterface
     /**
      * @return string
      */
-    public function getCommitMessage()
+    public function getCommitMessage(): string
     {
         return $this->commitMessage;
     }
@@ -51,7 +50,7 @@ class GitCommitMsgContext implements ContextInterface
     /**
      * @return string
      */
-    public function getUserName()
+    public function getUserName(): string
     {
         return $this->userName;
     }
@@ -59,7 +58,7 @@ class GitCommitMsgContext implements ContextInterface
     /**
      * @return string
      */
-    public function getUserEmail()
+    public function getUserEmail(): string
     {
         return $this->userEmail;
     }
@@ -67,7 +66,7 @@ class GitCommitMsgContext implements ContextInterface
     /**
      * @return FilesCollection
      */
-    public function getFiles()
+    public function getFiles(): FilesCollection
     {
         return $this->files;
     }

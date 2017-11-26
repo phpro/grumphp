@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Event\Subscriber;
 
@@ -30,7 +30,6 @@ class ProgressSubscriber implements EventSubscriberInterface
 
     /**
      * @param OutputInterface  $output
-     * @param ProgressBar $progressBar
      */
     public function __construct(OutputInterface $output, ProgressBar $progressBar)
     {
@@ -43,7 +42,7 @@ class ProgressSubscriber implements EventSubscriberInterface
     /**
      * @return array
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             RunnerEvents::RUNNER_RUN => 'startProgress',
@@ -81,10 +80,9 @@ class ProgressSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param TaskEvent $task
      * @param string $event
      */
-    public function onTaskProgress(TaskEvent $task, $event)
+    public function onTaskProgress(TaskEvent $task, string $event)
     {
         switch ($event) {
             case TaskEvents::TASK_COMPLETE:

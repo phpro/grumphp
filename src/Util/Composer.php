@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Util;
 
@@ -16,11 +16,10 @@ class Composer
 {
     /**
      * @param string|JsonFile $json
-     * @param Config $config
      *
      * @return \Composer\Package\RootPackageInterface
      */
-    public static function loadRootPackageFromJson($json, Config $config = null)
+    public static function loadRootPackageFromJson($json, Config $config = null): \Composer\Package\RootPackageInterface
     {
         try {
             $config = (null !== $config) ? $config : self::loadConfiguration();
@@ -39,7 +38,7 @@ class Composer
     /**
      * @return \Composer\Config
      */
-    public static function loadConfiguration()
+    public static function loadConfiguration(): \Composer\Config
     {
         try {
             $configuration = Factory::createConfig();
@@ -59,7 +58,7 @@ class Composer
      *
      * @param string $binDir
      */
-    public static function ensureProjectBinDirInSystemPath($binDir)
+    public static function ensureProjectBinDirInSystemPath(string $binDir)
     {
         $pathStr = 'PATH';
         if (!isset($_SERVER[$pathStr]) && isset($_SERVER['Path'])) {

@@ -1,10 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Parser\Php\Factory;
 
 use GrumPHP\Parser\Php\Configurator\TraverserConfigurator;
 use GrumPHP\Parser\Php\Context\ParserContext;
 use PhpParser\NodeTraverser;
+use PhpParser\NodeTraverserInterface;
 
 class TraverserFactory
 {
@@ -16,7 +17,6 @@ class TraverserFactory
     /**
      * TraverserFactory constructor.
      *
-     * @param TraverserConfigurator $configurator
      */
     public function __construct(TraverserConfigurator $configurator)
     {
@@ -25,12 +25,10 @@ class TraverserFactory
 
     /**
      * @param array         $parserOptions
-     * @param ParserContext $context
      *
-     * @return NodeTraverser
      * @throws \GrumPHP\Exception\RuntimeException
      */
-    public function createForTaskContext(array $parserOptions, ParserContext $context)
+    public function createForTaskContext(array $parserOptions, ParserContext $context): NodeTraverserInterface
     {
         $this->configurator->registerOptions($parserOptions);
         $this->configurator->registerContext($context);

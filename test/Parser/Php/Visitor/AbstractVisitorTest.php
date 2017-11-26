@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHPTest\Parser\Php\Visitor;
 
@@ -6,6 +6,7 @@ use GrumPHP\Collection\ParseErrorsCollection;
 use GrumPHP\Parser\Php\Context\ParserContext;
 use GrumPHP\Parser\Php\Visitor\ContextAwareVisitorInterface;
 use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\NodeVisitorAbstract;
 use PhpParser\ParserFactory;
@@ -31,14 +32,14 @@ abstract class AbstractVisitorTest extends TestCase
     }
 
     /**
-     * @return ContextAwareVisitorInterface
+     * @return NodeVisitor
      */
-    abstract protected function getVisitor();
+    abstract protected function getVisitor(): NodeVisitor;
 
     /**
      * @return ParserContext
      */
-    protected function createContext()
+    protected function createContext(): ParserContext
     {
         $file = new SplFileInfo('code.php');
         $errors = new ParseErrorsCollection();
@@ -51,7 +52,7 @@ abstract class AbstractVisitorTest extends TestCase
      *
      * @return ParseErrorsCollection
      */
-    protected function visit($code)
+    protected function visit($code): ParseErrorsCollection
     {
         $context = $this->createContext();
         $visitor = $this->getVisitor();

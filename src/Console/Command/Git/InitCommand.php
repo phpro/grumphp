@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Console\Command\Git;
 
@@ -72,9 +72,7 @@ class InitCommand extends Command
 
     /**
      * @param InputInterface  $input
-     * @param OutputInterface $output
      *
-     * @return int|void
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
@@ -137,7 +135,7 @@ class InitCommand extends Command
      * @return string
      * @throws \GrumPHP\Exception\FileNotFoundException
      */
-    protected function generateHookCommand($command)
+    protected function generateHookCommand($command): string
     {
         $executable = $this->paths()->getBinCommand('grumphp', true);
         $this->processBuilder->setArguments([
@@ -174,7 +172,7 @@ class InitCommand extends Command
     /**
      * @return PathsHelper
      */
-    protected function paths()
+    protected function paths(): PathsHelper
     {
         return $this->getHelper(PathsHelper::HELPER_NAME);
     }

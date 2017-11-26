@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Configuration;
 
@@ -27,7 +27,7 @@ class GrumPHP
     /**
      * @return string
      */
-    public function getBinDir()
+    public function getBinDir(): string
     {
         return $this->container->getParameter('bin_dir');
     }
@@ -35,7 +35,7 @@ class GrumPHP
     /**
      * @return string
      */
-    public function getGitDir()
+    public function getGitDir(): string
     {
         return $this->container->getParameter('git_dir');
     }
@@ -43,7 +43,7 @@ class GrumPHP
     /**
      * @return string
      */
-    public function getHooksDir()
+    public function getHooksDir(): string
     {
         return $this->container->getParameter('hooks_dir');
     }
@@ -51,7 +51,7 @@ class GrumPHP
     /**
      * @return string
      */
-    public function getHooksPreset()
+    public function getHooksPreset(): string
     {
         return $this->container->getParameter('hooks_preset');
     }
@@ -59,7 +59,7 @@ class GrumPHP
     /**
      * @return bool
      */
-    public function stopOnFailure()
+    public function stopOnFailure(): bool
     {
         return (bool) $this->container->getParameter('stop_on_failure');
     }
@@ -67,7 +67,7 @@ class GrumPHP
     /**
      * @return bool
      */
-    public function ignoreUnstagedChanges()
+    public function ignoreUnstagedChanges(): bool
     {
         return (bool) $this->container->getParameter('ignore_unstaged_changes');
     }
@@ -75,7 +75,7 @@ class GrumPHP
     /**
      * @return int
      */
-    public function getProcessAsyncLimit()
+    public function getProcessAsyncLimit(): int
     {
         return (int) $this->container->getParameter('process_async_limit');
     }
@@ -83,7 +83,7 @@ class GrumPHP
     /**
      * @return int
      */
-    public function getProcessAsyncWaitTime()
+    public function getProcessAsyncWaitTime(): int
     {
         return (int) $this->container->getParameter('process_async_wait');
     }
@@ -104,7 +104,7 @@ class GrumPHP
     /**
      * @return array
      */
-    public function getRegisteredTasks()
+    public function getRegisteredTasks(): array
     {
         return $this->container->getParameter('grumphp.tasks.registered');
     }
@@ -114,7 +114,7 @@ class GrumPHP
      *
      * @return bool True to hide the tip, otherwise false.
      */
-    public function hideCircumventionTip()
+    public function hideCircumventionTip(): bool
     {
         return (bool)$this->container->getParameter('hide_circumvention_tip');
     }
@@ -124,7 +124,7 @@ class GrumPHP
      *
      * @return array
      */
-    public function getTaskConfiguration($taskName)
+    public function getTaskConfiguration(string $taskName): array
     {
         $tasksConfiguration = $this->container->getParameter('grumphp.tasks.configuration');
         if (!array_key_exists($taskName, $tasksConfiguration)) {
@@ -139,7 +139,7 @@ class GrumPHP
      *
      * @return array
      */
-    public function getTaskMetadata($taskName)
+    public function getTaskMetadata($taskName): array
     {
         $tasksMetadata = $this->container->getParameter('grumphp.tasks.metadata');
         if (!array_key_exists($taskName, $tasksMetadata)) {
@@ -152,7 +152,7 @@ class GrumPHP
     /**
      * @return TestSuiteCollection
      */
-    public function getTestSuites()
+    public function getTestSuites(): TestSuiteCollection
     {
         return $this->container->getParameter('grumphp.testsuites');
     }
@@ -178,7 +178,7 @@ class GrumPHP
      * @param string $taskName
      * @return bool
      */
-    public function isBlockingTask($taskName)
+    public function isBlockingTask(string $taskName): bool
     {
         $taskMetadata = $this->getTaskMetadata($taskName);
         return $taskMetadata['blocking'];

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Formatter;
 
@@ -19,9 +19,8 @@ class PhpcsFormatter implements ProcessFormatterInterface
     protected $suggestedFiles = [];
 
     /**
-     * @param Process $process
      *
-     * @return string
+     * @return string|null
      */
     public function format(Process $process)
     {
@@ -71,12 +70,13 @@ class PhpcsFormatter implements ProcessFormatterInterface
     }
 
     /**
-     * @param ProcessArgumentsCollection $defaultArguments
      * @param ProcessBuilder $processBuilder
-     * @return string
+     * @return string|null
      */
-    public function formatErrorMessage(ProcessArgumentsCollection $defaultArguments, ProcessBuilder $processBuilder)
-    {
+    public function formatErrorMessage(
+        ProcessArgumentsCollection $defaultArguments,
+        ProcessBuilder $processBuilder
+    ) {
         if (empty($this->suggestedFiles)) {
             return '';
         }

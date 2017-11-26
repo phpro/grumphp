@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Parser;
 
@@ -37,7 +37,7 @@ class ParseError
      * @param string $file
      * @param int    $line
      */
-    public function __construct($type, $error, $file, $line = -1)
+    public function __construct(string $type, string $error, string $file, int $line = -1)
     {
         $this->type = $type;
         $this->error = $error;
@@ -48,7 +48,7 @@ class ParseError
     /**
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -56,7 +56,7 @@ class ParseError
     /**
      * @return string
      */
-    public function getError()
+    public function getError(): string
     {
         return $this->error;
     }
@@ -64,7 +64,7 @@ class ParseError
     /**
      * @return string
      */
-    public function getFile()
+    public function getFile(): string
     {
         return $this->file;
     }
@@ -72,7 +72,7 @@ class ParseError
     /**
      * @return int
      */
-    public function getLine()
+    public function getLine(): int
     {
         return $this->line;
     }
@@ -80,7 +80,7 @@ class ParseError
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         if ($this->getLine() < 0) {
             return sprintf(

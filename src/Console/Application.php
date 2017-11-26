@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Console;
 
@@ -138,7 +138,7 @@ class Application extends SymfonyConsole
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerBuilder
      */
-    protected function getContainer()
+    protected function getContainer(): \Symfony\Component\DependencyInjection\ContainerBuilder
     {
         if ($this->container) {
             return $this->container;
@@ -158,7 +158,6 @@ class Application extends SymfonyConsole
      * Configure IO of GrumPHP objects
      *
      * @param InputInterface  $input
-     * @param OutputInterface $output
      */
     protected function configureIO(InputInterface $input, OutputInterface $output)
     {
@@ -183,7 +182,7 @@ class Application extends SymfonyConsole
     /**
      * @return string
      */
-    protected function getDefaultConfigPath()
+    protected function getDefaultConfigPath(): string
     {
         if ($this->configDefaultPath) {
             return $this->configDefaultPath;
@@ -201,7 +200,7 @@ class Application extends SymfonyConsole
     /**
      * @return Helper\ComposerHelper
      */
-    protected function initializeComposerHelper()
+    protected function initializeComposerHelper(): Helper\ComposerHelper
     {
         if ($this->composerHelper) {
             return $this->composerHelper;

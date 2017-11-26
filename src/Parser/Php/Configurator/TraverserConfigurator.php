@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Parser\Php\Configurator;
 
@@ -39,7 +39,6 @@ class TraverserConfigurator
     /**
      * TraverserConfigurator constructor.
      *
-     * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
     {
@@ -52,7 +51,7 @@ class TraverserConfigurator
      *
      * @throws \GrumPHP\Exception\RuntimeException
      */
-    public function registerVisitorId($alias, $visitorId)
+    public function registerVisitorId(string $alias, string $visitorId)
     {
         if (array_key_exists($alias, $this->registeredVisitorIds)) {
             $registeredId = $this->registeredVisitorIds[$alias];
@@ -144,7 +143,7 @@ class TraverserConfigurator
     /**
      * @return array
      */
-    private function loadEnabledVisitorsForCurrentOptions()
+    private function loadEnabledVisitorsForCurrentOptions(): array
     {
         $visitors = $this->standardEnabledVisitors;
         foreach ($this->options['visitors'] as $alias => $visitorOptions) {

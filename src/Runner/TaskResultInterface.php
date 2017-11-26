@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace GrumPHP\Runner;
 
 use GrumPHP\Task\Context\ContextInterface;
@@ -9,22 +10,22 @@ interface TaskResultInterface
     /**
      * @return TaskInterface
      */
-    public function getTask();
+    public function getTask(): TaskInterface;
 
     /**
      * @return int
      */
-    public function getResultCode();
+    public function getResultCode(): int;
 
     /**
      * @return bool
      */
-    public function isPassed();
+    public function isPassed(): bool;
 
     /**
      * @return bool
      */
-    public function isBlocking();
+    public function isBlocking(): bool;
 
     /**
      * @return null|string
@@ -34,5 +35,5 @@ interface TaskResultInterface
     /**
      * @return ContextInterface
      */
-    public function getContext();
+    public function getContext(): ContextInterface;
 }

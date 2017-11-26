@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Collection;
 
@@ -25,7 +25,7 @@ class FilesCollection extends ArrayCollection
      *
      * @return FilesCollection
      */
-    public function name($pattern)
+    public function name($pattern): FilesCollection
     {
         return $this->names([$pattern]);
     }
@@ -43,7 +43,7 @@ class FilesCollection extends ArrayCollection
      *
      * @return FilesCollection
      */
-    public function names(array $patterns)
+    public function names(array $patterns): FilesCollection
     {
         $filter = new Iterator\FilenameFilterIterator($this->getIterator(), $patterns, []);
 
@@ -63,7 +63,7 @@ class FilesCollection extends ArrayCollection
      *
      * @return FilesCollection
      */
-    public function notName($pattern)
+    public function notName(string $pattern): FilesCollection
     {
         $filter = new Iterator\FilenameFilterIterator($this->getIterator(), [], [$pattern]);
 
@@ -79,7 +79,7 @@ class FilesCollection extends ArrayCollection
      *
      * @return FilesCollection
      */
-    public function path($pattern)
+    public function path(string $pattern): FilesCollection
     {
         return $this->paths([$pattern]);
     }
@@ -93,7 +93,7 @@ class FilesCollection extends ArrayCollection
      *
      * @return FilesCollection
      */
-    public function paths(array $patterns)
+    public function paths(array $patterns): FilesCollection
     {
         $filter = new Iterator\PathFilterIterator($this->getIterator(), $patterns, []);
 
@@ -111,7 +111,7 @@ class FilesCollection extends ArrayCollection
      *
      * @return FilesCollection
      */
-    public function notPath($pattern)
+    public function notPath(string $pattern): FilesCollection
     {
         return $this->notPaths([$pattern]);
     }
@@ -127,7 +127,7 @@ class FilesCollection extends ArrayCollection
      *
      * @return FilesCollection
      */
-    public function notPaths(array $pattern)
+    public function notPaths(array $pattern): FilesCollection
     {
         $filter = new Iterator\PathFilterIterator($this->getIterator(), [], $pattern);
 
@@ -139,7 +139,7 @@ class FilesCollection extends ArrayCollection
      *
      * @return FilesCollection
      */
-    public function extensions(array $extensions)
+    public function extensions(array $extensions): FilesCollection
     {
         if (!count($extensions)) {
             return new FilesCollection();
@@ -161,7 +161,7 @@ class FilesCollection extends ArrayCollection
      *
      * @see NumberComparator
      */
-    public function size($size)
+    public function size(string $size): FilesCollection
     {
         $comparator = new Comparator\NumberComparator($size);
         $filter = new Iterator\SizeRangeFilterIterator($this->getIterator(), [$comparator]);
@@ -185,7 +185,7 @@ class FilesCollection extends ArrayCollection
      *
      * @see DateComparator
      */
-    public function date($date)
+    public function date(string $date): FilesCollection
     {
         $comparator = new Comparator\DateComparator($date);
         $filter = new Iterator\DateRangeFilterIterator($this->getIterator(), [$comparator]);
@@ -205,7 +205,7 @@ class FilesCollection extends ArrayCollection
      *
      * @see CustomFilterIterator
      */
-    public function filter(Closure $closure)
+    public function filter(Closure $closure): FilesCollection
     {
         $filter = new Iterator\CustomFilterIterator($this->getIterator(), [$closure]);
 
@@ -213,11 +213,10 @@ class FilesCollection extends ArrayCollection
     }
 
     /**
-     * @param Traversable $fileList
      *
      * @return FilesCollection
      */
-    public function filterByFileList(Traversable $fileList)
+    public function filterByFileList(Traversable $fileList): FilesCollection
     {
         $allowedFiles = array_map(function (SplFileInfo $file) {
             return $file->getPathname();
@@ -229,11 +228,10 @@ class FilesCollection extends ArrayCollection
     }
 
     /**
-     * @param FilesCollection $files
      *
      * @return FilesCollection
      */
-    public function ensureFiles(FilesCollection $files)
+    public function ensureFiles(FilesCollection $files): FilesCollection
     {
         $newFiles = new self($this->toArray());
 

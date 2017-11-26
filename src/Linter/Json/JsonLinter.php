@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Linter\Json;
 
@@ -29,7 +29,6 @@ class JsonLinter implements LinterInterface
     /**
      * JsonLinter constructor.
      *
-     * @param Filesystem $filesystem
      * @param JsonParser $jsonParser
      */
     public function __construct(Filesystem $filesystem, JsonParser $jsonParser)
@@ -39,7 +38,6 @@ class JsonLinter implements LinterInterface
     }
 
     /**
-     * @param SplFileInfo $file
      *
      * @return mixed
      * @throws \Seld\JsonLint\ParsingException
@@ -62,7 +60,7 @@ class JsonLinter implements LinterInterface
     /**
      * @return bool
      */
-    public function isInstalled()
+    public function isInstalled(): bool
     {
         return class_exists(JsonParser::class);
     }
@@ -70,7 +68,7 @@ class JsonLinter implements LinterInterface
     /**
      * @param boolean $detectKeyConflicts
      */
-    public function setDetectKeyConflicts($detectKeyConflicts)
+    public function setDetectKeyConflicts(bool $detectKeyConflicts)
     {
         $this->detectKeyConflicts = $detectKeyConflicts;
     }
@@ -78,7 +76,7 @@ class JsonLinter implements LinterInterface
     /**
      * @return int
      */
-    private function calculateFlags()
+    private function calculateFlags(): int
     {
         $flags = 0;
         $flags += $this->detectKeyConflicts ? JsonParser::DETECT_KEY_CONFLICTS : 0;

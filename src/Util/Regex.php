@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Util;
 
@@ -34,7 +34,7 @@ class Regex
      *
      * @return bool Whether the given string is a regex
      */
-    private function isRegex($string)
+    private function isRegex(string $string): bool
     {
         if (preg_match('/^(.{3,}?)[' . self::ALLOWED_MODIFIERS . ']*$/', $string, $m)) {
             $start = substr($m[1], 0, 1);
@@ -59,7 +59,7 @@ class Regex
      *
      * @return string
      */
-    private function toRegex($string)
+    private function toRegex(string $string): string
     {
         return $this->isRegex($string) ? $string : Glob::toRegex($string);
     }
@@ -67,7 +67,7 @@ class Regex
     /**
      * @param string $modifier
      */
-    public function addPatternModifier($modifier)
+    public function addPatternModifier(string $modifier)
     {
         if (!strlen($modifier) == 1 || !strstr(self::ALLOWED_MODIFIERS, $modifier)) {
             throw new RuntimeException('Invalid regex modifier: ' . $modifier);
@@ -91,7 +91,7 @@ class Regex
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->regex;
     }

@@ -1,9 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Task\Git;
 
 use Gitonomy\Git\Exception\ProcessException;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -42,7 +43,7 @@ class BranchName implements TaskInterface
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'git_branch_name';
     }
@@ -50,7 +51,7 @@ class BranchName implements TaskInterface
     /**
      * @return array
      */
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
 
@@ -60,7 +61,7 @@ class BranchName implements TaskInterface
     /**
      * @return OptionsResolver
      */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -77,11 +78,10 @@ class BranchName implements TaskInterface
     }
 
     /**
-     * @param ContextInterface $context
      *
      * @return bool
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
         return $context instanceof RunContext || $context instanceof GitPreCommitContext;
     }
@@ -94,7 +94,7 @@ class BranchName implements TaskInterface
      *
      * @throws RuntimeException
      */
-    private function runMatcher(array $config, $name, $rule, $ruleName)
+    private function runMatcher(array $config, string $name, string $rule, string $ruleName)
     {
         $regex = new Regex($rule);
 
@@ -111,7 +111,7 @@ class BranchName implements TaskInterface
      *
      * @return TaskResult
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
         $exceptions = [];
@@ -128,7 +128,7 @@ class BranchName implements TaskInterface
 
         foreach ($config['matchers'] as $ruleName => $rule) {
             try {
-                $this->runMatcher($config, $name, $rule, $ruleName);
+                $this->runMatcher($config, $name, $rule, (string) $ruleName);
             } catch (RuntimeException $e) {
                 $exceptions[] = $e->getMessage();
             }

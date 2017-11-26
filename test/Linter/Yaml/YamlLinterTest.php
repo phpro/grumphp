@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHPTest\Linter\Yaml;
 
@@ -29,7 +29,7 @@ class YamlLinterTest extends TestCase
      *
      * @return SplFileInfo
      */
-    private function getFixture($fixture)
+    private function getFixture(string $fixture): SplFileInfo
     {
         $file = new SplFileInfo(TEST_BASE_PATH . '/fixtures/linters/yaml/' . $fixture);
         if (!$file->isReadable()) {
@@ -42,7 +42,7 @@ class YamlLinterTest extends TestCase
      * @param string $fixture
      * @param int $errors
      */
-    private function validateFixture($fixture, $errors)
+    private function validateFixture(string $fixture, int $errors)
     {
         $result = $this->linter->lint($this->getFixture($fixture));
         $this->assertInstanceOf(LintErrorsCollection::class, $result);
@@ -143,7 +143,7 @@ class YamlLinterTest extends TestCase
     /**
      * @return array
      */
-    function provideYamlValidation()
+    function provideYamlValidation(): array
     {
         return [
             ['fixture' => 'valid.yml', 'errors' => 0],

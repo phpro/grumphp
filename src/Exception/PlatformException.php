@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Exception;
 
@@ -8,11 +8,10 @@ use Symfony\Component\Process\Process;
 class PlatformException extends RuntimeException
 {
     /**
-     * @param Process $process
      *
      * @return PlatformException
      */
-    public static function commandLineStringLimit(Process $process)
+    public static function commandLineStringLimit(Process $process): PlatformException
     {
         return new self(sprintf(
             'The Windows maximum amount of %s input characters exceeded while running process: %s ...',

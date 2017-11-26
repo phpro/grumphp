@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Locator;
 
@@ -19,9 +19,8 @@ class ExternalCommand
 
     /**
      * @param string $binDir
-     * @param ExecutableFinder $executableFinder
      */
-    public function __construct($binDir, ExecutableFinder $executableFinder)
+    public function __construct(string $binDir, ExecutableFinder $executableFinder)
     {
         $this->binDir = rtrim($binDir, '/\\');
         $this->executableFinder = $executableFinder;
@@ -37,7 +36,7 @@ class ExternalCommand
      *
      * @throws RuntimeException if the command can not be found
      */
-    public function locate($command, $forceUnix = false)
+    public function locate(string $command, bool $forceUnix = false): string
     {
         // Search executable:
         $executable = $this->executableFinder->find($command, null, [$this->binDir]);

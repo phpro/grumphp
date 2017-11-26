@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Process;
 
@@ -32,7 +32,6 @@ class ProcessBuilder
      * ProcessBuilder constructor.
      *
      * @param GrumPHP         $config
-     * @param ExternalCommand $externalCommandLocator
      */
     public function __construct(GrumPHP $config, ExternalCommand $externalCommandLocator, IOInterface $io)
     {
@@ -46,7 +45,7 @@ class ProcessBuilder
      *
      * @return ProcessArgumentsCollection
      */
-    public function createArgumentsForCommand($command)
+    public function createArgumentsForCommand(string $command): ProcessArgumentsCollection
     {
         $executable = $this->getCommandLocation($command);
 
@@ -54,12 +53,11 @@ class ProcessBuilder
     }
 
     /**
-     * @param ProcessArgumentsCollection $arguments
      *
      * @return Process
      * @throws \GrumPHP\Exception\PlatformException
      */
-    public function buildProcess(ProcessArgumentsCollection $arguments)
+    public function buildProcess(ProcessArgumentsCollection $arguments): Process
     {
         $builder = SymfonyProcessBuilder::create($arguments->getValues());
         $builder->setTimeout($this->config->getProcessTimeout());
@@ -94,7 +92,7 @@ class ProcessBuilder
      *
      * @return string
      */
-    private function getCommandLocation($command)
+    private function getCommandLocation(string $command): string
     {
         return $this->externalCommandLocator->locate($command);
     }

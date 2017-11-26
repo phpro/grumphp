@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Parser\Php;
 
@@ -38,7 +38,6 @@ class PhpParser implements ParserInterface
      * PhpParser constructor.
      *
      * @param ParserFactory    $parserFactory
-     * @param TraverserFactory $traverserFactory
      * @param Filesystem       $filesystem
      */
     public function __construct(
@@ -60,11 +59,10 @@ class PhpParser implements ParserInterface
     }
 
     /**
-     * @param SplFileInfo $file
      *
      * @return ParseErrorsCollection
      */
-    public function parse(SplFileInfo $file)
+    public function parse(SplFileInfo $file): ParseErrorsCollection
     {
         $errors = new ParseErrorsCollection();
         $context = new ParserContext($file, $errors);
@@ -76,7 +74,7 @@ class PhpParser implements ParserInterface
             $stmts = $parser->parse($code);
             $traverser->traverse($stmts);
         } catch (Error $e) {
-            $errors->add(PhpParserError::fromParseException($e, $file->getRealPath()));
+            $errors->add(PhpParserError::fromParseException($e, (string) $file->getRealPath()));
         }
 
         return $errors;
@@ -85,7 +83,7 @@ class PhpParser implements ParserInterface
     /**
      * @return bool
      */
-    public function isInstalled()
+    public function isInstalled(): bool
     {
         return interface_exists(Parser::class);
     }

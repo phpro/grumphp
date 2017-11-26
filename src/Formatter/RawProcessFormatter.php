@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Formatter;
 
@@ -9,11 +9,10 @@ class RawProcessFormatter implements ProcessFormatterInterface
     /**
      * This method will format the output of a Process object to a string.
      *
-     * @param Process $process
      *
      * @return string
      */
-    public function format(Process $process)
+    public function format(Process $process): string
     {
         $stdout = $process->getOutput();
         $stderr = $process->getErrorOutput();

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Console\Helper;
 
@@ -40,14 +40,13 @@ class PathsHelper extends Helper
     /**
      * @param GrumPHP         $config
      * @param Filesystem      $fileSystem
-     * @param ExternalCommand $externalCommandLocator
      * @param string          $defaultConfigPath
      */
     public function __construct(
         GrumPHP $config,
         Filesystem $fileSystem,
         ExternalCommand $externalCommandLocator,
-        $defaultConfigPath
+        string $defaultConfigPath
     ) {
         $this->config = $config;
         $this->fileSystem = $fileSystem;
@@ -60,7 +59,7 @@ class PathsHelper extends Helper
      *
      * @return string
      */
-    public function getGrumPHPPath()
+    public function getGrumPHPPath(): string
     {
         $path = __DIR__ . '/../../..';
 
@@ -72,7 +71,7 @@ class PathsHelper extends Helper
      *
      * @return string
      */
-    public function getResourcesPath()
+    public function getResourcesPath(): string
     {
         return $this->getGrumPHPPath() . 'resources/';
     }
@@ -82,7 +81,7 @@ class PathsHelper extends Helper
      *
      * @return string
      */
-    public function getAsciiPath()
+    public function getAsciiPath(): string
     {
         return $this->getResourcesPath() . 'ascii/';
     }
@@ -92,7 +91,7 @@ class PathsHelper extends Helper
      *
      * @param $resource
      *
-     * @return string
+     * @return string|null
      */
     public function getAsciiContent($resource)
     {
@@ -124,7 +123,7 @@ class PathsHelper extends Helper
      *
      * @return string
      */
-    public function getWorkingDir()
+    public function getWorkingDir(): string
     {
         return getcwd();
     }
@@ -134,7 +133,7 @@ class PathsHelper extends Helper
      *
      * @return string
      */
-    public function getGitDir()
+    public function getGitDir(): string
     {
         $gitDir = $this->config->getGitDir();
         if (!$this->fileSystem->exists($gitDir)) {
@@ -149,7 +148,7 @@ class PathsHelper extends Helper
      *
      * @return string
      */
-    public function getGitHookExecutionPath()
+    public function getGitHookExecutionPath(): string
     {
         $gitPath = $this->getGitDir();
 
@@ -161,7 +160,7 @@ class PathsHelper extends Helper
      *
      * @return string
      */
-    public function getGitHooksDir()
+    public function getGitHooksDir(): string
     {
         return $this->getGitDir() . '.git/hooks/';
     }
@@ -171,7 +170,7 @@ class PathsHelper extends Helper
      *
      * @return string
      */
-    public function getGitHookTemplatesDir()
+    public function getGitHookTemplatesDir(): string
     {
         return $this->getResourcesPath() . 'hooks/';
     }
@@ -181,7 +180,7 @@ class PathsHelper extends Helper
      *
      * @return string
      */
-    public function getBinDir()
+    public function getBinDir(): string
     {
         $binDir = $this->config->getBinDir();
         if (!$this->fileSystem->exists($binDir)) {
@@ -200,7 +199,7 @@ class PathsHelper extends Helper
      *
      * @return string
      */
-    public function getBinCommand($command, $forceUnix = false)
+    public function getBinCommand($command, $forceUnix = false): string
     {
         return $this->externalCommandLocator->locate($command, $forceUnix);
     }
@@ -211,7 +210,7 @@ class PathsHelper extends Helper
      * @return string
      * @throws FileNotFoundException If file doesn't exists
      */
-    public function getRelativePath($path)
+    public function getRelativePath($path): string
     {
         $realpath = $this->getAbsolutePath($path);
         return $this->fileSystem->makePathRelative($realpath, $this->getWorkingDir());
@@ -226,7 +225,7 @@ class PathsHelper extends Helper
      * @return string
      * @throws FileNotFoundException
      */
-    public function getRelativeProjectPath($path)
+    public function getRelativeProjectPath(string $path): string
     {
         $realPath = $this->getAbsolutePath($path);
         $gitPath = $this->getAbsolutePath($this->getGitDir());
@@ -259,7 +258,7 @@ class PathsHelper extends Helper
      *
      * @return string
      */
-    public function getPathWithTrailingSlash($path)
+    public function getPathWithTrailingSlash(string $path): string
     {
         if (!$path) {
             return $path;
@@ -271,7 +270,7 @@ class PathsHelper extends Helper
     /**
      * @return string
      */
-    public function getDefaultConfigPath()
+    public function getDefaultConfigPath(): string
     {
         return $this->defaultConfigPath;
     }

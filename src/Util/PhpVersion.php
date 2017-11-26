@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Util;
 
@@ -23,10 +23,10 @@ class PhpVersion
     /**
      * Check if the current version is supported
      * @param string $currentVersion
-     * @return bool
+     * @return bool|null
      * @see https://secure.php.net/supported-versions.php for a list of currently supported versions
      */
-    public function isSupportedVersion($currentVersion)
+    public function isSupportedVersion(string $currentVersion)
     {
         $versionIsSupported = false;
         $now = new DateTime();
@@ -46,7 +46,7 @@ class PhpVersion
      * @param string $projectVersion
      * @return bool
      */
-    public function isSupportedProjectVersion($currentVersion, $projectVersion)
+    public function isSupportedProjectVersion(string $currentVersion, string $projectVersion): bool
     {
         return version_compare($currentVersion, $projectVersion) >= 0;
     }

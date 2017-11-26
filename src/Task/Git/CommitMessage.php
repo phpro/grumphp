@@ -1,10 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Task\Git;
 
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use GrumPHP\Task\TaskInterface;
@@ -32,7 +33,7 @@ class CommitMessage implements TaskInterface
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'git_commit_message';
     }
@@ -40,7 +41,7 @@ class CommitMessage implements TaskInterface
     /**
      * @return array
      */
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
 
@@ -50,7 +51,7 @@ class CommitMessage implements TaskInterface
     /**
      * @return OptionsResolver
      */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -81,11 +82,10 @@ class CommitMessage implements TaskInterface
     }
 
     /**
-     * @param ContextInterface $context
      *
      * @return bool
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
         return $context instanceof GitCommitMsgContext;
     }
@@ -95,7 +95,7 @@ class CommitMessage implements TaskInterface
      *
      * @return TaskResult
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
         $commitMessage = $context->getCommitMessage();
@@ -135,7 +135,7 @@ class CommitMessage implements TaskInterface
 
         foreach ($config['matchers'] as $ruleName => $rule) {
             try {
-                $this->runMatcher($config, $commitMessage, $rule, $ruleName);
+                $this->runMatcher($config, $commitMessage, $rule, (string) $ruleName);
             } catch (RuntimeException $e) {
                 $exceptions[] = $e->getMessage();
             }
@@ -197,7 +197,7 @@ class CommitMessage implements TaskInterface
      *
      * @throws RuntimeException
      */
-    private function runMatcher(array $config, $commitMessage, $rule, $ruleName)
+    private function runMatcher(array $config, string $commitMessage, string $rule, string $ruleName)
     {
         $regex = new Regex($rule);
 
@@ -222,7 +222,7 @@ class CommitMessage implements TaskInterface
      *
      * @return int
      */
-    private function getSpecialPrefixLength($string)
+    private function getSpecialPrefixLength(string $string): int
     {
         if (preg_match('/^(fixup|squash)! /', $string, $match) !== 1) {
             return 0;
@@ -320,7 +320,7 @@ class CommitMessage implements TaskInterface
      *
      * @return array
      */
-    private function getCommitMessageLinesWithoutComments($commitMessage)
+    private function getCommitMessageLinesWithoutComments(string $commitMessage): array
     {
         $lines = preg_split('/\R/u', $commitMessage);
 

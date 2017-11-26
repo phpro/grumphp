@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Parser\Php\Factory;
 
@@ -12,7 +12,7 @@ class ParserFactory
      *
      * @return \PhpParser\Parser
      */
-    public function createFromOptions(array $options)
+    public function createFromOptions(array $options): \PhpParser\Parser
     {
         $kind = ($options['kind'] === PhpParser::KIND_PHP5)
             ? PhpParserFactory::PREFER_PHP5 : PhpParserFactory::PREFER_PHP7;

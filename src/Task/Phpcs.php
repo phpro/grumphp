@@ -1,9 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -20,7 +21,7 @@ class Phpcs extends AbstractExternalTask
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'phpcs';
     }
@@ -28,7 +29,7 @@ class Phpcs extends AbstractExternalTask
     /**
      * @return OptionsResolver
      */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -57,7 +58,7 @@ class Phpcs extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
         return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
     }
@@ -65,7 +66,7 @@ class Phpcs extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         /** @var array $config */
         $config = $this->getConfiguration();
@@ -110,12 +111,13 @@ class Phpcs extends AbstractExternalTask
     }
 
     /**
-     * @param ProcessArgumentsCollection $arguments
      * @param array $config
      * @return ProcessArgumentsCollection
      */
-    protected function addArgumentsFromConfig(ProcessArgumentsCollection $arguments, array $config)
-    {
+    protected function addArgumentsFromConfig(
+        ProcessArgumentsCollection $arguments,
+        array $config
+    ): ProcessArgumentsCollection {
         $arguments->addOptionalArgument('--standard=%s', $config['standard']);
         $arguments->addOptionalArgument('--warning-severity=0', !$config['show_warnings']);
         $arguments->addOptionalArgument('--tab-width=%s', $config['tab_width']);

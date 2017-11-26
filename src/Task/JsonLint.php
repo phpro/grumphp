@@ -1,9 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -17,7 +18,7 @@ class JsonLint extends AbstractLinterTask
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'jsonlint';
     }
@@ -25,7 +26,7 @@ class JsonLint extends AbstractLinterTask
     /**
      * @return OptionsResolver
      */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = parent::getConfigurableOptions();
         $resolver->setDefaults([
@@ -40,7 +41,7 @@ class JsonLint extends AbstractLinterTask
     /**
      * {@inheritdoc}
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
         return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
     }
@@ -48,7 +49,7 @@ class JsonLint extends AbstractLinterTask
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $files = $context->getFiles()->name('*.json');
         if (0 === count($files)) {

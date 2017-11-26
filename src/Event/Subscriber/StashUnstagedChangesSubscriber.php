@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Event\Subscriber;
 
@@ -45,7 +45,6 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     /**
      * @param GrumPHP     $grumPHP
      * @param Repository  $repository
-     * @param IOInterface $io
      */
     public function __construct(GrumPHP $grumPHP, Repository $repository, IOInterface $io)
     {
@@ -57,7 +56,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     /**
      * @return array
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             RunnerEvents::RUNNER_RUN => ['saveStash', 10000],
@@ -158,11 +157,10 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param ContextInterface $context
      *
      * @return bool
      */
-    private function isStashEnabled(ContextInterface $context)
+    private function isStashEnabled(ContextInterface $context): bool
     {
         return $this->grumPHP->ignoreUnstagedChanges() && $context instanceof GitPreCommitContext;
     }
@@ -170,7 +168,6 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     /**
      * Make sure to fetch errors and pop the stash before crashing
      *
-     * @return void
      */
     private function registerShutdownHandler()
     {

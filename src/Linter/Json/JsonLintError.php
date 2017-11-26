@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Linter\Json;
 
@@ -10,11 +10,10 @@ class JsonLintError extends LintError
 {
     /**
      * @param SplFileInfo      $file
-     * @param ParsingException $exception
      *
      * @return JsonLintError
      */
-    public static function fromParsingException(SplFileInfo $file, ParsingException $exception)
+    public static function fromParsingException(SplFileInfo $file, ParsingException $exception): JsonLintError
     {
         return new JsonLintError(LintError::TYPE_ERROR, $exception->getMessage(), $file->getPathname(), 0);
     }
@@ -22,7 +21,7 @@ class JsonLintError extends LintError
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf(
             '[%s] %s: %s',

@@ -1,9 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -17,7 +18,7 @@ class Shell extends AbstractExternalTask
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'shell';
     }
@@ -25,7 +26,7 @@ class Shell extends AbstractExternalTask
     /**
      * @return OptionsResolver
      */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -47,7 +48,7 @@ class Shell extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
         return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
     }
@@ -55,7 +56,7 @@ class Shell extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
         $files = $context->getFiles()->extensions($config['triggered_by']);
@@ -91,7 +92,7 @@ class Shell extends AbstractExternalTask
         $process->run();
 
         if (!$process->isSuccessful()) {
-            throw new RuntimeException($this->formatter->format($process));
+            throw new RuntimeException((string) $this->formatter->format($process));
         }
     }
 }

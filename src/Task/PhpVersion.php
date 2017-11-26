@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -28,7 +28,6 @@ class PhpVersion implements TaskInterface
 
     /**
      * PhpVersion constructor.
-     * @param GrumPHP $grumPHP
      * @param PhpVersionUtility $phpVersionUtility
      */
     public function __construct(GrumPHP $grumPHP, PhpVersionUtility $phpVersionUtility)
@@ -40,21 +39,19 @@ class PhpVersion implements TaskInterface
     /**
      * This methods specifies if a task can run in a specific context.
      *
-     * @param ContextInterface $context
      *
      * @return bool
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
         return $context instanceof RunContext || $context instanceof GitPreCommitContext;
     }
 
     /**
-     * @param ContextInterface $context
      *
      * @return TaskResultInterface
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         // Check the current version
         $config = $this->getConfiguration();
@@ -83,7 +80,7 @@ class PhpVersion implements TaskInterface
     /**
      * @return array
      */
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
 
@@ -93,7 +90,7 @@ class PhpVersion implements TaskInterface
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'phpversion';
     }
@@ -101,7 +98,7 @@ class PhpVersion implements TaskInterface
     /**
      * @return OptionsResolver
      */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(

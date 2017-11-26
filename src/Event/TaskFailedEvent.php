@@ -1,10 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Event;
 
 use Exception;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
+use Throwable;
 
 class TaskFailedEvent extends TaskEvent
 {
@@ -15,7 +16,6 @@ class TaskFailedEvent extends TaskEvent
 
     /**
      * @param TaskInterface    $task
-     * @param ContextInterface $context
      * @param Exception        $exception
      */
     public function __construct(TaskInterface $task, ContextInterface $context, Exception $exception)
@@ -28,7 +28,7 @@ class TaskFailedEvent extends TaskEvent
     /**
      * @return Exception
      */
-    public function getException()
+    public function getException(): Exception
     {
         return $this->exception;
     }

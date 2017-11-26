@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Util;
 
@@ -16,7 +16,7 @@ class Platform
     /**
      * @return bool Whether the host machine is running a Windows OS
      */
-    public static function isWindows()
+    public static function isWindows(): bool
     {
         return defined('PHP_WINDOWS_VERSION_BUILD');
     }

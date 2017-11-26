@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Linter;
 
@@ -8,14 +8,12 @@ use SplFileInfo;
 interface LinterInterface
 {
     /**
-     * @param SplFileInfo $file
-     *
-     * @return LintErrorsCollection
+     * @return LintErrorsCollection|mixed
      */
     public function lint(SplFileInfo $file);
 
     /**
      * @return bool
      */
-    public function isInstalled();
+    public function isInstalled(): bool;
 }
