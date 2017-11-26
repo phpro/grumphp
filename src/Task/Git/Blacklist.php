@@ -67,7 +67,7 @@ class Blacklist extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext);
+        return $context instanceof GitPreCommitContext;
     }
 
     /**
