@@ -6,13 +6,11 @@ interface IOInterface
 {
     /**
      * Is this input means interactive?
-     *
      */
     public function isInteractive(): bool;
 
     /**
      * Is this output verbose?
-     *
      */
     public function isVerbose(): bool;
 
@@ -25,7 +23,6 @@ interface IOInterface
 
     /**
      * Is the output in debug verbosity?
-     *
      */
     public function isDebug(): bool;
 

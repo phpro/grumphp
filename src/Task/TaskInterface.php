@@ -25,8 +25,6 @@ interface TaskInterface
 
     /**
      * This methods specifies if a task can run in a specific context.
-     *
-     *
      */
     public function canRunInContext(ContextInterface $context): bool;
 

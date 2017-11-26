@@ -13,7 +13,6 @@ final class ContainerFactory
 {
     /**
      * @param string $path path to grumphp.yml
-     *
      */
     public static function buildFromConfiguration(string $path): ContainerBuilder
     {

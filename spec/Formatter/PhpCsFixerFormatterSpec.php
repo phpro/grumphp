@@ -94,9 +94,6 @@ class PhpCsFixerFormatterSpec extends ObjectBehavior
         $this->formatErrorMessage(['message1'], ['message2'])->shouldBeString();
     }
 
-    /**
-     * @return string
-     */
     private function parseJson(array $files): string
     {
         return json_encode(['files' => $files]);

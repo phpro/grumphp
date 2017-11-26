@@ -79,9 +79,6 @@ class PhpcsFormatterSpec extends ObjectBehavior
             ));
     }
 
-    /**
-     * @return string
-     */
     private function parseJson(array $files): string
     {
         $fixable = 0;

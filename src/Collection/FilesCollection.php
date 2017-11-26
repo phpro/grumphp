@@ -22,7 +22,6 @@ class FilesCollection extends ArrayCollection
      * $collection->name('test.php')
      *
      * @param string|Regex $pattern A pattern (a regexp, a glob, or a string)
-     *
      */
     public function name($pattern): self
     {
@@ -39,7 +38,6 @@ class FilesCollection extends ArrayCollection
      * $collection->names(['test.php'])
      *
      * @param array $patterns Patterns (regexps, globs, or strings)
-     *
      */
     public function names(array $patterns): self
     {
@@ -58,7 +56,6 @@ class FilesCollection extends ArrayCollection
      * $collection->name('test.php')
      *
      * @param string $pattern A pattern (a regexp, a glob, or a string)
-     *
      */
     public function notName(string $pattern): self
     {
@@ -71,8 +68,6 @@ class FilesCollection extends ArrayCollection
      * Filter by path
      *
      * $collection->path('/^spec\/')
-     *
-     *
      */
     public function path(string $pattern): self
     {
@@ -83,8 +78,6 @@ class FilesCollection extends ArrayCollection
      * Filter by paths
      *
      * $collection->paths(['/^spec\/','/^src\/'])
-     *
-     *
      */
     public function paths(array $patterns): self
     {
@@ -99,8 +92,6 @@ class FilesCollection extends ArrayCollection
      * You can use patterns (delimited with / sign) or simple strings.
      *
      * $collection->notPath('/^spec\/')
-     *
-     *
      */
     public function notPath(string $pattern): self
     {
@@ -113,8 +104,6 @@ class FilesCollection extends ArrayCollection
      * You can use patterns (delimited with / sign) or simple strings.
      *
      * $collection->notPaths(['/^spec\/','/^src\/'])
-     *
-     *
      */
     public function notPaths(array $pattern): self
     {
