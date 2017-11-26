@@ -39,7 +39,6 @@ class TasksCollection extends ArrayCollection
      * This method sorts the tasks by highest priority first.
      *
      *
-     * @return TasksCollection
      */
     public function sortByPriority(GrumPHP $grumPHP): self
     {

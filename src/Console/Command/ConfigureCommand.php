@@ -3,7 +3,6 @@
 namespace GrumPHP\Console\Command;
 
 use Composer\Config;
-use Exception;
 use Gitonomy\Git\Repository;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\ComposerHelper;
@@ -19,6 +18,7 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Yaml\Yaml;
+use Throwable;
 
 class ConfigureCommand extends Command
 {
@@ -169,7 +169,7 @@ class ConfigureCommand extends Command
             $this->filesystem->dumpFile($grumphpConfigName, $yaml);
 
             return true;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             // Fail silently and return false!
         }
 
@@ -199,7 +199,7 @@ class ConfigureCommand extends Command
         $defaultGitDir = $this->config->getGitDir();
         try {
             $topLevel = $this->repository->run('rev-parse', ['--show-toplevel']);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             return $defaultGitDir;
         }
 

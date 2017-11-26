@@ -9,8 +9,8 @@ use Composer\Json\JsonFile;
 use Composer\Package\Loader\JsonLoader;
 use Composer\Package\Loader\RootPackageLoader;
 use Composer\Repository\RepositoryFactory;
-use Exception;
 use GrumPHP\Exception\RuntimeException;
+use Throwable;
 
 class Composer
 {
@@ -26,7 +26,7 @@ class Composer
                 $config
             ));
             $package = $loader->load($json);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             throw RuntimeException::fromAnyException($e);
         }
 
@@ -37,7 +37,7 @@ class Composer
     {
         try {
             $configuration = Factory::createConfig();
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             throw RuntimeException::fromAnyException($e);
         }
 

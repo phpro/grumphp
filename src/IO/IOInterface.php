@@ -7,14 +7,12 @@ interface IOInterface
     /**
      * Is this input means interactive?
      *
-     * @return bool
      */
     public function isInteractive(): bool;
 
     /**
      * Is this output verbose?
      *
-     * @return bool
      */
     public function isVerbose(): bool;
 
@@ -28,7 +26,6 @@ interface IOInterface
     /**
      * Is the output in debug verbosity?
      *
-     * @return bool
      */
     public function isDebug(): bool;
 

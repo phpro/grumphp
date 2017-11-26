@@ -2,7 +2,6 @@
 
 namespace GrumPHP\Event\Subscriber;
 
-use Exception;
 use Gitonomy\Git\Exception\ProcessException;
 use Gitonomy\Git\Repository;
 use GrumPHP\Configuration\GrumPHP;
@@ -14,6 +13,7 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Throwable;
 
 class StashUnstagedChangesSubscriber implements EventSubscriberInterface
 {
@@ -104,7 +104,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         try {
             $this->io->write('<fg=yellow>Detected unstaged changes... Stashing them!</fg=yellow>');
             $this->repository->run('stash', ['save', '--quiet', '--keep-index', uniqid('grumphp')]);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             // No worries ...
             $this->io->write(sprintf('<fg=red>Failed stashing changes: %s</fg=red>', $e->getMessage()));
             return;
@@ -123,7 +123,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         try {
             $this->io->write('<fg=yellow>Reapplying unstaged changes from stash.</fg=yellow>');
             $this->repository->run('stash', ['pop', '--quiet']);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             throw new RuntimeException(
                 'The stashed changes could not be applied. Please run `git stash pop` manually!'
                 . 'More info: ' . $e->__toString(),

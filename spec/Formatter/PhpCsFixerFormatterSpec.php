@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace spec\GrumPHP\Formatter;
 
@@ -97,7 +97,7 @@ class PhpCsFixerFormatterSpec extends ObjectBehavior
     /**
      * @return string
      */
-    private function parseJson(array $files)
+    private function parseJson(array $files): string
     {
         return json_encode(['files' => $files]);
     }

@@ -35,7 +35,6 @@ class TaskResult implements TaskResultInterface
     /**
      * Initializes test result.
      *
-     * @param integer $resultCode
      * @param string|null $message
      */
     private function __construct(

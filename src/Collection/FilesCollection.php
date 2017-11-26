@@ -23,7 +23,6 @@ class FilesCollection extends ArrayCollection
      *
      * @param string|Regex $pattern A pattern (a regexp, a glob, or a string)
      *
-     * @return FilesCollection
      */
     public function name($pattern): self
     {
@@ -41,7 +40,6 @@ class FilesCollection extends ArrayCollection
      *
      * @param array $patterns Patterns (regexps, globs, or strings)
      *
-     * @return FilesCollection
      */
     public function names(array $patterns): self
     {
@@ -61,7 +59,6 @@ class FilesCollection extends ArrayCollection
      *
      * @param string $pattern A pattern (a regexp, a glob, or a string)
      *
-     * @return FilesCollection
      */
     public function notName(string $pattern): self
     {
@@ -76,7 +73,6 @@ class FilesCollection extends ArrayCollection
      * $collection->path('/^spec\/')
      *
      *
-     * @return FilesCollection
      */
     public function path(string $pattern): self
     {
@@ -89,7 +85,6 @@ class FilesCollection extends ArrayCollection
      * $collection->paths(['/^spec\/','/^src\/'])
      *
      *
-     * @return FilesCollection
      */
     public function paths(array $patterns): self
     {
@@ -106,7 +101,6 @@ class FilesCollection extends ArrayCollection
      * $collection->notPath('/^spec\/')
      *
      *
-     * @return FilesCollection
      */
     public function notPath(string $pattern): self
     {
@@ -121,7 +115,6 @@ class FilesCollection extends ArrayCollection
      * $collection->notPaths(['/^spec\/','/^src\/'])
      *
      *
-     * @return FilesCollection
      */
     public function notPaths(array $pattern): self
     {
@@ -151,7 +144,6 @@ class FilesCollection extends ArrayCollection
      *
      * @param string $size A size range string
      *
-     * @return FilesCollection
      *
      * @see NumberComparator
      */
@@ -175,7 +167,6 @@ class FilesCollection extends ArrayCollection
      *
      * @param string $date A date to test
      *
-     * @return FilesCollection
      *
      * @see DateComparator
      */

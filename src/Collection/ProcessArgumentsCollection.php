@@ -28,9 +28,9 @@ class ProcessArgumentsCollection extends ArrayCollection
     }
 
     /**
-     * @param string|null $value
+     * @param string|int|null $value
      */
-    public function addOptionalArgumentWithSeparatedValue(string $argument, $value)
+    public function addOptionalArgumentWithSeparatedValue(string $argument, $value = null)
     {
         if (!$value) {
             return;

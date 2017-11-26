@@ -2,16 +2,16 @@
 
 namespace GrumPHP\Exception;
 
-use Exception;
 use GrumPHP\Task\TaskInterface;
 use RuntimeException as BaseRuntimeException;
+use Throwable;
 
 class RuntimeException extends BaseRuntimeException implements ExceptionInterface
 {
     /**
      * @return RuntimeException
      */
-    public static function fromAnyException(Exception $e): self
+    public static function fromAnyException(Throwable $e): self
     {
         return new self($e->getMessage(), $e->getCode(), $e);
     }

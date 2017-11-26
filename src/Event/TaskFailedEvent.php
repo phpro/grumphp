@@ -2,25 +2,25 @@
 
 namespace GrumPHP\Event;
 
-use Exception;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
+use Throwable;
 
 class TaskFailedEvent extends TaskEvent
 {
     /**
-     * @var Exception
+     * @var Throwable
      */
     private $exception;
 
-    public function __construct(TaskInterface $task, ContextInterface $context, Exception $exception)
+    public function __construct(TaskInterface $task, ContextInterface $context, Throwable $exception)
     {
         parent::__construct($task, $context);
 
         $this->exception = $exception;
     }
 
-    public function getException(): Exception
+    public function getException(): Throwable
     {
         return $this->exception;
     }
