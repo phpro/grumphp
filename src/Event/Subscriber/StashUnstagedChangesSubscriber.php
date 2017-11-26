@@ -42,10 +42,6 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
      */
     private $shutdownFunctionRegistered = false;
 
-    /**
-     * @param GrumPHP     $grumPHP
-     * @param Repository  $repository
-     */
     public function __construct(GrumPHP $grumPHP, Repository $repository, IOInterface $io)
     {
         $this->grumPHP = $grumPHP;
@@ -53,9 +49,6 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         $this->io = $io;
     }
 
-    /**
-     * @return array
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -66,11 +59,6 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param RunnerEvent $e
-     *
-     * @return void
-     */
     public function saveStash(RunnerEvent $e)
     {
         if (!$this->isStashEnabled($e->getContext())) {
@@ -81,9 +69,6 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param RunnerEvent $e
-     *
-     * @return void
      * @throws ProcessException
      */
     public function popStash(RunnerEvent $e)
@@ -95,9 +80,6 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         $this->doPopStash();
     }
 
-    /**
-     * @return void
-     */
     public function handleErrors()
     {
         if (!$this->grumPHP->ignoreUnstagedChanges()) {
@@ -132,9 +114,6 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         $this->registerShutdownHandler();
     }
 
-    /**
-     * @return void
-     */
     private function doPopStash()
     {
         if (!$this->stashIsApplied) {
@@ -156,10 +135,6 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         $this->stashIsApplied = false;
     }
 
-    /**
-     *
-     * @return bool
-     */
     private function isStashEnabled(ContextInterface $context): bool
     {
         return $this->grumPHP->ignoreUnstagedChanges() && $context instanceof GitPreCommitContext;
@@ -167,7 +142,6 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
 
     /**
      * Make sure to fetch errors and pop the stash before crashing
-     *
      */
     private function registerShutdownHandler()
     {

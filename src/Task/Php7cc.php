@@ -14,9 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Php7cc extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return 'php7cc';

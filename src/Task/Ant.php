@@ -14,9 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Ant extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return 'ant';

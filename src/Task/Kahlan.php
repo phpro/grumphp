@@ -14,9 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Kahlan extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return 'kahlan';

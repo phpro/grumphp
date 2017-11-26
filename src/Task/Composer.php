@@ -26,10 +26,6 @@ class Composer extends AbstractExternalTask
 
     /**
      * Composer constructor.
-     *
-     * @param GrumPHP                   $grumPHP
-     * @param ProcessBuilder            $processBuilder
-     * @param Filesystem                $filesystem
      */
     public function __construct(
         GrumPHP $grumPHP,
@@ -41,9 +37,6 @@ class Composer extends AbstractExternalTask
         $this->filesystem = $filesystem;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return 'composer';
@@ -123,9 +116,6 @@ class Composer extends AbstractExternalTask
 
     /**
      * Checks if composer.local host one or more local repositories.
-     *
-     *
-     * @return bool
      */
     private function hasLocalRepository(SplFileInfo $composerFile): bool
     {

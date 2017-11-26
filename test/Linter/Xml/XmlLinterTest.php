@@ -21,11 +21,6 @@ class XmlLinterTest extends TestCase
         $this->linter = new XmlLinter();
     }
 
-    /**
-     * @param string $fixture
-     *
-     * @return SplFileInfo
-     */
     private function getFixture(string $fixture): SplFileInfo
     {
         $file = new SplFileInfo(TEST_BASE_PATH . '/fixtures/linters/xml/' . $fixture);
@@ -36,10 +31,6 @@ class XmlLinterTest extends TestCase
         return $file;
     }
 
-    /**
-     * @param string $fixture
-     * @param int $errors
-     */
     private function validateFixture(string $fixture, int $errors)
     {
         $result = $this->linter->lint($this->getFixture($fixture));
@@ -106,9 +97,6 @@ class XmlLinterTest extends TestCase
         $this->validateFixture($fixture, $errors);
     }
 
-    /**
-     * @return array
-     */
     function provideXmlValidation(): array
     {
         return [
@@ -117,9 +105,6 @@ class XmlLinterTest extends TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     function provideDtdValidation(): array
     {
         return [
@@ -134,9 +119,6 @@ class XmlLinterTest extends TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     function provideSchemeValidation(): array
     {
         return [
@@ -151,9 +133,6 @@ class XmlLinterTest extends TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     function provideDtdAndSchemeValidation(): array
     {
         return [
@@ -162,9 +141,6 @@ class XmlLinterTest extends TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     function provideXincludeValidation(): array
     {
         return [

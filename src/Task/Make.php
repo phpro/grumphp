@@ -14,9 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Make extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return 'make';

@@ -14,9 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Atoum extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return 'atoum';

@@ -48,8 +48,6 @@ abstract class AbstractVisitorTest extends TestCase
     }
 
     /**
-     * @param $code
-     *
      * @return ParseErrorsCollection
      */
     protected function visit($code): ParseErrorsCollection

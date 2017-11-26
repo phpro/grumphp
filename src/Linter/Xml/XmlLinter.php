@@ -32,7 +32,6 @@ class XmlLinter implements LinterInterface
     private $schemeValidation = false;
 
     /**
-     *
      * @return LintErrorsCollection
      */
     public function lint(SplFileInfo $file): LintErrorsCollection
@@ -66,9 +65,6 @@ class XmlLinter implements LinterInterface
         return $errors;
     }
 
-    /**
-     * @return bool
-     */
     public function isInstalled(): bool
     {
         $extensions = get_loaded_extensions();
@@ -107,18 +103,12 @@ class XmlLinter implements LinterInterface
         $this->schemeValidation = $schemeValidation;
     }
 
-    /**
-     * @param bool $useInternalErrors
-     *
-     * @return bool
-     */
     private function useInternalXmlLoggin(bool $useInternalErrors = false): bool
     {
         return libxml_use_internal_errors($useInternalErrors);
     }
 
     /**
-     *
      * @return DOMDocument|null
      */
     private function loadDocument(SplFileInfo $file)
@@ -149,8 +139,6 @@ class XmlLinter implements LinterInterface
     }
 
     /**
-     * @param LintErrorsCollection $errors
-     *
      * @return array
      */
     private function collectXmlErrors(LintErrorsCollection $errors)
@@ -169,10 +157,6 @@ class XmlLinter implements LinterInterface
         libxml_clear_errors();
     }
 
-    /**
-     *
-     * @return bool
-     */
     private function validateDTD(DOMDocument $document): bool
     {
         if (is_null($document->doctype)) {
@@ -188,11 +172,6 @@ class XmlLinter implements LinterInterface
         return $document->validate();
     }
 
-    /**
-     * @param DOMDocument $document
-     *
-     * @return bool
-     */
     private function validateInternalSchemes(SplFileInfo $file, DOMDocument $document): bool
     {
         $schemas = [];
@@ -222,8 +201,6 @@ class XmlLinter implements LinterInterface
     }
 
     /**
-     * @param string      $scheme
-     *
      * @return null|string
      */
     private function locateScheme(SplFileInfo $xmlFile, string $scheme)

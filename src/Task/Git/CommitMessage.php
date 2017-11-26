@@ -22,25 +22,16 @@ class CommitMessage implements TaskInterface
      */
     private $grumPHP;
 
-    /**
-     * @param GrumPHP $grumPHP
-     */
     public function __construct(GrumPHP $grumPHP)
     {
         $this->grumPHP = $grumPHP;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return 'git_commit_message';
     }
 
-    /**
-     * @return array
-     */
     public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
@@ -81,10 +72,6 @@ class CommitMessage implements TaskInterface
         return $resolver;
     }
 
-    /**
-     *
-     * @return bool
-     */
     public function canRunInContext(ContextInterface $context): bool
     {
         return $context instanceof GitCommitMsgContext;
@@ -190,11 +177,6 @@ class CommitMessage implements TaskInterface
     }
 
     /**
-     * @param array $config
-     * @param string $commitMessage
-     * @param string $rule
-     * @param string $ruleName
-     *
      * @throws RuntimeException
      */
     private function runMatcher(array $config, string $commitMessage, string $rule, string $ruleName)
@@ -217,11 +199,6 @@ class CommitMessage implements TaskInterface
         }
     }
 
-    /**
-     * @param string $string
-     *
-     * @return int
-     */
     private function getSpecialPrefixLength(string $string): int
     {
         if (preg_match('/^(fixup|squash)! /', $string, $match) !== 1) {
@@ -315,11 +292,6 @@ class CommitMessage implements TaskInterface
         return true;
     }
 
-    /**
-     * @param string $commitMessage
-     *
-     * @return array
-     */
     private function getCommitMessageLinesWithoutComments(string $commitMessage): array
     {
         $lines = preg_split('/\R/u', $commitMessage);

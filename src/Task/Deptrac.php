@@ -14,9 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Deptrac extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return 'deptrac';
@@ -49,9 +46,6 @@ class Deptrac extends AbstractExternalTask
 
     /**
      * This methods specifies if a task can run in a specific context.
-     *
-     *
-     * @return bool
      */
     public function canRunInContext(ContextInterface $context): bool
     {
@@ -59,7 +53,6 @@ class Deptrac extends AbstractExternalTask
     }
 
     /**
-     *
      * @return TaskResultInterface
      */
     public function run(ContextInterface $context): TaskResultInterface

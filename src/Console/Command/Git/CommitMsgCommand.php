@@ -40,10 +40,6 @@ class CommitMsgCommand extends Command
      */
     private $filesystem;
 
-    /**
-     * @param GrumPHP      $grumPHP
-     * @param Filesystem   $filesystem
-     */
     public function __construct(GrumPHP $grumPHP, ChangedFiles $changedFilesLocator, Filesystem $filesystem)
     {
         parent::__construct();
@@ -65,8 +61,6 @@ class CommitMsgCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     *
      * @return int|void
      */
     public function execute(InputInterface $input, OutputInterface $output)

@@ -24,65 +24,41 @@ class GrumPHP
         $this->container = $container;
     }
 
-    /**
-     * @return string
-     */
     public function getBinDir(): string
     {
         return $this->container->getParameter('bin_dir');
     }
 
-    /**
-     * @return string
-     */
     public function getGitDir(): string
     {
         return $this->container->getParameter('git_dir');
     }
 
-    /**
-     * @return string
-     */
     public function getHooksDir(): string
     {
         return $this->container->getParameter('hooks_dir');
     }
 
-    /**
-     * @return string
-     */
     public function getHooksPreset(): string
     {
         return $this->container->getParameter('hooks_preset');
     }
 
-    /**
-     * @return bool
-     */
     public function stopOnFailure(): bool
     {
         return (bool) $this->container->getParameter('stop_on_failure');
     }
 
-    /**
-     * @return bool
-     */
     public function ignoreUnstagedChanges(): bool
     {
         return (bool) $this->container->getParameter('ignore_unstaged_changes');
     }
 
-    /**
-     * @return int
-     */
     public function getProcessAsyncLimit(): int
     {
         return (int) $this->container->getParameter('process_async_limit');
     }
 
-    /**
-     * @return int
-     */
     public function getProcessAsyncWaitTime(): int
     {
         return (int) $this->container->getParameter('process_async_wait');
@@ -101,9 +77,6 @@ class GrumPHP
         return (float) $timeout;
     }
 
-    /**
-     * @return array
-     */
     public function getRegisteredTasks(): array
     {
         return $this->container->getParameter('grumphp.tasks.registered');
@@ -119,11 +92,6 @@ class GrumPHP
         return (bool)$this->container->getParameter('hide_circumvention_tip');
     }
 
-    /**
-     * @param string $taskName
-     *
-     * @return array
-     */
     public function getTaskConfiguration(string $taskName): array
     {
         $tasksConfiguration = $this->container->getParameter('grumphp.tasks.configuration');
@@ -134,11 +102,6 @@ class GrumPHP
         return $tasksConfiguration[$taskName];
     }
 
-    /**
-     * @param $taskName
-     *
-     * @return array
-     */
     public function getTaskMetadata($taskName): array
     {
         $tasksMetadata = $this->container->getParameter('grumphp.tasks.metadata');
@@ -160,7 +123,6 @@ class GrumPHP
     /**
      * Get ascii content path from grumphp.yml file
      *
-     * @param $resource
      *
      * @return string|null
      */
@@ -174,10 +136,6 @@ class GrumPHP
         return $paths[$resource];
     }
 
-    /**
-     * @param string $taskName
-     * @return bool
-     */
     public function isBlockingTask(string $taskName): bool
     {
         $taskMetadata = $this->getTaskMetadata($taskName);

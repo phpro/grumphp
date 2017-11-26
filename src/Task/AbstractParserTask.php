@@ -21,9 +21,6 @@ abstract class AbstractParserTask implements TaskInterface
      */
     protected $parser;
 
-    /**
-     * @param GrumPHP         $grumPHP
-     */
     public function __construct(GrumPHP $grumPHP, ParserInterface $parser)
     {
         $this->grumPHP = $grumPHP;
@@ -64,7 +61,6 @@ abstract class AbstractParserTask implements TaskInterface
     }
 
     /**
-     *
      * @return ParseErrorsCollection
      */
     protected function parse(FilesCollection $files): ParseErrorsCollection

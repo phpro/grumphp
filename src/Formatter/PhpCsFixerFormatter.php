@@ -20,10 +20,6 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
         $this->counter = 0;
     }
 
-    /**
-     *
-     * @return string
-     */
     public function format(Process $process): string
     {
         $output = $process->getOutput();
@@ -38,10 +34,6 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
         return $this->formatJsonResponse($json);
     }
 
-    /**
-     *
-     * @return string
-     */
     public function formatSuggestion(Process $process): string
     {
         $pattern = '%s ';
@@ -52,12 +44,6 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
         return str_replace([$dryrun, $formatJson], '', $process->getCommandLine());
     }
 
-    /**
-     * @param array $messages
-     * @param array $suggestions
-     *
-     * @return string
-     */
     public function formatErrorMessage(array $messages, array $suggestions): string
     {
         return sprintf(
@@ -67,11 +53,6 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
         );
     }
 
-    /**
-     * @param array $json
-     *
-     * @return string
-     */
     private function formatJsonResponse(array $json): string
     {
         $formatted = [];
@@ -87,11 +68,6 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
         return implode(PHP_EOL, $formatted);
     }
 
-    /**
-     * @param array $file
-     *
-     * @return string
-     */
     private function formatFile(array $file): string
     {
         if (!isset($file['name'])) {

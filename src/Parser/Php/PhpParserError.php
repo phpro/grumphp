@@ -8,9 +8,6 @@ use PhpParser\Error;
 class PhpParserError extends ParseError
 {
     /**
-     * @param Error  $exception
-     * @param string $filename
-     *
      * @return PhpParserError
      */
     public static function fromParseException(Error $exception, string $filename): PhpParserError

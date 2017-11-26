@@ -37,11 +37,6 @@ class PathsHelper extends Helper
      */
     private $defaultConfigPath;
 
-    /**
-     * @param GrumPHP         $config
-     * @param Filesystem      $fileSystem
-     * @param string          $defaultConfigPath
-     */
     public function __construct(
         GrumPHP $config,
         Filesystem $fileSystem,
@@ -56,8 +51,6 @@ class PathsHelper extends Helper
 
     /**
      * Get the root path of the GrumPHP package:
-     *
-     * @return string
      */
     public function getGrumPHPPath(): string
     {
@@ -68,8 +61,6 @@ class PathsHelper extends Helper
 
     /**
      * Get the folder which contains all resources
-     *
-     * @return string
      */
     public function getResourcesPath(): string
     {
@@ -78,8 +69,6 @@ class PathsHelper extends Helper
 
     /**
      * Get the path with all ascii art
-     *
-     * @return string
      */
     public function getAsciiPath(): string
     {
@@ -89,7 +78,6 @@ class PathsHelper extends Helper
     /**
      * Load an ascii image
      *
-     * @param $resource
      *
      * @return string|null
      */
@@ -120,8 +108,6 @@ class PathsHelper extends Helper
     /**
      * This is the directory in which the cli script is initialized.
      * Normally this should be the directory where the composer.json file is located.
-     *
-     * @return string
      */
     public function getWorkingDir(): string
     {
@@ -130,8 +116,6 @@ class PathsHelper extends Helper
 
     /**
      * Find the relative git directory
-     *
-     * @return string
      */
     public function getGitDir(): string
     {
@@ -145,8 +129,6 @@ class PathsHelper extends Helper
 
     /**
      * Gets the path from where the command needs to be executed in the GIT hook.
-     *
-     * @return string
      */
     public function getGitHookExecutionPath(): string
     {
@@ -157,8 +139,6 @@ class PathsHelper extends Helper
 
     /**
      * Returns the directory where the git hooks are installed.
-     *
-     * @return string
      */
     public function getGitHooksDir(): string
     {
@@ -167,8 +147,6 @@ class PathsHelper extends Helper
 
     /**
      * The folder with all git hooks
-     *
-     * @return string
      */
     public function getGitHookTemplatesDir(): string
     {
@@ -177,8 +155,6 @@ class PathsHelper extends Helper
 
     /**
      * Find the relative bin directory
-     *
-     * @return string
      */
     public function getBinDir(): string
     {
@@ -193,11 +169,6 @@ class PathsHelper extends Helper
     /**
      * Search a command in the bin folder
      * Note: the command locator is not injected because it needs the relative bin path
-     *
-     * @param $command
-     * @param $forceUnix
-     *
-     * @return string
      */
     public function getBinCommand($command, $forceUnix = false): string
     {
@@ -205,9 +176,6 @@ class PathsHelper extends Helper
     }
 
     /**
-     * @param $path
-     *
-     * @return string
      * @throws FileNotFoundException If file doesn't exists
      */
     public function getRelativePath($path): string
@@ -220,9 +188,7 @@ class PathsHelper extends Helper
      * This method will return a relative path to a file of directory if it lives in the current project.
      * When the file is not located in the current project, the absolute path to the file is returned.
      *
-     * @param string $path
      *
-     * @return string
      * @throws FileNotFoundException
      */
     public function getRelativeProjectPath(string $path): string
@@ -238,8 +204,6 @@ class PathsHelper extends Helper
     }
 
     /**
-     * @param $path
-     *
      * @return mixed
      */
     public function getAbsolutePath($path)
@@ -253,11 +217,6 @@ class PathsHelper extends Helper
         return $realpath;
     }
 
-    /**
-     * @param string $path
-     *
-     * @return string
-     */
     public function getPathWithTrailingSlash(string $path): string
     {
         if (!$path) {
@@ -267,9 +226,6 @@ class PathsHelper extends Helper
         return rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
     }
 
-    /**
-     * @return string
-     */
     public function getDefaultConfigPath(): string
     {
         return $this->defaultConfigPath;

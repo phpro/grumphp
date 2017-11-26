@@ -40,10 +40,6 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
 
     /**
      * PhpCsFixerRunner constructor.
-     *
-     * @param GrumPHP             $grumPHP
-     * @param ProcessBuilder      $processBuilder
-     * @param AsyncProcessRunner  $processRunner
      */
     public function __construct(
         GrumPHP $grumPHP,
@@ -76,8 +72,6 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
     }
 
     /**
-     * @param ContextInterface           $context
-     *
      * @return TaskResult
      */
     protected function runOnAllFiles(ContextInterface $context, ProcessArgumentsCollection $arguments): TaskResult
@@ -97,9 +91,6 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
     }
 
     /**
-     * @param ContextInterface           $context
-     * @param FilesCollection            $files
-     *
      * @return TaskResult
      */
     protected function runOnChangedFiles(

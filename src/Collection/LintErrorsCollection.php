@@ -6,9 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class LintErrorsCollection extends ArrayCollection
 {
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         $errors = [];

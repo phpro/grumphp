@@ -13,9 +13,6 @@ class RegisteredFiles
      */
     private $repository;
 
-    /**
-     * @param Repository $repository
-     */
     public function __construct(Repository $repository)
     {
         $this->repository = $repository;

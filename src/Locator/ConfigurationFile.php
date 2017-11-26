@@ -16,18 +16,12 @@ class ConfigurationFile
 
     /**
      * ConfigurationFile constructor.
-     *
      */
     public function __construct(Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
     }
 
-    /**
-     * @param string                $workingDir
-     *
-     * @return string
-     */
     public function locate(string $workingDir, PackageInterface $package = null): string
     {
         $defaultPath = $workingDir . DIRECTORY_SEPARATOR .  self::APP_CONFIG_FILE;
@@ -46,11 +40,6 @@ class ConfigurationFile
         return $defaultPath;
     }
 
-    /**
-     * @param                  $defaultPath
-     *
-     * @return string
-     */
     private function useConfigPathFromComposer(PackageInterface $package, $defaultPath): string
     {
         $extra = $package->getExtra();
@@ -62,11 +51,6 @@ class ConfigurationFile
         return $this->locateConfigFileWithDistSupport($composerDefaultPath);
     }
 
-    /**
-     * @param $defaultPath
-     *
-     * @return string
-     */
     private function locateConfigFileWithDistSupport($defaultPath): string
     {
         $distPath = (strpos($defaultPath, -5) !== '.dist') ? $defaultPath . '.dist' : $defaultPath;

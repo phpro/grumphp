@@ -26,10 +26,6 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
         $this->IO = $IO;
     }
 
-    /**
-     *
-     * @return string
-     */
     public function format(Process $process): string
     {
         $output = $process->getOutput();
@@ -42,10 +38,6 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
         return $this->formatOutput($output);
     }
 
-    /**
-     * @param string $output
-     * @return string
-     */
     private function formatOutput(string $output): string
     {
         $result = static::RESET_COLOR;
@@ -56,11 +48,6 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
         return trim($result);
     }
 
-    /**
-     * @param string $line
-     * @param int $lineNumber
-     * @return string
-     */
     private function trimOutputLine(string $line, int $lineNumber): string
     {
         if (strlen($line) < 80) {

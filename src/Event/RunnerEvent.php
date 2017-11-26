@@ -24,11 +24,6 @@ class RunnerEvent extends Event
      */
     private $taskResults;
 
-    /**
-     * @param TasksCollection $tasks
-     * @param ContextInterface $context
-     * @param TaskResultCollection $taskResults
-     */
     public function __construct(TasksCollection $tasks, ContextInterface $context, TaskResultCollection $taskResults)
     {
         $this->tasks = $tasks;

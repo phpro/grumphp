@@ -16,7 +16,6 @@ class TraverserFactory
 
     /**
      * TraverserFactory constructor.
-     *
      */
     public function __construct(TraverserConfigurator $configurator)
     {
@@ -24,8 +23,6 @@ class TraverserFactory
     }
 
     /**
-     * @param array         $parserOptions
-     *
      * @throws \GrumPHP\Exception\RuntimeException
      */
     public function createForTaskContext(array $parserOptions, ParserContext $context): NodeTraverserInterface

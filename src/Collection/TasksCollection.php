@@ -12,7 +12,6 @@ use SplPriorityQueue;
 class TasksCollection extends ArrayCollection
 {
     /**
-     *
      * @return TasksCollection
      */
     public function filterByContext(ContextInterface $context): TasksCollection
@@ -23,7 +22,6 @@ class TasksCollection extends ArrayCollection
     }
 
     /**
-     *
      * @return TasksCollection
      */
     public function filterByTestSuite(TestSuiteInterface $testSuite = null): TasksCollection

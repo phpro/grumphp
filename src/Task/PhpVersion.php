@@ -28,7 +28,6 @@ class PhpVersion implements TaskInterface
 
     /**
      * PhpVersion constructor.
-     * @param PhpVersionUtility $phpVersionUtility
      */
     public function __construct(GrumPHP $grumPHP, PhpVersionUtility $phpVersionUtility)
     {
@@ -38,9 +37,6 @@ class PhpVersion implements TaskInterface
 
     /**
      * This methods specifies if a task can run in a specific context.
-     *
-     *
-     * @return bool
      */
     public function canRunInContext(ContextInterface $context): bool
     {
@@ -48,7 +44,6 @@ class PhpVersion implements TaskInterface
     }
 
     /**
-     *
      * @return TaskResultInterface
      */
     public function run(ContextInterface $context): TaskResultInterface
@@ -77,9 +72,6 @@ class PhpVersion implements TaskInterface
         return TaskResult::createPassed($this, $context);
     }
 
-    /**
-     * @return array
-     */
     public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
@@ -87,9 +79,6 @@ class PhpVersion implements TaskInterface
         return $this->getConfigurableOptions()->resolve($configured);
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return 'phpversion';

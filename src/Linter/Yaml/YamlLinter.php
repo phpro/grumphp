@@ -47,7 +47,6 @@ class YamlLinter implements LinterInterface
 
     /**
      * YamlLinter constructor.
-     *
      */
     public function __construct(Filesystem $filesystem)
     {
@@ -55,7 +54,6 @@ class YamlLinter implements LinterInterface
     }
 
     /**
-     *
      * @return LintErrorsCollection
      */
     public function lint(SplFileInfo $file): LintErrorsCollection
@@ -78,8 +76,6 @@ class YamlLinter implements LinterInterface
      * If this method returns true, you are using Symfony YAML > 3.1.
      *
      * @link http://symfony.com/blog/new-in-symfony-3-1-customizable-yaml-parsing-and-dumping
-     *
-     * @return bool
      */
     public static function supportsFlags(): bool
     {
@@ -91,7 +87,6 @@ class YamlLinter implements LinterInterface
     }
 
     /**
-     * @param string $content
      * @throws ParseException
      */
     private function parseYaml(string $content)
@@ -111,9 +106,6 @@ class YamlLinter implements LinterInterface
         Yaml::parse($content, $flags);
     }
 
-    /**
-     * @return bool
-     */
     public function isInstalled(): bool
     {
         return class_exists(Yaml::class);
@@ -135,18 +127,12 @@ class YamlLinter implements LinterInterface
         $this->exceptionOnInvalidType = $exceptionOnInvalidType;
     }
 
-    /**
-     * @param bool $parseCustomTags
-     */
     public function setParseCustomTags(bool $parseCustomTags)
     {
         // Yaml::PARSE_CONSTANT is only available in Symfony Yaml >= 3.2
         $this->parseCustomTags = $parseCustomTags && defined('Symfony\Component\Yaml\Yaml::PARSE_CONSTANT');
     }
 
-    /**
-     * @param bool $parseConstants
-     */
     public function setParseConstants(bool $parseConstants)
     {
         // Yaml::PARSE_CUSTOM_TAGS is only available in Symfony Yaml >= 3.3

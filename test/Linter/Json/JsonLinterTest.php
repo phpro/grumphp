@@ -26,11 +26,6 @@ class JsonLinterTest extends TestCase
         );
     }
 
-    /**
-     * @param string $fixture
-     *
-     * @return SplFileInfo
-     */
     private function getFixture(string $fixture): SplFileInfo
     {
         $file = new SplFileInfo(TEST_BASE_PATH . '/fixtures/linters/json/' . $fixture);
@@ -40,10 +35,6 @@ class JsonLinterTest extends TestCase
 
         return $file;
     }
-    /**
-     * @param string $fixture
-     * @param int $errors
-     */
     private function validateFixture(string $fixture, int $errors)
     {
         $result = $this->linter->lint($this->getFixture($fixture));
@@ -72,9 +63,6 @@ class JsonLinterTest extends TestCase
         $this->validateFixture('duplicate-keys.json', 1);
     }
 
-    /**
-     * @return array
-     */
     function provideJsonValidation(): array
     {
         return [

@@ -18,9 +18,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Phpcs extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return 'phpcs';
@@ -111,7 +108,6 @@ class Phpcs extends AbstractExternalTask
     }
 
     /**
-     * @param array $config
      * @return ProcessArgumentsCollection
      */
     protected function addArgumentsFromConfig(

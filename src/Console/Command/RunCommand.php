@@ -28,10 +28,6 @@ class RunCommand extends Command
      */
     protected $registeredFilesLocator;
 
-    /**
-     * @param GrumPHP $grumPHP
-     * @param RegisteredFiles $registeredFilesLocator
-     */
     public function __construct(GrumPHP $grumPHP, RegisteredFiles $registeredFilesLocator)
     {
         parent::__construct();
@@ -56,8 +52,6 @@ class RunCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     *
      * @return int|void
      */
     public function execute(InputInterface $input, OutputInterface $output)

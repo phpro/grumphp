@@ -17,9 +17,6 @@ class ExternalCommand
      */
     protected $executableFinder;
 
-    /**
-     * @param string $binDir
-     */
     public function __construct(string $binDir, ExecutableFinder $executableFinder)
     {
         $this->binDir = rtrim($binDir, '/\\');
@@ -27,12 +24,10 @@ class ExternalCommand
     }
 
     /**
-     * @param string $command
      * @param boolean $forceUnix This parameter makes it possible to force unix style commands
      *                           on a windows environment.
      *                           This can be useful in git hooks.
      *
-     * @return string
      *
      * @throws RuntimeException if the command can not be found
      */

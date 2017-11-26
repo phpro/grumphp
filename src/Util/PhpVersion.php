@@ -13,7 +13,6 @@ class PhpVersion
 
     /**
      * PhpVersion constructor.
-     * @param array $versions
      */
     public function __construct(array $versions)
     {
@@ -22,7 +21,6 @@ class PhpVersion
 
     /**
      * Check if the current version is supported
-     * @param string $currentVersion
      * @return bool|null
      * @see https://secure.php.net/supported-versions.php for a list of currently supported versions
      */
@@ -42,9 +40,6 @@ class PhpVersion
 
     /**
      * Check if the project version is higher or equal to the given current version
-     * @param string $currentVersion
-     * @param string $projectVersion
-     * @return bool
      */
     public function isSupportedProjectVersion(string $currentVersion, string $projectVersion): bool
     {

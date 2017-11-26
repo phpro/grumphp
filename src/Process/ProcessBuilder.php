@@ -30,8 +30,6 @@ class ProcessBuilder
 
     /**
      * ProcessBuilder constructor.
-     *
-     * @param GrumPHP         $config
      */
     public function __construct(GrumPHP $config, ExternalCommand $externalCommandLocator, IOInterface $io)
     {
@@ -41,8 +39,6 @@ class ProcessBuilder
     }
 
     /**
-     * @param string $command
-     *
      * @return ProcessArgumentsCollection
      */
     public function createArgumentsForCommand(string $command): ProcessArgumentsCollection
@@ -53,7 +49,6 @@ class ProcessBuilder
     }
 
     /**
-     *
      * @return Process
      * @throws \GrumPHP\Exception\PlatformException
      */
@@ -70,8 +65,6 @@ class ProcessBuilder
     }
 
     /**
-     * @param Process $process
-     *
      * @throws \GrumPHP\Exception\PlatformException
      */
     private function guardWindowsCmdMaxInputStringLimitation(Process $process)
@@ -87,19 +80,11 @@ class ProcessBuilder
         throw PlatformException::commandLineStringLimit($process);
     }
 
-    /**
-     * @param string $command
-     *
-     * @return string
-     */
     private function getCommandLocation(string $command): string
     {
         return $this->externalCommandLocator->locate($command);
     }
 
-    /**
-     * @param Process $process
-     */
     private function logProcessInVerboseMode(Process $process)
     {
         if ($this->io->isVeryVerbose()) {

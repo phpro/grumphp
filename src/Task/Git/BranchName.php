@@ -31,26 +31,17 @@ class BranchName implements TaskInterface
      */
     protected $repository;
 
-    /**
-     * @param GrumPHP $grumPHP
-     */
     public function __construct(GrumPHP $grumPHP, Repository $repository)
     {
         $this->grumPHP = $grumPHP;
         $this->repository = $repository;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return 'git_branch_name';
     }
 
-    /**
-     * @return array
-     */
     public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
@@ -77,21 +68,12 @@ class BranchName implements TaskInterface
         return $resolver;
     }
 
-    /**
-     *
-     * @return bool
-     */
     public function canRunInContext(ContextInterface $context): bool
     {
         return $context instanceof RunContext || $context instanceof GitPreCommitContext;
     }
 
     /**
-     * @param array $config
-     * @param string $name
-     * @param string $rule
-     * @param string $ruleName
-     *
      * @throws RuntimeException
      */
     private function runMatcher(array $config, string $name, string $rule, string $ruleName)

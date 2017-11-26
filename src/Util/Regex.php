@@ -19,8 +19,6 @@ class Regex
 
     /**
      * Regex constructor.
-     *
-     * @param $string
      */
     public function __construct($string)
     {
@@ -30,7 +28,6 @@ class Regex
     /**
      * Checks whether the string is a regex.
      *
-     * @param string $string
      *
      * @return bool Whether the given string is a regex
      */
@@ -54,19 +51,11 @@ class Regex
         return false;
     }
 
-    /**
-     * @param string $string
-     *
-     * @return string
-     */
     private function toRegex(string $string): string
     {
         return $this->isRegex($string) ? $string : Glob::toRegex($string);
     }
 
-    /**
-     * @param string $modifier
-     */
     public function addPatternModifier(string $modifier)
     {
         if (!strlen($modifier) == 1 || !strstr(self::ALLOWED_MODIFIERS, $modifier)) {
@@ -88,8 +77,6 @@ class Regex
 
     /**
      * Returns the new regex.
-     *
-     * @return string
      */
     public function __toString(): string
     {

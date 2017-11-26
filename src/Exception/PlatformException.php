@@ -8,7 +8,6 @@ use Symfony\Component\Process\Process;
 class PlatformException extends RuntimeException
 {
     /**
-     *
      * @return PlatformException
      */
     public static function commandLineStringLimit(Process $process): PlatformException

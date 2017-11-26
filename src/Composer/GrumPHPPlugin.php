@@ -72,7 +72,6 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 
     /**
      * When this package is updated, the git hook is also initialized
-     *
      */
     public function postPackageInstall(PackageEvent $event)
     {
@@ -91,7 +90,6 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 
     /**
      * When this package is updated, the git hook is also updated
-     *
      */
     public function postPackageUpdate(PackageEvent $event)
     {
@@ -109,7 +107,6 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 
     /**
      * When this package is uninstalled, the generated git hooks need to be removed
-     *
      */
     public function prePackageUninstall(PackageEvent $event)
     {
@@ -125,9 +122,6 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         $this->deInitGitHook();
     }
 
-    /**
-     * @param Event $event
-     */
     public function runScheduledTasks(Event $event)
     {
         if ($this->initScheduled) {
@@ -138,10 +132,6 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
-    /**
-     *
-     * @return bool
-     */
     protected function guardIsGrumPhpPackage(PackageInterface $package): bool
     {
         return $package->getName() == self::PACKAGE_NAME;
@@ -165,8 +155,6 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 
     /**
      * Run the GrumPHP console to (de)init the git hooks
-     *
-     * @param $command
      */
     protected function runGrumPhpCommand($command)
     {

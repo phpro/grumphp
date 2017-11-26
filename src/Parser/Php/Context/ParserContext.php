@@ -19,8 +19,6 @@ class ParserContext
 
     /**
      * ParserContext constructor.
-     *
-     * @param SplFileInfo          $file
      */
     public function __construct(SplFileInfo $file, ParseErrorsCollection $errors)
     {
@@ -28,9 +26,6 @@ class ParserContext
         $this->errors = $errors;
     }
 
-    /**
-     * @return SplFileInfo
-     */
     public function getFile(): SplFileInfo
     {
         return $this->file;

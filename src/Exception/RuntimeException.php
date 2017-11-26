@@ -9,7 +9,6 @@ use RuntimeException as BaseRuntimeException;
 class RuntimeException extends BaseRuntimeException implements ExceptionInterface
 {
     /**
-     *
      * @return RuntimeException
      */
     public static function fromAnyException(Exception $e): RuntimeException
@@ -18,7 +17,6 @@ class RuntimeException extends BaseRuntimeException implements ExceptionInterfac
     }
 
     /**
-     *
      * @return RuntimeException
      */
     public static function invalidTaskReturnType(TaskInterface $task): RuntimeException

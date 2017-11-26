@@ -34,10 +34,6 @@ class TaskRunnerHelper extends Helper
      */
     private $config;
 
-    /**
-     * @param GrumPHP                  $config
-     * @param TaskRunner               $taskRunner
-     */
     public function __construct(GrumPHP $config, TaskRunner $taskRunner, EventDispatcherInterface $eventDispatcher)
     {
         $this->config = $config;
@@ -53,11 +49,6 @@ class TaskRunnerHelper extends Helper
         return $this->getHelperSet()->get(PathsHelper::HELPER_NAME);
     }
 
-    /**
-     * @param OutputInterface  $output
-     *
-     * @return int
-     */
     public function run(OutputInterface $output, TaskRunnerContext $context): int
     {
         // Make sure to add some default event listeners before running.
@@ -86,19 +77,11 @@ class TaskRunnerHelper extends Helper
         return $this->returnSuccessMessage($output, $warnings->getAllMessages());
     }
 
-    /**
-     * @param OutputInterface  $output
-     */
     private function registerEventListeners(OutputInterface $output)
     {
         $this->eventDispatcher->addSubscriber(new ProgressSubscriber($output, new ProgressBar($output)));
     }
 
-    /**
-     * @param array           $errorMessages
-     *
-     * @return int
-     */
     private function returnErrorMessages(OutputInterface $output, array $errorMessages, array $warnings): int
     {
         $failed = $this->paths()->getAsciiContent('failed');
@@ -121,12 +104,6 @@ class TaskRunnerHelper extends Helper
         return self::CODE_ERROR;
     }
 
-    /**
-     *
-     * @param array           $warnings
-     *
-     * @return int
-     */
     private function returnSuccessMessage(OutputInterface $output, array $warnings): int
     {
         $succeeded = $this->paths()->getAsciiContent('succeeded');
@@ -140,10 +117,6 @@ class TaskRunnerHelper extends Helper
         return self::CODE_SUCCESS;
     }
 
-    /**
-     * @param OutputInterface $output
-     * @param array $warningMessages
-     */
     private function returnWarningMessages(OutputInterface $output, array $warningMessages)
     {
         foreach ($warningMessages as $warningMessage) {

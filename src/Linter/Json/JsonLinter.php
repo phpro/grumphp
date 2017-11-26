@@ -28,8 +28,6 @@ class JsonLinter implements LinterInterface
 
     /**
      * JsonLinter constructor.
-     *
-     * @param JsonParser $jsonParser
      */
     public function __construct(Filesystem $filesystem, JsonParser $jsonParser)
     {
@@ -38,7 +36,6 @@ class JsonLinter implements LinterInterface
     }
 
     /**
-     *
      * @return mixed
      * @throws \Seld\JsonLint\ParsingException
      */
@@ -57,9 +54,6 @@ class JsonLinter implements LinterInterface
         return $errors;
     }
 
-    /**
-     * @return bool
-     */
     public function isInstalled(): bool
     {
         return class_exists(JsonParser::class);
@@ -73,9 +67,6 @@ class JsonLinter implements LinterInterface
         $this->detectKeyConflicts = $detectKeyConflicts;
     }
 
-    /**
-     * @return int
-     */
     private function calculateFlags(): int
     {
         $flags = 0;

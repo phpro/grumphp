@@ -24,8 +24,6 @@ class TaskRunnerContext
 
     /**
      * TaskRunnerContext constructor.
-     *
-     * @param ContextInterface   $taskContext
      */
     public function __construct(ContextInterface $taskContext, TestSuiteInterface $testSuite = null)
     {
@@ -41,25 +39,16 @@ class TaskRunnerContext
         return $this->taskContext;
     }
 
-    /**
-     * @return bool
-     */
     public function skipSuccessOutput(): bool
     {
         return $this->skipSuccessOutput;
     }
 
-    /**
-     * @param bool $skipSuccessOutput
-     */
     public function setSkipSuccessOutput(bool $skipSuccessOutput)
     {
         $this->skipSuccessOutput = (bool)$skipSuccessOutput;
     }
 
-    /**
-     * @return bool
-     */
     public function hasTestSuite(): bool
     {
         return $this->testSuite !== null;

@@ -18,9 +18,6 @@ class TaskEvent extends Event
      */
     private $context;
 
-    /**
-     * @param TaskInterface    $task
-     */
     public function __construct(TaskInterface $task, ContextInterface $context)
     {
         $this->task = $task;

@@ -4,9 +4,6 @@ namespace GrumPHP\Event;
 
 class RunnerFailedEvent extends RunnerEvent
 {
-    /**
-     * @return array
-     */
     public function getMessages(): array
     {
         $messages = [];

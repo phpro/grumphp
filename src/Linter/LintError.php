@@ -31,11 +31,6 @@ class LintError
 
     /**
      * LintError constructor.
-     *
-     * @param string $type
-     * @param string $error
-     * @param string $file
-     * @param int    $line
      */
     public function __construct(string $type, string $error, string $file, int $line)
     {
@@ -45,41 +40,26 @@ class LintError
         $this->line = $line;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @return string
-     */
     public function getError(): string
     {
         return $this->error;
     }
 
-    /**
-     * @return string
-     */
     public function getFile(): string
     {
         return $this->file;
     }
 
-    /**
-     * @return int
-     */
     public function getLine(): int
     {
         return $this->line;
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return sprintf(

@@ -44,10 +44,6 @@ class ConfigureCommand extends Command
      */
     protected $input;
 
-    /**
-     * @param GrumPHP    $config
-     * @param Repository $repository
-     */
     public function __construct(GrumPHP $config, Filesystem $filesystem, Repository $repository)
     {
         parent::__construct();
@@ -71,10 +67,6 @@ class ConfigureCommand extends Command
         );
     }
 
-    /**
-     * @param InputInterface  $input
-     *
-     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
@@ -109,10 +101,6 @@ class ConfigureCommand extends Command
 
     /**
      * This method will ask the developer for it's input and will result in a configuration array.
-     *
-     * @param InputInterface  $input
-     *
-     * @return array
      */
     protected function buildConfiguration(InputInterface $input, OutputInterface $output): array
     {
@@ -164,11 +152,7 @@ class ConfigureCommand extends Command
     }
 
     /**
-     * @param        $question
      * @param null   $default
-     * @param string $separator
-     *
-     * @return string
      */
     protected function createQuestionString($question, $default = null, string $separator = ':'): string
     {
@@ -177,11 +161,6 @@ class ConfigureCommand extends Command
             sprintf('<info>%s</info>%s ', $question, $separator);
     }
 
-    /**
-     * @param array $configuration
-     *
-     * @return bool
-     */
     protected function writeConfiguration(array $configuration): bool
     {
         try {
@@ -199,8 +178,6 @@ class ConfigureCommand extends Command
 
     /**
      * Make a guess to the bin dir
-     *
-     * @return string
      */
     protected function guessBinDir(): string
     {
@@ -217,9 +194,6 @@ class ConfigureCommand extends Command
         return $config->get('bin-dir', Config::RELATIVE_PATHS);
     }
 
-    /**
-     * @return string
-     */
     protected function guessGitDir(): string
     {
         $defaultGitDir = $this->config->getGitDir();
@@ -232,11 +206,6 @@ class ConfigureCommand extends Command
         return rtrim($this->paths()->getRelativePath($topLevel), '/');
     }
 
-    /**
-     * @param $path
-     *
-     * @return bool
-     */
     public function pathValidator($path): bool
     {
         if (!$this->filesystem->exists($path)) {
@@ -247,8 +216,6 @@ class ConfigureCommand extends Command
 
     /**
      * Return a list of all available tasks
-     *
-     * @return array
      */
     protected function getAvailableTasks(GrumPHP $config): array
     {

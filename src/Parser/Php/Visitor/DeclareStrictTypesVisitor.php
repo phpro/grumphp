@@ -11,11 +11,6 @@ class DeclareStrictTypesVisitor extends AbstractVisitor
      */
     private $hasStrictType = false;
 
-    /**
-     * @param Node $node
-     *
-     * @return void
-     */
     public function leaveNode(Node $node)
     {
         if (!$node instanceof Node\Stmt\Declare_) {
@@ -31,10 +26,6 @@ class DeclareStrictTypesVisitor extends AbstractVisitor
         }
     }
 
-    /**
-     * @param array $nodes
-     *
-     */
     public function afterTraverse(array $nodes)
     {
         if (!$this->hasStrictType) {

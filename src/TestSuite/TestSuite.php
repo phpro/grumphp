@@ -16,9 +16,6 @@ class TestSuite implements TestSuiteInterface
 
     /**
      * TestSuite constructor.
-     *
-     * @param string $name
-     * @param array  $taskNames
      */
     public function __construct(string $name, array $taskNames)
     {
@@ -26,17 +23,11 @@ class TestSuite implements TestSuiteInterface
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return array
-     */
     public function getTaskNames(): array
     {
         return $this->taskNames;

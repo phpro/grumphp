@@ -24,11 +24,6 @@ class YamlLinterTest extends TestCase
         );
     }
 
-    /**
-     * @param string $fixture
-     *
-     * @return SplFileInfo
-     */
     private function getFixture(string $fixture): SplFileInfo
     {
         $file = new SplFileInfo(TEST_BASE_PATH . '/fixtures/linters/yaml/' . $fixture);
@@ -38,10 +33,6 @@ class YamlLinterTest extends TestCase
 
         return $file;
     }
-    /**
-     * @param string $fixture
-     * @param int $errors
-     */
     private function validateFixture(string $fixture, int $errors)
     {
         $result = $this->linter->lint($this->getFixture($fixture));
@@ -140,9 +131,6 @@ class YamlLinterTest extends TestCase
         $this->validateFixture($fixture, 0);
     }
 
-    /**
-     * @return array
-     */
     function provideYamlValidation(): array
     {
         return [

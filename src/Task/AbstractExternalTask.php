@@ -23,11 +23,6 @@ abstract class AbstractExternalTask implements TaskInterface
      */
     protected $formatter;
 
-    /**
-     * @param GrumPHP $grumPHP
-     * @param ProcessBuilder $processBuilder
-     * @param ProcessFormatterInterface $formatter
-     */
     public function __construct(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
         $this->grumPHP = $grumPHP;

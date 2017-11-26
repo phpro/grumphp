@@ -32,10 +32,6 @@ class PreCommitCommand extends Command
      */
     protected $changedFilesLocator;
 
-    /**
-     * @param GrumPHP $grumPHP
-     * @param ChangedFiles $changedFilesLocator
-     */
     public function __construct(GrumPHP $grumPHP, ChangedFiles $changedFilesLocator)
     {
         parent::__construct();
@@ -59,8 +55,6 @@ class PreCommitCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     *
      * @return int|void
      */
     public function execute(InputInterface $input, OutputInterface $output)

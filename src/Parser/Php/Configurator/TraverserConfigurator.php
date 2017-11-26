@@ -38,7 +38,6 @@ class TraverserConfigurator
 
     /**
      * TraverserConfigurator constructor.
-     *
      */
     public function __construct(ContainerInterface $container)
     {
@@ -46,9 +45,6 @@ class TraverserConfigurator
     }
 
     /**
-     * @param string $alias
-     * @param string $visitorId
-     *
      * @throws \GrumPHP\Exception\RuntimeException
      */
     public function registerVisitorId(string $alias, string $visitorId)
@@ -64,7 +60,6 @@ class TraverserConfigurator
     }
 
     /**
-     * @param            $alias
      * @param array|null $visitorOptions
      *
      * @throws \GrumPHP\Exception\RuntimeException
@@ -80,25 +75,17 @@ class TraverserConfigurator
         $this->standardEnabledVisitors[$alias] = $visitorOptions;
     }
 
-    /**
-     * @param array $options
-     */
     public function registerOptions(array $options)
     {
         $this->options = $options;
     }
 
-    /**
-     * @param ParserContext $context
-     */
     public function registerContext(ParserContext $context)
     {
         $this->context = $context;
     }
 
     /**
-     * @param NodeTraverserInterface $traverser
-     *
      * @throws \GrumPHP\Exception\RuntimeException
      */
     public function configure(NodeTraverserInterface $traverser)
@@ -140,9 +127,6 @@ class TraverserConfigurator
         $this->context = null;
     }
 
-    /**
-     * @return array
-     */
     private function loadEnabledVisitorsForCurrentOptions(): array
     {
         $visitors = $this->standardEnabledVisitors;

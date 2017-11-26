@@ -15,9 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Shell extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return 'shell';
@@ -80,9 +77,6 @@ class Shell extends AbstractExternalTask
         return TaskResult::createPassed($this, $context);
     }
 
-    /**
-     * @param array $scriptArguments
-     */
     private function runShell(array $scriptArguments)
     {
         $arguments = $this->processBuilder->createArgumentsForCommand('sh');

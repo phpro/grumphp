@@ -14,19 +14,11 @@ class AbstractVisitor extends NodeVisitorAbstract implements ContextAwareVisitor
      */
     protected $context;
 
-    /**
-     * @param ParserContext $context
-     */
     public function setContext(ParserContext $context)
     {
         $this->context = $context;
     }
 
-    /**
-     * @param string $message
-     * @param int    $line
-     * @param string $type
-     */
     protected function addError(string $message, int $line = -1, string $type = ParseError::TYPE_ERROR)
     {
         $errors = $this->context->getErrors();

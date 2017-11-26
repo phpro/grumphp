@@ -26,8 +26,6 @@ class ConsoleIO implements IOInterface
 
     /**
      * ConsoleIO constructor.
-     *
-     * @param InputInterface  $input
      */
     public function __construct(InputInterface $input, OutputInterface $output)
     {
@@ -94,7 +92,6 @@ class ConsoleIO implements IOInterface
     /**
      * @param resource $handle
      *
-     * @return string
      * @throws \GrumPHP\Exception\RuntimeException
      */
     public function readCommandInput($handle): string
@@ -122,8 +119,6 @@ class ConsoleIO implements IOInterface
 
     /**
      * @param array|string $messages
-     * @param bool  $newline
-     * @param bool  $stderr
      */
     private function doWrite($messages, bool $newline, bool $stderr)
     {

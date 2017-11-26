@@ -28,10 +28,6 @@ class CloverCoverage implements TaskInterface
      */
     protected $filesystem;
 
-    /**
-     * @param GrumPHP $grumPHP
-     * @param Filesystem $filesystem
-     */
     public function __construct(GrumPHP $grumPHP, Filesystem $filesystem)
     {
         $this->grumPHP = $grumPHP;
@@ -48,9 +44,6 @@ class CloverCoverage implements TaskInterface
         return $this->getConfigurableOptions()->resolve($configured);
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return 'clover_coverage';

@@ -8,9 +8,6 @@ class RawProcessFormatter implements ProcessFormatterInterface
 {
     /**
      * This method will format the output of a Process object to a string.
-     *
-     *
-     * @return string
      */
     public function format(Process $process): string
     {

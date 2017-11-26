@@ -36,8 +36,6 @@ class TaskRunner
 
     /**
      * @constructor
-     *
-     * @param GrumPHP                  $grumPHP
      */
     public function __construct(GrumPHP $grumPHP, EventDispatcherInterface $eventDispatcher)
     {
@@ -46,9 +44,6 @@ class TaskRunner
         $this->grumPHP = $grumPHP;
     }
 
-    /**
-     * @param TaskInterface $task
-     */
     public function addTask(TaskInterface $task)
     {
         if ($this->tasks->contains($task)) {
@@ -67,7 +62,6 @@ class TaskRunner
     }
 
     /**
-     *
      * @return TaskResultCollection
      */
     public function run(TaskRunnerContext $runnerContext): TaskResultCollection
@@ -111,8 +105,6 @@ class TaskRunner
     }
 
     /**
-     * @param TaskInterface    $task
-     *
      * @return TaskResultInterface
      * @throws RuntimeException
      */

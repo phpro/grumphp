@@ -34,10 +34,6 @@ class DeInitCommand extends Command
      */
     protected $filesystem;
 
-    /**
-     * @param GrumPHP $grumPHP
-     * @param Filesystem $filesystem
-     */
     public function __construct(GrumPHP $grumPHP, Filesystem $filesystem)
     {
         parent::__construct();
@@ -54,10 +50,6 @@ class DeInitCommand extends Command
         $this->setName(self::COMMAND_NAME);
     }
 
-    /**
-     * @param InputInterface  $input
-     *
-     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $gitHooksPath = $this->paths()->getGitHooksDir();

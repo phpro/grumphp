@@ -13,9 +13,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PhpCsFixer extends AbstractPhpCsFixerTask
 {
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return 'phpcsfixer';

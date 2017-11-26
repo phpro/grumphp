@@ -135,9 +135,6 @@ class Application extends SymfonyConsole
         return $helperSet;
     }
 
-    /**
-     * @return \Symfony\Component\DependencyInjection\ContainerBuilder
-     */
     protected function getContainer(): \Symfony\Component\DependencyInjection\ContainerBuilder
     {
         if ($this->container) {
@@ -156,8 +153,6 @@ class Application extends SymfonyConsole
 
     /**
      * Configure IO of GrumPHP objects
-     *
-     * @param InputInterface  $input
      */
     protected function configureIO(InputInterface $input, OutputInterface $output)
     {
@@ -179,9 +174,6 @@ class Application extends SymfonyConsole
         }
     }
 
-    /**
-     * @return string
-     */
     protected function getDefaultConfigPath(): string
     {
         if ($this->configDefaultPath) {

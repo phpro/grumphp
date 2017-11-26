@@ -16,8 +16,6 @@ class Composer
 {
     /**
      * @param string|JsonFile $json
-     *
-     * @return \Composer\Package\RootPackageInterface
      */
     public static function loadRootPackageFromJson($json, Config $config = null): \Composer\Package\RootPackageInterface
     {
@@ -35,9 +33,6 @@ class Composer
         return $package;
     }
 
-    /**
-     * @return \Composer\Config
-     */
     public static function loadConfiguration(): \Composer\Config
     {
         try {
@@ -55,8 +50,6 @@ class Composer
      * we'll have to ensure that the bin path is always prefixed.
      *
      * @link https://github.com/composer/composer/blob/1.1/src/Composer/EventDispatcher/EventDispatcher.php#L147-L160
-     *
-     * @param string $binDir
      */
     public static function ensureProjectBinDirInSystemPath(string $binDir)
     {

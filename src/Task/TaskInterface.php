@@ -32,7 +32,6 @@ interface TaskInterface
     public function canRunInContext(ContextInterface $context): bool;
 
     /**
-     *
      * @return TaskResultInterface
      */
     public function run(ContextInterface $context): TaskResultInterface;

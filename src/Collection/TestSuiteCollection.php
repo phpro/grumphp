@@ -9,8 +9,6 @@ use GrumPHP\TestSuite\TestSuiteInterface;
 class TestSuiteCollection extends ArrayCollection
 {
     /**
-     * @param string $name
-     *
      * @return TestSuiteInterface
      * @throws \GrumPHP\Exception\InvalidArgumentException
      */
@@ -24,8 +22,6 @@ class TestSuiteCollection extends ArrayCollection
     }
 
     /**
-     * @param string $name
-     *
      * @return TestSuiteInterface|null
      */
     public function getOptional(string $name)

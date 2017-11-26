@@ -21,9 +21,6 @@ abstract class AbstractLinterTask implements TaskInterface
      */
     protected $linter;
 
-    /**
-     * @param GrumPHP         $grumPHP
-     */
     public function __construct(GrumPHP $grumPHP, LinterInterface $linter)
     {
         $this->grumPHP = $grumPHP;
@@ -70,7 +67,6 @@ abstract class AbstractLinterTask implements TaskInterface
     }
 
     /**
-     *
      * @return LintErrorsCollection
      */
     protected function lint(FilesCollection $files): LintErrorsCollection

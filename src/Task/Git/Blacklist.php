@@ -25,9 +25,6 @@ class Blacklist extends AbstractExternalTask
 
     /**
      * Blacklist constructor
-     * @param ProcessBuilder $processBuilder
-     * @param ProcessFormatterInterface $formatter
-     * @param IOInterface $IO
      */
     public function __construct(
         GrumPHP $grumPHP,
@@ -39,9 +36,6 @@ class Blacklist extends AbstractExternalTask
         parent::__construct($grumPHP, $processBuilder, $formatter);
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return 'git_blacklist';

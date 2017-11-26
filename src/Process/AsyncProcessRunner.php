@@ -24,7 +24,6 @@ class AsyncProcessRunner
 
     /**
      * AsyncProcessRunner constructor.
-     *
      */
     public function __construct(GrumPHP $config)
     {
@@ -45,9 +44,6 @@ class AsyncProcessRunner
         }
     }
 
-    /**
-     * @return bool
-     */
     private function watchProcesses(): bool
     {
         foreach ($this->processes as $key => $process) {
@@ -61,9 +57,6 @@ class AsyncProcessRunner
         return count($this->processes) !== 0;
     }
 
-    /**
-     * @return bool
-     */
     private function handleProcess(Process $process): bool
     {
         if ($process->isStarted()) {

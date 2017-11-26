@@ -28,9 +28,6 @@ class ProgressSubscriber implements EventSubscriberInterface
      */
     private $output;
 
-    /**
-     * @param OutputInterface  $output
-     */
     public function __construct(OutputInterface $output, ProgressBar $progressBar)
     {
         $this->output = $output;
@@ -39,9 +36,6 @@ class ProgressSubscriber implements EventSubscriberInterface
         $this->progressFormat = '<fg=yellow>Running task %current%/%max%:</fg=yellow> %message%... ';
     }
 
-    /**
-     * @return array
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -55,9 +49,6 @@ class ProgressSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param RunnerEvent $event
-     */
     public function startProgress(RunnerEvent $event)
     {
         $numberOftasks = $event->getTasks()->count();
@@ -66,9 +57,6 @@ class ProgressSubscriber implements EventSubscriberInterface
         $this->progressBar->start($numberOftasks);
     }
 
-    /**
-     * @param TaskEvent $event
-     */
     public function advanceProgress(TaskEvent $event)
     {
         $taskReflection = new ReflectionClass($event->getTask());
@@ -79,9 +67,6 @@ class ProgressSubscriber implements EventSubscriberInterface
         $this->progressBar->advance();
     }
 
-    /**
-     * @param string $event
-     */
     public function onTaskProgress(TaskEvent $task, string $event)
     {
         switch ($event) {
@@ -100,9 +85,6 @@ class ProgressSubscriber implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @param RunnerEvent $runnerEvent
-     */
     public function finishProgress(RunnerEvent $runnerEvent)
     {
         if ($this->progressBar->getProgress() !== $this->progressBar->getMaxSteps()) {

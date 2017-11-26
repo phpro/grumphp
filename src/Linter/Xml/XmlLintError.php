@@ -19,13 +19,6 @@ class XmlLintError extends LintError
 
     /**
      * XmlLintError constructor.
-     *
-     * @param string $type
-     * @param int    $code
-     * @param string $error
-     * @param string $file
-     * @param int    $line
-     * @param int    $column
      */
     public function __construct(string $type, int $code, string $error, string $file, int $line, int $column)
     {
@@ -35,7 +28,6 @@ class XmlLintError extends LintError
     }
 
     /**
-     *
      * @return XmlLintError
      */
     public static function fromLibXmlError(LibXMLError $error): XmlLintError
@@ -56,25 +48,16 @@ class XmlLintError extends LintError
         return new XmlLintError($type, $error->code, $error->message, $error->file, $error->line, $error->column);
     }
 
-    /**
-     * @return int
-     */
     public function getCode(): int
     {
         return $this->code;
     }
 
-    /**
-     * @return int
-     */
     public function getColumn(): int
     {
         return $this->column;
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return sprintf(

@@ -8,7 +8,6 @@ use SplFileInfo;
 interface ParserInterface
 {
     /**
-     *
      * @return ParseErrorsCollection
      */
     public function parse(SplFileInfo $file): ParseErrorsCollection;

@@ -19,7 +19,6 @@ class PhpcsFormatter implements ProcessFormatterInterface
     protected $suggestedFiles = [];
 
     /**
-     *
      * @return string|null
      */
     public function format(Process $process)
@@ -46,7 +45,6 @@ class PhpcsFormatter implements ProcessFormatterInterface
     }
 
     /**
-     * @param array $json
      * @return string[]
      */
     public function getSuggestedFilesFromJson(array $json)
@@ -70,7 +68,6 @@ class PhpcsFormatter implements ProcessFormatterInterface
     }
 
     /**
-     * @param ProcessBuilder $processBuilder
      * @return string|null
      */
     public function formatErrorMessage(

@@ -75,7 +75,6 @@ class FilesCollection extends ArrayCollection
      *
      * $collection->path('/^spec\/')
      *
-     * @param string $pattern
      *
      * @return FilesCollection
      */
@@ -89,7 +88,6 @@ class FilesCollection extends ArrayCollection
      *
      * $collection->paths(['/^spec\/','/^src\/'])
      *
-     * @param array $patterns
      *
      * @return FilesCollection
      */
@@ -107,7 +105,6 @@ class FilesCollection extends ArrayCollection
      *
      * $collection->notPath('/^spec\/')
      *
-     * @param string $pattern
      *
      * @return FilesCollection
      */
@@ -123,7 +120,6 @@ class FilesCollection extends ArrayCollection
      *
      * $collection->notPaths(['/^spec\/','/^src\/'])
      *
-     * @param array $pattern
      *
      * @return FilesCollection
      */
@@ -135,8 +131,6 @@ class FilesCollection extends ArrayCollection
     }
 
     /**
-     * @param array $extensions
-     *
      * @return FilesCollection
      */
     public function extensions(array $extensions): FilesCollection
@@ -213,7 +207,6 @@ class FilesCollection extends ArrayCollection
     }
 
     /**
-     *
      * @return FilesCollection
      */
     public function filterByFileList(Traversable $fileList): FilesCollection
@@ -228,7 +221,6 @@ class FilesCollection extends ArrayCollection
     }
 
     /**
-     *
      * @return FilesCollection
      */
     public function ensureFiles(FilesCollection $files): FilesCollection

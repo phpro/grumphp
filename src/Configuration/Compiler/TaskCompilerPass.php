@@ -58,11 +58,6 @@ class TaskCompilerPass implements CompilerPassInterface
         $container->setParameter('grumphp.tasks.metadata', $tasksMetadata);
     }
 
-    /**
-     * @param array $tags
-     *
-     * @return array
-     */
     private function getTaskTag(array $tags): array
     {
         $resolver = new OptionsResolver();
@@ -71,11 +66,6 @@ class TaskCompilerPass implements CompilerPassInterface
         return $resolver->resolve(current($tags));
     }
 
-    /**
-     * @param $configuration
-     *
-     * @return array
-     */
     private function parseTaskMetadata($configuration): array
     {
         $resolver = new OptionsResolver();

@@ -36,7 +36,6 @@ class TaskResult implements TaskResultInterface
      * Initializes test result.
      *
      * @param integer $resultCode
-     * @param ContextInterface $context
      * @param string|null $message
      */
     private function __construct(
@@ -52,8 +51,6 @@ class TaskResult implements TaskResultInterface
     }
 
     /**
-     * @param TaskInterface    $task
-     *
      * @return TaskResult
      */
     public static function createSkipped(TaskInterface $task, ContextInterface $context): TaskResult
@@ -62,8 +59,6 @@ class TaskResult implements TaskResultInterface
     }
 
     /**
-     * @param TaskInterface    $task
-     *
      * @return TaskResult
      */
     public static function createPassed(TaskInterface $task, ContextInterface $context): TaskResult
@@ -72,9 +67,6 @@ class TaskResult implements TaskResultInterface
     }
 
     /**
-     * @param TaskInterface    $task
-     * @param string           $message
-     *
      * @return TaskResult
      */
     public static function createFailed(
@@ -86,9 +78,6 @@ class TaskResult implements TaskResultInterface
     }
 
     /**
-     * @param TaskInterface    $task
-     * @param string           $message
-     *
      * @return TaskResult
      */
     public static function createNonBlockingFailed(
@@ -107,17 +96,11 @@ class TaskResult implements TaskResultInterface
         return $this->task;
     }
 
-    /**
-     * @return int
-     */
     public function getResultCode(): int
     {
         return $this->resultCode;
     }
 
-    /**
-     * @return bool
-     */
     public function isPassed(): bool
     {
         return self::PASSED === $this->getResultCode();
@@ -128,9 +111,6 @@ class TaskResult implements TaskResultInterface
         return self::FAILED === $this->getResultCode() || self::NONBLOCKING_FAILED === $this->getResultCode();
     }
 
-    /**
-     * @return bool
-     */
     public function isBlocking(): bool
     {
         return $this->getResultCode() >= self::FAILED;

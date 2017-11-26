@@ -23,10 +23,6 @@ class ChangedFiles
      */
     private $filesystem;
 
-    /**
-     * @param Repository $repository
-     * @param Filesystem $filesystem
-     */
     public function __construct(Repository $repository, Filesystem $filesystem)
     {
         $this->repository = $repository;
@@ -44,8 +40,6 @@ class ChangedFiles
     }
 
     /**
-     * @param string $rawDiff
-     *
      * @return FilesCollection
      */
     public function locateFromRawDiffInput(string $rawDiff): FilesCollection
@@ -57,7 +51,6 @@ class ChangedFiles
     }
 
     /**
-     *
      * @return FilesCollection
      */
     private function parseFilesFromDiff(Diff $diff): FilesCollection
