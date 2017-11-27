@@ -9,6 +9,7 @@ use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Runner\TaskRunnerContext;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -93,6 +94,10 @@ class TaskRunnerHelper extends Helper
      */
     private function registerEventListeners(OutputInterface $output)
     {
+        if ($output instanceof ConsoleOutputInterface) {
+            $output = $output->getErrorOutput();
+        }
+        
         $this->eventDispatcher->addSubscriber(new ProgressSubscriber($output, new ProgressBar($output)));
     }
 
