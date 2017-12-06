@@ -80,6 +80,7 @@ services:
         arguments:
           - '@console.input'
           - '@console.output'
+        public: true
 
     grumphp.logger:
         class: Monolog\Logger

@@ -29,12 +29,14 @@ services:
       class: 'GrumPHP\Parser\Php\Visitor\DeclareStrictTypesVisitor'
       tags:
         - {name: 'php_parser.visitor', alias: 'declare_strict_types'}
+      public: true
 
     grumphp.parser.php.visitor.forbidden_class_method_calls:
       class: 'GrumPHP\Parser\Php\Visitor\ForbiddenClassMethodCallsVisitor'
       arguments: []
       tags:
         - {name: 'php_parser.visitor', alias: 'forbidden_class_method_calls'}
+      public: true
 
     grumphp.parser.php.visitor.forbidden_function_calls:
       class: 'GrumPHP\Parser\Php\Visitor\ForbiddenFunctionCallsVisitor'
@@ -48,6 +50,7 @@ services:
       arguments: []
       tags:
         - {name: 'php_parser.visitor', alias: 'forbidden_static_method_calls'}
+      public: true
 
     grumphp.parser.php.visitor.nameresolver:
       class: 'PhpParser\NodeVisitor\NameResolver'
