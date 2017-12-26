@@ -4,6 +4,7 @@ namespace GrumPHP\Collection;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use GrumPHP\Exception\InvalidArgumentException;
+use GrumPHP\Process\ProcessUtils;
 
 class ProcessArgumentsCollection extends ArrayCollection
 {
@@ -152,19 +153,16 @@ class ProcessArgumentsCollection extends ArrayCollection
     }
 
     /**
-     * @return array|string
+     * @return string
      */
     public function generateCliCommand()
     {
-        $commandline = $this->getValues();
+        $commandlineArgs = $this->getValues();
 
-        // Backwards compatibility layer for Symfony Process < 3.3
-        if (class_exists('Symfony\Component\Process\ProcessBuilder')) {
-            $commandline = implode(' ', array_map(
-                ['Symfony\Component\Process\ProcessUtils', 'escapeArgument'],
-                $commandline
-            ));
-        }
+        $commandline = implode(' ', array_map(
+            [ProcessUtils::class, 'escapeArgument'],
+            $commandlineArgs
+        ));
 
         return $commandline;
     }
