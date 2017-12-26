@@ -160,7 +160,7 @@ class ProcessArgumentsCollection extends ArrayCollection
 
         // Backwards compatibility layer for Symfony Process < 3.3
         if (class_exists('Symfony\Component\Process\ProcessBuilder')) {
-            $commandline = join(' ', array_map(
+            $commandline = implode(' ', array_map(
                 ['Symfony\Component\Process\ProcessUtils', 'escapeArgument'],
                 $commandline
             ));
