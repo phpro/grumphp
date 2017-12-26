@@ -13,7 +13,7 @@ class ProcessUtils
 {
     /**
      * Escapes a string to be used as a shell argument.
-     * Taken from the Symfony package.
+     * Adapted from the Symfony package.
      *
      * @param string $argument The argument that will be escaped
      *
@@ -37,17 +37,21 @@ class ProcessUtils
             foreach (preg_split('/(")/', $argument, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE) as $part) {
                 if ('"' === $part) {
                     $escapedArgument .= '\\"';
-                } elseif (self::isSurroundedBy($part, '%')) {
+                    continue;
+                }
+
+                if (self::isSurroundedBy($part, '%')) {
                     // Avoid environment variable expansion
                     $escapedArgument .= '^%"'.substr($part, 1, -1).'"^%';
-                } else {
-                    // escape trailing backslash
-                    if ('\\' === substr($part, -1)) {
-                        $part .= '\\';
-                    }
-                    $quote = true;
-                    $escapedArgument .= $part;
+                    continue;
                 }
+
+                // escape trailing backslash
+                if ('\\' === substr($part, -1)) {
+                    $part .= '\\';
+                }
+                $quote = true;
+                $escapedArgument .= $part;
             }
             if ($quote) {
                 $escapedArgument = '"'.$escapedArgument.'"';
