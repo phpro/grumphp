@@ -4,7 +4,7 @@ namespace GrumPHP\Composer;
 
 use Composer\Script\Event;
 use GrumPHP\Util\Filesystem;
-use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Process\Process;
 
 class DevelopmentIntegrator
 {
@@ -23,7 +23,7 @@ class DevelopmentIntegrator
             self::noramlizePath($composerExecutable)
         );
 
-        $process = ProcessBuilder::create([$composerExecutable, 'git:init'])->getProcess();
+        $process = new Process($composerExecutable.' git:init');
         $process->run();
         if (!$process->isSuccessful()) {
             $event->getIO()->write(
