@@ -157,13 +157,10 @@ class ProcessArgumentsCollection extends ArrayCollection
      */
     public function generateCliCommand()
     {
-        $commandlineArgs = $this->getValues();
+        $commandlineArgs = array_map(function ($argument) {
+            return ProcessUtils::escapeArgument($argument);
+        }, $this->getValues());
 
-        $commandline = implode(' ', array_map(
-            [ProcessUtils::class, 'escapeArgument'],
-            $commandlineArgs
-        ));
-
-        return $commandline;
+        return implode(' ', $commandlineArgs);
     }
 }
