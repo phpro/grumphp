@@ -14,12 +14,13 @@ use Composer\Package\PackageInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
+use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Console\Command\ConfigureCommand;
 use GrumPHP\Console\Command\Git\DeInitCommand;
 use GrumPHP\Console\Command\Git\InitCommand;
 use GrumPHP\Locator\ExternalCommand;
 use Symfony\Component\Process\ExecutableFinder;
-use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Process\Process;
 
 class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 {
@@ -178,8 +179,11 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         $commandLocator = new ExternalCommand($config->get('bin-dir'), new ExecutableFinder());
         $executable = $commandLocator->locate('grumphp');
 
-        $builder = new ProcessBuilder([$executable, $command, '--no-interaction']);
-        $process = $builder->getProcess();
+        $commandlineArgs = ProcessArgumentsCollection::forExecutable($executable);
+        $commandlineArgs->add($command);
+        $commandlineArgs->add('--no-interaction');
+
+        $process = new Process($commandlineArgs->generateCliCommand());
 
         // Check executable which is running:
         if ($this->io->isVeryVerbose()) {
