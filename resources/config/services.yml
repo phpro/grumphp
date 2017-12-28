@@ -11,7 +11,10 @@ services:
         public: true
 
     event_dispatcher:
-        class: Symfony\Component\EventDispatcher\EventDispatcher
+        class: Symfony\Component\EventDispatcher\EventDispatcherInterface
+        factory: GrumPHP\Event\EventDispatcherFactory::create
+        arguments:
+          - '@service_container'
         public: true
 
     filesystem:
