@@ -5,6 +5,7 @@ namespace spec\GrumPHP\Collection;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Exception\InvalidArgumentException;
+use GrumPHP\Process\ProcessUtils;
 use PhpSpec\ObjectBehavior;
 use SplFileInfo;
 
@@ -121,5 +122,22 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
         $this->addArgumentWithCommaSeparatedFiles('--argument=%s', $files);
 
         $this->getValues()->shouldBe(['--argument=file1.txt,file2.txt']);
+    }
+
+    function it_should_be_able_to_generate_a_cli_command()
+    {
+        $result = $this->forExecutable('exec');
+        $result->addArgumentArray('--item=%s', [
+            'file1.txt',
+            'file2.txt',
+        ]);
+
+        $expected = sprintf('%s %s %s',
+            ProcessUtils::escapeArgument('exec'),
+            ProcessUtils::escapeArgument('--item=file1.txt'),
+            ProcessUtils::escapeArgument('--item=file2.txt')
+        );
+
+        $result->generateCliCommand()->shouldBe($expected);
     }
 }
