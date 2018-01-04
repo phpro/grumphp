@@ -10,6 +10,11 @@ namespace GrumPHP\Process;
  * @author Martin Hasoň <martin.hason@gmail.com>
  *
  * @internal
+ *
+ * @todo Remove when Symfony's Process can accept an array of parameters (3.3+)
+ *       From that moment on, we can remove this class, and directly pass
+ *       an array of unescaped cli options as the `$commandline` argument
+ *       in its constructor.
  */
 final class ProcessUtils
 {
