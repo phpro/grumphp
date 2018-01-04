@@ -66,6 +66,8 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         ];
 
         // Backward compatibility layer for Symfony Console < 4.0.
+        // @todo Replace with ConsoleEvents::EXCEPTION when bumping symfony/console to ^3.3
+        //       (and maybe revert back to returning a simple array, as it was before?)
         $consoleErrorEvent = defined(ConsoleEvents::class.'::ERROR')
             ? ConsoleEvents::ERROR
             : ConsoleEvents::EXCEPTION;
