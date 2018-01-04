@@ -8,8 +8,10 @@ namespace GrumPHP\Process;
  * This class contains static methods only and is not meant to be instantiated.
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
+ *
+ * @internal
  */
-class ProcessUtils
+final class ProcessUtils
 {
     /**
      * Escapes a string to be used as a shell argument.

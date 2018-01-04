@@ -7,7 +7,10 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class EventDispatcherFactory
+/**
+ * @internal
+ */
+final class EventDispatcherFactory
 {
     /**
      * @param ContainerInterface $container
