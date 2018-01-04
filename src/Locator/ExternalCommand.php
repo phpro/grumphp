@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Locator;
 
@@ -17,27 +17,21 @@ class ExternalCommand
      */
     protected $executableFinder;
 
-    /**
-     * @param string $binDir
-     * @param ExecutableFinder $executableFinder
-     */
-    public function __construct($binDir, ExecutableFinder $executableFinder)
+    public function __construct(string $binDir, ExecutableFinder $executableFinder)
     {
         $this->binDir = rtrim($binDir, '/\\');
         $this->executableFinder = $executableFinder;
     }
 
     /**
-     * @param string $command
      * @param boolean $forceUnix This parameter makes it possible to force unix style commands
      *                           on a windows environment.
      *                           This can be useful in git hooks.
      *
-     * @return string
      *
      * @throws RuntimeException if the command can not be found
      */
-    public function locate($command, $forceUnix = false)
+    public function locate(string $command, bool $forceUnix = false): string
     {
         // Search executable:
         $executable = $this->executableFinder->find($command, null, [$this->binDir]);

@@ -1,8 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -12,10 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PhpCsFixer extends AbstractPhpCsFixerTask
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'phpcsfixer';
     }
@@ -23,7 +21,7 @@ class PhpCsFixer extends AbstractPhpCsFixerTask
     /**
      * @return OptionsResolver
      */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -46,7 +44,7 @@ class PhpCsFixer extends AbstractPhpCsFixerTask
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $files = $context->getFiles()->name('*.php');
         if (0 === count($files)) {

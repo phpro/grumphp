@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace GrumPHP\Formatter;
 
 use Symfony\Component\Process\Process;
@@ -9,9 +10,7 @@ use Symfony\Component\Process\Process;
 interface ProcessFormatterInterface
 {
     /**
-     * @param Process $process
-     *
-     * @return string
+     * @return string|null
      */
     public function format(Process $process);
 }

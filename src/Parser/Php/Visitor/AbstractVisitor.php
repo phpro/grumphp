@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Parser\Php\Visitor;
 
@@ -14,23 +14,15 @@ class AbstractVisitor extends NodeVisitorAbstract implements ContextAwareVisitor
      */
     protected $context;
 
-    /**
-     * @param ParserContext $context
-     */
     public function setContext(ParserContext $context)
     {
         $this->context = $context;
     }
 
-    /**
-     * @param string $message
-     * @param int    $line
-     * @param string $type
-     */
-    protected function addError($message, $line = -1, $type = ParseError::TYPE_ERROR)
+    protected function addError(string $message, int $line = -1, string $type = ParseError::TYPE_ERROR)
     {
         $errors = $this->context->getErrors();
-        $fileName = $this->context->getFile()->getRealPath();
+        $fileName = (string) $this->context->getFile()->getRealPath();
         $errors->add(new PhpParserError($type, $message, $fileName, $line));
     }
 }

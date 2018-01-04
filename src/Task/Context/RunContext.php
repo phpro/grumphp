@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Task\Context;
 
@@ -11,9 +11,6 @@ class RunContext implements ContextInterface
      */
     private $files;
 
-    /**
-     * @param FilesCollection $files
-     */
     public function __construct(FilesCollection $files)
     {
         $this->files = $files;
@@ -22,7 +19,7 @@ class RunContext implements ContextInterface
     /**
      * @return FilesCollection
      */
-    public function getFiles()
+    public function getFiles(): FilesCollection
     {
         return $this->files;
     }

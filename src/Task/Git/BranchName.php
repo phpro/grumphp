@@ -1,18 +1,19 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Task\Git;
 
 use Gitonomy\Git\Exception\ProcessException;
+use Gitonomy\Git\Repository;
+use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
-use GrumPHP\Util\Regex;
-use GrumPHP\Exception\RuntimeException;
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Task\TaskInterface;
+use GrumPHP\Util\Regex;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Gitonomy\Git\Repository;
 
 /**
  * Git BranchName Task
@@ -30,27 +31,18 @@ class BranchName implements TaskInterface
      */
     protected $repository;
 
-    /**
-     * @param GrumPHP $grumPHP
-     */
     public function __construct(GrumPHP $grumPHP, Repository $repository)
     {
         $this->grumPHP = $grumPHP;
         $this->repository = $repository;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'git_branch_name';
     }
 
-    /**
-     * @return array
-     */
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
 
@@ -60,7 +52,7 @@ class BranchName implements TaskInterface
     /**
      * @return OptionsResolver
      */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -76,25 +68,15 @@ class BranchName implements TaskInterface
         return $resolver;
     }
 
-    /**
-     * @param ContextInterface $context
-     *
-     * @return bool
-     */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
         return $context instanceof RunContext || $context instanceof GitPreCommitContext;
     }
 
     /**
-     * @param array $config
-     * @param string $name
-     * @param string $rule
-     * @param string $ruleName
-     *
      * @throws RuntimeException
      */
-    private function runMatcher(array $config, $name, $rule, $ruleName)
+    private function runMatcher(array $config, string $name, string $rule, string $ruleName)
     {
         $regex = new Regex($rule);
 
@@ -111,7 +93,7 @@ class BranchName implements TaskInterface
      *
      * @return TaskResult
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
         $exceptions = [];
@@ -128,7 +110,7 @@ class BranchName implements TaskInterface
 
         foreach ($config['matchers'] as $ruleName => $rule) {
             try {
-                $this->runMatcher($config, $name, $rule, $ruleName);
+                $this->runMatcher($config, $name, $rule, (string) $ruleName);
             } catch (RuntimeException $e) {
                 $exceptions[] = $e->getMessage();
             }

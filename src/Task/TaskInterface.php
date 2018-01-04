@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -11,31 +11,25 @@ interface TaskInterface
     /**
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * @return array
      */
-    public function getConfiguration();
+    public function getConfiguration(): array;
 
     /**
      * @return OptionsResolver
      */
-    public function getConfigurableOptions();
+    public function getConfigurableOptions(): OptionsResolver;
 
     /**
      * This methods specifies if a task can run in a specific context.
-     *
-     * @param ContextInterface $context
-     *
-     * @return bool
      */
-    public function canRunInContext(ContextInterface $context);
+    public function canRunInContext(ContextInterface $context): bool;
 
     /**
-     * @param ContextInterface $context
-     *
      * @return TaskResultInterface
      */
-    public function run(ContextInterface $context);
+    public function run(ContextInterface $context): TaskResultInterface;
 }

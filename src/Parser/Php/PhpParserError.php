@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Parser\Php;
 
@@ -8,12 +8,9 @@ use PhpParser\Error;
 class PhpParserError extends ParseError
 {
     /**
-     * @param Error  $exception
-     * @param string $filename
-     *
      * @return PhpParserError
      */
-    public static function fromParseException(Error $exception, $filename)
+    public static function fromParseException(Error $exception, string $filename): self
     {
         return new self(
             ParseError::TYPE_FATAL,

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Process;
 
@@ -9,7 +9,7 @@ use GrumPHP\IO\IOInterface;
 use GrumPHP\Locator\ExternalCommand;
 use GrumPHP\Util\Platform;
 use Symfony\Component\Process\Process;
-use \Symfony\Component\Process\ProcessBuilder as SymfonyProcessBuilder;
+use Symfony\Component\Process\ProcessBuilder as SymfonyProcessBuilder;
 
 class ProcessBuilder
 {
@@ -30,9 +30,6 @@ class ProcessBuilder
 
     /**
      * ProcessBuilder constructor.
-     *
-     * @param GrumPHP         $config
-     * @param ExternalCommand $externalCommandLocator
      */
     public function __construct(GrumPHP $config, ExternalCommand $externalCommandLocator, IOInterface $io)
     {
@@ -42,11 +39,9 @@ class ProcessBuilder
     }
 
     /**
-     * @param string $command
-     *
      * @return ProcessArgumentsCollection
      */
-    public function createArgumentsForCommand($command)
+    public function createArgumentsForCommand(string $command): ProcessArgumentsCollection
     {
         $executable = $this->getCommandLocation($command);
 
@@ -54,12 +49,10 @@ class ProcessBuilder
     }
 
     /**
-     * @param ProcessArgumentsCollection $arguments
-     *
      * @return Process
      * @throws \GrumPHP\Exception\PlatformException
      */
-    public function buildProcess(ProcessArgumentsCollection $arguments)
+    public function buildProcess(ProcessArgumentsCollection $arguments): Process
     {
         $builder = SymfonyProcessBuilder::create($arguments->getValues());
         $builder->setTimeout($this->config->getProcessTimeout());
@@ -72,8 +65,6 @@ class ProcessBuilder
     }
 
     /**
-     * @param Process $process
-     *
      * @throws \GrumPHP\Exception\PlatformException
      */
     private function guardWindowsCmdMaxInputStringLimitation(Process $process)
@@ -89,19 +80,11 @@ class ProcessBuilder
         throw PlatformException::commandLineStringLimit($process);
     }
 
-    /**
-     * @param string $command
-     *
-     * @return string
-     */
-    private function getCommandLocation($command)
+    private function getCommandLocation(string $command): string
     {
         return $this->externalCommandLocator->locate($command);
     }
 
-    /**
-     * @param Process $process
-     */
     private function logProcessInVerboseMode(Process $process)
     {
         if ($this->io->isVeryVerbose()) {

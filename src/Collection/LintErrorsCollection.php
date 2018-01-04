@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Collection;
 
@@ -6,10 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class LintErrorsCollection extends ArrayCollection
 {
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         $errors = [];
         foreach ($this->getIterator() as $error) {

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Console\Command\Git;
 
@@ -34,10 +34,6 @@ class DeInitCommand extends Command
      */
     protected $filesystem;
 
-    /**
-     * @param GrumPHP $grumPHP
-     * @param Filesystem $filesystem
-     */
     public function __construct(GrumPHP $grumPHP, Filesystem $filesystem)
     {
         parent::__construct();
@@ -54,12 +50,6 @@ class DeInitCommand extends Command
         $this->setName(self::COMMAND_NAME);
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int|void
-     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $gitHooksPath = $this->paths()->getGitHooksDir();
@@ -79,7 +69,7 @@ class DeInitCommand extends Command
     /**
      * @return PathsHelper
      */
-    protected function paths()
+    protected function paths(): PathsHelper
     {
         return $this->getHelper(PathsHelper::HELPER_NAME);
     }

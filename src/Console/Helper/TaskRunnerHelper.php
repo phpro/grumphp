@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Console\Helper;
 
@@ -35,11 +35,6 @@ class TaskRunnerHelper extends Helper
      */
     private $config;
 
-    /**
-     * @param GrumPHP                  $config
-     * @param TaskRunner               $taskRunner
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(GrumPHP $config, TaskRunner $taskRunner, EventDispatcherInterface $eventDispatcher)
     {
         $this->config = $config;
@@ -50,18 +45,12 @@ class TaskRunnerHelper extends Helper
     /**
      * @return PathsHelper
      */
-    private function paths()
+    private function paths(): PathsHelper
     {
         return $this->getHelperSet()->get(PathsHelper::HELPER_NAME);
     }
 
-    /**
-     * @param OutputInterface  $output
-     * @param TaskRunnerContext $context
-     *
-     * @return int
-     */
-    public function run(OutputInterface $output, TaskRunnerContext $context)
+    public function run(OutputInterface $output, TaskRunnerContext $context): int
     {
         // Make sure to add some default event listeners before running.
         $this->registerEventListeners($output);
@@ -89,9 +78,6 @@ class TaskRunnerHelper extends Helper
         return $this->returnSuccessMessage($output, $warnings->getAllMessages());
     }
 
-    /**
-     * @param OutputInterface  $output
-     */
     private function registerEventListeners(OutputInterface $output)
     {
         if ($output instanceof ConsoleOutputInterface) {
@@ -101,13 +87,7 @@ class TaskRunnerHelper extends Helper
         $this->eventDispatcher->addSubscriber(new ProgressSubscriber($output, new ProgressBar($output)));
     }
 
-    /**
-     * @param OutputInterface $output
-     * @param array           $errorMessages
-     *
-     * @return int
-     */
-    private function returnErrorMessages(OutputInterface $output, array $errorMessages, array $warnings)
+    private function returnErrorMessages(OutputInterface $output, array $errorMessages, array $warnings): int
     {
         $failed = $this->paths()->getAsciiContent('failed');
         if ($failed) {
@@ -129,14 +109,7 @@ class TaskRunnerHelper extends Helper
         return self::CODE_ERROR;
     }
 
-    /**
-     * @param OutputInterface $output
-     *
-     * @param array           $warnings
-     *
-     * @return int
-     */
-    private function returnSuccessMessage(OutputInterface $output, array $warnings)
+    private function returnSuccessMessage(OutputInterface $output, array $warnings): int
     {
         $succeeded = $this->paths()->getAsciiContent('succeeded');
         if ($succeeded) {
@@ -149,11 +122,7 @@ class TaskRunnerHelper extends Helper
         return self::CODE_SUCCESS;
     }
 
-    /**
-     * @param OutputInterface $output
-     * @param array $warningMessages
-     */
-    private function returnWarningMessages($output, array $warningMessages)
+    private function returnWarningMessages(OutputInterface $output, array $warningMessages)
     {
         foreach ($warningMessages as $warningMessage) {
             $output->writeln('<fg=yellow>' . $warningMessage . '</fg=yellow>');

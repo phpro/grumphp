@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\TestSuite;
 
@@ -16,28 +16,19 @@ class TestSuite implements TestSuiteInterface
 
     /**
      * TestSuite constructor.
-     *
-     * @param string $name
-     * @param array  $taskNames
      */
-    public function __construct($name, array $taskNames)
+    public function __construct(string $name, array $taskNames)
     {
         $this->taskNames = $taskNames;
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return array
-     */
-    public function getTaskNames()
+    public function getTaskNames(): array
     {
         return $this->taskNames;
     }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace spec\GrumPHP\Formatter;
 
@@ -94,12 +94,7 @@ class PhpCsFixerFormatterSpec extends ObjectBehavior
         $this->formatErrorMessage(['message1'], ['message2'])->shouldBeString();
     }
 
-    /**
-     * @param $files
-     *
-     * @return string
-     */
-    private function parseJson(array $files)
+    private function parseJson(array $files): string
     {
         return json_encode(['files' => $files]);
     }

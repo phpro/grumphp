@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Event;
 
@@ -24,11 +24,6 @@ class RunnerEvent extends Event
      */
     private $taskResults;
 
-    /**
-     * @param TasksCollection $tasks
-     * @param ContextInterface $context
-     * @param TaskResultCollection $taskResults
-     */
     public function __construct(TasksCollection $tasks, ContextInterface $context, TaskResultCollection $taskResults)
     {
         $this->tasks = $tasks;
@@ -39,7 +34,7 @@ class RunnerEvent extends Event
     /**
      * @return TasksCollection
      */
-    public function getTasks()
+    public function getTasks(): TasksCollection
     {
         return $this->tasks;
     }
@@ -47,7 +42,7 @@ class RunnerEvent extends Event
     /**
      * @return ContextInterface
      */
-    public function getContext()
+    public function getContext(): ContextInterface
     {
         return $this->context;
     }
@@ -55,7 +50,7 @@ class RunnerEvent extends Event
     /**
      * @return TaskResultCollection
      */
-    public function getTaskResults()
+    public function getTaskResults(): TaskResultCollection
     {
         return $this->taskResults;
     }

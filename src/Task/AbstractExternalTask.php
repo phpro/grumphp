@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -23,11 +23,6 @@ abstract class AbstractExternalTask implements TaskInterface
      */
     protected $formatter;
 
-    /**
-     * @param GrumPHP $grumPHP
-     * @param ProcessBuilder $processBuilder
-     * @param ProcessFormatterInterface $formatter
-     */
     public function __construct(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
         $this->grumPHP = $grumPHP;
@@ -38,7 +33,7 @@ abstract class AbstractExternalTask implements TaskInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
 

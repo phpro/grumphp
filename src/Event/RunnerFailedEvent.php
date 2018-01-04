@@ -1,13 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Event;
 
 class RunnerFailedEvent extends RunnerEvent
 {
-    /**
-     * @return array
-     */
-    public function getMessages()
+    public function getMessages(): array
     {
         $messages = [];
 

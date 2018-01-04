@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Task\Git;
 
@@ -7,6 +7,7 @@ use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\IO\IOInterface;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\AbstractExternalTask;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -23,11 +24,7 @@ class Blacklist extends AbstractExternalTask
     private $IO;
 
     /**
-     * Blacklist constructor.
-     * @param GrumPHP $grumPHP
-     * @param ProcessBuilder $processBuilder
-     * @param ProcessFormatterInterface $formatter
-     * @param IOInterface $IO
+     * Blacklist constructor
      */
     public function __construct(
         GrumPHP $grumPHP,
@@ -39,10 +36,7 @@ class Blacklist extends AbstractExternalTask
         parent::__construct($grumPHP, $processBuilder, $formatter);
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'git_blacklist';
     }
@@ -50,7 +44,7 @@ class Blacklist extends AbstractExternalTask
     /**
      * @return OptionsResolver
      */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -71,15 +65,15 @@ class Blacklist extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext);
+        return $context instanceof GitPreCommitContext;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
         $files = $context->getFiles()->extensions($config['triggered_by']);

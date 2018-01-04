@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Process;
 
@@ -24,8 +24,6 @@ class AsyncProcessRunner
 
     /**
      * AsyncProcessRunner constructor.
-     *
-     * @param GrumPHP $config
      */
     public function __construct(GrumPHP $config)
     {
@@ -46,10 +44,7 @@ class AsyncProcessRunner
         }
     }
 
-    /**
-     * @return bool
-     */
-    private function watchProcesses()
+    private function watchProcesses(): bool
     {
         foreach ($this->processes as $key => $process) {
             $isTerminated = $this->handleProcess($process);
@@ -62,10 +57,7 @@ class AsyncProcessRunner
         return count($this->processes) !== 0;
     }
 
-    /**
-     * @return bool
-     */
-    private function handleProcess(Process $process)
+    private function handleProcess(Process $process): bool
     {
         if ($process->isStarted()) {
             if ($process->isTerminated()) {

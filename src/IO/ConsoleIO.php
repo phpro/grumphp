@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\IO;
 
@@ -26,9 +26,6 @@ class ConsoleIO implements IOInterface
 
     /**
      * ConsoleIO constructor.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      */
     public function __construct(InputInterface $input, OutputInterface $output)
     {
@@ -39,7 +36,7 @@ class ConsoleIO implements IOInterface
     /**
      * {@inheritDoc}
      */
-    public function isInteractive()
+    public function isInteractive(): bool
     {
         return $this->input->isInteractive();
     }
@@ -55,7 +52,7 @@ class ConsoleIO implements IOInterface
     /**
      * {@inheritDoc}
      */
-    public function isVerbose()
+    public function isVerbose(): bool
     {
         return $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE;
     }
@@ -71,7 +68,7 @@ class ConsoleIO implements IOInterface
     /**
      * {@inheritDoc}
      */
-    public function isDebug()
+    public function isDebug(): bool
     {
         return $this->output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG;
     }
@@ -95,10 +92,9 @@ class ConsoleIO implements IOInterface
     /**
      * @param resource $handle
      *
-     * @return string
      * @throws \GrumPHP\Exception\RuntimeException
      */
-    public function readCommandInput($handle)
+    public function readCommandInput($handle): string
     {
         if (!is_resource($handle)) {
             throw new RuntimeException(
@@ -122,11 +118,9 @@ class ConsoleIO implements IOInterface
     }
 
     /**
-     * @param array $messages
-     * @param bool  $newline
-     * @param bool  $stderr
+     * @param array|string $messages
      */
-    private function doWrite($messages, $newline, $stderr)
+    private function doWrite($messages, bool $newline, bool $stderr)
     {
         if (true === $stderr && $this->output instanceof ConsoleOutputInterface) {
             $this->output->getErrorOutput()->write($messages, $newline);

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Formatter;
 
@@ -20,12 +20,7 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
         $this->counter = 0;
     }
 
-    /**
-     * @param Process $process
-     *
-     * @return string
-     */
-    public function format(Process $process)
+    public function format(Process $process): string
     {
         $output = $process->getOutput();
         if (!$output) {
@@ -39,12 +34,7 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
         return $this->formatJsonResponse($json);
     }
 
-    /**
-     * @param Process $process
-     *
-     * @return string
-     */
-    public function formatSuggestion(Process $process)
+    public function formatSuggestion(Process $process): string
     {
         $pattern = '%s ';
 
@@ -54,13 +44,7 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
         return str_replace([$dryrun, $formatJson], '', $process->getCommandLine());
     }
 
-    /**
-     * @param array $messages
-     * @param array $suggestions
-     *
-     * @return string
-     */
-    public function formatErrorMessage(array $messages, array $suggestions)
+    public function formatErrorMessage(array $messages, array $suggestions): string
     {
         return sprintf(
             '%sYou can fix all errors by running following commands:%s',
@@ -69,12 +53,7 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
         );
     }
 
-    /**
-     * @param array $json
-     *
-     * @return string
-     */
-    private function formatJsonResponse(array $json)
+    private function formatJsonResponse(array $json): string
     {
         $formatted = [];
         foreach ($json['files'] as $file) {
@@ -89,12 +68,7 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
         return implode(PHP_EOL, $formatted);
     }
 
-    /**
-     * @param array $file
-     *
-     * @return string
-     */
-    private function formatFile(array $file)
+    private function formatFile(array $file): string
     {
         if (!isset($file['name'])) {
             return 'Invalid file: ' . print_r($file, true);

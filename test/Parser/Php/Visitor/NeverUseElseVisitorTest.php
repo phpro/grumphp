@@ -1,16 +1,17 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHPTest\Parser\Php\Visitor;
 
 use GrumPHP\Parser\ParseError;
 use GrumPHP\Parser\Php\Visitor\NeverUseElseVisitor;
+use PhpParser\NodeVisitor;
 
 class NeverUseElseVisitorTest extends AbstractVisitorTest
 {
     /**
      * @return NeverUseElseVisitor
      */
-    protected function getVisitor()
+    protected function getVisitor(): NodeVisitor
     {
         return new NeverUseElseVisitor();
     }

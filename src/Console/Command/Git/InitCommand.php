@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Console\Command\Git;
 
@@ -48,11 +48,6 @@ class InitCommand extends Command
      */
     protected $input;
 
-    /**
-     * @param GrumPHP $grumPHP
-     * @param Filesystem $filesystem
-     * @param ProcessBuilder $processBuilder
-     */
     public function __construct(GrumPHP $grumPHP, Filesystem $filesystem, ProcessBuilder $processBuilder)
     {
         parent::__construct();
@@ -70,12 +65,6 @@ class InitCommand extends Command
         $this->setName(self::COMMAND_NAME);
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int|void
-     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
@@ -115,9 +104,6 @@ class InitCommand extends Command
     }
 
     /**
-     * @param $hook
-     * @param $templateFile
-     *
      * @return mixed
      */
     protected function parseHookBody($hook, SplFileInfo $templateFile)
@@ -132,12 +118,9 @@ class InitCommand extends Command
     }
 
     /**
-     * @param $command
-     *
-     * @return string
      * @throws \GrumPHP\Exception\FileNotFoundException
      */
-    protected function generateHookCommand($command)
+    protected function generateHookCommand($command): string
     {
         $executable = $this->paths()->getBinCommand('grumphp', true);
         $this->processBuilder->setArguments([
@@ -174,7 +157,7 @@ class InitCommand extends Command
     /**
      * @return PathsHelper
      */
-    protected function paths()
+    protected function paths(): PathsHelper
     {
         return $this->getHelper(PathsHelper::HELPER_NAME);
     }

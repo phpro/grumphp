@@ -1,9 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Console\Command;
 
 use Composer\Config;
-use Exception;
 use Gitonomy\Git\Repository;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\ComposerHelper;
@@ -19,6 +18,7 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Yaml\Yaml;
+use Throwable;
 
 class ConfigureCommand extends Command
 {
@@ -44,11 +44,6 @@ class ConfigureCommand extends Command
      */
     protected $input;
 
-    /**
-     * @param GrumPHP    $config
-     * @param Filesystem $filesystem
-     * @param Repository $repository
-     */
     public function __construct(GrumPHP $config, Filesystem $filesystem, Repository $repository)
     {
         parent::__construct();
@@ -72,12 +67,6 @@ class ConfigureCommand extends Command
         );
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int|void
-     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
@@ -112,13 +101,8 @@ class ConfigureCommand extends Command
 
     /**
      * This method will ask the developer for it's input and will result in a configuration array.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return array
      */
-    protected function buildConfiguration(InputInterface $input, OutputInterface $output)
+    protected function buildConfiguration(InputInterface $input, OutputInterface $output): array
     {
         /** @var QuestionHelper $helper */
         $helper = $this->getHelper('question');
@@ -168,25 +152,16 @@ class ConfigureCommand extends Command
     }
 
     /**
-     * @param        $question
      * @param null   $default
-     * @param string $separator
-     *
-     * @return string
      */
-    protected function createQuestionString($question, $default = null, $separator = ':')
+    protected function createQuestionString($question, $default = null, string $separator = ':'): string
     {
         return $default !== null ?
             sprintf('<info>%s</info> [<comment>%s</comment>]%s ', $question, $default, $separator) :
             sprintf('<info>%s</info>%s ', $question, $separator);
     }
 
-    /**
-     * @param array $configuration
-     *
-     * @return bool
-     */
-    protected function writeConfiguration(array $configuration)
+    protected function writeConfiguration(array $configuration): bool
     {
         try {
             $yaml = Yaml::dump($configuration);
@@ -194,7 +169,7 @@ class ConfigureCommand extends Command
             $this->filesystem->dumpFile($grumphpConfigName, $yaml);
 
             return true;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             // Fail silently and return false!
         }
 
@@ -203,10 +178,8 @@ class ConfigureCommand extends Command
 
     /**
      * Make a guess to the bin dir
-     *
-     * @return string
      */
-    protected function guessBinDir()
+    protected function guessBinDir(): string
     {
         $defaultBinDir = $this->config->getBinDir();
         if (!$this->composer()->hasConfiguration()) {
@@ -221,27 +194,19 @@ class ConfigureCommand extends Command
         return $config->get('bin-dir', Config::RELATIVE_PATHS);
     }
 
-    /**
-     * @return string
-     */
-    protected function guessGitDir()
+    protected function guessGitDir(): string
     {
         $defaultGitDir = $this->config->getGitDir();
         try {
             $topLevel = $this->repository->run('rev-parse', ['--show-toplevel']);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             return $defaultGitDir;
         }
 
         return rtrim($this->paths()->getRelativePath($topLevel), '/');
     }
 
-    /**
-     * @param $path
-     *
-     * @return bool
-     */
-    public function pathValidator($path)
+    public function pathValidator($path): bool
     {
         if (!$this->filesystem->exists($path)) {
             throw new RuntimeException(sprintf('The path %s could not be found!', $path));
@@ -251,10 +216,8 @@ class ConfigureCommand extends Command
 
     /**
      * Return a list of all available tasks
-     *
-     * @return array
      */
-    protected function getAvailableTasks(GrumPHP $config)
+    protected function getAvailableTasks(GrumPHP $config): array
     {
         return $config->getRegisteredTasks();
     }
@@ -262,7 +225,7 @@ class ConfigureCommand extends Command
     /**
      * @return PathsHelper
      */
-    protected function paths()
+    protected function paths(): PathsHelper
     {
         return $this->getHelper(PathsHelper::HELPER_NAME);
     }
@@ -270,7 +233,7 @@ class ConfigureCommand extends Command
     /**
      * @return ComposerHelper
      */
-    protected function composer()
+    protected function composer(): ComposerHelper
     {
         return $this->getHelper(ComposerHelper::HELPER_NAME);
     }

@@ -1,22 +1,23 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHPTest\Parser\Php\Visitor;
 
 use GrumPHP\Parser\ParseError;
 use GrumPHP\Parser\Php\Visitor\ConfigurableVisitorInterface;
 use GrumPHP\Parser\Php\Visitor\ForbiddenStaticMethodCallsVisitor;
+use PhpParser\NodeVisitor;
 
 class ForbiddenStaticMethodCallsVisitorTest extends AbstractVisitorTest
 {
     /**
      * @return ForbiddenStaticMethodCallsVisitor
      */
-    protected function getVisitor()
+    protected function getVisitor(): NodeVisitor
     {
         $visitor = new ForbiddenStaticMethodCallsVisitor();
-        $visitor->configure(array(
-           'blacklist' => array('Dumper\StaticDumper::dump', 'My\Dumper::dump', 'Dumper\Alias::dump'),
-        ));
+        $visitor->configure([
+           'blacklist' => ['Dumper\StaticDumper::dump', 'My\Dumper::dump', 'Dumper\Alias::dump'],
+        ]);
 
         return $visitor;
     }

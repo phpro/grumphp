@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Collection;
 
@@ -10,18 +10,12 @@ class TaskResultCollection extends ArrayCollection
 {
     const NO_TASKS = -100;
 
-    /**
-     * @return bool
-     */
-    public function isPassed()
+    public function isPassed(): bool
     {
         return TaskResult::PASSED == $this->getResultCode();
     }
 
-    /**
-     * @return bool
-     */
-    public function isFailed()
+    public function isFailed(): bool
     {
         foreach ($this as $taskResult) {
             if (TaskResult::FAILED === $taskResult->getResultCode()) {
@@ -46,20 +40,16 @@ class TaskResultCollection extends ArrayCollection
     }
 
     /**
-     * @param int $resultCode
      * @return static
      */
-    public function filterByResultCode($resultCode)
+    public function filterByResultCode(int $resultCode)
     {
         return $this->filter(function (TaskResultInterface $taskResult) use ($resultCode) {
             return $resultCode === $taskResult->getResultCode();
         });
     }
 
-    /**
-     * @return array
-     */
-    public function getAllMessages()
+    public function getAllMessages(): array
     {
         $messages = [];
 

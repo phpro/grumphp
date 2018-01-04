@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\IO;
 
@@ -6,36 +6,30 @@ interface IOInterface
 {
     /**
      * Is this input means interactive?
-     *
-     * @return bool
      */
-    public function isInteractive();
+    public function isInteractive(): bool;
 
     /**
      * Is this output verbose?
-     *
-     * @return bool
      */
-    public function isVerbose();
+    public function isVerbose(): bool;
 
     /**
      * Is the output very verbose?
      *
-     * @return bool
+     * @return bool|null
      */
     public function isVeryVerbose();
 
     /**
      * Is the output in debug verbosity?
-     *
-     * @return bool
      */
-    public function isDebug();
+    public function isDebug(): bool;
 
     /**
      * Is this output decorated?
      *
-     * @return bool
+     * @return bool|null
      */
     public function isDecorated();
 

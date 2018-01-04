@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\IO;
 
@@ -7,7 +7,7 @@ class NullIO implements IOInterface
     /**
      * {@inheritDoc}
      */
-    public function isInteractive()
+    public function isInteractive(): bool
     {
         return false;
     }
@@ -15,7 +15,7 @@ class NullIO implements IOInterface
     /**
      * {@inheritDoc}
      */
-    public function isVerbose()
+    public function isVerbose(): bool
     {
         return false;
     }
@@ -23,7 +23,7 @@ class NullIO implements IOInterface
     /**
      * {@inheritDoc}
      */
-    public function isVeryVerbose()
+    public function isVeryVerbose(): bool
     {
         return false;
     }
@@ -31,7 +31,7 @@ class NullIO implements IOInterface
     /**
      * {@inheritDoc}
      */
-    public function isDebug()
+    public function isDebug(): bool
     {
         return false;
     }
@@ -39,7 +39,7 @@ class NullIO implements IOInterface
     /**
      * {@inheritDoc}
      */
-    public function isDecorated()
+    public function isDecorated(): bool
     {
         return false;
     }

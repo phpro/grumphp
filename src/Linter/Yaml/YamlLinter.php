@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Linter\Yaml;
 
@@ -47,8 +47,6 @@ class YamlLinter implements LinterInterface
 
     /**
      * YamlLinter constructor.
-     *
-     * @param Filesystem $filesystem
      */
     public function __construct(Filesystem $filesystem)
     {
@@ -56,11 +54,9 @@ class YamlLinter implements LinterInterface
     }
 
     /**
-     * @param SplFileInfo $file
-     *
      * @return LintErrorsCollection
      */
-    public function lint(SplFileInfo $file)
+    public function lint(SplFileInfo $file): LintErrorsCollection
     {
         $errors = new LintErrorsCollection();
 
@@ -80,10 +76,8 @@ class YamlLinter implements LinterInterface
      * If this method returns true, you are using Symfony YAML > 3.1.
      *
      * @link http://symfony.com/blog/new-in-symfony-3-1-customizable-yaml-parsing-and-dumping
-     *
-     * @return bool
      */
-    public static function supportsFlags()
+    public static function supportsFlags(): bool
     {
         $rc = new ReflectionClass(Yaml::class);
         $method = $rc->getMethod('parse');
@@ -93,10 +87,9 @@ class YamlLinter implements LinterInterface
     }
 
     /**
-     * @param string $content
      * @throws ParseException
      */
-    private function parseYaml($content)
+    private function parseYaml(string $content)
     {
         // Lint on Symfony Yaml < 3.1
         if (!self::supportsFlags()) {
@@ -113,10 +106,7 @@ class YamlLinter implements LinterInterface
         Yaml::parse($content, $flags);
     }
 
-    /**
-     * @return bool
-     */
-    public function isInstalled()
+    public function isInstalled(): bool
     {
         return class_exists(Yaml::class);
     }
@@ -124,7 +114,7 @@ class YamlLinter implements LinterInterface
     /**
      * @param boolean $objectSupport
      */
-    public function setObjectSupport($objectSupport)
+    public function setObjectSupport(bool $objectSupport)
     {
         $this->objectSupport = $objectSupport;
     }
@@ -132,24 +122,18 @@ class YamlLinter implements LinterInterface
     /**
      * @param boolean $exceptionOnInvalidType
      */
-    public function setExceptionOnInvalidType($exceptionOnInvalidType)
+    public function setExceptionOnInvalidType(bool $exceptionOnInvalidType)
     {
         $this->exceptionOnInvalidType = $exceptionOnInvalidType;
     }
 
-    /**
-     * @param bool $parseCustomTags
-     */
-    public function setParseCustomTags($parseCustomTags)
+    public function setParseCustomTags(bool $parseCustomTags)
     {
         // Yaml::PARSE_CONSTANT is only available in Symfony Yaml >= 3.2
         $this->parseCustomTags = $parseCustomTags && defined('Symfony\Component\Yaml\Yaml::PARSE_CONSTANT');
     }
 
-    /**
-     * @param bool $parseConstants
-     */
-    public function setParseConstants($parseConstants)
+    public function setParseConstants(bool $parseConstants)
     {
         // Yaml::PARSE_CUSTOM_TAGS is only available in Symfony Yaml >= 3.3
         $this->parseConstants = $parseConstants && defined('Symfony\Component\Yaml\Yaml::PARSE_CUSTOM_TAGS');

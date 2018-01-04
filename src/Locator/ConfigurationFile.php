@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Locator;
 
@@ -16,21 +16,13 @@ class ConfigurationFile
 
     /**
      * ConfigurationFile constructor.
-     *
-     * @param Filesystem $filesystem
      */
     public function __construct(Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
     }
 
-    /**
-     * @param string                $workingDir
-     * @param PackageInterface|null $package
-     *
-     * @return string
-     */
-    public function locate($workingDir, PackageInterface $package = null)
+    public function locate(string $workingDir, PackageInterface $package = null): string
     {
         $defaultPath = $workingDir . DIRECTORY_SEPARATOR .  self::APP_CONFIG_FILE;
         $defaultPath = $this->locateConfigFileWithDistSupport($defaultPath);
@@ -48,13 +40,7 @@ class ConfigurationFile
         return $defaultPath;
     }
 
-    /**
-     * @param PackageInterface $package
-     * @param                  $defaultPath
-     *
-     * @return string
-     */
-    private function useConfigPathFromComposer(PackageInterface $package, $defaultPath)
+    private function useConfigPathFromComposer(PackageInterface $package, $defaultPath): string
     {
         $extra = $package->getExtra();
         if (!isset($extra['grumphp']['config-default-path'])) {
@@ -65,12 +51,7 @@ class ConfigurationFile
         return $this->locateConfigFileWithDistSupport($composerDefaultPath);
     }
 
-    /**
-     * @param $defaultPath
-     *
-     * @return string
-     */
-    private function locateConfigFileWithDistSupport($defaultPath)
+    private function locateConfigFileWithDistSupport($defaultPath): string
     {
         $distPath = (strpos($defaultPath, -5) !== '.dist') ? $defaultPath . '.dist' : $defaultPath;
         if ($this->filesystem->exists($defaultPath) || !$this->filesystem->exists($distPath)) {

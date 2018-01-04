@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Parser\Php\Visitor;
 
@@ -10,10 +10,6 @@ class NeverUseElseVisitor extends AbstractVisitor
     /**
      * @link http://www.slideshare.net/rdohms/your-code-sucks-lets-fix-it-15471808
      * @link http://www.slideshare.net/guilhermeblanco/object-calisthenics-applied-to-php
-     *
-     * @param Node $node
-     *
-     * @return void
      */
     public function leaveNode(Node $node)
     {

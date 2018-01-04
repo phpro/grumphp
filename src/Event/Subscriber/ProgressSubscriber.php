@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Event\Subscriber;
 
@@ -6,10 +6,10 @@ use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Event\RunnerEvents;
 use GrumPHP\Event\TaskEvent;
 use GrumPHP\Event\TaskEvents;
+use ReflectionClass;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use ReflectionClass;
 
 class ProgressSubscriber implements EventSubscriberInterface
 {
@@ -28,10 +28,6 @@ class ProgressSubscriber implements EventSubscriberInterface
      */
     private $output;
 
-    /**
-     * @param OutputInterface  $output
-     * @param ProgressBar $progressBar
-     */
     public function __construct(OutputInterface $output, ProgressBar $progressBar)
     {
         $this->output = $output;
@@ -40,10 +36,7 @@ class ProgressSubscriber implements EventSubscriberInterface
         $this->progressFormat = '<fg=yellow>Running task %current%/%max%:</fg=yellow> %message%... ';
     }
 
-    /**
-     * @return array
-     */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             RunnerEvents::RUNNER_RUN => 'startProgress',
@@ -56,9 +49,6 @@ class ProgressSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param RunnerEvent $event
-     */
     public function startProgress(RunnerEvent $event)
     {
         $numberOftasks = $event->getTasks()->count();
@@ -67,9 +57,6 @@ class ProgressSubscriber implements EventSubscriberInterface
         $this->progressBar->start($numberOftasks);
     }
 
-    /**
-     * @param TaskEvent $event
-     */
     public function advanceProgress(TaskEvent $event)
     {
         $taskReflection = new ReflectionClass($event->getTask());
@@ -80,11 +67,7 @@ class ProgressSubscriber implements EventSubscriberInterface
         $this->progressBar->advance();
     }
 
-    /**
-     * @param TaskEvent $task
-     * @param string $event
-     */
-    public function onTaskProgress(TaskEvent $task, $event)
+    public function onTaskProgress(TaskEvent $task, string $event)
     {
         switch ($event) {
             case TaskEvents::TASK_COMPLETE:
@@ -102,9 +85,6 @@ class ProgressSubscriber implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @param RunnerEvent $runnerEvent
-     */
     public function finishProgress(RunnerEvent $runnerEvent)
     {
         if ($this->progressBar->getProgress() !== $this->progressBar->getMaxSteps()) {

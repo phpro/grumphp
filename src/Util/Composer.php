@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Util;
 
@@ -6,21 +6,18 @@ use Composer\Config;
 use Composer\Factory;
 use Composer\IO\NullIO;
 use Composer\Json\JsonFile;
-use Composer\Package\Loader\RootPackageLoader;
 use Composer\Package\Loader\JsonLoader;
+use Composer\Package\Loader\RootPackageLoader;
 use Composer\Repository\RepositoryFactory;
-use Exception;
 use GrumPHP\Exception\RuntimeException;
+use Throwable;
 
 class Composer
 {
     /**
      * @param string|JsonFile $json
-     * @param Config $config
-     *
-     * @return \Composer\Package\RootPackageInterface
      */
-    public static function loadRootPackageFromJson($json, Config $config = null)
+    public static function loadRootPackageFromJson($json, Config $config = null): \Composer\Package\RootPackageInterface
     {
         try {
             $config = (null !== $config) ? $config : self::loadConfiguration();
@@ -29,21 +26,18 @@ class Composer
                 $config
             ));
             $package = $loader->load($json);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             throw RuntimeException::fromAnyException($e);
         }
 
         return $package;
     }
 
-    /**
-     * @return \Composer\Config
-     */
-    public static function loadConfiguration()
+    public static function loadConfiguration(): \Composer\Config
     {
         try {
             $configuration = Factory::createConfig();
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             throw RuntimeException::fromAnyException($e);
         }
 
@@ -56,10 +50,8 @@ class Composer
      * we'll have to ensure that the bin path is always prefixed.
      *
      * @link https://github.com/composer/composer/blob/1.1/src/Composer/EventDispatcher/EventDispatcher.php#L147-L160
-     *
-     * @param string $binDir
      */
-    public static function ensureProjectBinDirInSystemPath($binDir)
+    public static function ensureProjectBinDirInSystemPath(string $binDir)
     {
         $pathStr = 'PATH';
         if (!isset($_SERVER[$pathStr]) && isset($_SERVER['Path'])) {

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Collection;
 
@@ -9,12 +9,10 @@ use GrumPHP\TestSuite\TestSuiteInterface;
 class TestSuiteCollection extends ArrayCollection
 {
     /**
-     * @param string $name
-     *
      * @return TestSuiteInterface
      * @throws \GrumPHP\Exception\InvalidArgumentException
      */
-    public function getRequired($name)
+    public function getRequired(string $name): TestSuiteInterface
     {
         if (!$this->containsKey($name)) {
             throw InvalidArgumentException::unknownTestSuite($name);
@@ -24,11 +22,9 @@ class TestSuiteCollection extends ArrayCollection
     }
 
     /**
-     * @param string $name
-     *
      * @return TestSuiteInterface|null
      */
-    public function getOptional($name)
+    public function getOptional(string $name)
     {
         return $this->get($name);
     }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Locator;
 
@@ -13,9 +13,6 @@ class RegisteredFiles
      */
     private $repository;
 
-    /**
-     * @param Repository $repository
-     */
     public function __construct(Repository $repository)
     {
         $this->repository = $repository;
@@ -24,7 +21,7 @@ class RegisteredFiles
     /**
      * @return FilesCollection
      */
-    public function locate()
+    public function locate(): FilesCollection
     {
         $allFiles = trim($this->repository->run('ls-files'));
         $filePaths = preg_split("/\r\n|\n|\r/", $allFiles);

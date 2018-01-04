@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Parser\Php\Context;
 
@@ -19,9 +19,6 @@ class ParserContext
 
     /**
      * ParserContext constructor.
-     *
-     * @param SplFileInfo          $file
-     * @param ParseErrorsCollection $errors
      */
     public function __construct(SplFileInfo $file, ParseErrorsCollection $errors)
     {
@@ -29,10 +26,7 @@ class ParserContext
         $this->errors = $errors;
     }
 
-    /**
-     * @return SplFileInfo
-     */
-    public function getFile()
+    public function getFile(): SplFileInfo
     {
         return $this->file;
     }
@@ -40,7 +34,7 @@ class ParserContext
     /**
      * @return ParseErrorsCollection
      */
-    public function getErrors()
+    public function getErrors(): ParseErrorsCollection
     {
         return $this->errors;
     }

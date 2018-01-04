@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Configuration\Compiler;
 
@@ -11,9 +11,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TestSuiteCompilerPass implements CompilerPassInterface
 {
-    /**
-     * @param ContainerBuilder $container
-     */
     public function process(ContainerBuilder $container)
     {
         $testSuites = $container->getParameter('testsuites');
@@ -30,11 +27,9 @@ class TestSuiteCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param array $registeredTasks
-     *
      * @return OptionsResolver
      */
-    private function createOptionsResolver(array $registeredTasks)
+    private function createOptionsResolver(array $registeredTasks): OptionsResolver
     {
         $options = new OptionsResolver();
         $options->setRequired(['tasks']);

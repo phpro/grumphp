@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Configuration\Compiler;
 
@@ -58,12 +58,7 @@ class TaskCompilerPass implements CompilerPassInterface
         $container->setParameter('grumphp.tasks.metadata', $tasksMetadata);
     }
 
-    /**
-     * @param array $tags
-     *
-     * @return array
-     */
-    private function getTaskTag(array $tags)
+    private function getTaskTag(array $tags): array
     {
         $resolver = new OptionsResolver();
         $resolver->setRequired(['config']);
@@ -71,12 +66,7 @@ class TaskCompilerPass implements CompilerPassInterface
         return $resolver->resolve(current($tags));
     }
 
-    /**
-     * @param $configuration
-     *
-     * @return array
-     */
-    private function parseTaskMetadata($configuration)
+    private function parseTaskMetadata($configuration): array
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -84,7 +74,7 @@ class TaskCompilerPass implements CompilerPassInterface
             'blocking' => true,
         ]);
 
-        $metadata = isset($configuration['metadata']) ? $configuration['metadata'] : [];
+        $metadata = $configuration['metadata'] ?? [];
 
         return $resolver->resolve($metadata);
     }

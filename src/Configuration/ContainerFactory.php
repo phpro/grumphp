@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Configuration;
 
@@ -13,10 +13,8 @@ final class ContainerFactory
 {
     /**
      * @param string $path path to grumphp.yml
-     *
-     * @return ContainerBuilder
      */
-    public static function buildFromConfiguration($path)
+    public static function buildFromConfiguration(string $path): ContainerBuilder
     {
         $container = new ContainerBuilder();
         $container->setProxyInstantiator(new RuntimeInstantiator());

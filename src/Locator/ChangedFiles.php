@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Locator;
 
@@ -23,10 +23,6 @@ class ChangedFiles
      */
     private $filesystem;
 
-    /**
-     * @param Repository $repository
-     * @param Filesystem $filesystem
-     */
     public function __construct(Repository $repository, Filesystem $filesystem)
     {
         $this->repository = $repository;
@@ -36,7 +32,7 @@ class ChangedFiles
     /**
      * @return FilesCollection
      */
-    public function locateFromGitRepository()
+    public function locateFromGitRepository(): FilesCollection
     {
         $diff = $this->repository->getWorkingCopy()->getDiffStaged();
 
@@ -44,11 +40,9 @@ class ChangedFiles
     }
 
     /**
-     * @param string $rawDiff
-     *
      * @return FilesCollection
      */
-    public function locateFromRawDiffInput($rawDiff)
+    public function locateFromRawDiffInput(string $rawDiff): FilesCollection
     {
         $diff = Diff::parse($rawDiff);
         $diff->setRepository($this->repository);
@@ -57,11 +51,9 @@ class ChangedFiles
     }
 
     /**
-     * @param Diff $diff
-     *
      * @return FilesCollection
      */
-    private function parseFilesFromDiff(Diff $diff)
+    private function parseFilesFromDiff(Diff $diff): FilesCollection
     {
         $files = [];
         /** @var File $file */

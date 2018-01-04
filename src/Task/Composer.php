@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -6,12 +6,13 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Util\Filesystem;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use SplFileInfo;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Composer task
@@ -25,11 +26,6 @@ class Composer extends AbstractExternalTask
 
     /**
      * Composer constructor.
-     *
-     * @param GrumPHP                   $grumPHP
-     * @param ProcessBuilder            $processBuilder
-     * @param ProcessFormatterInterface $formatter
-     * @param Filesystem                $filesystem
      */
     public function __construct(
         GrumPHP $grumPHP,
@@ -41,10 +37,7 @@ class Composer extends AbstractExternalTask
         $this->filesystem = $filesystem;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'composer';
     }
@@ -52,7 +45,7 @@ class Composer extends AbstractExternalTask
     /**
      * @return OptionsResolver
      */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -79,15 +72,15 @@ class Composer extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
         $files = $context->getFiles()
@@ -123,12 +116,8 @@ class Composer extends AbstractExternalTask
 
     /**
      * Checks if composer.local host one or more local repositories.
-     *
-     * @param SplFileInfo $composerFile
-     *
-     * @return bool
      */
-    private function hasLocalRepository(SplFileInfo $composerFile)
+    private function hasLocalRepository(SplFileInfo $composerFile): bool
     {
         $json = $this->filesystem->readFromFileInfo($composerFile);
         $package = json_decode($json, true);
