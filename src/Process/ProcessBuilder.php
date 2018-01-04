@@ -60,9 +60,7 @@ class ProcessBuilder
      */
     public function buildProcess(ProcessArgumentsCollection $arguments)
     {
-        $commandline = $arguments->generateCliCommand();
-
-        $process = new Process($commandline);
+        $process = ProcessFactory::fromArguments($arguments);
         $process->setTimeout($this->config->getProcessTimeout());
 
         $this->logProcessInVerboseMode($process);

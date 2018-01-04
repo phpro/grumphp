@@ -4,7 +4,6 @@ namespace GrumPHP\Collection;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use GrumPHP\Exception\InvalidArgumentException;
-use GrumPHP\Process\ProcessUtils;
 
 class ProcessArgumentsCollection extends ArrayCollection
 {
@@ -150,17 +149,5 @@ class ProcessArgumentsCollection extends ArrayCollection
         }
 
         $this->add(sprintf($argument, implode(',', $paths)));
-    }
-
-    /**
-     * @return string
-     */
-    public function generateCliCommand()
-    {
-        $commandlineArgs = array_map(function ($argument) {
-            return ProcessUtils::escapeArgument($argument);
-        }, $this->getValues());
-
-        return implode(' ', $commandlineArgs);
     }
 }

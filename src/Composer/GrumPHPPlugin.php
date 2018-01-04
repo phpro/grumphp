@@ -19,8 +19,8 @@ use GrumPHP\Console\Command\ConfigureCommand;
 use GrumPHP\Console\Command\Git\DeInitCommand;
 use GrumPHP\Console\Command\Git\InitCommand;
 use GrumPHP\Locator\ExternalCommand;
+use GrumPHP\Process\ProcessFactory;
 use Symfony\Component\Process\ExecutableFinder;
-use Symfony\Component\Process\Process;
 
 class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 {
@@ -183,7 +183,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         $commandlineArgs->add($command);
         $commandlineArgs->add('--no-interaction');
 
-        $process = new Process($commandlineArgs->generateCliCommand());
+        $process = ProcessFactory::fromArguments($commandlineArgs);
 
         // Check executable which is running:
         if ($this->io->isVeryVerbose()) {
