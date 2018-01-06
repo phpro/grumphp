@@ -19,7 +19,7 @@ use GrumPHP\Console\Command\Git\DeInitCommand;
 use GrumPHP\Console\Command\Git\InitCommand;
 use GrumPHP\Locator\ExternalCommand;
 use Symfony\Component\Process\ExecutableFinder;
-use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Process\Process;
 
 class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 {
@@ -178,8 +178,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         $commandLocator = new ExternalCommand($config->get('bin-dir'), new ExecutableFinder());
         $executable = $commandLocator->locate('grumphp');
 
-        $builder = new ProcessBuilder([$executable, $command, '--no-interaction']);
-        $process = $builder->getProcess();
+        $process = new Process($executable.' '.$command.' --no-interaction');
 
         // Check executable which is running:
         if ($this->io->isVeryVerbose()) {
