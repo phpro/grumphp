@@ -8,7 +8,7 @@
         "composer-plugin-api": "~1.0",
         "composer/composer": "^1.0",
         "doctrine/collections": "~1.2",
-        "gitonomy/gitlib": "~1.0",
+        "gitonomy/gitlib": "^1.0.3",
         "monolog/monolog": "~1.16",
         "ocramius/proxy-manager": "~0.4|~1.0|~2.0",
         "seld/jsonlint": "~1.1",
