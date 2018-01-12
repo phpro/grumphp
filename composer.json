@@ -12,16 +12,16 @@
         "monolog/monolog": "~1.16",
         "ocramius/proxy-manager": "~0.4|~1.0|~2.0",
         "seld/jsonlint": "~1.1",
-        "symfony/config": "~2.7|~3.0",
-        "symfony/console": "~2.7|~3.0",
-        "symfony/dependency-injection": "~2.7|~3.0",
-        "symfony/event-dispatcher": "~2.7|~3.0",
-        "symfony/filesystem": "~2.7|~3.0",
-        "symfony/finder": "~2.7|~3.0",
-        "symfony/options-resolver": "~2.7|~3.0",
-        "symfony/process": "~2.7|~3.0",
-        "symfony/proxy-manager-bridge": "~2.7|~3.0",
-        "symfony/yaml": "~2.7|~3.0"
+        "symfony/config": "~2.7|~3.0|~4.0",
+        "symfony/console": "~2.7|~3.0|~4.0",
+        "symfony/dependency-injection": "~2.7|~3.0|~4.0",
+        "symfony/event-dispatcher": "~2.7|~3.0|~4.0",
+        "symfony/filesystem": "~2.7|~3.0|~4.0",
+        "symfony/finder": "~2.7|~3.0|~4.0",
+        "symfony/options-resolver": "~2.7|~3.0|~4.0",
+        "symfony/process": "~2.7|~3.0|~4.0",
+        "symfony/proxy-manager-bridge": "~2.7|~3.0|~4.0",
+        "symfony/yaml": "~2.7|~3.0|~4.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "~1|~2",
@@ -29,9 +29,9 @@
         "nikic/php-parser": "~2.1",
         "phpspec/phpspec": "^3.2.2",
         "phpspec/prophecy": "^1.6.2",
-        "phpunit/phpunit": "^5.7.25|^6.4.4",
+        "phpunit/phpunit": "^5.7.26|^6.4.4",
         "sebastian/comparator": "^1.2.4",
-        "sensiolabs/security-checker": "^3.0",
+        "sensiolabs/security-checker": "^4.0",
         "squizlabs/php_codesniffer": "~2.4"
     },
     "suggest": {

@@ -3,8 +3,9 @@
 namespace GrumPHP\Composer;
 
 use Composer\Script\Event;
+use GrumPHP\Collection\ProcessArgumentsCollection;
+use GrumPHP\Process\ProcessFactory;
 use GrumPHP\Util\Filesystem;
-use Symfony\Component\Process\ProcessBuilder;
 
 class DevelopmentIntegrator
 {
@@ -23,7 +24,10 @@ class DevelopmentIntegrator
             self::noramlizePath($composerExecutable)
         );
 
-        $process = ProcessBuilder::create([$composerExecutable, 'git:init'])->getProcess();
+        $commandlineArgs = ProcessArgumentsCollection::forExecutable($composerExecutable);
+        $commandlineArgs->add('git:init');
+
+        $process = ProcessFactory::fromArguments($commandlineArgs);
         $process->run();
         if (!$process->isSuccessful()) {
             $event->getIO()->write(

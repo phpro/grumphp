@@ -59,12 +59,21 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return [
+        $events = [
             RunnerEvents::RUNNER_RUN => ['saveStash', 10000],
             RunnerEvents::RUNNER_COMPLETE => ['popStash', -10000],
             RunnerEvents::RUNNER_FAILED => ['popStash', -10000],
-            ConsoleEvents::EXCEPTION => ['handleErrors', -10000],
         ];
+
+        // Backward compatibility layer for Symfony Console < 4.0.
+        // @todo Replace with ConsoleEvents::EXCEPTION when bumping symfony/console to ^3.3
+        //       (and maybe revert back to returning a simple array, as it was before?)
+        $consoleErrorEvent = defined(ConsoleEvents::class.'::ERROR')
+            ? ConsoleEvents::ERROR
+            : ConsoleEvents::EXCEPTION;
+        $events[$consoleErrorEvent] = ['handleErrors', -10000];
+
+        return $events;
     }
 
     /**

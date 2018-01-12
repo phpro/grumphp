@@ -9,7 +9,6 @@ use GrumPHP\IO\IOInterface;
 use GrumPHP\Locator\ExternalCommand;
 use GrumPHP\Util\Platform;
 use Symfony\Component\Process\Process;
-use \Symfony\Component\Process\ProcessBuilder as SymfonyProcessBuilder;
 
 class ProcessBuilder
 {
@@ -61,9 +60,8 @@ class ProcessBuilder
      */
     public function buildProcess(ProcessArgumentsCollection $arguments)
     {
-        $builder = SymfonyProcessBuilder::create($arguments->getValues());
-        $builder->setTimeout($this->config->getProcessTimeout());
-        $process = $builder->getProcess();
+        $process = ProcessFactory::fromArguments($arguments);
+        $process->setTimeout($this->config->getProcessTimeout());
 
         $this->logProcessInVerboseMode($process);
         $this->guardWindowsCmdMaxInputStringLimitation($process);

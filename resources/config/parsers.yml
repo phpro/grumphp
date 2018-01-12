@@ -29,39 +29,46 @@ services:
       class: 'GrumPHP\Parser\Php\Visitor\DeclareStrictTypesVisitor'
       tags:
         - {name: 'php_parser.visitor', alias: 'declare_strict_types'}
+      public: true
 
     grumphp.parser.php.visitor.forbidden_class_method_calls:
       class: 'GrumPHP\Parser\Php\Visitor\ForbiddenClassMethodCallsVisitor'
       arguments: []
       tags:
         - {name: 'php_parser.visitor', alias: 'forbidden_class_method_calls'}
+      public: true
 
     grumphp.parser.php.visitor.forbidden_function_calls:
       class: 'GrumPHP\Parser\Php\Visitor\ForbiddenFunctionCallsVisitor'
       arguments: []
       tags:
         - {name: 'php_parser.visitor', alias: 'forbidden_function_calls'}
+      public: true
 
     grumphp.parser.php.visitor.forbidden_static_method_calls:
       class: 'GrumPHP\Parser\Php\Visitor\ForbiddenStaticMethodCallsVisitor'
       arguments: []
       tags:
         - {name: 'php_parser.visitor', alias: 'forbidden_static_method_calls'}
+      public: true
 
     grumphp.parser.php.visitor.nameresolver:
       class: 'PhpParser\NodeVisitor\NameResolver'
       arguments: []
       tags:
         - {name: 'php_parser.visitor', alias: 'nameresolver'}
+      public: true
 
     grumphp.parser.php.visitor.never_use_else:
       class: 'GrumPHP\Parser\Php\Visitor\NeverUseElseVisitor'
       arguments: []
       tags:
         - {name: 'php_parser.visitor', alias: 'never_use_else'}
+      public: true
 
     grumphp.parser.php.visitor.no_exit_statements:
       class: 'GrumPHP\Parser\Php\Visitor\NoExitStatementsVisitor'
       arguments: []
       tags:
         - {name: 'php_parser.visitor', alias: 'no_exit_statements'}
+      public: true

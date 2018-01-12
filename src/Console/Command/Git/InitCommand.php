@@ -5,13 +5,13 @@ namespace GrumPHP\Console\Command\Git;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Exception\FileNotFoundException;
+use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Util\Filesystem;
 use RuntimeException;
 use SplFileInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\ProcessBuilder;
 
 /**
  * This command is responsible for enabling all the configured hooks.
@@ -39,14 +39,14 @@ class InitCommand extends Command
     protected $filesystem;
 
     /**
-     * @var ProcessBuilder
-     */
-    protected $processBuilder;
-
-    /**
      * @var InputInterface
      */
     protected $input;
+
+    /**
+     * @var ProcessBuilder
+     */
+    private $processBuilder;
 
     /**
      * @param GrumPHP $grumPHP
@@ -139,17 +139,15 @@ class InitCommand extends Command
      */
     protected function generateHookCommand($command)
     {
-        $executable = $this->paths()->getBinCommand('grumphp', true);
-        $this->processBuilder->setArguments([
-            $this->paths()->getRelativeProjectPath($executable),
-            $command
-        ]);
+        $configFile = $this->useExoticConfigFile();
 
-        if ($configFile = $this->useExoticConfigFile()) {
-            $this->processBuilder->add(sprintf('--config=%s', $configFile));
-        }
+        $arguments = $this->processBuilder->createArgumentsForCommand('grumphp');
+        $arguments->add($command);
+        $arguments->addOptionalArgument('--config=%s', $configFile);
 
-        return $this->processBuilder->getProcess()->getCommandLine();
+        $process = $this->processBuilder->buildProcess($arguments);
+
+        return $process->getCommandLine();
     }
 
     /**
