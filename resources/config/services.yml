@@ -90,6 +90,7 @@ services:
         arguments:
           - 'GrumPHP'
           - ['@grumphp.logger.handler.nullhandler']
+        public: true
 
     grumphp.logger.handler.nullhandler:
         class: Monolog\Handler\NullHandler
