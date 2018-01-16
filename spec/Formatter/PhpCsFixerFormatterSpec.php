@@ -6,7 +6,7 @@ use GrumPHP\Formatter\PhpCsFixerFormatter;
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\ProcessUtils;
+use GrumPHP\Process\ProcessUtils;
 
 class PhpCsFixerFormatterSpec extends ObjectBehavior
 {
