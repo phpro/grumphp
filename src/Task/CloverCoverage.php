@@ -113,7 +113,7 @@ class CloverCoverage implements TaskInterface
         if ((int)$totalElements === 0) {
             return TaskResult::createSkipped($this, $context);
         }
-        
+
         $coverage = round(($checkedElements / $totalElements) * 100, 2);
 
         if ($coverage < $percentage) {

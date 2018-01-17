@@ -97,7 +97,7 @@ class TaskRunnerHelper extends Helper
         if ($output instanceof ConsoleOutputInterface) {
             $output = $output->getErrorOutput();
         }
-        
+
         $this->eventDispatcher->addSubscriber(new ProgressSubscriber($output, new ProgressBar($output)));
     }
 
