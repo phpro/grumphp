@@ -10,7 +10,7 @@ use GrumPHP\Process\ProcessBuilder;
 use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\ProcessUtils;
+use GrumPHP\Process\ProcessUtils;
 
 class ProcessBuilderSpec extends ObjectBehavior
 {
