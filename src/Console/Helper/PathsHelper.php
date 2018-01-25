@@ -16,6 +16,7 @@ use Symfony\Component\Console\Helper\Helper;
 class PathsHelper extends Helper
 {
     const HELPER_NAME = 'paths';
+    const HOME_CHAR = '~';
 
     /**
      * @var GrumPHP
@@ -97,6 +98,7 @@ class PathsHelper extends Helper
     public function getAsciiContent($resource)
     {
         $file = $this->config->getAsciiContentPath($resource);
+        $file = $this->filterHomeFolder($file);
 
         // Disabled:
         if (is_null($file)) {
@@ -246,6 +248,7 @@ class PathsHelper extends Helper
     public function getAbsolutePath($path)
     {
         $path = trim($path);
+        $path = $this->filterHomeFolder($path);
         $realpath = realpath($path);
         if (false === $realpath) {
             throw new FileNotFoundException($path);
@@ -282,5 +285,24 @@ class PathsHelper extends Helper
     public function getName()
     {
         return self::HELPER_NAME;
+    }
+
+    /**
+     * @param $path
+     *
+     * @return mixed
+     */
+    private function filterHomeFolder($path)
+    {
+        $homeCharPos = strpos($path, self::HOME_CHAR);
+
+        if ($homeCharPos === false) {
+            return $path;
+        }
+
+        $homeSubfolder = substr($path, $homeCharPos);
+        $filteredPath = str_replace(self::HOME_CHAR, getenv('HOME'), $homeSubfolder);
+
+        return $filteredPath;
     }
 }
