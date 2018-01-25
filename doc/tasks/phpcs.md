@@ -12,15 +12,15 @@ composer require --dev squizlabs/php_codesniffer
 
 The task lives under the `phpcs` namespace and has following configurable parameters:
 
-sebastian/phpcpd
-
 ```yaml
 # grumphp.yml
 parameters:
     tasks:
         phpcs:
             standard: ~
-            show_warnings: true
+            severity: ~
+            error_severity: ~
+            warning_severity: ~
             tab_width: ~
             whitelist_patterns: []
             encoding: ~
@@ -46,13 +46,23 @@ You can get a list of all installed phpcs standards with the command:
 phpcs -i
 ```
 
+**severity**
 
-**show_warnings**
+*Default: null*
 
-*Default: true*
+Global severity level that should be used by `phpcs` (default is 5).
 
-Triggers an error when there are warnings.
+**error_severity**
 
+*Default: null*
+
+Error severity that should be used by `phpcs` (default is 5).
+
+**warning_severity**
+
+*Default: null*
+
+Warning severity that should be used by `phpcs` (default is 5).
 
 **tab_width**
 
