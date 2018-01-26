@@ -1,7 +1,7 @@
 # Doctrine ORM
 
 The Doctrine ORM task will validate that your Doctrine mapping files and check if the mapping is in sync with the database.
-It lives under the `doctrine` namespace and has following configurable parameters:
+It lives under the `doctrine_orm` namespace and has following configurable parameters:
 
 ```yaml
 # grumphp.yml
