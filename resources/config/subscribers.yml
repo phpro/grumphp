@@ -7,3 +7,5 @@ services:
       - '@grumphp.io'
     tags:
       - { name: grumphp.event_subscriber }
+    public: true
+
