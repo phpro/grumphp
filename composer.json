@@ -49,7 +49,7 @@
         "nikic/php-parser": "Lets GrumPHP run static analyses through your PHP files.",
         "phing/phing": "Lets GrumPHP run your automated PHP tasks.",
         "phpmd/phpmd": "Lets GrumPHP sort out the mess in your code",
-        "phpmnd/phpmnd": "Lets GrumPHP help you detect magic numbers in PHP code.",
+        "povils/phpmnd": "Lets GrumPHP help you detect magic numbers in PHP code.",
         "phpspec/phpspec": "Lets GrumPHP spec your code.",
         "phpstan/phpstan": "Lets GrumPHP discover bugs in your code without running it.",
         "phpunit/phpunit": "Lets GrumPHP run your unit tests.",
