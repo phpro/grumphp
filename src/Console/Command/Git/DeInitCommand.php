@@ -59,21 +59,28 @@ class DeInitCommand extends Command
      * @param OutputInterface $output
      *
      * @return int|void
+     *
+     * @throws \Symfony\Component\Filesystem\Exception\IOException
+     * @throws \LogicException
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $gitHooksPath = $this->paths()->getGitHooksDir();
 
         foreach (InitCommand::$hooks as $hook) {
-            $hookPath = $gitHooksPath . $hook;
+            $hookPath = $gitHooksPath.$hook;
             if (!$this->filesystem->exists($hookPath)) {
                 continue;
             }
 
             $this->filesystem->remove($hookPath);
+
+            if ($this->filesystem->exists($hookPath.InitCommand::BACKUP_HOOK_EXTENSION)) {
+                $this->restoreBackedupGitHook($output, $hookPath, $hook);
+            }
         }
 
-        $output->writeln('<fg=yellow>GrumPHP stopped sniffing your commits! Too bad ...<fg=yellow>');
+        $output->writeln('<fg=yellow>GrumPHP stopped sniffing your commits! Too bad ...</fg=yellow>');
     }
 
     /**
@@ -82,5 +89,28 @@ class DeInitCommand extends Command
     protected function paths()
     {
         return $this->getHelper(PathsHelper::HELPER_NAME);
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param string          $hookPath
+     * @param string          $hook
+     *
+     * @throws \Symfony\Component\Filesystem\Exception\IOException
+     * @throws \LogicException
+     */
+    private function restoreBackedupGitHook(OutputInterface $output, $hookPath, $hook)
+    {
+        $backupFile = new \SplFileObject($hookPath.InitCommand::BACKUP_HOOK_EXTENSION);
+
+        $this->filesystem->dumpFile($hookPath, $this->filesystem->readFromFileInfo($backupFile));
+        $this->filesystem->remove($backupFile->getRealPath());
+
+        $output->writeln(
+            sprintf(
+                '<fg=yellow>GrumPHP detected a backup for <fg=white>%s</fg=white> hook and restored it.</fg=yellow>',
+                $hook
+            )
+        );
     }
 }

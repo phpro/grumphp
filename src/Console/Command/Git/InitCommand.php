@@ -7,8 +7,8 @@ use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Exception\FileNotFoundException;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Util\Filesystem;
-use RuntimeException;
 use SplFileInfo;
+use SplFileObject;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,6 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class InitCommand extends Command
 {
     const COMMAND_NAME = 'git:init';
+    const BACKUP_HOOK_EXTENSION = '.backup';
 
     /**
      * @var array
@@ -49,8 +50,8 @@ class InitCommand extends Command
     private $processBuilder;
 
     /**
-     * @param GrumPHP $grumPHP
-     * @param Filesystem $filesystem
+     * @param GrumPHP        $grumPHP
+     * @param Filesystem     $filesystem
      * @param ProcessBuilder $processBuilder
      */
     public function __construct(GrumPHP $grumPHP, Filesystem $filesystem, ProcessBuilder $processBuilder)
@@ -75,38 +76,53 @@ class InitCommand extends Command
      * @param OutputInterface $output
      *
      * @return int|void
+     *
+     * @throws \Symfony\Component\Filesystem\Exception\IOException
+     * @throws \RuntimeException
+     * @throws \LogicException
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
         $gitHooksPath = $this->paths()->getGitHooksDir();
-        $resourceHooksPath = $this->paths()->getGitHookTemplatesDir() . $this->grumPHP->getHooksPreset();
+        $resourceHooksPath = $this->paths()->getGitHookTemplatesDir().$this->grumPHP->getHooksPreset();
         $resourceHooksPath = $this->paths()->getPathWithTrailingSlash($resourceHooksPath);
         $customHooksPath = $this->paths()->getPathWithTrailingSlash($this->grumPHP->getHooksDir());
 
         // Some git clients do not automatically create a git hooks folder.
         if (!$this->filesystem->exists($gitHooksPath)) {
             $this->filesystem->mkdir($gitHooksPath);
-            $output->writeln(sprintf(
-                '<fg=yellow>Created git hooks folder at: %s</fg=yellow>',
-                $gitHooksPath
-            ));
+            $output->writeln(
+                sprintf(
+                    '<fg=yellow>Created git hooks folder at: %s</fg=yellow>',
+                    $gitHooksPath
+                )
+            );
         }
 
         foreach (self::$hooks as $hook) {
-            $gitHook = $gitHooksPath . $hook;
-            $hookTemplate = new SplFileInfo($resourceHooksPath . $hook);
-            if ($customHooksPath && $this->filesystem->exists($customHooksPath . $hook)) {
-                $hookTemplate = new SplFileInfo($customHooksPath . $hook);
+            $gitHook = $gitHooksPath.$hook;
+            $hookTemplate = new SplFileInfo($resourceHooksPath.$hook);
+            if ($customHooksPath && $this->filesystem->exists($customHooksPath.$hook)) {
+                $hookTemplate = new SplFileInfo($customHooksPath.$hook);
             }
 
             if (!$this->filesystem->exists($hookTemplate)) {
-                throw new RuntimeException(
+                throw new \RuntimeException(
                     sprintf('Could not find hook template for %s at %s.', $hook, $hookTemplate)
                 );
             }
 
             $content = $this->parseHookBody($hook, $hookTemplate);
+
+            if ($this->filesystem->exists($gitHook)) {
+                $gitHookFile = new SplFileObject($gitHook);
+
+                if (!$this->isGitHookFromGrumPhp($gitHookFile)) {
+                    $this->saveOldGitHook($gitHook, $gitHookFile, $output);
+                }
+            }
+
             $this->filesystem->dumpFile($gitHook, $content);
             $this->filesystem->chmod($gitHook, 0775);
         }
@@ -125,7 +141,7 @@ class InitCommand extends Command
         $content = $this->filesystem->readFromFileInfo($templateFile);
         $replacements = [
             '${HOOK_EXEC_PATH}' => $this->paths()->getGitHookExecutionPath(),
-            '$(HOOK_COMMAND)' => $this->generateHookCommand('git:' . $hook),
+            '$(HOOK_COMMAND)' => $this->generateHookCommand('git:'.$hook),
         ];
 
         return str_replace(array_keys($replacements), array_values($replacements), $content);
@@ -175,5 +191,39 @@ class InitCommand extends Command
     protected function paths()
     {
         return $this->getHelper(PathsHelper::HELPER_NAME);
+    }
+
+    /**
+     * @param SplFileObject $hookFile
+     *
+     * @return bool
+     */
+    private function isGitHookFromGrumPhp(SplFileObject $hookFile)
+    {
+        return stripos($this->filesystem->readFromFileInfo($hookFile->getFileInfo()), 'grumphp') !== false;
+    }
+
+    /**
+     * @param string          $hookPath
+     * @param SplFileObject   $gitHookFile
+     *
+     * @param OutputInterface $output
+     *
+     * @return void
+     *
+     * @throws \Symfony\Component\Filesystem\Exception\IOException
+     */
+    private function saveOldGitHook($hookPath, SplFileObject $gitHookFile, OutputInterface $output)
+    {
+        $fileName = $hookPath.self::BACKUP_HOOK_EXTENSION;
+        $this->filesystem->dumpFile($fileName, $gitHookFile->fread($gitHookFile->getSize()));
+
+        $output->writeln(
+            sprintf(
+                '<fg=yellow>Your old <fg=white>%s</fg=white> hook can be found at <fg=white>%s</fg=white>.</fg=yellow>',
+                $gitHookFile->getFilename(),
+                $fileName
+            )
+        );
     }
 }
