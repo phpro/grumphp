@@ -26,6 +26,10 @@ before_install:
   - composer global require hirak/prestissimo
 
 install:
+  # Debug
+  - composer why-not -t -r phpunit/phpunit
+  - composer depend sebastian/diff
+  - composer depend sebastian/comparator
   - travis_retry composer update --no-progress --profile --no-scripts --no-suggest $DEPENDENCIES
 
 script:
