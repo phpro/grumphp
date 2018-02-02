@@ -41,7 +41,9 @@ class PhpcsSpec extends ObjectBehavior
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('standard');
-        $options->getDefinedOptions()->shouldContain('show_warnings');
+        $options->getDefinedOptions()->shouldContain('severity');
+        $options->getDefinedOptions()->shouldContain('error_severity');
+        $options->getDefinedOptions()->shouldContain('warning_severity');
         $options->getDefinedOptions()->shouldContain('tab_width');
         $options->getDefinedOptions()->shouldContain('encoding');
         $options->getDefinedOptions()->shouldContain('whitelist_patterns');

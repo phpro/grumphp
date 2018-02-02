@@ -33,22 +33,26 @@ class Phpcs extends AbstractExternalTask
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'standard' => null,
-            'show_warnings' => true,
             'tab_width' => null,
             'encoding' => null,
             'whitelist_patterns' => [],
             'ignore_patterns' => [],
             'sniffs' => [],
+            'severity' => null,
+            'error_severity' => null,
+            'warning_severity' => null,
             'triggered_by' => ['php']
         ]);
 
         $resolver->addAllowedTypes('standard', ['null', 'string']);
-        $resolver->addAllowedTypes('show_warnings', ['bool']);
         $resolver->addAllowedTypes('tab_width', ['null', 'int']);
         $resolver->addAllowedTypes('encoding', ['null', 'string']);
         $resolver->addAllowedTypes('whitelist_patterns', ['array']);
         $resolver->addAllowedTypes('ignore_patterns', ['array']);
         $resolver->addAllowedTypes('sniffs', ['array']);
+        $resolver->addAllowedTypes('severity', ['null', 'int']);
+        $resolver->addAllowedTypes('error_severity', ['null', 'int']);
+        $resolver->addAllowedTypes('warning_severity', ['null', 'int']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
@@ -111,17 +115,22 @@ class Phpcs extends AbstractExternalTask
 
     /**
      * @param ProcessArgumentsCollection $arguments
+     *
      * @param array $config
+     *
      * @return ProcessArgumentsCollection
      */
     protected function addArgumentsFromConfig(ProcessArgumentsCollection $arguments, array $config)
     {
         $arguments->addOptionalArgument('--standard=%s', $config['standard']);
-        $arguments->addOptionalArgument('--warning-severity=0', !$config['show_warnings']);
         $arguments->addOptionalArgument('--tab-width=%s', $config['tab_width']);
         $arguments->addOptionalArgument('--encoding=%s', $config['encoding']);
+        $arguments->addOptionalArgument('--severity=%s', $config['severity']);
+        $arguments->addOptionalArgument('--error-severity=%s', $config['error_severity']);
+        $arguments->addOptionalArgument('--warning-severity=%s', $config['warning_severity']);
         $arguments->addOptionalCommaSeparatedArgument('--sniffs=%s', $config['sniffs']);
         $arguments->addOptionalCommaSeparatedArgument('--ignore=%s', $config['ignore_patterns']);
+
         return $arguments;
     }
 }
