@@ -30,11 +30,13 @@ class ComposerRequireChecker extends AbstractExternalTask
         $resolver->setDefaults([
             'composer_file' => 'composer.json',
             'config_file' => null,
+            'ignore_parse_errors' => false,
             'triggered_by' => ['composer.json', 'composer.lock', '*.php'],
         ]);
 
         $resolver->addAllowedTypes('composer_file', ['string']);
         $resolver->addAllowedTypes('config_file', ['null', 'string']);
+        $resolver->addAllowedTypes('ignore_parse_errors', ['boolean']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
@@ -64,6 +66,7 @@ class ComposerRequireChecker extends AbstractExternalTask
 
         $arguments->add('check');
         $arguments->addOptionalArgument('--config-file=%s', $config['config_file']);
+        $arguments->addOptionalArgument('--ignore-parse-errors', $config['ignore_parse_errors']);
         $arguments->add('--no-interaction');
         $arguments->add($config['composer_file']);
 
