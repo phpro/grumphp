@@ -3,6 +3,7 @@
 namespace spec\GrumPHP\Process;
 
 use GrumPHP\Process\ProcessUtils;
+use GrumPHP\Util\Platform;
 use PhpSpec\Exception\Example\SkippingException;
 use PhpSpec\ObjectBehavior;
 
@@ -15,7 +16,7 @@ class ProcessUtilsSpec extends ObjectBehavior
 
     function it_escapes_arguments_on_windows_platform()
     {
-        if ('\\' !== DIRECTORY_SEPARATOR) {
+        if (('\\' !== DIRECTORY_SEPARATOR) || Platform::isWindows() === false) {
             throw new SkippingException('Test requires a Windows platform.');
         }
 
@@ -29,6 +30,7 @@ class ProcessUtilsSpec extends ObjectBehavior
         self::escapeArgument('a^b c!')->shouldReturn('"a"^^"b c"^!""');
         self::escapeArgument("a!b\tc")->shouldReturn("\"a\"^!\"b\tc\"");
         self::escapeArgument('a\\\\"\\"')->shouldReturn('"a\\\\""\"""');
+        self::escapeArgument("c:\users\phpro\grumphp")->shouldReturn("'c:\users\phpro\grumphp'");
     }
 
     function it_escapes_arguments_on_other_platforms()
