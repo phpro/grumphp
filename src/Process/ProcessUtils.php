@@ -2,6 +2,8 @@
 
 namespace GrumPHP\Process;
 
+use GrumPHP\Util\Platform;
+
 /**
  * ProcessUtils is a bunch of utility methods.
  *
@@ -30,7 +32,7 @@ final class ProcessUtils
      */
     public static function escapeArgument($argument)
     {
-        if ('\\' !== DIRECTORY_SEPARATOR) {
+        if ('\\' !== DIRECTORY_SEPARATOR || Platform::isWindows()) {
             return "'".str_replace("'", "'\\''", $argument)."'";
         }
         if ('' === $argument = (string) $argument) {
@@ -43,6 +45,7 @@ final class ProcessUtils
             return $argument;
         }
         $argument = preg_replace('/(\\\\+)$/', '$1$1', $argument);
+
         return '"'.str_replace(['"', '^', '%', '!', "\n"], ['""', '"^^"', '"^%"', '"^!"', '!LF!'], $argument).'"';
     }
 }
