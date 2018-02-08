@@ -119,17 +119,21 @@ class Application extends SymfonyConsole
 
         $helperSet = parent::getDefaultHelperSet();
         $helperSet->set($this->initializeComposerHelper());
-        $helperSet->set(new Helper\PathsHelper(
-            $container->get('config'),
-            $container->get('grumphp.util.filesystem'),
-            $container->get('locator.external_command'),
-            $this->getDefaultConfigPath()
-        ));
-        $helperSet->set(new Helper\TaskRunnerHelper(
-            $container->get('config'),
-            $container->get('task_runner'),
-            $container->get('event_dispatcher')
-        ));
+        $helperSet->set(
+            new Helper\PathsHelper(
+                $container->get('config'),
+                $container->get('grumphp.util.filesystem'),
+                $container->get('locator.external_command'),
+                $this->getDefaultConfigPath()
+            )
+        );
+        $helperSet->set(
+            new Helper\TaskRunnerHelper(
+                $container->get('config'),
+                $container->get('task_runner'),
+                $container->get('event_dispatcher')
+            )
+        );
 
         return $helperSet;
     }
@@ -146,6 +150,7 @@ class Application extends SymfonyConsole
         // Load cli options:
         $input = new ArgvInput();
         $configPath = $input->getParameterOption(['--config', '-c'], $this->getDefaultConfigPath());
+        $configPath = $this->updateUserConfigPath($configPath);
 
         // Build the service container:
         $this->container = ContainerFactory::buildFromConfiguration($configPath);
@@ -156,7 +161,7 @@ class Application extends SymfonyConsole
     /**
      * Configure IO of GrumPHP objects
      *
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      */
     protected function configureIO(InputInterface $input, OutputInterface $output)
@@ -207,7 +212,7 @@ class Application extends SymfonyConsole
         }
 
         try {
-            $composerFile = getcwd() . DIRECTORY_SEPARATOR . 'composer.json';
+            $composerFile = getcwd().DIRECTORY_SEPARATOR.'composer.json';
             $configuration = Composer::loadConfiguration();
             Composer::ensureProjectBinDirInSystemPath($configuration->get('bin-dir'));
             $rootPackage = Composer::loadRootPackageFromJson($composerFile, $configuration);
@@ -217,5 +222,20 @@ class Application extends SymfonyConsole
         }
 
         return $this->composerHelper = new Helper\ComposerHelper($configuration, $rootPackage);
+    }
+
+    /**
+     * Prefixes the cwd to the path given by the user
+     *
+     * @param string $configPath
+     * @return string
+     */
+    private function updateUserConfigPath(string $configPath): string
+    {
+        if ($configPath !== $this->getDefaultConfigPath()) {
+            $configPath = getcwd().DIRECTORY_SEPARATOR.$configPath;
+        }
+
+        return $configPath;
     }
 }
