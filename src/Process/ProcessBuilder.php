@@ -43,11 +43,12 @@ class ProcessBuilder
     /**
      * @param string $command
      *
+     * @param bool $forceUnix
      * @return ProcessArgumentsCollection
      */
-    public function createArgumentsForCommand($command)
+    public function createArgumentsForCommand($command, $forceUnix = false)
     {
-        $executable = $this->getCommandLocation($command);
+        $executable = $this->externalCommandLocator->locate($command, $forceUnix);
 
         return ProcessArgumentsCollection::forExecutable($executable);
     }
@@ -85,16 +86,6 @@ class ProcessBuilder
         }
 
         throw PlatformException::commandLineStringLimit($process);
-    }
-
-    /**
-     * @param string $command
-     *
-     * @return string
-     */
-    private function getCommandLocation($command)
-    {
-        return $this->externalCommandLocator->locate($command);
     }
 
     /**
