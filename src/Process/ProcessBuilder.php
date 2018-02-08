@@ -42,8 +42,8 @@ class ProcessBuilder
 
     /**
      * @param string $command
-     *
      * @param bool $forceUnix
+     *
      * @return ProcessArgumentsCollection
      */
     public function createArgumentsForCommand($command, $forceUnix = false)
