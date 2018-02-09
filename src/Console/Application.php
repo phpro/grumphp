@@ -226,7 +226,7 @@ class Application extends SymfonyConsole
      * @param string $configPath
      * @return string
      */
-    private function updateUserConfigPath(string $configPath): string
+    private function updateUserConfigPath($configPath)
     {
         if ($configPath !== $this->getDefaultConfigPath()) {
             $configPath = getcwd().DIRECTORY_SEPARATOR.$configPath;
