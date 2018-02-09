@@ -224,6 +224,7 @@ class Application extends SymfonyConsole
      * Prefixes the cwd to the path given by the user
      *
      * @param string $configPath
+     *
      * @return string
      */
     private function updateUserConfigPath($configPath)
