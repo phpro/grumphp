@@ -146,6 +146,7 @@ class Application extends SymfonyConsole
         // Load cli options:
         $input = new ArgvInput();
         $configPath = $input->getParameterOption(['--config', '-c'], $this->getDefaultConfigPath());
+        $configPath = $this->updateUserConfigPath($configPath);
 
         // Build the service container:
         $this->container = ContainerFactory::buildFromConfiguration($configPath);
@@ -217,5 +218,21 @@ class Application extends SymfonyConsole
         }
 
         return $this->composerHelper = new Helper\ComposerHelper($configuration, $rootPackage);
+    }
+
+    /**
+     * Prefixes the cwd to the path given by the user
+     *
+     * @param string $configPath
+     *
+     * @return string
+     */
+    private function updateUserConfigPath($configPath)
+    {
+        if ($configPath !== $this->getDefaultConfigPath()) {
+            $configPath = getcwd().DIRECTORY_SEPARATOR.$configPath;
+        }
+
+        return $configPath;
     }
 }
