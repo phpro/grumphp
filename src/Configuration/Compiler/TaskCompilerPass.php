@@ -34,7 +34,7 @@ class TaskCompilerPass implements CompilerPassInterface
             }
 
             $tasksRegistered[] = $configKey;
-            if (!array_key_exists($configKey, $configuration)) {
+            if (!array_key_exists($configKey, $configuration?:[])) {
                 continue;
             }
 
