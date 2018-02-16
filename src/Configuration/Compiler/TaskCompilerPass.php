@@ -19,7 +19,7 @@ class TaskCompilerPass implements CompilerPassInterface
     {
         $definition = $container->findDefinition('task_runner');
         $taggedServices = $container->findTaggedServiceIds(self::TAG_GRUMPHP_TASK);
-        $configuration = $container->getParameter('tasks');
+        $configuration = $container->getParameter('tasks') ?: [];
 
         $tasksRegistered = [];
         $tasksMetadata = [];
