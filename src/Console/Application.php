@@ -4,7 +4,7 @@ namespace GrumPHP\Console;
 
 use GrumPHP\Configuration\ContainerFactory;
 use GrumPHP\Exception\RuntimeException;
-use GrumPHP\IO\IOInterface;
+use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Locator\ConfigurationFile;
 use GrumPHP\Util\Composer;
 use GrumPHP\Util\Filesystem;
@@ -14,6 +14,7 @@ use Symfony\Component\Console\Application as SymfonyConsole;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -42,9 +43,6 @@ class Application extends SymfonyConsole
      */
     protected $composerHelper;
 
-    /**
-     * Set up application:
-     */
     public function __construct()
     {
         $this->filesystem = new Filesystem();
@@ -78,64 +76,64 @@ class Application extends SymfonyConsole
      */
     protected function getDefaultCommands()
     {
-        $container = $this->getContainer();
         $commands = parent::getDefaultCommands();
 
         $commands[] = new Command\ConfigureCommand(
-            $container->get('config'),
-            $container->get('grumphp.util.filesystem'),
-            $container->get('git.repository')
+            $this->container->get('config'),
+            $this->container->get('grumphp.util.filesystem'),
+            $this->container->get('git.repository')
         );
         $commands[] = new Command\RunCommand(
-            $container->get('config'),
-            $container->get('locator.registered_files')
+            $this->container->get('config'),
+            $this->container->get('locator.registered_files')
         );
 
         $commands[] = new Command\Git\CommitMsgCommand(
-            $container->get('config'),
-            $container->get('locator.changed_files'),
-            $container->get('grumphp.util.filesystem')
+            $this->container->get('config'),
+            $this->container->get('locator.changed_files'),
+            $this->container->get('grumphp.util.filesystem')
         );
         $commands[] = new Command\Git\DeInitCommand(
-            $container->get('config'),
-            $container->get('grumphp.util.filesystem')
+            $this->container->get('config'),
+            $this->container->get('grumphp.util.filesystem')
         );
         $commands[] = new Command\Git\InitCommand(
-            $container->get('config'),
-            $container->get('grumphp.util.filesystem'),
-            $container->get('process_builder')
+            $this->container->get('config'),
+            $this->container->get('grumphp.util.filesystem'),
+            $this->container->get('process_builder')
         );
         $commands[] = new Command\Git\PreCommitCommand(
-            $container->get('config'),
-            $container->get('locator.changed_files')
+            $this->container->get('config'),
+            $this->container->get('locator.changed_files')
         );
 
         return $commands;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getDefaultHelperSet()
     {
-        $container = $this->getContainer();
-
         $helperSet = parent::getDefaultHelperSet();
         $helperSet->set($this->initializeComposerHelper());
         $helperSet->set(new Helper\PathsHelper(
-            $container->get('config'),
-            $container->get('grumphp.util.filesystem'),
-            $container->get('locator.external_command'),
+            $this->container->get('config'),
+            $this->container->get('grumphp.util.filesystem'),
+            $this->container->get('locator.external_command'),
             $this->getDefaultConfigPath()
         ));
         $helperSet->set(new Helper\TaskRunnerHelper(
-            $container->get('config'),
-            $container->get('task_runner'),
-            $container->get('event_dispatcher')
+            $this->container->get('config'),
+            $this->container->get('task_runner'),
+            $this->container->get('event_dispatcher')
         ));
 
         return $helperSet;
     }
 
     /**
-     * @return \Symfony\Component\DependencyInjection\ContainerBuilder
+     * @return ContainerBuilder
      */
     protected function getContainer()
     {
@@ -147,35 +145,30 @@ class Application extends SymfonyConsole
         $input = new ArgvInput();
         $configPath = $input->getParameterOption(['--config', '-c'], $this->getDefaultConfigPath());
         $configPath = $this->updateUserConfigPath($configPath);
+        $output = new ConsoleOutput();
 
         // Build the service container:
         $this->container = ContainerFactory::buildFromConfiguration($configPath);
+        $this->container->set('console.input', $input);
+        $this->container->set('console.output', $output);
 
         return $this->container;
     }
 
     /**
-     * Configure IO of GrumPHP objects
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * {@inheritdoc}
      */
     protected function configureIO(InputInterface $input, OutputInterface $output)
     {
         parent::configureIO($input, $output);
 
-        $container = $this->getContainer();
-
-        // Register the console input and output to the container
-        $container->set('console.input', $input);
-        $container->set('console.output', $output);
+        /** @var ConsoleIO $io */
+        $io = $this->container->get('grumphp.io.console');
 
         // Redirect the GrumPHP logger to the stdout in verbose mode
-        /** @var IOInterface $io */
-        $io = $container->get('grumphp.io.console');
         if ($io->isVerbose()) {
             /** @var Logger $logger */
-            $logger = $container->get('grumphp.logger');
+            $logger = $this->container->get('grumphp.logger');
             $logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
         }
     }
@@ -234,5 +227,16 @@ class Application extends SymfonyConsole
         }
 
         return $configPath;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function run(InputInterface $input = null, OutputInterface $output = null)
+    {
+        /** @var ConsoleIO $io */
+        $io = $this->container->get('grumphp.io.console');
+
+        return parent::run($io->getInput(), $io->getOutput());
     }
 }

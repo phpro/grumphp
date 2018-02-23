@@ -93,6 +93,22 @@ class ConsoleIO implements IOInterface
     }
 
     /**
+     * @return InputInterface
+     */
+    public function getInput()
+    {
+        return $this->input;
+    }
+
+    /**
+     * @return OutputInterface
+     */
+    public function getOutput()
+    {
+        return $this->output;
+    }
+
+    /**
      * @param resource $handle
      *
      * @return string
