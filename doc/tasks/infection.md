@@ -24,6 +24,7 @@ parameters:
             min_msi: ~
             min_covered_msi: ~
             mutators: []
+            ignore_patterns: []
             triggered_by: [php]
 ```
 
@@ -33,7 +34,8 @@ parameters:
 
 If you want to run tests for mutated code in parallel, set this to something bigger than 1.
 It will dramatically speed up the mutation process.
-Please note that if your tests somehow depends on each other or use a database, this option can lead to failing tests which give many false-positives results.
+Please note that if your tests somehow depends on each other or use a database, this option can lead
+to failing tests which give many false-positives results.
 
 
 **test_framework**
@@ -76,6 +78,15 @@ This is a minimum threshold of Covered Code Mutation Score Indicator (MSI) in pe
 *Default: []*
 
 This is a list separated options to specify a particular set of mutators that needs to be executed. 
+
+
+**ignore_patterns**
+
+*Default: []*
+
+This is a list of patterns that will be ignored by Infection.
+With this option you can skip files like tests. Leave this option blank to run analysis for all
+'triggered by' files.
 
 
 **triggered_by**
