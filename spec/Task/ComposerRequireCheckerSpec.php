@@ -42,6 +42,7 @@ class ComposerRequireCheckerSpec extends ObjectBehavior
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('composer_file');
         $options->getDefinedOptions()->shouldContain('config_file');
+        $options->getDefinedOptions()->shouldContain('ignore_parse_errors');
         $options->getDefinedOptions()->shouldContain('triggered_by');
     }
 
