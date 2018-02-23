@@ -141,7 +141,7 @@ class InitCommand extends Command
     {
         $configFile = $this->useExoticConfigFile();
 
-        $arguments = $this->processBuilder->createArgumentsForCommand('grumphp');
+        $arguments = $this->processBuilder->createArgumentsForCommand('grumphp', true);
         $arguments->add($command);
         $arguments->addOptionalArgument('--config=%s', $configFile);
 
