@@ -150,4 +150,19 @@ class ProcessArgumentsCollection extends ArrayCollection
 
         $this->add(sprintf($argument, implode(',', $paths)));
     }
+
+    /**
+     * @param string      $argument
+     * @param string|null $value
+     * @param string      $trueFormat
+     * @param string      $falseFormat
+     */
+    public function addOptionalBooleanArgument($argument, $value, $trueFormat, $falseFormat)
+    {
+        if (null === $value) {
+            return;
+        }
+
+        $this->add(sprintf($argument, $value ? $trueFormat : $falseFormat));
+    }
 }

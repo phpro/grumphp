@@ -122,4 +122,22 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
 
         $this->getValues()->shouldBe(['--argument=file1.txt,file2.txt']);
     }
+
+    function it_should_be_able_to_add_boolean_nullable_argument_with_null_value()
+    {
+        $this->addOptionalBooleanArgument('--argument=%s', null, 'yes', 'no');
+        $this->getValues()->shouldBe([]);
+    }
+
+    function it_should_be_able_to_add_boolean_nullable_argument_with_true_value()
+    {
+        $this->addOptionalBooleanArgument('--argument=%s', true, 'yes', 'no');
+        $this->getValues()->shouldBe(['--argument=yes']);
+    }
+
+    function it_should_be_able_to_add_boolean_nullable_argument_with_false_value()
+    {
+        $this->addOptionalBooleanArgument('--argument=%s', false, 'yes', 'no');
+        $this->getValues()->shouldBe(['--argument=no']);
+    }
 }

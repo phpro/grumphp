@@ -249,4 +249,55 @@ class PhpCsFixerV2Spec extends ObjectBehavior
 
         $this->run($context)->isPassed()->shouldBe(true);
     }
+
+    function it_does_not_apply_optional_arguments_if_not_passed(
+        GrumPHP $grumPHP,
+        ProcessBuilder $processBuilder,
+        Process $process,
+        RunContext $context,
+        PhpCsFixerFormatter $formatter
+    ) {
+        $formatter->resetCounter()->shouldBeCalled();
+        $grumPHP->getTaskConfiguration('phpcsfixer2')->willReturn([]);
+        $context->getFiles()->willReturn(new FilesCollection([new SplFileInfo('file1.php', '.', 'file1.php')]));
+
+        $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn(new ProcessArgumentsCollection());
+        $processBuilder->buildProcess(Argument::that(function (ProcessArgumentsCollection $arguments) {
+            return !$arguments->contains('--allow-risky') && !$arguments->contains('--using-cache');
+        }))->willReturn($process);
+
+        $process->run()->shouldBeCalled();
+        $process->isSuccessful()->willReturn(true);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
+        $result->isPassed()->shouldBe(true);
+    }
+
+    function it_applies_optional_arguments_if_passed(
+        GrumPHP $grumPHP,
+        ProcessBuilder $processBuilder,
+        Process $process,
+        RunContext $context,
+        PhpCsFixerFormatter $formatter
+    ) {
+        $formatter->resetCounter()->shouldBeCalled();
+        $grumPHP->getTaskConfiguration('phpcsfixer2')->willReturn([
+            'allow_risky' => true,
+            'using_cache' => false,
+        ]);
+        $context->getFiles()->willReturn(new FilesCollection([new SplFileInfo('file1.php', '.', 'file1.php')]));
+
+        $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn(new ProcessArgumentsCollection());
+        $processBuilder->buildProcess(Argument::that(function (ProcessArgumentsCollection $arguments) {
+            return $arguments->contains('--allow-risky=yes') && $arguments->contains('--using-cache=no');
+        }))->willReturn($process);
+
+        $process->run()->shouldBeCalled();
+        $process->isSuccessful()->willReturn(true);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
+        $result->isPassed()->shouldBe(true);
+    }
 }
