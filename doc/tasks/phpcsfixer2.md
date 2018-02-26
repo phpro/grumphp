@@ -17,11 +17,11 @@ The task lives under the `phpcsfixer2` namespace and has following configurable 
 parameters:
     tasks:
         phpcsfixer2:
-            allow_risky: false
+            allow_risky: ~
             cache_file: ~
             config: ~
             rules: []
-            using_cache: true
+            using_cache: ~
             config_contains_finder: true
             verbose: true
             diff: false
@@ -31,12 +31,11 @@ parameters:
 
 **allow_risky**
 
-*Default: false*
+*Default: null*
 
-The allow_risky option allows you to set whether riskys fixer may run.
-Risky fixer is a fixer, which could change code behaviour.
-By default no risky fixers are run.
-
+The allow_risky option allows you to set whether risky rules may run.
+Risky rule is a rule, which could change code behaviour.
+If not set, the default value is taken from config file (if it exists). By default no risky rules are run.
 
 **cache_file**
 
@@ -89,9 +88,10 @@ is incorrect.
 
 **using_cache**
 
-*Default: true*
+*Default: null*
 
-The caching mechanism is enabled by default.
+By using using_cache option you can set if the caching mechanism should be used.
+If not set, the default value is taken from config file (if it exists). The caching mechanism is enabled by default.
 This will speed up further runs by fixing only files that were modified since the last run.
 The tool will fix all files if the tool version has changed or the list of fixers has changed.
 Cache is supported only for tool downloaded as phar file or installed via composer.

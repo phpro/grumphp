@@ -28,22 +28,22 @@ class PhpCsFixerV2 extends AbstractExternalTask
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'allow_risky' => false,
+            'allow_risky' => null,
             'cache_file' => null,
             'config' => null,
             'rules' => [],
-            'using_cache' => true,
+            'using_cache' => null,
             'config_contains_finder' => true,
             'verbose' => true,
             'diff' => false,
             'triggered_by' => ['php'],
         ]);
 
-        $resolver->addAllowedTypes('allow_risky', ['bool']);
+        $resolver->addAllowedTypes('allow_risky', ['null', 'bool']);
         $resolver->addAllowedTypes('cache_file', ['null', 'string']);
         $resolver->addAllowedTypes('config', ['null', 'string']);
         $resolver->addAllowedTypes('rules', ['array']);
-        $resolver->addAllowedTypes('using_cache', ['bool']);
+        $resolver->addAllowedTypes('using_cache', ['null', 'bool']);
         $resolver->addAllowedTypes('config_contains_finder', ['bool']);
         $resolver->addAllowedTypes('verbose', ['bool']);
         $resolver->addAllowedTypes('diff', ['bool']);
@@ -76,7 +76,7 @@ class PhpCsFixerV2 extends AbstractExternalTask
         $arguments = $this->processBuilder->createArgumentsForCommand('php-cs-fixer');
         $arguments->add('--format=json');
         $arguments->add('--dry-run');
-        $arguments->addOptionalArgument('--allow-risky=%s', $config['allow_risky'] ? 'yes' : 'no');
+        $arguments->addOptionalBooleanArgument('--allow-risky=%s', $config['allow_risky'], 'yes', 'no');
         $arguments->addOptionalArgument('--cache-file=%s', $config['cache_file']);
         $arguments->addOptionalArgument('--config=%s', $config['config']);
 
@@ -90,7 +90,7 @@ class PhpCsFixerV2 extends AbstractExternalTask
 
         $canUseIntersection = !($context instanceof RunContext) && $config['config_contains_finder'];
 
-        $arguments->addOptionalArgument('--using-cache=%s', $config['using_cache'] ? 'yes' : 'no');
+        $arguments->addOptionalBooleanArgument('--using-cache=%s', $config['using_cache'], 'yes', 'no');
         $arguments->addOptionalArgument('--path-mode=intersection', $canUseIntersection);
         $arguments->addOptionalArgument('--verbose', $config['verbose']);
         $arguments->addOptionalArgument('--diff', $config['diff']);
