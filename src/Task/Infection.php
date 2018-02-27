@@ -36,6 +36,7 @@ class Infection extends AbstractExternalTask
             'min_msi' => null,
             'min_covered_msi' => null,
             'mutators' => [],
+            'ignore_patterns'  => [],
             'triggered_by' => ['php'],
         ]);
 
@@ -46,6 +47,7 @@ class Infection extends AbstractExternalTask
         $resolver->addAllowedTypes('min_msi', ['null', 'integer']);
         $resolver->addAllowedTypes('min_covered_msi', ['null', 'integer']);
         $resolver->addAllowedTypes('mutators', ['array']);
+        $resolver->addAllowedTypes('ignore_patterns', ['array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
@@ -66,6 +68,8 @@ class Infection extends AbstractExternalTask
     {
         $config = $this->getConfiguration();
         $files = $context->getFiles()->extensions($config['triggered_by']);
+
+        $files = $files->notPaths($config['ignore_patterns']);
 
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);

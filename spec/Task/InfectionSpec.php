@@ -47,6 +47,7 @@ class InfectionSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('min_msi');
         $options->getDefinedOptions()->shouldContain('min_covered_msi');
         $options->getDefinedOptions()->shouldContain('mutators');
+        $options->getDefinedOptions()->shouldContain('ignore_patterns');
         $options->getDefinedOptions()->shouldContain('triggered_by');
     }
 
