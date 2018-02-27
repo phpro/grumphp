@@ -50,6 +50,8 @@ class FilesCollectionSpec extends ObjectBehavior
 
     function it_should_filter_by_names(SplFileInfo $file1, SplFileInfo $file2, SplFileInfo $file3)
     {
+        $this->beConstructedWith([$file1, $file2, $file3]);
+
         $file1->getFilename()->willReturn('file.json');
         $file2->getFilename()->willReturn('file.php');
         $file3->getFilename()->willReturn('file.png');
@@ -113,6 +115,8 @@ class FilesCollectionSpec extends ObjectBehavior
 
     function it_should_filter_by_not_paths(SplFileInfo $file1, SplFileInfo $file2, SplFileInfo $file3)
     {
+        $this->beConstructedWith([$file1, $file2, $file3]);
+
         $file1->getRelativePathname()->willReturn('path1/file.php');
         $file2->getRelativePathname()->willReturn('path2/file.php');
         $file3->getRelativePathname()->willReturn('path3/file.png');
@@ -122,6 +126,24 @@ class FilesCollectionSpec extends ObjectBehavior
         $result->count()->shouldBe(1);
         $files = $result->toArray();
         $files[0]->shouldBe($file1);
+    }
+
+    function it_should_filter_by_empty_not_paths(SplFileInfo $file1, SplFileInfo $file2, SplFileInfo $file3)
+    {
+        $this->beConstructedWith([$file1, $file2, $file3]);
+
+        $file1->getRelativePathname()->willReturn('path1/file.php');
+        $file2->getRelativePathname()->willReturn('path2/file.php');
+        $file3->getRelativePathname()->willReturn('path3/file.png');
+
+        $result = $this->notPaths([]);
+        $result->shouldBeAnInstanceOf(FilesCollection::class);
+        $result->count()->shouldBe(3);
+
+        $files = $result->toArray();
+        $files[0]->shouldBe($file1);
+        $files[1]->shouldBe($file2);
+        $files[2]->shouldBe($file3);
     }
 
     function it_should_filter_by_size(SplFileInfo $file1, SplFileInfo $file2)
