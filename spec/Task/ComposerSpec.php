@@ -171,4 +171,35 @@ class ComposerSpec extends ObjectBehavior
         $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(true);
     }
+
+    function it_succeeds_when_it_has_repositories_is_not_defined(
+        GrumPHP $grumPHP,
+        ProcessBuilder $processBuilder,
+        Filesystem $filesystem,
+        Process $process,
+        ContextInterface $context
+    ) {
+        $composerFile = 'composer.json';
+        $grumPHP->getTaskConfiguration('composer')->willReturn([
+            'file' => $composerFile,
+            'no_local_repository' => true
+        ]);
+
+        $arguments = new ProcessArgumentsCollection();
+        $processBuilder->createArgumentsForCommand('composer')->willReturn($arguments);
+        $processBuilder->buildProcess($arguments)->willReturn($process);
+
+        $process->run()->shouldBeCalled();
+        $process->isSuccessful()->willReturn(true);
+
+        $context->getFiles()->willReturn(new FilesCollection([
+            $composerFile = new SplFileInfo($composerFile, '.', $composerFile)
+        ]));
+
+        $filesystem->readFromFileInfo($composerFile)->willReturn('{}');
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
+        $result->isPassed()->shouldBe(true);
+    }
 }
