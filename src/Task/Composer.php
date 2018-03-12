@@ -133,6 +133,10 @@ class Composer extends AbstractExternalTask
         $json = $this->filesystem->readFromFileInfo($composerFile);
         $package = json_decode($json, true);
 
+        if (!array_key_exists('repositories', $package)) {
+            return false;
+        }
+
         foreach ($package['repositories'] as $repository) {
             if ($repository['type'] === 'path') {
                 return true;
