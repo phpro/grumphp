@@ -44,6 +44,7 @@ class PhpCpdSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('directory');
         $options->getDefinedOptions()->shouldContain('exclude');
         $options->getDefinedOptions()->shouldContain('names_exclude');
+        $options->getDefinedOptions()->shouldContain('paths_exclude');
         $options->getDefinedOptions()->shouldContain('fuzzy');
         $options->getDefinedOptions()->shouldContain('min_lines');
         $options->getDefinedOptions()->shouldContain('min_tokens');
@@ -107,7 +108,7 @@ class PhpCpdSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(false);
     }
 
-    function it_does_not_apply_names_exclude_option_if_it_is_not_passed(
+    function it_does_not_apply_paths_exclude_option_if_it_is_not_passed(
         ProcessBuilder $processBuilder,
         Process $process,
         RunContext $context
@@ -116,7 +117,7 @@ class PhpCpdSpec extends ObjectBehavior
 
         $processBuilder->createArgumentsForCommand('phpcpd')->willReturn(new ProcessArgumentsCollection());
         $processBuilder->buildProcess(Argument::that(function (ProcessArgumentsCollection $arguments) {
-            return !$arguments->contains('--names-exclude');
+            return !$arguments->contains('--regexps-exclude');
         }))->willReturn($process);
 
         $process->run()->shouldBeCalled();
@@ -127,21 +128,21 @@ class PhpCpdSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_applies_names_exclude_option_in_the_correct_way(
+    function it_applies_paths_exclude_option_if_it_is_passed(
         GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,
         Process $process,
         RunContext $context
     ) {
         $grumPHP->getTaskConfiguration('phpcpd')->willReturn([
-            'names_exclude' => ['foo.php', 'bar.php'],
+            'paths_exclude' => ['path/to/foo.php', 'path/to/bar.php'],
         ]);
 
         $context->getFiles()->willReturn(new FilesCollection([new SplFileInfo('file1.php', '.', 'file1.php')]));
 
         $processBuilder->createArgumentsForCommand('phpcpd')->willReturn(new ProcessArgumentsCollection());
         $processBuilder->buildProcess(Argument::that(function (ProcessArgumentsCollection $arguments) {
-            return $arguments->contains('--names-exclude=foo.php,bar.php');
+            return $arguments->contains('--regexps-exclude=path/to/foo.php,path/to/bar.php');
         }))->willReturn($process);
 
         $process->run()->shouldBeCalled();
