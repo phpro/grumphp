@@ -14,6 +14,7 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\PhpCpd;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
@@ -104,5 +105,50 @@ class PhpCpdSpec extends ObjectBehavior
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(false);
+    }
+
+    function it_does_not_apply_names_exclude_option_if_it_is_not_passed(
+        ProcessBuilder $processBuilder,
+        Process $process,
+        RunContext $context
+    ) {
+        $context->getFiles()->willReturn(new FilesCollection([new SplFileInfo('file1.php', '.', 'file1.php')]));
+
+        $processBuilder->createArgumentsForCommand('phpcpd')->willReturn(new ProcessArgumentsCollection());
+        $processBuilder->buildProcess(Argument::that(function (ProcessArgumentsCollection $arguments) {
+            return !$arguments->contains('--names-exclude');
+        }))->willReturn($process);
+
+        $process->run()->shouldBeCalled();
+        $process->isSuccessful()->willReturn(true);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
+        $result->isPassed()->shouldBe(true);
+    }
+
+    function it_applies_names_exclude_option_in_the_correct_way(
+        GrumPHP $grumPHP,
+        ProcessBuilder $processBuilder,
+        Process $process,
+        RunContext $context
+    ) {
+        $grumPHP->getTaskConfiguration('phpcpd')->willReturn([
+            'names_exclude' => ['foo.php', 'bar.php'],
+        ]);
+
+        $context->getFiles()->willReturn(new FilesCollection([new SplFileInfo('file1.php', '.', 'file1.php')]));
+
+        $processBuilder->createArgumentsForCommand('phpcpd')->willReturn(new ProcessArgumentsCollection());
+        $processBuilder->buildProcess(Argument::that(function (ProcessArgumentsCollection $arguments) {
+            return $arguments->contains('--names-exclude=foo.php,bar.php');
+        }))->willReturn($process);
+
+        $process->run()->shouldBeCalled();
+        $process->isSuccessful()->willReturn(true);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
+        $result->isPassed()->shouldBe(true);
     }
 }
