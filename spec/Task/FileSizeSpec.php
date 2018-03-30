@@ -39,6 +39,7 @@ class FileSizeSpec extends ObjectBehavior
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('max_size');
+        $options->getDefinedOptions()->shouldContain('ignore_patterns');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
@@ -78,6 +79,7 @@ class FileSizeSpec extends ObjectBehavior
     {
         $filesCollection->count()->willReturn(1);
         $filesCollection->ignoreSymlinks()->willReturn($filesCollection);
+        $filesCollection->notPaths([])->willReturn($filesCollection);
         $filesCollection->size('>10M')->willReturn(new FilesCollection([
             new SplFileInfo('src/Collection/TaskResultCollection.php', 'src/Collection', 'TaskResultCollection.php'),
         ]));
