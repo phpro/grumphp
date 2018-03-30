@@ -160,7 +160,7 @@ You're welcome!
 You just registered your custom task in no time! Pretty cool right?!
 
 
-## Run the same task with custom configuration
+## Run the same task twice with different configuration
 
 In some cases you might want to run the same task but with different configuration.
 The suggested way of doing this, is by registering the existing task with a different name.
