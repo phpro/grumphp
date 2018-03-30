@@ -20,7 +20,7 @@ parameters:
             directory: '.'
             exclude: ['vendor']
             names_exclude: []
-            paths_exclude: []
+            regexps_exclude: []
             fuzzy: false
             min_lines: 5
             min_tokens: 70
@@ -48,7 +48,7 @@ The values of this option refer to the file names, not to the paths.
 
 You can use a regexp, a glob, or a string.
 
-**paths_exclude**
+**regexps_exclude**
 
 *Default: []*
 

@@ -44,7 +44,7 @@ class PhpCpdSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('directory');
         $options->getDefinedOptions()->shouldContain('exclude');
         $options->getDefinedOptions()->shouldContain('names_exclude');
-        $options->getDefinedOptions()->shouldContain('paths_exclude');
+        $options->getDefinedOptions()->shouldContain('regexps_exclude');
         $options->getDefinedOptions()->shouldContain('fuzzy');
         $options->getDefinedOptions()->shouldContain('min_lines');
         $options->getDefinedOptions()->shouldContain('min_tokens');
@@ -108,7 +108,7 @@ class PhpCpdSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(false);
     }
 
-    function it_does_not_apply_paths_exclude_option_if_it_is_not_passed(
+    function it_does_not_apply_regexps_exclude_option_if_it_is_not_passed(
         ProcessBuilder $processBuilder,
         Process $process,
         RunContext $context
@@ -128,14 +128,14 @@ class PhpCpdSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_applies_paths_exclude_option_if_it_is_passed(
+    function it_applies_regexps_exclude_option_if_it_is_passed(
         GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,
         Process $process,
         RunContext $context
     ) {
         $grumPHP->getTaskConfiguration('phpcpd')->willReturn([
-            'paths_exclude' => ['path/to/foo.php', 'path/to/bar.php'],
+            'regexps_exclude' => ['path/to/foo.php', 'path/to/bar.php'],
         ]);
 
         $context->getFiles()->willReturn(new FilesCollection([new SplFileInfo('file1.php', '.', 'file1.php')]));
