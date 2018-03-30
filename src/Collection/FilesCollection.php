@@ -245,4 +245,14 @@ class FilesCollection extends ArrayCollection
 
         return $newFiles;
     }
+
+    /**
+     * @return FilesCollection
+     */
+    public function ignoreSymlinks()
+    {
+        return $this->filter(function (SplFileInfo $file) {
+            return !$file->isLink();
+        });
+    }
 }

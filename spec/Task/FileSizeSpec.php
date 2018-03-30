@@ -77,6 +77,7 @@ class FileSizeSpec extends ObjectBehavior
     function it_throws_exception_if_the_process_fails(RunContext $context, FilesCollection $filesCollection, ArrayIterator $arrayIterator)
     {
         $filesCollection->count()->willReturn(1);
+        $filesCollection->ignoreSymlinks()->willReturn($filesCollection);
         $filesCollection->size('>10M')->willReturn(new FilesCollection([
             new SplFileInfo('src/Collection/TaskResultCollection.php', 'src/Collection', 'TaskResultCollection.php'),
         ]));
