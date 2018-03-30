@@ -163,7 +163,18 @@ class PathsHelper extends Helper
      */
     public function getGitHooksDir()
     {
-        return $this->getGitDir() . '.git/hooks/';
+        $gitPath = $this->getGitDir();
+        $absoluteGitPath = $this->getAbsolutePath($gitPath);
+        $gitRepoPath = $absoluteGitPath . '/.git';
+
+        if (is_file($gitRepoPath)) {
+            $fileContent = $this->fileSystem->readFromFileInfo(new SplFileInfo($gitRepoPath));
+            if (preg_match('/gitdir:\s+(\S+)/', $fileContent, $matches)) {
+                return $this->getRelativePath($gitPath . $matches[1] . '/hooks/');
+            }
+        }
+
+        return $gitPath . '.git/hooks/';
     }
 
     /**
