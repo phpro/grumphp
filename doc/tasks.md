@@ -158,3 +158,54 @@ services:
 You're welcome!
 
 You just registered your custom task in no time! Pretty cool right?!
+
+
+## Run the same task twice with different configuration
+
+In some cases you might want to run the same task but with different configuration.
+The suggested way of doing this, is by registering the existing task with a different name.
+Configuration of the additional task will look like this:
+
+```yaml
+# grumphp.yml
+parameters:
+    tasks:
+        phpcsfixer2:
+            allow_risky: true
+            path_mode: intersection
+        phpcsfixer2_typo3:
+            allow_risky: true
+            config: .typo3.php_cs
+            path_mode: intersection
+
+services:
+    task.phpcsfixer2_typo3:
+        class: Acme\Typo3\ConventionsChecker\Task\PhpCsFixerV2Typo3
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@async_process_runner'
+            - '@formatter.phpcsfixer'
+        tags:
+            - {name: grumphp.task, config: phpcsfixer2_typo3}            
+```
+
+Since we currently match the name based on the task name, you'll also have to create a new task class:
+
+````php
+<?php
+// Acme/Typo3/ConventionsChecker/Task/PhpCsFixerV2Typo3.php
+
+namespace Acme\Typo3\ConventionsChecker\Task;
+
+use GrumPHP\Task\PhpCsFixerV2;
+
+class PhpCsFixerV2Typo3 extends PhpCsFixerV2
+{
+    public function getName()
+    {
+        return 'phpcsfixer2_typo3';
+    }
+}
+````
+
