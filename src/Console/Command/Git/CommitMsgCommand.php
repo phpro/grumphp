@@ -78,6 +78,11 @@ class CommitMsgCommand extends Command
         $gitUser = $input->getOption('git-user');
         $gitEmail = $input->getOption('git-email');
         $commitMsgPath = $input->getArgument('commit-msg-file');
+
+        if (!$this->filesystem->isAbsolutePath($commitMsgPath)) {
+            $commitMsgPath = $this->paths()->getGitDir() . $commitMsgPath;
+        }
+
         $commitMsgFile = new SplFileInfo($commitMsgPath);
         $commitMsg = $this->filesystem->readFromFileInfo($commitMsgFile);
 
