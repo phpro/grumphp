@@ -1,22 +1,22 @@
 # Phpunit
 
-The Phpunit task will run your unit tests.
+The Phpunit Bridge task will run your unit tests thanks to the Symfony Phpunit Bridge.
 
 ***Composer***
 
 ```
-composer require --dev phpunit/phpunit
+composer require --dev symfony/phpunit-bridge
 ```
 
 ***Config***
 
-The task lives under the `phpunit` namespace and has following configurable parameters:
+The task lives under the `phpunitbridge` namespace and has following configurable parameters:
 
 ```yaml
 # grumphp.yml
 parameters:
     tasks:
-        phpunit:
+        phpunitbridge:
             config_file: ~
             testsuite: ~
             group: []

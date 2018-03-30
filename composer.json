@@ -30,7 +30,8 @@
         "phpunit/phpunit": "^5.7.27|^6.4.4",
         "sebastian/comparator": "^1.2.4",
         "sensiolabs/security-checker": "^4.0",
-        "squizlabs/php_codesniffer": "~2.4"
+        "squizlabs/php_codesniffer": "~2.4",
+        "symfony/phpunit-bridge": "~2.7|~3.0|~4.0"
     },
     "suggest": {
         "atoum/atoum": "Lets GrumPHP run your unit tests.",
@@ -55,7 +56,8 @@
         "sebastian/phpcpd": "Lets GrumPHP find duplicated code.",
         "sensiolabs/security-checker": "Lets GrumPHP be sure that there are no known security issues.",
         "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",
-        "sstalle/php7cc": "Lets GrumPHP check PHP 5.3 - 5.6 code compatibility with PHP 7."
+        "sstalle/php7cc": "Lets GrumPHP check PHP 5.3 - 5.6 code compatibility with PHP 7.",
+        "symfony/phpunit-bridge": "Lets GrumPHP run your unit tests with the phpunit-bridge of Symfony."
     },
     "authors": [
         {
