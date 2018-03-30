@@ -31,9 +31,8 @@ class RegisteredFiles
 
         $files = [];
         foreach ($filePaths as $file) {
-            $fileInfo = new SplFileInfo($file, dirname($file), $file);
-
-            if (! $fileInfo->isLink()) {
+            $fileInfo = new SplFileInfo($file, \dirname($file), $file);
+            if (!$fileInfo->isLink()) {
                 $files[] = $fileInfo;
             }
         }
