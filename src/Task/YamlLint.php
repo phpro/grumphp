@@ -4,22 +4,18 @@ namespace GrumPHP\Task;
 
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @property \GrumPHP\Linter\Yaml\YamlLinter $linter
- */
 class YamlLint extends AbstractLinterTask
 {
-
     public function getName(): string
     {
         return 'yamllint';
     }
-
 
     public function getConfigurableOptions(): OptionsResolver
     {
@@ -39,17 +35,11 @@ class YamlLint extends AbstractLinterTask
         return $resolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function canRunInContext(ContextInterface $context): bool
     {
         return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function run(ContextInterface $context): TaskResultInterface
     {
         $files = $context->getFiles()->name('/\.(yaml|yml)$/i');
