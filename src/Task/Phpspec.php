@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -11,7 +13,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Phpspec extends AbstractExternalTask
 {
-
     public function getName(): string
     {
         return 'phpspec';
@@ -37,7 +38,7 @@ class Phpspec extends AbstractExternalTask
 
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     public function run(ContextInterface $context): TaskResultInterface

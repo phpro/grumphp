@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -10,16 +12,14 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Deptrac task
+ * Deptrac task.
  */
 class Deptrac extends AbstractExternalTask
 {
-
     public function getName(): string
     {
         return 'deptrac';
     }
-
 
     public function getConfigurableOptions(): OptionsResolver
     {
@@ -45,7 +45,7 @@ class Deptrac extends AbstractExternalTask
 
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     public function run(ContextInterface $context): TaskResultInterface
@@ -59,7 +59,7 @@ class Deptrac extends AbstractExternalTask
 
         $arguments = $this->processBuilder->createArgumentsForCommand('deptrac');
         $arguments->add('analyze');
-        $arguments->add('--formatter-graphviz=' . (int)$config['formatter_graphviz']);
+        $arguments->add('--formatter-graphviz='.(int) $config['formatter_graphviz']);
         $arguments->addOptionalArgument('--formatter-graphviz-display=%s', $config['formatter_graphviz_display']);
         $arguments->addOptionalArgument('--formatter-graphviz-dump-image=%s', $config['formatter_graphviz_dump_image']);
         $arguments->addOptionalArgument('--formatter-graphviz-dump-dot=%s', $config['formatter_graphviz_dump_dot']);

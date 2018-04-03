@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -9,24 +11,22 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Phing task
+ * Phing task.
  */
 class Phing extends AbstractExternalTask
 {
-    
     public function getName(): string
     {
         return 'phing';
     }
 
-    
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'build_file' => null,
             'task' => null,
-            'triggered_by' => ['php']
+            'triggered_by' => ['php'],
         ]);
 
         $resolver->addAllowedTypes('build_file', ['null', 'string']);
@@ -41,7 +41,7 @@ class Phing extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**

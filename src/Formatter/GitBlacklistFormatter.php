@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Formatter;
 
@@ -35,21 +37,21 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
         if (!$this->IO->isDecorated()) {
             return $output;
         }
+
         return $this->formatOutput($output);
     }
 
-    
     private function formatOutput(string $output): string
     {
         $result = static::RESET_COLOR;
         foreach (array_filter(explode("\n", $output)) as $lineNumber => $line) {
-            $result .= preg_match('/^[0-9]+/', $line) ? $this->trimOutputLine($line, (int)$lineNumber) : $line;
+            $result .= preg_match('/^[0-9]+/', $line) ? $this->trimOutputLine($line, (int) $lineNumber) : $line;
             $result .= PHP_EOL;
         }
+
         return trim($result);
     }
 
-    
     private function trimOutputLine(string $lineint, $lineNumber): string
     {
         if (strlen($line) < 80) {
@@ -62,14 +64,14 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
         $lastPos = 0;
 
         //iterate over all WORD_COLORs and save the positions into $positionsWordColor
-        while (($lastPos = mb_strpos($line, static::WORD_COLOR, $lastPos)) !== false) {
+        while (false !== ($lastPos = mb_strpos($line, static::WORD_COLOR, $lastPos))) {
             $positionsWordColor[] = $lastPos;
             $lastPos = $lastPos + mb_strlen(static::WORD_COLOR);
         }
         $lastPos = 0;
 
         //iterate over all RESET_COLORs and save the positions into $positionsResetColor
-        while (($lastPos = mb_strpos($line, static::RESET_COLOR, $lastPos)) !== false) {
+        while (false !== ($lastPos = mb_strpos($line, static::RESET_COLOR, $lastPos))) {
             $positionsResetColor[] = $lastPos;
             $lastPos = $lastPos + mb_strlen(static::RESET_COLOR);
         }
@@ -86,11 +88,12 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
             }
             $pos2 += static::SPACE_AFTER;
 
-            $part = '  ' . $lineNumber . static::COLON_COLOR . ':' . static::RESET_COLOR;
-            $part .= ($pos + static::SPACE_BEFORE) . static::COLON_COLOR . ':' . static::RESET_COLOR;
-            $part .= ' ' . mb_substr($line, $pos, $pos2 - $pos) . static::RESET_COLOR;
+            $part = '  '.$lineNumber.static::COLON_COLOR.':'.static::RESET_COLOR;
+            $part .= ($pos + static::SPACE_BEFORE).static::COLON_COLOR.':'.static::RESET_COLOR;
+            $part .= ' '.mb_substr($line, $pos, $pos2 - $pos).static::RESET_COLOR;
             $parts[] = $part;
         }
+
         return implode(PHP_EOL, $parts);
     }
 }

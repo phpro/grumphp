@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Event\Subscriber;
 
@@ -28,7 +30,6 @@ class ProgressSubscriber implements EventSubscriberInterface
      */
     private $output;
 
-    
     public function __construct(OutputInterface $output, ProgressBar $progressBar)
     {
         $this->output = $output;
@@ -37,7 +38,6 @@ class ProgressSubscriber implements EventSubscriberInterface
         $this->progressFormat = '<fg=yellow>Running task %current%/%max%:</fg=yellow> %message%... ';
     }
 
-    
     public static function getSubscribedEvents(): array
     {
         return [
@@ -51,7 +51,6 @@ class ProgressSubscriber implements EventSubscriberInterface
         ];
     }
 
-    
     public function startProgress(RunnerEvent $event)
     {
         $numberOftasks = $event->getTasks()->count();
@@ -60,7 +59,6 @@ class ProgressSubscriber implements EventSubscriberInterface
         $this->progressBar->start($numberOftasks);
     }
 
-    
     public function advanceProgress(TaskEvent $event)
     {
         $taskReflection = new ReflectionClass($event->getTask());
@@ -71,7 +69,6 @@ class ProgressSubscriber implements EventSubscriberInterface
         $this->progressBar->advance();
     }
 
-    
     public function onTaskProgress(TaskEvent $task, string $event)
     {
         switch ($event) {
@@ -90,7 +87,6 @@ class ProgressSubscriber implements EventSubscriberInterface
         }
     }
 
-    
     public function finishProgress(RunnerEvent $runnerEvent)
     {
         if ($this->progressBar->getProgress() !== $this->progressBar->getMaxSteps()) {

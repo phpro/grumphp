@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -8,17 +10,15 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Php-cs-fixer task
+ * Php-cs-fixer task.
  */
 class PhpCsFixer extends AbstractPhpCsFixerTask
 {
-    
     public function getName(): string
     {
         return 'phpcsfixer';
     }
 
-    
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
@@ -62,7 +62,7 @@ class PhpCsFixer extends AbstractPhpCsFixerTask
         $arguments->addOptionalCommaSeparatedArgument('--fixers=%s', $config['fixers']);
         $arguments->add('fix');
 
-        if ($context instanceof RunContext && $config['config_file'] !== null) {
+        if ($context instanceof RunContext && null !== $config['config_file']) {
             return $this->runOnAllFiles($context, $arguments);
         }
 

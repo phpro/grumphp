@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -9,24 +11,22 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Php7cc task
+ * Php7cc task.
  */
 class Php7cc extends AbstractExternalTask
 {
-    
     public function getName(): string
     {
         return 'php7cc';
     }
 
-    
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'exclude' => [],
             'level' => null,
-            'triggered_by' => ['php']
+            'triggered_by' => ['php'],
         ]);
 
         $resolver->addAllowedTypes('exclude', ['array']);
@@ -50,7 +50,7 @@ class Php7cc extends AbstractExternalTask
     public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
-        $files  = $context->getFiles()->extensions($config['triggered_by']);
+        $files = $context->getFiles()->extensions($config['triggered_by']);
 
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);
@@ -65,7 +65,7 @@ class Php7cc extends AbstractExternalTask
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
 
-        if (preg_match('/^File: /m', $process->getOutput()) === 1) {
+        if (1 === preg_match('/^File: /m', $process->getOutput())) {
             return TaskResult::createFailed($this, $context, $this->formatter->format($process));
         }
 

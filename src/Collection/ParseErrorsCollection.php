@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Collection;
 
@@ -6,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class ParseErrorsCollection extends ArrayCollection
 {
-    
     public function __toString(): string
     {
         $errors = [];

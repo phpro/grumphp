@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -14,13 +16,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class JsonLint extends AbstractLinterTask
 {
-    
     public function getName(): string
     {
         return 'jsonlint';
     }
 
-    
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = parent::getConfigurableOptions();
@@ -38,7 +38,7 @@ class JsonLint extends AbstractLinterTask
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**

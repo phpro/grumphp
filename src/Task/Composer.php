@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -40,10 +42,10 @@ class Composer extends AbstractExternalTask
             'file' => './composer.json',
             'no_check_all' => false,
             'no_check_lock' => false,
-            'no_check_publish'  => false,
+            'no_check_publish' => false,
             'no_local_repository' => false,
             'with_dependencies' => false,
-            'strict' => false
+            'strict' => false,
         ]);
 
         $resolver->addAllowedTypes('file', ['string']);
@@ -59,7 +61,7 @@ class Composer extends AbstractExternalTask
 
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     public function run(ContextInterface $context): TaskResultInterface
@@ -106,7 +108,7 @@ class Composer extends AbstractExternalTask
         }
 
         foreach ($package['repositories'] as $repository) {
-            if ($repository['type'] === 'path') {
+            if ('path' === $repository['type']) {
                 return true;
             }
         }

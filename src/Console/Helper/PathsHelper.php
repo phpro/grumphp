@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Console\Helper;
 
@@ -37,7 +39,6 @@ class PathsHelper extends Helper
      */
     private $defaultConfigPath;
 
-
     public function __construct(
         GrumPHP $config,
         Filesystem $fileSystem,
@@ -51,45 +52,40 @@ class PathsHelper extends Helper
     }
 
     /**
-     * Get the root path of the GrumPHP package:
-     *
+     * Get the root path of the GrumPHP package:.
      */
     public function getGrumPHPPath(): string
     {
-        $path = __DIR__ . '/../../..';
+        $path = __DIR__.'/../../..';
 
         return $this->getRelativePath($path);
     }
 
     /**
-     * Get the folder which contains all resources
-     *
+     * Get the folder which contains all resources.
      */
     public function getResourcesPath(): string
     {
-        return $this->getGrumPHPPath() . 'resources/';
+        return $this->getGrumPHPPath().'resources/';
     }
 
     /**
-     * Get the path with all ascii art
-     *
+     * Get the path with all ascii art.
      */
     public function getAsciiPath(): string
     {
-        return $this->getResourcesPath() . 'ascii/';
+        return $this->getResourcesPath().'ascii/';
     }
 
     /**
-     * Load an ascii image
-     *
-     *
+     * Load an ascii image.
      */
     public function getAsciiContent($resource): string
     {
         $file = $this->config->getAsciiContentPath($resource);
 
         // Disabled:
-        if (is_null($file)) {
+        if (null === $file) {
             return '';
         }
 
@@ -99,7 +95,7 @@ class PathsHelper extends Helper
         }
 
         // Embedded ASCII art:
-        $embeddedFile = $this->getAsciiPath() . $file;
+        $embeddedFile = $this->getAsciiPath().$file;
         if ($this->fileSystem->exists($embeddedFile)) {
             return $this->fileSystem->readFromFileInfo(new SplFileInfo($embeddedFile));
         }
@@ -111,7 +107,6 @@ class PathsHelper extends Helper
     /**
      * This is the directory in which the cli script is initialized.
      * Normally this should be the directory where the composer.json file is located.
-     *
      */
     public function getWorkingDir(): string
     {
@@ -119,8 +114,7 @@ class PathsHelper extends Helper
     }
 
     /**
-     * Find the relative git directory
-     *
+     * Find the relative git directory.
      */
     public function getGitDir(): string
     {
@@ -134,7 +128,6 @@ class PathsHelper extends Helper
 
     /**
      * Gets the path from where the command needs to be executed in the GIT hook.
-     *
      */
     public function getGitHookExecutionPath(): string
     {
@@ -145,36 +138,33 @@ class PathsHelper extends Helper
 
     /**
      * Returns the directory where the git hooks are installed.
-     *
      */
     public function getGitHooksDir(): string
     {
         $gitPath = $this->getGitDir();
         $absoluteGitPath = $this->getAbsolutePath($gitPath);
-        $gitRepoPath = $absoluteGitPath . '/.git';
+        $gitRepoPath = $absoluteGitPath.'/.git';
 
         if (is_file($gitRepoPath)) {
             $fileContent = $this->fileSystem->readFromFileInfo(new SplFileInfo($gitRepoPath));
             if (preg_match('/gitdir:\s+(\S+)/', $fileContent, $matches)) {
-                return $this->getRelativePath($gitPath . $matches[1] . '/hooks/');
+                return $this->getRelativePath($gitPath.$matches[1].'/hooks/');
             }
         }
 
-        return $gitPath . '.git/hooks/';
+        return $gitPath.'.git/hooks/';
     }
 
     /**
-     * The folder with all git hooks
-     *
+     * The folder with all git hooks.
      */
     public function getGitHookTemplatesDir(): string
     {
-        return $this->getResourcesPath() . 'hooks/';
+        return $this->getResourcesPath().'hooks/';
     }
 
     /**
-     * Find the relative bin directory
-     *
+     * Find the relative bin directory.
      */
     public function getBinDir(): string
     {
@@ -188,9 +178,7 @@ class PathsHelper extends Helper
 
     /**
      * Search a command in the bin folder
-     * Note: the command locator is not injected because it needs the relative bin path
-     *
-     *
+     * Note: the command locator is not injected because it needs the relative bin path.
      */
     public function getBinCommand($command, $forceUnix = false): string
     {
@@ -198,12 +186,12 @@ class PathsHelper extends Helper
     }
 
     /**
-     *
      * @throws FileNotFoundException If file doesn't exists
      */
     public function getRelativePath($path): string
     {
         $realpath = $this->getAbsolutePath($path);
+
         return $this->fileSystem->makePathRelative($realpath, $this->getWorkingDir());
     }
 
@@ -237,18 +225,14 @@ class PathsHelper extends Helper
         return $realpath;
     }
 
-    /**
-     *
-     */
     public function getPathWithTrailingSlash(string $path): string
     {
         if (!$path) {
             return $path;
         }
 
-        return rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        return rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
     }
-
 
     public function getDefaultConfigPath(): string
     {

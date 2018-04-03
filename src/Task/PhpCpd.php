@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -9,16 +11,14 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * PhpCpd task
+ * PhpCpd task.
  */
 class PhpCpd extends AbstractExternalTask
 {
-
     public function getName(): string
     {
         return 'phpcpd';
     }
-
 
     public function getConfigurableOptions(): OptionsResolver
     {
@@ -51,7 +51,7 @@ class PhpCpd extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**

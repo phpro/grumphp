@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Configuration;
 
@@ -16,57 +18,46 @@ class GrumPHP
      */
     private $container;
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
-    
     public function getBinDir(): string
     {
         return $this->container->getParameter('bin_dir');
     }
 
-    
     public function getGitDir(): string
     {
         return $this->container->getParameter('git_dir');
     }
 
-    
     public function getHooksDir(): string
     {
         return $this->container->getParameter('hooks_dir');
     }
 
-    
     public function getHooksPreset(): string
     {
         return $this->container->getParameter('hooks_preset');
     }
 
-    
     public function stopOnFailure(): bool
     {
         return (bool) $this->container->getParameter('stop_on_failure');
     }
 
-    
     public function ignoreUnstagedChanges(): bool
     {
         return (bool) $this->container->getParameter('ignore_unstaged_changes');
     }
 
-    
     public function getProcessAsyncLimit(): int
     {
         return (int) $this->container->getParameter('process_async_limit');
     }
 
-    
     public function getProcessAsyncWaitTime(): int
     {
         return (int) $this->container->getParameter('process_async_wait');
@@ -85,7 +76,6 @@ class GrumPHP
         return (float) $timeout;
     }
 
-    
     public function getRegisteredTasks(): array
     {
         return $this->container->getParameter('grumphp.tasks.registered');
@@ -93,47 +83,39 @@ class GrumPHP
 
     /**
      * Gets a value indicating whether the Git commit hook circumvention tip should be shown when a task fails.
-     *
      */
     public function hideCircumventionTip(): bool
     {
-        return (bool)$this->container->getParameter('hide_circumvention_tip');
+        return (bool) $this->container->getParameter('hide_circumvention_tip');
     }
 
-    /**
-     *
-     */
     public function getTaskConfiguration(string $taskName): array
     {
         $tasksConfiguration = $this->container->getParameter('grumphp.tasks.configuration');
         if (!array_key_exists($taskName, $tasksConfiguration)) {
-            throw new RuntimeException('Could not find task configuration. Invalid task: ' . $taskName);
+            throw new RuntimeException('Could not find task configuration. Invalid task: '.$taskName);
         }
 
         return $tasksConfiguration[$taskName];
     }
 
-    /**
-     *
-     */
     public function getTaskMetadata($taskName): array
     {
         $tasksMetadata = $this->container->getParameter('grumphp.tasks.metadata');
         if (!array_key_exists($taskName, $tasksMetadata)) {
-            throw new RuntimeException('Could not find task metadata. Invalid task: ' . $taskName);
+            throw new RuntimeException('Could not find task metadata. Invalid task: '.$taskName);
         }
 
         return $tasksMetadata[$taskName];
     }
 
-    
     public function getTestSuites(): TestSuiteCollection
     {
         return $this->container->getParameter('grumphp.testsuites');
     }
 
     /**
-     * Get ascii content path from grumphp.yml file
+     * Get ascii content path from grumphp.yml file.
      *
      *
      * @return string|null
@@ -148,10 +130,10 @@ class GrumPHP
         return $paths[$resource];
     }
 
-    
     public function isBlockingTask(string $taskName): bool
     {
         $taskMetadata = $this->getTaskMetadata($taskName);
+
         return $taskMetadata['blocking'];
     }
 }

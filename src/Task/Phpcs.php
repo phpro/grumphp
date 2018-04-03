@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -21,18 +23,20 @@ class Phpcs extends AbstractExternalTask
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults([
-            'standard' => null,
-            'tab_width' => null,
-            'encoding' => null,
-            'whitelist_patterns' => [],
-            'ignore_patterns' => [],
-            'sniffs' => [],
-            'severity' => null,
-            'error_severity' => null,
-            'warning_severity' => null,
-            'triggered_by' => ['php']
-        ]);
+        $resolver->setDefaults(
+            [
+                'standard' => null,
+                'tab_width' => null,
+                'encoding' => null,
+                'whitelist_patterns' => [],
+                'ignore_patterns' => [],
+                'sniffs' => [],
+                'severity' => null,
+                'error_severity' => null,
+                'warning_severity' => null,
+                'triggered_by' => ['php'],
+            ]
+        );
 
         $resolver->addAllowedTypes('standard', ['null', 'string']);
         $resolver->addAllowedTypes('tab_width', ['null', 'int']);
@@ -50,7 +54,7 @@ class Phpcs extends AbstractExternalTask
 
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     public function run(ContextInterface $context): TaskResultInterface
@@ -89,16 +93,19 @@ class Phpcs extends AbstractExternalTask
                 $arguments = $this->addArgumentsFromConfig($arguments, $config);
                 $output .= $this->formatter->formatErrorMessage($arguments, $this->processBuilder);
             } catch (RuntimeException $exception) { // phpcbf could not get found.
-                $output .= PHP_EOL . 'Info: phpcbf could not get found. Please consider to install it for suggestions.';
+                $output .= PHP_EOL.'Info: phpcbf could not get found. Please consider to install it for suggestions.';
             }
+
             return TaskResult::createFailed($this, $context, $output);
         }
 
         return TaskResult::createPassed($this, $context);
     }
 
-    protected function addArgumentsFromConfig(ProcessArgumentsCollection $arguments, array $config): ProcessArgumentsCollection
-    {
+    protected function addArgumentsFromConfig(
+        ProcessArgumentsCollection $arguments,
+        array $config
+    ): ProcessArgumentsCollection {
         $arguments->addOptionalArgument('--standard=%s', $config['standard']);
         $arguments->addOptionalArgument('--tab-width=%s', $config['tab_width']);
         $arguments->addOptionalArgument('--encoding=%s', $config['encoding']);

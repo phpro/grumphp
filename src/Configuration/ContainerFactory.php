@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Configuration;
 
@@ -10,9 +12,6 @@ use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 
 final class ContainerFactory
 {
-    /**
-     *
-     */
     public static function buildFromConfiguration(string $path): ContainerBuilder
     {
         $container = new ContainerBuilder();
@@ -27,7 +26,7 @@ final class ContainerFactory
         );
 
         // Load basic service file + custom user configuration
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../../resources/config'));
         $loader->load('formatter.yml');
         $loader->load('linters.yml');
         $loader->load('parameters.yml');

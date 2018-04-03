@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Locator;
 
@@ -29,7 +31,7 @@ class ExternalCommand
         // Make sure to add unix-style directory separators if unix-mode is enforced
         if ($forceUnix) {
             $parts = pathinfo($executable);
-            $executable = $parts['dirname'] . '/' . $parts['filename'];
+            $executable = $parts['dirname'].'/'.$parts['filename'];
         }
 
         return $executable;

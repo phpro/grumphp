@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Configuration\Compiler;
 
@@ -40,8 +42,7 @@ class PhpParserCompilerPass implements CompilerPassInterface
      * From Symfony 2.8 the setShared method was available.
      * The 2.7 version is the LTS, so we still need to support it.
      *
-     * @link http://symfony.com/blog/new-in-symfony-3-1-customizable-yaml-parsing-and-dumping
-     *
+     * @see http://symfony.com/blog/new-in-symfony-3-1-customizable-yaml-parsing-and-dumping
      *
      * @throws \GrumPHP\Exception\RuntimeException
      */
@@ -49,11 +50,13 @@ class PhpParserCompilerPass implements CompilerPassInterface
     {
         if (method_exists($definition, 'setShared')) {
             $definition->setShared(false);
+
             return;
         }
 
         if (method_exists($definition, 'setScope')) {
             $definition->setScope('prototype');
+
             return;
         }
 

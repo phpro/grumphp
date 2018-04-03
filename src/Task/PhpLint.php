@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -40,7 +42,7 @@ class PhpLint extends AbstractExternalTask
     public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
-        $files  = $context->getFiles()->extensions($config['triggered_by']);
+        $files = $context->getFiles()->extensions($config['triggered_by']);
 
         $arguments = $this->processBuilder->createArgumentsForCommand('parallel-lint');
         $arguments->add('--no-colors');

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Linter\Xml;
 
@@ -23,7 +25,7 @@ class XmlLintError extends LintError
         $this->column = $column;
     }
 
-    public static function fromLibXmlError(LibXMLError $error): XmlLintError
+    public static function fromLibXmlError(LibXMLError $error): self
     {
         $type = LintError::TYPE_NONE;
         switch ($error->level) {
@@ -38,21 +40,18 @@ class XmlLintError extends LintError
                 break;
         }
 
-        return new XmlLintError($type, $error->code, $error->message, $error->file, $error->line, $error->column);
+        return new self($type, $error->code, $error->message, $error->file, $error->line, $error->column);
     }
-
 
     public function getCode(): int
     {
         return $this->code;
     }
 
-
     public function getColumn(): int
     {
         return $this->column;
     }
-
 
     public function __toString(): string
     {

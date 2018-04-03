@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Parser\Php\Configurator;
 
@@ -83,7 +85,6 @@ class TraverserConfigurator
     }
 
     /**
-     *
      * @throws \GrumPHP\Exception\RuntimeException
      */
     public function configure(NodeTraverserInterface $traverser)

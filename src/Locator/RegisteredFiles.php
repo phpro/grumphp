@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Locator;
 
@@ -13,13 +15,11 @@ class RegisteredFiles
      */
     private $repository;
 
-    
     public function __construct(Repository $repository)
     {
         $this->repository = $repository;
     }
 
-    
     public function locate(): FilesCollection
     {
         $allFiles = trim($this->repository->run('ls-files'));

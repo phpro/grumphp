@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -9,16 +11,14 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * PhpMnd task
+ * PhpMnd task.
  */
 class PhpMnd extends AbstractExternalTask
 {
-
     public function getName(): string
     {
         return 'phpmnd';
     }
-
 
     public function getConfigurableOptions(): OptionsResolver
     {
@@ -34,7 +34,7 @@ class PhpMnd extends AbstractExternalTask
             'ignore_numbers' => [],
             'ignore_strings' => [],
             'strings' => false,
-            'triggered_by' => ['php']
+            'triggered_by' => ['php'],
         ]);
 
         $resolver->addAllowedTypes('directory', ['string']);
@@ -57,7 +57,7 @@ class PhpMnd extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**

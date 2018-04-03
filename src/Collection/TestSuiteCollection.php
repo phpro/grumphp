@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Collection;
 
@@ -9,7 +11,6 @@ use GrumPHP\TestSuite\TestSuiteInterface;
 class TestSuiteCollection extends ArrayCollection
 {
     /**
-     *
      * @throws \GrumPHP\Exception\InvalidArgumentException
      */
     public function getRequired(string $name): TestSuiteInterface
@@ -22,7 +23,6 @@ class TestSuiteCollection extends ArrayCollection
     }
 
     /**
-     *
      * @return TestSuiteInterface|null
      */
     public function getOptional(string $name)

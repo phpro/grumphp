@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Linter\Xml;
 
@@ -31,9 +33,6 @@ class XmlLinter implements LinterInterface
      */
     private $schemeValidation = false;
 
-    /**
-     *
-     */
     public function lint(SplFileInfo $file): LintErrorsCollection
     {
         $errors = new LintErrorsCollection();
@@ -65,47 +64,39 @@ class XmlLinter implements LinterInterface
         return $errors;
     }
 
-    
     public function isInstalled(): bool
     {
         $extensions = get_loaded_extensions();
+
         return in_array('libxml', $extensions, true) && in_array('dom', $extensions, true);
     }
 
-    
     public function setLoadFromNet(boolean $loadFromNet)
     {
         $this->loadFromNet = $loadFromNet;
     }
 
-    
     public function setXInclude(boolean $xInclude)
     {
         $this->xInclude = $xInclude;
     }
 
-    
     public function setDtdValidation(boolean $dtdValidation)
     {
         $this->dtdValidation = $dtdValidation;
     }
 
-    
     public function setSchemeValidation(boolean $schemeValidation)
     {
         $this->schemeValidation = $schemeValidation;
     }
 
-    /**
-     *
-     */
     private function useInternalXmlLoggin(bool $useInternalErrors = false): bool
     {
         return libxml_use_internal_errors($useInternalErrors);
     }
 
     /**
-     *
      * @return DOMDocument|null
      */
     private function loadDocument(SplFileInfo $file)
@@ -122,22 +113,20 @@ class XmlLinter implements LinterInterface
     }
 
     /**
-     * This is added to fix a bug with remote DTDs that are blocking automated php request on some domains:
-     * @link http://stackoverflow.com/questions/4062792/domdocumentvalidate-problem
-     * @link https://bugs.php.net/bug.php?id=48080
+     * This is added to fix a bug with remote DTDs that are blocking automated php request on some domains:.
+     *
+     * @see http://stackoverflow.com/questions/4062792/domdocumentvalidate-problem
+     * @see https://bugs.php.net/bug.php?id=48080
      */
     private function registerXmlStreamContext()
     {
         libxml_set_streams_context(stream_context_create([
             'http' => [
-                'user_agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:43.0) Gecko/20100101 Firefox/43.0'
-            ]
+                'user_agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:43.0) Gecko/20100101 Firefox/43.0',
+            ],
         ]));
     }
 
-    /**
-     *
-     */
     private function collectXmlErrors(LintErrorsCollection $errors): array
     {
         foreach (libxml_get_errors() as $error) {
@@ -154,12 +143,9 @@ class XmlLinter implements LinterInterface
         libxml_clear_errors();
     }
 
-    /**
-     *
-     */
     private function validateDTD(DOMDocument $document): bool
     {
-        if (is_null($document->doctype)) {
+        if (null === $document->doctype) {
             return true;
         }
 
@@ -172,9 +158,6 @@ class XmlLinter implements LinterInterface
         return $document->validate();
     }
 
-    /**
-     *
-     */
     private function validateInternalSchemes(SplFileInfo $file, DOMDocument $document): bool
     {
         $schemas = [];
@@ -204,7 +187,6 @@ class XmlLinter implements LinterInterface
     }
 
     /**
-     *
      * @return null|string
      */
     private function locateScheme(SplFileInfo $xmlFile, string $scheme)
@@ -214,7 +196,7 @@ class XmlLinter implements LinterInterface
         }
 
         $xmlFilePath = $xmlFile->getPath();
-        $schemePath = empty($xmlFilePath) ? $scheme : rtrim($xmlFilePath, '/') . DIRECTORY_SEPARATOR . $scheme;
+        $schemePath = empty($xmlFilePath) ? $scheme : rtrim($xmlFilePath, '/').DIRECTORY_SEPARATOR.$scheme;
 
         $schemeFile = new SplFileInfo($schemePath);
 

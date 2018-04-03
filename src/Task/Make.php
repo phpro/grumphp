@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -9,16 +11,14 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Make task
+ * Make task.
  */
 class Make extends AbstractExternalTask
 {
-
     public function getName(): string
     {
         return 'make';
     }
-
 
     public function getConfigurableOptions(): OptionsResolver
     {
@@ -26,7 +26,7 @@ class Make extends AbstractExternalTask
         $resolver->setDefaults([
             'make_file' => null,
             'task' => null,
-            'triggered_by' => ['php']
+            'triggered_by' => ['php'],
         ]);
 
         $resolver->addAllowedTypes('make_file', ['null', 'string']);
@@ -41,7 +41,7 @@ class Make extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**

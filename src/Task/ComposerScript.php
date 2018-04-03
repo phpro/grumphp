@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -9,16 +11,14 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * ComposerScript task
+ * ComposerScript task.
  */
 class ComposerScript extends AbstractExternalTask
 {
-
     public function getName(): string
     {
         return 'composer_script';
     }
-
 
     public function getConfigurableOptions(): OptionsResolver
     {
@@ -26,7 +26,7 @@ class ComposerScript extends AbstractExternalTask
         $resolver->setDefaults([
             'working_directory' => null,
             'script' => null,
-            'triggered_by' => ['php', 'phtml']
+            'triggered_by' => ['php', 'phtml'],
         ]);
 
         $resolver->addAllowedTypes('working_directory', ['null', 'string']);
@@ -41,7 +41,7 @@ class ComposerScript extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**

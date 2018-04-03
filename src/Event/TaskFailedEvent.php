@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Event;
 
@@ -13,7 +15,6 @@ class TaskFailedEvent extends TaskEvent
      */
     private $exception;
 
-    
     public function __construct(TaskInterface $task, ContextInterface $context, Exception $exception)
     {
         parent::__construct($task, $context);
@@ -21,7 +22,6 @@ class TaskFailedEvent extends TaskEvent
         $this->exception = $exception;
     }
 
-    
     public function getException(): Exception
     {
         return $this->exception;

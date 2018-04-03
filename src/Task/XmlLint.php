@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -14,12 +16,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class XmlLint extends AbstractLinterTask
 {
-
     public function getName(): string
     {
         return 'xmllint';
     }
-
 
     public function getConfigurableOptions(): OptionsResolver
     {
@@ -46,7 +46,7 @@ class XmlLint extends AbstractLinterTask
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**

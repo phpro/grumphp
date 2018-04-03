@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Process;
 
@@ -24,7 +26,6 @@ class AsyncProcessRunner
 
     /**
      * AsyncProcessRunner constructor.
-     *
      */
     public function __construct(GrumPHP $config)
     {
@@ -45,7 +46,6 @@ class AsyncProcessRunner
         }
     }
 
-    
     private function watchProcesses(): bool
     {
         foreach ($this->processes as $key => $process) {
@@ -56,15 +56,15 @@ class AsyncProcessRunner
             }
         }
 
-        return count($this->processes) !== 0;
+        return 0 !== count($this->processes);
     }
 
-    
     private function handleProcess(Process $process): bool
     {
         if ($process->isStarted()) {
             if ($process->isTerminated()) {
-                $this->running--;
+                --$this->running;
+
                 return true;
             }
 
@@ -74,7 +74,7 @@ class AsyncProcessRunner
         // Only start a new process if we haven't reached the limit yet.
         if ($this->running < $this->config->getProcessAsyncLimit()) {
             $process->start();
-            $this->running++;
+            ++$this->running;
         }
 
         return false;

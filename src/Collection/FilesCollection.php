@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Collection;
 
@@ -22,9 +24,8 @@ class FilesCollection extends ArrayCollection
      * $collection->name('test.php')
      *
      * @param string|Regex $pattern A pattern (a regexp, a glob, or a string)
-     *
      */
-    public function name($pattern): FilesCollection
+    public function name($pattern): self
     {
         return $this->names([$pattern]);
     }
@@ -37,14 +38,12 @@ class FilesCollection extends ArrayCollection
      * $collection->names(['*.php'])
      * $collection->names(['/\.php$/']) // same as above
      * $collection->names(['test.php'])
-     *
-     *
      */
-    public function names(array $patterns): FilesCollection
+    public function names(array $patterns): self
     {
         $filter = new Iterator\FilenameFilterIterator($this->getIterator(), $patterns, []);
 
-        return new FilesCollection(iterator_to_array($filter));
+        return new self(iterator_to_array($filter));
     }
 
     /**
@@ -55,40 +54,34 @@ class FilesCollection extends ArrayCollection
      * $collection->name('*.php')
      * $collection->name('/\.php$/') // same as above
      * $collection->name('test.php')
-     *
-     *
      */
-    public function notName(string $pattern): FilesCollection
+    public function notName(string $pattern): self
     {
         $filter = new Iterator\FilenameFilterIterator($this->getIterator(), [], [$pattern]);
 
-        return new FilesCollection(iterator_to_array($filter));
+        return new self(iterator_to_array($filter));
     }
 
     /**
-     * Filter by path
+     * Filter by path.
      *
      * $collection->path('/^spec\/')
-     *
-     *
      */
-    public function path(string $pattern): FilesCollection
+    public function path(string $pattern): self
     {
         return $this->paths([$pattern]);
     }
 
     /**
-     * Filter by paths
+     * Filter by paths.
      *
      * $collection->paths(['/^spec\/','/^src\/'])
-     *
-     *
      */
-    public function paths(array $patterns): FilesCollection
+    public function paths(array $patterns): self
     {
         $filter = new Iterator\PathFilterIterator($this->getIterator(), $patterns, []);
 
-        return new FilesCollection(iterator_to_array($filter));
+        return new self(iterator_to_array($filter));
     }
 
     /**
@@ -97,10 +90,8 @@ class FilesCollection extends ArrayCollection
      * You can use patterns (delimited with / sign) or simple strings.
      *
      * $collection->notPath('/^spec\/')
-     *
-     *
      */
-    public function notPath(string $pattern): FilesCollection
+    public function notPath(string $pattern): self
     {
         return $this->notPaths([$pattern]);
     }
@@ -111,23 +102,18 @@ class FilesCollection extends ArrayCollection
      * You can use patterns (delimited with / sign) or simple strings.
      *
      * $collection->notPaths(['/^spec\/','/^src\/'])
-     *
-     *
      */
-    public function notPaths(array $pattern): FilesCollection
+    public function notPaths(array $pattern): self
     {
         $filter = new Iterator\PathFilterIterator($this->getIterator(), [], $pattern);
 
-        return new FilesCollection(iterator_to_array($filter));
+        return new self(iterator_to_array($filter));
     }
 
-    /**
-     *
-     */
-    public function extensions(array $extensions): FilesCollection
+    public function extensions(array $extensions): self
     {
         if (!count($extensions)) {
-            return new FilesCollection();
+            return new self();
         }
 
         return $this->name(sprintf('/\.(%s)$/i', implode('|', $extensions)));
@@ -144,12 +130,12 @@ class FilesCollection extends ArrayCollection
      *
      * @see NumberComparator
      */
-    public function size(string $size): FilesCollection
+    public function size(string $size): self
     {
         $comparator = new Comparator\NumberComparator($size);
         $filter = new Iterator\SizeRangeFilterIterator($this->getIterator(), [$comparator]);
 
-        return new FilesCollection(iterator_to_array($filter));
+        return new self(iterator_to_array($filter));
     }
 
     /**
@@ -166,12 +152,12 @@ class FilesCollection extends ArrayCollection
      *
      * @see DateComparator
      */
-    public function date(string $date): FilesCollection
+    public function date(string $date): self
     {
         $comparator = new Comparator\DateComparator($date);
         $filter = new Iterator\DateRangeFilterIterator($this->getIterator(), [$comparator]);
 
-        return new FilesCollection(iterator_to_array($filter));
+        return new self(iterator_to_array($filter));
     }
 
     /**
@@ -184,17 +170,14 @@ class FilesCollection extends ArrayCollection
      *
      * @see CustomFilterIterator
      */
-    public function filter(Closure $closure): FilesCollection
+    public function filter(Closure $closure): self
     {
         $filter = new Iterator\CustomFilterIterator($this->getIterator(), [$closure]);
 
-        return new FilesCollection(iterator_to_array($filter));
+        return new self(iterator_to_array($filter));
     }
 
-    /**
-     *
-     */
-    public function filterByFileList(Traversable $fileList): FilesCollection
+    public function filterByFileList(Traversable $fileList): self
     {
         $allowedFiles = array_map(function (SplFileInfo $file) {
             return $file->getPathname();
@@ -205,10 +188,7 @@ class FilesCollection extends ArrayCollection
         });
     }
 
-    /**
-     *
-     */
-    public function ensureFiles(FilesCollection $files): FilesCollection
+    public function ensureFiles(self $files): self
     {
         $newFiles = new self($this->toArray());
 
@@ -221,8 +201,7 @@ class FilesCollection extends ArrayCollection
         return $newFiles;
     }
 
-    
-    public function ignoreSymlinks(): FilesCollection
+    public function ignoreSymlinks(): self
     {
         return $this->filter(function (SplFileInfo $file) {
             return !$file->isLink();

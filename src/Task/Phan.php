@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -9,26 +11,24 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Phan task
+ * Phan task.
  */
 class Phan extends AbstractExternalTask
 {
-    
     public function getName(): string
     {
         return 'phan';
     }
 
-    
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(
             [
-                'output_mode'  => 'text',
-                'output'       => null,
-                'config_file'  => '.phan/config.php',
-                'triggered_by' => ['php']
+                'output_mode' => 'text',
+                'output' => null,
+                'config_file' => '.phan/config.php',
+                'triggered_by' => ['php'],
             ]
         );
 
@@ -45,7 +45,7 @@ class Phan extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**

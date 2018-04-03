@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Runner;
 
@@ -36,7 +38,6 @@ class TaskRunner
 
     /**
      * @constructor
-     *
      */
     public function __construct(GrumPHP $grumPHP, EventDispatcherInterface $eventDispatcher)
     {
@@ -45,7 +46,6 @@ class TaskRunner
         $this->grumPHP = $grumPHP;
     }
 
-    
     public function addTask(TaskInterface $task)
     {
         if ($this->tasks->contains($task)) {
@@ -63,9 +63,6 @@ class TaskRunner
         return $this->tasks;
     }
 
-    /**
-     *
-     */
     public function run(TaskRunnerContext $runnerContext): TaskResultCollection
     {
         $context = $runnerContext->getTaskContext();
@@ -107,7 +104,6 @@ class TaskRunner
     }
 
     /**
-     *
      * @throws RuntimeException
      */
     private function runTask(TaskInterface $task, ContextInterface $context): TaskResultInterface

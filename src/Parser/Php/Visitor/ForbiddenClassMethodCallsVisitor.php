@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Parser\Php\Visitor;
 
@@ -13,7 +15,6 @@ class ForbiddenClassMethodCallsVisitor extends AbstractVisitor implements Config
      */
     private $blacklist = [];
 
-    
     public function configure(array $options)
     {
         $resolver = new OptionsResolver();
@@ -28,9 +29,6 @@ class ForbiddenClassMethodCallsVisitor extends AbstractVisitor implements Config
         $this->blacklist = $config['blacklist'];
     }
 
-    /**
-     *
-     */
     public function leaveNode(Node $node): void
     {
         if (!$node instanceof Node\Expr\MethodCall || !isset($node->var->name)) {

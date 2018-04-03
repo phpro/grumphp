@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Collection;
 
@@ -7,9 +9,9 @@ use GrumPHP\Exception\InvalidArgumentException;
 
 class ProcessArgumentsCollection extends ArrayCollection
 {
-    public static function forExecutable(string $executable): ProcessArgumentsCollection
+    public static function forExecutable(string $executable): self
     {
-        return new ProcessArgumentsCollection([$executable]);
+        return new self([$executable]);
     }
 
     /**

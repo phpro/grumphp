@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -9,16 +11,14 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Brunch task
+ * Brunch task.
  */
 class Brunch extends AbstractExternalTask
 {
-
     public function getName(): string
     {
         return 'brunch';
     }
-
 
     public function getConfigurableOptions(): OptionsResolver
     {
@@ -28,7 +28,7 @@ class Brunch extends AbstractExternalTask
             'env' => 'production',
             'jobs' => 4,
             'debug' => false,
-            'triggered_by' => ['js', 'jsx', 'coffee', 'ts', 'less', 'sass', 'scss']
+            'triggered_by' => ['js', 'jsx', 'coffee', 'ts', 'less', 'sass', 'scss'],
         ]);
 
         $resolver->addAllowedTypes('task', ['string']);
@@ -45,7 +45,7 @@ class Brunch extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**
