@@ -12,25 +12,10 @@ use Symfony\Component\Process\Process;
 
 class ProcessBuilder
 {
-    /**
-     * @var ExternalCommand
-     */
     private $externalCommandLocator;
-
-    /**
-     * @var GrumPHP
-     */
     private $config;
-
-    /**
-     * @var IOInterface
-     */
     private $io;
 
-    /**
-     * ProcessBuilder constructor.
-     *
-     */
     public function __construct(GrumPHP $config, ExternalCommand $externalCommandLocator, IOInterface $io)
     {
         $this->externalCommandLocator = $externalCommandLocator;
@@ -38,10 +23,7 @@ class ProcessBuilder
         $this->io = $io;
     }
 
-    /**
-     *
-     */
-    public function createArgumentsForCommand(string $commandbool , $forceUnix = false): ProcessArgumentsCollection
+    public function createArgumentsForCommand(string $command, bool $forceUnix = false): ProcessArgumentsCollection
     {
         $executable = $this->externalCommandLocator->locate($command, $forceUnix);
 
@@ -49,8 +31,7 @@ class ProcessBuilder
     }
 
     /**
-     *
-     * @throws \GrumPHP\Exception\PlatformException
+     * @throws PlatformException
      */
     public function buildProcess(ProcessArgumentsCollection $arguments): Process
     {
@@ -64,8 +45,7 @@ class ProcessBuilder
     }
 
     /**
-     *
-     * @throws \GrumPHP\Exception\PlatformException
+     * @throws PlatformException
      */
     private function guardWindowsCmdMaxInputStringLimitation(Process $process)
     {
@@ -80,7 +60,6 @@ class ProcessBuilder
         throw PlatformException::commandLineStringLimit($process);
     }
 
-    
     private function logProcessInVerboseMode(Process $process)
     {
         if ($this->io->isVeryVerbose()) {
