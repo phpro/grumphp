@@ -59,11 +59,9 @@ class TaskCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param array $tags
      *
-     * @return array
      */
-    private function getTaskTag(array $tags)
+    private function getTaskTag(array $tags): array
     {
         $resolver = new OptionsResolver();
         $resolver->setRequired(['config']);
@@ -72,11 +70,9 @@ class TaskCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param $configuration
      *
-     * @return array
      */
-    private function parseTaskMetadata($configuration)
+    private function parseTaskMetadata($configuration): array
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([

@@ -34,10 +34,7 @@ class DeInitCommand extends Command
      */
     protected $filesystem;
 
-    /**
-     * @param GrumPHP $grumPHP
-     * @param Filesystem $filesystem
-     */
+    
     public function __construct(GrumPHP $grumPHP, Filesystem $filesystem)
     {
         parent::__construct();
@@ -55,8 +52,6 @@ class DeInitCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      *
      * @return int|void
      */
@@ -76,10 +71,8 @@ class DeInitCommand extends Command
         $output->writeln('<fg=yellow>GrumPHP stopped sniffing your commits! Too bad ...<fg=yellow>');
     }
 
-    /**
-     * @return PathsHelper
-     */
-    protected function paths()
+    
+    protected function paths(): PathsHelper
     {
         return $this->getHelper(PathsHelper::HELPER_NAME);
     }

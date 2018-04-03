@@ -15,24 +15,17 @@ class YamlLintError extends LintError
     /**
      * YamlLintError constructor.
      *
-     * @param string $type
-     * @param string $error
-     * @param string $file
-     * @param int    $line
-     * @param string $snippet
      */
-    public function __construct($type, $error, $file, $line = -1, $snippet = null)
+    public function __construct(string $typestring ,string  int $error, $file, string $line = -1, $snippet = null)
     {
         parent::__construct($type, $error, $file, $line);
         $this->snippet = $snippet;
     }
 
     /**
-     * @param ParseException $exception
      *
-     * @return YamlLintError
      */
-    public static function fromParseException(ParseException $exception)
+    public static function fromParseException(ParseException $exception): YamlLintError
     {
         return new YamlLintError(
             LintError::TYPE_ERROR,
@@ -43,18 +36,14 @@ class YamlLintError extends LintError
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getSnippet()
+    
+    public function getSnippet(): string
     {
         return $this->snippet;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    
+    public function __toString(): string
     {
         return sprintf('[%s] %s', strtoupper($this->getType()), $this->getError());
     }

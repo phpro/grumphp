@@ -21,36 +21,28 @@ class CommitMessage implements TaskInterface
      */
     private $grumPHP;
 
-    /**
-     * @param GrumPHP $grumPHP
-     */
+    
     public function __construct(GrumPHP $grumPHP)
     {
         $this->grumPHP = $grumPHP;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    
+    public function getName(): string
     {
         return 'git_commit_message';
     }
 
-    /**
-     * @return array
-     */
-    public function getConfiguration()
+    
+    public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
 
         return $this->getConfigurableOptions()->resolve($configured);
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -81,11 +73,9 @@ class CommitMessage implements TaskInterface
     }
 
     /**
-     * @param ContextInterface $context
      *
-     * @return bool
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
         return $context instanceof GitCommitMsgContext;
     }
@@ -93,9 +83,8 @@ class CommitMessage implements TaskInterface
     /**
      * @param ContextInterface|GitCommitMsgContext $context
      *
-     * @return TaskResult
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResult
     {
         $config = $this->getConfiguration();
         $commitMessage = $context->getCommitMessage();
@@ -149,11 +138,9 @@ class CommitMessage implements TaskInterface
     }
 
     /**
-     * @param ContextInterface $context
      *
-     * @return TaskResult
      */
-    private function enforceTextWidth(ContextInterface $context)
+    private function enforceTextWidth(ContextInterface $context): TaskResult
     {
         $commitMessage = $context->getCommitMessage();
         $config = $this->getConfiguration();
@@ -194,14 +181,10 @@ class CommitMessage implements TaskInterface
     }
 
     /**
-     * @param array $config
-     * @param string $commitMessage
-     * @param string $rule
-     * @param string $ruleName
      *
      * @throws RuntimeException
      */
-    private function runMatcher(array $config, $commitMessage, $rule, $ruleName)
+    private function runMatcher(array $config, string $commitMessagestring ,string  $rule, $ruleName)
     {
         $regex = new Regex($rule);
 
@@ -222,11 +205,9 @@ class CommitMessage implements TaskInterface
     }
 
     /**
-     * @param string $string
      *
-     * @return int
      */
-    private function getSpecialPrefixLength($string)
+    private function getSpecialPrefixLength(string $string): int
     {
         if (preg_match('/^(fixup|squash)! /', $string, $match) !== 1) {
             return 0;
@@ -236,11 +217,9 @@ class CommitMessage implements TaskInterface
     }
 
     /**
-     * @param ContextInterface $context
      *
-     * @return bool
      */
-    private function subjectHasTrailingPeriod(ContextInterface $context)
+    private function subjectHasTrailingPeriod(ContextInterface $context): bool
     {
         $commitMessage = $context->getCommitMessage();
 
@@ -258,11 +237,9 @@ class CommitMessage implements TaskInterface
     }
 
     /**
-     * @param ContextInterface $context
      *
-     * @return bool
      */
-    private function subjectIsCapitalized(ContextInterface $context)
+    private function subjectIsCapitalized(ContextInterface $context): bool
     {
         $commitMessage = $context->getCommitMessage();
 
@@ -298,11 +275,9 @@ class CommitMessage implements TaskInterface
     }
 
     /**
-     * @param ContextInterface $context
      *
-     * @return bool
      */
-    private function subjectIsSingleLined(ContextInterface $context)
+    private function subjectIsSingleLined(ContextInterface $context): bool
     {
         $commitMessage = $context->getCommitMessage();
 
@@ -320,11 +295,9 @@ class CommitMessage implements TaskInterface
     }
 
     /**
-     * @param string $commitMessage
      *
-     * @return array
      */
-    private function getCommitMessageLinesWithoutComments($commitMessage)
+    private function getCommitMessageLinesWithoutComments(string $commitMessage): array
     {
         $lines = preg_split('/\R/u', $commitMessage);
 

@@ -9,9 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ExtensionCompilerPass implements CompilerPassInterface
 {
-    /**
-     * @param ContainerBuilder $container
-     */
+    
     public function process(ContainerBuilder $container)
     {
         $extensions = $container->getParameter('extensions');

@@ -17,18 +17,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Phpcs extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    
+    public function getName(): string
     {
         return 'phpcs';
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -117,13 +113,10 @@ class Phpcs extends AbstractExternalTask
     }
 
     /**
-     * @param ProcessArgumentsCollection $arguments
      *
-     * @param array $config
      *
-     * @return ProcessArgumentsCollection
      */
-    protected function addArgumentsFromConfig(ProcessArgumentsCollection $arguments, array $config)
+    protected function addArgumentsFromConfig(ProcessArgumentsCollection $arguments, array $config): ProcessArgumentsCollection
     {
         $arguments->addOptionalArgument('--standard=%s', $config['standard']);
         $arguments->addOptionalArgument('--tab-width=%s', $config['tab_width']);

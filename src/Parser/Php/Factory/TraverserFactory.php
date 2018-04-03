@@ -16,7 +16,6 @@ class TraverserFactory
     /**
      * TraverserFactory constructor.
      *
-     * @param TraverserConfigurator $configurator
      */
     public function __construct(TraverserConfigurator $configurator)
     {
@@ -24,13 +23,10 @@ class TraverserFactory
     }
 
     /**
-     * @param array         $parserOptions
-     * @param ParserContext $context
      *
-     * @return NodeTraverser
      * @throws \GrumPHP\Exception\RuntimeException
      */
-    public function createForTaskContext(array $parserOptions, ParserContext $context)
+    public function createForTaskContext(array $parserOptions, ParserContext $context): NodeTraverser
     {
         $this->configurator->registerOptions($parserOptions);
         $this->configurator->registerContext($context);

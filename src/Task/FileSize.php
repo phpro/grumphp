@@ -16,36 +16,28 @@ class FileSize implements TaskInterface
      */
     protected $grumPHP;
 
-    /**
-     * @param GrumPHP $grumPHP
-     */
+    
     public function __construct(GrumPHP $grumPHP)
     {
         $this->grumPHP = $grumPHP;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    
+    public function getName(): string
     {
         return 'file_size';
     }
 
-    /**
-     * @return array
-     */
-    public function getConfiguration()
+    
+    public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
 
         return $this->getConfigurableOptions()->resolve($configured);
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -60,11 +52,9 @@ class FileSize implements TaskInterface
     }
 
     /**
-     * @param ContextInterface $context
      *
-     * @return bool
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
         return $context instanceof RunContext || $context instanceof GitPreCommitContext;
     }
@@ -72,9 +62,8 @@ class FileSize implements TaskInterface
     /**
      * @param ContextInterface|RunContext $context
      *
-     * @return TaskResult
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResult
     {
         $config = $this->getConfiguration();
 

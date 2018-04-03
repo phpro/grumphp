@@ -21,10 +21,7 @@ abstract class AbstractParserTask implements TaskInterface
      */
     protected $parser;
 
-    /**
-     * @param GrumPHP         $grumPHP
-     * @param ParserInterface $parser
-     */
+    
     public function __construct(GrumPHP $grumPHP, ParserInterface $parser)
     {
         $this->grumPHP = $grumPHP;
@@ -37,10 +34,8 @@ abstract class AbstractParserTask implements TaskInterface
         }
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -65,11 +60,9 @@ abstract class AbstractParserTask implements TaskInterface
     }
 
     /**
-     * @param FilesCollection $files
      *
-     * @return ParseErrorsCollection
      */
-    protected function parse(FilesCollection $files)
+    protected function parse(FilesCollection $files): ParseErrorsCollection
     {
         // Skip ignored patterns:
         $configuration = $this->getConfiguration();

@@ -30,8 +30,6 @@ class ProcessBuilder
     /**
      * ProcessBuilder constructor.
      *
-     * @param GrumPHP         $config
-     * @param ExternalCommand $externalCommandLocator
      */
     public function __construct(GrumPHP $config, ExternalCommand $externalCommandLocator, IOInterface $io)
     {
@@ -41,12 +39,9 @@ class ProcessBuilder
     }
 
     /**
-     * @param string $command
-     * @param bool $forceUnix
      *
-     * @return ProcessArgumentsCollection
      */
-    public function createArgumentsForCommand($command, $forceUnix = false)
+    public function createArgumentsForCommand(string $commandbool , $forceUnix = false): ProcessArgumentsCollection
     {
         $executable = $this->externalCommandLocator->locate($command, $forceUnix);
 
@@ -54,12 +49,10 @@ class ProcessBuilder
     }
 
     /**
-     * @param ProcessArgumentsCollection $arguments
      *
-     * @return Process
      * @throws \GrumPHP\Exception\PlatformException
      */
-    public function buildProcess(ProcessArgumentsCollection $arguments)
+    public function buildProcess(ProcessArgumentsCollection $arguments): Process
     {
         $process = ProcessFactory::fromArguments($arguments);
         $process->setTimeout($this->config->getProcessTimeout());
@@ -71,7 +64,6 @@ class ProcessBuilder
     }
 
     /**
-     * @param Process $process
      *
      * @throws \GrumPHP\Exception\PlatformException
      */
@@ -88,9 +80,7 @@ class ProcessBuilder
         throw PlatformException::commandLineStringLimit($process);
     }
 
-    /**
-     * @param Process $process
-     */
+    
     private function logProcessInVerboseMode(Process $process)
     {
         if ($this->io->isVeryVerbose()) {

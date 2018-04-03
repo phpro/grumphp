@@ -11,18 +11,14 @@ class GitPreCommitContext implements ContextInterface
      */
     private $files;
 
-    /**
-     * @param FilesCollection $files
-     */
+    
     public function __construct(FilesCollection $files)
     {
         $this->files = $files;
     }
 
-    /**
-     * @return FilesCollection
-     */
-    public function getFiles()
+    
+    public function getFiles(): FilesCollection
     {
         return $this->files;
     }

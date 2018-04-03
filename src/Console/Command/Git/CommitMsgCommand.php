@@ -40,11 +40,7 @@ class CommitMsgCommand extends Command
      */
     private $filesystem;
 
-    /**
-     * @param GrumPHP      $grumPHP
-     * @param ChangedFiles $changedFilesLocator
-     * @param Filesystem   $filesystem
-     */
+    
     public function __construct(GrumPHP $grumPHP, ChangedFiles $changedFilesLocator, Filesystem $filesystem)
     {
         parent::__construct();
@@ -66,8 +62,6 @@ class CommitMsgCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      *
      * @return int|void
      */
@@ -96,10 +90,8 @@ class CommitMsgCommand extends Command
         return $this->taskRunner()->run($output, $context);
     }
 
-    /**
-     * @return FilesCollection
-     */
-    protected function getCommittedFiles(ConsoleIO $io)
+    
+    protected function getCommittedFiles(ConsoleIO $io): FilesCollection
     {
         if ($stdin = $io->readCommandInput(STDIN)) {
             return $this->changedFilesLocator->locateFromRawDiffInput($stdin);
@@ -108,18 +100,14 @@ class CommitMsgCommand extends Command
         return $this->changedFilesLocator->locateFromGitRepository();
     }
 
-    /**
-     * @return TaskRunnerHelper
-     */
-    protected function taskRunner()
+    
+    protected function taskRunner(): TaskRunnerHelper
     {
         return $this->getHelper(TaskRunnerHelper::HELPER_NAME);
     }
 
-    /**
-     * @return PathsHelper
-     */
-    protected function paths()
+    
+    protected function paths(): PathsHelper
     {
         return $this->getHelper(PathsHelper::HELPER_NAME);
     }

@@ -13,9 +13,7 @@ class ForbiddenClassMethodCallsVisitor extends AbstractVisitor implements Config
      */
     private $blacklist = [];
 
-    /**
-     * @param array $options
-     */
+    
     public function configure(array $options)
     {
         $resolver = new OptionsResolver();
@@ -31,11 +29,9 @@ class ForbiddenClassMethodCallsVisitor extends AbstractVisitor implements Config
     }
 
     /**
-     * @param Node $node
      *
-     * @return void
      */
-    public function leaveNode(Node $node)
+    public function leaveNode(Node $node): void
     {
         if (!$node instanceof Node\Expr\MethodCall || !isset($node->var->name)) {
             return;

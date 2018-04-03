@@ -6,8 +6,6 @@ use GrumPHP\Collection\FilesCollection;
 
 interface ContextInterface
 {
-    /**
-     * @return FilesCollection
-     */
-    public function getFiles();
+    
+    public function getFiles(): FilesCollection;
 }

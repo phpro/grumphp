@@ -48,11 +48,7 @@ class InitCommand extends Command
      */
     private $processBuilder;
 
-    /**
-     * @param GrumPHP $grumPHP
-     * @param Filesystem $filesystem
-     * @param ProcessBuilder $processBuilder
-     */
+    
     public function __construct(GrumPHP $grumPHP, Filesystem $filesystem, ProcessBuilder $processBuilder)
     {
         parent::__construct();
@@ -71,8 +67,6 @@ class InitCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      *
      * @return int|void
      */
@@ -115,12 +109,9 @@ class InitCommand extends Command
     }
 
     /**
-     * @param $hook
-     * @param $templateFile
      *
-     * @return mixed
      */
-    protected function parseHookBody($hook, SplFileInfo $templateFile)
+    protected function parseHookBody($hook, SplFileInfo $templateFile): mixed
     {
         $content = $this->filesystem->readFromFileInfo($templateFile);
         $replacements = [
@@ -132,12 +123,10 @@ class InitCommand extends Command
     }
 
     /**
-     * @param $command
      *
-     * @return string
      * @throws \GrumPHP\Exception\FileNotFoundException
      */
-    protected function generateHookCommand($command)
+    protected function generateHookCommand($command): string
     {
         $configFile = $this->useExoticConfigFile();
 
@@ -169,10 +158,8 @@ class InitCommand extends Command
         return null;
     }
 
-    /**
-     * @return PathsHelper
-     */
-    protected function paths()
+    
+    protected function paths(): PathsHelper
     {
         return $this->getHelper(PathsHelper::HELPER_NAME);
     }

@@ -12,11 +12,9 @@ class DeclareStrictTypesVisitor extends AbstractVisitor
     private $hasStrictType = false;
 
     /**
-     * @param Node $node
      *
-     * @return void
      */
-    public function leaveNode(Node $node)
+    public function leaveNode(Node $node): void
     {
         if (!$node instanceof Node\Stmt\Declare_) {
             return;
@@ -37,11 +35,9 @@ class DeclareStrictTypesVisitor extends AbstractVisitor
     }
 
     /**
-     * @param array $nodes
      *
-     * @return void
      */
-    public function afterTraverse(array $nodes)
+    public function afterTraverse(array $nodes): void
     {
         if (!$this->hasStrictType) {
             $this->addError('No "declare(strict_types = 1)" found in file!');

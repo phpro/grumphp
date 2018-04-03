@@ -18,11 +18,9 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 final class EventDispatcherFactory
 {
     /**
-     * @param ContainerInterface $container
      *
-     * @return EventDispatcherInterface
      */
-    public static function create(ContainerInterface $container)
+    public static function create(ContainerInterface $container): EventDispatcherInterface
     {
         if (class_exists(ContainerAwareEventDispatcher::class)) {
             return new ContainerAwareEventDispatcher($container);

@@ -39,7 +39,6 @@ class TraverserConfigurator
     /**
      * TraverserConfigurator constructor.
      *
-     * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
     {
@@ -47,12 +46,10 @@ class TraverserConfigurator
     }
 
     /**
-     * @param string $alias
-     * @param string $visitorId
      *
      * @throws \GrumPHP\Exception\RuntimeException
      */
-    public function registerVisitorId($alias, $visitorId)
+    public function registerVisitorId(string $aliasstring , $visitorId)
     {
         if (array_key_exists($alias, $this->registeredVisitorIds)) {
             $registeredId = $this->registeredVisitorIds[$alias];
@@ -65,7 +62,6 @@ class TraverserConfigurator
     }
 
     /**
-     * @param            $alias
      * @param array|null $visitorOptions
      *
      * @throws \GrumPHP\Exception\RuntimeException
@@ -81,24 +77,19 @@ class TraverserConfigurator
         $this->standardEnabledVisitors[$alias] = $visitorOptions;
     }
 
-    /**
-     * @param array $options
-     */
+    
     public function registerOptions(array $options)
     {
         $this->options = $options;
     }
 
-    /**
-     * @param ParserContext $context
-     */
+    
     public function registerContext(ParserContext $context)
     {
         $this->context = $context;
     }
 
     /**
-     * @param NodeTraverserInterface $traverser
      *
      * @throws \GrumPHP\Exception\RuntimeException
      */
@@ -141,10 +132,8 @@ class TraverserConfigurator
         $this->context = null;
     }
 
-    /**
-     * @return array
-     */
-    private function loadEnabledVisitorsForCurrentOptions()
+    
+    private function loadEnabledVisitorsForCurrentOptions(): array
     {
         $visitors = $this->standardEnabledVisitors;
         foreach ($this->options['visitors'] as $alias => $visitorOptions) {

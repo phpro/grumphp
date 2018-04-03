@@ -132,10 +132,8 @@ class Application extends SymfonyConsole
         return $helperSet;
     }
 
-    /**
-     * @return ContainerBuilder
-     */
-    protected function getContainer()
+    
+    protected function getContainer(): ContainerBuilder
     {
         if ($this->container) {
             return $this->container;
@@ -173,10 +171,8 @@ class Application extends SymfonyConsole
         }
     }
 
-    /**
-     * @return string
-     */
-    protected function getDefaultConfigPath()
+    
+    protected function getDefaultConfigPath(): string
     {
         if ($this->configDefaultPath) {
             return $this->configDefaultPath;
@@ -191,10 +187,8 @@ class Application extends SymfonyConsole
         return $this->configDefaultPath;
     }
 
-    /**
-     * @return Helper\ComposerHelper
-     */
-    protected function initializeComposerHelper()
+    
+    protected function initializeComposerHelper(): Helper\ComposerHelper
     {
         if ($this->composerHelper) {
             return $this->composerHelper;
@@ -216,11 +210,9 @@ class Application extends SymfonyConsole
     /**
      * Prefixes the cwd to the path given by the user
      *
-     * @param string $configPath
      *
-     * @return string
      */
-    private function updateUserConfigPath($configPath)
+    private function updateUserConfigPath(string $configPath): string
     {
         if ($configPath !== $this->getDefaultConfigPath()) {
             $configPath = getcwd().DIRECTORY_SEPARATOR.$configPath;

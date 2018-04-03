@@ -16,11 +16,9 @@ class Composer
 {
     /**
      * @param string|JsonFile $json
-     * @param Config $config
      *
-     * @return \Composer\Package\RootPackageInterface
      */
-    public static function loadRootPackageFromJson($json, Config $config = null)
+    public static function loadRootPackageFromJson($json, Config $config = null): \Composer\Package\RootPackageInterface
     {
         try {
             $config = (null !== $config) ? $config : self::loadConfiguration();
@@ -36,10 +34,8 @@ class Composer
         return $package;
     }
 
-    /**
-     * @return \Composer\Config
-     */
-    public static function loadConfiguration()
+    
+    public static function loadConfiguration(): \Composer\Config
     {
         try {
             $configuration = Factory::createConfig();
@@ -57,9 +53,8 @@ class Composer
      *
      * @link https://github.com/composer/composer/blob/1.1/src/Composer/EventDispatcher/EventDispatcher.php#L147-L160
      *
-     * @param string $binDir
      */
-    public static function ensureProjectBinDirInSystemPath($binDir)
+    public static function ensureProjectBinDirInSystemPath(string $binDir)
     {
         $pathStr = 'PATH';
         if (!isset($_SERVER[$pathStr]) && isset($_SERVER['Path'])) {

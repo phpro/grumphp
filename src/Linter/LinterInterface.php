@@ -8,14 +8,10 @@ use SplFileInfo;
 interface LinterInterface
 {
     /**
-     * @param SplFileInfo $file
      *
-     * @return LintErrorsCollection
      */
-    public function lint(SplFileInfo $file);
+    public function lint(SplFileInfo $file): LintErrorsCollection;
 
-    /**
-     * @return bool
-     */
-    public function isInstalled();
+    
+    public function isInstalled(): bool;
 }

@@ -8,14 +8,10 @@ use SplFileInfo;
 interface ParserInterface
 {
     /**
-     * @param SplFileInfo $file
      *
-     * @return ParseErrorsCollection
      */
-    public function parse(SplFileInfo $file);
+    public function parse(SplFileInfo $file): ParseErrorsCollection;
 
-    /**
-     * @return bool
-     */
-    public function isInstalled();
+    
+    public function isInstalled(): bool;
 }

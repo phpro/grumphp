@@ -18,7 +18,6 @@ class PhpParserCompilerPass implements CompilerPassInterface
      * All visitor Ids are registered in the traverser configurator.
      * The configurator will be used to apply the configured visitors to the traverser.
      *
-     * @param ContainerBuilder $container
      *
      * @throws \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
      * @throws \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
@@ -43,7 +42,6 @@ class PhpParserCompilerPass implements CompilerPassInterface
      *
      * @link http://symfony.com/blog/new-in-symfony-3-1-customizable-yaml-parsing-and-dumping
      *
-     * @param Definition $definition
      *
      * @throws \GrumPHP\Exception\RuntimeException
      */
