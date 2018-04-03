@@ -21,7 +21,7 @@ abstract class AbstractParserTask implements TaskInterface
      */
     protected $parser;
 
-    
+
     public function __construct(GrumPHP $grumPHP, ParserInterface $parser)
     {
         $this->grumPHP = $grumPHP;
@@ -34,7 +34,7 @@ abstract class AbstractParserTask implements TaskInterface
         }
     }
 
-    
+
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
@@ -52,7 +52,7 @@ abstract class AbstractParserTask implements TaskInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
 

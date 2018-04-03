@@ -45,7 +45,6 @@ class ComposerHelper extends Helper
         return $this->rootPackage;
     }
 
-    
     public function hasRootPackage(): bool
     {
         return null !== $this->rootPackage;
@@ -59,7 +58,6 @@ class ComposerHelper extends Helper
         return $this->configuration;
     }
 
-    
     public function hasConfiguration(): bool
     {
         return null !== $this->configuration;

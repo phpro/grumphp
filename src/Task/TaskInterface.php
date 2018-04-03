@@ -8,24 +8,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 interface TaskInterface
 {
-    
     public function getName(): string;
 
-    
     public function getConfiguration(): array;
 
-    
     public function getConfigurableOptions(): OptionsResolver;
 
-    /**
-     * This methods specifies if a task can run in a specific context.
-     *
-     *
-     */
     public function canRunInContext(ContextInterface $context): bool;
 
-    /**
-     *
-     */
     public function run(ContextInterface $context): TaskResultInterface;
 }
