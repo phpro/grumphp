@@ -7,29 +7,16 @@ use Symfony\Component\Process\ExecutableFinder;
 
 class ExternalCommand
 {
-    /**
-     * @var string
-     */
     protected $binDir;
-
-    /**
-     * @var ExecutableFinder
-     */
     protected $executableFinder;
 
-    
     public function __construct(string $binDir, ExecutableFinder $executableFinder)
     {
         $this->binDir = rtrim($binDir, '/\\');
         $this->executableFinder = $executableFinder;
     }
 
-    /**
-     *
-     *
-     * @throws RuntimeException if the command can not be found
-     */
-    public function locate(string $commandboolean , $forceUnix = false): string
+    public function locate(string $command, bool $forceUnix = false): string
     {
         // Search executable:
         $executable = $this->executableFinder->find($command, null, [$this->binDir]);

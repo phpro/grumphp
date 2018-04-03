@@ -27,7 +27,7 @@ class PhpVersion implements TaskInterface
         return $context instanceof RunContext || $context instanceof GitPreCommitContext;
     }
 
-    public function run(ContextInterface $context): TaskResultInterface 
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
         if (null === $config['project']) {
