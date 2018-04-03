@@ -52,9 +52,6 @@ class Application extends SymfonyConsole
         parent::__construct(self::APP_NAME, self::APP_VERSION);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getDefaultInputDefinition()
     {
         $definition = parent::getDefaultInputDefinition();
@@ -71,9 +68,6 @@ class Application extends SymfonyConsole
         return $definition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getDefaultCommands()
     {
         $commands = parent::getDefaultCommands();
@@ -110,9 +104,6 @@ class Application extends SymfonyConsole
         return $commands;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getDefaultHelperSet()
     {
         $helperSet = parent::getDefaultHelperSet();
@@ -132,7 +123,6 @@ class Application extends SymfonyConsole
         return $helperSet;
     }
 
-    
     protected function getContainer(): ContainerBuilder
     {
         if ($this->container) {
@@ -153,9 +143,6 @@ class Application extends SymfonyConsole
         return $this->container;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureIO(InputInterface $input, OutputInterface $output)
     {
         parent::configureIO($input, $output);
@@ -171,7 +158,6 @@ class Application extends SymfonyConsole
         }
     }
 
-    
     protected function getDefaultConfigPath(): string
     {
         if ($this->configDefaultPath) {
@@ -187,7 +173,6 @@ class Application extends SymfonyConsole
         return $this->configDefaultPath;
     }
 
-    
     protected function initializeComposerHelper(): Helper\ComposerHelper
     {
         if ($this->composerHelper) {
@@ -209,8 +194,6 @@ class Application extends SymfonyConsole
 
     /**
      * Prefixes the cwd to the path given by the user
-     *
-     *
      */
     private function updateUserConfigPath(string $configPath): string
     {
@@ -221,9 +204,6 @@ class Application extends SymfonyConsole
         return $configPath;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function run(InputInterface $input = null, OutputInterface $output = null)
     {
         /** @var ConsoleIO $io */

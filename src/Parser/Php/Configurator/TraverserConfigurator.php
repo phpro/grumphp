@@ -36,20 +36,15 @@ class TraverserConfigurator
      */
     private $context;
 
-    /**
-     * TraverserConfigurator constructor.
-     *
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
     /**
-     *
      * @throws \GrumPHP\Exception\RuntimeException
      */
-    public function registerVisitorId(string $aliasstring , $visitorId)
+    public function registerVisitorId(string $alias, string $visitorId)
     {
         if (array_key_exists($alias, $this->registeredVisitorIds)) {
             $registeredId = $this->registeredVisitorIds[$alias];
@@ -58,7 +53,7 @@ class TraverserConfigurator
             );
         }
 
-        $this->registeredVisitorIds[$alias] = (string) $visitorId;
+        $this->registeredVisitorIds[$alias] = $visitorId;
     }
 
     /**
@@ -77,13 +72,11 @@ class TraverserConfigurator
         $this->standardEnabledVisitors[$alias] = $visitorOptions;
     }
 
-    
     public function registerOptions(array $options)
     {
         $this->options = $options;
     }
 
-    
     public function registerContext(ParserContext $context)
     {
         $this->context = $context;
@@ -132,7 +125,6 @@ class TraverserConfigurator
         $this->context = null;
     }
 
-    
     private function loadEnabledVisitorsForCurrentOptions(): array
     {
         $visitors = $this->standardEnabledVisitors;

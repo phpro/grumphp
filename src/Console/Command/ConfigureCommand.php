@@ -44,7 +44,7 @@ class ConfigureCommand extends Command
      */
     protected $input;
 
-    
+
     public function __construct(GrumPHP $config, Filesystem $filesystem, Repository $repository)
     {
         parent::__construct();
@@ -160,10 +160,7 @@ class ConfigureCommand extends Command
         ];
     }
 
-    /**
-     *
-     */
-    protected function createQuestionString($question, null $default = nullstring , $separator = ':'): string
+    protected function createQuestionString(string $question, string $default = null, string $separator = ':'): string
     {
         return $default !== null ?
             sprintf('<info>%s</info> [<comment>%s</comment>]%s ', $question, $default, $separator) :
@@ -207,7 +204,7 @@ class ConfigureCommand extends Command
         return $config->get('bin-dir', Config::RELATIVE_PATHS);
     }
 
-    
+
     protected function guessGitDir(): string
     {
         $defaultGitDir = $this->config->getGitDir();
@@ -240,13 +237,13 @@ class ConfigureCommand extends Command
         return $config->getRegisteredTasks();
     }
 
-    
+
     protected function paths(): PathsHelper
     {
         return $this->getHelper(PathsHelper::HELPER_NAME);
     }
 
-    
+
     protected function composer(): ComposerHelper
     {
         return $this->getHelper(ComposerHelper::HELPER_NAME);
