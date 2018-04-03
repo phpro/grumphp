@@ -9,31 +9,12 @@ class LintError
     const TYPE_ERROR = 'error';
     const TYPE_FATAL = 'fatal';
 
-    /**
-     * @var string
-     */
     private $type;
-
-    /**
-     * @var string
-     */
     private $error;
-
-    /**
-     * @var string
-     */
     private $file;
-
-    /**
-     * @var int
-     */
     private $line;
 
-    /**
-     * LintError constructor.
-     *
-     */
-    public function __construct(string $typestring ,string  int $error, $file, $line)
+    public function __construct(string $type, string $error, string $file, int $line)
     {
         $this->type = $type;
         $this->error = $error;
@@ -41,31 +22,26 @@ class LintError
         $this->line = $line;
     }
 
-    
     public function getType(): string
     {
         return $this->type;
     }
 
-    
     public function getError(): string
     {
         return $this->error;
     }
 
-    
     public function getFile(): string
     {
         return $this->file;
     }
 
-    
     public function getLine(): int
     {
         return $this->line;
     }
 
-    
     public function __toString(): string
     {
         return sprintf(
