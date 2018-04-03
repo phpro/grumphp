@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GrumPHP\Task\Git;
 
@@ -151,7 +151,7 @@ class CommitMessage implements TaskInterface
     /**
      * @param ContextInterface $context
      *
-     * @return TaskResult
+     * @return TaskResult
      */
     private function enforceTextWidth(ContextInterface $context)
     {
@@ -238,7 +238,7 @@ class CommitMessage implements TaskInterface
     /**
      * @param ContextInterface $context
      *
-     * @return bool
+     * @return bool
      */
     private function subjectHasTrailingPeriod(ContextInterface $context)
     {
@@ -260,7 +260,7 @@ class CommitMessage implements TaskInterface
     /**
      * @param ContextInterface $context
      *
-     * @return bool
+     * @return bool
      */
     private function subjectIsCapitalized(ContextInterface $context)
     {
@@ -300,7 +300,7 @@ class CommitMessage implements TaskInterface
     /**
      * @param ContextInterface $context
      *
-     * @return bool
+     * @return bool
      */
     private function subjectIsSingleLined(ContextInterface $context)
     {
