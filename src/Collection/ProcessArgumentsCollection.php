@@ -8,20 +8,15 @@ use GrumPHP\Exception\InvalidArgumentException;
 class ProcessArgumentsCollection extends ArrayCollection
 {
     /**
-     * @param string $executable
      *
-     * @return ProcessArgumentsCollection
      */
-    public static function forExecutable($executable)
+    public static function forExecutable(string $executable): ProcessArgumentsCollection
     {
         return new ProcessArgumentsCollection([$executable]);
     }
 
-    /**
-     * @param string $argument
-     * @param string $value
-     */
-    public function addOptionalArgument($argument, $value)
+    
+    public function addOptionalArgument(string $argumentstring , $value)
     {
         if (!$value) {
             return;
@@ -30,11 +25,8 @@ class ProcessArgumentsCollection extends ArrayCollection
         $this->add(sprintf($argument, $value));
     }
 
-    /**
-     * @param string $argument
-     * @param string $value
-     */
-    public function addOptionalArgumentWithSeparatedValue($argument, $value)
+    
+    public function addOptionalArgumentWithSeparatedValue(string $argumentstring , $value)
     {
         if (!$value) {
             return;
@@ -44,12 +36,8 @@ class ProcessArgumentsCollection extends ArrayCollection
         $this->add($value);
     }
 
-    /**
-     * @param string $argument
-     * @param array  $values
-     * @param string $delimiter
-     */
-    public function addOptionalCommaSeparatedArgument($argument, array $values, $delimiter = ',')
+    
+    public function addOptionalCommaSeparatedArgument(string $argument, array $valuesstring , $delimiter = ',')
     {
         if (!count($values)) {
             return;
@@ -58,11 +46,8 @@ class ProcessArgumentsCollection extends ArrayCollection
         $this->add(sprintf($argument, implode($delimiter, $values)));
     }
 
-    /**
-     * @param string $argument
-     * @param array  $values
-     */
-    public function addArgumentArray($argument, array $values)
+    
+    public function addArgumentArray(string $argument, array $values)
     {
         foreach ($values as $value) {
             $this->add(sprintf($argument, $value));
@@ -72,8 +57,6 @@ class ProcessArgumentsCollection extends ArrayCollection
     /**
      * Some CLI tools prefer to split the argument and the value.
      *
-     * @param       $argument
-     * @param array $values
      */
     public function addArgumentArrayWithSeparatedValue($argument, array $values)
     {
@@ -83,11 +66,8 @@ class ProcessArgumentsCollection extends ArrayCollection
         }
     }
 
-    /**
-     * @param string $argument
-     * @param array  $values
-     */
-    public function addSeparatedArgumentArray($argument, array $values)
+    
+    public function addSeparatedArgumentArray(string $argument, array $values)
     {
         if (!count($values)) {
             return;
@@ -99,11 +79,8 @@ class ProcessArgumentsCollection extends ArrayCollection
         }
     }
 
-    /**
-     * @param string $argument
-     * @param string $value
-     */
-    public function addRequiredArgument($argument, $value)
+    
+    public function addRequiredArgument(string $argumentstring , $value)
     {
         if (!$value) {
             throw new InvalidArgumentException(sprintf('The argument %s is required.', $argument));
@@ -137,10 +114,9 @@ class ProcessArgumentsCollection extends ArrayCollection
     }
 
     /**
-     * @param string $argument
      * @param FilesCollection|\SplFileInfo[] $files
      */
-    public function addArgumentWithCommaSeparatedFiles($argument, FilesCollection $files)
+    public function addArgumentWithCommaSeparatedFiles(string $argument, FilesCollection $files)
     {
         $paths = [];
 
@@ -152,12 +128,9 @@ class ProcessArgumentsCollection extends ArrayCollection
     }
 
     /**
-     * @param string      $argument
      * @param string|null $value
-     * @param string      $trueFormat
-     * @param string      $falseFormat
      */
-    public function addOptionalBooleanArgument($argument, $value, $trueFormat, $falseFormat)
+    public function addOptionalBooleanArgument(string $argument, $valuestring ,string  $trueFormat, $falseFormat)
     {
         if (null === $value) {
             return;

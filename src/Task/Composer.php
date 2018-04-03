@@ -26,10 +26,6 @@ class Composer extends AbstractExternalTask
     /**
      * Composer constructor.
      *
-     * @param GrumPHP                   $grumPHP
-     * @param ProcessBuilder            $processBuilder
-     * @param ProcessFormatterInterface $formatter
-     * @param Filesystem                $filesystem
      */
     public function __construct(
         GrumPHP $grumPHP,
@@ -41,18 +37,14 @@ class Composer extends AbstractExternalTask
         $this->filesystem = $filesystem;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    
+    public function getName(): string
     {
         return 'composer';
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -124,11 +116,9 @@ class Composer extends AbstractExternalTask
     /**
      * Checks if composer.local host one or more local repositories.
      *
-     * @param SplFileInfo $composerFile
      *
-     * @return bool
      */
-    private function hasLocalRepository(SplFileInfo $composerFile)
+    private function hasLocalRepository(SplFileInfo $composerFile): bool
     {
         $json = $this->filesystem->readFromFileInfo($composerFile);
         $package = json_decode($json, true);

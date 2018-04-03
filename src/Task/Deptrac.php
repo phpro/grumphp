@@ -14,18 +14,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Deptrac extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    
+    public function getName(): string
     {
         return 'deptrac';
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -50,21 +46,17 @@ class Deptrac extends AbstractExternalTask
     /**
      * This methods specifies if a task can run in a specific context.
      *
-     * @param ContextInterface $context
      *
-     * @return bool
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
         return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
     }
 
     /**
-     * @param ContextInterface $context
      *
-     * @return TaskResultInterface
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
 

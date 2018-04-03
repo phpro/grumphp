@@ -20,7 +20,6 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
 
     /**
      * GitBlacklistFormatter constructor.
-     * @param IOInterface $IO
      */
     public function __construct(IOInterface $IO)
     {
@@ -39,11 +38,8 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
         return $this->formatOutput($output);
     }
 
-    /**
-     * @param string $output
-     * @return string
-     */
-    private function formatOutput($output)
+    
+    private function formatOutput(string $output): string
     {
         $result = static::RESET_COLOR;
         foreach (array_filter(explode("\n", $output)) as $lineNumber => $line) {
@@ -53,12 +49,8 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
         return trim($result);
     }
 
-    /**
-     * @param string $line
-     * @param int $lineNumber
-     * @return string
-     */
-    private function trimOutputLine($line, $lineNumber)
+    
+    private function trimOutputLine(string $lineint , $lineNumber): string
     {
         if (strlen($line) < 80) {
             return $line;

@@ -37,9 +37,6 @@ class PhpParser implements ParserInterface
     /**
      * PhpParser constructor.
      *
-     * @param ParserFactory    $parserFactory
-     * @param TraverserFactory $traverserFactory
-     * @param Filesystem       $filesystem
      */
     public function __construct(
         ParserFactory $parserFactory,
@@ -51,20 +48,16 @@ class PhpParser implements ParserInterface
         $this->filesystem = $filesystem;
     }
 
-    /**
-     * @param array $options
-     */
+    
     public function setParserOptions(array $options)
     {
         $this->parserOptions = $options;
     }
 
     /**
-     * @param SplFileInfo $file
      *
-     * @return ParseErrorsCollection
      */
-    public function parse(SplFileInfo $file)
+    public function parse(SplFileInfo $file): ParseErrorsCollection
     {
         $errors = new ParseErrorsCollection();
         $context = new ParserContext($file, $errors);
@@ -82,10 +75,8 @@ class PhpParser implements ParserInterface
         return $errors;
     }
 
-    /**
-     * @return bool
-     */
-    public function isInstalled()
+    
+    public function isInstalled(): bool
     {
         return interface_exists(Parser::class);
     }

@@ -13,18 +13,14 @@ class RegisteredFiles
      */
     private $repository;
 
-    /**
-     * @param Repository $repository
-     */
+    
     public function __construct(Repository $repository)
     {
         $this->repository = $repository;
     }
 
-    /**
-     * @return FilesCollection
-     */
-    public function locate()
+    
+    public function locate(): FilesCollection
     {
         $allFiles = trim($this->repository->run('ls-files'));
         $filePaths = preg_split("/\r\n|\n|\r/", $allFiles);

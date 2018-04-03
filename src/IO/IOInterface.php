@@ -7,51 +7,44 @@ interface IOInterface
     /**
      * Is this input means interactive?
      *
-     * @return bool
      */
-    public function isInteractive();
+    public function isInteractive(): bool;
 
     /**
      * Is this output verbose?
      *
-     * @return bool
      */
-    public function isVerbose();
+    public function isVerbose(): bool;
 
     /**
      * Is the output very verbose?
      *
-     * @return bool
      */
-    public function isVeryVerbose();
+    public function isVeryVerbose(): bool;
 
     /**
      * Is the output in debug verbosity?
      *
-     * @return bool
      */
-    public function isDebug();
+    public function isDebug(): bool;
 
     /**
      * Is this output decorated?
      *
-     * @return bool
      */
-    public function isDecorated();
+    public function isDecorated(): bool;
 
     /**
      * Writes a message to the output.
      *
      * @param string|array $messages The message as an array of lines or a single string
-     * @param bool         $newline  Whether to add a newline or not
      */
-    public function write($messages, $newline = true);
+    public function write($messages, bool $newline = true);
 
     /**
      * Writes a message to the error output.
      *
      * @param string|array $messages The message as an array of lines or a single string
-     * @param bool         $newline  Whether to add a newline or not
      */
-    public function writeError($messages, $newline = true);
+    public function writeError($messages, bool $newline = true);
 }

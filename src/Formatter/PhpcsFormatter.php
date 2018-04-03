@@ -41,11 +41,8 @@ class PhpcsFormatter implements ProcessFormatterInterface
         return $this->output;
     }
 
-    /**
-     * @param array $json
-     * @return string[]
-     */
-    public function getSuggestedFilesFromJson(array $json)
+    
+    public function getSuggestedFilesFromJson(array $json): string[]
     {
         $suggestedFiles = [];
         if (!isset($json['totals'], $json['totals']['fixable']) || $json['totals']['fixable'] == 0) {
@@ -65,12 +62,8 @@ class PhpcsFormatter implements ProcessFormatterInterface
         return $suggestedFiles;
     }
 
-    /**
-     * @param ProcessArgumentsCollection $defaultArguments
-     * @param ProcessBuilder $processBuilder
-     * @return string
-     */
-    public function formatErrorMessage(ProcessArgumentsCollection $defaultArguments, ProcessBuilder $processBuilder)
+    
+    public function formatErrorMessage(ProcessArgumentsCollection $defaultArguments, ProcessBuilder $processBuilder): string
     {
         if (empty($this->suggestedFiles)) {
             return '';

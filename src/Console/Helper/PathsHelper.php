@@ -37,17 +37,12 @@ class PathsHelper extends Helper
      */
     private $defaultConfigPath;
 
-    /**
-     * @param GrumPHP         $config
-     * @param Filesystem      $fileSystem
-     * @param ExternalCommand $externalCommandLocator
-     * @param string          $defaultConfigPath
-     */
+    
     public function __construct(
         GrumPHP $config,
         Filesystem $fileSystem,
         ExternalCommand $externalCommandLocator,
-        $defaultConfigPath
+        string $defaultConfigPath
     ) {
         $this->config = $config;
         $this->fileSystem = $fileSystem;
@@ -58,9 +53,8 @@ class PathsHelper extends Helper
     /**
      * Get the root path of the GrumPHP package:
      *
-     * @return string
      */
-    public function getGrumPHPPath()
+    public function getGrumPHPPath(): string
     {
         $path = __DIR__ . '/../../..';
 
@@ -70,9 +64,8 @@ class PathsHelper extends Helper
     /**
      * Get the folder which contains all resources
      *
-     * @return string
      */
-    public function getResourcesPath()
+    public function getResourcesPath(): string
     {
         return $this->getGrumPHPPath() . 'resources/';
     }
@@ -80,9 +73,8 @@ class PathsHelper extends Helper
     /**
      * Get the path with all ascii art
      *
-     * @return string
      */
-    public function getAsciiPath()
+    public function getAsciiPath(): string
     {
         return $this->getResourcesPath() . 'ascii/';
     }
@@ -90,11 +82,9 @@ class PathsHelper extends Helper
     /**
      * Load an ascii image
      *
-     * @param $resource
      *
-     * @return string
      */
-    public function getAsciiContent($resource)
+    public function getAsciiContent($resource): string
     {
         $file = $this->config->getAsciiContentPath($resource);
 
@@ -122,9 +112,8 @@ class PathsHelper extends Helper
      * This is the directory in which the cli script is initialized.
      * Normally this should be the directory where the composer.json file is located.
      *
-     * @return string
      */
-    public function getWorkingDir()
+    public function getWorkingDir(): string
     {
         return getcwd();
     }
@@ -132,9 +121,8 @@ class PathsHelper extends Helper
     /**
      * Find the relative git directory
      *
-     * @return string
      */
-    public function getGitDir()
+    public function getGitDir(): string
     {
         $gitDir = $this->config->getGitDir();
         if (!$this->fileSystem->exists($gitDir)) {
@@ -147,9 +135,8 @@ class PathsHelper extends Helper
     /**
      * Gets the path from where the command needs to be executed in the GIT hook.
      *
-     * @return string
      */
-    public function getGitHookExecutionPath()
+    public function getGitHookExecutionPath(): string
     {
         $gitPath = $this->getGitDir();
 
@@ -159,9 +146,8 @@ class PathsHelper extends Helper
     /**
      * Returns the directory where the git hooks are installed.
      *
-     * @return string
      */
-    public function getGitHooksDir()
+    public function getGitHooksDir(): string
     {
         $gitPath = $this->getGitDir();
         $absoluteGitPath = $this->getAbsolutePath($gitPath);
@@ -180,9 +166,8 @@ class PathsHelper extends Helper
     /**
      * The folder with all git hooks
      *
-     * @return string
      */
-    public function getGitHookTemplatesDir()
+    public function getGitHookTemplatesDir(): string
     {
         return $this->getResourcesPath() . 'hooks/';
     }
@@ -190,9 +175,8 @@ class PathsHelper extends Helper
     /**
      * Find the relative bin directory
      *
-     * @return string
      */
-    public function getBinDir()
+    public function getBinDir(): string
     {
         $binDir = $this->config->getBinDir();
         if (!$this->fileSystem->exists($binDir)) {
@@ -206,23 +190,18 @@ class PathsHelper extends Helper
      * Search a command in the bin folder
      * Note: the command locator is not injected because it needs the relative bin path
      *
-     * @param $command
-     * @param $forceUnix
      *
-     * @return string
      */
-    public function getBinCommand($command, $forceUnix = false)
+    public function getBinCommand($command, $forceUnix = false): string
     {
         return $this->externalCommandLocator->locate($command, $forceUnix);
     }
 
     /**
-     * @param $path
      *
-     * @return string
      * @throws FileNotFoundException If file doesn't exists
      */
-    public function getRelativePath($path)
+    public function getRelativePath($path): string
     {
         $realpath = $this->getAbsolutePath($path);
         return $this->fileSystem->makePathRelative($realpath, $this->getWorkingDir());
@@ -232,12 +211,10 @@ class PathsHelper extends Helper
      * This method will return a relative path to a file of directory if it lives in the current project.
      * When the file is not located in the current project, the absolute path to the file is returned.
      *
-     * @param string $path
      *
-     * @return string
      * @throws FileNotFoundException
      */
-    public function getRelativeProjectPath($path)
+    public function getRelativeProjectPath(string $path): string
     {
         $realPath = $this->getAbsolutePath($path);
         $gitPath = $this->getAbsolutePath($this->getGitDir());
@@ -250,11 +227,9 @@ class PathsHelper extends Helper
     }
 
     /**
-     * @param $path
      *
-     * @return mixed
      */
-    public function getAbsolutePath($path)
+    public function getAbsolutePath($path): mixed
     {
         $path = trim($path);
         $realpath = realpath($path);
@@ -266,11 +241,9 @@ class PathsHelper extends Helper
     }
 
     /**
-     * @param string $path
      *
-     * @return string
      */
-    public function getPathWithTrailingSlash($path)
+    public function getPathWithTrailingSlash(string $path): string
     {
         if (!$path) {
             return $path;
@@ -279,10 +252,8 @@ class PathsHelper extends Helper
         return rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
     }
 
-    /**
-     * @return string
-     */
-    public function getDefaultConfigPath()
+    
+    public function getDefaultConfigPath(): string
     {
         return $this->defaultConfigPath;
     }

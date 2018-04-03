@@ -35,12 +35,9 @@ class TaskResult implements TaskResultInterface
     /**
      * Initializes test result.
      *
-     * @param integer $resultCode
-     * @param TaskInterface $task
-     * @param ContextInterface $context
      * @param string|null $message
      */
-    private function __construct($resultCode, TaskInterface $task, ContextInterface $context, $message = null)
+    private function __construct(integer $resultCode, TaskInterface $task, ContextInterface $context, $message = null)
     {
         $this->resultCode = $resultCode;
         $this->task = $task;
@@ -49,71 +46,51 @@ class TaskResult implements TaskResultInterface
     }
 
     /**
-     * @param TaskInterface    $task
-     * @param ContextInterface $context
      *
-     * @return TaskResult
      */
-    public static function createSkipped(TaskInterface $task, ContextInterface $context)
+    public static function createSkipped(TaskInterface $task, ContextInterface $context): TaskResult
     {
         return new self(self::SKIPPED, $task, $context);
     }
 
     /**
-     * @param TaskInterface    $task
-     * @param ContextInterface $context
      *
-     * @return TaskResult
      */
-    public static function createPassed(TaskInterface $task, ContextInterface $context)
+    public static function createPassed(TaskInterface $task, ContextInterface $context): TaskResult
     {
         return new self(self::PASSED, $task, $context, null);
     }
 
     /**
-     * @param TaskInterface    $task
-     * @param ContextInterface $context
-     * @param string           $message
      *
-     * @return TaskResult
      */
-    public static function createFailed(TaskInterface $task, ContextInterface $context, $message)
+    public static function createFailed(TaskInterface $task, ContextInterface $context, string $message): TaskResult
     {
         return new self(self::FAILED, $task, $context, $message);
     }
 
     /**
-     * @param TaskInterface    $task
-     * @param ContextInterface $context
-     * @param string           $message
      *
-     * @return TaskResult
      */
-    public static function createNonBlockingFailed(TaskInterface $task, ContextInterface $context, $message)
+    public static function createNonBlockingFailed(TaskInterface $task, ContextInterface $context, string $message): TaskResult
     {
         return new self(self::NONBLOCKING_FAILED, $task, $context, $message);
     }
 
-    /**
-     * @return TaskInterface
-     */
-    public function getTask()
+    
+    public function getTask(): TaskInterface
     {
         return $this->task;
     }
 
-    /**
-     * @return int
-     */
-    public function getResultCode()
+    
+    public function getResultCode(): int
     {
         return $this->resultCode;
     }
 
-    /**
-     * @return bool
-     */
-    public function isPassed()
+    
+    public function isPassed(): bool
     {
         return self::PASSED === $this->getResultCode();
     }
@@ -123,10 +100,8 @@ class TaskResult implements TaskResultInterface
         return self::FAILED === $this->getResultCode() || self::NONBLOCKING_FAILED === $this->getResultCode();
     }
 
-    /**
-     * @return bool
-     */
-    public function isBlocking()
+    
+    public function isBlocking(): bool
     {
         return $this->getResultCode() >= self::FAILED;
     }
@@ -139,10 +114,8 @@ class TaskResult implements TaskResultInterface
         return $this->message;
     }
 
-    /**
-     * @return ContextInterface
-     */
-    public function getContext()
+    
+    public function getContext(): ContextInterface
     {
         return $this->context;
     }

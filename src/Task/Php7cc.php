@@ -13,18 +13,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Php7cc extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    
+    public function getName(): string
     {
         return 'php7cc';
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([

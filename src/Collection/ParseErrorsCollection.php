@@ -6,10 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class ParseErrorsCollection extends ArrayCollection
 {
-    /**
-     * @return string
-     */
-    public function __toString()
+    
+    public function __toString(): string
     {
         $errors = [];
         foreach ($this->getIterator() as $error) {

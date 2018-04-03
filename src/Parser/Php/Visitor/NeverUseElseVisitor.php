@@ -11,11 +11,9 @@ class NeverUseElseVisitor extends AbstractVisitor
      * @link http://www.slideshare.net/rdohms/your-code-sucks-lets-fix-it-15471808
      * @link http://www.slideshare.net/guilhermeblanco/object-calisthenics-applied-to-php
      *
-     * @param Node $node
      *
-     * @return void
      */
-    public function leaveNode(Node $node)
+    public function leaveNode(Node $node): void
     {
         if (!$node instanceof Node\Stmt\Else_ && !$node instanceof Node\Stmt\ElseIf_) {
             return;

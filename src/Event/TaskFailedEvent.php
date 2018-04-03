@@ -13,11 +13,7 @@ class TaskFailedEvent extends TaskEvent
      */
     private $exception;
 
-    /**
-     * @param TaskInterface    $task
-     * @param ContextInterface $context
-     * @param Exception        $exception
-     */
+    
     public function __construct(TaskInterface $task, ContextInterface $context, Exception $exception)
     {
         parent::__construct($task, $context);
@@ -25,10 +21,8 @@ class TaskFailedEvent extends TaskEvent
         $this->exception = $exception;
     }
 
-    /**
-     * @return Exception
-     */
-    public function getException()
+    
+    public function getException(): Exception
     {
         return $this->exception;
     }

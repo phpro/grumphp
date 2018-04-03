@@ -27,8 +27,6 @@ class ConsoleIO implements IOInterface
     /**
      * ConsoleIO constructor.
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      */
     public function __construct(InputInterface $input, OutputInterface $output)
     {
@@ -92,29 +90,23 @@ class ConsoleIO implements IOInterface
         $this->doWrite($messages, $newline, true);
     }
 
-    /**
-     * @return InputInterface
-     */
-    public function getInput()
+    
+    public function getInput(): InputInterface
     {
         return $this->input;
     }
 
-    /**
-     * @return OutputInterface
-     */
-    public function getOutput()
+    
+    public function getOutput(): OutputInterface
     {
         return $this->output;
     }
 
     /**
-     * @param resource $handle
      *
-     * @return string
      * @throws \GrumPHP\Exception\RuntimeException
      */
-    public function readCommandInput($handle)
+    public function readCommandInput(resource $handle): string
     {
         if (!is_resource($handle)) {
             throw new RuntimeException(
@@ -137,12 +129,8 @@ class ConsoleIO implements IOInterface
         return  $this->stdin;
     }
 
-    /**
-     * @param array $messages
-     * @param bool  $newline
-     * @param bool  $stderr
-     */
-    private function doWrite($messages, $newline, $stderr)
+    
+    private function doWrite(array $messagesbool ,bool  $newline, $stderr)
     {
         if (true === $stderr && $this->output instanceof ConsoleOutputInterface) {
             $this->output->getErrorOutput()->write($messages, $newline);

@@ -41,11 +41,9 @@ class DevelopmentIntegrator
     }
 
     /**
-     * @param $path
      *
-     * @return string
      */
-    private static function noramlizePath($path)
+    private static function noramlizePath($path): string
     {
         return strtr($path, '/', DIRECTORY_SEPARATOR);
     }

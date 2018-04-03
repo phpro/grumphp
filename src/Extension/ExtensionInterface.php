@@ -10,8 +10,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 interface ExtensionInterface
 {
-    /**
-     * @param ContainerBuilder $container
-     */
+    
     public function load(ContainerBuilder $container);
 }

@@ -13,10 +13,8 @@ class Platform
      */
     const WINDOWS_COMMANDLINE_STRING_LIMITATION  = 8191;
 
-    /**
-     * @return bool Whether the host machine is running a Windows OS
-     */
-    public static function isWindows()
+    
+    public static function isWindows(): bool
     {
         return defined('PHP_WINDOWS_VERSION_BUILD');
     }

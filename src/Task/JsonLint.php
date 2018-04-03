@@ -14,18 +14,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class JsonLint extends AbstractLinterTask
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    
+    public function getName(): string
     {
         return 'jsonlint';
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = parent::getConfigurableOptions();
         $resolver->setDefaults([

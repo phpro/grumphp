@@ -13,18 +13,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ComposerScript extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    
+    public function getName(): string
     {
         return 'composer_script';
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([

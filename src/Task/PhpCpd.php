@@ -13,18 +13,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PhpCpd extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    
+    public function getName(): string
     {
         return 'phpcpd';
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([

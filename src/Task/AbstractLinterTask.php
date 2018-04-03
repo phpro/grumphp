@@ -21,20 +21,15 @@ abstract class AbstractLinterTask implements TaskInterface
      */
     protected $linter;
 
-    /**
-     * @param GrumPHP         $grumPHP
-     * @param LinterInterface $linter
-     */
+    
     public function __construct(GrumPHP $grumPHP, LinterInterface $linter)
     {
         $this->grumPHP = $grumPHP;
         $this->linter = $linter;
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -71,11 +66,9 @@ abstract class AbstractLinterTask implements TaskInterface
     }
 
     /**
-     * @param FilesCollection $files
      *
-     * @return LintErrorsCollection
      */
-    protected function lint(FilesCollection $files)
+    protected function lint(FilesCollection $files): LintErrorsCollection
     {
         $this->guardLinterIsInstalled();
 

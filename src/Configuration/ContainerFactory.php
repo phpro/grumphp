@@ -11,11 +11,9 @@ use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 final class ContainerFactory
 {
     /**
-     * @param string $path path to grumphp.yml
      *
-     * @return ContainerBuilder
      */
-    public static function buildFromConfiguration($path)
+    public static function buildFromConfiguration(string $path): ContainerBuilder
     {
         $container = new ContainerBuilder();
 
