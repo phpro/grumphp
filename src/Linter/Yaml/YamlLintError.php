@@ -7,24 +7,14 @@ use Symfony\Component\Yaml\Exception\ParseException;
 
 class YamlLintError extends LintError
 {
-    /**
-     * @var string
-     */
     private $snippet;
 
-    /**
-     * YamlLintError constructor.
-     *
-     */
-    public function __construct(string $typestring ,string  int $error, $file, string $line = -1, $snippet = null)
+    public function __construct(string $type, string $error, string $file, int $line = -1, $snippet = null)
     {
         parent::__construct($type, $error, $file, $line);
         $this->snippet = $snippet;
     }
 
-    /**
-     *
-     */
     public static function fromParseException(ParseException $exception): YamlLintError
     {
         return new YamlLintError(
@@ -36,13 +26,11 @@ class YamlLintError extends LintError
         );
     }
 
-    
     public function getSnippet(): string
     {
         return $this->snippet;
     }
 
-    
     public function __toString(): string
     {
         return sprintf('[%s] %s', strtoupper($this->getType()), $this->getError());

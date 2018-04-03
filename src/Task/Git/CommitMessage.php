@@ -11,28 +11,19 @@ use GrumPHP\Task\TaskInterface;
 use GrumPHP\Util\Regex;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Git CommitMessage Task
- */
 class CommitMessage implements TaskInterface
 {
-    /**
-     * @var GrumPHP
-     */
     private $grumPHP;
-
 
     public function __construct(GrumPHP $grumPHP)
     {
         $this->grumPHP = $grumPHP;
     }
 
-
     public function getName(): string
     {
         return 'git_commit_message';
     }
-
 
     public function getConfiguration(): array
     {
@@ -40,7 +31,6 @@ class CommitMessage implements TaskInterface
 
         return $this->getConfigurableOptions()->resolve($configured);
     }
-
 
     public function getConfigurableOptions(): OptionsResolver
     {
@@ -72,19 +62,12 @@ class CommitMessage implements TaskInterface
         return $resolver;
     }
 
-    /**
-     *
-     */
     public function canRunInContext(ContextInterface $context): bool
     {
         return $context instanceof GitCommitMsgContext;
     }
 
-    /**
-     * @param ContextInterface|GitCommitMsgContext $context
-     *
-     */
-    public function run(ContextInterface $context): TaskResultInterface: TaskResult
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
         $commitMessage = $context->getCommitMessage();
@@ -137,9 +120,6 @@ class CommitMessage implements TaskInterface
         return $this->enforceTextWidth($context);
     }
 
-    /**
-     *
-     */
     private function enforceTextWidth(ContextInterface $context): TaskResult
     {
         $commitMessage = $context->getCommitMessage();
@@ -180,11 +160,7 @@ class CommitMessage implements TaskInterface
         return TaskResult::createPassed($this, $context);
     }
 
-    /**
-     *
-     * @throws RuntimeException
-     */
-    private function runMatcher(array $config, string $commitMessagestring ,string  $rule, $ruleName)
+    private function runMatcher(array $config, string $commitMessage, string $rule, string $ruleName)
     {
         $regex = new Regex($rule);
 
@@ -204,9 +180,6 @@ class CommitMessage implements TaskInterface
         }
     }
 
-    /**
-     *
-     */
     private function getSpecialPrefixLength(string $string): int
     {
         if (preg_match('/^(fixup|squash)! /', $string, $match) !== 1) {
@@ -216,9 +189,6 @@ class CommitMessage implements TaskInterface
         return mb_strlen($match[0]);
     }
 
-    /**
-     *
-     */
     private function subjectHasTrailingPeriod(ContextInterface $context): bool
     {
         $commitMessage = $context->getCommitMessage();
@@ -236,9 +206,6 @@ class CommitMessage implements TaskInterface
         return true;
     }
 
-    /**
-     *
-     */
     private function subjectIsCapitalized(ContextInterface $context): bool
     {
         $commitMessage = $context->getCommitMessage();
@@ -274,9 +241,6 @@ class CommitMessage implements TaskInterface
         return true;
     }
 
-    /**
-     *
-     */
     private function subjectIsSingleLined(ContextInterface $context): bool
     {
         $commitMessage = $context->getCommitMessage();
@@ -294,9 +258,6 @@ class CommitMessage implements TaskInterface
         return true;
     }
 
-    /**
-     *
-     */
     private function getCommitMessageLinesWithoutComments(string $commitMessage): array
     {
         $lines = preg_split('/\R/u', $commitMessage);

@@ -37,7 +37,7 @@ class PathsHelper extends Helper
      */
     private $defaultConfigPath;
 
-    
+
     public function __construct(
         GrumPHP $config,
         Filesystem $fileSystem,
@@ -226,10 +226,7 @@ class PathsHelper extends Helper
         return rtrim($this->getRelativePath($realPath), '\\/');
     }
 
-    /**
-     *
-     */
-    public function getAbsolutePath($path): mixed
+    public function getAbsolutePath(string $path): string
     {
         $path = trim($path);
         $realpath = realpath($path);
@@ -252,7 +249,7 @@ class PathsHelper extends Helper
         return rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
     }
 
-    
+
     public function getDefaultConfigPath(): string
     {
         return $this->defaultConfigPath;

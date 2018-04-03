@@ -9,31 +9,12 @@ class ParseError
     const TYPE_ERROR = 'error';
     const TYPE_FATAL = 'fatal';
 
-    /**
-     * @var string
-     */
     private $type;
-
-    /**
-     * @var string
-     */
     private $error;
-
-    /**
-     * @var string
-     */
     private $file;
-
-    /**
-     * @var int
-     */
     private $line;
 
-    /**
-     * ParseError constructor.
-     *
-     */
-    public function __construct(string $typestring ,string  int $error, $file, $line = -1)
+    public function __construct(string $type, string $error, string $file, int $line = -1)
     {
         $this->type = $type;
         $this->error = $error;
@@ -41,31 +22,26 @@ class ParseError
         $this->line = $line;
     }
 
-    
     public function getType(): string
     {
         return $this->type;
     }
 
-    
     public function getError(): string
     {
         return $this->error;
     }
 
-    
     public function getFile(): string
     {
         return $this->file;
     }
 
-    
     public function getLine(): int
     {
         return $this->line;
     }
 
-    
     public function __toString(): string
     {
         if ($this->getLine() < 0) {

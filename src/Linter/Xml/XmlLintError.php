@@ -7,30 +7,22 @@ use LibXMLError;
 
 class XmlLintError extends LintError
 {
-    /**
-     * @var int
-     */
     private $code;
-
-    /**
-     * @var int
-     */
     private $column;
 
-    /**
-     * XmlLintError constructor.
-     *
-     */
-    public function __construct(string $typeint ,string  string $codeint ,int  $error, $file, $line, $column)
-    {
+    public function __construct(
+        string $type,
+        int $code,
+        string $error,
+        string $file,
+        int $line,
+        int $column
+    ) {
         parent::__construct($type, $error, $file, $line);
         $this->code = $code;
         $this->column = $column;
     }
 
-    /**
-     *
-     */
     public static function fromLibXmlError(LibXMLError $error): XmlLintError
     {
         $type = LintError::TYPE_NONE;
@@ -49,19 +41,19 @@ class XmlLintError extends LintError
         return new XmlLintError($type, $error->code, $error->message, $error->file, $error->line, $error->column);
     }
 
-    
+
     public function getCode(): int
     {
         return $this->code;
     }
 
-    
+
     public function getColumn(): int
     {
         return $this->column;
     }
 
-    
+
     public function __toString(): string
     {
         return sprintf(
