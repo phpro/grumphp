@@ -76,12 +76,14 @@ class FileSize implements TaskInterface
     {
         $config = $this->getConfiguration();
 
-        if (0 === count($context->getFiles())) {
+        if (0 === $context->getFiles()->count()) {
             return TaskResult::createSkipped($this, $context);
         }
 
         $maxSize = $config['max_size'];
-        $files = $context->getFiles()->size(sprintf('>%s', $maxSize));
+        $files = $context->getFiles()
+            ->ignoreSymlinks()
+            ->size(sprintf('>%s', $maxSize));
 
         if ($files->count() > 0) {
             $errorMessage = 'Large files detected:' . PHP_EOL;

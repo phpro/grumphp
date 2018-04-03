@@ -239,4 +239,15 @@ class FilesCollectionSpec extends ObjectBehavior
         $result->shouldIterateAs([$file2, $file3, $file1]);
         $result->shouldHaveCount(3);
     }
+
+    function it_should_ignore_symlinks(SplFileInfo $file1, SplFileInfo $file2)
+    {
+        $file1->isLink()->willReturn(true);
+        $file2->isLink()->willReturn(false);
+
+        $result = $this->ignoreSymlinks();
+        $result->count()->shouldBe(1);
+        $result->contains($file1)->shouldBe(false);
+        $result->contains($file2)->shouldBe(true);
+    }
 }
