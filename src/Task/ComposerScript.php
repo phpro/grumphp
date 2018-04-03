@@ -13,13 +13,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ComposerScript extends AbstractExternalTask
 {
-    
+
     public function getName(): string
     {
         return 'composer_script';
     }
 
-    
+
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
@@ -47,7 +47,7 @@ class ComposerScript extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
         $files = $context->getFiles()->extensions($config['triggered_by']);

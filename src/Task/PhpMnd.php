@@ -13,13 +13,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PhpMnd extends AbstractExternalTask
 {
-    
+
     public function getName(): string
     {
         return 'phpmnd';
     }
 
-    
+
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
@@ -63,7 +63,7 @@ class PhpMnd extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         /** @var array $config */
         $config = $this->getConfiguration();

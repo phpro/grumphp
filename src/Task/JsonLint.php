@@ -44,7 +44,7 @@ class JsonLint extends AbstractLinterTask
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $files = $context->getFiles()->name('*.json');
         if (0 === count($files)) {

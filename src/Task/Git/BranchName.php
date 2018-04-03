@@ -96,7 +96,7 @@ class BranchName implements TaskInterface
      * @param ContextInterface|RunContext $context
      *
      */
-    public function run(ContextInterface $context): TaskResult
+    public function run(ContextInterface $context): TaskResultInterface: TaskResult
     {
         $config = $this->getConfiguration();
         $exceptions = [];
