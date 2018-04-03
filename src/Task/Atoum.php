@@ -13,13 +13,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Atoum extends AbstractExternalTask
 {
-    
+
     public function getName(): string
     {
         return 'atoum';
     }
 
-    
+
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
@@ -55,7 +55,7 @@ class Atoum extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $files = $context->getFiles()->name('*.php');
         if (0 === count($files)) {

@@ -81,7 +81,7 @@ class CloverCoverage implements TaskInterface
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $configuration = $this->getConfiguration();
         $percentage = round(min(100, max(0, (float) $configuration['level'])), 2);

@@ -14,13 +14,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class YamlLint extends AbstractLinterTask
 {
-    
+
     public function getName(): string
     {
         return 'yamllint';
     }
 
-    
+
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = parent::getConfigurableOptions();
@@ -50,7 +50,7 @@ class YamlLint extends AbstractLinterTask
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $files = $context->getFiles()->name('/\.(yaml|yml)$/i');
         if (0 === count($files)) {

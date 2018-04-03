@@ -65,7 +65,7 @@ class Phpcs extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         /** @var array $config */
         $config = $this->getConfiguration();

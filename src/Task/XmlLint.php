@@ -14,13 +14,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class XmlLint extends AbstractLinterTask
 {
-    
+
     public function getName(): string
     {
         return 'xmllint';
     }
 
-    
+
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = parent::getConfigurableOptions();
@@ -52,7 +52,7 @@ class XmlLint extends AbstractLinterTask
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
         $files = $context->getFiles()->extensions($config['triggered_by']);

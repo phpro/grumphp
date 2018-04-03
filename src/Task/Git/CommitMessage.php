@@ -84,7 +84,7 @@ class CommitMessage implements TaskInterface
      * @param ContextInterface|GitCommitMsgContext $context
      *
      */
-    public function run(ContextInterface $context): TaskResult
+    public function run(ContextInterface $context): TaskResultInterface: TaskResult
     {
         $config = $this->getConfiguration();
         $commitMessage = $context->getCommitMessage();
