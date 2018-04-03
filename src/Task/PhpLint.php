@@ -3,22 +3,18 @@
 namespace GrumPHP\Task;
 
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * PHP parallel lint task.
- */
 class PhpLint extends AbstractExternalTask
 {
-
     public function getName(): string
     {
         return 'phplint';
     }
-
 
     public function getConfigurableOptions(): OptionsResolver
     {
@@ -36,17 +32,11 @@ class PhpLint extends AbstractExternalTask
         return $resolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function canRunInContext(ContextInterface $context): bool
     {
         return $context instanceof RunContext || $context instanceof GitPreCommitContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
