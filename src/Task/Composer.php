@@ -6,6 +6,7 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -13,20 +14,10 @@ use GrumPHP\Util\Filesystem;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use SplFileInfo;
 
-/**
- * Composer task
- */
 class Composer extends AbstractExternalTask
 {
-    /**
-     * @var Filesystem
-     */
     private $filesystem;
 
-    /**
-     * Composer constructor.
-     *
-     */
     public function __construct(
         GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,
@@ -37,13 +28,11 @@ class Composer extends AbstractExternalTask
         $this->filesystem = $filesystem;
     }
 
-    
     public function getName(): string
     {
         return 'composer';
     }
 
-    
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
@@ -68,17 +57,11 @@ class Composer extends AbstractExternalTask
         return $resolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function canRunInContext(ContextInterface $context): bool
     {
         return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
@@ -113,11 +96,6 @@ class Composer extends AbstractExternalTask
         return TaskResult::createPassed($this, $context);
     }
 
-    /**
-     * Checks if composer.local host one or more local repositories.
-     *
-     *
-     */
     private function hasLocalRepository(SplFileInfo $composerFile): bool
     {
         $json = $this->filesystem->readFromFileInfo($composerFile);

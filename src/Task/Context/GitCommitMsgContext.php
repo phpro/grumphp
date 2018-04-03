@@ -6,28 +6,12 @@ use GrumPHP\Collection\FilesCollection;
 
 class GitCommitMsgContext implements ContextInterface
 {
-    /**
-     * @var FilesCollection
-     */
     private $files;
-
-    /**
-     * @var string
-     */
-    private $commitMessage = null;
-
-    /**
-     * @var string
-     */
+    private $commitMessage;
     private $userName;
-
-    /**
-     * @var string
-     */
     private $userEmail;
 
-    
-    public function __construct(FilesCollection $files, string $commitMessagestring ,string  $userName, $userEmail)
+    public function __construct(FilesCollection $files, string $commitMessage, string $userName, string $userEmail)
     {
         $this->files = $files;
         $this->commitMessage = $commitMessage;
@@ -35,25 +19,21 @@ class GitCommitMsgContext implements ContextInterface
         $this->userEmail = $userEmail;
     }
 
-    
     public function getCommitMessage(): string
     {
         return $this->commitMessage;
     }
 
-    
     public function getUserName(): string
     {
         return $this->userName;
     }
 
-    
     public function getUserEmail(): string
     {
         return $this->userEmail;
     }
 
-    
     public function getFiles(): FilesCollection
     {
         return $this->files;

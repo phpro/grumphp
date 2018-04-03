@@ -6,18 +6,13 @@ use GrumPHP\Collection\FilesCollection;
 
 class RunContext implements ContextInterface
 {
-    /**
-     * @var FilesCollection
-     */
     private $files;
 
-    
     public function __construct(FilesCollection $files)
     {
         $this->files = $files;
     }
 
-    
     public function getFiles(): FilesCollection
     {
         return $this->files;

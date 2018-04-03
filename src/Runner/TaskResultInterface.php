@@ -7,16 +7,12 @@ use GrumPHP\Task\TaskInterface;
 
 interface TaskResultInterface
 {
-    
     public function getTask(): TaskInterface;
 
-    
     public function getResultCode(): int;
 
-    
     public function isPassed(): bool;
 
-    
     public function isBlocking(): bool;
 
     /**
@@ -24,6 +20,5 @@ interface TaskResultInterface
      */
     public function getMessage();
 
-    
     public function getContext(): ContextInterface;
 }
