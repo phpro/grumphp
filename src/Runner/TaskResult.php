@@ -33,8 +33,6 @@ class TaskResult implements TaskResultInterface
     private $message;
 
     /**
-     * Initializes test result.
-     *
      * @param string|null $message
      */
     private function __construct(integer $resultCode, TaskInterface $task, ContextInterface $context, $message = null)
@@ -77,19 +75,19 @@ class TaskResult implements TaskResultInterface
         return new self(self::NONBLOCKING_FAILED, $task, $context, $message);
     }
 
-    
+
     public function getTask(): TaskInterface
     {
         return $this->task;
     }
 
-    
+
     public function getResultCode(): int
     {
         return $this->resultCode;
     }
 
-    
+
     public function isPassed(): bool
     {
         return self::PASSED === $this->getResultCode();
@@ -100,7 +98,7 @@ class TaskResult implements TaskResultInterface
         return self::FAILED === $this->getResultCode() || self::NONBLOCKING_FAILED === $this->getResultCode();
     }
 
-    
+
     public function isBlocking(): bool
     {
         return $this->getResultCode() >= self::FAILED;
@@ -114,7 +112,7 @@ class TaskResult implements TaskResultInterface
         return $this->message;
     }
 
-    
+
     public function getContext(): ContextInterface
     {
         return $this->context;

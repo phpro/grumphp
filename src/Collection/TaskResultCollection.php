@@ -10,13 +10,11 @@ class TaskResultCollection extends ArrayCollection
 {
     const NO_TASKS = -100;
 
-    
     public function isPassed(): bool
     {
         return TaskResult::PASSED == $this->getResultCode();
     }
 
-    
     public function isFailed(): bool
     {
         foreach ($this as $taskResult) {
@@ -41,15 +39,13 @@ class TaskResultCollection extends ArrayCollection
         return $resultCode;
     }
 
-    
-    public function filterByResultCode(int $resultCode): static
+    public function filterByResultCode(int $resultCode): TaskResultCollection
     {
         return $this->filter(function (TaskResultInterface $taskResult) use ($resultCode) {
             return $resultCode === $taskResult->getResultCode();
         });
     }
 
-    
     public function getAllMessages(): array
     {
         $messages = [];
