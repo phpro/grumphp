@@ -9,23 +9,14 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Shell task
- */
 class Shell extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'shell';
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -35,7 +26,7 @@ class Shell extends AbstractExternalTask
 
         $resolver->addAllowedTypes('scripts', ['array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
-        $resolver->setNormalizer('scripts', function ($resolver, $scripts) {
+        $resolver->setNormalizer('scripts', function ($scripts) {
             return array_map(function ($script) {
                 return is_string($script) ? (array) $script : $script;
             }, $scripts);
@@ -79,9 +70,6 @@ class Shell extends AbstractExternalTask
         return TaskResult::createPassed($this, $context);
     }
 
-    /**
-     * @param array $scriptArguments
-     */
     private function runShell(array $scriptArguments)
     {
         $arguments = $this->processBuilder->createArgumentsForCommand('sh');

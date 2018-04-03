@@ -20,12 +20,7 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
         $this->counter = 0;
     }
 
-    /**
-     * @param Process $process
-     *
-     * @return string
-     */
-    public function format(Process $process)
+    public function format(Process $process): string
     {
         $output = $process->getOutput();
         if (!$output) {

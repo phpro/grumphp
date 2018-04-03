@@ -18,12 +18,7 @@ class PhpcsFormatter implements ProcessFormatterInterface
      */
     protected $suggestedFiles = [];
 
-    /**
-     * @param Process $process
-     *
-     * @return string
-     */
-    public function format(Process $process)
+    public function format(Process $process): string
     {
         $output = $process->getOutput();
         if (!$output) {
