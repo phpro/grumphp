@@ -224,7 +224,7 @@ class FilesCollection extends ArrayCollection
         }, iterator_to_array($fileList));
 
         return $this->filter(function (SplFileInfo $file) use ($allowedFiles) {
-            return in_array($file->getPathname(), $allowedFiles);
+            return in_array($file->getPathname(), $allowedFiles, true);
         });
     }
 

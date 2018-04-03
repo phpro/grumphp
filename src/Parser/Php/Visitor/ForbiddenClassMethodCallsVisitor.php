@@ -44,7 +44,7 @@ class ForbiddenClassMethodCallsVisitor extends AbstractVisitor implements Config
         $variable = $node->var->name;
         $method = $node->name;
         $normalized = sprintf('$%s->%s', $variable, $method);
-        if (!in_array($normalized, $this->blacklist)) {
+        if (!in_array($normalized, $this->blacklist, true)) {
             return;
         }
 

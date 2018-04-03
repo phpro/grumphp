@@ -27,7 +27,7 @@ class TaskCompilerPass implements CompilerPassInterface
         foreach ($taggedServices as $id => $tags) {
             $taskTag = $this->getTaskTag($tags);
             $configKey = $taskTag['config'];
-            if (in_array($configKey, $tasksRegistered)) {
+            if (in_array($configKey, $tasksRegistered, true)) {
                 throw new RuntimeException(
                     sprintf('The name of a task should be unique. Duplicate found: %s', $configKey)
                 );

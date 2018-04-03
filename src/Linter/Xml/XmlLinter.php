@@ -73,7 +73,7 @@ class XmlLinter implements LinterInterface
     public function isInstalled()
     {
         $extensions = get_loaded_extensions();
-        return in_array('libxml', $extensions) && in_array('dom', $extensions);
+        return in_array('libxml', $extensions, true) && in_array('dom', $extensions, true);
     }
 
     /**

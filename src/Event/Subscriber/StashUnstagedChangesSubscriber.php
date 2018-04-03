@@ -194,7 +194,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
             }
 
             // Don't fail on non-blcoking errors!
-            if (in_array($error['type'], [E_DEPRECATED, E_USER_DEPRECATED, E_CORE_WARNING, E_CORE_ERROR])) {
+            if (in_array($error['type'], [E_DEPRECATED, E_USER_DEPRECATED, E_CORE_WARNING, E_CORE_ERROR], true)) {
                 return;
             }
 
