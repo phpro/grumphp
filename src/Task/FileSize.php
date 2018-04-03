@@ -50,9 +50,11 @@ class FileSize implements TaskInterface
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'max_size' => '10M',
+            'ignore_patterns'  => [],
         ]);
 
         $resolver->addAllowedTypes('max_size', ['string', 'integer']);
+        $resolver->addAllowedTypes('ignore_patterns', ['array']);
 
         return $resolver;
     }
@@ -83,6 +85,7 @@ class FileSize implements TaskInterface
         $maxSize = $config['max_size'];
         $files = $context->getFiles()
             ->ignoreSymlinks()
+            ->notPaths($config['ignore_patterns'])
             ->size(sprintf('>%s', $maxSize));
 
         if ($files->count() > 0) {
