@@ -16,19 +16,19 @@ class FileSize implements TaskInterface
      */
     protected $grumPHP;
 
-    
+
     public function __construct(GrumPHP $grumPHP)
     {
         $this->grumPHP = $grumPHP;
     }
 
-    
+
     public function getName(): string
     {
         return 'file_size';
     }
 
-    
+
     public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
@@ -36,7 +36,7 @@ class FileSize implements TaskInterface
         return $this->getConfigurableOptions()->resolve($configured);
     }
 
-    
+
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();

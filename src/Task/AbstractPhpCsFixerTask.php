@@ -57,7 +57,7 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
     /**
      * {@inheritdoc}
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
         return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
     }
@@ -65,7 +65,7 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
 

@@ -27,7 +27,7 @@ class CloverCoverage implements TaskInterface
      */
     protected $filesystem;
 
-    
+
     public function __construct(GrumPHP $grumPHP, Filesystem $filesystem)
     {
         $this->grumPHP = $grumPHP;
@@ -37,20 +37,20 @@ class CloverCoverage implements TaskInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
 
         return $this->getConfigurableOptions()->resolve($configured);
     }
 
-    
+
     public function getName(): string
     {
         return 'clover_coverage';
     }
 
-    
+
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
@@ -73,7 +73,7 @@ class CloverCoverage implements TaskInterface
     /**
      * {@inheritdoc}
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
         return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
     }

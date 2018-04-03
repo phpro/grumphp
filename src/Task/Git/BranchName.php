@@ -30,20 +30,20 @@ class BranchName implements TaskInterface
      */
     protected $repository;
 
-    
+
     public function __construct(GrumPHP $grumPHP, Repository $repository)
     {
         $this->grumPHP = $grumPHP;
         $this->repository = $repository;
     }
 
-    
+
     public function getName(): string
     {
         return 'git_branch_name';
     }
 
-    
+
     public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
@@ -51,7 +51,7 @@ class BranchName implements TaskInterface
         return $this->getConfigurableOptions()->resolve($configured);
     }
 
-    
+
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();

@@ -21,19 +21,19 @@ class CommitMessage implements TaskInterface
      */
     private $grumPHP;
 
-    
+
     public function __construct(GrumPHP $grumPHP)
     {
         $this->grumPHP = $grumPHP;
     }
 
-    
+
     public function getName(): string
     {
         return 'git_commit_message';
     }
 
-    
+
     public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
@@ -41,7 +41,7 @@ class CommitMessage implements TaskInterface
         return $this->getConfigurableOptions()->resolve($configured);
     }
 
-    
+
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();

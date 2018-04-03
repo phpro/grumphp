@@ -36,7 +36,7 @@ class JsonLint extends AbstractLinterTask
     /**
      * {@inheritdoc}
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
         return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
     }
