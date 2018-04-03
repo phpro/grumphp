@@ -2,8 +2,8 @@
 
 namespace GrumPHP\Task\Git;
 
-use Gitonomy\Git\Exception\ProcessException;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -14,22 +14,10 @@ use GrumPHP\Task\TaskInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Gitonomy\Git\Repository;
 
-/**
- * Git BranchName Task
- */
 class BranchName implements TaskInterface
 {
-
-    /**
-     * @var GrumPHP
-     */
     protected $grumPHP;
-
-    /**
-     * @var Repository
-     */
     protected $repository;
-
 
     public function __construct(GrumPHP $grumPHP, Repository $repository)
     {
@@ -37,12 +25,10 @@ class BranchName implements TaskInterface
         $this->repository = $repository;
     }
 
-
     public function getName(): string
     {
         return 'git_branch_name';
     }
-
 
     public function getConfiguration(): array
     {
@@ -50,7 +36,6 @@ class BranchName implements TaskInterface
 
         return $this->getConfigurableOptions()->resolve($configured);
     }
-
 
     public function getConfigurableOptions(): OptionsResolver
     {
@@ -68,19 +53,12 @@ class BranchName implements TaskInterface
         return $resolver;
     }
 
-    /**
-     *
-     */
     public function canRunInContext(ContextInterface $context): bool
     {
         return $context instanceof RunContext || $context instanceof GitPreCommitContext;
     }
 
-    /**
-     *
-     * @throws RuntimeException
-     */
-    private function runMatcher(array $config, string $namestring ,string  $rule, $ruleName)
+    private function runMatcher(array $config, string $name, string $rule, string $ruleName)
     {
         $regex = new Regex($rule);
 
@@ -92,11 +70,7 @@ class BranchName implements TaskInterface
         }
     }
 
-    /**
-     * @param ContextInterface|RunContext $context
-     *
-     */
-    public function run(ContextInterface $context): TaskResultInterface: TaskResult
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
         $exceptions = [];

@@ -4,26 +4,20 @@ namespace GrumPHP\Task;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Phpcs task
- *
- * @property \GrumPHP\Formatter\PhpcsFormatter $formatter
- */
 class Phpcs extends AbstractExternalTask
 {
-    
     public function getName(): string
     {
         return 'phpcs';
     }
 
-    
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
@@ -58,17 +52,11 @@ class Phpcs extends AbstractExternalTask
         return $resolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function canRunInContext(ContextInterface $context): bool
     {
         return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function run(ContextInterface $context): TaskResultInterface
     {
         /** @var array $config */
@@ -112,10 +100,6 @@ class Phpcs extends AbstractExternalTask
         return TaskResult::createPassed($this, $context);
     }
 
-    /**
-     *
-     *
-     */
     protected function addArgumentsFromConfig(ProcessArgumentsCollection $arguments, array $config): ProcessArgumentsCollection
     {
         $arguments->addOptionalArgument('--standard=%s', $config['standard']);
