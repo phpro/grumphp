@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Formatter;
 
@@ -11,6 +13,6 @@ class RawProcessFormatter implements ProcessFormatterInterface
         $stdout = $process->getOutput();
         $stderr = $process->getErrorOutput();
 
-        return trim($stdout . PHP_EOL . $stderr);
+        return trim($stdout.PHP_EOL.$stderr);
     }
 }

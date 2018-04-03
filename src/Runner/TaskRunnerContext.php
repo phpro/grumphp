@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Runner;
 
@@ -24,7 +26,6 @@ class TaskRunnerContext
 
     /**
      * TaskRunnerContext constructor.
-     *
      */
     public function __construct(ContextInterface $taskContext, TestSuiteInterface $testSuite = null)
     {
@@ -32,28 +33,24 @@ class TaskRunnerContext
         $this->testSuite = $testSuite;
     }
 
-    
     public function getTaskContext(): ContextInterface
     {
         return $this->taskContext;
     }
 
-    
     public function skipSuccessOutput(): bool
     {
         return $this->skipSuccessOutput;
     }
 
-    
     public function setSkipSuccessOutput(bool $skipSuccessOutput)
     {
-        $this->skipSuccessOutput = (bool)$skipSuccessOutput;
+        $this->skipSuccessOutput = (bool) $skipSuccessOutput;
     }
 
-    
     public function hasTestSuite(): bool
     {
-        return $this->testSuite !== null;
+        return null !== $this->testSuite;
     }
 
     /**

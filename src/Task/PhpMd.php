@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -9,16 +11,14 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * PhpMd task
+ * PhpMd task.
  */
 class PhpMd extends AbstractExternalTask
 {
-
     public function getName(): string
     {
         return 'phpmd';
     }
-
 
     public function getConfigurableOptions(): OptionsResolver
     {
@@ -27,7 +27,7 @@ class PhpMd extends AbstractExternalTask
             'whitelist_patterns' => [],
             'exclude' => [],
             'ruleset' => ['cleancode', 'codesize', 'naming'],
-            'triggered_by' => ['php']
+            'triggered_by' => ['php'],
         ]);
 
         $resolver->addAllowedTypes('whitelist_patterns', ['array']);
@@ -43,7 +43,7 @@ class PhpMd extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**

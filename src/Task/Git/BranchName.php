@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task\Git;
 
@@ -81,7 +83,8 @@ class BranchName implements TaskInterface
             if ($config['allow_detached_head']) {
                 return TaskResult::createPassed($this, $context);
             }
-            $message = "Branch naming convention task is not allowed on a detached HEAD.";
+            $message = 'Branch naming convention task is not allowed on a detached HEAD.';
+
             return TaskResult::createFailed($this, $context, $message);
         }
 

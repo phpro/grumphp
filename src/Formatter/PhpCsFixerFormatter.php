@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Formatter;
 
@@ -34,9 +36,6 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
         return $this->formatJsonResponse($json);
     }
 
-    /**
-     *
-     */
     public function formatSuggestion(Process $process): string
     {
         $pattern = '%s ';
@@ -47,27 +46,21 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
         return str_replace([$dryrun, $formatJson], '', $process->getCommandLine());
     }
 
-    /**
-     *
-     */
     public function formatErrorMessage(array $messages, array $suggestions): string
     {
         return sprintf(
             '%sYou can fix all errors by running following commands:%s',
-            implode(PHP_EOL, $messages) . PHP_EOL . PHP_EOL,
-            PHP_EOL . implode(PHP_EOL, $suggestions)
+            implode(PHP_EOL, $messages).PHP_EOL.PHP_EOL,
+            PHP_EOL.implode(PHP_EOL, $suggestions)
         );
     }
 
-    /**
-     *
-     */
     private function formatJsonResponse(array $json): string
     {
         $formatted = [];
         foreach ($json['files'] as $file) {
             if (!is_array($file) || !isset($file['name'])) {
-                $formatted[] = 'Invalid file: ' . print_r($file, true);
+                $formatted[] = 'Invalid file: '.print_r($file, true);
                 continue;
             }
 
@@ -77,13 +70,10 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
         return implode(PHP_EOL, $formatted);
     }
 
-    /**
-     *
-     */
     private function formatFile(array $file): string
     {
         if (!isset($file['name'])) {
-            return 'Invalid file: ' . print_r($file, true);
+            return 'Invalid file: '.print_r($file, true);
         }
 
         $hasFixers = isset($file['appliedFixers']);
@@ -93,8 +83,8 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
             '%s) %s%s%s',
             ++$this->counter,
             $file['name'],
-            $hasFixers ? ' (' . implode(', ', $file['appliedFixers']) . ')' : '',
-            $hasDiff ? PHP_EOL . PHP_EOL . $file['diff'] : ''
+            $hasFixers ? ' ('.implode(', ', $file['appliedFixers']).')' : '',
+            $hasDiff ? PHP_EOL.PHP_EOL.$file['diff'] : ''
         );
     }
 }

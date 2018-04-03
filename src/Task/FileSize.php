@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -36,7 +38,7 @@ class FileSize implements TaskInterface
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'max_size' => '10M',
-            'ignore_patterns'  => [],
+            'ignore_patterns' => [],
         ]);
 
         $resolver->addAllowedTypes('max_size', ['string', 'integer']);
@@ -65,11 +67,11 @@ class FileSize implements TaskInterface
             ->size(sprintf('>%s', $maxSize));
 
         if ($files->count() > 0) {
-            $errorMessage = 'Large files detected:' . PHP_EOL;
+            $errorMessage = 'Large files detected:'.PHP_EOL;
 
             foreach ($files as $file) {
                 $errorMessage .= sprintf(
-                    '- %s exceeded the maximum size of %s.' . PHP_EOL,
+                    '- %s exceeded the maximum size of %s.'.PHP_EOL,
                     $file->getFilename(),
                     $maxSize
                 );

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Collection;
 
@@ -39,7 +41,7 @@ class TaskResultCollection extends ArrayCollection
         return $resultCode;
     }
 
-    public function filterByResultCode(int $resultCode): TaskResultCollection
+    public function filterByResultCode(int $resultCode): self
     {
         return $this->filter(function (TaskResultInterface $taskResult) use ($resultCode) {
             return $resultCode === $taskResult->getResultCode();

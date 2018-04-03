@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -9,25 +11,23 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Codeception task
+ * Codeception task.
  */
 class Codeception extends AbstractExternalTask
 {
-    
     public function getName(): string
     {
         return 'codeception';
     }
 
-    
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'config_file' => null,
             'suite' => null,
-            'test'  => null,
-            'fail_fast' => false
+            'test' => null,
+            'fail_fast' => false,
         ]);
 
         $resolver->addAllowedTypes('config_file', ['null', 'string']);
@@ -43,7 +43,7 @@ class Codeception extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**

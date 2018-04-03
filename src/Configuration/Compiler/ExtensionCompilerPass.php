@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Configuration\Compiler;
 
@@ -9,7 +11,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ExtensionCompilerPass implements CompilerPassInterface
 {
-    
     public function process(ContainerBuilder $container)
     {
         $extensions = $container->getParameter('extensions');

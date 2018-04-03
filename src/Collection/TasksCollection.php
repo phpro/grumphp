@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Collection;
 
@@ -11,10 +13,7 @@ use SplPriorityQueue;
 
 class TasksCollection extends ArrayCollection
 {
-    /**
-     *
-     */
-    public function filterByContext(ContextInterface $context): TasksCollection
+    public function filterByContext(ContextInterface $context): self
     {
         return $this->filter(function (TaskInterface $task) use ($context) {
             return $task->canRunInContext($context);
@@ -23,12 +22,11 @@ class TasksCollection extends ArrayCollection
 
     /**
      * @param TestSuiteInterface|null $testSuite
-     *
      */
-    public function filterByTestSuite(TestSuiteInterface $testSuite = null): TasksCollection
+    public function filterByTestSuite(TestSuiteInterface $testSuite = null): self
     {
-        if ($testSuite === null) {
-            return new TasksCollection($this->toArray());
+        if (null === $testSuite) {
+            return new self($this->toArray());
         }
 
         return $this->filter(function (TaskInterface $task) use ($testSuite) {
@@ -38,10 +36,8 @@ class TasksCollection extends ArrayCollection
 
     /**
      * This method sorts the tasks by highest priority first.
-     *
-     *
      */
-    public function sortByPriority(GrumPHP $grumPHP): TasksCollection
+    public function sortByPriority(GrumPHP $grumPHP): self
     {
         $priorityQueue = new SplPriorityQueue();
         $stableSortIndex = PHP_INT_MAX;
@@ -50,6 +46,6 @@ class TasksCollection extends ArrayCollection
             $priorityQueue->insert($task, [$metadata['priority'], $stableSortIndex--]);
         }
 
-        return new TasksCollection(array_values(iterator_to_array($priorityQueue)));
+        return new self(array_values(iterator_to_array($priorityQueue)));
     }
 }

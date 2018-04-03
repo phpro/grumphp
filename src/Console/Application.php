@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Console;
 
@@ -180,7 +182,7 @@ class Application extends SymfonyConsole
         }
 
         try {
-            $composerFile = getcwd() . DIRECTORY_SEPARATOR . 'composer.json';
+            $composerFile = getcwd().DIRECTORY_SEPARATOR.'composer.json';
             $configuration = Composer::loadConfiguration();
             Composer::ensureProjectBinDirInSystemPath($configuration->get('bin-dir'));
             $rootPackage = Composer::loadRootPackageFromJson($composerFile, $configuration);
@@ -193,7 +195,7 @@ class Application extends SymfonyConsole
     }
 
     /**
-     * Prefixes the cwd to the path given by the user
+     * Prefixes the cwd to the path given by the user.
      */
     private function updateUserConfigPath(string $configPath): string
     {

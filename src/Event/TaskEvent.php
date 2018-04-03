@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Event;
 
@@ -18,20 +20,17 @@ class TaskEvent extends Event
      */
     private $context;
 
-    
     public function __construct(TaskInterface $task, ContextInterface $context)
     {
         $this->task = $task;
         $this->context = $context;
     }
 
-    
     public function getTask(): TaskInterface
     {
         return $this->task;
     }
 
-    
     public function getContext(): ContextInterface
     {
         return $this->context;

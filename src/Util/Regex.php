@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Util;
 
@@ -19,7 +21,6 @@ class Regex
 
     /**
      * Regex constructor.
-     *
      */
     public function __construct($string)
     {
@@ -28,12 +29,10 @@ class Regex
 
     /**
      * Checks whether the string is a regex.
-     *
-     *
      */
     private function isRegex(string $string): bool
     {
-        if (preg_match('/^(.{3,}?)[' . self::ALLOWED_MODIFIERS . ']*$/', $string, $m)) {
+        if (preg_match('/^(.{3,}?)['.self::ALLOWED_MODIFIERS.']*$/', $string, $m)) {
             $start = substr($m[1], 0, 1);
             $end = substr($m[1], -1);
 
@@ -51,28 +50,24 @@ class Regex
         return false;
     }
 
-    /**
-     *
-     */
     private function toRegex(string $string): string
     {
         return $this->isRegex($string) ? $string : Glob::toRegex($string);
     }
 
-    
     public function addPatternModifier(string $modifier)
     {
-        if (!strlen($modifier) == 1 || !strstr(self::ALLOWED_MODIFIERS, $modifier)) {
-            throw new RuntimeException('Invalid regex modifier: ' . $modifier);
+        if (1 == !strlen($modifier) || !strstr(self::ALLOWED_MODIFIERS, $modifier)) {
+            throw new RuntimeException('Invalid regex modifier: '.$modifier);
         }
 
         // Find all modifiers of current regex:
-        $modifiersPattern = '/([' . self::ALLOWED_MODIFIERS . ']*$)/';
+        $modifiersPattern = '/(['.self::ALLOWED_MODIFIERS.']*$)/';
         preg_match($modifiersPattern, $this->regex, $matches);
         $modifiers = $matches[0];
 
         // Skip if the modifier is already available
-        if (strstr($modifiers, $modifier) !== false) {
+        if (false !== strstr($modifiers, $modifier)) {
             return;
         }
 
@@ -81,7 +76,6 @@ class Regex
 
     /**
      * Returns the new regex.
-     *
      */
     public function __toString(): string
     {

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -9,24 +11,22 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Grunt task
+ * Grunt task.
  */
 class Grunt extends AbstractExternalTask
 {
-    
     public function getName(): string
     {
         return 'grunt';
     }
 
-    
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'grunt_file' => null,
             'task' => null,
-            'triggered_by' => ['js', 'jsx', 'coffee', 'ts', 'less', 'sass', 'scss']
+            'triggered_by' => ['js', 'jsx', 'coffee', 'ts', 'less', 'sass', 'scss'],
         ]);
 
         $resolver->addAllowedTypes('grunt_file', ['null', 'string']);
@@ -41,7 +41,7 @@ class Grunt extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**

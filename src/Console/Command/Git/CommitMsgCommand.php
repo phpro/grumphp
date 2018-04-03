@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Console\Command\Git;
 
@@ -40,7 +42,6 @@ class CommitMsgCommand extends Command
      */
     private $filesystem;
 
-    
     public function __construct(GrumPHP $grumPHP, ChangedFiles $changedFilesLocator, Filesystem $filesystem)
     {
         parent::__construct();
@@ -51,7 +52,7 @@ class CommitMsgCommand extends Command
     }
 
     /**
-     * Configure command
+     * Configure command.
      */
     protected function configure()
     {
@@ -62,7 +63,6 @@ class CommitMsgCommand extends Command
     }
 
     /**
-     *
      * @return int|void
      */
     public function execute(InputInterface $input, OutputInterface $output)
@@ -74,7 +74,7 @@ class CommitMsgCommand extends Command
         $commitMsgPath = $input->getArgument('commit-msg-file');
 
         if (!$this->filesystem->isAbsolutePath($commitMsgPath)) {
-            $commitMsgPath = $this->paths()->getGitDir() . $commitMsgPath;
+            $commitMsgPath = $this->paths()->getGitDir().$commitMsgPath;
         }
 
         $commitMsgFile = new SplFileInfo($commitMsgPath);
@@ -90,7 +90,6 @@ class CommitMsgCommand extends Command
         return $this->taskRunner()->run($output, $context);
     }
 
-    
     protected function getCommittedFiles(ConsoleIO $io): FilesCollection
     {
         if ($stdin = $io->readCommandInput(STDIN)) {
@@ -100,13 +99,11 @@ class CommitMsgCommand extends Command
         return $this->changedFilesLocator->locateFromGitRepository();
     }
 
-    
     protected function taskRunner(): TaskRunnerHelper
     {
         return $this->getHelper(TaskRunnerHelper::HELPER_NAME);
     }
 
-    
     protected function paths(): PathsHelper
     {
         return $this->getHelper(PathsHelper::HELPER_NAME);

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\IO;
 
@@ -58,19 +60,17 @@ class ConsoleIO implements IOInterface
         $this->doWrite($messages, $newline, true);
     }
 
-
     public function getInput(): InputInterface
     {
         return $this->input;
     }
-
 
     public function getOutput(): OutputInterface
     {
         return $this->output;
     }
 
-    public function readCommandInput(resource $handle): string
+    public function readCommandInput($handle): string
     {
         if (!is_resource($handle)) {
             throw new RuntimeException(
@@ -78,7 +78,7 @@ class ConsoleIO implements IOInterface
             );
         }
 
-        if ($this->stdin !== null || ftell($handle) !== 0) {
+        if (null !== $this->stdin || 0 !== ftell($handle)) {
             return $this->stdin;
         }
 

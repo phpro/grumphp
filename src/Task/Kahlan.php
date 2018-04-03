@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -9,16 +11,14 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Phpspec task
+ * Phpspec task.
  */
 class Kahlan extends AbstractExternalTask
 {
-
     public function getName(): string
     {
         return 'kahlan';
     }
-
 
     public function getConfigurableOptions(): OptionsResolver
     {
@@ -44,7 +44,7 @@ class Kahlan extends AbstractExternalTask
                 'Kahlan\Plugin\Monkey',
                 'Kahlan\Plugin\Call',
                 'Kahlan\Plugin\Stub',
-                'Kahlan\Plugin\Quit'
+                'Kahlan\Plugin\Quit',
             ],
         ]);
 
@@ -74,7 +74,7 @@ class Kahlan extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**

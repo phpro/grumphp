@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Process;
 
@@ -41,6 +43,7 @@ final class ProcessUtils
             return $argument;
         }
         $argument = preg_replace('/(\\\\+)$/', '$1$1', $argument);
+
         return '"'.str_replace(['"', '^', '%', '!', "\n"], ['""', '"^^"', '"^%"', '"^!"', '!LF!'], $argument).'"';
     }
 }

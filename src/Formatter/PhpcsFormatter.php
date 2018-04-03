@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Formatter;
 
@@ -23,7 +25,7 @@ class PhpcsFormatter implements ProcessFormatterInterface
         }
 
         $pos = strrpos($output, "\n");
-        if ($pos === false) {
+        if (false === $pos) {
             return $output;
         }
         $lastLine = substr($output, $pos + 1);
@@ -55,19 +57,23 @@ class PhpcsFormatter implements ProcessFormatterInterface
                 }
             }
         }
+
         return $suggestedFiles;
     }
 
-    public function formatErrorMessage(ProcessArgumentsCollection $defaultArguments, ProcessBuilder $processBuilder): string
-    {
+    public function formatErrorMessage(
+        ProcessArgumentsCollection $defaultArguments,
+        ProcessBuilder $processBuilder
+    ): string {
         if (empty($this->suggestedFiles)) {
             return '';
         }
         $defaultArguments->addArgumentArray('%s', $this->suggestedFiles);
+
         return sprintf(
             '%sYou can fix some errors by running following command:%s',
-            PHP_EOL . PHP_EOL,
-            PHP_EOL . $processBuilder->buildProcess($defaultArguments)->getCommandLine()
+            PHP_EOL.PHP_EOL,
+            PHP_EOL.$processBuilder->buildProcess($defaultArguments)->getCommandLine()
         );
     }
 }

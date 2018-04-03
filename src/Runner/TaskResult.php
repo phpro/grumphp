@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Runner;
 
@@ -17,31 +19,41 @@ class TaskResult implements TaskResultInterface
     private $context;
     private $message;
 
-    private function __construct(int $resultCode, TaskInterface $task, ContextInterface $context, string $message = null)
-    {
+    private function __construct(
+        int $resultCode,
+        TaskInterface $task,
+        ContextInterface $context,
+        string $message = null
+    ) {
         $this->resultCode = $resultCode;
         $this->task = $task;
         $this->context = $context;
         $this->message = $message;
     }
 
-    public static function createSkipped(TaskInterface $task, ContextInterface $context): TaskResult
+    public static function createSkipped(TaskInterface $task, ContextInterface $context): self
     {
         return new self(self::SKIPPED, $task, $context);
     }
 
-    public static function createPassed(TaskInterface $task, ContextInterface $context): TaskResult
+    public static function createPassed(TaskInterface $task, ContextInterface $context): self
     {
         return new self(self::PASSED, $task, $context, null);
     }
 
-    public static function createFailed(TaskInterface $task, ContextInterface $context, string $message): TaskResult
-    {
+    public static function createFailed(
+        TaskInterface $task,
+        ContextInterface $context,
+        string $message
+    ): self {
         return new self(self::FAILED, $task, $context, $message);
     }
 
-    public static function createNonBlockingFailed(TaskInterface $task, ContextInterface $context, string $message): TaskResult
-    {
+    public static function createNonBlockingFailed(
+        TaskInterface $task,
+        ContextInterface $context,
+        string $message
+    ): self {
         return new self(self::NONBLOCKING_FAILED, $task, $context, $message);
     }
 

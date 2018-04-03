@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -14,7 +16,7 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 
 /**
- * Class PhpCsFixerRunner
+ * Class PhpCsFixerRunner.
  */
 abstract class AbstractPhpCsFixerTask implements TaskInterface
 {
@@ -40,7 +42,6 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
 
     /**
      * PhpCsFixerRunner constructor.
-     *
      */
     public function __construct(
         GrumPHP $grumPHP,
@@ -59,7 +60,7 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**
@@ -72,9 +73,6 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
         return $this->getConfigurableOptions()->resolve($configured);
     }
 
-    /**
-     *
-     */
     protected function runOnAllFiles(ContextInterface $context, ProcessArgumentsCollection $arguments): TaskResult
     {
         $process = $this->processBuilder->buildProcess($arguments);
@@ -91,9 +89,6 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
         return TaskResult::createPassed($this, $context);
     }
 
-    /**
-     *
-     */
     protected function runOnChangedFiles(
         ContextInterface $context,
         ProcessArgumentsCollection $arguments,

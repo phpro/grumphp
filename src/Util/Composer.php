@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Util;
 
@@ -16,7 +18,6 @@ class Composer
 {
     /**
      * @param string|JsonFile $json
-     *
      */
     public static function loadRootPackageFromJson($json, Config $config = null): \Composer\Package\RootPackageInterface
     {
@@ -34,7 +35,6 @@ class Composer
         return $package;
     }
 
-    
     public static function loadConfiguration(): \Composer\Config
     {
         try {
@@ -51,8 +51,7 @@ class Composer
      * To make sure this application works the same in CLI and Composer modus,
      * we'll have to ensure that the bin path is always prefixed.
      *
-     * @link https://github.com/composer/composer/blob/1.1/src/Composer/EventDispatcher/EventDispatcher.php#L147-L160
-     *
+     * @see https://github.com/composer/composer/blob/1.1/src/Composer/EventDispatcher/EventDispatcher.php#L147-L160
      */
     public static function ensureProjectBinDirInSystemPath(string $binDir)
     {
@@ -68,13 +67,13 @@ class Composer
         // add the bin dir to the PATH to make local binaries of deps usable in scripts
         $binDir = realpath($binDir);
         $hasBindDirInPath = preg_match(
-            '{(^|' . PATH_SEPARATOR . ')' . preg_quote($binDir) . '($|' . PATH_SEPARATOR . ')}',
+            '{(^|'.PATH_SEPARATOR.')'.preg_quote($binDir).'($|'.PATH_SEPARATOR.')}',
             $_SERVER[$pathStr]
         );
 
         if (!$hasBindDirInPath && isset($_SERVER[$pathStr])) {
-            $_SERVER[$pathStr] = $binDir . PATH_SEPARATOR . getenv($pathStr);
-            putenv($pathStr . '=' . $_SERVER[$pathStr]);
+            $_SERVER[$pathStr] = $binDir.PATH_SEPARATOR.getenv($pathStr);
+            putenv($pathStr.'='.$_SERVER[$pathStr]);
         }
     }
 }

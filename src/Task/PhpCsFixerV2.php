@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -9,17 +11,15 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Php-cs-fixer task v2
+ * Php-cs-fixer task v2.
  */
 class PhpCsFixerV2 extends AbstractExternalTask
 {
-    
     public function getName(): string
     {
         return 'phpcsfixer2';
     }
 
-    
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
@@ -53,7 +53,7 @@ class PhpCsFixerV2 extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**

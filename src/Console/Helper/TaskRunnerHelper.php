@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Console\Helper;
 
@@ -35,7 +37,6 @@ class TaskRunnerHelper extends Helper
      */
     private $config;
 
-    
     public function __construct(GrumPHP $config, TaskRunner $taskRunner, EventDispatcherInterface $eventDispatcher)
     {
         $this->config = $config;
@@ -43,15 +44,11 @@ class TaskRunnerHelper extends Helper
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    
     private function paths(): PathsHelper
     {
         return $this->getHelperSet()->get(PathsHelper::HELPER_NAME);
     }
 
-    /**
-     *
-     */
     public function run(OutputInterface $output, TaskRunnerContext $context): int
     {
         // Make sure to add some default event listeners before running.
@@ -69,18 +66,19 @@ class TaskRunnerHelper extends Helper
         $warnings = $taskResults->filterByResultCode(TaskResult::NONBLOCKING_FAILED);
         if ($taskResults->isFailed()) {
             $failed = $taskResults->filterByResultCode(TaskResult::FAILED);
+
             return $this->returnErrorMessages($output, $failed->getAllMessages(), $warnings->getAllMessages());
         }
 
         if ($context->skipSuccessOutput()) {
             $this->returnWarningMessages($output, $warnings->getAllMessages());
+
             return self::CODE_SUCCESS;
         }
 
         return $this->returnSuccessMessage($output, $warnings->getAllMessages());
     }
 
-    
     private function registerEventListeners(OutputInterface $output)
     {
         if ($output instanceof ConsoleOutputInterface) {
@@ -90,20 +88,17 @@ class TaskRunnerHelper extends Helper
         $this->eventDispatcher->addSubscriber(new ProgressSubscriber($output, new ProgressBar($output)));
     }
 
-    /**
-     *
-     */
     private function returnErrorMessages(OutputInterface $output, array $errorMessages, array $warnings): int
     {
         $failed = $this->paths()->getAsciiContent('failed');
         if ($failed) {
-            $output->writeln('<fg=red>' . $failed . '</fg=red>');
+            $output->writeln('<fg=red>'.$failed.'</fg=red>');
         }
 
         $this->returnWarningMessages($output, $warnings);
 
         foreach ($errorMessages as $errorMessage) {
-            $output->writeln('<fg=red>' . $errorMessage . '</fg=red>');
+            $output->writeln('<fg=red>'.$errorMessage.'</fg=red>');
         }
 
         if (!$this->config->hideCircumventionTip()) {
@@ -115,28 +110,22 @@ class TaskRunnerHelper extends Helper
         return self::CODE_ERROR;
     }
 
-    /**
-     *
-     *
-     */
     private function returnSuccessMessage(OutputInterface $output, array $warnings): int
     {
         $succeeded = $this->paths()->getAsciiContent('succeeded');
         if ($succeeded) {
-            $output->write('<fg=green>' . $succeeded . '</fg=green>');
+            $output->write('<fg=green>'.$succeeded.'</fg=green>');
         }
-
 
         $this->returnWarningMessages($output, $warnings);
 
         return self::CODE_SUCCESS;
     }
 
-    
     private function returnWarningMessages(OutputInterface $output, array $warningMessages)
     {
         foreach ($warningMessages as $warningMessage) {
-            $output->writeln('<fg=yellow>' . $warningMessage . '</fg=yellow>');
+            $output->writeln('<fg=yellow>'.$warningMessage.'</fg=yellow>');
         }
     }
 

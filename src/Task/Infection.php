@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
@@ -9,16 +11,14 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Infection task
+ * Infection task.
  */
 class Infection extends AbstractExternalTask
 {
-
     public function getName(): string
     {
         return 'infection';
     }
-
 
     public function getConfigurableOptions(): OptionsResolver
     {
@@ -32,7 +32,7 @@ class Infection extends AbstractExternalTask
             'min_msi' => null,
             'min_covered_msi' => null,
             'mutators' => [],
-            'ignore_patterns'  => [],
+            'ignore_patterns' => [],
             'triggered_by' => ['php'],
         ]);
 
@@ -54,7 +54,7 @@ class Infection extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**

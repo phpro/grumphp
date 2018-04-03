@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task\Git;
 
@@ -45,7 +47,7 @@ class CommitMessage implements TaskInterface
             'case_insensitive' => true,
             'multiline' => true,
             'matchers' => [],
-            'additional_modifiers' => ''
+            'additional_modifiers' => '',
         ]);
 
         $resolver->addAllowedTypes('allow_empty_message', ['bool']);
@@ -73,7 +75,7 @@ class CommitMessage implements TaskInterface
         $commitMessage = $context->getCommitMessage();
         $exceptions = [];
 
-        if (!(bool) $config['allow_empty_message'] && trim($commitMessage) === '') {
+        if (!(bool) $config['allow_empty_message'] && '' === trim($commitMessage)) {
             return TaskResult::createFailed(
                 $this,
                 $context,
@@ -125,7 +127,7 @@ class CommitMessage implements TaskInterface
         $commitMessage = $context->getCommitMessage();
         $config = $this->getConfiguration();
 
-        if (trim($commitMessage) === '') {
+        if ('' === trim($commitMessage)) {
             return TaskResult::createPassed($this, $context);
         }
 
@@ -182,7 +184,7 @@ class CommitMessage implements TaskInterface
 
     private function getSpecialPrefixLength(string $string): int
     {
-        if (preg_match('/^(fixup|squash)! /', $string, $match) !== 1) {
+        if (1 !== preg_match('/^(fixup|squash)! /', $string, $match)) {
             return 0;
         }
 
@@ -193,13 +195,13 @@ class CommitMessage implements TaskInterface
     {
         $commitMessage = $context->getCommitMessage();
 
-        if (trim($commitMessage) === '') {
+        if ('' === trim($commitMessage)) {
             return false;
         }
 
         $lines = $this->getCommitMessageLinesWithoutComments($commitMessage);
 
-        if (mb_substr(rtrim($lines[0]), -1) !== '.') {
+        if ('.' !== mb_substr(rtrim($lines[0]), -1)) {
             return false;
         }
 
@@ -210,31 +212,30 @@ class CommitMessage implements TaskInterface
     {
         $commitMessage = $context->getCommitMessage();
 
-        if (trim($commitMessage) === '') {
+        if ('' === trim($commitMessage)) {
             return true;
         }
 
         $lines = $this->getCommitMessageLinesWithoutComments($commitMessage);
         $subject = array_reduce($lines, function ($subject, $line) {
-            if ($subject !== null) {
+            if (null !== $subject) {
                 return $subject;
             }
 
-            if (trim($line) === '') {
+            if ('' === trim($line)) {
                 return null;
             }
 
             return $line;
         }, null);
 
-
-        if ($subject === null || preg_match('/^[[:punct:]]*(.)/u', $subject, $match) !== 1) {
+        if (null === $subject || 1 !== preg_match('/^[[:punct:]]*(.)/u', $subject, $match)) {
             return false;
         }
 
         $firstLetter = $match[1];
 
-        if (preg_match('/^(fixup|squash)!/u', $subject) !== 1 && preg_match('/[[:upper:]]/u', $firstLetter) !== 1) {
+        if (1 !== preg_match('/^(fixup|squash)!/u', $subject) && 1 !== preg_match('/[[:upper:]]/u', $firstLetter)) {
             return false;
         }
 
@@ -245,13 +246,13 @@ class CommitMessage implements TaskInterface
     {
         $commitMessage = $context->getCommitMessage();
 
-        if (trim($commitMessage) === '') {
+        if ('' === trim($commitMessage)) {
             return true;
         }
 
         $lines = $this->getCommitMessageLinesWithoutComments($commitMessage);
 
-        if (array_key_exists(1, $lines) && trim($lines[1]) !== '') {
+        if (array_key_exists(1, $lines) && '' !== trim($lines[1])) {
             return false;
         }
 
@@ -263,7 +264,7 @@ class CommitMessage implements TaskInterface
         $lines = preg_split('/\R/u', $commitMessage);
 
         return array_values(array_filter($lines, function ($line) {
-            return strpos($line, '#') !== 0;
+            return 0 !== strpos($line, '#');
         }));
     }
 }

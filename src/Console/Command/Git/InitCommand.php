@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Console\Command\Git;
 
@@ -48,7 +50,6 @@ class InitCommand extends Command
      */
     private $processBuilder;
 
-    
     public function __construct(GrumPHP $grumPHP, Filesystem $filesystem, ProcessBuilder $processBuilder)
     {
         parent::__construct();
@@ -59,7 +60,7 @@ class InitCommand extends Command
     }
 
     /**
-     * Configure command
+     * Configure command.
      */
     protected function configure()
     {
@@ -67,14 +68,13 @@ class InitCommand extends Command
     }
 
     /**
-     *
      * @return int|void
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
         $gitHooksPath = $this->paths()->getGitHooksDir();
-        $resourceHooksPath = $this->paths()->getGitHookTemplatesDir() . $this->grumPHP->getHooksPreset();
+        $resourceHooksPath = $this->paths()->getGitHookTemplatesDir().$this->grumPHP->getHooksPreset();
         $resourceHooksPath = $this->paths()->getPathWithTrailingSlash($resourceHooksPath);
         $customHooksPath = $this->paths()->getPathWithTrailingSlash($this->grumPHP->getHooksDir());
 
@@ -88,10 +88,10 @@ class InitCommand extends Command
         }
 
         foreach (self::$hooks as $hook) {
-            $gitHook = $gitHooksPath . $hook;
-            $hookTemplate = new SplFileInfo($resourceHooksPath . $hook);
-            if ($customHooksPath && $this->filesystem->exists($customHooksPath . $hook)) {
-                $hookTemplate = new SplFileInfo($customHooksPath . $hook);
+            $gitHook = $gitHooksPath.$hook;
+            $hookTemplate = new SplFileInfo($resourceHooksPath.$hook);
+            if ($customHooksPath && $this->filesystem->exists($customHooksPath.$hook)) {
+                $hookTemplate = new SplFileInfo($customHooksPath.$hook);
             }
 
             if (!$this->filesystem->exists($hookTemplate)) {
@@ -108,22 +108,18 @@ class InitCommand extends Command
         $output->writeln('<fg=yellow>Watch out! GrumPHP is sniffing your commits!<fg=yellow>');
     }
 
-    /**
-     *
-     */
     protected function parseHookBody($hook, SplFileInfo $templateFile): mixed
     {
         $content = $this->filesystem->readFromFileInfo($templateFile);
         $replacements = [
             '${HOOK_EXEC_PATH}' => $this->paths()->getGitHookExecutionPath(),
-            '$(HOOK_COMMAND)' => $this->generateHookCommand('git:' . $hook),
+            '$(HOOK_COMMAND)' => $this->generateHookCommand('git:'.$hook),
         ];
 
         return str_replace(array_keys($replacements), array_values($replacements), $content);
     }
 
     /**
-     *
      * @throws \GrumPHP\Exception\FileNotFoundException
      */
     protected function generateHookCommand($command): string
@@ -158,7 +154,6 @@ class InitCommand extends Command
         return null;
     }
 
-    
     protected function paths(): PathsHelper
     {
         return $this->getHelper(PathsHelper::HELPER_NAME);

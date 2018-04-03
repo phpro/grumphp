@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Event\Subscriber;
 
@@ -42,7 +44,6 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
      */
     private $shutdownFunctionRegistered = false;
 
-    
     public function __construct(GrumPHP $grumPHP, Repository $repository, IOInterface $io)
     {
         $this->grumPHP = $grumPHP;
@@ -50,7 +51,6 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         $this->io = $io;
     }
 
-    
     public static function getSubscribedEvents(): array
     {
         $events = [
@@ -70,9 +70,6 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         return $events;
     }
 
-    /**
-     *
-     */
     public function saveStash(RunnerEvent $e): void
     {
         if (!$this->isStashEnabled($e->getContext())) {
@@ -83,7 +80,6 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     }
 
     /**
-     *
      * @throws ProcessException
      */
     public function popStash(RunnerEvent $e): void
@@ -95,7 +91,6 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         $this->doPopStash();
     }
 
-    
     public function handleErrors(): void
     {
         if (!$this->grumPHP->ignoreUnstagedChanges()) {
@@ -123,6 +118,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         } catch (Exception $e) {
             // No worries ...
             $this->io->write(sprintf('<fg=red>Failed stashing changes: %s</fg=red>', $e->getMessage()));
+
             return;
         }
 
@@ -130,7 +126,6 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         $this->registerShutdownHandler();
     }
 
-    
     private function doPopStash(): void
     {
         if (!$this->stashIsApplied) {
@@ -143,7 +138,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         } catch (Exception $e) {
             throw new RuntimeException(
                 'The stashed changes could not be applied. Please run `git stash pop` manually!'
-                . 'More info: ' . $e->__toString(),
+                .'More info: '.$e->__toString(),
                 0,
                 $e
             );
@@ -152,17 +147,13 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         $this->stashIsApplied = false;
     }
 
-    /**
-     *
-     */
     private function isStashEnabled(ContextInterface $context): bool
     {
         return $this->grumPHP->ignoreUnstagedChanges() && $context instanceof GitPreCommitContext;
     }
 
     /**
-     * Make sure to fetch errors and pop the stash before crashing
-     *
+     * Make sure to fetch errors and pop the stash before crashing.
      */
     private function registerShutdownHandler(): void
     {

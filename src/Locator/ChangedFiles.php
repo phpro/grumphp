@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Locator;
 
@@ -10,7 +12,7 @@ use GrumPHP\Util\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * Class Git
+ * Class Git.
  */
 class ChangedFiles
 {
@@ -23,14 +25,12 @@ class ChangedFiles
      */
     private $filesystem;
 
-    
     public function __construct(Repository $repository, Filesystem $filesystem)
     {
         $this->repository = $repository;
         $this->filesystem = $filesystem;
     }
 
-    
     public function locateFromGitRepository(): FilesCollection
     {
         $diff = $this->repository->getWorkingCopy()->getDiffStaged();
@@ -38,9 +38,6 @@ class ChangedFiles
         return $this->parseFilesFromDiff($diff);
     }
 
-    /**
-     *
-     */
     public function locateFromRawDiffInput(string $rawDiff): FilesCollection
     {
         $diff = Diff::parse($rawDiff);
@@ -49,9 +46,6 @@ class ChangedFiles
         return $this->parseFilesFromDiff($diff);
     }
 
-    /**
-     *
-     */
     private function parseFilesFromDiff(Diff $diff): FilesCollection
     {
         $files = [];

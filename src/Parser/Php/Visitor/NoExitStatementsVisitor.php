@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Parser\Php\Visitor;
 
@@ -7,9 +9,6 @@ use PhpParser\Node;
 
 class NoExitStatementsVisitor extends AbstractVisitor
 {
-    /**
-     *
-     */
     public function leaveNode(Node $node): void
     {
         if (!$node instanceof Node\Expr\Exit_) {

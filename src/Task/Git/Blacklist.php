@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Task\Git;
 
@@ -13,7 +15,7 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Git Blacklist Task
+ * Git Blacklist Task.
  */
 class Blacklist extends AbstractExternalTask
 {
@@ -35,13 +37,11 @@ class Blacklist extends AbstractExternalTask
         parent::__construct($grumPHP, $processBuilder, $formatter);
     }
 
-    
     public function getName(): string
     {
         return 'git_blacklist';
     }
 
-    
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
@@ -49,7 +49,7 @@ class Blacklist extends AbstractExternalTask
             'keywords' => [],
             'whitelist_patterns' => [],
             'triggered_by' => ['php'],
-            'regexp_type' => 'G'
+            'regexp_type' => 'G',
         ]);
 
         $resolver->addAllowedTypes('keywords', ['array']);
@@ -67,7 +67,7 @@ class Blacklist extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext);
+        return $context instanceof GitPreCommitContext;
     }
 
     /**
