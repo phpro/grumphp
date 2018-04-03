@@ -9,14 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ConsoleIO implements IOInterface
 {
-    /**
-     * @var InputInterface
-     */
     private $input;
-
-    /**
-     * @var OutputInterface
-     */
     private $output;
 
     /**
@@ -24,88 +17,59 @@ class ConsoleIO implements IOInterface
      */
     private $stdin;
 
-    /**
-     * ConsoleIO constructor.
-     *
-     */
     public function __construct(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
         $this->output = $output;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function isInteractive()
+    public function isInteractive(): bool
     {
         return $this->input->isInteractive();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function isDecorated()
+    public function isDecorated(): bool
     {
         return $this->output->isDecorated();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function isVerbose()
+    public function isVerbose(): bool
     {
         return $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function isVeryVerbose()
+    public function isVeryVerbose(): bool
     {
         return $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function isDebug()
+    public function isDebug(): bool
     {
         return $this->output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function write($messages, $newline = true)
+    public function write(array $messages, bool $newline = true)
     {
         $this->doWrite($messages, $newline, false);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function writeError($messages, $newline = true)
+    public function writeError(array $messages, bool $newline = true)
     {
         $this->doWrite($messages, $newline, true);
     }
 
-    
+
     public function getInput(): InputInterface
     {
         return $this->input;
     }
 
-    
+
     public function getOutput(): OutputInterface
     {
         return $this->output;
     }
 
-    /**
-     *
-     * @throws \GrumPHP\Exception\RuntimeException
-     */
     public function readCommandInput(resource $handle): string
     {
         if (!is_resource($handle)) {
@@ -126,11 +90,10 @@ class ConsoleIO implements IOInterface
         // When the input only consist of white space characters, we assume that there is no input.
         $this->stdin = !preg_match_all('/^([\s]*)$/', $input) ? $input : '';
 
-        return  $this->stdin;
+        return $this->stdin;
     }
 
-    
-    private function doWrite(array $messagesbool ,bool  $newline, $stderr)
+    private function doWrite(array $messages, bool $newline, bool $stderr)
     {
         if (true === $stderr && $this->output instanceof ConsoleOutputInterface) {
             $this->output->getErrorOutput()->write($messages, $newline);
