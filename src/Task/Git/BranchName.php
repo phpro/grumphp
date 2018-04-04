@@ -50,7 +50,7 @@ class BranchName implements TaskInterface
 
         $resolver->addAllowedTypes('matchers', ['array']);
         $resolver->addAllowedTypes('additional_modifiers', ['string']);
-        $resolver->addAllowedTypes('allow_detached_head', ['boolean']);
+        $resolver->addAllowedTypes('allow_detached_head', ['bool']);
 
         return $resolver;
     }

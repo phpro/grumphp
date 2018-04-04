@@ -33,7 +33,7 @@ class ComposerRequireChecker extends AbstractExternalTask
 
         $resolver->addAllowedTypes('composer_file', ['string']);
         $resolver->addAllowedTypes('config_file', ['null', 'string']);
-        $resolver->addAllowedTypes('ignore_parse_errors', ['boolean']);
+        $resolver->addAllowedTypes('ignore_parse_errors', ['bool']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;

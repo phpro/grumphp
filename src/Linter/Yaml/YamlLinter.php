@@ -123,12 +123,12 @@ class YamlLinter implements LinterInterface
         return class_exists(Yaml::class);
     }
 
-    public function setObjectSupport(boolean $objectSupport)
+    public function setObjectSupport(bool $objectSupport)
     {
         $this->objectSupport = $objectSupport;
     }
 
-    public function setExceptionOnInvalidType(boolean $exceptionOnInvalidType)
+    public function setExceptionOnInvalidType(bool $exceptionOnInvalidType)
     {
         $this->exceptionOnInvalidType = $exceptionOnInvalidType;
     }

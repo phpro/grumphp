@@ -13,24 +13,10 @@ use SplFileInfo;
 
 class JsonLinter implements LinterInterface
 {
-    /**
-     * @var bool
-     */
     private $detectKeyConflicts = false;
-
-    /**
-     * @var Filesystem
-     */
     private $filesystem;
-
-    /**
-     * @var JsonParser
-     */
     private $jsonParser;
 
-    /**
-     * JsonLinter constructor.
-     */
     public function __construct(Filesystem $filesystem, JsonParser $jsonParser)
     {
         $this->filesystem = $filesystem;
@@ -38,7 +24,7 @@ class JsonLinter implements LinterInterface
     }
 
     /**
-     * @throws \Seld\JsonLint\ParsingException
+     * @throws ParsingException
      */
     public function lint(SplFileInfo $file): LintErrorsCollection
     {
@@ -60,7 +46,7 @@ class JsonLinter implements LinterInterface
         return class_exists(JsonParser::class);
     }
 
-    public function setDetectKeyConflicts(boolean $detectKeyConflicts)
+    public function setDetectKeyConflicts(bool $detectKeyConflicts)
     {
         $this->detectKeyConflicts = $detectKeyConflicts;
     }
