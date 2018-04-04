@@ -60,7 +60,7 @@ class ConsoleIOSpec extends ObjectBehavior
     function it_should_write_messages(OutputInterface $output)
     {
         $output->write('test', true)->shouldBeCalled();
-        $this->write('test');
+        $this->write(['test']);
     }
 
     function it_should_write_error_messages(OutputInterface $output)
