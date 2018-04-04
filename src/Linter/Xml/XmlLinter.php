@@ -71,22 +71,22 @@ class XmlLinter implements LinterInterface
         return in_array('libxml', $extensions, true) && in_array('dom', $extensions, true);
     }
 
-    public function setLoadFromNet(boolean $loadFromNet)
+    public function setLoadFromNet(bool $loadFromNet)
     {
         $this->loadFromNet = $loadFromNet;
     }
 
-    public function setXInclude(boolean $xInclude)
+    public function setXInclude(bool $xInclude)
     {
         $this->xInclude = $xInclude;
     }
 
-    public function setDtdValidation(boolean $dtdValidation)
+    public function setDtdValidation(bool $dtdValidation)
     {
         $this->dtdValidation = $dtdValidation;
     }
 
-    public function setSchemeValidation(boolean $schemeValidation)
+    public function setSchemeValidation(bool $schemeValidation)
     {
         $this->schemeValidation = $schemeValidation;
     }
