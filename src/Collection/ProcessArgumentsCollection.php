@@ -26,7 +26,7 @@ class ProcessArgumentsCollection extends ArrayCollection
         $this->add(sprintf($argument, $value));
     }
 
-    public function addOptionalArgumentWithSeparatedValue(string $argument, string $value)
+    public function addOptionalArgumentWithSeparatedValue(string $argument, $value)
     {
         if (!$value) {
             return;
@@ -113,7 +113,7 @@ class ProcessArgumentsCollection extends ArrayCollection
         $this->add(sprintf($argument, implode(',', $paths)));
     }
 
-    public function addOptionalBooleanArgument(string $argument, string $value, string $trueFormat, string $falseFormat)
+    public function addOptionalBooleanArgument(string $argument, $value, string $trueFormat, string $falseFormat)
     {
         if (null === $value) {
             return;

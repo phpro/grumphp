@@ -40,7 +40,7 @@ class JsonLinter implements LinterInterface
     /**
      * @throws \Seld\JsonLint\ParsingException
      */
-    public function lint(SplFileInfo $file): mixed
+    public function lint(SplFileInfo $file): LintErrorsCollection
     {
         $errors = new LintErrorsCollection();
         $flags = $this->calculateFlags();
