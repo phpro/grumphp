@@ -25,6 +25,10 @@ We don't want to bore you with all the details, so quick: install it yourself an
 ## Demo
 <img src="https://github.com/phpro/grumphp/wiki/images/demo.gif" alt="demo" width="100%" />
 
+## Warning
+
+GrumPHP will overwrite existing hooks unless you run `composer install` with `--no-plugins` or `--no-scripts`. Be sure to backup your hooks before you try to install GrumPHP.
+
 ## Installation
 
 *If you are trying to install GrumPHP on Windows: please read the windows pre-install section.*
