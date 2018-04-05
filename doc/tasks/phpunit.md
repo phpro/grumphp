@@ -34,7 +34,7 @@ This means that `phpunit.xml` or `phpunit.xml.dist` are automatically loaded if 
 
 **testsuite**
 
-*Default: null
+*Default: null*
 
 If you wish to only run tests from a certain Suite.
 `testsuite: unit`
