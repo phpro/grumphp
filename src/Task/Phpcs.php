@@ -127,7 +127,7 @@ class Phpcs extends AbstractExternalTask
         $arguments->addOptionalArgument('--encoding=%s', $config['encoding']);
         $arguments->addOptionalArgument('--severity=%s', $config['severity']);
         $arguments->addOptionalArgument('--error-severity=%s', $config['error_severity']);
-        $arguments->addOptionalArgument('--warning-severity=%s', $config['warning_severity']);
+        $arguments->addOptionalIntegerArgument('--warning-severity=%s', $config['warning_severity']);
         $arguments->addOptionalCommaSeparatedArgument('--sniffs=%s', $config['sniffs']);
         $arguments->addOptionalCommaSeparatedArgument('--ignore=%s', $config['ignore_patterns']);
 

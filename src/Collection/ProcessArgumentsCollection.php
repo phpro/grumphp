@@ -165,4 +165,17 @@ class ProcessArgumentsCollection extends ArrayCollection
 
         $this->add(sprintf($argument, $value ? $trueFormat : $falseFormat));
     }
+
+    /**
+     * @param string      $argument
+     * @param int|null    $value
+     */
+    public function addOptionalIntegerArgument($argument, $value)
+    {
+        if (null === $value) {
+            return;
+        }
+        
+        $this->add(sprintf($argument, $value));
+    }
 }
