@@ -125,8 +125,8 @@ class Phpcs extends AbstractExternalTask
         $arguments->addOptionalArgument('--standard=%s', $config['standard']);
         $arguments->addOptionalArgument('--tab-width=%s', $config['tab_width']);
         $arguments->addOptionalArgument('--encoding=%s', $config['encoding']);
-        $arguments->addOptionalArgument('--severity=%s', $config['severity']);
-        $arguments->addOptionalArgument('--error-severity=%s', $config['error_severity']);
+        $arguments->addOptionalIntegerArgument('--severity=%s', $config['severity']);
+        $arguments->addOptionalIntegerArgument('--error-severity=%s', $config['error_severity']);
         $arguments->addOptionalIntegerArgument('--warning-severity=%s', $config['warning_severity']);
         $arguments->addOptionalCommaSeparatedArgument('--sniffs=%s', $config['sniffs']);
         $arguments->addOptionalCommaSeparatedArgument('--ignore=%s', $config['ignore_patterns']);
