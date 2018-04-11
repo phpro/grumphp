@@ -29,7 +29,7 @@ class ForbiddenFunctionCallsVisitor extends AbstractVisitor implements Configura
         $this->blacklist = $config['blacklist'];
     }
 
-    public function leaveNode(Node $node): void
+    public function leaveNode(Node $node)
     {
         if (!$node instanceof Node\Expr\FuncCall) {
             return;

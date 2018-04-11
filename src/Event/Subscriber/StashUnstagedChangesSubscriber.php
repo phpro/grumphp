@@ -70,7 +70,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         return $events;
     }
 
-    public function saveStash(RunnerEvent $e): void
+    public function saveStash(RunnerEvent $e)
     {
         if (!$this->isStashEnabled($e->getContext())) {
             return;
@@ -82,7 +82,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     /**
      * @throws ProcessException
      */
-    public function popStash(RunnerEvent $e): void
+    public function popStash(RunnerEvent $e)
     {
         if (!$this->isStashEnabled($e->getContext())) {
             return;
@@ -91,7 +91,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         $this->doPopStash();
     }
 
-    public function handleErrors(): void
+    public function handleErrors()
     {
         if (!$this->grumPHP->ignoreUnstagedChanges()) {
             return;
@@ -126,7 +126,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         $this->registerShutdownHandler();
     }
 
-    private function doPopStash(): void
+    private function doPopStash()
     {
         if (!$this->stashIsApplied) {
             return;
@@ -155,7 +155,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     /**
      * Make sure to fetch errors and pop the stash before crashing.
      */
-    private function registerShutdownHandler(): void
+    private function registerShutdownHandler()
     {
         if ($this->shutdownFunctionRegistered) {
             return;
