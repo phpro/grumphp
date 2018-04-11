@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GrumPHP\Parser\Php\Visitor;
 
@@ -6,15 +8,9 @@ use PhpParser\Node;
 
 class DeclareStrictTypesVisitor extends AbstractVisitor
 {
-    /**
-     * @var bool
-     */
     private $hasStrictType = false;
 
-    /**
-     *
-     */
-    public function leaveNode(Node $node): void
+    public function leaveNode(Node $node)
     {
         if (!$node instanceof Node\Stmt\Declare_) {
             return;
@@ -34,10 +30,7 @@ class DeclareStrictTypesVisitor extends AbstractVisitor
         }
     }
 
-    /**
-     *
-     */
-    public function afterTraverse(array $nodes): void
+    public function afterTraverse(array $nodes)
     {
         if (!$this->hasStrictType) {
             $this->addError('No "declare(strict_types = 1)" found in file!');

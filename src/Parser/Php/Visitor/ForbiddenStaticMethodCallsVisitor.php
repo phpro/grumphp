@@ -29,7 +29,7 @@ class ForbiddenStaticMethodCallsVisitor extends AbstractVisitor implements Confi
         $this->blacklist = $config['blacklist'];
     }
 
-    public function leaveNode(Node $node): void
+    public function leaveNode(Node $node)
     {
         if (!$node instanceof Node\Expr\StaticCall) {
             return;

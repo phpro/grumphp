@@ -29,7 +29,7 @@ class ForbiddenClassMethodCallsVisitor extends AbstractVisitor implements Config
         $this->blacklist = $config['blacklist'];
     }
 
-    public function leaveNode(Node $node): void
+    public function leaveNode(Node $node)
     {
         if (!$node instanceof Node\Expr\MethodCall || !isset($node->var->name)) {
             return;
