@@ -140,4 +140,22 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
         $this->addOptionalBooleanArgument('--argument=%s', false, 'yes', 'no');
         $this->getValues()->shouldBe(['--argument=no']);
     }
+
+    function it_should_be_able_to_add_optional_integer_argument_with_null_value()
+    {
+        $this->addOptionalIntegerArgument('--argument=%s', null);
+        $this->getValues()->shouldBe([]);
+    }
+
+    function it_should_be_able_to_add_optional_integer_argument_with_a_value()
+    {
+        $this->addOptionalIntegerArgument('--argument=%s', 100);
+        $this->getValues()->shouldBe(['--argument=100']);
+    }
+
+    function it_should_be_able_to_add_optional_integer_argument_with_zero_as_value()
+    {
+        $this->addOptionalIntegerArgument('--argument=%s', 0);
+        $this->getValues()->shouldBe(['--argument=0']);
+    }
 }
