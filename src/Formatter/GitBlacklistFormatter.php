@@ -52,7 +52,7 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
         return trim($result);
     }
 
-    private function trimOutputLine(string $lineint, $lineNumber): string
+    private function trimOutputLine(string $line, int $lineNumber): string
     {
         if (strlen($line) < 80) {
             return $line;

@@ -45,8 +45,10 @@ class ProcessBuilderSpec extends ObjectBehavior
         $arguments->count()->shouldBe(1);
     }
 
-    function it_should_build_process_based_on_process_arguments()
+    function it_should_build_process_based_on_process_arguments(IOInterface $io)
     {
+        $io->isVeryVerbose()->willReturn(false);
+
         $arguments = new ProcessArgumentsCollection(['/usr/bin/grumphp']);
         $process = $this->buildProcess($arguments);
 
@@ -54,11 +56,10 @@ class ProcessBuilderSpec extends ObjectBehavior
         $process->getCommandLine()->shouldBeQuoted('/usr/bin/grumphp');
     }
 
-    function it_should_be_possible_to_configure_the_process_timeout(
-        GrumPHP $config,
-        ExternalCommand $externalCommandLocator,
-        IOInterface $io
-    ) {
+    function it_should_be_possible_to_configure_the_process_timeout(GrumPHP $config, IOInterface $io)
+    {
+        $io->isVeryVerbose()->willReturn(false);
+
         $config->getProcessTimeout()->willReturn(120);
 
         $arguments = new ProcessArgumentsCollection(['/usr/bin/grumphp']);
@@ -66,17 +67,15 @@ class ProcessBuilderSpec extends ObjectBehavior
         $process->getTimeout()->shouldBe(120.0);
     }
 
-    function it_outputs_the_command_when_run_very_very_verbose(
-        GrumPHP $config,
-        ExternalCommand $externalCommandLocator,
-        IOInterface $io
-    ) {
+    function it_outputs_the_command_when_run_very_very_verbose(IOInterface $io)
+    {
         $io->isVeryVerbose()->willReturn(true);
+
         $command = '/usr/bin/grumphp';
-        $io->write(PHP_EOL . 'Command: ' . ProcessUtils::escapeArgument($command), true)->shouldBeCalled();
+        $io->write([PHP_EOL . 'Command: ' . ProcessUtils::escapeArgument($command)], true)->shouldBeCalled();
 
         $arguments = new ProcessArgumentsCollection([$command]);
-        $process = $this->buildProcess($arguments);
+        $this->buildProcess($arguments);
     }
 
     function getMatchers()

@@ -113,11 +113,11 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         }
 
         try {
-            $this->io->write('<fg=yellow>Detected unstaged changes... Stashing them!</fg=yellow>');
+            $this->io->write(['<fg=yellow>Detected unstaged changes... Stashing them!</fg=yellow>']);
             $this->repository->run('stash', ['save', '--quiet', '--keep-index', uniqid('grumphp')]);
         } catch (Exception $e) {
             // No worries ...
-            $this->io->write(sprintf('<fg=red>Failed stashing changes: %s</fg=red>', $e->getMessage()));
+            $this->io->write([sprintf('<fg=red>Failed stashing changes: %s</fg=red>', $e->getMessage())]);
 
             return;
         }
@@ -133,7 +133,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         }
 
         try {
-            $this->io->write('<fg=yellow>Reapplying unstaged changes from stash.</fg=yellow>');
+            $this->io->write(['<fg=yellow>Reapplying unstaged changes from stash.</fg=yellow>']);
             $this->repository->run('stash', ['pop', '--quiet']);
         } catch (Exception $e) {
             throw new RuntimeException(
