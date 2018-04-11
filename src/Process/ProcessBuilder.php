@@ -65,7 +65,7 @@ class ProcessBuilder
     private function logProcessInVerboseMode(Process $process)
     {
         if ($this->io->isVeryVerbose()) {
-            $this->io->write(PHP_EOL.'Command: '.$process->getCommandLine(), true);
+            $this->io->write([PHP_EOL.'Command: '.$process->getCommandLine()], true);
         }
     }
 }

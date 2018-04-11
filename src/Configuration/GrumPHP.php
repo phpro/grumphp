@@ -117,7 +117,6 @@ class GrumPHP
     /**
      * Get ascii content path from grumphp.yml file.
      *
-     *
      * @return string|null
      */
     public function getAsciiContentPath($resource)
