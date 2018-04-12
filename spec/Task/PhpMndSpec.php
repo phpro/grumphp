@@ -41,6 +41,7 @@ class PhpMndSpec extends ObjectBehavior
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('directory');
+        $options->getDefinedOptions()->shouldContain('whitelist_patterns');
         $options->getDefinedOptions()->shouldContain('exclude');
         $options->getDefinedOptions()->shouldContain('exclude_name');
         $options->getDefinedOptions()->shouldContain('exclude_path');
