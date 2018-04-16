@@ -55,11 +55,13 @@ class Blacklist extends AbstractExternalTask
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'keywords' => [],
+            'whitelist_patterns' => [],
             'triggered_by' => ['php'],
             'regexp_type' => 'G'
         ]);
 
         $resolver->addAllowedTypes('keywords', ['array']);
+        $resolver->addAllowedTypes('whitelist_patterns', ['array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
         $resolver->addAllowedTypes('regexp_type', ['string']);
 
@@ -81,8 +83,20 @@ class Blacklist extends AbstractExternalTask
      */
     public function run(ContextInterface $context)
     {
+        /** @var array $config */
         $config = $this->getConfiguration();
-        $files = $context->getFiles()->extensions($config['triggered_by']);
+        /** @var array $whitelistPatterns */
+        $whitelistPatterns = $config['whitelist_patterns'];
+        /** @var array $extensions */
+        $extensions = $config['triggered_by'];
+
+        /** @var \GrumPHP\Collection\FilesCollection $files */
+        $files = $context->getFiles();
+        if (0 !== count($whitelistPatterns)) {
+            $files = $files->paths($whitelistPatterns);
+        }
+        $files = $files->extensions($extensions);
+
         if (0 === count($files) || empty($config['keywords'])) {
             return TaskResult::createSkipped($this, $context);
         }
