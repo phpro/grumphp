@@ -17,9 +17,22 @@ The task lives under the `phpmd` namespace and has following configurable parame
 parameters:
     tasks:
         phpmd:
+            whitelist_patterns: []
             exclude: []
             ruleset: ['cleancode', 'codesize', 'naming']
             triggered_by: ['php']
+```
+
+**whitelist_patterns**
+
+*Default: []*
+
+This is a list of regex patterns that will filter files to validate. With this option you can skip files like tests. This option is used in relation with the parameter `triggered_by`.
+For exemple to validate only files in your `src/App/` and `src/AppBundle/` directories in a Symfony you can use 
+```yml
+whitelist_patterns:
+  - /^src\/App\/(.*)/
+  - /^src\/AppBundle\/(.*)/
 ```
 
 **exclude**

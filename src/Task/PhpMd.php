@@ -28,11 +28,13 @@ class PhpMd extends AbstractExternalTask
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
+            'whitelist_patterns' => [],
             'exclude' => [],
             'ruleset' => ['cleancode', 'codesize', 'naming'],
             'triggered_by' => ['php']
         ]);
 
+        $resolver->addAllowedTypes('whitelist_patterns', ['array']);
         $resolver->addAllowedTypes('exclude', ['array']);
         $resolver->addAllowedTypes('ruleset', ['array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
@@ -53,13 +55,23 @@ class PhpMd extends AbstractExternalTask
      */
     public function run(ContextInterface $context)
     {
+        /** @var array $config */
         $config = $this->getConfiguration();
-        $files = $context->getFiles()->extensions($config['triggered_by']);
+        /** @var array $whitelistPatterns */
+        $whitelistPatterns = $config['whitelist_patterns'];
+        /** @var array $extensions */
+        $extensions = $config['triggered_by'];
+
+        /** @var \GrumPHP\Collection\FilesCollection $files */
+        $files = $context->getFiles();
+        if (0 !== count($whitelistPatterns)) {
+            $files = $files->paths($whitelistPatterns);
+        }
+        $files = $files->extensions($extensions);
+
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
-
-        $config = $this->getConfiguration();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('phpmd');
         $arguments->addCommaSeparatedFiles($files);
