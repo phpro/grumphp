@@ -11,6 +11,7 @@ parameters:
             matchers:
                 Branch name must contain JIRA issue number: /JIRA-\d+/
             additional_modifiers: ''
+            names_exclude: []
 ```
 
 **matchers**
@@ -44,3 +45,9 @@ additional_modifiers: 'xu'
 *Default: true*
 
 Set this to `false` if you wish the task to fail when ran on a detached HEAD. If set to `true` the task will always pass.
+
+**names_exclude**
+
+*Default: []*
+
+Use this parameter to exclude one or multiple branch names.

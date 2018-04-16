@@ -67,11 +67,13 @@ class BranchName implements TaskInterface
             'matchers' => [],
             'additional_modifiers' => '',
             'allow_detached_head' => true,
+            'names_exclude' => [],
         ]);
 
         $resolver->addAllowedTypes('matchers', ['array']);
         $resolver->addAllowedTypes('additional_modifiers', ['string']);
         $resolver->addAllowedTypes('allow_detached_head', ['boolean']);
+        $resolver->addAllowedTypes('names_exclude', ['array']);
 
         return $resolver;
     }
@@ -115,6 +117,8 @@ class BranchName implements TaskInterface
     {
         $config = $this->getConfiguration();
         $exceptions = [];
+        /** @var array $namesExclude */
+        $namesExclude = $config['names_exclude'];
 
         try {
             $name = trim($this->repository->run('symbolic-ref', ['HEAD', '--short']));
@@ -124,6 +128,10 @@ class BranchName implements TaskInterface
             }
             $message = "Branch naming convention task is not allowed on a detached HEAD.";
             return TaskResult::createFailed($this, $context, $message);
+        }
+
+        if (in_array($name, $namesExclude)) {
+            return TaskResult::createPassed($this, $context);
         }
 
         foreach ($config['matchers'] as $ruleName => $rule) {
