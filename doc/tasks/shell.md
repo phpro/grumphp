@@ -18,7 +18,7 @@ parameters:
 
 This options specifies the paths to your shell scripts.
 You can specify one or more scripts. 
-You also can specify one or more shell commands.
+You also can specify one or more shell commands. Add `-c` as a first argument. The -c option causes the commands to be read from the string.
 All scripts / shell commands need to succeed for the task to complete.
 
 Configuration example:
@@ -30,7 +30,7 @@ parameters:
         shell:
             scripts:
                - script.sh
-               - ["./bin/command", "arg1", "arg2"]
+               - ["-c", "./bin/command", "arg1", "arg2"]
 ```
 
 **triggered_by**
