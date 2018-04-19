@@ -8,6 +8,7 @@
 - [How can I fix Composer require conflicts?](#how-can-i-fix-composer-require-conflicts)
 - [Why is the unstaged file state being used?](#why-is-the-unstaged-file-state-being-used)
 - [How can I fix the SourceTree $PATH problem?](#how-can-i-fix-the-sourcetree-path-problem)
+- [When will GrumPHP support PHP 7?](#when-will-grumphp-support-php-7)
 
 
 ## How can I bypass GrumPHP
@@ -101,5 +102,11 @@ You can fix this by adding following line to the top of the git hooks:
 ```bash
 export PATH=/usr/local/bin:$PATH
 ```
+
+[up](#table-of-content)
+
+## When will GrumPHP support PHP 7?
+
+PHP 7 support will be gradually introduced, see https://github.com/phpro/grumphp/issues/482. Any help would be gratefully received!
 
 [up](#table-of-content)
