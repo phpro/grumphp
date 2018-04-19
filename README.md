@@ -140,7 +140,7 @@ Since GrumPHP is just a CLI tool, these commands can be triggered:
 
 ## Compatibility
 
-GrumPHP works with PHP 5.6 or above.
+GrumPHP works with PHP 5.6 or above, but does not currently support PHP 7.
 
 This package has been tested with following git clients:
 
