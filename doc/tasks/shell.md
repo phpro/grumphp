@@ -33,6 +33,9 @@ parameters:
                - ["-c", "./bin/command arg1 arg2"]
 ```
 
+*Note:* When using the `-c` option, the next argument should contain the full executable with all parameters. Be carefull: quotes will be escaped!
+
+
 **triggered_by**
 
 *Default: [php]*
