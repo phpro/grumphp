@@ -144,7 +144,7 @@ parameters:
     tasks:
         phpcs:
             standard: "vendor/magento-ecg/coding-standard/Ecg/"
-            show_warnings: false
+            warning_severity: 0
 ```
 
 ### Drupal
