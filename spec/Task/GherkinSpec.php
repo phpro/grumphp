@@ -14,6 +14,7 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\Gherkin;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
@@ -86,8 +87,11 @@ class GherkinSpec extends ObjectBehavior
     function it_throws_exception_if_the_process_fails(
         ProcessBuilder $processBuilder,
         Process $process,
-        ContextInterface $context
+        ContextInterface $context,
+        ProcessFormatterInterface $formatter
     ) {
+        $formatter->format($process)->willReturn(Argument::type('string'));
+
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('kawaii')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);

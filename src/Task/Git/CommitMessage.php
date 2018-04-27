@@ -110,7 +110,7 @@ class CommitMessage implements TaskInterface
 
         foreach ($config['matchers'] as $ruleName => $rule) {
             try {
-                $this->runMatcher($config, $commitMessage, $rule, $ruleName);
+                $this->runMatcher($config, $commitMessage, $rule, (string) $ruleName);
             } catch (RuntimeException $e) {
                 $exceptions[] = $e->getMessage();
             }
