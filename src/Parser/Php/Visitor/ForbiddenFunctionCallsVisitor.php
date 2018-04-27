@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GrumPHP\Parser\Php\Visitor;
 
-use GrumPHP\Parser\ParseError;
 use PhpParser\Node;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -42,8 +41,7 @@ class ForbiddenFunctionCallsVisitor extends AbstractVisitor implements Configura
 
         $this->addError(
             sprintf('Found blacklisted "%s" function call', $function),
-            $node->getLine(),
-            ParseError::TYPE_ERROR
+            $node->getLine()
         );
     }
 }
