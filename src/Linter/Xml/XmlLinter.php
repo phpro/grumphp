@@ -127,7 +127,7 @@ class XmlLinter implements LinterInterface
         ]));
     }
 
-    private function collectXmlErrors(LintErrorsCollection $errors): array
+    private function collectXmlErrors(LintErrorsCollection $errors)
     {
         foreach (libxml_get_errors() as $error) {
             $errors->add(XmlLintError::fromLibXmlError($error));
