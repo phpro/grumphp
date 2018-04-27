@@ -122,8 +122,11 @@ class SecurityCheckerSpec extends ObjectBehavior
     function it_throws_an_exception_if_the_process_fails(
         ProcessBuilder $processBuilder,
         Process $process,
-        ContextInterface $context
+        ContextInterface $context,
+        ProcessFormatterInterface $formatter
     ) {
+        $formatter->format($process)->willReturn(Argument::type('string'));
+
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('security-checker')->willReturn($arguments);
         $processBuilder->buildProcess(Argument::type(ProcessArgumentsCollection::class))->willReturn($process);

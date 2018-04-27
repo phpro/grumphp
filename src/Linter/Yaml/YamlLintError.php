@@ -11,7 +11,7 @@ class YamlLintError extends LintError
 {
     private $snippet;
 
-    public function __construct(string $type, string $error, string $file, int $line = -1, $snippet = null)
+    public function __construct(string $type, string $error, string $file, int $line = -1, string $snippet = '')
     {
         parent::__construct($type, $error, $file, $line);
         $this->snippet = $snippet;

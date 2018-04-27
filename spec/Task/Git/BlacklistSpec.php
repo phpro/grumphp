@@ -14,6 +14,7 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Git\Blacklist;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
@@ -80,8 +81,14 @@ class BlacklistSpec extends ObjectBehavior
         GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,
         Process $process,
-        ContextInterface $context
+        ContextInterface $context,
+        ProcessFormatterInterface $formatter,
+        ConsoleIO $consoleIO
     ) {
+        $formatter->format($process)->willReturn(Argument::type('string'));
+
+        $consoleIO->isDecorated()->willReturn(false);
+
         $grumPHP->getTaskConfiguration('git_blacklist')->willReturn([
             'keywords'=> ['var_dump('],
         ]);
@@ -108,8 +115,14 @@ class BlacklistSpec extends ObjectBehavior
         GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,
         Process $process,
-        ContextInterface $context
+        ContextInterface $context,
+        ConsoleIO $consoleIO,
+        ProcessFormatterInterface $formatter
     ) {
+        $consoleIO->isDecorated()->willReturn(false);
+
+        $formatter->format($process)->willReturn(Argument::type('string'));
+
         $grumPHP->getTaskConfiguration('git_blacklist')->willReturn([
             'keywords'=> ['var_dump('],
         ]);

@@ -93,7 +93,7 @@ class YamlLintSpec extends AbstractLinterTaskSpec
         $linter->setParseCustomTags(false)->shouldBeCalled();
         $linter->setParseConstants(false)->shouldBeCalled();
         $linter->lint(Argument::type('SplFileInfo'))->willReturn(new LintErrorsCollection([
-            new YamlLintError(LintError::TYPE_ERROR, 0, 'error', 'file.yaml', 1, 1)
+            new YamlLintError(LintError::TYPE_ERROR,'error', 'file.yaml', 1)
         ]));
 
         $context->getFiles()->willReturn(new FilesCollection([
