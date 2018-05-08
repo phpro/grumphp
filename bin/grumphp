@@ -4,10 +4,10 @@
 define('GRUMPHP_PATH', realpath(__DIR__ . '/..'));
 
 $autoloadLocations = [
-    getcwd() . '/vendor/autoload.php',
-    getcwd() . '/../../autoload.php',
     __DIR__ . '/../vendor/autoload.php',
     __DIR__ . '/../../../autoload.php',
+    getcwd() . '/vendor/autoload.php',
+    getcwd() . '/../../autoload.php',
 ];
 
 $loaded = false;
@@ -15,6 +15,7 @@ foreach ($autoloadLocations as $autoload) {
     if (is_file($autoload)) {
         require_once($autoload);
         $loaded = true;
+        break;
     }
 }
 
