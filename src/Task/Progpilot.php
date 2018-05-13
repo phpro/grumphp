@@ -76,4 +76,3 @@ class Progpilot extends AbstractExternalTask
         return TaskResult::createPassed($this, $context);
     }
 }
- 
