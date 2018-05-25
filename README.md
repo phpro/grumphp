@@ -43,6 +43,8 @@ You will see following message in the composer logs:
 GrumPHP will never push you into using a specific task. You can choose the tasks that fit your needs, and activate or
 deactivate any task in no time! See the `suggest` section in [composer.json](https://github.com/phpro/grumphp/blob/master/composer.json#L37).
 
+Note: GrumPHP will overwrite existing hooks unless you run `composer install` with `--no-plugins` or `--no-scripts`. Be sure to backup your hooks before you try to install GrumPHP.
+
 Having trouble installing GrumPHP? Find out how to:
 
 - [Install globally](doc/installation/global.md)
