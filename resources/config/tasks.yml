@@ -335,6 +335,15 @@ services:
         tags:
             - {name: grumphp.task, config: phpversion}
 
+    task.psalm:
+        class: GrumPHP\Task\Psalm
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: psalm}
+
     task.robo:
         class: GrumPHP\Task\Robo
         arguments:
