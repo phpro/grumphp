@@ -83,14 +83,11 @@ class Blacklist extends AbstractExternalTask
      */
     public function run(ContextInterface $context)
     {
-        /** @var array $config */
         $config = $this->getConfiguration();
-        /** @var array $whitelistPatterns */
+
         $whitelistPatterns = $config['whitelist_patterns'];
-        /** @var array $extensions */
         $extensions = $config['triggered_by'];
 
-        /** @var \GrumPHP\Collection\FilesCollection $files */
         $files = $context->getFiles();
         if (0 !== count($whitelistPatterns)) {
             $files = $files->paths($whitelistPatterns);
