@@ -12,6 +12,7 @@ parameters:
                 - "die("
                 - "var_dump("
                 - "exit;"
+            whitelist_patterns: []
             triggered_by: ['php']
             regexp_type: G
 ```
@@ -22,6 +23,17 @@ parameters:
 
 Use this parameter to specify your blacklisted keywords list.
 
+**whitelist_patterns**
+
+*Default: []*
+
+This is a list of regex patterns that will filter files to validate. With this option you can skip files like tests. This option is used in relation with the parameter `triggered_by`.
+For example: whitelist files in `src/FolderA/` and `src/FolderB/` you can use 
+```yml
+whitelist_patterns:
+  - /^src\/FolderA\/(.*)/
+  - /^src\/FolderB\/(.*)/
+```
 
 **triggered_by**
 
