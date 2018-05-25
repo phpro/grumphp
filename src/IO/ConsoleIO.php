@@ -17,7 +17,7 @@ class ConsoleIO implements IOInterface
     /**
      * @var string
      */
-    private $stdin;
+    private $stdin = '';
 
     public function __construct(InputInterface $input, OutputInterface $output)
     {
@@ -78,7 +78,7 @@ class ConsoleIO implements IOInterface
             );
         }
 
-        if (null !== $this->stdin || 0 !== ftell($handle)) {
+        if (0 !== ftell($handle)) {
             return $this->stdin;
         }
 
