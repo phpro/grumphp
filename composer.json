@@ -55,7 +55,8 @@
         "sebastian/phpcpd": "Lets GrumPHP find duplicated code.",
         "sensiolabs/security-checker": "Lets GrumPHP be sure that there are no known security issues.",
         "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",
-        "sstalle/php7cc": "Lets GrumPHP check PHP 5.3 - 5.6 code compatibility with PHP 7."
+        "sstalle/php7cc": "Lets GrumPHP check PHP 5.3 - 5.6 code compatibility with PHP 7.",
+        "vimeo/psalm": "Lets GrumPHP discover errors in your code without running it."
     },
     "authors": [
         {
