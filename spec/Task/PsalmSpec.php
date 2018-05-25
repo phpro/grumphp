@@ -41,8 +41,11 @@ class PsalmSpec extends ObjectBehavior
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('config');
+        $options->getDefinedOptions()->shouldContain('ignore_patterns');
+        $options->getDefinedOptions()->shouldContain('no_cache');
+        $options->getDefinedOptions()->shouldContain('report');
         $options->getDefinedOptions()->shouldContain('threads');
-        $options->getDefinedOptions()->shouldContain('no-cache');
+        $options->getDefinedOptions()->shouldContain('triggered_by');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)

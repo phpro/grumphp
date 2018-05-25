@@ -30,14 +30,19 @@ class Psalm extends AbstractExternalTask
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'config' => 'psalm.xml',
+            'config' => null,
+            'ignore_patterns' => [],
+            'no_cache' => false,
+            'report' => null,
             'threads' => 1,
-            'no-cache' => false
+            'triggered_by' => ['php'],
         ]);
-
         $resolver->addAllowedTypes('config', ['null', 'string']);
+        $resolver->addAllowedTypes('ignore_patterns', ['array']);
+        $resolver->addAllowedTypes('no_cache', ['bool']);
+        $resolver->addAllowedTypes('report', ['null', 'string']);
         $resolver->addAllowedTypes('threads', ['int']);
-        $resolver->addAllowedTypes('no-cache', ['bool']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
     }
@@ -55,15 +60,23 @@ class Psalm extends AbstractExternalTask
      */
     public function run(ContextInterface $context)
     {
-        $files = $context->getFiles()->name('*.php');
+        $config = $this->getConfiguration();
+
+        $files = $context
+            ->getFiles()
+            ->extensions($config['triggered_by']);
+
+        $files = $files->notPaths($config['ignore_patterns']);
+
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 
-        $config = $this->getConfiguration();
-
         $arguments = $this->processBuilder->createArgumentsForCommand(self::TASK_NAME);
         $arguments->addOptionalArgument('--config=%s', $config['config']);
+        $arguments->addOptionalArgument('--report=%s', $config['report']);
+        $arguments->addOptionalArgument('--no-cache', $config['no_cache']);
+        $arguments->addOptionalArgument('--threads=%d', $config['threads']);
         $arguments->addFiles($files);
 
         $process = $this->processBuilder->buildProcess($arguments);
