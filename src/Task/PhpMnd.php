@@ -29,6 +29,7 @@ class PhpMnd extends AbstractExternalTask
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'directory' => '.',
+            'whitelist_patterns' => [],
             'exclude' => [],
             'exclude_name' => [],
             'exclude_path' => [],
@@ -41,6 +42,7 @@ class PhpMnd extends AbstractExternalTask
         ]);
 
         $resolver->addAllowedTypes('directory', ['string']);
+        $resolver->addAllowedTypes('whitelist_patterns', ['array']);
         $resolver->addAllowedTypes('exclude', ['array']);
         $resolver->addAllowedTypes('exclude_name', ['array']);
         $resolver->addAllowedTypes('exclude_path', ['array']);
@@ -67,14 +69,23 @@ class PhpMnd extends AbstractExternalTask
      */
     public function run(ContextInterface $context)
     {
+        /** @var array $config */
         $config = $this->getConfiguration();
-        $files = $context->getFiles()->extensions($config['triggered_by']);
+        /** @var array $whitelistPatterns */
+        $whitelistPatterns = $config['whitelist_patterns'];
+        /** @var array $extensions */
+        $extensions = $config['triggered_by'];
+
+        /** @var \GrumPHP\Collection\FilesCollection $files */
+        $files = $context->getFiles();
+        if (0 !== count($whitelistPatterns)) {
+            $files = $files->paths($whitelistPatterns);
+        }
+        $files = $files->extensions($extensions);
 
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
-
-        $config = $this->getConfiguration();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('phpmnd');
         $arguments->addArgumentArray('--exclude=%s', $config['exclude']);
