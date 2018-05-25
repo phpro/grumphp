@@ -109,6 +109,7 @@ parameters:
         phpstan: ~
         phpunit: ~
         phpversion: ~
+        psalm: ~
         robo: ~
         securitychecker: ~
         shell: ~
