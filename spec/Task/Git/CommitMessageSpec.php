@@ -371,7 +371,7 @@ MSG;
         ]);
 
         $commitMessage = <<<'MSG'
-# Starts with a comment
+# Starts with a a really really really really relly long comment, this won't appear in hisory
 
 Another reasonable line.
 MSG;
