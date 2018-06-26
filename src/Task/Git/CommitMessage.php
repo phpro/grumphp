@@ -173,6 +173,9 @@ class CommitMessage implements TaskInterface
         }
 
         foreach (array_slice($lines, 2) as $index => $line) {
+            if ($line !== '' && $line[0] === '#') {
+                continue;
+            }
             if (mb_strlen(rtrim($line)) > $config['max_body_width']) {
                 $errors[] = sprintf(
                     'Line %u of commit message has > %u characters.',
