@@ -14,7 +14,6 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\Atoum;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
@@ -95,7 +94,7 @@ class AtoumSpec extends ObjectBehavior
         ContextInterface $context,
         ProcessFormatterInterface $formatter
     ) {
-        $formatter->format($process)->willReturn(Argument::type('string'));
+        $formatter->format($process)->willReturn('format string');
 
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('atoum')->willReturn($arguments);
