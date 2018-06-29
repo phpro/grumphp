@@ -10,6 +10,7 @@ use Composer\IO\NullIO;
 use Composer\Json\JsonFile;
 use Composer\Package\Loader\RootPackageLoader;
 use Composer\Package\Loader\JsonLoader;
+use Composer\Package\RootPackageInterface;
 use Composer\Repository\RepositoryFactory;
 use Exception;
 use GrumPHP\Exception\RuntimeException;
@@ -19,7 +20,7 @@ class Composer
     /**
      * @param string|JsonFile $json
      */
-    public static function loadRootPackageFromJson($json, Config $config = null): \Composer\Package\RootPackageInterface
+    public static function loadRootPackageFromJson($json, Config $config = null): RootPackageInterface
     {
         try {
             $config = (null !== $config) ? $config : self::loadConfiguration();
@@ -35,7 +36,7 @@ class Composer
         return $package;
     }
 
-    public static function loadConfiguration(): \Composer\Config
+    public static function loadConfiguration(): Config
     {
         try {
             $configuration = Factory::createConfig();
