@@ -125,7 +125,7 @@ class SecurityCheckerSpec extends ObjectBehavior
         ContextInterface $context,
         ProcessFormatterInterface $formatter
     ) {
-        $formatter->format($process)->willReturn(Argument::type('string'));
+        $formatter->format($process)->willReturn('format string');
 
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('security-checker')->willReturn($arguments);
