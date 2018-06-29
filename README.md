@@ -108,6 +108,7 @@ parameters:
         phpspec: ~
         phpstan: ~
         phpunit: ~
+        phpunitbridge: ~
         phpversion: ~
         robo: ~
         securitychecker: ~

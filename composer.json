@@ -30,8 +30,7 @@
         "phpunit/phpunit": "^5.7.27|^6.4.4",
         "sebastian/comparator": "^1.2.4",
         "sensiolabs/security-checker": "^4.0",
-        "squizlabs/php_codesniffer": "~2.4",
-        "symfony/phpunit-bridge": "~2.7|~3.0|~4.0"
+        "squizlabs/php_codesniffer": "~2.4"
     },
     "suggest": {
         "atoum/atoum": "Lets GrumPHP run your unit tests.",

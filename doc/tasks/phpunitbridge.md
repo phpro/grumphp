@@ -1,4 +1,4 @@
-# Phpunit
+# Phpunit bridge
 
 The Phpunit Bridge task will run your unit tests thanks to the Symfony Phpunit Bridge.
 

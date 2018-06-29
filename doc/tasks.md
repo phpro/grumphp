@@ -44,6 +44,7 @@ parameters:
         phpspec: ~
         phpstan: ~
         phpunit: ~
+        phpunitbridge: ~
         phpversion: ~
         robo: ~
         securitychecker: ~
@@ -93,6 +94,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Phpspec](tasks/phpspec.md)
 - [PHPStan](tasks/phpstan.md)
 - [Phpunit](tasks/phpunit.md)
+- [Phpunit bridge](tasks/phpunitbridge.md)
 - [PhpVersion](tasks/phpversion.md)
 - [Robo](tasks/robo.md)
 - [Security Checker](tasks/securitychecker.md)
