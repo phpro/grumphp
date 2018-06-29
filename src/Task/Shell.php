@@ -10,6 +10,7 @@ use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Shell extends AbstractExternalTask
@@ -29,7 +30,7 @@ class Shell extends AbstractExternalTask
 
         $resolver->addAllowedTypes('scripts', ['array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
-        $resolver->setNormalizer('scripts', function ($scripts) {
+        $resolver->setNormalizer('scripts', function (Options $options, $scripts) {
             return array_map(function ($script) {
                 return is_string($script) ? (array) $script : $script;
             }, $scripts);
