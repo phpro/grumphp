@@ -111,6 +111,7 @@ parameters:
         phpstan: ~
         phpunit: ~
         phpversion: ~
+        progpilot: ~
         robo: ~
         securitychecker: ~
         shell: ~
