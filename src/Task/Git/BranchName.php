@@ -60,7 +60,7 @@ class BranchName implements TaskInterface
         return $context instanceof RunContext || $context instanceof GitPreCommitContext;
     }
 
-    private function runMatcher(array $config, string $name, string $rule, string $ruleName)
+    private function runMatcher(array $config, string $name, string $rule)
     {
         $regex = new Regex($rule);
 
@@ -68,7 +68,7 @@ class BranchName implements TaskInterface
         array_map([$regex, 'addPatternModifier'], $additionalModifiersArray);
 
         if (!preg_match((string) $regex, $name)) {
-            throw new RuntimeException("Rule not matched: \"$ruleName\" $rule");
+            throw new RuntimeException("Rule not matched: $rule");
         }
     }
 
@@ -88,9 +88,9 @@ class BranchName implements TaskInterface
             return TaskResult::createFailed($this, $context, $message);
         }
 
-        foreach ($config['matchers'] as $ruleName => $rule) {
+        foreach ($config['matchers'] as $rule) {
             try {
-                $this->runMatcher($config, $name, $rule, $ruleName);
+                $this->runMatcher($config, $name, $rule);
             } catch (RuntimeException $e) {
                 $exceptions[] = $e->getMessage();
             }
