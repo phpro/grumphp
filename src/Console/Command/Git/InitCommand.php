@@ -108,7 +108,7 @@ class InitCommand extends Command
         $output->writeln('<fg=yellow>Watch out! GrumPHP is sniffing your commits!<fg=yellow>');
     }
 
-    protected function parseHookBody($hook, SplFileInfo $templateFile): mixed
+    protected function parseHookBody($hook, SplFileInfo $templateFile): string
     {
         $content = $this->filesystem->readFromFileInfo($templateFile);
         $replacements = [
