@@ -34,14 +34,14 @@ class Psalm extends AbstractExternalTask
             'ignore_patterns' => [],
             'no_cache' => false,
             'report' => null,
-            'threads' => 1,
+            'threads' => null,
             'triggered_by' => ['php'],
         ]);
         $resolver->addAllowedTypes('config', ['null', 'string']);
         $resolver->addAllowedTypes('ignore_patterns', ['array']);
         $resolver->addAllowedTypes('no_cache', ['bool']);
         $resolver->addAllowedTypes('report', ['null', 'string']);
-        $resolver->addAllowedTypes('threads', ['int']);
+        $resolver->addAllowedTypes('threads', ['null', 'int']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
