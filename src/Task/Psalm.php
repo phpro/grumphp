@@ -6,6 +6,7 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -64,9 +65,8 @@ class Psalm extends AbstractExternalTask
 
         $files = $context
             ->getFiles()
+            ->notPaths($config['ignore_patterns'])
             ->extensions($config['triggered_by']);
-
-        $files = $files->notPaths($config['ignore_patterns']);
 
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);
@@ -77,7 +77,10 @@ class Psalm extends AbstractExternalTask
         $arguments->addOptionalArgument('--report=%s', $config['report']);
         $arguments->addOptionalArgument('--no-cache', $config['no_cache']);
         $arguments->addOptionalArgument('--threads=%d', $config['threads']);
-        $arguments->addFiles($files);
+
+        if ($context instanceof GitPreCommitContext) {
+            $arguments->addFiles($files);
+        }
 
         $process = $this->processBuilder->buildProcess($arguments);
 
