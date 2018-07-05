@@ -41,6 +41,7 @@ class BlacklistSpec extends ObjectBehavior
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('keywords');
+        $options->getDefinedOptions()->shouldContain('whitelist_patterns');
         $options->getDefinedOptions()->shouldContain('triggered_by');
         $options->getDefinedOptions()->shouldContain('regexp_type');
     }

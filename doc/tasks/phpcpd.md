@@ -20,6 +20,7 @@ parameters:
             directory: '.'
             exclude: ['vendor']
             names_exclude: []
+            regexps_exclude: []
             fuzzy: false
             min_lines: 5
             min_tokens: 70
@@ -42,7 +43,18 @@ With this parameter you will be able to exclude one or multiple directories from
 
 *Default: []*
 
-With this parameter you will be able to exclude one or multiple files from code analysis (must be relative to `directory`).
+With this parameter you will be able to exclude one or multiple files from code analysis.
+The values of this option refer to the file names, not to the paths.
+
+You can use a regexp, a glob, or a string.
+
+**regexps_exclude**
+
+*Default: []*
+
+With this parameter you will be able to exclude one or multiple files from code analysis.
+
+You can use patterns (delimited with / sign) or simple strings.
 
 **fuzzy**
 

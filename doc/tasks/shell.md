@@ -17,8 +17,8 @@ parameters:
 *Default: []*
 
 This options specifies the paths to your shell scripts.
-You can specify one or more scripts. 
-You also can specify one or more shell commands.
+You can specify which executables or shell commands should run.
+If you want to run a command, add `-c` as a first argument. This will execute the command instead of trying to open and interpret it.
 All scripts / shell commands need to succeed for the task to complete.
 
 Configuration example:
@@ -30,8 +30,11 @@ parameters:
         shell:
             scripts:
                - script.sh
-               - ["./bin/command", "arg1", "arg2"]
+               - ["-c", "./bin/command arg1 arg2"]
 ```
+
+*Note:* When using the `-c` option, the next argument should contain the full executable with all parameters. Be carefull: quotes will be escaped!
+
 
 **triggered_by**
 

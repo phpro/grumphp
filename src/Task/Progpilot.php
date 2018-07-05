@@ -9,16 +9,16 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * PhpMd task
+ * Progpilot task
  */
-class PhpMd extends AbstractExternalTask
+class Progpilot extends AbstractExternalTask
 {
     /**
      * @return string
      */
     public function getName()
     {
-        return 'phpmd';
+        return 'progpilot';
     }
 
     /**
@@ -27,16 +27,14 @@ class PhpMd extends AbstractExternalTask
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults([
-            'whitelist_patterns' => [],
-            'exclude' => [],
-            'ruleset' => ['cleancode', 'codesize', 'naming'],
-            'triggered_by' => ['php']
-        ]);
+        $resolver->setDefaults(
+            [
+                'config_file'  => '.progpilot/configuration.yml',
+                'triggered_by' => ['php']
+            ]
+        );
 
-        $resolver->addAllowedTypes('whitelist_patterns', ['array']);
-        $resolver->addAllowedTypes('exclude', ['array']);
-        $resolver->addAllowedTypes('ruleset', ['array']);
+        $resolver->addAllowedTypes('config_file', ['string', 'null']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
@@ -56,26 +54,17 @@ class PhpMd extends AbstractExternalTask
     public function run(ContextInterface $context)
     {
         $config = $this->getConfiguration();
-
-        $whitelistPatterns = $config['whitelist_patterns'];
-        $extensions = $config['triggered_by'];
-
-        $files = $context->getFiles();
-        if (0 !== count($whitelistPatterns)) {
-            $files = $files->paths($whitelistPatterns);
-        }
-        $files = $files->extensions($extensions);
-
+        $files = $context->getFiles()->extensions($config['triggered_by']);
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 
-        $arguments = $this->processBuilder->createArgumentsForCommand('phpmd');
-        $arguments->addCommaSeparatedFiles($files);
-        $arguments->add('text');
-        $arguments->addOptionalCommaSeparatedArgument('%s', $config['ruleset']);
-        $arguments->addOptionalArgument('--exclude', !empty($config['exclude']));
-        $arguments->addOptionalCommaSeparatedArgument('%s', $config['exclude']);
+        $config = $this->getConfiguration();
+
+        $arguments = $this->processBuilder->createArgumentsForCommand('progpilot');
+
+        $arguments->addOptionalArgumentWithSeparatedValue('--configuration', $config['config_file']);
+        $arguments->addFiles($files);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
