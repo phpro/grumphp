@@ -46,6 +46,12 @@ With this parameter you can run Psalm without using the cache file.
 
 With this path you can specify the path your psalm report file 
 
+**threads**
+
+*Default: null*
+
+This parameter defines on how many threads Psalm's analysis stage is ran.
+
 
 **triggered_by**
 
