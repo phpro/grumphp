@@ -39,7 +39,7 @@
         "codegyre/robo": "Lets GrumPHP run your automated PHP tasks.",
         "designsecurity/progpilot": "Lets GrumPHP be sure that there are no vulnerabilities in your code.",
         "doctrine/orm": "Lets GrumPHP validate your Doctrine mapping files.",
-        "etsy/phan": "Lets GrumPHP unleash a static analyzer on your code",
+        "phan/phan": "Lets GrumPHP unleash a static analyzer on your code",
         "friendsofphp/php-cs-fixer": "Lets GrumPHP automatically fix your codestyle.",
         "infection/infection": "Lets GrumPHP evaluate the quality your unit tests",
         "jakub-onderka/php-parallel-lint": "Lets GrumPHP quickly lint your entire code base.",
