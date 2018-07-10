@@ -18,6 +18,7 @@ parameters:
             exclude: []
             jobs: ~
             triggered_by: ['php', 'phtml', 'php3', 'php4', 'php5']
+            use_cmd_tmp_file: false
 ```
 **exclude**
 
@@ -39,3 +40,11 @@ defaults to 10.
 *Default: ['php', 'phtml', 'php3', 'php4', 'php5']*
 
 Any file extensions that you wish to be passed to the linter.
+
+**use_cmd_tmp_file**
+
+*Default: false:
+
+Whether to first write the command to a file and execute that file. Use this if you want to scan a large codebase and the string of files is larger than the max cli imput.
+
+note: only works on unix (requires `sh`)

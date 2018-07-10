@@ -41,7 +41,8 @@ class Phpcs extends AbstractExternalTask
             'severity' => null,
             'error_severity' => null,
             'warning_severity' => null,
-            'triggered_by' => ['php']
+            'triggered_by' => ['php'],
+            'use_cmd_tmp_file' => false
         ]);
 
         $resolver->addAllowedTypes('standard', ['null', 'string']);
@@ -54,6 +55,7 @@ class Phpcs extends AbstractExternalTask
         $resolver->addAllowedTypes('error_severity', ['null', 'int']);
         $resolver->addAllowedTypes('warning_severity', ['null', 'int']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
+        $resolver->addAllowedTypes('use_cmd_tmp_file', ['bool']);
 
         return $resolver;
     }
@@ -96,6 +98,10 @@ class Phpcs extends AbstractExternalTask
         $arguments->addFiles($files);
 
         $process = $this->processBuilder->buildProcess($arguments);
+        if ($config['use_cmd_tmp_file']) {
+            $process = $this->processBuilder->proxyThroughTmpFile($process);
+        }
+        $process->run();
         $process->run();
 
         if (!$process->isSuccessful()) {

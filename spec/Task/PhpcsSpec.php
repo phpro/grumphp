@@ -50,6 +50,7 @@ class PhpcsSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('ignore_patterns');
         $options->getDefinedOptions()->shouldContain('sniffs');
         $options->getDefinedOptions()->shouldContain('triggered_by');
+        $options->getDefinedOptions()->shouldContain('use_cmd_tmp_file');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
@@ -73,7 +74,7 @@ class PhpcsSpec extends ObjectBehavior
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
-    function it_does_not_runs_the_suite_with_invalid_extensions(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
+    function it_does_not_run_the_suite_with_invalid_extensions(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('phpcs')->willReturn($arguments);

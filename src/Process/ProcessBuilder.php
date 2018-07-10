@@ -71,6 +71,31 @@ class ProcessBuilder
     }
 
     /**
+     * @param ProcessArgumentsCollection $arguments
+     *
+     * @return Process
+     * @throws \GrumPHP\Exception\PlatformException
+     */
+    public function proxyThroughTmpFile(Process $process)
+    {
+        $tmpFile = tempnam(sys_get_temp_dir(), 'GRUMPHP');
+        $handle = fopen($tmpFile, "w");
+        fwrite($handle, $process->getCommandLine());
+        fclose($handle);
+
+        $process = ProcessFactory::fromArguments(new ProcessArgumentsCollection([
+            'sh',
+            $tmpFile,
+        ]));
+        $process->setTimeout($this->config->getProcessTimeout());
+
+        $this->logProcessInVerboseMode($process);
+        $this->guardWindowsCmdMaxInputStringLimitation($process);
+
+        return $process;
+    }
+
+    /**
      * @param Process $process
      *
      * @throws \GrumPHP\Exception\PlatformException

@@ -31,11 +31,13 @@ class PhpLint extends AbstractExternalTask
             'jobs' => null,
             'exclude' => [],
             'triggered_by' => ['php', 'phtml', 'php3', 'php4', 'php5'],
+            'use_cmd_tmp_file' => false,
         ]);
 
         $resolver->setAllowedTypes('jobs', ['int', 'null']);
         $resolver->setAllowedTypes('exclude', 'array');
         $resolver->setAllowedTypes('triggered_by', 'array');
+        $resolver->setAllowedTypes('use_cmd_tmp_file', 'bool');
 
         return $resolver;
     }
@@ -63,6 +65,9 @@ class PhpLint extends AbstractExternalTask
         $arguments->addFiles($files);
 
         $process = $this->processBuilder->buildProcess($arguments);
+        if ($config['use_cmd_tmp_file']) {
+            $process = $this->processBuilder->proxyThroughTmpFile($process);
+        }
         $process->run();
 
         if (!$process->isSuccessful()) {

@@ -27,7 +27,7 @@ parameters:
             ignore_patterns: []
             sniffs: []
             triggered_by: [php]
-            
+            use_cmd_tmp_file: false
 ```
 
 **standard**
@@ -107,6 +107,14 @@ This is a list of sniffs that need to be executed. Leave this option blank to ru
 *Default: [php]:
 
 This is a list of extensions to be sniffed. 
+
+**use_cmd_tmp_file**
+
+*Default: false:
+
+Whether to first write the command to a file and execute that file. Use this if you want to scan a large codebase and the string of files is larger than the max cli imput.
+
+note: only works on unix (requires `sh`)
 
 ## Framework presets
 
