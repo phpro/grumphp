@@ -23,7 +23,12 @@ class DeclareStrictTypesVisitor extends AbstractVisitor
         }
 
         foreach ($node->declares as $id => $declare) {
-            if ($declare->key !== 'strict_types') {
+            // In PhpParser 3 and lower the key used in a `declare()` statement
+            // is represented as a string value. Starting with PhpParser 4 this
+            // key is represented by a 'PhpParser\Node\Identifier' object. To
+            // support backwards compatibility with older versions the object
+            // can be cast to a string to get the original string value.
+            if ((string) $declare->key !== 'strict_types') {
                 continue;
             }
 
