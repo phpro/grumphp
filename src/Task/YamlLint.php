@@ -56,7 +56,9 @@ class YamlLint extends AbstractLinterTask
      */
     public function run(ContextInterface $context)
     {
+        // @TODO : Whitelist here
         $files = $context->getFiles()->name('/\.(yaml|yml)$/i');
+
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
