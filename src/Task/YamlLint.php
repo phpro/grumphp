@@ -2,6 +2,7 @@
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
@@ -63,9 +64,9 @@ class YamlLint extends AbstractLinterTask
         $whitelistPatterns = isset($config['whitelist_patterns']) ? $config['whitelist_patterns'] : [];
         $extensionPattern = '/\.(yaml|yml)$/i';
 
-        if (0 === count($whitelistPatterns)) {
-            $files = $context->getFiles()->name($extensionPattern);
-        } else {
+        /** @var FilesCollection $files */
+        $files = $context->getFiles()->name($extensionPattern);
+        if (count($whitelistPatterns) >= 1) {
             $files = $context->getFiles()->paths($whitelistPatterns)->name($extensionPattern);
         }
         if (0 === count($files)) {
