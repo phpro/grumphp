@@ -8,11 +8,24 @@ It lives under the `yamllint` namespace and has following configurable parameter
 parameters:
     tasks:
         yamllint:
+            whitelist_patterns: []
             ignore_patterns: []
             object_support: false
             exception_on_invalid_type: false
             parse_constant: false
             parse_custom_tags: false
+```
+
+**whitelist_patterns**
+
+*Default: []*
+
+This is a list of regex patterns that will filter files to validate. With this option you can skip files like tests. This option is used in relation with the parameter `triggered_by`.
+For example: whitelist files in `src/FolderA/` and `src/FolderB/` you can use 
+```yml
+whitelist_patterns:
+  - /^src\/FolderA\/(.*)/
+  - /^src\/FolderB\/(.*)/
 ```
 
 **ignore_patterns**
