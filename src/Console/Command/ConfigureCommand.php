@@ -151,8 +151,7 @@ class ConfigureCommand extends Command
         if ($input->isInteractive()) {
             $question = new ChoiceQuestion(
                 'Which tasks do you want to run?',
-                $this->getAvailableTasks($this->config),
-                null
+                $this->getAvailableTasks($this->config)
             );
             $question->setMultiselect(true);
             $tasks = (array) $helper->ask($input, $output, $question);
