@@ -22,17 +22,22 @@ parameters:
             triggered_by: ['php']
 ```
 
+
 **config**
 
 *Default: ~*
 
 With this parameter you can specify the path your project's configuration file.
 
+
 **ignore_patterns**
 
 *Default: []*
 
-This is a list of patterns that will be ignored by psalm. With this option you can skip files like tests. Leave this option blank to run psalm for every php file/directory specified in your configuration.
+This is a list of patterns that will be ignored by psalm. With this option you can skip files like
+tests. Leave this option blank to run psalm for every php file/directory specified in your
+configuration.
+
 
 **no_cache**
 
@@ -40,11 +45,13 @@ This is a list of patterns that will be ignored by psalm. With this option you c
 
 With this parameter you can run Psalm without using the cache file.
 
+
 **report**
 
 *Default: ~*
 
 With this path you can specify the path your psalm report file 
+
 
 **threads**
 
