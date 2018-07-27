@@ -5,7 +5,7 @@ The Phan task will run your automated PHP tasks.
 ***Composer***
 
 ```
-composer require --dev etsy/phan
+composer require --dev phan/phan
 ```
 
 ***Config***
