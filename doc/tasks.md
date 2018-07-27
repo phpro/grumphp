@@ -45,7 +45,8 @@ parameters:
         phpstan: ~
         phpunit: ~
         phpversion: ~
-        progpilot: ~    
+        progpilot: ~
+        psalm: ~    
         robo: ~
         securitychecker: ~
         shell: ~
@@ -96,6 +97,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Phpunit](tasks/phpunit.md)
 - [PhpVersion](tasks/phpversion.md)
 - [Progpilot](tasks/progpilot.md)
+- [Psalm](tasks/psalm.md)
 - [Robo](tasks/robo.md)
 - [Security Checker](tasks/securitychecker.md)
 - [Shell](tasks/shell.md)

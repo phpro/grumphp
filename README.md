@@ -112,6 +112,7 @@ parameters:
         phpunit: ~
         phpversion: ~
         progpilot: ~
+        psalm: ~
         robo: ~
         securitychecker: ~
         shell: ~
