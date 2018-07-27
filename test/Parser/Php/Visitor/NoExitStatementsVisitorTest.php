@@ -3,6 +3,7 @@
 namespace GrumPHPTest\Parser\Php\Visitor;
 
 use GrumPHP\Parser\ParseError;
+use GrumPHP\Parser\Php\Visitor\ContextAwareVisitorInterface;
 use GrumPHP\Parser\Php\Visitor\NoExitStatementsVisitor;
 
 class NoExitStatementsVisitorTest extends AbstractVisitorTest
@@ -10,7 +11,7 @@ class NoExitStatementsVisitorTest extends AbstractVisitorTest
     /**
      * @return NoExitStatementsVisitor
      */
-    protected function getVisitor()
+    protected function getVisitor(): ContextAwareVisitorInterface
     {
         return new NoExitStatementsVisitor();
     }
