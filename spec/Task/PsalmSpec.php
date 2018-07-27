@@ -22,7 +22,7 @@ class PsalmSpec extends ObjectBehavior
 {
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
-        $grumPHP->getTaskConfiguration(Psalm::TASK_NAME)->willReturn([]);
+        $grumPHP->getTaskConfiguration('psalm')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
@@ -33,7 +33,7 @@ class PsalmSpec extends ObjectBehavior
 
     function it_should_have_a_name()
     {
-        $this->getName()->shouldBe(Psalm::TASK_NAME);
+        $this->getName()->shouldBe('psalm');
     }
 
     function it_should_have_configurable_options()
@@ -60,7 +60,7 @@ class PsalmSpec extends ObjectBehavior
 
     function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
     {
-        $processBuilder->buildProcess(Psalm::TASK_NAME)->shouldNotBeCalled();
+        $processBuilder->buildProcess('psalm')->shouldNotBeCalled();
         $context->getFiles()->willReturn(new FilesCollection());
 
         $result = $this->run($context);
@@ -71,7 +71,7 @@ class PsalmSpec extends ObjectBehavior
     function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
         $arguments = new ProcessArgumentsCollection();
-        $processBuilder->createArgumentsForCommand(Psalm::TASK_NAME)->willReturn($arguments);
+        $processBuilder->createArgumentsForCommand('psalm')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
         $process->run()->shouldBeCalled();
@@ -86,17 +86,23 @@ class PsalmSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_throws_exception_if_the_process_fails(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
-    {
+    function it_throws_exception_if_the_process_fails(
+        ProcessBuilder $processBuilder,
+        Process $process,
+        ContextInterface $context,
+        ProcessFormatterInterface $formatter
+    ) {
+        $formatter->format($process)->willReturn('format string');
+
         $arguments = new ProcessArgumentsCollection();
-        $processBuilder->createArgumentsForCommand(Psalm::TASK_NAME)->willReturn($arguments);
+        $processBuilder->createArgumentsForCommand('psalm')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
         $process->run()->shouldBeCalled();
         $process->isSuccessful()->willReturn(false);
 
         $context->getFiles()->willReturn(new FilesCollection([
-            new SplFileInfo('test.php', '.', 'test.php')
+            new SplFileInfo('test.php', '.', 'test.php'),
         ]));
 
         $result = $this->run($context);

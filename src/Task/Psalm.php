@@ -3,31 +3,20 @@
 namespace GrumPHP\Task;
 
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
-use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Psalm task
- */
 class Psalm extends AbstractExternalTask
 {
-    const TASK_NAME = 'psalm';
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
-        return self::TASK_NAME;
+        return 'psalm';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -48,18 +37,12 @@ class Psalm extends AbstractExternalTask
         return $resolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
         return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
 
@@ -68,11 +51,11 @@ class Psalm extends AbstractExternalTask
             ->notPaths($config['ignore_patterns'])
             ->extensions($config['triggered_by']);
 
-        if (0 === count($files)) {
+        if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 
-        $arguments = $this->processBuilder->createArgumentsForCommand(self::TASK_NAME);
+        $arguments = $this->processBuilder->createArgumentsForCommand('psalm');
         $arguments->addOptionalArgument('--config=%s', $config['config']);
         $arguments->addOptionalArgument('--report=%s', $config['report']);
         $arguments->addOptionalArgument('--no-cache', $config['no_cache']);
@@ -83,7 +66,6 @@ class Psalm extends AbstractExternalTask
         }
 
         $process = $this->processBuilder->buildProcess($arguments);
-
         $process->run();
 
         if (!$process->isSuccessful()) {
