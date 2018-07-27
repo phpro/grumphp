@@ -88,23 +88,22 @@ class BranchNameSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-//    todo: need help
-//    function it_runs_with_detached_head_setting(RunContext $context, GrumPHP $grumPHP, Repository $repository)
-//    {
-//        $repository->run('symbolic-ref', ['HEAD', '--short'])->willThrow(ProcessException::class);
-//
-//        $grumPHP->getTaskConfiguration('git_branch_name')->willReturn([
-//          'allow_detached_head' => true,
-//        ]);
-//
-//        $result = $this->run($context);
-//        $result->isPassed()->shouldBe(true);
-//
-//        $grumPHP->getTaskConfiguration('git_branch_name')->willReturn([
-//          'allow_detached_head' => false,
-//        ]);
-//
-//        $result = $this->run($context);
-//        $result->isPassed()->shouldBe(false);
-//    }
+    function it_runs_with_detached_head_setting(RunContext $context, GrumPHP $grumPHP, Repository $repository)
+    {
+        $repository->run('symbolic-ref', ['HEAD', '--short'])->willThrow(ProcessException::class);
+
+        $grumPHP->getTaskConfiguration('git_branch_name')->willReturn([
+          'allow_detached_head' => true,
+        ]);
+
+        $result = $this->run($context);
+        $result->isPassed()->shouldBe(true);
+
+        $grumPHP->getTaskConfiguration('git_branch_name')->willReturn([
+          'allow_detached_head' => false,
+        ]);
+
+        $result = $this->run($context);
+        $result->isPassed()->shouldBe(false);
+    }
 }
