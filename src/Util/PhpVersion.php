@@ -13,6 +13,9 @@ class PhpVersion
         $this->versions = $versions;
     }
 
+    /**
+     * @see https://secure.php.net/supported-versions.php for a list of currently supported versions
+     */
     public function isSupportedVersion(string $currentVersion): bool
     {
         $now = new \DateTime();
