@@ -147,13 +147,15 @@ class ConfigureCommand extends Command
         $binDir = $helper->ask($input, $output, $question);
 
         // Search tasks
-        $question = new ChoiceQuestion(
-            'Which tasks do you want to run?',
-            $this->getAvailableTasks($this->config),
-            []
-        );
-        $question->setMultiselect(true);
-        $tasks = $helper->ask($input, $output, $question);
+        $tasks = [];
+        if ($input->isInteractive()) {
+            $question = new ChoiceQuestion(
+                'Which tasks do you want to run?',
+                $this->getAvailableTasks($this->config)
+            );
+            $question->setMultiselect(true);
+            $tasks = (array) $helper->ask($input, $output, $question);
+        }
 
         // Build configuration
         return [
