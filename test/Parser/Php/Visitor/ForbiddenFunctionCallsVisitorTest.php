@@ -4,19 +4,17 @@ namespace GrumPHPTest\Parser\Php\Visitor;
 
 use GrumPHP\Parser\ParseError;
 use GrumPHP\Parser\Php\Visitor\ConfigurableVisitorInterface;
+use GrumPHP\Parser\Php\Visitor\ContextAwareVisitorInterface;
 use GrumPHP\Parser\Php\Visitor\ForbiddenFunctionCallsVisitor;
 
 class ForbiddenFunctionCallsVisitorTest extends AbstractVisitorTest
 {
-    /**
-     * @return ForbiddenFunctionCallsVisitor
-     */
-    protected function getVisitor()
+    protected function getVisitor(): ContextAwareVisitorInterface
     {
         $visitor = new ForbiddenFunctionCallsVisitor();
-        $visitor->configure(array(
-           'blacklist' => array('var_dump'),
-        ));
+        $visitor->configure([
+           'blacklist' => ['var_dump'],
+        ]);
 
         return $visitor;
     }
@@ -28,22 +26,23 @@ class ForbiddenFunctionCallsVisitorTest extends AbstractVisitorTest
     {
         $this->assertInstanceOf(ConfigurableVisitorInterface::class, $this->getVisitor());
     }
-// todo
-//    /**
-//     * @test
-//     */
-//    function it_does_not_allow_blacklisted_functions()
-//    {
-//        $code = <<<EOC
-//<?php
-//var_dump('test');
-//EOC;
-//
-//        $errors = $this->visit($code);
-//        $this->assertCount(1, $errors);
-//        $this->assertEquals(ParseError::TYPE_ERROR, $errors[0]->getType());
-//        $this->assertEquals(2, $errors[0]->getLine());
-//    }
+
+    /**
+     * @test
+     */
+    function it_does_not_allow_blacklisted_functions()
+    {
+        $code = <<<EOC
+<?php
+var_dump('test');
+EOC;
+
+        $errors = $this->visit($code);
+
+        $this->assertCount(1, $errors);
+        $this->assertEquals(ParseError::TYPE_ERROR, $errors[0]->getType());
+        $this->assertEquals(2, $errors[0]->getLine());
+    }
 
     /**
      * @test

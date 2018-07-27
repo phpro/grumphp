@@ -30,15 +30,9 @@ abstract class AbstractVisitorTest extends TestCase
         self::assertInstanceOf(ContextAwareVisitorInterface::class, $this->getVisitor());
     }
 
-    /**
-     * @return ContextAwareVisitorInterface
-     */
-    abstract protected function getVisitor();
+    abstract protected function getVisitor(): ContextAwareVisitorInterface;
 
-    /**
-     * @return ParserContext
-     */
-    protected function createContext()
+    protected function createContext(): ParserContext
     {
         $file = new SplFileInfo('code.php');
         $errors = new ParseErrorsCollection();
@@ -46,12 +40,7 @@ abstract class AbstractVisitorTest extends TestCase
         return new ParserContext($file, $errors);
     }
 
-    /**
-     * @param $code
-     *
-     * @return ParseErrorsCollection
-     */
-    protected function visit($code)
+    protected function visit($code): ParseErrorsCollection
     {
         $context = $this->createContext();
         $visitor = $this->getVisitor();
