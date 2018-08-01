@@ -91,7 +91,7 @@ class TaskResultCollectionSpec extends ObjectBehavior
 
         $this->getAllMessages()->shouldReturn([
             'failed message',
-            null,
+            '',
             'another failed message',
         ]);
     }

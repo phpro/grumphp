@@ -23,7 +23,7 @@ class TaskResult implements TaskResultInterface
         int $resultCode,
         TaskInterface $task,
         ContextInterface $context,
-        string $message = null
+        string $message = ''
     ) {
         $this->resultCode = $resultCode;
         $this->task = $task;
@@ -38,7 +38,7 @@ class TaskResult implements TaskResultInterface
 
     public static function createPassed(TaskInterface $task, ContextInterface $context): self
     {
-        return new self(self::PASSED, $task, $context, null);
+        return new self(self::PASSED, $task, $context);
     }
 
     public static function createFailed(
@@ -82,10 +82,7 @@ class TaskResult implements TaskResultInterface
         return $this->getResultCode() >= self::FAILED;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }

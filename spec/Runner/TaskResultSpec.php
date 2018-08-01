@@ -18,7 +18,7 @@ class TaskResultSpec extends ObjectBehavior
         $this->getTask()->shouldBe($task);
         $this->getResultCode()->shouldBe(TaskResult::PASSED);
         $this->isPassed()->shouldBe(true);
-        $this->getMessage()->shouldBeNull();
+        $this->getMessage()->shouldBe('');
     }
 
     function it_creates_failed_task(TaskInterface $task, ContextInterface $context)
@@ -38,6 +38,7 @@ class TaskResultSpec extends ObjectBehavior
         $this->getTask()->shouldBe($task);
         $this->getResultCode()->shouldBe(TaskResult::SKIPPED);
         $this->isPassed()->shouldBe(false);
+        $this->getMessage()->shouldBe('');
     }
 
     function it_should_be_a_blocking_task_if_it_is_a_failed_task(TaskInterface $task, ContextInterface $context)
