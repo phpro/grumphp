@@ -40,6 +40,7 @@ class YamlLintSpec extends AbstractLinterTaskSpec
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
+        $options->getDefinedOptions()->shouldContain('whitelist_patterns');
         $options->getDefinedOptions()->shouldContain('object_support');
         $options->getDefinedOptions()->shouldContain('exception_on_invalid_type');
         $options->getDefinedOptions()->shouldContain('parse_custom_tags');
