@@ -61,13 +61,13 @@ class YamlLint extends AbstractLinterTask
     {
         /** @var array $config */
         $config = $this->getConfiguration();
-        $whitelistPatterns = isset($config['whitelist_patterns']) ? $config['whitelist_patterns'] : [];
-        $extensionPattern = '/\.(yaml|yml)$/i';
+        $whitelistPatterns = $config['whitelist_patterns'];
+        $extensions = '/\.(yaml|yml)$/i';
 
         /** @var FilesCollection $files */
-        $files = $context->getFiles()->name($extensionPattern);
+        $files = $context->getFiles()->name($extensions);
         if (count($whitelistPatterns) >= 1) {
-            $files = $context->getFiles()->paths($whitelistPatterns)->name($extensionPattern);
+            $files = $context->getFiles()->paths($whitelistPatterns)->name($extensions);
         }
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);
