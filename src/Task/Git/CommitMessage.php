@@ -166,19 +166,23 @@ class CommitMessage implements TaskInterface
         $lines = $this->getCommitMessageLinesWithoutComments($commitMessage);
 
         $subject = rtrim($lines[0]);
-        $maxSubjectWidth = $config['max_subject_width'] + $this->getSpecialPrefixLength($subject);
+        if ($config['max_subject_width'] > 0) {
+            $maxSubjectWidth = $config['max_subject_width'] + $this->getSpecialPrefixLength($subject);
 
-        if (mb_strlen($subject) > $maxSubjectWidth) {
-            $errors[] = sprintf('Please keep the subject <= %u characters.', $maxSubjectWidth);
+            if (mb_strlen($subject) > $maxSubjectWidth) {
+                $errors[] = sprintf('Please keep the subject <= %u characters.', $maxSubjectWidth);
+            }
         }
 
-        foreach (array_slice($lines, 2) as $index => $line) {
-            if (mb_strlen(rtrim($line)) > $config['max_body_width']) {
-                $errors[] = sprintf(
-                    'Line %u of commit message has > %u characters.',
-                    $index + 3,
-                    $config['max_body_width']
-                );
+        if ($config['max_body_width'] > 0) {
+            foreach (array_slice($lines, 2) as $index => $line) {
+                if (mb_strlen(rtrim($line)) > $config['max_body_width']) {
+                    $errors[] = sprintf(
+                        'Line %u of commit message has > %u characters.',
+                        $index + 3,
+                        $config['max_body_width']
+                    );
+                }
             }
         }
 
