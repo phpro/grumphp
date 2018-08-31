@@ -22,6 +22,8 @@ parameters:
             error_severity: ~
             warning_severity: ~
             tab_width: ~
+            report: full
+            report_width: ~
             whitelist_patterns: []
             encoding: ~
             ignore_patterns: []
@@ -75,6 +77,19 @@ By default, the standard will specify the optimal tab-width of the code. If you 
 *Default: null*
 
 The default encoding used by PHP_CodeSniffer (is ISO-8859-1).
+
+**report**
+
+*Default: full*
+
+The report type output by PHP_CodeSniffer, put `code` to see a code snippet of the offending code.
+Consult the [complete list](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-default-report-format) for more formats.
+
+**report_width**
+
+*Default: null*
+
+PHP_CodeSniffer will print all screen-based reports 80 characters wide. You may override this size so that long lines do not wrap.
 
 **whitelist_patterns**
 

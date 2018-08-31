@@ -41,7 +41,9 @@ class Phpcs extends AbstractExternalTask
             'severity' => null,
             'error_severity' => null,
             'warning_severity' => null,
-            'triggered_by' => ['php']
+            'triggered_by' => ['php'],
+            'report' => 'full',
+            'report_width' => null,
         ]);
 
         $resolver->addAllowedTypes('standard', ['null', 'string']);
@@ -54,6 +56,8 @@ class Phpcs extends AbstractExternalTask
         $resolver->addAllowedTypes('error_severity', ['null', 'int']);
         $resolver->addAllowedTypes('warning_severity', ['null', 'int']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
+        $resolver->addAllowedTypes('report', ['null', 'string']);
+        $resolver->addAllowedTypes('report_width', ['null', 'int']);
 
         return $resolver;
     }
@@ -91,7 +95,6 @@ class Phpcs extends AbstractExternalTask
 
         $arguments = $this->processBuilder->createArgumentsForCommand('phpcs');
         $arguments = $this->addArgumentsFromConfig($arguments, $config);
-        $arguments->add('--report-full');
         $arguments->add('--report-json');
         $arguments->addFiles($files);
 
@@ -125,6 +128,8 @@ class Phpcs extends AbstractExternalTask
         $arguments->addOptionalArgument('--standard=%s', $config['standard']);
         $arguments->addOptionalArgument('--tab-width=%s', $config['tab_width']);
         $arguments->addOptionalArgument('--encoding=%s', $config['encoding']);
+        $arguments->addOptionalArgument('--report=%s', $config['report']);
+        $arguments->addOptionalIntegerArgument('--report-width=%s', $config['report_width']);
         $arguments->addOptionalIntegerArgument('--severity=%s', $config['severity']);
         $arguments->addOptionalIntegerArgument('--error-severity=%s', $config['error_severity']);
         $arguments->addOptionalIntegerArgument('--warning-severity=%s', $config['warning_severity']);
