@@ -89,6 +89,12 @@ class GrumPHPSpec extends ObjectBehavior
         $this->getAsciiContentPath('success')->shouldReturn('success');
     }
 
+    function it_should_return_the_ascii_location_from_list(ContainerInterface $container)
+    {
+        $container->getParameter('ascii')->willReturn(['success' => ['success.txt']]);
+        $this->getAsciiContentPath('success')->shouldReturn('success.txt');
+    }
+
     function it_should_know_all_registered_tasks(ContainerInterface $container)
     {
         $container->getParameter('grumphp.tasks.registered')->willReturn(['phpspec']);
