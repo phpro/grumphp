@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 class Application extends SymfonyConsole
 {
     const APP_NAME = 'GrumPHP';
-    const APP_VERSION = '0.14.1';
+    const APP_VERSION = '0.14.2';
 
     /**
      * @var ContainerBuilder
