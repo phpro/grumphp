@@ -49,13 +49,13 @@ Ensures that the commit message subject line is followed by a blank line.
 
 *Default: 72*
 
-Preferred limit on the commit message body lines.
+Preferred limit on the commit message body lines. Set to 0 to disable the check.
 
 **max_subject_width**
 
 *Default: 60*
 
-Preferred limit on the commit message subject line.
+Preferred limit on the commit message subject line. Set to 0 to disable the check.
 
 **matchers**
 
