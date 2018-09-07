@@ -116,6 +116,22 @@ This parameter will tell GrumPHP where it can locate ascii images used in pre-co
 Currently there are only two images `failed` and `succeeded`. If path is not specified default image from
 `resources/ascii/` folder are used.
 
+You may also specify lists of ascii images, and GrumPHP will choose a random one
+from the list.
+
+```yaml
+# grumphp.yml
+parameters:
+    ascii:
+        failed:
+            - resource/grumphp-grumpy1.txt
+            - resource/grumphp-grumpy2.txt
+        succeeded:
+            - resource/grumphp-happy1.txt
+            - resource/grumphp-happy2.txt
+            - resource/grumphp-happy3.txt
+```
+
 To disable banner set ascii images path to `~`:
 
 ```yaml
