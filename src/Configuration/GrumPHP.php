@@ -174,7 +174,7 @@ class GrumPHP
         // Deal with multiple ascii files by returning one at random.
         if (is_array($paths[$resource])) {
             shuffle($paths[$resource]);
-            $paths[$resource] = reset($paths[$resource]);
+            return reset($paths[$resource]);
         }
 
         return $paths[$resource];
