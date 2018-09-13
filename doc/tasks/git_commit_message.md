@@ -10,8 +10,12 @@ parameters:
         git_commit_message:
             allow_empty_message: false
             enforce_capitalized_subject: true
+            enforce_no_subject_punctuations: false
             enforce_no_subject_trailing_period: true
             enforce_single_lined_subject: true
+            enforce_type_scope_conventions: false
+            types: []
+            scopes: []
             max_body_width: 72
             max_subject_width: 60
             matchers:
@@ -32,6 +36,12 @@ Controls whether or not empty commit messages are allowed.
 *Default: true*
 
 Ensures that the commit message subject line starts with a capital letter.
+
+**enforce_no_subject_punctuations**
+
+*Default: false*
+
+Ensures that the commit message subject line doesn't have any punctuations characters.
 
 **enforce_no_subject_trailing_period**
 
@@ -95,3 +105,69 @@ additional_modifiers: 'u'
 
 additional_modifiers: 'xu'
 ```
+
+**type_scope_conventions**
+
+*Default: []*
+
+Enable a commonly used convention for the subject line.
+
+Format is as follows:
+```
+type[(scope)]: subject
+```
+*The scope is optional*
+
+Good examples:
+```
+fix: Security issue with password hashing
+fix(Password): Security issue with password hashing  
+```
+
+**types**
+
+*Default: []*
+
+*To be used with `type_scope_conventions`*
+
+Specify a list of acceptable types. Default allows ***all*** types.
+
+Add one or multiple types like:
+```yaml
+type_scope_conventions:
+  - types:
+    - build
+    - ci
+    - chore
+    - docs
+    - feat
+    - fix
+    - perf
+    - refactor
+    - revert
+    - style
+    - test
+  - scopes: []
+```
+
+**scopes**
+
+*Default: []*
+
+*To be used with `type_scope_conventions`*
+
+Specify a list of acceptable scopes. Default allows ***all*** scopes.
+
+Add one or multiple scopes like:
+```yaml
+type_scope_conventions:
+  - types: []
+  - scopes:
+      - api
+      - index
+      - user
+      - language
+      - browser
+      - environment
+```
+
