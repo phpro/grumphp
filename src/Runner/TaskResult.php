@@ -72,7 +72,7 @@ class TaskResult implements TaskResultInterface
         return self::PASSED === $this->getResultCode();
     }
 
-    public function hasFailed()
+    public function hasFailed(): bool
     {
         return self::FAILED === $this->getResultCode() || self::NONBLOCKING_FAILED === $this->getResultCode();
     }
