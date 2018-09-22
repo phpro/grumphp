@@ -17,10 +17,7 @@ interface TaskResultInterface
 
     public function isBlocking(): bool;
 
-    /**
-     * @return null|string
-     */
-    public function getMessage();
+    public function getMessage(): string;
 
     public function getContext(): ContextInterface;
 }
