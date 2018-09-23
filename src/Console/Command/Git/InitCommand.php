@@ -157,9 +157,8 @@ class InitCommand extends Command
      */
     protected function determineProjectRootDir()
     {
-        if (null === $this->grumPHP->getVagrantProjectDir()) {
-            $rootDir = $this->paths()->getAbsolutePath('.');
-        } else {
+        $rootDir = $this->paths()->getAbsolutePath('.');
+        if (null !== $this->grumPHP->getVagrantProjectDir()) {
             $rootDir = $this->grumPHP->getVagrantProjectDir();
         }
 
