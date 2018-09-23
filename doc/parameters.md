@@ -7,6 +7,8 @@ parameters:
     git_dir: .
     hooks_dir: ~
     hooks_preset: local
+    vagrant_dir: .
+    vagrant_project_dir: ~
     stop_on_failure: false
     ignore_unstaged_changes: false
     hide_circumvention_tip: false
@@ -51,17 +53,19 @@ GrumPHP comes with following presets:
 - `local`: All checks will run on your local computer.
 - `vagrant`: All checks will run in your vagrant box.
 
+**vagrant_dir**
 
-*Note:*
-When using the vagrant preset, you are required to set the vagrant SSH home folder to your working directory.
-This can be done by altering the `.bashrc` or `.zshrc` inside your vagrant box:
+*Default: .*
 
-```sh
-echo 'cd /remote/path/to/your/project' >> ~/.bashrc
-```
+If you specified `hooks_preset: vagrant`, then this parameter allow you to specify a custom directory for your vagrant box.
+By default "." means that your VagrantFile should be at the root project dir.
 
-You can also add the `.bashrc` or `.zshrc` to your vagrant provision script.
-This way the home directory will be set for all the people who are using your vagrant box.
+**vagrant_project_dir**
+
+*Default: null*
+
+If you specified `hooks_preset: vagrant`, then this parameter allow you to specify the project root path **inside the vagrant box**. 
+By default "null" means that GrumPHP will try to find itself the root project dir.
 
 **stop_on_failure**
 

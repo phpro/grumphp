@@ -126,6 +126,8 @@ class InitCommand extends Command
         $replacements = [
             '${HOOK_EXEC_PATH}' => $this->paths()->getGitHookExecutionPath(),
             '$(HOOK_COMMAND)' => $this->generateHookCommand('git:' . $hook),
+            '$(VAGRANT_DIR)' => $this->grumPHP->getVagrantDir(),
+            '$(PROJECT_ROOT)' => $this->determineProjectRootDir()
         ];
 
         return str_replace(array_keys($replacements), array_values($replacements), $content);
@@ -148,6 +150,20 @@ class InitCommand extends Command
         $process = $this->processBuilder->buildProcess($arguments);
 
         return $process->getCommandLine();
+    }
+
+    /**
+     * @return string
+     */
+    protected function determineProjectRootDir()
+    {
+        if (null === $this->grumPHP->getVagrantProjectDir()) {
+            $rootDir = $this->paths()->getAbsolutePath('.');
+        } else {
+            $rootDir = $this->grumPHP->getVagrantProjectDir();
+        }
+
+        return $rootDir;
     }
 
     /**

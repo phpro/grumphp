@@ -3,6 +3,8 @@ parameters:
   git_dir: .
   hooks_dir: ~
   hooks_preset: local
+  vagrant_dir: .
+  vagrant_project_dir: ~
   tasks: []
   testsuites: []
   stop_on_failure: false

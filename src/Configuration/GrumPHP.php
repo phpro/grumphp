@@ -57,6 +57,22 @@ class GrumPHP
     }
 
     /**
+     * @return string
+     */
+    public function getVagrantDir()
+    {
+        return $this->container->getParameter('vagrant_dir');
+    }
+
+    /**
+     * @return string
+     */
+    public function getVagrantProjectDir()
+    {
+        return $this->container->getParameter('vagrant_project_dir');
+    }
+
+    /**
      * @return bool
      */
     public function stopOnFailure()
