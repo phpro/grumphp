@@ -40,4 +40,4 @@ before_test:
 
 test_script:
     - cd c:\projects\grumphp
-    - php ./bin/grumphp run
+    - php ./bin/grumphp run -vvv
