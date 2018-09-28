@@ -65,7 +65,23 @@ class ProcessBuilder
         $process->setTimeout($this->config->getProcessTimeout());
 
         $this->logProcessInVerboseMode($process);
-        $this->guardWindowsCmdMaxInputStringLimitation($process);
+        $process = $this->proxyThroughTemporaryFile($process);
+
+        return $process;
+    }
+
+    private function proxyThroughTemporaryFile(Process $process)
+    {
+        $tmpFile = tempnam(sys_get_temp_dir(), 'GRUMPHP');
+        @chmod($tmpFile, 0777);
+        $handle = fopen($tmpFile, 'w');
+        fwrite($handle, $process->getCommandLine());
+        fclose($handle);
+        $process = ProcessFactory::fromArguments(new ProcessArgumentsCollection([
+            $tmpFile
+        ]));
+        $process->setTimeout($process->getTimeout());
+        $this->logProcessInVerboseMode($process);
 
         return $process;
     }
