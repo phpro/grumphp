@@ -168,7 +168,9 @@ class TaskRunnerHelper extends Helper
      */
     private function returnAdditionalInfo(OutputInterface $output)
     {
-        is_null($this->config->getAdditionalInfo()) ?: $output->writeln($this->config->getAdditionalInfo());
+        if (null !== $this->config->getAdditionalInfo()) {
+            $output->writeln($this->config->getAdditionalInfo());
+        }
     }
 
     /**
