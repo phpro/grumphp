@@ -63,8 +63,9 @@ parameters:
     git_dir: "."
     hooks_dir: ~
     hooks_preset: local
-    vagrant_dir: .
-    vagrant_project_dir: ~
+    git_hook_variables:
+         VAGRANT_HOST_DIR: .
+         VAGRANT_PROJECT_DIR: /var/www
     stop_on_failure: false
     ignore_unstaged_changes: false
     hide_circumvention_tip: false

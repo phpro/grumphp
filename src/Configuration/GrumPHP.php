@@ -57,19 +57,11 @@ class GrumPHP
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getVagrantDir()
+    public function getGitHookVariables()
     {
-        return $this->container->getParameter('vagrant_dir');
-    }
-
-    /**
-     * @return string
-     */
-    public function getVagrantProjectDir()
-    {
-        return $this->container->getParameter('vagrant_project_dir');
+        return $this->container->getParameter('git_hook_variables');
     }
 
     /**

@@ -7,6 +7,9 @@ parameters:
     git_dir: .
     hooks_dir: ~
     hooks_preset: local
+        git_hook_variables:
+            VAGRANT_HOST_DIR: .
+            VAGRANT_PROJECT_DIR: /var/www
     vagrant_dir: .
     vagrant_project_dir: ~
     stop_on_failure: false
@@ -51,21 +54,14 @@ Presets are only used when you did NOT specify a custom `hooks_dir`.
 GrumPHP comes with following presets:
 
 - `local`: All checks will run on your local computer.
-- `vagrant`: All checks will run in your vagrant box.
+- `vagrant`: All checks will run in your vagrant box (your certainly want to customize `git_hook_variables` default values in this case).
 
-**vagrant_dir**
+**git_hook_variables**
 
-*Default: .*
+This parameter will allow you to customize git hooks templates. For now, those parameters are used in the templates : 
 
-If you specified `hooks_preset: vagrant`, then this parameter allow you to specify a custom directory for your vagrant box.
-By default "." means that your VagrantFile should be at the root project dir.
-
-**vagrant_project_dir**
-
-*Default: null*
-
-If you specified `hooks_preset: vagrant`, then this parameter allow you to specify the project root path **inside the vagrant box**. 
-By default "null" means that GrumPHP will try to find itself the root project dir.
+-  `VAGRANT_HOST_DIR` : specifies the vagrant location on your host machine (_default_ `.`)
+-  `VAGRANT_PROJECT_DIR` : specifies the project dir location **inside** the vagrant box (_default_ `/var/www`)
 
 **stop_on_failure**
 

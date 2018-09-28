@@ -123,12 +123,15 @@ class InitCommand extends Command
     protected function parseHookBody($hook, SplFileInfo $templateFile)
     {
         $content = $this->filesystem->readFromFileInfo($templateFile);
+
         $replacements = [
             '${HOOK_EXEC_PATH}' => $this->paths()->getGitHookExecutionPath(),
             '$(HOOK_COMMAND)' => $this->generateHookCommand('git:' . $hook),
-            '$(VAGRANT_DIR)' => $this->grumPHP->getVagrantDir(),
-            '$(PROJECT_ROOT)' => $this->determineProjectRootDir()
         ];
+
+        foreach($this->grumPHP->getGitHookVariables() as $key => $value) {
+            $replacements[sprintf('$(%s)', $key)] = $value;
+        }
 
         return str_replace(array_keys($replacements), array_values($replacements), $content);
     }
