@@ -129,7 +129,7 @@ class InitCommand extends Command
             '$(HOOK_COMMAND)' => $this->generateHookCommand('git:' . $hook),
         ];
 
-        foreach($this->grumPHP->getGitHookVariables() as $key => $value) {
+        foreach ($this->grumPHP->getGitHookVariables() as $key => $value) {
             $replacements[sprintf('$(%s)', $key)] = $value;
         }
 
