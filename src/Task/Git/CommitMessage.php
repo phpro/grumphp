@@ -263,14 +263,13 @@ class CommitMessage implements TaskInterface
      */
     private function subjectHasPunctuations(ContextInterface $context)
     {
-        $commitMessage = $context->getCommitMessage();
-        $subject = strtok($commitMessage, PHP_EOL);
+        $subjectLine = $this->getSubjectLine($context);
 
-        if (trim($commitMessage) === '') {
+        if (trim($subjectLine) === '') {
             return false;
         }
 
-        if (Str::contains($subject, ['.', '!', '?', ','])) {
+        if (Str::contains($subjectLine, ['.', '!', '?', ','])) {
             return true;
         }
 
@@ -284,15 +283,13 @@ class CommitMessage implements TaskInterface
      */
     private function subjectHasTrailingPeriod(ContextInterface $context)
     {
-        $commitMessage = $context->getCommitMessage();
+        $subjectLine = $this->getSubjectLine($context);
 
-        if (trim($commitMessage) === '') {
+        if (trim($subjectLine) === '') {
             return false;
         }
 
-        $lines = $this->getCommitMessageLinesWithoutComments($commitMessage);
-
-        if (mb_substr(rtrim($lines[0]), -1) !== '.') {
+        if (mb_substr(rtrim($subjectLine), -1) !== '.') {
             return false;
         }
 
@@ -400,7 +397,7 @@ class CommitMessage implements TaskInterface
     private function followsTypeScopeConventions($context)
     {
         $config = $this->getConfiguration();
-        $commitMessage = $context->getCommitMessage();
+        $subjectLine = $this->getSubjectLine($context);
 
         $types = isset($config['type_scope_conventions']['types'])
             ? $config['type_scope_conventions']['types']
@@ -428,7 +425,7 @@ class CommitMessage implements TaskInterface
         $rule = '/^' . $typesPattern . $scopesPattern . $subjectPattern . '|' . $mergePattern . '/';
 
         try {
-            $this->runMatcher($config, $commitMessage, $rule, 'Invalid Type/Scope Format');
+            $this->runMatcher($config, $subjectLine, $rule, 'Invalid Type/Scope Format');
         } catch (RuntimeException $e) {
             $this->exceptions[] = $e->getMessage();
             return false;
