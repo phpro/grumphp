@@ -4,9 +4,16 @@ namespace GrumPHP\Util;
 
 class Str
 {
-    public static function contains($haystack, $needles)
+    /**
+     * String contains one of the provided needles
+     *
+     * @param string $haystack
+     * @param array $needles
+     * @return bool
+     */
+    public static function containsOneOf($haystack, array $needles)
     {
-        foreach ((array) $needles as $needle) {
+        foreach ($needles as $needle) {
             if ($needle !== '' && mb_strpos($haystack, $needle) !== false) {
                 return true;
             }
