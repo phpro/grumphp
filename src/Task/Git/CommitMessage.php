@@ -436,4 +436,17 @@ class CommitMessage implements TaskInterface
 
         return true;
     }
+
+    /**
+     * Gets a clean subject line from the commit message
+     *
+     * @param $context
+     * @return string
+     */
+    private function getSubjectLine($context)
+    {
+        $commitMessage = $context->getCommitMessage();
+        $lines = $this->getCommitMessageLinesWithoutComments($commitMessage);
+        return (string) $lines[0];
+    }
 }
