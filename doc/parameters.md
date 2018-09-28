@@ -132,7 +132,15 @@ parameters:
             - resource/grumphp-happy3.txt
 ```
 
-To disable banner set ascii images path to `~`:
+To disable all banners set ascii to `~`:
+
+```yaml
+# grumphp.yml
+parameters:
+    ascii: ~
+```
+
+To disable a specific banner set ascii image path to `~`:
 
 ```yaml
 # grumphp.yml

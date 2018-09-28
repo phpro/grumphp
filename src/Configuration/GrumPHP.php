@@ -166,6 +166,10 @@ class GrumPHP
      */
     public function getAsciiContentPath($resource)
     {
+        if (null === $this->container->getParameter('ascii')) {
+            return null;
+        }
+
         $paths = $this->container->getParameter('ascii');
         if (!array_key_exists($resource, $paths)) {
             return null;
