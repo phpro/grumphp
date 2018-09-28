@@ -13,9 +13,7 @@ parameters:
             enforce_no_subject_punctuations: false
             enforce_no_subject_trailing_period: true
             enforce_single_lined_subject: true
-            enforce_type_scope_conventions: false
-            types: []
-            scopes: []
+            type_scope_conventions: []
             max_body_width: 72
             max_subject_width: 60
             matchers:
