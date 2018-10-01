@@ -102,6 +102,14 @@ class GrumPHP
     }
 
     /**
+     * @return null|string
+     */
+    public function getAdditionalInfo()
+    {
+        return $this->container->getParameter('additional_info');
+    }
+
+    /**
      * @return array
      */
     public function getRegisteredTasks()
