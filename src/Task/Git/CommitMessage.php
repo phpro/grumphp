@@ -23,11 +23,6 @@ class CommitMessage implements TaskInterface
     private $grumPHP;
 
     /**
-     * @var array $exceptions
-     */
-    private $exceptions = [];
-
-    /**
      * @param GrumPHP $grumPHP
      */
     public function __construct(GrumPHP $grumPHP)
@@ -109,6 +104,7 @@ class CommitMessage implements TaskInterface
     {
         $config = $this->getConfiguration();
         $commitMessage = $context->getCommitMessage();
+        $exceptions = [];
 
         if (!(bool) $config['allow_empty_message'] && trim($commitMessage) === '') {
             return TaskResult::createFailed(
@@ -150,20 +146,25 @@ class CommitMessage implements TaskInterface
             );
         }
 
-        if ((bool) $this->enforceTypeScopeConventions() && !$this->followsTypeScopeConventions($context)) {
-            return TaskResult::createFailed($this, $context, implode(PHP_EOL, $this->exceptions));
+
+        if ((bool) $this->enforceTypeScopeConventions()) {
+            try {
+                $this->checkTypeScopeConventions($context);
+            } catch (RuntimeException $e) {
+                $exceptions[] = $e->getMessage();
+            }
         }
 
         foreach ($config['matchers'] as $ruleName => $rule) {
             try {
                 $this->runMatcher($config, $commitMessage, $rule, $ruleName);
             } catch (RuntimeException $e) {
-                $this->exceptions[] = $e->getMessage();
+                $exceptions[] = $e->getMessage();
             }
         }
 
-        if (count($this->exceptions)) {
-            return TaskResult::createFailed($this, $context, implode(PHP_EOL, $this->exceptions));
+        if (count($exceptions)) {
+            return TaskResult::createFailed($this, $context, implode(PHP_EOL, $exceptions));
         }
 
         return $this->enforceTextWidth($context);
@@ -392,9 +393,10 @@ class CommitMessage implements TaskInterface
     /**
      * @param ContextInterface $context
      *
-     * @return bool
+     * @return void;
+     * @throws RuntimeException
      */
-    private function followsTypeScopeConventions($context)
+    private function checkTypeScopeConventions($context)
     {
         $config = $this->getConfiguration();
         $subjectLine = $this->getSubjectLine($context);
@@ -427,11 +429,8 @@ class CommitMessage implements TaskInterface
         try {
             $this->runMatcher($config, $subjectLine, $rule, 'Invalid Type/Scope Format');
         } catch (RuntimeException $e) {
-            $this->exceptions[] = $e->getMessage();
-            return false;
+            throw $e;
         }
-
-        return true;
     }
 
     /**
