@@ -270,11 +270,7 @@ class CommitMessage implements TaskInterface
             return false;
         }
 
-        if (Str::containsOneOf($subjectLine, ['.', '!', '?', ','])) {
-            return true;
-        }
-
-        return false;
+        return Str::containsOneOf($subjectLine, ['.', '!', '?', ',']);
     }
 
     /**
