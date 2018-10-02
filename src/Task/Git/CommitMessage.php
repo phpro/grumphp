@@ -373,17 +373,9 @@ class CommitMessage implements TaskInterface
     {
         $config = $this->getConfiguration();
 
-        if (!is_array($config['type_scope_conventions'])) {
-            return false;
-        }
+        $conventionsKeys = array_keys($config['type_scope_conventions']);
 
-        if (!in_array('types', array_keys($config['type_scope_conventions']))
-            && !in_array('scopes', array_keys($config['type_scope_conventions']))
-        ) {
-            return false;
-        }
-
-        return true;
+        return in_array('types', $conventionsKeys) || in_array('scopes', $conventionsKeys);
     }
 
     /**
