@@ -225,6 +225,9 @@ class PathsHelper extends Helper
         return $realpath;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPathWithTrailingSlash(string $path = null)
     {
         if (!$path) {
