@@ -33,7 +33,10 @@ class GrumPHP
         return $this->container->getParameter('git_dir');
     }
 
-    public function getHooksDir(): string
+    /**
+     * @return string|null
+     */
+    public function getHooksDir()
     {
         return $this->container->getParameter('hooks_dir');
     }
