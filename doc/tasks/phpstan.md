@@ -24,13 +24,13 @@ parameters:
 
 **autoload_file**
 
-*Default: ~*
+*Default: null*
 
 With this parameter you can specify the path your project's additional autoload file path.
 
 **configuration**
 
-*Default: ~*
+*Default: null*
 
 With this parameter you can specify the path your project's configuration file.
 

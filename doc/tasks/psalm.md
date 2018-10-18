@@ -25,7 +25,7 @@ parameters:
 
 **config**
 
-*Default: ~*
+*Default: null*
 
 With this parameter you can specify the path your project's configuration file.
 
@@ -48,7 +48,7 @@ With this parameter you can run Psalm without using the cache file.
 
 **report**
 
-*Default: ~*
+*Default: null*
 
 With this path you can specify the path your psalm report file 
 
