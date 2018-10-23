@@ -132,7 +132,7 @@ class TaskRunnerHelper extends Helper
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return self::HELPER_NAME;
     }

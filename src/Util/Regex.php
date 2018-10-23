@@ -22,7 +22,7 @@ class Regex
     /**
      * Regex constructor.
      */
-    public function __construct($string)
+    public function __construct(string $string)
     {
         $this->regex = $this->toRegex($string);
     }

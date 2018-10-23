@@ -45,7 +45,7 @@ class ConfigurationFile
         return $defaultPath;
     }
 
-    private function useConfigPathFromComposer(PackageInterface $package, $defaultPath): string
+    private function useConfigPathFromComposer(PackageInterface $package, string $defaultPath): string
     {
         $extra = $package->getExtra();
         if (!isset($extra['grumphp']['config-default-path'])) {
@@ -57,7 +57,7 @@ class ConfigurationFile
         return $this->locateConfigFileWithDistSupport($composerDefaultPath);
     }
 
-    private function locateConfigFileWithDistSupport($defaultPath): string
+    private function locateConfigFileWithDistSupport(string $defaultPath): string
     {
         $distPath = ('.dist' !== strpos($defaultPath, -5)) ? $defaultPath.'.dist' : $defaultPath;
         if ($this->filesystem->exists($defaultPath) || !$this->filesystem->exists($distPath)) {
