@@ -180,7 +180,7 @@ class PathsHelper extends Helper
      * Search a command in the bin folder
      * Note: the command locator is not injected because it needs the relative bin path.
      */
-    public function getBinCommand($command, $forceUnix = false): string
+    public function getBinCommand($command, bool $forceUnix = false): string
     {
         return $this->externalCommandLocator->locate($command, $forceUnix);
     }
@@ -188,7 +188,7 @@ class PathsHelper extends Helper
     /**
      * @throws FileNotFoundException If file doesn't exists
      */
-    public function getRelativePath($path): string
+    public function getRelativePath(string $path): string
     {
         $realpath = $this->getAbsolutePath($path);
 

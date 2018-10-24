@@ -122,7 +122,7 @@ class GrumPHP
      *
      * @return string|null
      */
-    public function getAsciiContentPath($resource)
+    public function getAsciiContentPath(string $resource)
     {
         $paths = $this->container->getParameter('ascii');
         if (!array_key_exists($resource, $paths)) {

@@ -43,7 +43,7 @@ class DevelopmentIntegrator
         $event->getIO()->write('<fg=yellow>'.$process->getOutput().'</fg=yellow>');
     }
 
-    private static function noramlizePath($path): string
+    private static function noramlizePath(string $path): string
     {
         return strtr($path, '/', DIRECTORY_SEPARATOR);
     }

@@ -13,7 +13,9 @@ use GrumPHP\Util\Filesystem;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Symfony\Component\Console\Application as SymfonyConsole;
+use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -54,7 +56,7 @@ class Application extends SymfonyConsole
         parent::__construct(self::APP_NAME, self::APP_VERSION);
     }
 
-    protected function getDefaultInputDefinition()
+    protected function getDefaultInputDefinition(): InputDefinition
     {
         $definition = parent::getDefaultInputDefinition();
         $definition->addOption(
@@ -70,7 +72,7 @@ class Application extends SymfonyConsole
         return $definition;
     }
 
-    protected function getDefaultCommands()
+    protected function getDefaultCommands(): array
     {
         $commands = parent::getDefaultCommands();
 
@@ -106,7 +108,7 @@ class Application extends SymfonyConsole
         return $commands;
     }
 
-    protected function getDefaultHelperSet()
+    protected function getDefaultHelperSet(): HelperSet
     {
         $helperSet = parent::getDefaultHelperSet();
         $helperSet->set($this->initializeComposerHelper());

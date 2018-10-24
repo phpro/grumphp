@@ -62,7 +62,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
      *
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             PackageEvents::POST_PACKAGE_INSTALL => 'postPackageInstall',
