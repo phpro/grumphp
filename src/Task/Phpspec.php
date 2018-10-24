@@ -44,7 +44,7 @@ class Phpspec extends AbstractExternalTask
     public function run(ContextInterface $context): TaskResultInterface
     {
         $files = $context->getFiles()->name('*.php');
-        if (0 === count($files)) {
+        if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 

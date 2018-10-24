@@ -98,7 +98,7 @@ class TraverserConfigurator
         $visitorIds = array_values(array_intersect($registeredVisitorsIds, $configuredVisitorIds));
         $unknownConfiguredVisitorIds = array_diff($configuredVisitorIds, $registeredVisitorsIds);
 
-        if (count($unknownConfiguredVisitorIds)) {
+        if (\count($unknownConfiguredVisitorIds)) {
             throw new RuntimeException(
                 sprintf('Found unknown php_parser visitors: %s', implode(',', $unknownConfiguredVisitorIds))
             );
@@ -113,7 +113,7 @@ class TraverserConfigurator
             }
 
             $options = $configuredVisitors[$visitorAlias];
-            if ($visitor instanceof ConfigurableVisitorInterface && is_array($options)) {
+            if ($visitor instanceof ConfigurableVisitorInterface && \is_array($options)) {
                 $visitor->configure($options);
             }
 

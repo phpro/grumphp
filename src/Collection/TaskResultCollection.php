@@ -14,7 +14,7 @@ class TaskResultCollection extends ArrayCollection
 
     public function isPassed(): bool
     {
-        return TaskResult::PASSED == $this->getResultCode();
+        return TaskResult::PASSED === $this->getResultCode();
     }
 
     public function isFailed(): bool

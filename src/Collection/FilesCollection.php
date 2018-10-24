@@ -112,7 +112,7 @@ class FilesCollection extends ArrayCollection
 
     public function extensions(array $extensions): self
     {
-        if (!count($extensions)) {
+        if (!\count($extensions)) {
             return new self();
         }
 
@@ -184,7 +184,7 @@ class FilesCollection extends ArrayCollection
         }, iterator_to_array($fileList));
 
         return $this->filter(function (SplFileInfo $file) use ($allowedFiles) {
-            return in_array($file->getPathname(), $allowedFiles, true);
+            return \in_array($file->getPathname(), $allowedFiles, true);
         });
     }
 

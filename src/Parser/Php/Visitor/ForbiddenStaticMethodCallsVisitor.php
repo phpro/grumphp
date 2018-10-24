@@ -39,7 +39,7 @@ class ForbiddenStaticMethodCallsVisitor extends AbstractVisitor implements Confi
         $method = $node->name;
         $normalized = sprintf('%s::%s', $class, $method);
 
-        if (!in_array($normalized, $this->blacklist, true)) {
+        if (!\in_array($normalized, $this->blacklist, true)) {
             return;
         }
 

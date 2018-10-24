@@ -53,7 +53,7 @@ class Php7cc extends AbstractExternalTask
         $config = $this->getConfiguration();
         $files = $context->getFiles()->extensions($config['triggered_by']);
 
-        if (0 === count($files)) {
+        if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 

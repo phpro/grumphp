@@ -29,7 +29,7 @@ class TaskCompilerPass implements CompilerPassInterface
         foreach ($taggedServices as $id => $tags) {
             $taskTag = $this->getTaskTag($tags);
             $configKey = $taskTag['config'];
-            if (in_array($configKey, $tasksRegistered, true)) {
+            if (\in_array($configKey, $tasksRegistered, true)) {
                 throw new RuntimeException(
                     sprintf('The name of a task should be unique. Duplicate found: %s', $configKey)
                 );
@@ -41,7 +41,7 @@ class TaskCompilerPass implements CompilerPassInterface
             }
 
             // Load configuration and metadata:
-            $taskConfig = is_array($configuration[$configKey]) ? $configuration[$configKey] : [];
+            $taskConfig = \is_array($configuration[$configKey]) ? $configuration[$configKey] : [];
             $tasksMetadata[$configKey] = $this->parseTaskMetadata($taskConfig);
 
             // The metadata can't be part of the actual configuration.
@@ -76,7 +76,7 @@ class TaskCompilerPass implements CompilerPassInterface
             'blocking' => true,
         ]);
 
-        $metadata = isset($configuration['metadata']) ? $configuration['metadata'] : [];
+        $metadata = $configuration['metadata'] ?? [];
 
         return $resolver->resolve($metadata);
     }

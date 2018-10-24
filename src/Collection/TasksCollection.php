@@ -30,7 +30,7 @@ class TasksCollection extends ArrayCollection
         }
 
         return $this->filter(function (TaskInterface $task) use ($testSuite) {
-            return in_array($task->getName(), $testSuite->getTaskNames(), true);
+            return \in_array($task->getName(), $testSuite->getTaskNames(), true);
         });
     }
 

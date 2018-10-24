@@ -68,7 +68,7 @@ class PhpStan extends AbstractExternalTask
             $files = $files->ensureFiles($forcedFiles);
         }
 
-        if (0 === count($files)) {
+        if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 

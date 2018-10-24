@@ -70,12 +70,12 @@ class Phpcs extends AbstractExternalTask
 
         /** @var \GrumPHP\Collection\FilesCollection $files */
         $files = $context->getFiles();
-        if (0 !== count($whitelistPatterns)) {
+        if (\count($whitelistPatterns)) {
             $files = $files->paths($whitelistPatterns);
         }
         $files = $files->extensions($extensions);
 
-        if (0 === count($files)) {
+        if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 

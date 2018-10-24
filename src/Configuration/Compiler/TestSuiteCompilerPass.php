@@ -35,7 +35,7 @@ class TestSuiteCompilerPass implements CompilerPassInterface
         $options->setAllowedTypes('tasks', ['array']);
         $options->setAllowedValues('tasks', function (array $value) use ($registeredTasks) {
             foreach ($value as $task) {
-                if (!in_array($task, $registeredTasks, true)) {
+                if (!\in_array($task, $registeredTasks, true)) {
                     throw new InvalidOptionsException(sprintf(
                         'The testsuite option "tasks" contains the unknow task "%s". Expected one of %s',
                         $task,

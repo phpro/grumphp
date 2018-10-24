@@ -54,7 +54,7 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
 
     private function trimOutputLine(string $line, int $lineNumber): string
     {
-        if (strlen($line) < 80) {
+        if (\strlen($line) < 80) {
             return $line;
         }
 
@@ -66,14 +66,14 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
         //iterate over all WORD_COLORs and save the positions into $positionsWordColor
         while (false !== ($lastPos = mb_strpos($line, static::WORD_COLOR, $lastPos))) {
             $positionsWordColor[] = $lastPos;
-            $lastPos = $lastPos + mb_strlen(static::WORD_COLOR);
+            $lastPos += mb_strlen(static::WORD_COLOR);
         }
         $lastPos = 0;
 
         //iterate over all RESET_COLORs and save the positions into $positionsResetColor
         while (false !== ($lastPos = mb_strpos($line, static::RESET_COLOR, $lastPos))) {
             $positionsResetColor[] = $lastPos;
-            $lastPos = $lastPos + mb_strlen(static::RESET_COLOR);
+            $lastPos += mb_strlen(static::RESET_COLOR);
         }
 
         foreach ($positionsWordColor as $pos) {

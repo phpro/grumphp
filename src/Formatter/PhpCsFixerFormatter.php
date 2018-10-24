@@ -59,7 +59,7 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
     {
         $formatted = [];
         foreach ($json['files'] as $file) {
-            if (!is_array($file) || !isset($file['name'])) {
+            if (!\is_array($file) || !isset($file['name'])) {
                 $formatted[] = 'Invalid file: '.print_r($file, true);
                 continue;
             }

@@ -38,7 +38,7 @@ class ProcessArgumentsCollection extends ArrayCollection
 
     public function addOptionalCommaSeparatedArgument(string $argument, array $values, string $delimiter = ',')
     {
-        if (!count($values)) {
+        if (!\count($values)) {
             return;
         }
 
@@ -65,7 +65,7 @@ class ProcessArgumentsCollection extends ArrayCollection
 
     public function addSeparatedArgumentArray(string $argument, array $values)
     {
-        if (!count($values)) {
+        if (!\count($values)) {
             return;
         }
 

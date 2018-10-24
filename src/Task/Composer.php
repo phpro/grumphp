@@ -70,7 +70,7 @@ class Composer extends AbstractExternalTask
         $files = $context->getFiles()
             ->path(pathinfo($config['file'], PATHINFO_DIRNAME))
             ->name(pathinfo($config['file'], PATHINFO_BASENAME));
-        if (0 === count($files)) {
+        if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 

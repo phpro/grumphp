@@ -57,7 +57,7 @@ class Regex
 
     public function addPatternModifier(string $modifier)
     {
-        if (1 == !strlen($modifier) || !strstr(self::ALLOWED_MODIFIERS, $modifier)) {
+        if ('' === $modifier || false === strpos(self::ALLOWED_MODIFIERS, $modifier)) {
             throw new RuntimeException('Invalid regex modifier: '.$modifier);
         }
 
@@ -67,7 +67,7 @@ class Regex
         $modifiers = $matches[0];
 
         // Skip if the modifier is already available
-        if (false !== strstr($modifiers, $modifier)) {
+        if (false !== strpos($modifiers, $modifier)) {
             return;
         }
 

@@ -35,7 +35,7 @@ class ForbiddenFunctionCallsVisitor extends AbstractVisitor implements Configura
         }
 
         $function = $node->name;
-        if (!in_array($function, $this->blacklist, false)) {
+        if (!\in_array($function, $this->blacklist, false)) {
             return;
         }
 
