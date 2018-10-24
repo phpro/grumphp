@@ -68,7 +68,7 @@ class TaskCompilerPass implements CompilerPassInterface
         return $resolver->resolve(current($tags));
     }
 
-    private function parseTaskMetadata($configuration): array
+    private function parseTaskMetadata(array $configuration): array
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
