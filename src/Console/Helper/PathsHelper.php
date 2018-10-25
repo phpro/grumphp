@@ -80,7 +80,7 @@ class PathsHelper extends Helper
     /**
      * Load an ascii image.
      */
-    public function getAsciiContent($resource): string
+    public function getAsciiContent(string $resource): string
     {
         $file = $this->config->getAsciiContentPath($resource);
 
@@ -180,7 +180,7 @@ class PathsHelper extends Helper
      * Search a command in the bin folder
      * Note: the command locator is not injected because it needs the relative bin path.
      */
-    public function getBinCommand($command, bool $forceUnix = false): string
+    public function getBinCommand(string $command, bool $forceUnix = false): string
     {
         return $this->externalCommandLocator->locate($command, $forceUnix);
     }

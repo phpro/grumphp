@@ -108,7 +108,7 @@ class InitCommand extends Command
         $output->writeln('<fg=yellow>Watch out! GrumPHP is sniffing your commits!<fg=yellow>');
     }
 
-    protected function parseHookBody($hook, SplFileInfo $templateFile): string
+    protected function parseHookBody(string $hook, SplFileInfo $templateFile): string
     {
         $content = $this->filesystem->readFromFileInfo($templateFile);
         $replacements = [
@@ -122,7 +122,7 @@ class InitCommand extends Command
     /**
      * @throws \GrumPHP\Exception\FileNotFoundException
      */
-    protected function generateHookCommand($command): string
+    protected function generateHookCommand(string $command): string
     {
         $configFile = $this->useExoticConfigFile();
 

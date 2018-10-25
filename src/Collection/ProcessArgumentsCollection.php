@@ -126,7 +126,7 @@ class ProcessArgumentsCollection extends ArrayCollection
      * @param string   $argument
      * @param int|null $value
      */
-    public function addOptionalIntegerArgument($argument, $value)
+    public function addOptionalIntegerArgument(string $argument, $value)
     {
         if (null === $value) {
             return;

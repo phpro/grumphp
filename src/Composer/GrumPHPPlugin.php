@@ -159,7 +159,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * Run the GrumPHP console to (de)init the git hooks.
      */
-    protected function runGrumPhpCommand($command)
+    protected function runGrumPhpCommand(string $command)
     {
         $config = $this->composer->getConfig();
         $commandLocator = new ExternalCommand($config->get('bin-dir'), new ExecutableFinder());
