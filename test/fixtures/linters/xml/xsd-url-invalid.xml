@@ -2,7 +2,7 @@
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services
-            http://symfony.com/schema/dic/services/services-1.0.xsd"
+            https://gist.githubusercontent.com/veewee/6e65062d2db2795b5be80ef702a9bb11/raw/199e96652e2b06ee7faaadc1f430f86feca7925e/symfony-services.xsd"
 >
     <services>
         <service id="my_mailer" class="Acme\HelloBundle\Mailer">
