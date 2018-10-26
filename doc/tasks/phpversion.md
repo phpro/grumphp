@@ -9,7 +9,7 @@ It lives under the `phpversion` namespace and has following configurable paramet
 parameters:
     tasks:
         phpversion:
-            project: '7.0'
+            project: '7.2'
 ```
 
 **project**
