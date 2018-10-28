@@ -3,16 +3,16 @@
 namespace spec\GrumPHP\Console\Helper;
 
 use Composer\Config;
-use Composer\Package\RootPackage;
 use GrumPHP\Console\Helper\ComposerHelper;
+use GrumPHP\Util\ComposerFile;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Console\Helper\Helper;
 
 class ComposerHelperSpec extends ObjectBehavior
 {
-    function let(Config $config, RootPackage $rootPackage)
+    function let(ComposerFile $composerFile)
     {
-        $this->beConstructedWith($config, $rootPackage);
+        $this->beConstructedWith($composerFile);
     }
 
     function it_is_initializable()
@@ -25,23 +25,13 @@ class ComposerHelperSpec extends ObjectBehavior
         $this->shouldHaveType(Helper::class);
     }
 
-    function it_knows_if_the_composer_configuration_is_available()
+    function it_has_a_composer_file(ComposerFile $composerFile)
     {
-        $this->hasConfiguration()->shouldBe(true);
+        $this->getComposerFile()->shouldBe($composerFile);
     }
 
-    function it_has_composer_configuration(Config $config)
+    function it_has_a_name()
     {
-        $this->getConfiguration()->shouldBe($config);
-    }
-
-    function it_knows_if_the_composer_root_package_is_available()
-    {
-        $this->hasRootPackage()->shouldBe(true);
-    }
-
-    function it_has_composer_root_package(RootPackage $rootPackage)
-    {
-        $this->getRootPackage()->shouldBe($rootPackage);
+        $this->getName()->shouldBe(ComposerHelper::HELPER_NAME);
     }
 }

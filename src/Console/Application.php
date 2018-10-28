@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace GrumPHP\Console;
 
 use GrumPHP\Configuration\ContainerFactory;
-use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Exception\FileNotFoundException;
 use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Locator\ConfigurationFile;
-use GrumPHP\Util\Composer;
+use GrumPHP\Util\ComposerFile;
 use GrumPHP\Util\Filesystem;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -171,7 +171,7 @@ class Application extends SymfonyConsole
         $locator = new ConfigurationFile($this->filesystem);
         $this->configDefaultPath = $locator->locate(
             getcwd(),
-            $this->initializeComposerHelper()->getRootPackage()
+            $this->initializeComposerHelper()->getComposerFile()
         );
 
         return $this->configDefaultPath;
@@ -184,16 +184,14 @@ class Application extends SymfonyConsole
         }
 
         try {
-            $composerFile = getcwd().DIRECTORY_SEPARATOR.'composer.json';
-            $configuration = Composer::loadConfiguration();
-            Composer::ensureProjectBinDirInSystemPath($configuration->get('bin-dir'));
-            $rootPackage = Composer::loadRootPackageFromJson($composerFile, $configuration);
-        } catch (RuntimeException $e) {
-            $configuration = null;
-            $rootPackage = null;
+            $composerFileLocation = getcwd().DIRECTORY_SEPARATOR.'composer.json';
+            $composerFile = ComposerFile::createFrom($composerFileLocation);
+        } catch (FileNotFoundException $exception) {
+            $composerFile = ComposerFile::createEmpty();
         }
+        $composerFile->ensureProjectBinDirInSystemPath();
 
-        return $this->composerHelper = new Helper\ComposerHelper($configuration, $rootPackage);
+        return $this->composerHelper = new Helper\ComposerHelper($composerFile);
     }
 
     /**
