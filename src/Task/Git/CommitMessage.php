@@ -5,6 +5,7 @@ namespace GrumPHP\Task\Git;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Task\TraitExtraConfigTask;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use GrumPHP\Task\TaskInterface;
@@ -17,6 +18,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class CommitMessage implements TaskInterface
 {
+    use TraitExtraConfigTask;
+
     /**
      * @var GrumPHP
      */
@@ -44,6 +47,7 @@ class CommitMessage implements TaskInterface
     public function getConfiguration()
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
+        $this->alterConfig($configured);
 
         return $this->getConfigurableOptions()->resolve($configured);
     }

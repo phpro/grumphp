@@ -11,6 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FileSize implements TaskInterface
 {
+    use TraitExtraConfigTask;
+
     /**
      * @var GrumPHP
      */
@@ -38,6 +40,7 @@ class FileSize implements TaskInterface
     public function getConfiguration()
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
+        $this->alterConfig($configured);
 
         return $this->getConfigurableOptions()->resolve($configured);
     }

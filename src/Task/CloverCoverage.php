@@ -17,6 +17,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class CloverCoverage implements TaskInterface
 {
+    use TraitExtraConfigTask;
+
     /**
      * @var GrumPHP
      */
@@ -43,6 +45,7 @@ class CloverCoverage implements TaskInterface
     public function getConfiguration()
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
+        $this->alterConfig($configured);
 
         return $this->getConfigurableOptions()->resolve($configured);
     }

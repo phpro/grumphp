@@ -8,6 +8,8 @@ use GrumPHP\Process\ProcessBuilder;
 
 abstract class AbstractExternalTask implements TaskInterface
 {
+    use TraitExtraConfigTask;
+
     /**
      * @var GrumPHP
      */
@@ -41,6 +43,7 @@ abstract class AbstractExternalTask implements TaskInterface
     public function getConfiguration()
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
+        $this->alterConfig($configured);
 
         return $this->getConfigurableOptions()->resolve($configured);
     }

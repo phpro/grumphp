@@ -16,6 +16,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PhpVersion implements TaskInterface
 {
+    use TraitExtraConfigTask;
+
     /**
      * @var PhpVersionUtility
      */
@@ -86,6 +88,7 @@ class PhpVersion implements TaskInterface
     public function getConfiguration()
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
+        $this->alterConfig($configured);
 
         return $this->getConfigurableOptions()->resolve($configured);
     }

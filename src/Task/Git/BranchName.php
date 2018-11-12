@@ -4,6 +4,7 @@ namespace GrumPHP\Task\Git;
 
 use Gitonomy\Git\Exception\ProcessException;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Task\TraitExtraConfigTask;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -19,6 +20,7 @@ use Gitonomy\Git\Repository;
  */
 class BranchName implements TaskInterface
 {
+    use TraitExtraConfigTask;
 
     /**
      * @var GrumPHP
@@ -53,6 +55,7 @@ class BranchName implements TaskInterface
     public function getConfiguration()
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
+        $this->alterConfig($configured);
 
         return $this->getConfigurableOptions()->resolve($configured);
     }

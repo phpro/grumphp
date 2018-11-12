@@ -72,8 +72,12 @@ class ProgressSubscriber implements EventSubscriberInterface
      */
     public function advanceProgress(TaskEvent $event)
     {
-        $taskReflection = new ReflectionClass($event->getTask());
+        $task = $event->getTask();
+        $taskReflection = new ReflectionClass($task);
         $taskName = $taskReflection->getShortName();
+        if (method_exists($task, 'getExtraConfig') && $task->getExtraConfig('label')) {
+            $taskName = '[' . $taskName . '] ' . $task->getExtraConfig('label');
+        }
 
         $this->progressBar->setFormat($this->progressFormat);
         $this->progressBar->setMessage($taskName);

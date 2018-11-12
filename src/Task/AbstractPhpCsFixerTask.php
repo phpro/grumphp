@@ -18,6 +18,8 @@ use GrumPHP\Task\Context\RunContext;
  */
 abstract class AbstractPhpCsFixerTask implements TaskInterface
 {
+    use TraitExtraConfigTask;
+
     /**
      * @var GrumPHP
      */
@@ -72,6 +74,7 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
     public function getConfiguration()
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
+        $this->alterConfig($configured);
 
         return $this->getConfigurableOptions()->resolve($configured);
     }
