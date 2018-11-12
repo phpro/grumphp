@@ -18,6 +18,7 @@ class BranchNameSpec extends ObjectBehavior
     function let(GrumPHP $grumPHP, Repository $repository)
     {
         $this->beConstructedWith($grumPHP, $repository);
+        $this->setName('git_branch_name');
         $grumPHP->getTaskConfiguration('git_branch_name')->willReturn([
             'matchers' => ['test', '*es*', 'te[s][t]', '/^te(.*)/', '/(.*)st$/', '/t(e|a)st/', 'TEST'],
             'additional_modifiers' => 'i',

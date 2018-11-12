@@ -24,6 +24,7 @@ class RoboSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('robo')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('robo');
     }
 
     function it_is_initializable()

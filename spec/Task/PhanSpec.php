@@ -24,6 +24,7 @@ class PhanSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('phan')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('phan');
     }
 
     function it_is_initializable()

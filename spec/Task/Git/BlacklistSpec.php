@@ -24,6 +24,7 @@ class BlacklistSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('git_blacklist')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter, $consoleIO);
+        $this->setName('git_blacklist');
     }
 
     function it_is_initializable()

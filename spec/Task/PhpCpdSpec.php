@@ -25,6 +25,7 @@ class PhpCpdSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('phpcpd')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('phpcpd');
     }
 
     function it_is_initializable()

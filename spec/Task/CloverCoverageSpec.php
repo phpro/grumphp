@@ -19,6 +19,7 @@ class CloverCoverageSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('clover_coverage')->willReturn([]);
         $this->beConstructedWith($grumPHP, new Filesystem());
+        $this->setName('clover_coverage');
     }
 
     function it_is_initializable()

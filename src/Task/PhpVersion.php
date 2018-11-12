@@ -55,11 +55,9 @@ class PhpVersion implements TaskInterface
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(
-          [
+        $resolver->setDefaults([
             'project' => null,
-          ]
-        );
+        ]);
         $resolver->addAllowedTypes('project', ['null', 'string']);
 
         return $resolver;

@@ -15,6 +15,7 @@ class CommitMessageSpec extends ObjectBehavior
     function let(GrumPHP $grumPHP)
     {
         $this->beConstructedWith($grumPHP);
+        $this->setName('git_commit_message');
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
             'allow_empty_message' => true,
             'enforce_capitalized_subject' => false,

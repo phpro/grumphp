@@ -24,6 +24,7 @@ class PhpcsSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('phpcs')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('phpcs');
     }
 
     function it_is_initializable()

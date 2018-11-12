@@ -24,6 +24,7 @@ class ProgpilotSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('progpilot')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('progpilot');
     }
 
     function it_is_initializable()

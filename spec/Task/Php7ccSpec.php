@@ -24,6 +24,7 @@ class Php7ccSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('php7cc')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('php7cc');
     }
 
     function it_is_initializable()

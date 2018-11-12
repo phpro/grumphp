@@ -24,6 +24,7 @@ class GruntSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('grunt')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('grunt');
     }
 
     function it_is_initializable()

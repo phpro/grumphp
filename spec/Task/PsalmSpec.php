@@ -24,6 +24,7 @@ class PsalmSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration(Psalm::TASK_NAME)->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName(Psalm::TASK_NAME);
     }
 
     function it_is_initializable()

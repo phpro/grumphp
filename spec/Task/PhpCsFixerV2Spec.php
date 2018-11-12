@@ -30,6 +30,7 @@ class PhpCsFixerV2Spec extends ObjectBehavior
         $formatter->formatErrorMessage(Argument::cetera())->willReturn('');
 
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('phpcsfixer2');
     }
 
     function it_is_initializable()

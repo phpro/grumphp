@@ -24,6 +24,7 @@ class BehatSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('behat')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('behat');
     }
 
     function it_is_initializable()

@@ -24,6 +24,7 @@ class PhpspecSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('phpspec')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('phpspec');
     }
 
     function it_is_initializable()

@@ -25,6 +25,7 @@ class SecurityCheckerSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('securitychecker')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('securitychecker');
     }
 
     function it_is_initializable()

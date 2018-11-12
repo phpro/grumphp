@@ -24,6 +24,7 @@ class ComposerScriptSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('composer_script')->willReturn(['script' => 'test']);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('composer_script');
     }
 
     function it_is_initializable()

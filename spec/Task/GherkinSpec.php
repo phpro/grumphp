@@ -24,6 +24,7 @@ class GherkinSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('gherkin')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('gherkin');
     }
 
     function it_is_initializable()

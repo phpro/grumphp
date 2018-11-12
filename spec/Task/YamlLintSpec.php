@@ -24,6 +24,7 @@ class YamlLintSpec extends AbstractLinterTaskSpec
     {
         $grumPHP->getTaskConfiguration('yamllint')->willReturn([]);
         $this->beConstructedWith($grumPHP, $linter);
+        $this->setName('yamllint');
     }
 
     function it_is_initializable()

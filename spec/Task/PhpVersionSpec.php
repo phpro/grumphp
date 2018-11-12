@@ -21,6 +21,7 @@ class PhpVersionSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('phpversion')->willReturn([]);
         $this->beConstructedWith($grumPHP, $phpVersionUtility);
+        $this->setName('phpversion');
     }
 
     function it_is_initializable()

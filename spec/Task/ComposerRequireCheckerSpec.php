@@ -24,6 +24,7 @@ class ComposerRequireCheckerSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('composer_require_checker')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('composer_require_checker');
     }
 
     function it_is_initializable()

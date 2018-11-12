@@ -24,6 +24,7 @@ class PhpMdSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('phpmd')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('phpmd');
     }
 
     function it_is_initializable()

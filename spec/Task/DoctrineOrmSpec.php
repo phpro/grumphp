@@ -24,6 +24,7 @@ class DoctrineOrmSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('doctrine_orm')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('doctrine_orm');
     }
 
     function it_is_initializable()

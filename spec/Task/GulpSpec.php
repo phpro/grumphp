@@ -24,6 +24,7 @@ class GulpSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('gulp')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('gulp');
     }
 
     function it_is_initializable()

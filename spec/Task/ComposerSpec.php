@@ -25,6 +25,7 @@ class ComposerSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('composer')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter, $filesystem);
+        $this->setName('composer');
     }
 
     function it_is_initializable()

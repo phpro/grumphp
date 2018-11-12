@@ -24,6 +24,7 @@ class MakeSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('make')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('make');
     }
 
     function it_is_initializable()

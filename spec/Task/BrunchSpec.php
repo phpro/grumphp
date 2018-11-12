@@ -24,6 +24,7 @@ class BrunchSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('brunch')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('brunch');
     }
 
     function it_is_initializable()

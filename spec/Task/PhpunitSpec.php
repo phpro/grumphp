@@ -24,6 +24,7 @@ class PhpunitSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('phpunit')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('phpunit');
     }
 
     function it_is_initializable()

@@ -24,6 +24,7 @@ class InfectionSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('infection')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('infection');
     }
 
     function it_is_initializable()

@@ -24,6 +24,7 @@ class XmlLintSpec extends AbstractLinterTaskSpec
     {
         $grumPHP->getTaskConfiguration('xmllint')->willReturn([]);
         $this->beConstructedWith($grumPHP, $linter);
+        $this->setName('xmllint');
     }
 
     function it_is_initializable()

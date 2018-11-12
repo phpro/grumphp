@@ -22,6 +22,7 @@ class FileSizeSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('file_size')->willReturn([]);
         $this->beConstructedWith($grumPHP);
+        $this->setName('file_size');
     }
 
     function it_is_initializable()

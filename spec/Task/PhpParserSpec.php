@@ -16,6 +16,7 @@ class PhpParserSpec extends AbstractParserTaskSpec
         $parser->isInstalled()->willReturn(true);
         $grumPHP->getTaskConfiguration('phpparser')->willReturn([]);
         $this->beConstructedWith($grumPHP, $parser);
+        $this->setName('phpparser');
     }
 
     function it_is_initializable()

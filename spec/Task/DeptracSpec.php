@@ -24,6 +24,7 @@ class DeptracSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('deptrac')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('deptrac');
     }
 
     function it_is_initializable()

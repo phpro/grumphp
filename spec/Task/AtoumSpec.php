@@ -24,6 +24,7 @@ class AtoumSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('atoum')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('atoum');
     }
 
     function it_is_initializable()

@@ -24,6 +24,7 @@ class AntSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('ant')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('ant');
     }
 
     function it_is_initializable()

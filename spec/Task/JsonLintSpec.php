@@ -24,6 +24,7 @@ class JsonLintSpec extends AbstractLinterTaskSpec
     {
         $grumPHP->getTaskConfiguration('jsonlint')->willReturn([]);
         $this->beConstructedWith($grumPHP, $linter);
+        $this->setName('jsonlint');
     }
 
     function it_is_initializable()

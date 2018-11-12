@@ -26,6 +26,7 @@ class ShellSpec extends ObjectBehavior
             'scripts' => ['script.sh']
         ]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('shell');
     }
 
     function it_is_initializable()

@@ -24,6 +24,7 @@ class NpmScriptSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('npm_script')->willReturn(['script' => 'test', 'working_directory' => './']);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('npm_script');
     }
 
     function it_is_initializable()

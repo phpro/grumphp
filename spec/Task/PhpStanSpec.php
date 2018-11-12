@@ -24,6 +24,7 @@ class PhpStanSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('phpstan')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('phpstan');
     }
 
     function it_is_initializable()

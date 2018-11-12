@@ -24,6 +24,7 @@ class CodeceptionSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('codeception')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('codeception');
     }
 
     function it_is_initializable()

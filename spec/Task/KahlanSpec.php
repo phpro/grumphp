@@ -27,6 +27,7 @@ class KahlanSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('kahlan')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('kahlan');
     }
 
     function it_is_initializable()

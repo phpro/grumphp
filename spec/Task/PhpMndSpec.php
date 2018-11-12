@@ -24,6 +24,7 @@ class PhpMndSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('phpmnd')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('phpmnd');
     }
 
     function it_is_initializable()

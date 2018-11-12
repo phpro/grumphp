@@ -23,6 +23,7 @@ class PhpLintSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('phplint')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('phplint');
     }
 
     function it_is_initializable()

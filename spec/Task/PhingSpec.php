@@ -24,6 +24,7 @@ class PhingSpec extends ObjectBehavior
     {
         $grumPHP->getTaskConfiguration('phing')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
+        $this->setName('phing');
     }
 
     function it_is_initializable()
