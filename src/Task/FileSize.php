@@ -11,6 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FileSize implements TaskInterface
 {
+    use TraitTaskName;
+
     /**
      * @var GrumPHP
      */
@@ -22,14 +24,6 @@ class FileSize implements TaskInterface
     public function __construct(GrumPHP $grumPHP)
     {
         $this->grumPHP = $grumPHP;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'file_size';
     }
 
     /**

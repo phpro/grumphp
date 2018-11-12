@@ -17,14 +17,6 @@ class PhpParser extends AbstractParserTask
     const KIND_PHP7 = 'php7';
 
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'phpparser';
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getConfigurableOptions()

@@ -14,14 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ComposerScript extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'composer_script';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

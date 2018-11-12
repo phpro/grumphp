@@ -14,14 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PhpMd extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'phpmd';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

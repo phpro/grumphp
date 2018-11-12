@@ -42,14 +42,6 @@ class Composer extends AbstractExternalTask
     }
 
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'composer';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

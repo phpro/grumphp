@@ -15,14 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class XmlLint extends AbstractLinterTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'xmllint';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

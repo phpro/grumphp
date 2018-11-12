@@ -14,14 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class Atoum extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'atoum';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

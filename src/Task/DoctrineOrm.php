@@ -14,14 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class DoctrineOrm extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'doctrine_orm';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

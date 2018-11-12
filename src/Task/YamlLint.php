@@ -16,14 +16,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class YamlLint extends AbstractLinterTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'yamllint';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

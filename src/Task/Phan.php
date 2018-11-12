@@ -14,14 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class Phan extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'phan';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

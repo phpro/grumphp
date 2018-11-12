@@ -14,14 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class Phpunit extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'phpunit';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

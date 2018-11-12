@@ -8,6 +8,8 @@ use GrumPHP\Process\ProcessBuilder;
 
 abstract class AbstractExternalTask implements TaskInterface
 {
+    use TraitTaskName;
+
     /**
      * @var GrumPHP
      */

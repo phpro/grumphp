@@ -14,14 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PhpCpd extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'phpcpd';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

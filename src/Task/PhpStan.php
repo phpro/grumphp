@@ -14,14 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PhpStan extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'phpstan';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

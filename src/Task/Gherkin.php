@@ -14,14 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class Gherkin extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'gherkin';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

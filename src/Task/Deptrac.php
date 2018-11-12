@@ -15,14 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class Deptrac extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'deptrac';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

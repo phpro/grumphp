@@ -19,14 +19,6 @@ class Psalm extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return self::TASK_NAME;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();

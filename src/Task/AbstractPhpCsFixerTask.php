@@ -18,6 +18,8 @@ use GrumPHP\Task\Context\RunContext;
  */
 abstract class AbstractPhpCsFixerTask implements TaskInterface
 {
+    use TraitTaskName;
+
     /**
      * @var GrumPHP
      */

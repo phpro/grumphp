@@ -14,14 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class Infection extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'infection';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

@@ -14,14 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class Grunt extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'grunt';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

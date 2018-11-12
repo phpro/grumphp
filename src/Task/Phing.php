@@ -14,14 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class Phing extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'phing';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

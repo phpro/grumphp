@@ -14,14 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class NpmScript extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'npm_script';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

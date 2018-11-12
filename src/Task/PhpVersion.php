@@ -16,6 +16,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PhpVersion implements TaskInterface
 {
+    use TraitTaskName;
+
     /**
      * @var PhpVersionUtility
      */
@@ -35,6 +37,32 @@ class PhpVersion implements TaskInterface
     {
         $this->grumPHP = $grumPHP;
         $this->phpVersionUtility = $phpVersionUtility;
+    }
+
+    /**
+     * @return array
+     */
+    public function getConfiguration()
+    {
+        $configured = $this->grumPHP->getTaskConfiguration($this->getName());
+
+        return $this->getConfigurableOptions()->resolve($configured);
+    }
+
+    /**
+     * @return OptionsResolver
+     */
+    public function getConfigurableOptions()
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(
+          [
+            'project' => null,
+          ]
+        );
+        $resolver->addAllowedTypes('project', ['null', 'string']);
+
+        return $resolver;
     }
 
     /**
@@ -78,39 +106,5 @@ class PhpVersion implements TaskInterface
         }
 
         return TaskResult::createPassed($this, $context);
-    }
-
-    /**
-     * @return array
-     */
-    public function getConfiguration()
-    {
-        $configured = $this->grumPHP->getTaskConfiguration($this->getName());
-
-        return $this->getConfigurableOptions()->resolve($configured);
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'phpversion';
-    }
-
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
-    {
-        $resolver = new OptionsResolver();
-        $resolver->setDefaults(
-            [
-                'project' => null,
-            ]
-        );
-        $resolver->addAllowedTypes('project', ['null', 'string']);
-
-        return $resolver;
     }
 }

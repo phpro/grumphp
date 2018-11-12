@@ -40,14 +40,6 @@ class Blacklist extends AbstractExternalTask
     }
 
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'git_blacklist';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

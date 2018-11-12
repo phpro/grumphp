@@ -16,14 +16,6 @@ class SecurityChecker extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'securitychecker';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigurableOptions()
     {
         $resolver = new OptionsResolver();

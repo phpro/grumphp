@@ -14,14 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ComposerRequireChecker extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'composer_require_checker';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

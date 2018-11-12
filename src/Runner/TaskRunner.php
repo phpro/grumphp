@@ -49,13 +49,16 @@ class TaskRunner
 
     /**
      * @param TaskInterface $task
+     * @param string $configKey
      */
-    public function addTask(TaskInterface $task)
+    public function addTask(TaskInterface $task, $configKey = NULL)
     {
         if ($this->tasks->contains($task)) {
             return;
         }
-
+        if ($configKey !== NULL && method_exists($task, 'setName')) {
+            $task->setName($configKey);
+        }
         $this->tasks->add($task);
     }
 

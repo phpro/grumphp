@@ -15,14 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class Shell extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'shell';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

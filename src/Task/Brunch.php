@@ -14,14 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class Brunch extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'brunch';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

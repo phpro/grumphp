@@ -14,14 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class Progpilot extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'progpilot';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

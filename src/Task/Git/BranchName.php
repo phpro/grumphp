@@ -4,6 +4,7 @@ namespace GrumPHP\Task\Git;
 
 use Gitonomy\Git\Exception\ProcessException;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Task\TraitTaskName;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -19,6 +20,7 @@ use Gitonomy\Git\Repository;
  */
 class BranchName implements TaskInterface
 {
+    use TraitTaskName;
 
     /**
      * @var GrumPHP
@@ -37,14 +39,6 @@ class BranchName implements TaskInterface
     {
         $this->grumPHP = $grumPHP;
         $this->repository = $repository;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'git_branch_name';
     }
 
     /**

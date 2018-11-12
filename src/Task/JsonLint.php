@@ -15,14 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class JsonLint extends AbstractLinterTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'jsonlint';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

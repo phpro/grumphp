@@ -14,14 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class Phpspec extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'phpspec';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

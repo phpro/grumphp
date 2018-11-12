@@ -14,14 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PhpCsFixerV2 extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'phpcsfixer2';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

@@ -48,7 +48,7 @@ class TaskCompilerPass implements CompilerPassInterface
             $tasksConfiguration[$configKey] = $taskConfig;
 
             // Add the task to the task runner:
-            $definition->addMethodCall('addTask', [new Reference($id)]);
+            $definition->addMethodCall('addTask', [new Reference($id), $configKey]);
         }
 
         sort($tasksRegistered);

@@ -14,14 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PhpLint extends AbstractExternalTask
 {
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'phplint';
-    }
-
-    /**
      * @return OptionsResolver
      */
     public function getConfigurableOptions()

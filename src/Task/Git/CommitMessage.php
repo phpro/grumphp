@@ -5,6 +5,7 @@ namespace GrumPHP\Task\Git;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Task\TraitTaskName;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use GrumPHP\Task\TaskInterface;
@@ -17,6 +18,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class CommitMessage implements TaskInterface
 {
+    use TraitTaskName;
+
     /**
      * @var GrumPHP
      */
@@ -28,14 +31,6 @@ class CommitMessage implements TaskInterface
     public function __construct(GrumPHP $grumPHP)
     {
         $this->grumPHP = $grumPHP;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'git_commit_message';
     }
 
     /**
