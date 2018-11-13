@@ -44,6 +44,9 @@ class ShellSpec extends ObjectBehavior
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('scripts');
         $options->getDefinedOptions()->shouldContain('triggered_by');
+        $options->getDefinedOptions()->shouldContain('include_files');
+        $options->getDefinedOptions()->shouldContain('include_files_with_comma');
+        $options->getDefinedOptions()->shouldContain('include_files_parameter');
     }
 
     function it_should_normalize_the_scripts_option()
