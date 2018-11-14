@@ -41,6 +41,7 @@ class PhpLintSpec extends ObjectBehavior
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('jobs');
         $options->getDefinedOptions()->shouldContain('exclude');
+        $options->getDefinedOptions()->shouldContain('ignore_patterns');
         $options->getDefinedOptions()->shouldContain('triggered_by');
     }
 
