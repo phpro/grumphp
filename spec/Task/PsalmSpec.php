@@ -46,6 +46,7 @@ class PsalmSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('report');
         $options->getDefinedOptions()->shouldContain('threads');
         $options->getDefinedOptions()->shouldContain('triggered_by');
+        $options->getDefinedOptions()->shouldContain('show_info');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)

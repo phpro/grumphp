@@ -20,6 +20,7 @@ parameters:
             report: ~ 
             threads: 1
             triggered_by: ['php']
+            show_info: false
 ```
 
 
@@ -65,3 +66,9 @@ This parameter defines on how many threads Psalm's analysis stage is ran.
 *Default: [php]*
 
 This is a list of extensions to be sniffed.
+
+**show_info**
+
+*Default: false*
+
+Show non-exception parser findings
