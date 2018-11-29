@@ -37,13 +37,16 @@ class Psalm extends AbstractExternalTask
             'report' => null,
             'threads' => null,
             'triggered_by' => ['php'],
+            'show_info' => false,
         ]);
+
         $resolver->addAllowedTypes('config', ['null', 'string']);
         $resolver->addAllowedTypes('ignore_patterns', ['array']);
         $resolver->addAllowedTypes('no_cache', ['bool']);
         $resolver->addAllowedTypes('report', ['null', 'string']);
         $resolver->addAllowedTypes('threads', ['null', 'int']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
+        $resolver->addAllowedTypes('show_info', ['bool']);
 
         return $resolver;
     }
@@ -77,6 +80,7 @@ class Psalm extends AbstractExternalTask
         $arguments->addOptionalArgument('--report=%s', $config['report']);
         $arguments->addOptionalArgument('--no-cache', $config['no_cache']);
         $arguments->addOptionalArgument('--threads=%d', $config['threads']);
+        $arguments->addOptionalBooleanArgument('--show-info=%s', $config['show_info'], 'true', 'false');
 
         if ($context instanceof GitPreCommitContext) {
             $arguments->addFiles($files);
