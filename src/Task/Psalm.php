@@ -80,7 +80,6 @@ class Psalm extends AbstractExternalTask
         $arguments->addOptionalArgument('--report=%s', $config['report']);
         $arguments->addOptionalArgument('--no-cache', $config['no_cache']);
         $arguments->addOptionalArgument('--threads=%d', $config['threads']);
-        $arguments->addOptionalArgument('--show-info=%d', $config['show_info']);
         $arguments->addOptionalBooleanArgument('--show-info=%s', $config['show_info'], 'true', 'false');
 
         if ($context instanceof GitPreCommitContext) {
