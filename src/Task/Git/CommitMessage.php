@@ -139,7 +139,15 @@ class CommitMessage implements TaskInterface
         }
 
         if (\count($exceptions)) {
-            return TaskResult::createFailed($this, $context, implode(PHP_EOL, $exceptions));
+            return TaskResult::createFailed(
+                $this,
+                $context,
+                implode(PHP_EOL, $exceptions).PHP_EOL.sprintf(
+                    'Original commit message: %s%s',
+                    PHP_EOL,
+                    $commitMessage
+                )
+            );
         }
 
         return $this->enforceTextWidth($context);
