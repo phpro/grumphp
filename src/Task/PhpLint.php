@@ -7,6 +7,7 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Process\InputStream;
 
 /**
  * PHP parallel lint task.
@@ -60,10 +61,15 @@ class PhpLint extends AbstractExternalTask
         $arguments->add('--no-colors');
         $arguments->addOptionalArgumentWithSeparatedValue('-j', $config['jobs']);
         $arguments->addArgumentArrayWithSeparatedValue('--exclude', $config['exclude']);
-        $arguments->addFiles($files);
+        $arguments->add('--stdin');
 
+        $inputStream = new InputStream();
         $process = $this->processBuilder->buildProcess($arguments);
-        $process->run();
+        $process->setInput($inputStream);
+        $process->start();
+        $inputStream->write(\implode($files->toArray(), PHP_EOL));
+        $inputStream->close();
+        $process->wait();
 
         if (!$process->isSuccessful()) {
             return TaskResult::createFailed($this, $context, $this->formatter->format($process));
