@@ -97,7 +97,7 @@ class BranchName implements TaskInterface
             }
         }
 
-        if (count($exceptions)) {
+        if (\count($exceptions)) {
             return TaskResult::createFailed($this, $context, implode(PHP_EOL, $exceptions));
         }
 

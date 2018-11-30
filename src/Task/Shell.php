@@ -54,7 +54,7 @@ class Shell extends AbstractExternalTask
     {
         $config = $this->getConfiguration();
         $files = $context->getFiles()->extensions($config['triggered_by']);
-        if (0 === count($files)) {
+        if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 
@@ -67,7 +67,7 @@ class Shell extends AbstractExternalTask
             }
         }
 
-        if (count($exceptions)) {
+        if (\count($exceptions)) {
             return TaskResult::createFailed($this, $context, implode(PHP_EOL, $exceptions));
         }
 

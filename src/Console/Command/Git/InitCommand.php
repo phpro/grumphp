@@ -144,7 +144,7 @@ class InitCommand extends Command
     {
         try {
             $configPath = $this->paths()->getAbsolutePath($this->input->getOption('config'));
-            if ($configPath != $this->paths()->getDefaultConfigPath()) {
+            if ($configPath !== $this->paths()->getDefaultConfigPath()) {
                 return $this->paths()->getRelativeProjectPath($configPath);
             }
         } catch (FileNotFoundException $e) {

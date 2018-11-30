@@ -45,7 +45,7 @@ class TaskRunnerContext
 
     public function setSkipSuccessOutput(bool $skipSuccessOutput)
     {
-        $this->skipSuccessOutput = (bool) $skipSuccessOutput;
+        $this->skipSuccessOutput = $skipSuccessOutput;
     }
 
     public function hasTestSuite(): bool

@@ -55,7 +55,7 @@ class ProcessBuilder
             return;
         }
 
-        if (strlen($process->getCommandLine()) <= Platform::WINDOWS_COMMANDLINE_STRING_LIMITATION) {
+        if (\strlen($process->getCommandLine()) <= Platform::WINDOWS_COMMANDLINE_STRING_LIMITATION) {
             return;
         }
 

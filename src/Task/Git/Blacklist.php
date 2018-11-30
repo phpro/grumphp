@@ -82,12 +82,12 @@ class Blacklist extends AbstractExternalTask
         $extensions = $config['triggered_by'];
 
         $files = $context->getFiles();
-        if (0 !== count($whitelistPatterns)) {
+        if (0 !== \count($whitelistPatterns)) {
             $files = $files->paths($whitelistPatterns);
         }
         $files = $files->extensions($extensions);
 
-        if (0 === count($files) || empty($config['keywords'])) {
+        if (0 === \count($files) || empty($config['keywords'])) {
             return TaskResult::createSkipped($this, $context);
         }
 

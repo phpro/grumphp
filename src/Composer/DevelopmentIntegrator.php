@@ -45,6 +45,6 @@ class DevelopmentIntegrator
 
     private static function noramlizePath(string $path): string
     {
-        return strtr($path, '/', DIRECTORY_SEPARATOR);
+        return str_replace('/', DIRECTORY_SEPARATOR, $path);
     }
 }

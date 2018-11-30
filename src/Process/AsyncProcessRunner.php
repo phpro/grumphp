@@ -56,7 +56,7 @@ class AsyncProcessRunner
             }
         }
 
-        return 0 !== count($this->processes);
+        return 0 !== \count($this->processes);
     }
 
     private function handleProcess(Process $process): bool

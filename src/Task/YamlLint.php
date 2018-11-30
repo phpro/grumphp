@@ -54,10 +54,10 @@ class YamlLint extends AbstractLinterTask
 
         /** @var FilesCollection $files */
         $files = $context->getFiles()->name($extensions);
-        if (count($whitelistPatterns) >= 1) {
+        if (\count($whitelistPatterns)) {
             $files = $context->getFiles()->paths($whitelistPatterns)->name($extensions);
         }
-        if (0 === count($files)) {
+        if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 

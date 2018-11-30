@@ -138,7 +138,7 @@ class CommitMessage implements TaskInterface
             }
         }
 
-        if (count($exceptions)) {
+        if (\count($exceptions)) {
             return TaskResult::createFailed($this, $context, implode(PHP_EOL, $exceptions));
         }
 
@@ -167,7 +167,7 @@ class CommitMessage implements TaskInterface
         }
 
         if ($config['max_body_width'] > 0) {
-            foreach (array_slice($lines, 2) as $index => $line) {
+            foreach (\array_slice($lines, 2) as $index => $line) {
                 if (mb_strlen(rtrim($line)) > $config['max_body_width']) {
                     $errors[] = sprintf(
                         'Line %u of commit message has > %u characters.',
@@ -178,7 +178,7 @@ class CommitMessage implements TaskInterface
             }
         }
 
-        if (count($errors) > 0) {
+        if (\count($errors)) {
             return TaskResult::createFailed($this, $context, implode(PHP_EOL, $errors));
         }
 
@@ -267,11 +267,7 @@ class CommitMessage implements TaskInterface
 
         $firstLetter = $match[1];
 
-        if (1 !== preg_match('/^(fixup|squash)!/u', $subject) && 1 !== preg_match('/[[:upper:]]/u', $firstLetter)) {
-            return false;
-        }
-
-        return true;
+        return !(1 !== preg_match('/^(fixup|squash)!/u', $subject) && 1 !== preg_match('/[[:upper:]]/u', $firstLetter));
     }
 
     private function subjectIsSingleLined(ContextInterface $context): bool
@@ -284,11 +280,7 @@ class CommitMessage implements TaskInterface
 
         $lines = $this->getCommitMessageLinesWithoutComments($commitMessage);
 
-        if (array_key_exists(1, $lines) && '' !== trim($lines[1])) {
-            return false;
-        }
-
-        return true;
+        return !(array_key_exists(1, $lines) && '' !== trim($lines[1]));
     }
 
     private function getCommitMessageLinesWithoutComments(string $commitMessage): array

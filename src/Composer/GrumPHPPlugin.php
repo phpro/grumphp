@@ -137,7 +137,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 
     protected function guardIsGrumPhpPackage(PackageInterface $package): bool
     {
-        return self::PACKAGE_NAME == $package->getName();
+        return self::PACKAGE_NAME === $package->getName();
     }
 
     /**

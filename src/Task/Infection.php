@@ -68,7 +68,7 @@ class Infection extends AbstractExternalTask
 
         $files = $files->notPaths($config['ignore_patterns']);
 
-        if (0 === count($files)) {
+        if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 
