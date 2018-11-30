@@ -44,12 +44,14 @@ class BranchName implements TaskInterface
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'matchers' => [],
+            'blacklist' => [],
+            'whitelist' => [],
             'additional_modifiers' => '',
             'allow_detached_head' => true,
         ]);
 
-        $resolver->addAllowedTypes('matchers', ['array']);
+        $resolver->addAllowedTypes('blacklist', ['array']);
+        $resolver->addAllowedTypes('whitelist', ['array']);
         $resolver->addAllowedTypes('additional_modifiers', ['string']);
         $resolver->addAllowedTypes('allow_detached_head', ['bool']);
 
@@ -61,22 +63,10 @@ class BranchName implements TaskInterface
         return $context instanceof RunContext || $context instanceof GitPreCommitContext;
     }
 
-    private function runMatcher(array $config, string $name, string $rule)
-    {
-        $regex = new Regex($rule);
-
-        $additionalModifiersArray = array_filter(str_split($config['additional_modifiers']));
-        array_map([$regex, 'addPatternModifier'], $additionalModifiersArray);
-
-        if (!preg_match((string) $regex, $name)) {
-            throw new RuntimeException("Rule not matched: $rule");
-        }
-    }
-
     public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
-        $exceptions = [];
+        $errors = [];
 
         try {
             $name = trim($this->repository->run('symbolic-ref', ['HEAD', '--short']));
@@ -89,16 +79,29 @@ class BranchName implements TaskInterface
             return TaskResult::createFailed($this, $context, $message);
         }
 
-        foreach ($config['matchers'] as $rule) {
-            try {
-                $this->runMatcher($config, $name, $rule);
-            } catch (RuntimeException $e) {
-                $exceptions[] = $e->getMessage();
+        foreach ($config['blacklist'] as $rule) {
+            $regex = new Regex($rule);
+
+            $additionalModifiersArray = array_filter(str_split($config['additional_modifiers']));
+            array_map([$regex, 'addPatternModifier'], $additionalModifiersArray);
+
+            if (preg_match((string)$regex, $name)) {
+                $errors[] = sprintf('Matched blacklist rule: %s', $rule);
+            }
+        }
+        foreach ($config['whitelist'] as $rule) {
+            $regex = new Regex($rule);
+
+            $additionalModifiersArray = array_filter(str_split($config['additional_modifiers']));
+            array_map([$regex, 'addPatternModifier'], $additionalModifiersArray);
+
+            if (!preg_match((string) $regex, $name)) {
+                $errors[] = sprintf('Whitelist rule not matched: %s', $rule);
             }
         }
 
-        if (\count($exceptions)) {
-            return TaskResult::createFailed($this, $context, implode(PHP_EOL, $exceptions));
+        if (\count($errors)) {
+            return TaskResult::createFailed($this, $context, implode(PHP_EOL, $errors));
         }
 
         return TaskResult::createPassed($this, $context);
