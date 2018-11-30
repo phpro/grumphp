@@ -107,6 +107,8 @@ class TaskRunnerHelper extends Helper
             );
         }
 
+        $this->returnAdditionalInfo($output);
+
         return self::CODE_ERROR;
     }
 
@@ -118,6 +120,7 @@ class TaskRunnerHelper extends Helper
         }
 
         $this->returnWarningMessages($output, $warnings);
+        $this->returnAdditionalInfo($output);
 
         return self::CODE_SUCCESS;
     }
@@ -126,6 +129,16 @@ class TaskRunnerHelper extends Helper
     {
         foreach ($warningMessages as $warningMessage) {
             $output->writeln('<fg=yellow>'.$warningMessage.'</fg=yellow>');
+        }
+    }
+
+    /**
+     * @param OutputInterface $output
+     */
+    private function returnAdditionalInfo(OutputInterface $output)
+    {
+        if (null !== $this->config->getAdditionalInfo()) {
+            $output->writeln($this->config->getAdditionalInfo());
         }
     }
 

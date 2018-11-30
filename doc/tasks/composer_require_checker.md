@@ -23,13 +23,13 @@ parameters:
 
 **composer_file**
 
-*Default: ~*
+*Default: null*
 
 The composer.json of your code base that should be checked.
 
 **config_file**
 
-*Default: ~*
+*Default: null*
 
 Composer Require Checker is configured to whitelist some symbols by default. You can now override this configuration
 with your own and tell GrumPHP to use that configuration file instead.
@@ -44,6 +44,6 @@ This option is only available in version 0.2.0 of `maglnet/composer-require-chec
 
 **triggered_by**
 
-*Default: ['composer.json', 'composer.lock', '*.php']*
+*Default: ['composer.json', 'composer.lock', '\*.php']*
 
 This is a list of file names that should trigger this task.

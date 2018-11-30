@@ -44,6 +44,7 @@ parameters:
         phpspec: ~
         phpstan: ~
         phpunit: ~
+        phpunitbridge: ~
         phpversion: ~
         progpilot: ~
         psalm: ~    
@@ -95,6 +96,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Phpspec](tasks/phpspec.md)
 - [PHPStan](tasks/phpstan.md)
 - [Phpunit](tasks/phpunit.md)
+- [Phpunit bridge](tasks/phpunitbridge.md)
 - [PhpVersion](tasks/phpversion.md)
 - [Progpilot](tasks/progpilot.md)
 - [Psalm](tasks/psalm.md)

@@ -79,6 +79,14 @@ class GrumPHP
         return (float) $timeout;
     }
 
+    /**
+     * @return null|string
+     */
+    public function getAdditionalInfo()
+    {
+        return $this->container->getParameter('additional_info');
+    }
+
     public function getRegisteredTasks(): array
     {
         return $this->container->getParameter('grumphp.tasks.registered');
@@ -124,6 +132,10 @@ class GrumPHP
      */
     public function getAsciiContentPath(string $resource)
     {
+        if (null === $this->container->getParameter('ascii')) {
+            return null;
+        }
+
         $paths = $this->container->getParameter('ascii');
         if (!array_key_exists($resource, $paths)) {
             return null;

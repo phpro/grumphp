@@ -36,6 +36,7 @@ class BranchNameSpec extends ObjectBehavior
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('matchers');
         $options->getDefinedOptions()->shouldContain('additional_modifiers');
+        $options->getDefinedOptions()->shouldContain('allow_detached_head');
     }
 
     function it_is_initializable()

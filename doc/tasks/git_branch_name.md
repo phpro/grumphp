@@ -11,6 +11,7 @@ parameters:
             matchers:
                 Branch name must contain JIRA issue number: /JIRA-\d+/
             additional_modifiers: ''
+            allow_detached_head: true
 ```
 
 **matchers**

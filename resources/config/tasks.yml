@@ -327,6 +327,15 @@ services:
         tags:
             - {name: grumphp.task, config: phpunit}
 
+    task.phpunitbridge:
+        class: GrumPHP\Task\PhpunitBridge
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: phpunitbridge}
+
     task.phpversion:
         class: GrumPHP\Task\PhpVersion
         arguments:

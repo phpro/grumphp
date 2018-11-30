@@ -13,6 +13,7 @@ parameters:
     process_async_limit: 10
     process_async_wait: 1000
     process_timeout: 60
+    additonal_info: ~
     ascii:
         failed: resource/grumphp-grumpy.txt
         succeeded: resource/grumphp-happy.txt
@@ -108,6 +109,28 @@ If you've got tools that run more then 60 seconds, you can increase this paramet
 It is also possible to disable the timeout by setting the value to `null`.
 When receiving a `Symfony\Component\Process\Exception\ProcessTimedOutException` during the execution of GrumPHP, you probably need to increment this setting.
 
+**additional_info**
+
+*Default: null*
+
+This parameter will display additional information at the end of a `success` *or* `error` task.
+
+```yaml
+# grumphp.yml
+parameters:
+  additional_info: "\nTo get full documentation for the project!\nVisit https://docs.example.com\n"
+```
+
+*Example Result:*
+```
+GrumPHP is sniffing your code!
+Running task 1/1: Phpcs... ✔
+
+To get full documentation for the project!
+Visit https://docs.example.com
+
+```
+
 **ascii**
 
 *Default: {failed: grumphp-grumpy.txt, succeeded: grumphp-happy.txt}*
@@ -132,7 +155,15 @@ parameters:
             - resource/grumphp-happy3.txt
 ```
 
-To disable banner set ascii images path to `~`:
+To disable all banners set ascii to `~`:
+
+```yaml
+# grumphp.yml
+parameters:
+    ascii: ~
+```
+
+To disable a specific banner set ascii image path to `~`:
 
 ```yaml
 # grumphp.yml
