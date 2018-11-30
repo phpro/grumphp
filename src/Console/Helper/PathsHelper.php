@@ -148,7 +148,8 @@ class PathsHelper extends Helper
         if (is_file($gitRepoPath)) {
             $fileContent = $this->fileSystem->readFromFileInfo(new SplFileInfo($gitRepoPath));
             if (preg_match('/gitdir:\s+(\S+)/', $fileContent, $matches)) {
-                return $this->getRelativePath($gitPath.$matches[1].'/hooks/');
+                $relativePath = $this->getRelativePath($matches[1]);
+                return $this->getRelativePath($gitPath.$relativePath.'/hooks/');
             }
         }
 

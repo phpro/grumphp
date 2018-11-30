@@ -12,6 +12,7 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\Util\Regex;
+use GrumPHP\Util\Str;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CommitMessage implements TaskInterface
@@ -41,18 +42,22 @@ class CommitMessage implements TaskInterface
         $resolver->setDefaults([
             'allow_empty_message' => false,
             'enforce_capitalized_subject' => true,
+            'enforce_no_subject_punctuations' => false,
             'enforce_no_subject_trailing_period' => true,
             'enforce_single_lined_subject' => true,
             'max_body_width' => 72,
             'max_subject_width' => 60,
             'case_insensitive' => true,
             'multiline' => true,
+            'type_scope_conventions' => [],
             'matchers' => [],
             'additional_modifiers' => '',
         ]);
 
         $resolver->addAllowedTypes('allow_empty_message', ['bool']);
+        $resolver->addAllowedTypes('type_scope_conventions', ['array']);
         $resolver->addAllowedTypes('enforce_capitalized_subject', ['bool']);
+        $resolver->addAllowedTypes('enforce_no_subject_punctuations', ['bool']);
         $resolver->addAllowedTypes('enforce_no_subject_trailing_period', ['bool']);
         $resolver->addAllowedTypes('enforce_single_lined_subject', ['bool']);
         $resolver->addAllowedTypes('max_body_width', ['int']);
@@ -100,12 +105,29 @@ class CommitMessage implements TaskInterface
             );
         }
 
+        if ((bool) $config['enforce_no_subject_punctuations'] && $this->subjectHasPunctuations($context)) {
+            return TaskResult::createFailed(
+                $this,
+                $context,
+                'Please omit all punctuations from commit message subject.'
+            );
+        }
+
         if ((bool) $config['enforce_no_subject_trailing_period'] && $this->subjectHasTrailingPeriod($context)) {
             return TaskResult::createFailed(
                 $this,
                 $context,
                 'Please omit trailing period from commit message subject.'
             );
+        }
+
+
+        if ((bool) $this->enforceTypeScopeConventions()) {
+            try {
+                $this->checkTypeScopeConventions($context);
+            } catch (RuntimeException $e) {
+                $exceptions[] = $e->getMessage();
+            }
         }
 
         foreach ($config['matchers'] as $ruleName => $rule) {
@@ -192,17 +214,26 @@ class CommitMessage implements TaskInterface
         return mb_strlen($match[0]);
     }
 
-    private function subjectHasTrailingPeriod(ContextInterface $context): bool
+    private function subjectHasPunctuations(ContextInterface $context): bool
     {
-        $commitMessage = $context->getCommitMessage();
+        $subjectLine = $this->getSubjectLine($context);
 
-        if ('' === trim($commitMessage)) {
+        if (trim($subjectLine) === '') {
             return false;
         }
 
-        $lines = $this->getCommitMessageLinesWithoutComments($commitMessage);
+        return Str::containsOneOf($subjectLine, ['.', '!', '?', ',']);
+    }
 
-        if ('.' !== mb_substr(rtrim($lines[0]), -1)) {
+    private function subjectHasTrailingPeriod(ContextInterface $context): bool
+    {
+        $subjectLine = $this->getSubjectLine($context);
+
+        if ('' === trim($subjectLine)) {
+            return false;
+        }
+
+        if ('.' !== mb_substr(rtrim($subjectLine), -1)) {
             return false;
         }
 
@@ -267,5 +298,70 @@ class CommitMessage implements TaskInterface
         return array_values(array_filter($lines, function ($line) {
             return 0 !== strpos($line, '#');
         }));
+    }
+
+    private function enforceTypeScopeConventions()
+    {
+        $config = $this->getConfiguration();
+
+        $conventionsKeys = array_keys($config['type_scope_conventions']);
+
+        return in_array('types', $conventionsKeys) || in_array('scopes', $conventionsKeys);
+    }
+
+    /**
+     * @param ContextInterface $context
+     *
+     * @return void;
+     * @throws RuntimeException
+     */
+    private function checkTypeScopeConventions($context)
+    {
+        $config = $this->getConfiguration();
+        $subjectLine = $this->getSubjectLine($context);
+
+        $types = isset($config['type_scope_conventions']['types'])
+            ? $config['type_scope_conventions']['types']
+            : [];
+
+        $scopes = isset($config['type_scope_conventions']['scopes'])
+            ? $config['type_scope_conventions']['scopes']
+            : [];
+
+        $typesPattern = '([a-zA-Z0-9]+)';
+        $scopesPattern = '(:\s|(\(.+\)?:\s))';
+        $subjectPattern = '([a-zA-Z0-9-_ #@\'\/\\"]+)';
+        $mergePattern = '(Merge branch \'.+\'\s.+|Merge remote-tracking branch \'.+\'|Merge pull request #\d+\s.+)';
+
+        if (count($types) > 0) {
+            $types = implode($types, '|');
+            $typesPattern = '(' . $types . ')';
+        }
+
+        if (count($scopes) > 0) {
+            $scopes = implode($scopes, '|');
+            $scopesPattern = '(:\s|(\(' . $scopes . '\)?:\s))';
+        }
+
+        $rule = '/^' . $typesPattern . $scopesPattern . $subjectPattern . '|' . $mergePattern . '/';
+
+        try {
+            $this->runMatcher($config, $subjectLine, $rule, 'Invalid Type/Scope Format');
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Gets a clean subject line from the commit message
+     *
+     * @param $context
+     * @return string
+     */
+    private function getSubjectLine($context)
+    {
+        $commitMessage = $context->getCommitMessage();
+        $lines = $this->getCommitMessageLinesWithoutComments($commitMessage);
+        return (string) $lines[0];
     }
 }

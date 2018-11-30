@@ -39,6 +39,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         $runnerContext->hasTestSuite()->willReturn(false);
         $runnerContext->skipSuccessOutput()->willReturn(false);
 
+        $config->getAdditionalInfo()->willReturn(null);
         $config->hideCircumventionTip()->willReturn(false);
     }
 

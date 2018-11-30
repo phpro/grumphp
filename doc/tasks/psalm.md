@@ -20,12 +20,13 @@ parameters:
             report: ~ 
             threads: 1
             triggered_by: ['php']
+            show_info: false
 ```
 
 
 **config**
 
-*Default: ~*
+*Default: null*
 
 With this parameter you can specify the path your project's configuration file.
 
@@ -48,7 +49,7 @@ With this parameter you can run Psalm without using the cache file.
 
 **report**
 
-*Default: ~*
+*Default: null*
 
 With this path you can specify the path your psalm report file 
 
@@ -65,3 +66,9 @@ This parameter defines on how many threads Psalm's analysis stage is ran.
 *Default: [php]*
 
 This is a list of extensions to be sniffed.
+
+**show_info**
+
+*Default: false*
+
+Show non-exception parser findings

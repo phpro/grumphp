@@ -136,4 +136,12 @@ class GrumPHPSpec extends ObjectBehavior
         $container->getParameter('grumphp.testsuites')->willReturn($testSuites = new TestSuiteCollection());
         $this->getTestSuites()->shouldBe($testSuites);
     }
+
+    function it_knows_the_additional_info(ContainerInterface $container)
+    {
+        $container->getParameter('additional_info')
+            ->willReturn('https://docs.example.com');
+
+        $this->getAdditionalInfo()->shouldReturn('https://docs.example.com');
+    }
 }
