@@ -31,11 +31,13 @@ class PhpLint extends AbstractExternalTask
         $resolver->setDefaults([
             'jobs' => null,
             'exclude' => [],
+            'ignore_patterns' => [],
             'triggered_by' => ['php', 'phtml', 'php3', 'php4', 'php5'],
         ]);
 
         $resolver->setAllowedTypes('jobs', ['int', 'null']);
         $resolver->setAllowedTypes('exclude', 'array');
+        $resolver->addAllowedTypes('ignore_patterns', ['array']);
         $resolver->setAllowedTypes('triggered_by', 'array');
 
         return $resolver;
@@ -55,7 +57,11 @@ class PhpLint extends AbstractExternalTask
     public function run(ContextInterface $context)
     {
         $config = $this->getConfiguration();
-        $files  = $context->getFiles()->extensions($config['triggered_by']);
+
+        $files = $context
+            ->getFiles()
+            ->notPaths($config['ignore_patterns'])
+            ->extensions($config['triggered_by']);
 
         $arguments = $this->processBuilder->createArgumentsForCommand('parallel-lint');
         $arguments->add('--no-colors');
