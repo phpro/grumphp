@@ -17,7 +17,7 @@ The task lives under the `phpcs` namespace and has following configurable parame
 parameters:
     tasks:
         phpcs:
-            standard: ~
+            standard: []
             severity: ~
             error_severity: ~
             warning_severity: ~
@@ -34,9 +34,9 @@ parameters:
 
 **standard**
 
-*Default: null*
+*Default: []*
 
-This parameter will describe which standard is being used to validate your code for bad coding standards.
+This parameter will describe which standard/s is being used to validate your code for bad coding standards.
 By default it is set to null so that the Phpcs defaults are being used.
 Phpcs will be using the PEAR or local `phpcs.xml` standard by default.
 You can configure this task to use any standard supported by the Phpcs CLI.
@@ -177,7 +177,9 @@ Following this, you can add the path to your phpcs task.
 parameters:
     tasks:
         phpcs:
-            standard: vendor/drupal/coder/coder_sniffer/Drupal/
+            standard: 
+              - vendor/drupal/coder/coder_sniffer/Drupal
+              - vendor/drupal/coder/coder_sniffer/DrupalPractice
             ignore_patterns:
               - cfg/
               - libraries/

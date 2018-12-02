@@ -32,7 +32,7 @@ class Phpcs extends AbstractExternalTask
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'standard' => null,
+            'standard' => [],
             'tab_width' => null,
             'encoding' => null,
             'whitelist_patterns' => [],
@@ -46,7 +46,7 @@ class Phpcs extends AbstractExternalTask
             'report_width' => null,
         ]);
 
-        $resolver->addAllowedTypes('standard', ['null', 'string']);
+        $resolver->addAllowedTypes('standard', ['array', 'null', 'string']);
         $resolver->addAllowedTypes('tab_width', ['null', 'int']);
         $resolver->addAllowedTypes('encoding', ['null', 'string']);
         $resolver->addAllowedTypes('whitelist_patterns', ['array']);
@@ -125,7 +125,7 @@ class Phpcs extends AbstractExternalTask
      */
     protected function addArgumentsFromConfig(ProcessArgumentsCollection $arguments, array $config)
     {
-        $arguments->addOptionalArgument('--standard=%s', $config['standard']);
+        $arguments->addOptionalCommaSeparatedArgument('--standard=%s', (array) $config['standard']);
         $arguments->addOptionalArgument('--tab-width=%s', $config['tab_width']);
         $arguments->addOptionalArgument('--encoding=%s', $config['encoding']);
         $arguments->addOptionalArgument('--report=%s', $config['report']);
