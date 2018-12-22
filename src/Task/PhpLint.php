@@ -31,8 +31,8 @@ class PhpLint extends AbstractExternalTask
         ]);
 
         $resolver->setAllowedTypes('jobs', ['int', 'null']);
-        $resolver->setAllowedTypes('exclude', 'array');
         $resolver->setAllowedTypes('short_open_tag', 'bool');
+        $resolver->setAllowedTypes('exclude', 'array');
         $resolver->addAllowedTypes('ignore_patterns', ['array']);
         $resolver->setAllowedTypes('triggered_by', 'array');
 
