@@ -33,7 +33,7 @@ class TaskRunnerContext
     {
         $this->taskContext = $taskContext;
         $this->testSuite = $testSuite;
-        if($tasks === null){
+        if ($tasks === null) {
             $tasks = [];
         }
         $this->tasks = $tasks;
