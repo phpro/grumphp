@@ -62,6 +62,33 @@ class TasksCollectionSpec extends ObjectBehavior
         $tasks[1]->shouldBe($task2);
     }
 
+    function it_can_filter_by_task_names(TaskInterface $task1, TaskInterface $task2)
+    {
+        $task1->getName()->willReturn('task1');
+        $task2->getName()->willReturn('task2');
+        $tasks = ['task1'];
+
+        $result = $this->filterByTaskName($tasks);
+        $result->shouldBeAnInstanceOf(TasksCollection::class);
+        $result->count()->shouldBe(1);
+        $tasks = $result->toArray();
+        $tasks[0]->shouldBe($task1);
+    }
+
+    function it_can_filter_by_empty_task_names(TaskInterface $task1, TaskInterface $task2)
+    {
+        $task1->getName()->willReturn('task1');
+        $task2->getName()->willReturn('task2');
+        $tasks = [];
+
+        $result = $this->filterByTaskName($tasks);
+        $result->shouldBeAnInstanceOf(TasksCollection::class);
+        $result->count()->shouldBe(2);
+        $tasks = $result->toArray();
+        $tasks[0]->shouldBe($task1);
+        $tasks[1]->shouldBe($task2);
+    }
+
     function it_should_sort_on_priority(TaskInterface $task1, TaskInterface $task2, TaskInterface $task3, GrumPHP $grumPHP)
     {
         $this->beConstructedWith([$task1, $task2, $task3]);

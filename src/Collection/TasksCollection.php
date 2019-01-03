@@ -35,6 +35,21 @@ class TasksCollection extends ArrayCollection
     }
 
     /**
+     * @param string[] $tasks
+     *
+     * @return TasksCollection
+     */
+    public function filterByTaskName($tasks)
+    {
+        return $this->filter(function (TaskInterface $task) use ($tasks) {
+            if (empty($tasks)) {
+                return true;
+            }
+            return in_array($task->getName(), $tasks);
+        });
+    }
+
+    /**
      * This method sorts the tasks by highest priority first.
      */
     public function sortByPriority(GrumPHP $grumPHP): self

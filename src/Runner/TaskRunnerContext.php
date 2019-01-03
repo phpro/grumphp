@@ -22,15 +22,21 @@ class TaskRunnerContext
     /**
      * @var null|TestSuiteInterface
      */
-    private $testSuite = null;
+    private $testSuite;
 
     /**
-     * TaskRunnerContext constructor.
+     * @var string[]
      */
-    public function __construct(ContextInterface $taskContext, TestSuiteInterface $testSuite = null)
+    private $tasks;
+
+    public function __construct(ContextInterface $taskContext, TestSuiteInterface $testSuite = null, array $tasks = null)
     {
         $this->taskContext = $taskContext;
         $this->testSuite = $testSuite;
+        if($tasks === null){
+            $tasks = [];
+        }
+        $this->tasks = $tasks;
     }
 
     public function getTaskContext(): ContextInterface
@@ -67,5 +73,21 @@ class TaskRunnerContext
     public function setTestSuite(TestSuiteInterface $testSuite)
     {
         $this->testSuite = $testSuite;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getTasks()
+    {
+        return $this->tasks;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasTasks()
+    {
+        return !empty($this->tasks);
     }
 }
