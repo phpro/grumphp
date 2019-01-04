@@ -2,36 +2,32 @@
 
 namespace GrumPHPTest\Console\Command;
 
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Command\RunCommand;
-use GrumPHP\Locator\RegisteredFiles;
 use PHPUnit\Framework\TestCase;
 
 class RunCommandTest extends TestCase
 {
     /**
      * @test
-     * @param null $valueString
-     * @param null $expected
+     * @param string $valueString
+     * @param array $expected
      * @dataProvider parses_comma_separated_options_dataProvider
-     * @throws \ReflectionException
      */
-    function parses_comma_separated_options($valueString = null, $expected = null)
+    function parses_comma_separated_options(string $valueString, array $expected)
     {
-        /**
-         * @var GrumPHP $grumPhp
-         */
-        $grumPhp = $this->createMock(GrumPHP::class);
-        /**
-         * @var RegisteredFiles $registeredFiles
-         */
-        $registeredFiles = $this->createMock(RegisteredFiles::class);
+        $command = new class extends RunCommand{
+            public function __construct()
+            {
+            }
 
-        $command = new RunCommand($grumPhp, $registeredFiles);
-        $method  = new \ReflectionMethod($command, "parseCommaSeparatedOption");
-        $method->setAccessible(true);
+            public function parseCommaSeparatedOption($str)
+            {
+                return parent::parseCommaSeparatedOption(... func_get_args());
+            }
+        };
 
-        $actual = $method->invoke($command, $valueString);
+        $actual = $command->parseCommaSeparatedOption($valueString);
+        $actual = array_values($actual);
 
         $this->assertEquals($expected, $actual);
     }
@@ -43,27 +39,16 @@ class RunCommandTest extends TestCase
             "default" => [
                 "valueString"  => "foo,bar",
                 "expected"  => [
-                    "foo" => "foo",
-                    "bar" => "bar"
+                    "foo",
+                    "bar"
                 ],
             ],
             "trims values" => [
                 "valueString"  => "foo , bar",
                 "expected"  => [
-                    "foo" => "foo",
-                    "bar" => "bar"
+                    "foo",
+                    "bar"
                 ],
-            ],
-            "deduplicates values" => [
-                "valueString"  => "foo,bar,bar",
-                "expected"  => [
-                    "foo" => "foo",
-                    "bar" => "bar"
-                ],
-            ],
-            "null" => [
-                "valueString"  => null,
-                "expected"  => [],
             ],
             "empty" => [
                 "valueString"  => "",

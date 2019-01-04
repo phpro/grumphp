@@ -18,30 +18,27 @@ class TaskRunnerContext
     private $skipSuccessOutput = false;
 
     /**
-     * @var null|TestSuiteInterface
-     */
-    private $testSuite = null;
-
-    /**
      * @var string[]
      */
     private $tasks = null;
 
     /**
+     * @var null|TestSuiteInterface
+     */
+    private $testSuite = null;
+
+    /**
      * TaskRunnerContext constructor.
      *
      * @param ContextInterface $taskContext
+     * @param string[] $tasks
      * @param TestSuiteInterface $testSuite
-     * @param string[]|null $tasks
      */
-    public function __construct(ContextInterface $taskContext, TestSuiteInterface $testSuite = null, $tasks = null)
+    public function __construct(ContextInterface $taskContext, array $tasks, TestSuiteInterface $testSuite = null)
     {
         $this->taskContext = $taskContext;
-        $this->testSuite = $testSuite;
-        if ($tasks === null) {
-            $tasks = [];
-        }
         $this->tasks = $tasks;
+        $this->testSuite = $testSuite;
     }
 
     /**
