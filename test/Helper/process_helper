@@ -1,0 +1,45 @@
+#!/usr/bin/env php
+<?php
+$opts = [
+    "c:" => "-c\treturn code", // "returnCode:",
+    "o:" => "-o\tstring printed to std out", // "stdOutString:",
+    "e:" => "-e\tstring printed to std err", // "stdErrString:",
+    "t:" => "-t\truntime of the process in milli seconds (sleep)", // "runtime:",
+    "h"  => "-h\tthis help", // "runtime:",
+];
+
+$options = getopt(implode(array_keys($opts)));
+
+$returnCode   = (int) ($options["c"] ?? 0);
+$stdOutString = $options["o"] ?? null;
+$stdErrString = $options["e"] ?? null;
+$runtime      = $options["t"] ?? null;
+$help         = $options["h"] ?? null;
+
+$showHelp = true;
+foreach ($opts as $opt => $_){
+    $o = trim($opt,":");
+    if(array_key_exists($o,$options)){
+        $showHelp = false;
+        break;
+    }
+}
+
+if ($help || $showHelp) {
+    $help = "Test process for grumphp. Parameters:\n\n".
+        implode("\n", $opts)."\n\n".
+        "Usage example:\n".
+        "process_helper -c=0 -o='to stdout' -e='to stderr' -t=100\n\n";
+    file_put_contents('php://stdout', $help);
+}
+
+if ($runtime) {
+    usleep(1000 * $runtime);
+}
+if ($stdOutString) {
+    file_put_contents('php://stdout', $stdOutString."\n");
+}
+if ($stdErrString) {
+    file_put_contents('php://stderr', $stdErrString."\n");
+}
+exit($returnCode);

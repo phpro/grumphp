@@ -112,6 +112,14 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
         $this->getValues()->shouldBe(['file1.txt,file2.txt']);
     }
 
+    function it_does_not_to_add_comma_separated_files_if_there_are_none()
+    {
+        $files = new FilesCollection([]);
+        $this->addCommaSeparatedFiles($files);
+
+        $this->getValues()->shouldBe([]);
+    }
+
     function it_should_be_able_to_add_an_argument_with_comma_separated_files()
     {
         $files = new FilesCollection([

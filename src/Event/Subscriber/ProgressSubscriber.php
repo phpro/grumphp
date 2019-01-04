@@ -32,7 +32,7 @@ class ProgressSubscriber implements EventSubscriberInterface
 
     public function __construct(OutputInterface $output, ProgressBar $progressBar)
     {
-        $this->output = $output;
+        $this->output      = $output;
         $this->progressBar = $progressBar ?: new ProgressBar($output);
         $this->progressBar->setOverwrite(false);
         $this->progressFormat = '<fg=yellow>Running task %current%/%max%:</fg=yellow> %message%... ';
@@ -41,13 +41,13 @@ class ProgressSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            RunnerEvents::RUNNER_RUN => 'startProgress',
-            TaskEvents::TASK_RUN => 'advanceProgress',
-            TaskEvents::TASK_COMPLETE => 'onTaskProgress',
-            TaskEvents::TASK_FAILED => 'onTaskProgress',
-            TaskEvents::TASK_SKIPPED => 'onTaskProgress',
+            RunnerEvents::RUNNER_RUN      => 'startProgress',
+            TaskEvents::TASK_RUN          => 'advanceProgress',
+            TaskEvents::TASK_COMPLETE     => 'onTaskProgress',
+            TaskEvents::TASK_FAILED       => 'onTaskProgress',
+            TaskEvents::TASK_SKIPPED      => 'onTaskProgress',
             RunnerEvents::RUNNER_COMPLETE => 'finishProgress',
-            RunnerEvents::RUNNER_FAILED => 'finishProgress',
+            RunnerEvents::RUNNER_FAILED   => 'finishProgress',
         ];
     }
 
@@ -62,16 +62,15 @@ class ProgressSubscriber implements EventSubscriberInterface
     public function advanceProgress(TaskEvent $event)
     {
         $taskReflection = new ReflectionClass($event->getTask());
-        $taskName = $taskReflection->getShortName();
-
+        $taskName       = $taskReflection->getShortName();
         $this->progressBar->setFormat($this->progressFormat);
         $this->progressBar->setMessage($taskName);
         $this->progressBar->advance();
     }
 
-    public function onTaskProgress(TaskEvent $task, string $event)
+    public function onTaskProgress(TaskEvent $event, string $eventName)
     {
-        switch ($event) {
+        switch ($eventName) {
             case TaskEvents::TASK_COMPLETE:
                 $this->output->write('<fg=green>✔</fg=green>');
                 break;

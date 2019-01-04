@@ -93,6 +93,9 @@ class ProcessArgumentsCollection extends ArrayCollection
 
     public function addCommaSeparatedFiles(FilesCollection $files)
     {
+        if ($files->isEmpty()) {
+            return;
+        }
         $paths = [];
 
         foreach ($files as $file) {

@@ -12,6 +12,9 @@ parameters:
   process_async_limit: 10
   process_async_wait: 1000
   process_timeout: 60
+  run_in_parallel: false
+  parallel_process_limit: 2
+  parallel_process_wait: 1
   extensions: []
   ascii:
     failed: grumphp-grumpy.txt

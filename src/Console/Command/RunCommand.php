@@ -9,6 +9,7 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\Locator\RegisteredFiles;
+use GrumPHP\Runner\ParallelOptions;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\Console\Command\Command;
@@ -34,7 +35,7 @@ class RunCommand extends Command
     {
         parent::__construct();
 
-        $this->grumPHP = $grumPHP;
+        $this->grumPHP                = $grumPHP;
         $this->registeredFilesLocator = $registeredFilesLocator;
     }
 
@@ -61,19 +62,21 @@ class RunCommand extends Command
     }
 
     /**
-     * @return int|void
+     * @return int
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $files = $this->getRegisteredFiles();
+        $files      = $this->getRegisteredFiles();
         $testSuites = $this->grumPHP->getTestSuites();
 
-        $tasks = $this->parseCommaSeparatedOption($input->getOption("tasks") ?? "");
+        $tasks           = $this->parseCommaSeparatedOption($input->getOption("tasks") ?? "");
+        $parallelOptions = $this->resolveParallelOptions();
 
         $context = new TaskRunnerContext(
             new RunContext($files),
             $tasks,
-            (bool) $input->getOption('testsuite') ? $testSuites->getRequired($input->getOption('testsuite')) : null
+            (bool) $input->getOption('testsuite') ? $testSuites->getRequired($input->getOption('testsuite')) : null,
+            $parallelOptions
         );
 
         return $this->taskRunner()->run($output, $context);
@@ -113,5 +116,19 @@ class RunCommand extends Command
             $parsedValues[] = $v;
         }
         return $parsedValues;
+    }
+
+    /**
+     * @return ParallelOptions|null
+     */
+    protected function resolveParallelOptions()
+    {
+        if (!$this->grumPHP->runInParallel()) {
+            return null;
+        }
+        return new ParallelOptions(
+            $this->grumPHP->getParallelProcessWaitTime() ?? 1,
+            $this->grumPHP->getParallelProcessLimit() ?? 2
+        );
     }
 }

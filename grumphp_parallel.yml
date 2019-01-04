@@ -1,0 +1,35 @@
+parameters:
+  run_in_parallel: true
+  parallel_process_limit: 4
+  parallel_process_wait: 1
+  process_timeout: 120
+  tasks:
+    phpcs_parallel:
+      standard: PSR2
+      ignore_patterns:
+        - "spec/*Spec.php"
+        - "test/*.php"
+      metadata:
+        priority: 300
+    phpspec_parallel:
+      format: progress
+      verbose: true
+      metadata:
+        priority: 200
+    phpunit_parallel:
+      metadata:
+        priority: 100
+    composer_parallel:
+      no_check_lock: true
+    phplint_parallel: ~
+    yamllint:
+      ignore_patterns:
+        - "#test/(.*).yml#"
+    phpparser:
+      visitors:
+        no_exit_statements: ~
+        never_use_else: ~
+        forbidden_function_calls:
+          blacklist: [var_dump]
+      metadata:
+        priority: 100000

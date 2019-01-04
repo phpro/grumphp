@@ -66,6 +66,24 @@ class GrumPHP
         return (int) $this->container->getParameter('process_async_wait');
     }
 
+    // TODO add spec
+    public function runInParallel(): bool
+    {
+        return (bool) $this->container->getParameter('run_in_parallel');
+    }
+
+    // TODO add spec
+    public function getParallelProcessLimit(): int
+    {
+        return (int) $this->container->getParameter('parallel_process_limit');
+    }
+
+    // TODO add spec
+    public function getParallelProcessWaitTime(): int
+    {
+        return (int) $this->container->getParameter('parallel_process_wait');
+    }
+
     /**
      * @return float|null
      */

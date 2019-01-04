@@ -6,5 +6,11 @@
         <testsuite name="Parsers">
             <directory>test/Parser</directory>
         </testsuite>
+        <testsuite name="Tasks">
+            <directory>test/Task</directory>
+        </testsuite>
+        <testsuite name="All">
+            <directory>test/</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

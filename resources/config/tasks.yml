@@ -404,3 +404,103 @@ services:
             - '@linter.yamllint'
         tags:
             - {name: grumphp.task, config: yamllint}
+
+# TODO: Remove parallel tasks --only temp
+    task.paratest:
+        class: GrumPHP\Task\Paratest
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: paratest}
+    task.securitychecker_parallel:
+        class: GrumPHP\Task\SecurityCheckerParallel
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: securitychecker_parallel}
+    task.composer_parallel:
+        class: GrumPHP\Task\ComposerParallel
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+            - '@filesystem'
+        tags:
+            - {name: grumphp.task, config: composer_parallel}
+    task.composer_require_checker_parallel:
+        class: GrumPHP\Task\ComposerRequireCheckerParallel
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: composer_require_checker_parallel}
+    task.phpmd_parallel:
+        class: GrumPHP\Task\PhpMdParallel
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: phpmd_parallel}
+    task.phpstan_parallel:
+        class: GrumPHP\Task\PhpstanParallel
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: phpstan_parallel}
+    task.phpcpd_parallel:
+        class: GrumPHP\Task\PhpCpdParallel
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: phpcpd_parallel}
+    task.phpcs_parallel:
+        class: GrumPHP\Task\PhpCsParallel
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.phpcs'
+        tags:
+            - {name: grumphp.task, config: phpcs_parallel}
+    task.phpmnd_parallel:
+        class: GrumPHP\Task\PhpMndParallel
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: phpmnd_parallel}
+    task.phpunit_parallel:
+        class: GrumPHP\Task\PhpunitParallel
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: phpunit_parallel}
+    task.phpspec_parallel:
+        class: GrumPHP\Task\PhpspecParallel
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: phpspec_parallel}
+    task.phplint_parallel:
+        class: GrumPHP\Task\PhpLintParallel
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: phplint_parallel}
+

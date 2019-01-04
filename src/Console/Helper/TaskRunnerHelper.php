@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GrumPHP\Console\Helper;
 
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Event\Subscriber\ParallelProgressSubscriber;
 use GrumPHP\Event\Subscriber\ProgressSubscriber;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskRunner;
@@ -52,7 +53,7 @@ class TaskRunnerHelper extends Helper
     public function run(OutputInterface $output, TaskRunnerContext $context): int
     {
         // Make sure to add some default event listeners before running.
-        $this->registerEventListeners($output);
+        $this->registerEventListeners($output, $context->runInParallel());
 
         if ($context->hasTestSuite()) {
             $output->writeln(sprintf(
@@ -79,12 +80,16 @@ class TaskRunnerHelper extends Helper
         return $this->returnSuccessMessage($output, $warnings->getAllMessages());
     }
 
-    private function registerEventListeners(OutputInterface $output)
+    private function registerEventListeners(OutputInterface $output, bool $runInParallel = false)
     {
         if ($output instanceof ConsoleOutputInterface) {
             $output = $output->getErrorOutput();
         }
 
+        if ($runInParallel) {
+            $this->eventDispatcher->addSubscriber(new ParallelProgressSubscriber($output));
+            return;
+        }
         $this->eventDispatcher->addSubscriber(new ProgressSubscriber($output, new ProgressBar($output)));
     }
 
