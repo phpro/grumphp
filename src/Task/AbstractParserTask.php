@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Task;
 
 use GrumPHP\Collection\FilesCollection;
@@ -21,14 +23,10 @@ abstract class AbstractParserTask implements TaskInterface
      */
     protected $parser;
 
-    /**
-     * @param GrumPHP         $grumPHP
-     * @param ParserInterface $parser
-     */
     public function __construct(GrumPHP $grumPHP, ParserInterface $parser)
     {
         $this->grumPHP = $grumPHP;
-        $this->parser  = $parser;
+        $this->parser = $parser;
 
         if (!$parser->isInstalled()) {
             throw new RuntimeException(
@@ -37,15 +35,12 @@ abstract class AbstractParserTask implements TaskInterface
         }
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'triggered_by'     => [],
-            'ignore_patterns'  => [],
+            'triggered_by' => [],
+            'ignore_patterns' => [],
         ]);
 
         $resolver->addAllowedTypes('triggered_by', ['array']);
@@ -57,19 +52,14 @@ abstract class AbstractParserTask implements TaskInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
 
         return $this->getConfigurableOptions()->resolve($configured);
     }
 
-    /**
-     * @param FilesCollection $files
-     *
-     * @return ParseErrorsCollection
-     */
-    protected function parse(FilesCollection $files)
+    protected function parse(FilesCollection $files): ParseErrorsCollection
     {
         // Skip ignored patterns:
         $configuration = $this->getConfiguration();

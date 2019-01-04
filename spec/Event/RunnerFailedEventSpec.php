@@ -43,18 +43,18 @@ class RunnerFailedEventSpec extends ObjectBehavior
         TaskResult $passedTaskResult,
         TaskResult $failedTaskResult
     ) {
+        $failedTaskResult->getMessage()->willReturn('message 1');
+        $passedTaskResult->getMessage()->willReturn('');
+
         $taskResults = new TaskResultCollection();
         $taskResults->add($passedTaskResult->getWrappedObject());
-        $failedTaskResult->getMessage()->willReturn('message 1');
         $taskResults->add($failedTaskResult->getWrappedObject());
 
         $this->beConstructedWith($tasks, $context, $taskResults);
 
-        $this->getMessages()->shouldReturn(
-            [
-                'message 1',
-            ]
-        );
+        $this->getMessages()->shouldReturn([
+            'message 1',
+        ]);
     }
 
     function it_should_have_a_task_result_collection(TaskResultCollection $taskResults)

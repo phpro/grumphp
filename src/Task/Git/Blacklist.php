@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Task\Git;
 
 use GrumPHP\Configuration\GrumPHP;
@@ -7,13 +9,14 @@ use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\IO\IOInterface;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\AbstractExternalTask;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Git Blacklist Task
+ * Git Blacklist Task.
  */
 class Blacklist extends AbstractExternalTask
 {
@@ -24,10 +27,6 @@ class Blacklist extends AbstractExternalTask
 
     /**
      * Blacklist constructor.
-     * @param GrumPHP $grumPHP
-     * @param ProcessBuilder $processBuilder
-     * @param ProcessFormatterInterface $formatter
-     * @param IOInterface $IO
      */
     public function __construct(
         GrumPHP $grumPHP,
@@ -39,25 +38,19 @@ class Blacklist extends AbstractExternalTask
         parent::__construct($grumPHP, $processBuilder, $formatter);
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'git_blacklist';
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'keywords' => [],
             'whitelist_patterns' => [],
             'triggered_by' => ['php'],
-            'regexp_type' => 'G'
+            'regexp_type' => 'G',
         ]);
 
         $resolver->addAllowedTypes('keywords', ['array']);
@@ -73,15 +66,15 @@ class Blacklist extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext);
+        return $context instanceof GitPreCommitContext;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
 
@@ -89,12 +82,12 @@ class Blacklist extends AbstractExternalTask
         $extensions = $config['triggered_by'];
 
         $files = $context->getFiles();
-        if (0 !== count($whitelistPatterns)) {
+        if (0 !== \count($whitelistPatterns)) {
             $files = $files->paths($whitelistPatterns);
         }
         $files = $files->extensions($extensions);
 
-        if (0 === count($files) || empty($config['keywords'])) {
+        if (0 === \count($files) || empty($config['keywords'])) {
             return TaskResult::createSkipped($this, $context);
         }
 

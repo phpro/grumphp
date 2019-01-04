@@ -52,16 +52,7 @@ class ShellSpec extends ObjectBehavior
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('scripts');
 
-        $config = [
-            'scripts' => [
-                'script.sh',
-                [
-                    'command',
-                    'arg1',
-                    'arg2'
-                ]
-            ]
-        ];
+        $config = ['scripts' => ['script.sh', ['command', 'arg1', 'arg2']]];
 
         $scripts = $options->resolve($config)['scripts'];
         $scripts[0]->shouldBe(['script.sh']);
@@ -110,8 +101,11 @@ class ShellSpec extends ObjectBehavior
     function it_throws_exception_if_the_process_fails(
         ProcessBuilder $processBuilder,
         Process $process,
-        ContextInterface $context
+        ContextInterface $context,
+        ProcessFormatterInterface $formatter
     ) {
+        $formatter->format($process)->willReturn('format string');
+
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('sh')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);

@@ -9,7 +9,7 @@ use GrumPHP\Parser\Php\Factory\TraverserFactory;
 use GrumPHP\Parser\Php\PhpParser;
 use GrumPHP\Util\Filesystem;
 use PhpParser\Error;
-use PhpParser\NodeTraverserInterface;
+use PhpParser\NodeTraverser;
 use PhpParser\Parser;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -21,7 +21,7 @@ class PhpParserSpec extends ObjectBehavior
         ParserFactory $parserFactory,
         TraverserFactory $traverserFactory,
         Parser $parser,
-        NodeTraverserInterface $traverser,
+        NodeTraverser $traverser,
         Filesystem $filesystem
     ) {
         $this->beConstructedWith($parserFactory, $traverserFactory, $filesystem);
@@ -39,10 +39,13 @@ class PhpParserSpec extends ObjectBehavior
         ParserFactory $parserFactory,
         TraverserFactory $traverserFactory,
         Parser $parser,
-        NodeTraverserInterface $traverser
+        NodeTraverser $traverser,
+        Filesystem $filesystem
     ) {
         $file = new SplFileInfo('php://memory');
         $this->setParserOptions($options = ['kind' => 'php7']);
+
+        $filesystem->readFromFileInfo($file)->willReturn('file content');
 
         $parserFactory->createFromOptions($options)->shouldBeCalled()->willReturn($parser);
         $traverserFactory->createForTaskContext($options, Argument::that(function (ParserContext $context) use ($file) {
@@ -53,9 +56,12 @@ class PhpParserSpec extends ObjectBehavior
         $this->parse($file);
     }
 
-    function it_parses_a_file(NodeTraverserInterface $traverser)
+    function it_parses_a_file(NodeTraverser $traverser, Filesystem $filesystem)
     {
         $file = new SplFileInfo('php://memory');
+
+        $filesystem->readFromFileInfo($file)->willReturn('file content');
+
         $traverser->traverse([])->shouldBeCalled();
         $errors = $this->parse($file);
 
@@ -63,9 +69,12 @@ class PhpParserSpec extends ObjectBehavior
         $errors->count()->shouldBe(0);
     }
 
-    function it_catches_parse_exceptions(Parser $parser)
+    function it_catches_parse_exceptions(Parser $parser, Filesystem $filesystem, SplFileInfo $file)
     {
-        $file = new SplFileInfo('php://memory');
+        $file->getRealPath()->willReturn('a real path');
+
+        $filesystem->readFromFileInfo($file)->willReturn('file content');
+
         $parser->parse(Argument::any())->willThrow(new Error('Error ....'));
         $errors = $this->parse($file);
 

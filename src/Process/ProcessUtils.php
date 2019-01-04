@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Process;
 
 /**
@@ -22,13 +24,11 @@ final class ProcessUtils
      * Escapes a string to be used as a shell argument.
      * Taken from the Symfony 4.0 package.
      *
-     * @param string $argument The argument that will be escaped
      *
-     * @return string The escaped argument
      *
      * @see \Symfony\Component\Process\Process::escapeArgument()
      */
-    public static function escapeArgument($argument)
+    public static function escapeArgument(string $argument): string
     {
         if ('\\' !== DIRECTORY_SEPARATOR) {
             return "'".str_replace("'", "'\\''", $argument)."'";
@@ -43,6 +43,7 @@ final class ProcessUtils
             return $argument;
         }
         $argument = preg_replace('/(\\\\+)$/', '$1$1', $argument);
+
         return '"'.str_replace(['"', '^', '%', '!', "\n"], ['""', '"^^"', '"^%"', '"^!"', '!LF!'], $argument).'"';
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Configuration\Compiler;
 
 use GrumPHP\Collection\TestSuiteCollection;
@@ -11,9 +13,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TestSuiteCompilerPass implements CompilerPassInterface
 {
-    /**
-     * @param ContainerBuilder $container
-     */
     public function process(ContainerBuilder $container)
     {
         $testSuites = $container->getParameter('testsuites');
@@ -29,19 +28,14 @@ class TestSuiteCompilerPass implements CompilerPassInterface
         $container->setParameter('grumphp.testsuites', $collection);
     }
 
-    /**
-     * @param array $registeredTasks
-     *
-     * @return OptionsResolver
-     */
-    private function createOptionsResolver(array $registeredTasks)
+    private function createOptionsResolver(array $registeredTasks): OptionsResolver
     {
         $options = new OptionsResolver();
         $options->setRequired(['tasks']);
         $options->setAllowedTypes('tasks', ['array']);
         $options->setAllowedValues('tasks', function (array $value) use ($registeredTasks) {
             foreach ($value as $task) {
-                if (!in_array($task, $registeredTasks, true)) {
+                if (!\in_array($task, $registeredTasks, true)) {
                     throw new InvalidOptionsException(sprintf(
                         'The testsuite option "tasks" contains the unknow task "%s". Expected one of %s',
                         $task,

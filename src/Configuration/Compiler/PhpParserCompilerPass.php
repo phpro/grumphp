@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Configuration\Compiler;
 
 use GrumPHP\Exception\RuntimeException;
@@ -18,7 +20,6 @@ class PhpParserCompilerPass implements CompilerPassInterface
      * All visitor Ids are registered in the traverser configurator.
      * The configurator will be used to apply the configured visitors to the traverser.
      *
-     * @param ContainerBuilder $container
      *
      * @throws \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
      * @throws \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
@@ -41,9 +42,7 @@ class PhpParserCompilerPass implements CompilerPassInterface
      * From Symfony 2.8 the setShared method was available.
      * The 2.7 version is the LTS, so we still need to support it.
      *
-     * @link http://symfony.com/blog/new-in-symfony-3-1-customizable-yaml-parsing-and-dumping
-     *
-     * @param Definition $definition
+     * @see http://symfony.com/blog/new-in-symfony-3-1-customizable-yaml-parsing-and-dumping
      *
      * @throws \GrumPHP\Exception\RuntimeException
      */
@@ -51,11 +50,13 @@ class PhpParserCompilerPass implements CompilerPassInterface
     {
         if (method_exists($definition, 'setShared')) {
             $definition->setShared(false);
+
             return;
         }
 
         if (method_exists($definition, 'setScope')) {
             $definition->setScope('prototype');
+
             return;
         }
 

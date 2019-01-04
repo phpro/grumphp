@@ -3,14 +3,12 @@
 namespace GrumPHPTest\Parser\Php\Visitor;
 
 use GrumPHP\Parser\ParseError;
+use GrumPHP\Parser\Php\Visitor\ContextAwareVisitorInterface;
 use GrumPHP\Parser\Php\Visitor\DeclareStrictTypesVisitor;
 
 class DeclareStrictTypesVisitorTest extends AbstractVisitorTest
 {
-    /**
-     * @return DeclareStrictTypesVisitor
-     */
-    protected function getVisitor()
+    protected function getVisitor(): ContextAwareVisitorInterface
     {
         return new DeclareStrictTypesVisitor();
     }

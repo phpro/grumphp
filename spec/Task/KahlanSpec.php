@@ -18,9 +18,6 @@ use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
-/**
- * Class PhpspecSpec
- */
 class KahlanSpec extends ObjectBehavior
 {
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
@@ -101,8 +98,14 @@ class KahlanSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_throws_exception_if_the_process_fails(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
-    {
+    function it_throws_exception_if_the_process_fails(
+        ProcessBuilder $processBuilder,
+        Process $process,
+        ContextInterface $context,
+        ProcessFormatterInterface $formatter
+    ) {
+        $formatter->format($process)->willReturn('format string');
+
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('kahlan')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);

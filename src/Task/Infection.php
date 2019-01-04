@@ -1,30 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Task;
 
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Infection task
+ * Infection task.
  */
 class Infection extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'infection';
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
 
@@ -36,7 +33,7 @@ class Infection extends AbstractExternalTask
             'min_msi' => null,
             'min_covered_msi' => null,
             'mutators' => [],
-            'ignore_patterns'  => [],
+            'ignore_patterns' => [],
             'triggered_by' => ['php'],
         ]);
 
@@ -56,22 +53,22 @@ class Infection extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
         $files = $context->getFiles()->extensions($config['triggered_by']);
 
         $files = $files->notPaths($config['ignore_patterns']);
 
-        if (0 === count($files)) {
+        if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 

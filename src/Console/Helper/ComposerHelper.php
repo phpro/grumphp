@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Console\Helper;
 
 use Composer\Config;
@@ -28,7 +30,7 @@ class ComposerHelper extends Helper
     /**
      * ComposerHelper constructor.
      *
-     * @param Config|null      $configuration
+     * @param Config|null               $configuration
      * @param RootPackageInterface|null $rootPackage
      */
     public function __construct(Config $configuration = null, RootPackageInterface $rootPackage = null)
@@ -45,10 +47,7 @@ class ComposerHelper extends Helper
         return $this->rootPackage;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasRootPackage()
+    public function hasRootPackage(): bool
     {
         return null !== $this->rootPackage;
     }
@@ -61,10 +60,7 @@ class ComposerHelper extends Helper
         return $this->configuration;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasConfiguration()
+    public function hasConfiguration(): bool
     {
         return null !== $this->configuration;
     }

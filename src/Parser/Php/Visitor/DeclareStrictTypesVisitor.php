@@ -1,21 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Parser\Php\Visitor;
 
 use PhpParser\Node;
 
 class DeclareStrictTypesVisitor extends AbstractVisitor
 {
-    /**
-     * @var bool
-     */
     private $hasStrictType = false;
 
-    /**
-     * @param Node $node
-     *
-     * @return void
-     */
     public function leaveNode(Node $node)
     {
         if (!$node instanceof Node\Stmt\Declare_) {
@@ -36,11 +30,6 @@ class DeclareStrictTypesVisitor extends AbstractVisitor
         }
     }
 
-    /**
-     * @param array $nodes
-     *
-     * @return void
-     */
     public function afterTraverse(array $nodes)
     {
         if (!$this->hasStrictType) {

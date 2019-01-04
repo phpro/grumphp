@@ -86,8 +86,11 @@ class MakeSpec extends ObjectBehavior
     function it_throws_exception_if_the_process_fails(
         ProcessBuilder $processBuilder,
         Process $process,
-        ContextInterface $context
+        ContextInterface $context,
+        ProcessFormatterInterface $formatter
     ) {
+        $formatter->format($process)->willReturn('format string');
+
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('make')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);

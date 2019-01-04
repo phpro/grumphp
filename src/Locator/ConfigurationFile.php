@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Locator;
 
 use Composer\Package\PackageInterface;
@@ -16,8 +18,6 @@ class ConfigurationFile
 
     /**
      * ConfigurationFile constructor.
-     *
-     * @param Filesystem $filesystem
      */
     public function __construct(Filesystem $filesystem)
     {
@@ -25,14 +25,11 @@ class ConfigurationFile
     }
 
     /**
-     * @param string                $workingDir
      * @param PackageInterface|null $package
-     *
-     * @return string
      */
-    public function locate($workingDir, PackageInterface $package = null)
+    public function locate(string $workingDir, PackageInterface $package = null): string
     {
-        $defaultPath = $workingDir . DIRECTORY_SEPARATOR .  self::APP_CONFIG_FILE;
+        $defaultPath = $workingDir.DIRECTORY_SEPARATOR.self::APP_CONFIG_FILE;
         $defaultPath = $this->locateConfigFileWithDistSupport($defaultPath);
 
         if (null !== $package) {
@@ -42,19 +39,13 @@ class ConfigurationFile
         // Make sure to set the full path when it is declared relative
         // This will fix some issues in windows.
         if (!$this->filesystem->isAbsolutePath($defaultPath)) {
-            $defaultPath = $workingDir . DIRECTORY_SEPARATOR . $defaultPath;
+            $defaultPath = $workingDir.DIRECTORY_SEPARATOR.$defaultPath;
         }
 
         return $defaultPath;
     }
 
-    /**
-     * @param PackageInterface $package
-     * @param                  $defaultPath
-     *
-     * @return string
-     */
-    private function useConfigPathFromComposer(PackageInterface $package, $defaultPath)
+    private function useConfigPathFromComposer(PackageInterface $package, string $defaultPath): string
     {
         $extra = $package->getExtra();
         if (!isset($extra['grumphp']['config-default-path'])) {
@@ -62,17 +53,13 @@ class ConfigurationFile
         }
 
         $composerDefaultPath = $extra['grumphp']['config-default-path'];
+
         return $this->locateConfigFileWithDistSupport($composerDefaultPath);
     }
 
-    /**
-     * @param $defaultPath
-     *
-     * @return string
-     */
-    private function locateConfigFileWithDistSupport($defaultPath)
+    private function locateConfigFileWithDistSupport(string $defaultPath): string
     {
-        $distPath = (strpos($defaultPath, -5) !== '.dist') ? $defaultPath . '.dist' : $defaultPath;
+        $distPath = ('.dist' !== strpos($defaultPath, -5)) ? $defaultPath.'.dist' : $defaultPath;
         if ($this->filesystem->exists($defaultPath) || !$this->filesystem->exists($distPath)) {
             return $defaultPath;
         }

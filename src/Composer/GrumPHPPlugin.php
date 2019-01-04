@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Composer;
 
 use Composer\Composer;
@@ -56,11 +58,11 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * Attach package installation events:
+     * Attach package installation events:.
      *
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             PackageEvents::POST_PACKAGE_INSTALL => 'postPackageInstall',
@@ -72,9 +74,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * When this package is updated, the git hook is also initialized
-     *
-     * @param PackageEvent $event
+     * When this package is updated, the git hook is also initialized.
      */
     public function postPackageInstall(PackageEvent $event)
     {
@@ -92,9 +92,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * When this package is updated, the git hook is also updated
-     *
-     * @param PackageEvent $event
+     * When this package is updated, the git hook is also updated.
      */
     public function postPackageUpdate(PackageEvent $event)
     {
@@ -111,9 +109,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * When this package is uninstalled, the generated git hooks need to be removed
-     *
-     * @param PackageEvent $event
+     * When this package is uninstalled, the generated git hooks need to be removed.
      */
     public function prePackageUninstall(PackageEvent $event)
     {
@@ -129,9 +125,6 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         $this->deInitGitHook();
     }
 
-    /**
-     * @param Event $event
-     */
     public function runScheduledTasks(Event $event)
     {
         if ($this->initScheduled) {
@@ -142,18 +135,13 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
-    /**
-     * @param PackageInterface $package
-     *
-     * @return bool
-     */
-    protected function guardIsGrumPhpPackage(PackageInterface $package)
+    protected function guardIsGrumPhpPackage(PackageInterface $package): bool
     {
-        return $package->getName() == self::PACKAGE_NAME;
+        return self::PACKAGE_NAME === $package->getName();
     }
 
     /**
-     * Initialize git hooks
+     * Initialize git hooks.
      */
     protected function initGitHook()
     {
@@ -161,7 +149,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * Deinitialize git hooks
+     * Deinitialize git hooks.
      */
     protected function deInitGitHook()
     {
@@ -169,11 +157,9 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * Run the GrumPHP console to (de)init the git hooks
-     *
-     * @param $command
+     * Run the GrumPHP console to (de)init the git hooks.
      */
-    protected function runGrumPhpCommand($command)
+    protected function runGrumPhpCommand(string $command)
     {
         $config = $this->composer->getConfig();
         $commandLocator = new ExternalCommand($config->get('bin-dir'), new ExecutableFinder());
@@ -187,7 +173,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 
         // Check executable which is running:
         if ($this->io->isVeryVerbose()) {
-            $this->io->write('Running process : ' . $process->getCommandLine());
+            $this->io->write('Running process : '.$process->getCommandLine());
         }
 
         $process->run();
@@ -195,10 +181,11 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
             $this->io->write(
                 '<fg=red>GrumPHP can not sniff your commits. Did you specify the correct git-dir?</fg=red>'
             );
-            $this->io->write('<fg=red>' . $process->getErrorOutput() . '</fg=red>');
+            $this->io->write('<fg=red>'.$process->getErrorOutput().'</fg=red>');
+
             return;
         }
 
-        $this->io->write('<fg=yellow>' . $process->getOutput() . '</fg=yellow>');
+        $this->io->write('<fg=yellow>'.$process->getOutput().'</fg=yellow>');
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Parser\Php\Visitor;
 
 use GrumPHP\Parser\ParseError;
@@ -13,9 +15,6 @@ class ForbiddenClassMethodCallsVisitor extends AbstractVisitor implements Config
      */
     private $blacklist = [];
 
-    /**
-     * @param array $options
-     */
     public function configure(array $options)
     {
         $resolver = new OptionsResolver();
@@ -30,11 +29,6 @@ class ForbiddenClassMethodCallsVisitor extends AbstractVisitor implements Config
         $this->blacklist = $config['blacklist'];
     }
 
-    /**
-     * @param Node $node
-     *
-     * @return void
-     */
     public function leaveNode(Node $node)
     {
         if (!$node instanceof Node\Expr\MethodCall || !isset($node->var->name)) {
@@ -44,7 +38,7 @@ class ForbiddenClassMethodCallsVisitor extends AbstractVisitor implements Config
         $variable = $node->var->name;
         $method = $node->name;
         $normalized = sprintf('$%s->%s', $variable, $method);
-        if (!in_array($normalized, $this->blacklist)) {
+        if (!\in_array($normalized, $this->blacklist, true)) {
             return;
         }
 

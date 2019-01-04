@@ -7,17 +7,13 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\PhpVersion;
-use GrumPHP\Task\YamlLint;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use GrumPHP\Util\PhpVersion as PhpVersionUtility;
 
-/**
- * @mixin YamlLint
- */
 class PhpVersionSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, PhpVersion $version, PhpVersionUtility $phpVersionUtility)
+    function let(GrumPHP $grumPHP, PhpVersionUtility $phpVersionUtility)
     {
         $grumPHP->getTaskConfiguration('phpversion')->willReturn([]);
         $this->beConstructedWith($grumPHP, $phpVersionUtility);
@@ -49,7 +45,7 @@ class PhpVersionSpec extends ObjectBehavior
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_runs_the_suite(PhpVersion $version, ContextInterface $context)
+    function it_runs_the_suite(ContextInterface $context)
     {
         $result = $this->run($context);
         $result->isPassed()->shouldBeBool();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Process;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
@@ -12,27 +14,10 @@ use Symfony\Component\Process\Process;
 
 class ProcessBuilder
 {
-    /**
-     * @var ExternalCommand
-     */
     private $externalCommandLocator;
-
-    /**
-     * @var GrumPHP
-     */
     private $config;
-
-    /**
-     * @var IOInterface
-     */
     private $io;
 
-    /**
-     * ProcessBuilder constructor.
-     *
-     * @param GrumPHP         $config
-     * @param ExternalCommand $externalCommandLocator
-     */
     public function __construct(GrumPHP $config, ExternalCommand $externalCommandLocator, IOInterface $io)
     {
         $this->externalCommandLocator = $externalCommandLocator;
@@ -40,13 +25,7 @@ class ProcessBuilder
         $this->io = $io;
     }
 
-    /**
-     * @param string $command
-     * @param bool $forceUnix
-     *
-     * @return ProcessArgumentsCollection
-     */
-    public function createArgumentsForCommand($command, $forceUnix = false)
+    public function createArgumentsForCommand(string $command, bool $forceUnix = false): ProcessArgumentsCollection
     {
         $executable = $this->externalCommandLocator->locate($command, $forceUnix);
 
@@ -54,12 +33,9 @@ class ProcessBuilder
     }
 
     /**
-     * @param ProcessArgumentsCollection $arguments
-     *
-     * @return Process
-     * @throws \GrumPHP\Exception\PlatformException
+     * @throws PlatformException
      */
-    public function buildProcess(ProcessArgumentsCollection $arguments)
+    public function buildProcess(ProcessArgumentsCollection $arguments): Process
     {
         $process = ProcessFactory::fromArguments($arguments);
         $process->setTimeout($this->config->getProcessTimeout());
@@ -71,9 +47,7 @@ class ProcessBuilder
     }
 
     /**
-     * @param Process $process
-     *
-     * @throws \GrumPHP\Exception\PlatformException
+     * @throws PlatformException
      */
     private function guardWindowsCmdMaxInputStringLimitation(Process $process)
     {
@@ -81,20 +55,17 @@ class ProcessBuilder
             return;
         }
 
-        if (strlen($process->getCommandLine()) <= Platform::WINDOWS_COMMANDLINE_STRING_LIMITATION) {
+        if (\strlen($process->getCommandLine()) <= Platform::WINDOWS_COMMANDLINE_STRING_LIMITATION) {
             return;
         }
 
         throw PlatformException::commandLineStringLimit($process);
     }
 
-    /**
-     * @param Process $process
-     */
     private function logProcessInVerboseMode(Process $process)
     {
         if ($this->io->isVeryVerbose()) {
-            $this->io->write(PHP_EOL . 'Command: ' . $process->getCommandLine(), true);
+            $this->io->write([PHP_EOL.'Command: '.$process->getCommandLine()], true);
         }
     }
 }

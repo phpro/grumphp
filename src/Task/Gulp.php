@@ -1,36 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Task;
 
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Gulp task
+ * Gulp task.
  */
 class Gulp extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'gulp';
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'gulp_file' => null,
             'task' => null,
-            'triggered_by' => ['js', 'jsx', 'coffee', 'ts', 'less', 'sass', 'scss']
+            'triggered_by' => ['js', 'jsx', 'coffee', 'ts', 'less', 'sass', 'scss'],
         ]);
 
         $resolver->addAllowedTypes('gulp_file', ['null', 'string']);
@@ -43,19 +40,19 @@ class Gulp extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
         $files = $context->getFiles()->extensions($config['triggered_by']);
-        if (0 === count($files)) {
+        if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 

@@ -3,30 +3,20 @@
 namespace GrumPHP\Task;
 
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * PhpunitBridge task
- *
- * @link https://symfony.com/doc/current/components/phpunit_bridge.html
- */
 class PhpunitBridge extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'phpunitbridge';
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -44,18 +34,12 @@ class PhpunitBridge extends AbstractExternalTask
         return $resolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
         return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
 

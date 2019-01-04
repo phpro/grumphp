@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Formatter;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
@@ -8,9 +10,6 @@ use Symfony\Component\Process\Process;
 
 class PhpcsFormatter implements ProcessFormatterInterface
 {
-    /**
-     * @var string
-     */
     protected $output = '';
 
     /**
@@ -18,12 +17,7 @@ class PhpcsFormatter implements ProcessFormatterInterface
      */
     protected $suggestedFiles = [];
 
-    /**
-     * @param Process $process
-     *
-     * @return string
-     */
-    public function format(Process $process)
+    public function format(Process $process): string
     {
         $output = $process->getOutput();
         if (!$output) {
@@ -31,7 +25,7 @@ class PhpcsFormatter implements ProcessFormatterInterface
         }
 
         $pos = strrpos($output, "\n");
-        if ($pos === false) {
+        if (false === $pos) {
             return $output;
         }
         $lastLine = substr($output, $pos + 1);
@@ -46,45 +40,40 @@ class PhpcsFormatter implements ProcessFormatterInterface
         return $this->output;
     }
 
-    /**
-     * @param array $json
-     * @return string[]
-     */
-    public function getSuggestedFilesFromJson(array $json)
+    public function getSuggestedFilesFromJson(array $json): array
     {
         $suggestedFiles = [];
-        if (!isset($json['totals'], $json['totals']['fixable']) || $json['totals']['fixable'] == 0) {
+        if (!isset($json['totals']['fixable']) || $json['totals']['fixable'] === 0) {
             return $suggestedFiles;
         }
         foreach ($json['files'] as $absolutePath => $data) {
-            if (!is_array($data) || empty($data['messages'])) {
+            if (!\is_array($data) || empty($data['messages'])) {
                 continue;
             }
             foreach ($data['messages'] as $message) {
-                if (is_array($message) && $message['fixable']) {
+                if (\is_array($message) && $message['fixable']) {
                     $suggestedFiles[] = $absolutePath;
                     break;
                 }
             }
         }
+
         return $suggestedFiles;
     }
 
-    /**
-     * @param ProcessArgumentsCollection $defaultArguments
-     * @param ProcessBuilder $processBuilder
-     * @return string
-     */
-    public function formatErrorMessage(ProcessArgumentsCollection $defaultArguments, ProcessBuilder $processBuilder)
-    {
+    public function formatErrorMessage(
+        ProcessArgumentsCollection $defaultArguments,
+        ProcessBuilder $processBuilder
+    ): string {
         if (empty($this->suggestedFiles)) {
             return '';
         }
         $defaultArguments->addArgumentArray('%s', $this->suggestedFiles);
+
         return sprintf(
             '%sYou can fix some errors by running following command:%s',
-            PHP_EOL . PHP_EOL,
-            PHP_EOL . $processBuilder->buildProcess($defaultArguments)->getCommandLine()
+            PHP_EOL.PHP_EOL,
+            PHP_EOL.$processBuilder->buildProcess($defaultArguments)->getCommandLine()
         );
     }
 }

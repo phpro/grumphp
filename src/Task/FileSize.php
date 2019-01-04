@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Task;
 
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -11,46 +14,31 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FileSize implements TaskInterface
 {
-    /**
-     * @var GrumPHP
-     */
     protected $grumPHP;
 
-    /**
-     * @param GrumPHP $grumPHP
-     */
     public function __construct(GrumPHP $grumPHP)
     {
         $this->grumPHP = $grumPHP;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'file_size';
     }
 
-    /**
-     * @return array
-     */
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
 
         return $this->getConfigurableOptions()->resolve($configured);
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'max_size' => '10M',
-            'ignore_patterns'  => [],
+            'ignore_patterns' => [],
         ]);
 
         $resolver->addAllowedTypes('max_size', ['string', 'integer']);
@@ -59,22 +47,12 @@ class FileSize implements TaskInterface
         return $resolver;
     }
 
-    /**
-     * @param ContextInterface $context
-     *
-     * @return bool
-     */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
         return $context instanceof RunContext || $context instanceof GitPreCommitContext;
     }
 
-    /**
-     * @param ContextInterface|RunContext $context
-     *
-     * @return TaskResult
-     */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
 
@@ -89,11 +67,11 @@ class FileSize implements TaskInterface
             ->size(sprintf('>%s', $maxSize));
 
         if ($files->count() > 0) {
-            $errorMessage = 'Large files detected:' . PHP_EOL;
+            $errorMessage = 'Large files detected:'.PHP_EOL;
 
             foreach ($files as $file) {
                 $errorMessage .= sprintf(
-                    '- %s exceeded the maximum size of %s.' . PHP_EOL,
+                    '- %s exceeded the maximum size of %s.'.PHP_EOL,
                     $file->getFilename(),
                     $maxSize
                 );
