@@ -65,12 +65,12 @@ class RunCommand extends Command
         $files = $this->getRegisteredFiles();
         $testSuites = $this->grumPHP->getTestSuites();
 
-        $tasks = $this->parseCommaSeparatedOption($input->getOption("tasks"));
+        $tasks = $this->parseCommaSeparatedOption($input->getOption("tasks") ?? "");
 
         $context = new TaskRunnerContext(
             new RunContext($files),
-            (bool) $input->getOption('testsuite') ? $testSuites->getRequired($input->getOption('testsuite')) : null,
-            $tasks
+            $tasks,
+            (bool) $input->getOption('testsuite') ? $testSuites->getRequired($input->getOption('testsuite')) : null
         );
 
         return $this->taskRunner()->run($output, $context);
@@ -98,7 +98,7 @@ class RunCommand extends Command
      * @param string $value
      * @return string[]
      */
-    protected function parseCommaSeparatedOption($value)
+    protected function parseCommaSeparatedOption(string $value)
     {
         $stringValues = explode(",", $value);
         $parsedValues = [];
@@ -107,7 +107,7 @@ class RunCommand extends Command
             if (empty($v)) {
                 continue;
             }
-            $parsedValues[$v] = $v;
+            $parsedValues[] = $v;
         }
         return $parsedValues;
     }

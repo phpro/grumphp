@@ -36,16 +36,15 @@ class TasksCollection extends ArrayCollection
 
     /**
      * @param string[] $tasks
-     *
-     * @return TasksCollection
      */
-    public function filterByTaskName($tasks)
+    public function filterByTaskNames($tasks): self
     {
+        if (empty($tasks)) {
+            return new self($this->toArray());
+        }
+
         return $this->filter(function (TaskInterface $task) use ($tasks) {
-            if (empty($tasks)) {
-                return true;
-            }
-            return in_array($task->getName(), $tasks);
+            return \in_array($task->getName(), $tasks, true);
         });
     }
 
@@ -54,7 +53,7 @@ class TasksCollection extends ArrayCollection
      */
     public function sortByPriority(GrumPHP $grumPHP): self
     {
-        $priorityQueue = new SplPriorityQueue();
+        $priorityQueue   = new SplPriorityQueue();
         $stableSortIndex = PHP_INT_MAX;
         foreach ($this->getIterator() as $task) {
             $metadata = $grumPHP->getTaskMetadata($task->getName());

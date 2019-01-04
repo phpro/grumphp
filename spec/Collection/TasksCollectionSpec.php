@@ -68,7 +68,20 @@ class TasksCollectionSpec extends ObjectBehavior
         $task2->getName()->willReturn('task2');
         $tasks = ['task1'];
 
-        $result = $this->filterByTaskName($tasks);
+        $result = $this->filterByTaskNames($tasks);
+        $result->shouldBeAnInstanceOf(TasksCollection::class);
+        $result->count()->shouldBe(1);
+        $tasks = $result->toArray();
+        $tasks[0]->shouldBe($task1);
+    }
+
+    function it_can_filter_by_duplicate_task_names(TaskInterface $task1, TaskInterface $task2)
+    {
+        $task1->getName()->willReturn('task1');
+        $task2->getName()->willReturn('task2');
+        $tasks = ['task1', 'task1'];
+
+        $result = $this->filterByTaskNames($tasks);
         $result->shouldBeAnInstanceOf(TasksCollection::class);
         $result->count()->shouldBe(1);
         $tasks = $result->toArray();
@@ -81,7 +94,7 @@ class TasksCollectionSpec extends ObjectBehavior
         $task2->getName()->willReturn('task2');
         $tasks = [];
 
-        $result = $this->filterByTaskName($tasks);
+        $result = $this->filterByTaskNames($tasks);
         $result->shouldBeAnInstanceOf(TasksCollection::class);
         $result->count()->shouldBe(2);
         $tasks = $result->toArray();
