@@ -28,9 +28,14 @@ class TaskRunnerContext
     private $testSuite = null;
 
     /**
-     * @var ParallelOptions $parallelOptions
+     * @var ParallelOptions
      */
     private $parallelOptions = null;
+
+    /**
+     * @var string
+     */
+    private $passthru = "";
 
     /**
      * TaskRunnerContext constructor.
@@ -39,17 +44,20 @@ class TaskRunnerContext
      * @param string[] $tasks
      * @param TestSuiteInterface $testSuite
      * @param ParallelOptions|null $parallelOptions
+     * @param string $passthru
      */
     public function __construct(
         ContextInterface $taskContext,
         array $tasks,
         TestSuiteInterface $testSuite = null,
-        ParallelOptions $parallelOptions = null
+        ParallelOptions $parallelOptions = null,
+        string $passthru = ""
     ) {
         $this->taskContext     = $taskContext;
         $this->tasks           = $tasks;
         $this->testSuite       = $testSuite;
         $this->parallelOptions = $parallelOptions;
+        $this->passthru = $passthru;
     }
 
     /**
@@ -127,5 +135,13 @@ class TaskRunnerContext
     public function runInParallel():bool
     {
         return $this->getParallelOptions() !== null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassthru(): string
+    {
+        return $this->passthru;
     }
 }

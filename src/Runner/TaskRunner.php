@@ -74,7 +74,7 @@ class TaskRunner
         ;
 
         if ($runnerContext->runInParallel()) {
-            return $this->runTasksParallely($tasks, $context, $runnerContext->getParallelOptions());
+            return $this->runTasksParallely($tasks, $runnerContext);
         }
         return $this->runTasksSequentially($tasks, $context);
     }
@@ -161,22 +161,22 @@ class TaskRunner
 
     /**
      * @param TasksCollection $tasks
-     * @param ContextInterface $context
-     * @param ParallelOptions $options
+     * @param TaskRunnerContext $runnerContext
      * @return TaskResultCollection
      */
     protected function runTasksParallely(
         TasksCollection $tasks,
-        ContextInterface $context,
-        ParallelOptions $options
+        TaskRunnerContext $runnerContext
     ): TaskResultCollection {
         $taskResults = new TaskResultCollection();
+        $context     = $runnerContext->getTaskContext();
+
         $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, new RunnerEvent($tasks, $context, $taskResults));
 
         $tasksByStage = $this->groupByStages($tasks);
 
         foreach ($tasksByStage as $stage => $taskList) {
-            $taskResults = $this->runTasksInStage($stage, $taskList, $context, $options, $taskResults);
+            $taskResults = $this->runTasksInStage($stage, $taskList, $runnerContext, $taskResults);
         }
 
         if ($taskResults->isFailed()) {
@@ -237,16 +237,14 @@ class TaskRunner
      *
      * @param int $stage
      * @param TasksCollection $taskList
-     * @param ContextInterface $context
-     * @param ParallelOptions $options
+     * @param TaskRunnerContext $runnerContext
      * @param TaskResultCollection $taskResults
      * @return TaskResultCollection
      */
     protected function runTasksInStage(
         int $stage,
         TasksCollection $taskList,
-        ContextInterface $context,
-        ParallelOptions $options,
+        TaskRunnerContext $runnerContext,
         TaskResultCollection $taskResults
     ): TaskResultCollection {
         // STAGE_START $stage
@@ -260,12 +258,12 @@ class TaskRunner
 
         // STAGE_START_PARALLEL $stage
         $parallelTasks = $parallelTasks->sortByPriority($this->grumPHP);
-        $taskResults   = $this->runTasksInParallel($parallelTasks, $context, $options, $taskResults);
+        $taskResults   = $this->runTasksInParallel($parallelTasks, $runnerContext, $taskResults);
         // STAGE_FINISH_PARALLEL $stage
 
         // STAGE_START_SEQUENTIAL $stage
         $sequentialTasks = $sequentialTasks->sortByPriority($this->grumPHP);
-        $taskResults     = $this->runTasksInSequence($sequentialTasks, $context, $taskResults);
+        $taskResults     = $this->runTasksInSequence($sequentialTasks, $runnerContext->getTaskContext(), $taskResults);
         // STAGE_FINISH_SEQUENTIAL $stage
         // STAGE_FINISH $stage
 
@@ -274,15 +272,13 @@ class TaskRunner
 
     /**
      * @param TasksCollection $tasks
-     * @param ContextInterface $context
-     * @param ParallelOptions $options
+     * @param TaskRunnerContext $runnerContext
      * @param TaskResultCollection $taskResults
      * @return TaskResultCollection
      */
     protected function runTasksInParallel(
         TasksCollection $tasks,
-        ContextInterface $context,
-        ParallelOptions $options,
+        TaskRunnerContext $runnerContext,
         TaskResultCollection $taskResults
     ) {
         /**
@@ -297,11 +293,14 @@ class TaskRunner
          * @var Process[] $runningProcesses
          */
         $runningProcesses    = [];
-        $maxProcesses        = $options->getMaxProcesses();
+        $maxProcesses        = $runnerContext->getParallelOptions()->getMaxProcesses();
+        $sleep               = $runnerContext->getParallelOptions()->getSleep();
+        $passthru            = $runnerContext->getPassthru();
+        $context             = $runnerContext->getTaskContext();
         $taskNamesToRun      = array_keys($tasksToRun);
         $executionShouldStop = false;
         do {
-            $this->sleepIfNecessary($taskNamesToRun, $runningProcesses, $maxProcesses, $options->getSleep());
+            $this->sleepIfNecessary($taskNamesToRun, $runningProcesses, $maxProcesses, $sleep);
 
             $taskName = $this->getNextTaskName($taskNamesToRun, $runningProcesses, $maxProcesses);
 
@@ -310,7 +309,7 @@ class TaskRunner
                 $task = $tasksToRun[$taskName];
                 try {
                     $this->eventDispatcher->dispatch(TaskEvents::TASK_RUN, new TaskEvent($task, $context));
-                    $process = $task->resolveProcess($context);
+                    $process = $task->resolveProcess($context, $passthru);
                     $process->start();
                     $runningProcesses[$taskName] = $process;
                 } catch (PlatformException $e) {

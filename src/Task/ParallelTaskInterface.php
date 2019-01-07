@@ -24,9 +24,19 @@ interface ParallelTaskInterface extends TaskInterface
 
     public function getExecutablePath(): string;
 
-    public function resolveProcess(ContextInterface $context): Process;
+    public function resolveProcess(ContextInterface $context, string $passthru = ""): Process;
 
     public function getTaskResult(Process $process, ContextInterface $context): TaskResultInterface;
 
+    /**
+     * Defines the "stage" on which the task should run
+     * @return int
+     */
     public function getStage(): int;
+
+    /**
+     * Allows to provide arbitrary arguments/options for the command
+     * @return string
+     */
+    public function getPassthru(): string;
 }

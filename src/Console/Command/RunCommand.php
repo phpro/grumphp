@@ -59,6 +59,13 @@ class RunCommand extends Command
             'Specify which tasks you want to run (comma separated). Example --tasks=task1,task2',
             null
         );
+        $this->addOption(
+            'passthru',
+            null,
+            InputOption::VALUE_REQUIRED,
+            'The given string is appended to the underlying external command. Example --passthru=--version --foo=bar',
+            null
+        );
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -68,11 +75,14 @@ class RunCommand extends Command
 
         $tasks           = $this->parseCommaSeparatedOption($input->getOption("tasks") ?? "");
         $parallelOptions = $this->resolveParallelOptions();
+        $passthru        = $input->getOption("passthru") ?? "";
+
         $context = new TaskRunnerContext(
             new RunContext($files),
             $tasks,
             (bool) $input->getOption('testsuite') ? $testSuites->getRequired($input->getOption('testsuite')) : null,
-            $parallelOptions
+            $parallelOptions,
+            $passthru
         );
 
         $start   = microtime(true);

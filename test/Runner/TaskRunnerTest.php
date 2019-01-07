@@ -116,10 +116,10 @@ RESULT
                         new ExternalTestTask("foo", 0, null, null, 0),
                     ],
                     [
-                        new ExternalTestTask("fooBar", 1, "fooBar:out", "fooBar:err", 200),
+                        new ExternalTestTask("fooBar", 1, "fooBar:out", "fooBar:err", 500),
                     ],
                     [
-                        new ExternalTestTask("fooBaz", 1, "fooBaz:out", "fooBaz:err", 400),
+                        new ExternalTestTask("fooBaz", 1, "fooBaz:out", "fooBaz:err", 1000),
                         [
                             "blocking" => false,
                         ],
@@ -179,7 +179,7 @@ RESULT
                 ],
                 "taskData" => [
                     [
-                        new ExternalTestTask("foo", 0, null, null, 200),
+                        new ExternalTestTask("foo", 0, null, null, 500),
                     ],
                     [
                         new ExternalTestTask("fooBar", 1, "fooBar:out", "fooBar:err", 0),

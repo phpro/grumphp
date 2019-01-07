@@ -66,14 +66,13 @@ abstract class AbstractExternalParallelTask extends AbstractExternalTask impleme
         return $this->getTaskResult($process, $context);
     }
 
-    /**
-     * @param ContextInterface $context
-     * @return Process
-     */
-    public function resolveProcess(ContextInterface $context): Process
+    public function resolveProcess(ContextInterface $context, string $passthru = ""): Process
     {
-        $config  = $this->getConfiguration();
-        $process = $this->buildProcess($config, $context);
+        $config = $this->getConfiguration();
+        if (empty($passthru)) {
+            $passthru = $this->getPassthru();
+        }
+        $process = $this->buildProcess($config, $context, $passthru);
         return $process;
     }
 
@@ -105,6 +104,12 @@ abstract class AbstractExternalParallelTask extends AbstractExternalTask impleme
         return $metadata['stage'] ?? 0;
     }
 
+    public function getPassthru(): string
+    {
+        $metadata = $this->grumPHP->getTaskMetadata($this->getName());
+        return $metadata['passthru'] ?? "";
+    }
+
     /**
      * This methods specifies if there is work to do for the task.
      * This might be "false" if we use a whitelist/trigger list for the task.
@@ -118,16 +123,11 @@ abstract class AbstractExternalParallelTask extends AbstractExternalTask impleme
         return true;
     }
 
-    /**
-     * @param  array $config
-     * @param ContextInterface $context
-     * @return Process
-     */
-    protected function buildProcess(array $config, ContextInterface $context): Process
+    protected function buildProcess(array $config, ContextInterface $context, string $passthru = ""): Process
     {
         $executable = $this->getExecutableName();
         $arguments  = $this->buildArguments($executable, $config, $context);
-        $process    = $this->getProcessBuilder()->buildProcess($arguments);
+        $process    = $this->getProcessBuilder()->buildProcess($arguments, $passthru);
         return $process;
     }
 

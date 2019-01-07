@@ -93,15 +93,11 @@ class ExternalTestTask extends AbstractExternalParallelTask
         return $this->name;
     }
 
-    /**
-     * @param ContextInterface $context
-     * @return Process
-     */
-    public function resolveProcess(ContextInterface $context): Process
+    public function resolveProcess(ContextInterface $context, string $passthru = ""): Process
     {
         $executable = $this->getExecutableName();
         $arguments  = $this->buildArguments($executable, [], $context);
-        $process    = ProcessFactory::fromArguments($arguments);
+        $process    = ProcessFactory::fromArguments($arguments, $passthru);
         return $process;
     }
 
@@ -130,5 +126,11 @@ class ExternalTestTask extends AbstractExternalParallelTask
     public function getStage(): int
     {
         return $this->stage;
+    }
+
+    // TODO: make configurable
+    public function getPassthru(): string
+    {
+        return "";
     }
 }

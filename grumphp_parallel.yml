@@ -12,6 +12,7 @@ parameters:
       metadata:
         priority: 300
         stage: 300
+        passthru: "-s"
     phpspec_parallel:
       format: progress
       verbose: true

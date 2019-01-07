@@ -35,9 +35,9 @@ class ProcessBuilder
     /**
      * @throws PlatformException
      */
-    public function buildProcess(ProcessArgumentsCollection $arguments): Process
+    public function buildProcess(ProcessArgumentsCollection $arguments, string $passthru = ""): Process
     {
-        $process = ProcessFactory::fromArguments($arguments);
+        $process = ProcessFactory::fromArguments($arguments, $passthru);
         $process->setTimeout($this->config->getProcessTimeout());
 
         $this->logProcessInVerboseMode($process);

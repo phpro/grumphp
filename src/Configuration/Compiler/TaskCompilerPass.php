@@ -19,15 +19,15 @@ class TaskCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->findDefinition('task_runner');
+        $definition     = $container->findDefinition('task_runner');
         $taggedServices = $container->findTaggedServiceIds(self::TAG_GRUMPHP_TASK);
-        $configuration = $container->getParameter('tasks') ?: [];
+        $configuration  = $container->getParameter('tasks') ?: [];
 
-        $tasksRegistered = [];
-        $tasksMetadata = [];
+        $tasksRegistered    = [];
+        $tasksMetadata      = [];
         $tasksConfiguration = [];
         foreach ($taggedServices as $id => $tags) {
-            $taskTag = $this->getTaskTag($tags);
+            $taskTag   = $this->getTaskTag($tags);
             $configKey = $taskTag['config'];
             if (\in_array($configKey, $tasksRegistered, true)) {
                 throw new RuntimeException(
@@ -41,7 +41,7 @@ class TaskCompilerPass implements CompilerPassInterface
             }
 
             // Load configuration and metadata:
-            $taskConfig = \is_array($configuration[$configKey]) ? $configuration[$configKey] : [];
+            $taskConfig                = \is_array($configuration[$configKey]) ? $configuration[$configKey] : [];
             $tasksMetadata[$configKey] = $this->parseTaskMetadata($taskConfig);
 
             // The metadata can't be part of the actual configuration.
@@ -72,9 +72,10 @@ class TaskCompilerPass implements CompilerPassInterface
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'stage' => 0,
             'priority' => 0,
             'blocking' => true,
+            'stage'    => 0,
+            'passthru' => "",
         ]);
 
         $metadata = $configuration['metadata'] ?? [];
