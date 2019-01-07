@@ -67,6 +67,7 @@ class ExternalTestTask extends AbstractExternalParallelTask
         $executable = __DIR__."/process_helper";
 
         $args = new ProcessArgumentsCollection();
+        $args->add("php");
         $args->add($executable);
         $args->addOptionalArgument('-c=%s', $this->returnCode);
         $args->addOptionalArgument('-o=%s', $this->stdOutString);

@@ -59,7 +59,7 @@ class ConfigurationFile
 
     private function locateConfigFileWithDistSupport(string $defaultPath): string
     {
-        $distPath = ('.dist' !== strpos($defaultPath, -5)) ? $defaultPath.'.dist' : $defaultPath;
+        $distPath = ('.dist' !== substr($defaultPath, 0, -5)) ? $defaultPath.'.dist' : $defaultPath;
         if ($this->filesystem->exists($defaultPath) || !$this->filesystem->exists($distPath)) {
             return $defaultPath;
         }

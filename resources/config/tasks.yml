@@ -448,7 +448,7 @@ services:
         tags:
             - {name: grumphp.task, config: phpmd_parallel}
     task.phpstan_parallel:
-        class: GrumPHP\Task\PhpstanParallel
+        class: GrumPHP\Task\PhpStanParallel
         arguments:
             - '@config'
             - '@process_builder'
