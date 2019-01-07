@@ -20,26 +20,13 @@ interface ParallelTaskInterface extends TaskInterface
      */
     public static function getStaticName() : string;
 
-    /**
-     * @return string
-     */
     public function getExecutableName(): string;
 
-    /**
-     * @return string
-     */
     public function getExecutablePath(): string;
 
-    /**
-     * @param ContextInterface $context
-     * @return Process
-     */
     public function resolveProcess(ContextInterface $context): Process;
 
-    /**
-     * @param Process $process
-     * @param ContextInterface $context
-     * @return TaskResultInterface
-     */
     public function getTaskResult(Process $process, ContextInterface $context): TaskResultInterface;
+
+    public function getStage(): int;
 }

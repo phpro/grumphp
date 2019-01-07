@@ -33,6 +33,10 @@ class ExternalTestTask extends AbstractExternalParallelTask
      * @var int|null
      */
     protected $runtime;
+    /**
+     * @var int|null
+     */
+    protected $stage;
 
     /**
      * ExternalTestTask constructor.
@@ -42,16 +46,24 @@ class ExternalTestTask extends AbstractExternalParallelTask
      * @param string|null $stdOutString
      * @param string|null $stdErrString
      * @param int|null $runtime
+     * @param int|null $stage
      */
-    public function __construct(string $name, int $returnCode = null, string $stdOutString = null, string $stdErrString = null, int $runtime = null)
-    {
+    public function __construct(
+        string $name,
+        int $returnCode = null,
+        string $stdOutString = null,
+        string $stdErrString = null,
+        int $runtime = null,
+        int $stage = null
+    ) {
         $this->name         = $name;
         $this->returnCode   = $returnCode;
         $this->stdOutString = $stdOutString;
         $this->stdErrString = $stdErrString;
         $this->runtime      = $runtime;
+        $this->stage        = $stage ?? 0;
 
-        $this->formatter      = new RawProcessFormatter();
+        $this->formatter = new RawProcessFormatter();
     }
 
     /**
@@ -113,5 +125,10 @@ class ExternalTestTask extends AbstractExternalParallelTask
     public function canRunInContext(ContextInterface $context): bool
     {
         return true;
+    }
+
+    public function getStage(): int
+    {
+        return $this->stage;
     }
 }

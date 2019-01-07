@@ -33,9 +33,7 @@ class ComposerTest extends TestCase
          */
         $process = $task->resolveProcess($context);
 
-        $actual = $process->getCommandLine();
-
-        $this->assertEquals($expected, $actual);
+        $this->assertProcessCommand($expected,$process);
     }
 
     /**

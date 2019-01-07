@@ -68,7 +68,6 @@ class RunCommand extends Command
 
         $tasks           = $this->parseCommaSeparatedOption($input->getOption("tasks") ?? "");
         $parallelOptions = $this->resolveParallelOptions();
-
         $context = new TaskRunnerContext(
             new RunContext($files),
             $tasks,
@@ -76,7 +75,13 @@ class RunCommand extends Command
             $parallelOptions
         );
 
-        return $this->taskRunner()->run($output, $context);
+        $start   = microtime(true);
+        $result  = $this->taskRunner()->run($output, $context);
+        $runtime = sprintf("Runtime %0.2fs", microtime(true) - $start);
+        if ($output->isVerbose()) {
+            $output->writeln($runtime);
+        }
+        return $result;
     }
 
     protected function getRegisteredFiles(): FilesCollection

@@ -173,16 +173,11 @@ class TaskRunner
         $taskResults = new TaskResultCollection();
         $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, new RunnerEvent($tasks, $context, $taskResults));
 
-        $parallelTasks = $tasks->filter(function ($task) {
-            return $task instanceof ParallelTaskInterface;
-        });
+        $tasksByStage = $this->groupByStages($tasks);
 
-        $taskResults = $this->runTasksInParallel($parallelTasks, $context, $options, $taskResults);
-
-        $sequentialTasks = $tasks->filter(function ($task) {
-            return !$task instanceof ParallelTaskInterface;
-        });
-        $taskResults     = $this->runTasksInSequence($sequentialTasks, $context, $taskResults);
+        foreach ($tasksByStage as $stage => $taskList) {
+            $taskResults = $this->runTasksInStage($stage, $taskList, $context, $options, $taskResults);
+        }
 
         if ($taskResults->isFailed()) {
             $this->eventDispatcher->dispatch(
@@ -197,6 +192,82 @@ class TaskRunner
             RunnerEvents::RUNNER_COMPLETE,
             new RunnerEvent($tasks, $context, $taskResults)
         );
+
+        return $taskResults;
+    }
+
+    /**
+     * @todo This should become a method in TaskCollection
+     * @param TasksCollection $tasks
+     * @return TasksCollection[]
+     */
+    protected function groupByStages(TasksCollection $tasks): array
+    {
+        /**
+         * @var TasksCollection[] $tasksByStage
+         */
+        $tasksByStage = [];
+        /**
+         * @var TaskInterface $task
+         */
+        foreach ($tasks as $task) {
+            // TODO
+            // Note:
+            // Tasks wihout stage info will be run after the parallel tasks
+            // This distinction will not be necessary when "stage" is accepted
+            // as a general meta info parameter
+            $stage = 0;
+            if ($task instanceof ParallelTaskInterface) {
+                $stage = $task->getStage();
+            }
+            if (!array_key_exists($stage, $tasksByStage)) {
+                $tasksByStage[$stage] = new TasksCollection();
+            }
+            $tasksByStage[$stage]->add($task);
+        }
+
+        // sort by stage descending
+        krsort($tasksByStage);
+
+        return $tasksByStage;
+    }
+
+    /**
+     * @todo Emit STAGE* events?
+     *
+     * @param int $stage
+     * @param TasksCollection $taskList
+     * @param ContextInterface $context
+     * @param ParallelOptions $options
+     * @param TaskResultCollection $taskResults
+     * @return TaskResultCollection
+     */
+    protected function runTasksInStage(
+        int $stage,
+        TasksCollection $taskList,
+        ContextInterface $context,
+        ParallelOptions $options,
+        TaskResultCollection $taskResults
+    ): TaskResultCollection {
+        // STAGE_START $stage
+        /**
+         * @var TasksCollection $parallelTasks
+         * @var TasksCollection $sequentialTasks
+         */
+        list($parallelTasks, $sequentialTasks) = $taskList->partition(function ($_, TaskInterface $task) {
+            return $task instanceof ParallelTaskInterface;
+        });
+
+        // STAGE_START_PARALLEL $stage
+        $parallelTasks = $parallelTasks->sortByPriority($this->grumPHP);
+        $taskResults   = $this->runTasksInParallel($parallelTasks, $context, $options, $taskResults);
+        // STAGE_FINISH_PARALLEL $stage
+
+        // STAGE_START_SEQUENTIAL $stage
+        $sequentialTasks = $sequentialTasks->sortByPriority($this->grumPHP);
+        $taskResults     = $this->runTasksInSequence($sequentialTasks, $context, $taskResults);
+        // STAGE_FINISH_SEQUENTIAL $stage
+        // STAGE_FINISH $stage
 
         return $taskResults;
     }

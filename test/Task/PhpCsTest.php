@@ -32,9 +32,7 @@ class PhpCsTest extends TestCase
          */
         $process = $task->resolveProcess($context);
 
-        $actual = $process->getCommandLine();
-
-        $this->assertEquals($expected, $actual);
+        $this->assertProcessCommand($expected,$process);
     }
 
     /**
@@ -83,7 +81,6 @@ class PhpCsTest extends TestCase
 
         $process = $task->resolveProcess($context);
 
-        $actual = $process->getCommandLine();
         // Note:
         // we can use the sprintf variant instead of a fixed value
         // if we want to actually "resolve" the executable
@@ -91,7 +88,7 @@ class PhpCsTest extends TestCase
         $pathToExecutable = $task->getExecutablePath();
         $expected = sprintf($expected, $pathToExecutable);
 
-        $this->assertEquals($expected, $actual);
+        $this->assertProcessCommand($expected,$process);
     }
 
     /**

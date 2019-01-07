@@ -21,7 +21,7 @@ class TaskRunnerHelper extends Helper
     const HELPER_NAME = 'taskrunner';
 
     const CODE_SUCCESS = 0;
-    const CODE_ERROR = 1;
+    const CODE_ERROR   = 1;
 
     /**
      * @var TaskRunner
@@ -40,8 +40,8 @@ class TaskRunnerHelper extends Helper
 
     public function __construct(GrumPHP $config, TaskRunner $taskRunner, EventDispatcherInterface $eventDispatcher)
     {
-        $this->config = $config;
-        $this->taskRunner = $taskRunner;
+        $this->config          = $config;
+        $this->taskRunner      = $taskRunner;
         $this->eventDispatcher = $eventDispatcher;
     }
 

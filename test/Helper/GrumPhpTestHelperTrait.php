@@ -3,11 +3,13 @@
 namespace GrumPHPTest\Helper;
 
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Console\Application;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\Locator\ExternalCommand;
+use GrumPHP\Process\ProcessFactory;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Runner\TaskRunnerContext;
@@ -18,6 +20,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 
 trait GrumPhpTestHelperTrait
@@ -307,9 +310,11 @@ trait GrumPhpTestHelperTrait
     {
         $actual = $actual
             ->map(function (TaskResultInterface $result) {
+                $message = $this->normalizeLineEndings($result->getMessage());
+
                 return [
                     "resultCode" => $result->getResultCode(),
-                    "message"    => $result->getMessage(),
+                    "message"    => $message,
                 ];
             })
             ->toArray()
@@ -320,6 +325,33 @@ trait GrumPhpTestHelperTrait
 
     protected function assertRunOutput(string $expected, string $actual)
     {
+        $actual = $this->normalizeLineEndings($actual);
+
         $this->assertEquals($expected, $actual, "Failed asserting run output, found:\n".$actual);
+    }
+
+    protected function assertProcessCommand(string $expected, Process $process)
+    {
+        // Note:
+        // Windows and Unix escape command line args differently
+        // so we need to "parse" the given expected command line
+        // string first and then put it back together to compare
+        // the same "format"
+        $normalizeCommandline = function($string) {
+            global $argv;
+            preg_match_all ('/(?<=^|\s)([\'"]?)(.+?)(?<!\\\\)\1(?=$|\s)/', $string, $ms);
+            $argv = $ms[2];
+            $commandline = ProcessFactory::fromArguments(new ProcessArgumentsCollection($argv))->getCommandLine();
+            return $commandline;
+        };
+        $normalizeExpected = $normalizeCommandline($expected);
+
+        $actual = $process->getCommandLine();
+
+        $this->assertEquals($normalizeExpected, $actual, "Original expected commandline string: $expected");
+    }
+
+    protected function normalizeLineEndings(string $string){
+        return str_replace(PHP_EOL, "\n", $string);
     }
 }

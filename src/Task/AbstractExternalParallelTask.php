@@ -92,6 +92,20 @@ abstract class AbstractExternalParallelTask extends AbstractExternalTask impleme
     }
 
     /**
+     * @return array
+     */
+    public function getConfiguration(): array
+    {
+        return parent::getConfiguration();
+    }
+
+    public function getStage(): int
+    {
+        $metadata = $this->grumPHP->getTaskMetadata($this->getName());
+        return $metadata['stage'] ?? 0;
+    }
+
+    /**
      * This methods specifies if there is work to do for the task.
      * This might be "false" if we use a whitelist/trigger list for the task.
      *
@@ -102,14 +116,6 @@ abstract class AbstractExternalParallelTask extends AbstractExternalTask impleme
     protected function hasWorkToDo(ContextInterface $context): bool
     {
         return true;
-    }
-
-    /**
-     * @return array
-     */
-    public function getConfiguration(): array
-    {
-        return parent::getConfiguration();
     }
 
     /**

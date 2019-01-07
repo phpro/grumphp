@@ -150,15 +150,15 @@ RESULT
                     // processes becomes really complicated
                     "output"      => <<<RESULT
 GrumPHP is sniffing your code!
-Task 1/3: [Scheduling] ExternalTestTask (foo)
-Task 2/3: [Scheduling] ExternalTestTask (fooBar)
-Task 3/3: [Scheduling] ExternalTestTask (fooBaz)
-Task 1/3: [Running] ExternalTestTask (foo)
-Task 2/3: [Running] ExternalTestTask (fooBar)
-Task 3/3: [Running] ExternalTestTask (fooBaz)
-Task 1/3: [Success] ExternalTestTask (foo) ✔
-Task 2/3: [Failed] ExternalTestTask (fooBar) ✘
-Task 3/3: [Failed] ExternalTestTask (fooBaz) ✘
+Task 1/3: [Scheduling] ExternalTestTask (foo) (stage 0)
+Task 2/3: [Scheduling] ExternalTestTask (fooBar) (stage 0)
+Task 3/3: [Scheduling] ExternalTestTask (fooBaz) (stage 0)
+Task 1/3: [Running] ExternalTestTask (foo) (stage 0)
+Task 2/3: [Running] ExternalTestTask (fooBar) (stage 0)
+Task 3/3: [Running] ExternalTestTask (fooBaz) (stage 0)
+Task 1/3: [Success] ExternalTestTask (foo) (stage 0) ✔
+Task 2/3: [Failed] ExternalTestTask (fooBar) (stage 0) ✘
+Task 3/3: [Failed] ExternalTestTask (fooBaz) (stage 0) ✘
 fooBaz:out
 
 fooBaz:err
@@ -201,12 +201,12 @@ RESULT
                     ],
                     "output"      => <<<RESULT
 GrumPHP is sniffing your code!
-Task 1/2: [Scheduling] ExternalTestTask (foo)
-Task 2/2: [Scheduling] ExternalTestTask (fooBar)
-Task 1/2: [Running] ExternalTestTask (foo)
-Task 2/2: [Running] ExternalTestTask (fooBar)
-Task 2/2: [Failed] ExternalTestTask (fooBar) ✘
-Task 1/2: [Success] ExternalTestTask (foo) ✔
+Task 1/2: [Scheduling] ExternalTestTask (foo) (stage 0)
+Task 2/2: [Scheduling] ExternalTestTask (fooBar) (stage 0)
+Task 1/2: [Running] ExternalTestTask (foo) (stage 0)
+Task 2/2: [Running] ExternalTestTask (fooBar) (stage 0)
+Task 2/2: [Failed] ExternalTestTask (fooBar) (stage 0) ✘
+Task 1/2: [Success] ExternalTestTask (foo) (stage 0) ✔
 fooBar:out
 
 fooBar:err

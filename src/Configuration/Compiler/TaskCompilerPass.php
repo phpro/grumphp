@@ -72,6 +72,7 @@ class TaskCompilerPass implements CompilerPassInterface
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
+            'stage' => 0,
             'priority' => 0,
             'blocking' => true,
         ]);

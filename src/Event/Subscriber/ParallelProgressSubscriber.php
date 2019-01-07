@@ -21,6 +21,10 @@ class ParallelProgressSubscriber implements EventSubscriberInterface
      * @var ProgressBar[]
      */
     private $progressBars;
+    /**
+     * @var float[]
+     */
+    private $runtimes;
 
     /**
      * @var OutputInterface
@@ -31,6 +35,7 @@ class ParallelProgressSubscriber implements EventSubscriberInterface
     {
         $this->output       = $output;
         $this->progressBars = [];
+        $this->runtimes     = [];
     }
 
     public static function getSubscribedEvents(): array
@@ -68,13 +73,6 @@ class ParallelProgressSubscriber implements EventSubscriberInterface
 
             $taskInfo = $this->getTaskInfo($task);
 
-            // TODO: Remove instanceof check
-            if ($this->output->getVerbosity() >= $this->output::VERBOSITY_VERY_VERBOSE
-                && $task instanceof ParallelTaskInterface
-            ) {
-                $taskInfo .= " via\n".$task->resolveProcess($event->getContext())->getCommandLine();
-            }
-
             $bar = $this->progressBars[$task->getName()];
             $bar->setFormat("<fg=yellow>Task $current/$max:</fg=yellow> <fg=%color%>[%status%]</fg=%color%> %message%");
             $this->setMessageForTask($task, $taskInfo, "Scheduling", "yellow");
@@ -86,12 +84,14 @@ class ParallelProgressSubscriber implements EventSubscriberInterface
             }
             $current++;
         }
-        echo "";
     }
 
     public function advanceProgress(TaskEvent $event)
     {
-        $task     = $event->getTask();
+        $task = $event->getTask();
+
+        $this->runtimes[$task->getName()] = microtime(true);
+
         $taskInfo = $this->getTaskInfo($task);
         $bar      = $this->setMessageForTask($task, $taskInfo, "Running", "cyan");
         $bar->advance();
@@ -128,6 +128,11 @@ class ParallelProgressSubscriber implements EventSubscriberInterface
                 break;
         }
 
+        if ($this->output->isVeryVerbose()) {
+            $start   = $this->runtimes[$task->getName()];
+            $message .= sprintf(" (Runtime %0.2fs)", microtime(true) - $start);
+        }
+
         $bar = $this->setMessageForTask($task, $message, $status, $color);
         $bar->advance();
     }
@@ -152,6 +157,9 @@ class ParallelProgressSubscriber implements EventSubscriberInterface
         $taskInfo       = $taskReflection->getShortName();
         if ($this->output->getVerbosity() >= $this->output::VERBOSITY_VERBOSE) {
             $taskInfo .= " (".$task->getName().")";
+            if ($task instanceof ParallelTaskInterface) {
+                $taskInfo .= " (stage {$task->getStage()})";
+            }
         }
         return $taskInfo;
     }
