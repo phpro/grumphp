@@ -16,11 +16,12 @@ class RunCommandTest extends TestCase
     function parses_comma_separated_options(string $valueString, array $expected)
     {
         $command = new class extends RunCommand{
+            /** @noinspection PhpMissingParentConstructorInspection */
             public function __construct()
             {
             }
 
-            public function parseCommaSeparatedOption($str)
+            public function parseCommaSeparatedOption(string $str)
             {
                 return parent::parseCommaSeparatedOption(... func_get_args());
             }

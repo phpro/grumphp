@@ -3,7 +3,7 @@
 namespace GrumPHPTest\Task;
 
 use GrumPHP\Task\Paratest;
-use GrumPHP\Task\SecuritycheckerParallel;
+use GrumPHP\Task\SecurityCheckerParallel;
 use GrumPHPTest\Helper\GrumPhpTestHelperTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
