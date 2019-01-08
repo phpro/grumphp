@@ -154,14 +154,14 @@ GrumPHP is sniffing your code!
 Task 1/3: [Scheduling] ExternalParallelTestTask (foo)
 Task 2/3: [Scheduling] ExternalParallelTestTask (fooBar)
 Task 3/3: [Scheduling] ExternalParallelTestTask (fooBaz)
- >>>>> STARTING STAGE 0 <<<<< 
+ >>>>> STARTING STAGE 0 
 Task 1/3: [Running] ExternalParallelTestTask (foo)
 Task 2/3: [Running] ExternalParallelTestTask (fooBar)
 Task 3/3: [Running] ExternalParallelTestTask (fooBaz)
 Task 1/3: [Success] ExternalParallelTestTask (foo) ✔
 Task 2/3: [Failed] ExternalParallelTestTask (fooBar) ✘
 Task 3/3: [Failed] ExternalParallelTestTask (fooBaz) ✘
- >>>>> FINISHING STAGE 0 <<<<< 
+ >>>>> FINISHING STAGE 0 
 fooBaz:out
 
 fooBaz:err
@@ -206,12 +206,12 @@ RESULT
 GrumPHP is sniffing your code!
 Task 1/2: [Scheduling] ExternalParallelTestTask (foo)
 Task 2/2: [Scheduling] ExternalParallelTestTask (fooBar)
- >>>>> STARTING STAGE 0 <<<<< 
+ >>>>> STARTING STAGE 0 
 Task 1/2: [Running] ExternalParallelTestTask (foo)
 Task 2/2: [Running] ExternalParallelTestTask (fooBar)
 Task 2/2: [Failed] ExternalParallelTestTask (fooBar) ✘
 Task 1/2: [Success] ExternalParallelTestTask (foo) ✔
- >>>>> FINISHING STAGE 0 <<<<< 
+ >>>>> FINISHING STAGE 0 
 fooBar:out
 
 fooBar:err
@@ -254,12 +254,12 @@ RESULT
 GrumPHP is sniffing your code!
 Task 1/2: [Scheduling] ExternalParallelTestTask (fooBar)
 Task 2/2: [Scheduling] ExternalTestTask (foo)
- >>>>> STARTING STAGE 0 <<<<< 
+ >>>>> STARTING STAGE 0 
 Task 1/2: [Running] ExternalParallelTestTask (fooBar)
 Task 1/2: [Success] ExternalParallelTestTask (fooBar) ✔
 Task 2/2: [Running] ExternalTestTask (foo)
 Task 2/2: [Success] ExternalTestTask (foo) ✔
- >>>>> FINISHING STAGE 0 <<<<< 
+ >>>>> FINISHING STAGE 0 
 
 RESULT
                     ,
@@ -300,18 +300,18 @@ Task 1/4: [Scheduling] ExternalParallelTestTask (Runs in stage 2, prio 2)
 Task 2/4: [Scheduling] ExternalParallelTestTask (Runs in stage 2, prio 1)
 Task 3/4: [Scheduling] ExternalParallelTestTask (Runs in stage 1, prio 2)
 Task 4/4: [Scheduling] ExternalParallelTestTask (Runs in stage 1, prio 1)
- >>>>> STARTING STAGE 2 <<<<< 
+ >>>>> STARTING STAGE 2 
 Task 1/4: [Running] ExternalParallelTestTask (Runs in stage 2, prio 2)
 Task 1/4: [Success] ExternalParallelTestTask (Runs in stage 2, prio 2) ✔
 Task 2/4: [Running] ExternalParallelTestTask (Runs in stage 2, prio 1)
 Task 2/4: [Success] ExternalParallelTestTask (Runs in stage 2, prio 1) ✔
- >>>>> FINISHING STAGE 2 <<<<< 
- >>>>> STARTING STAGE 1 <<<<< 
+ >>>>> FINISHING STAGE 2 
+ >>>>> STARTING STAGE 1 
 Task 3/4: [Running] ExternalParallelTestTask (Runs in stage 1, prio 2)
 Task 3/4: [Success] ExternalParallelTestTask (Runs in stage 1, prio 2) ✔
 Task 4/4: [Running] ExternalParallelTestTask (Runs in stage 1, prio 1)
 Task 4/4: [Success] ExternalParallelTestTask (Runs in stage 1, prio 1) ✔
- >>>>> FINISHING STAGE 1 <<<<< 
+ >>>>> FINISHING STAGE 1 
 
 RESULT
                     ,

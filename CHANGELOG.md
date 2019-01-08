@@ -153,12 +153,12 @@ vendor/bin/grumphp run --tasks=phpunit_parallel --config=grumphp_parallel.yml --
 [2019-01-08 18:21:51] GrumPHP.DEBUG: Repository created (git dir: "/codebase/grumphp/.git", working dir: "/codebase/grumphp") [] []
 GrumPHP is sniffing your code!
 Task 1/1: [Scheduling] PhpunitParallel (phpunit_parallel)
- >>>>> STARTING STAGE 0 <<<<<
+ >>>>> STARTING STAGE 0
 Task 1/1: [Running] PhpunitParallel (phpunit_parallel)
 Command: '/codebase/grumphp/vendor/bin/phpunit' --version
 
 Task 1/1: [Success] PhpunitParallel (phpunit_parallel) ✔ (Runtime 1.04s)
- >>>>> FINISHING STAGE 0 <<<<<
+ >>>>> FINISHING STAGE 0
 ````
 
 **Caution**: This feature is currently only available to `*Parallel` tasks!

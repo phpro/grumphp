@@ -207,7 +207,7 @@ trait GrumPHPTestHelperTrait
                 $task = $data[0];
                 $meta = $data[1] ?? [];
                 $tasks->add($task);
-                if($task instanceof TestTaskInterface){
+                if ($task instanceof TestTaskInterface) {
                     /** @noinspection PhpUndefinedMethodInspection */
                     $task->setGrumPHP($app->getGrumPhp());
                 }
@@ -352,17 +352,17 @@ trait GrumPHPTestHelperTrait
         // string first and then put it back together to compare
         // the same "format"
         $normalizeCommandline = function ($string) {
-            global $argv;
             preg_match_all('/(?<=^|\s)([\'"]?)(.+?)(?<!\\\\)\1(?=$|\s)/', $string, $ms);
-            $argv        = $ms[2];
-            $commandline = ProcessFactory::fromArguments(new ProcessArgumentsCollection($argv))->getCommandLine();
+            $args        = $ms[2];
+            $commandline = ProcessFactory::fromArguments(new ProcessArgumentsCollection($args))->getCommandLine();
             return $commandline;
         };
         $normalizeExpected    = $normalizeCommandline($expected);
 
-        $actual = $process->getCommandLine();
+        $actual          = $process->getCommandLine();
+        $normalizeActual = $normalizeCommandline($actual);
 
-        $this->assertEquals($normalizeExpected, $actual, "Original expected commandline string: $expected");
+        $this->assertEquals($normalizeExpected, $normalizeActual, "Original expected commandline string: $expected");
     }
 
     protected function normalizeLineEndings(string $string)

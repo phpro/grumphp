@@ -170,7 +170,7 @@ class ParallelProgressSubscriber implements EventSubscriberInterface
 
     protected function getMessageForStage(int $stage, string $status): string
     {
-        return PHP_EOL."<options=bold;fg=black;bg=white> >>>>> $status STAGE $stage <<<<< </>";
+        return PHP_EOL."<options=bold;fg=black;bg=white> >>>>> $status STAGE $stage </>";
     }
 
     protected function getTaskInfo(TaskInterface $task): string
