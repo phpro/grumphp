@@ -7,6 +7,7 @@ namespace GrumPHP\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Task\Context\ContextInterface;
+use GrumPHP\Task\ParallelTaskInterface;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\TestSuite\TestSuiteInterface;
 use SplPriorityQueue;
@@ -57,7 +58,13 @@ class TasksCollection extends ArrayCollection
         $stableSortIndex = PHP_INT_MAX;
         foreach ($this->getIterator() as $task) {
             $metadata = $grumPHP->getTaskMetadata($task->getName());
-            $priorityQueue->insert($task, [$metadata['priority'], $stableSortIndex--]);
+            // TODO
+            // remove workaround when getStage() is merged into TaskInterface
+            $stage    = -1;
+            if ($task instanceof ParallelTaskInterface) {
+                $stage = $task->getStage();
+            }
+            $priorityQueue->insert($task, [$stage, $metadata['priority'], $stableSortIndex--]);
         }
 
         return new self(array_values(iterator_to_array($priorityQueue)));

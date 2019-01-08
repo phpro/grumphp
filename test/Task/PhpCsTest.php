@@ -2,15 +2,16 @@
 
 namespace GrumPHPTest\Task;
 
+use GrumPHP\Task\AbstractExternalParallelTask;
 use GrumPHP\Task\Paratest;
 use GrumPHP\Task\PhpCsParallel;
-use GrumPHPTest\Helper\GrumPhpTestHelperTrait;
+use GrumPHPTest\Helper\GrumPHPTestHelperTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 
 class PhpCsTest extends TestCase
 {
-    use GrumPhpTestHelperTrait;
+    use GrumPHPTestHelperTrait;
 
     /**
      * @dataProvider buildProcess_dataProvider
@@ -32,7 +33,7 @@ class PhpCsTest extends TestCase
          */
         $process = $task->resolveProcess($context);
 
-        $this->assertProcessCommand($expected,$process);
+        $this->assertProcessCommand($expected, $process);
     }
 
     /**
@@ -43,7 +44,7 @@ class PhpCsTest extends TestCase
         $services = [];
 
         return [
-            "default" => [
+            "default"       => [
                 "data"     => [
                         "parameters" => [
                             "tasks" => [
@@ -86,9 +87,9 @@ class PhpCsTest extends TestCase
         // if we want to actually "resolve" the executable
         // which is helpful for end2end tests.
         $pathToExecutable = $task->getExecutablePath();
-        $expected = sprintf($expected, $pathToExecutable);
+        $expected         = sprintf($expected, $pathToExecutable);
 
-        $this->assertProcessCommand($expected,$process);
+        $this->assertProcessCommand($expected, $process);
     }
 
     /**

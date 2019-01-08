@@ -66,7 +66,7 @@ I'm not really familiar with PhpSpec and I wanted to get some feedback on the im
 before I dig deeper into that.
 
 I tried to be as "non-BC" as possible, that's why I'm doing a lot of "hacky" stuff in the
-`GrumPhpHelperTrait` (e.g. accessing private mehthods etc.). Tbh, i think the application would
+`GrumPHPHelperTrait` (e.g. accessing private mehthods etc.). Tbh, i think the application would
 have to be refactored with unit testability in mind to make this "cleaner". Concrete Examples:
 - add an optional construcutor argument (array) to Application that overrides the default grumphp.yml parsing for tests
 - provide methods to "mock" stuff (tasks, services, parameters, ...) in the DI Container (see laravels facade-faking for instance)
@@ -78,7 +78,7 @@ I'm a big fan of E2E tests, because they ensure that "the thing is actually work
 tests tend to be brittle and slow... But: machine time < dev time, imho ¯\_(ツ)_/¯
 
 That being said, I introduced the `test/Helper/process_helper` executable as a lightweight "testing" process,
-so that we can run "real" processes when testing the `TaskRunner`, for instance. Further, I added the `ExternalTestTask` as
+so that we can run "real" processes when testing the `TaskRunner`, for instance. Further, I added the `ExternalParallelTestTask` as
 a wrapper for the `process_helper` as an easy means to "define" a deterministic task list without having to register them
 upfront in the DI container.
 
@@ -108,3 +108,179 @@ This feels more like an actual End2End test AND one could even go a step further
 be benefitial to test the actual parameters (most commands will fail with an "unknown parameter" option, if the given
 arguments are incorrect). But: This would require to pull in all supported tasks / external tools and would probably s
 ignificantly increase the build time.
+
+# Documentation
+
+## `run` command
+````
+vendor/bin/grumphp run --help
+Usage:
+  run [options] [--] [<files>]...
+
+Arguments:
+  files                              (optional; overrides --file-provider) A list of files to be used. Example: file1 foo/bar/baz.php
+
+Options:
+      --testsuite=TESTSUITE          Specify which testsuite you want to run.
+      --tasks=TASKS                  Specify which tasks you want to run (comma separated). Example: --tasks=task1,task2
+      --passthru=PASSTHRU            The given string is appended to the underlying external command. Example: --passthru="--version --foo=bar"
+      --file-provider=FILE-PROVIDER  The provider that resolves the files to check. Values: default,changed. Example: --file-provider="changed" [default: "default"]
+````
+## files 
+You can provide a list of files that grumphp uses as input to run its tasks against. The argument is optional. If you do not provide 
+a list of files, grumphp will resolve the files from the provider it finds in the `--file-provider` option. Example:
+
+````
+vendor/bin/grumphp run test.php dir/test.php file3
+````
+
+
+### --tasks=task1,task2
+This options allows to execute only a subset of tasks that are configured in the `grumphp.yml` file.
+
+### --passthru="--version"
+Same ass the `passthru` parameter. This option is mainly useful in conjunction with `--tasks=new_task_to_check`
+while exploring a specific task, because it allows to quickly modify the parameters. Example:
+
+````
+vendor/bin/grumphp run --passthru="--version" test.php
+````
+
+**Hint**: Run grumphp with the `-vv` flag to see the _actual_ command that is executed. The example above will 
+result in a somthing like this:
+````
+vendor/bin/grumphp run --tasks=phpunit_parallel --config=grumphp_parallel.yml --passthru="--version" -vv test.php
+[2019-01-08 18:21:51] GrumPHP.DEBUG: Repository created (git dir: "/codebase/grumphp/.git", working dir: "/codebase/grumphp") [] []
+GrumPHP is sniffing your code!
+Task 1/1: [Scheduling] PhpunitParallel (phpunit_parallel)
+ >>>>> STARTING STAGE 0 <<<<<
+Task 1/1: [Running] PhpunitParallel (phpunit_parallel)
+Command: '/codebase/grumphp/vendor/bin/phpunit' --version
+
+Task 1/1: [Success] PhpunitParallel (phpunit_parallel) ✔ (Runtime 1.04s)
+ >>>>> FINISHING STAGE 0 <<<<<
+````
+
+**Caution**: This feature is currently only available to `*Parallel` tasks!
+
+### --file-provider="changed"
+Defines the provider that grumphp uses to resolve the files to check, if no `files` argument list is provided.
+By default, all files in the current git repository are checked. Currently, two providers are supported:
+
+- default
+  - checks all files
+- changed
+  - checks all staged files of the git repository (see also `git:pre-commit` command)
+
+## Parameters
+````
+parameters:
+  run_in_parallel: false
+  parallel_process_limit: 2
+  parallel_process_wait: 1
+  tasks:
+    foo_task:
+      metadata:
+        stage: 200
+        passthru: "--version"
+````
+## run_in_parallel (bool; false)
+If true, grumphp runs in parallel mode. That means that individual external tasks are executed parallely. 
+This setting does not affect a task that itself has settings for parallel execution (i.g. `phplint`). So it might be reasonable
+to separate those tasks in different `stages` so that the system does not get overwhelmed with too many parallel processes.
+
+**Caution**: This feature is _experimental_. Only a small number of tasks have been converted yet (look for the  `*Parallel` suffix).
+Further, parallel execution currently only works for external tasks (e.g. `phpcs`) not for `Parser`- order `LinterTask`s.
+
+## parallel_process_limit (int; 2)
+If `run_in_parallel` is enabled, this setting denotes the maximum number of parallel running tasks.
+
+## parallel_process_wait (int; 1)
+If `run_in_parallel` is enabled, this setting denotes the time in seconds that the main process sleeps before checking if
+any of the parallel running tasks have finished.
+
+## stage (int; 0)
+If `run_in_parallel` is enabled, this setting is used to group tasks together that should run parallely. This comes in handy
+if tasks have parallel execution capabilities themselves or shoud not be run in parallel with other tasks because they might 
+interfere with each other.
+
+This setting is used in conjunction with `priority` to determine the execution order of tasks. I.e. the tasks are sorted descending
+by `stage` and `priority` (stage taking precedence).
+
+If a task is not converted for parallel execution yet, it will be executed at the end of the corresponding stage.
+
+Consider the following config (`non_parallel` being the only task that is not converted for parallel execution):
+````
+parameters:
+  run_in_parallel: true
+  tasks:
+    foo:
+      metadata:
+        priority: 100
+        stage: 100
+    bar:
+      metadata:
+        priority: 200
+        stage: 100
+    baz:
+      metadata:
+        priority: 100
+        stage: 200
+    buh:
+      metadata:
+        priority: 200
+        stage: 200
+    non_parallel:
+      metadata:
+        priority: 300
+        stage: 200
+````
+
+This would result in the following execution plan:
+````
+> Stage: 200
+buh (priority 200)
+baz (priority 100)
+non_parallel (priority 300)
+> Stage: 100
+bar (priority 200)
+foo (priority 100)
+````
+
+Although the `non_parallel` task has the highest stage and priority value, it will only be executed at the end of the stage.
+
+## passthru (string; "")
+This string is appended verbatim to the end of the corresponding (external) tasks command. This might come in handy if the task in question
+does not provide all arguments/options that the underlying command provides. The `passthru` parameter allows us to "use" those
+arguments/options anyway. Please keep in mind that this is only meant as a workaround to facilitate adoption - **not** as 
+a replacement for a proper PR :)
+
+**Caution**: This feature is currently only available to `*Parallel` tasks!
+
+Consider the following example:
+````
+parameters:
+  run_in_parallel: true
+  tasks:
+    phpunit_parallel:
+      metadata:
+        passthru: "--version"
+````
+
+Although the `--version` option is not provided by grumphp, the resulting command will still look like this:
+````
+'vendor/bin/phpunit' --version
+````
+
+# ToDo
+This implementation is currently a **POC** to show what grumphp is capable of. In order to actually "release" those changes,
+(at least) the followings things should be done:
+- translate all remaining external tasks to parallel tasks
+- rename the ParallelTaskInterface to ExternalTaskInterface
+- move some common functionality (passthru, stage) into the TaskInterface
+- create `Spec`s for the newly created classes (e.g. the ParallelProgressSubscriber, the FileProviders, new methods in the TaskRunner, ...)
+- resolve/clarify all `TODO` annotations/comments
+- clean up the `GrumPHPHelperTrait`, e.g.:
+  - don't create temp files for the config but provide an array (for instance)
+  - remove the getting/setting/accessing of non-public properties/methods as much as possible
+- extend End2End tests for the TaskRunner with more cases (e.g. early abortion)

@@ -5,14 +5,15 @@ namespace GrumPHPTest\Task;
 use GrumPHP\Runner\ParallelOptions;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskRunnerContext;
+use GrumPHPTest\Helper\ExternalParallelTestTask;
 use GrumPHPTest\Helper\ExternalTestTask;
-use GrumPHPTest\Helper\GrumPhpTestHelperTrait;
+use GrumPHPTest\Helper\GrumPHPTestHelperTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class TaskRunnerTest extends TestCase
 {
-    use GrumPhpTestHelperTrait;
+    use GrumPHPTestHelperTrait;
 
     /**
      * @dataProvider buildProcess_dataProvider
@@ -58,25 +59,25 @@ class TaskRunnerTest extends TestCase
                 ],
                 "taskData" => [
                     [
-                        new ExternalTestTask("foo", 0),
+                        new ExternalParallelTestTask("foo", 0),
                     ],
                     [
-                        new ExternalTestTask("fooBar", 1, "fooBar:out", "fooBar:err"),
+                        new ExternalParallelTestTask("fooBar", 1, "fooBar:out", "fooBar:err"),
                     ],
                     [
-                        new ExternalTestTask("fooBaz", 1, "fooBaz:out", "fooBaz:err"),
+                        new ExternalParallelTestTask("fooBaz", 1, "fooBaz:out", "fooBaz:err"),
                         [
                             "blocking" => false,
                         ],
                     ],
                 ],
                 "context"  => [
-                    "parallelOptions" => null
+                    "parallelOptions" => null,
                 ],
                 "expected" => [
                     "taskResults" => [
                         "foo"    => [
-                            "resultCode" => 0,
+                            "resultCode" => TaskResult::PASSED,
                             "message"    => "",
                         ],
                         "fooBar" => [
@@ -90,9 +91,9 @@ class TaskRunnerTest extends TestCase
                     ],
                     "output"      => <<<RESULT
 GrumPHP is sniffing your code!
-Running task 1/3: ExternalTestTask... ✔
-Running task 2/3: ExternalTestTask... ✘
-Running task 3/3: ExternalTestTask... ✘
+Running task 1/3: ExternalParallelTestTask... ✔
+Running task 2/3: ExternalParallelTestTask... ✘
+Running task 3/3: ExternalParallelTestTask... ✘
 fooBaz:out
 
 fooBaz:err
@@ -113,13 +114,13 @@ RESULT
                 ],
                 "taskData" => [
                     [
-                        new ExternalTestTask("foo", 0, null, null, 0),
+                        new ExternalParallelTestTask("foo", 0, null, null, 0),
                     ],
                     [
-                        new ExternalTestTask("fooBar", 1, "fooBar:out", "fooBar:err", 500),
+                        new ExternalParallelTestTask("fooBar", 1, "fooBar:out", "fooBar:err", 500),
                     ],
                     [
-                        new ExternalTestTask("fooBaz", 1, "fooBaz:out", "fooBaz:err", 1000),
+                        new ExternalParallelTestTask("fooBaz", 1, "fooBaz:out", "fooBaz:err", 1000),
                         [
                             "blocking" => false,
                         ],
@@ -132,7 +133,7 @@ RESULT
                 "expected" => [
                     "taskResults" => [
                         "foo"    => [
-                            "resultCode" => 0,
+                            "resultCode" => TaskResult::PASSED,
                             "message"    => "",
                         ],
                         "fooBar" => [
@@ -150,15 +151,17 @@ RESULT
                     // processes becomes really complicated
                     "output"      => <<<RESULT
 GrumPHP is sniffing your code!
-Task 1/3: [Scheduling] ExternalTestTask (foo) (stage 0)
-Task 2/3: [Scheduling] ExternalTestTask (fooBar) (stage 0)
-Task 3/3: [Scheduling] ExternalTestTask (fooBaz) (stage 0)
-Task 1/3: [Running] ExternalTestTask (foo) (stage 0)
-Task 2/3: [Running] ExternalTestTask (fooBar) (stage 0)
-Task 3/3: [Running] ExternalTestTask (fooBaz) (stage 0)
-Task 1/3: [Success] ExternalTestTask (foo) (stage 0) ✔
-Task 2/3: [Failed] ExternalTestTask (fooBar) (stage 0) ✘
-Task 3/3: [Failed] ExternalTestTask (fooBaz) (stage 0) ✘
+Task 1/3: [Scheduling] ExternalParallelTestTask (foo)
+Task 2/3: [Scheduling] ExternalParallelTestTask (fooBar)
+Task 3/3: [Scheduling] ExternalParallelTestTask (fooBaz)
+ >>>>> STARTING STAGE 0 <<<<< 
+Task 1/3: [Running] ExternalParallelTestTask (foo)
+Task 2/3: [Running] ExternalParallelTestTask (fooBar)
+Task 3/3: [Running] ExternalParallelTestTask (fooBaz)
+Task 1/3: [Success] ExternalParallelTestTask (foo) ✔
+Task 2/3: [Failed] ExternalParallelTestTask (fooBar) ✘
+Task 3/3: [Failed] ExternalParallelTestTask (fooBaz) ✘
+ >>>>> FINISHING STAGE 0 <<<<< 
 fooBaz:out
 
 fooBaz:err
@@ -179,10 +182,10 @@ RESULT
                 ],
                 "taskData" => [
                     [
-                        new ExternalTestTask("foo", 0, null, null, 500),
+                        new ExternalParallelTestTask("foo", 0, null, null, 500),
                     ],
                     [
-                        new ExternalTestTask("fooBar", 1, "fooBar:out", "fooBar:err", 0),
+                        new ExternalParallelTestTask("fooBar", 1, "fooBar:out", "fooBar:err", 0),
                     ],
                 ],
                 "context"  => [
@@ -191,7 +194,7 @@ RESULT
                 "expected" => [
                     "taskResults" => [
                         "foo"    => [
-                            "resultCode" => 0,
+                            "resultCode" => TaskResult::PASSED,
                             "message"    => "",
                         ],
                         "fooBar" => [
@@ -201,15 +204,114 @@ RESULT
                     ],
                     "output"      => <<<RESULT
 GrumPHP is sniffing your code!
-Task 1/2: [Scheduling] ExternalTestTask (foo) (stage 0)
-Task 2/2: [Scheduling] ExternalTestTask (fooBar) (stage 0)
-Task 1/2: [Running] ExternalTestTask (foo) (stage 0)
-Task 2/2: [Running] ExternalTestTask (fooBar) (stage 0)
-Task 2/2: [Failed] ExternalTestTask (fooBar) (stage 0) ✘
-Task 1/2: [Success] ExternalTestTask (foo) (stage 0) ✔
+Task 1/2: [Scheduling] ExternalParallelTestTask (foo)
+Task 2/2: [Scheduling] ExternalParallelTestTask (fooBar)
+ >>>>> STARTING STAGE 0 <<<<< 
+Task 1/2: [Running] ExternalParallelTestTask (foo)
+Task 2/2: [Running] ExternalParallelTestTask (fooBar)
+Task 2/2: [Failed] ExternalParallelTestTask (fooBar) ✘
+Task 1/2: [Success] ExternalParallelTestTask (foo) ✔
+ >>>>> FINISHING STAGE 0 <<<<< 
 fooBar:out
 
 fooBar:err
+
+RESULT
+                    ,
+                ],
+            ],
+            "parallel with mixed tasks"                => [
+                "config"   => [
+                    "parameters" => [
+                        "ascii"                  => null,
+                        "hide_circumvention_tip" => true,
+                    ],
+                ],
+                "taskData" => [
+                    [
+                        new ExternalTestTask("foo", 0),
+                    ],
+                    [
+                        // will run first (same prio) - even if finishes "later"
+                        new ExternalParallelTestTask("fooBar", 0, null, null, 500),
+                    ],
+                ],
+                "context"  => [
+                    "parallelOptions" => new ParallelOptions(0, 2),
+                ],
+                "expected" => [
+                    "taskResults" => [
+                        "foo"    => [
+                            "resultCode" => TaskResult::PASSED,
+                            "message"    => "",
+                        ],
+                        "fooBar" => [
+                            "resultCode" => TaskResult::PASSED,
+                            "message"    => "",
+                        ],
+                    ],
+                    "output"      => <<<RESULT
+GrumPHP is sniffing your code!
+Task 1/2: [Scheduling] ExternalParallelTestTask (fooBar)
+Task 2/2: [Scheduling] ExternalTestTask (foo)
+ >>>>> STARTING STAGE 0 <<<<< 
+Task 1/2: [Running] ExternalParallelTestTask (fooBar)
+Task 1/2: [Success] ExternalParallelTestTask (fooBar) ✔
+Task 2/2: [Running] ExternalTestTask (foo)
+Task 2/2: [Success] ExternalTestTask (foo) ✔
+ >>>>> FINISHING STAGE 0 <<<<< 
+
+RESULT
+                    ,
+                ],
+            ],
+            "runs in stages"                => [
+                "config"   => [
+                    "parameters" => [
+                        "ascii"                  => null,
+                        "hide_circumvention_tip" => true,
+                    ],
+                ],
+                "taskData" => [
+                    [
+                        new ExternalParallelTestTask("Runs in stage 1, prio 1"),
+                        ["stage" => 1, "priority" => 1]
+                    ],
+                    [
+                        new ExternalParallelTestTask("Runs in stage 1, prio 2"),
+                        ["stage" => 1, "priority" => 2]
+                    ],
+                    [
+                        new ExternalParallelTestTask("Runs in stage 2, prio 1"),
+                        ["stage" => 2, "priority" => 1]
+                    ],
+                    [
+                        new ExternalParallelTestTask("Runs in stage 2, prio 2"),
+                        ["stage" => 2, "priority" => 2]
+                    ],
+                ],
+                "context"  => [
+                    "parallelOptions" => new ParallelOptions(0, 1),
+                ],
+                "expected" => [
+                    "output"      => <<<RESULT
+GrumPHP is sniffing your code!
+Task 1/4: [Scheduling] ExternalParallelTestTask (Runs in stage 2, prio 2)
+Task 2/4: [Scheduling] ExternalParallelTestTask (Runs in stage 2, prio 1)
+Task 3/4: [Scheduling] ExternalParallelTestTask (Runs in stage 1, prio 2)
+Task 4/4: [Scheduling] ExternalParallelTestTask (Runs in stage 1, prio 1)
+ >>>>> STARTING STAGE 2 <<<<< 
+Task 1/4: [Running] ExternalParallelTestTask (Runs in stage 2, prio 2)
+Task 1/4: [Success] ExternalParallelTestTask (Runs in stage 2, prio 2) ✔
+Task 2/4: [Running] ExternalParallelTestTask (Runs in stage 2, prio 1)
+Task 2/4: [Success] ExternalParallelTestTask (Runs in stage 2, prio 1) ✔
+ >>>>> FINISHING STAGE 2 <<<<< 
+ >>>>> STARTING STAGE 1 <<<<< 
+Task 3/4: [Running] ExternalParallelTestTask (Runs in stage 1, prio 2)
+Task 3/4: [Success] ExternalParallelTestTask (Runs in stage 1, prio 2) ✔
+Task 4/4: [Running] ExternalParallelTestTask (Runs in stage 1, prio 1)
+Task 4/4: [Success] ExternalParallelTestTask (Runs in stage 1, prio 1) ✔
+ >>>>> FINISHING STAGE 1 <<<<< 
 
 RESULT
                     ,

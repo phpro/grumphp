@@ -6,9 +6,10 @@ namespace GrumPHP\Event\Subscriber;
 
 use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Event\RunnerEvents;
+use GrumPHP\Event\StageEvent;
+use GrumPHP\Event\StageEvents;
 use GrumPHP\Event\TaskEvent;
 use GrumPHP\Event\TaskEvents;
-use GrumPHP\Task\ParallelTaskInterface;
 use GrumPHP\Task\TaskInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -42,13 +43,29 @@ class ParallelProgressSubscriber implements EventSubscriberInterface
     {
         return [
             RunnerEvents::RUNNER_RUN      => 'startProgress',
+            StageEvents::STAGE_RUN        => 'startStage',
             TaskEvents::TASK_RUN          => 'advanceProgress',
             TaskEvents::TASK_COMPLETE     => 'onTaskProgress',
             TaskEvents::TASK_FAILED       => 'onTaskProgress',
             TaskEvents::TASK_SKIPPED      => 'onTaskProgress',
+            StageEvents::STAGE_COMPLETE   => 'finishStage',
             RunnerEvents::RUNNER_COMPLETE => 'finishProgress',
             RunnerEvents::RUNNER_FAILED   => 'finishProgress',
         ];
+    }
+
+    public function startStage(StageEvent $event)
+    {
+        if ($this->output->isVerbose()) {
+            $this->output->write($this->getMessageForStage($event->getStage(), "STARTING"));
+        }
+    }
+
+    public function finishStage(StageEvent $event)
+    {
+        if ($this->output->isVerbose()) {
+            $this->output->write($this->getMessageForStage($event->getStage(), "FINISHING"));
+        }
     }
 
     public function startProgress(RunnerEvent $event)
@@ -151,15 +168,17 @@ class ParallelProgressSubscriber implements EventSubscriberInterface
         $this->output->writeln('');
     }
 
+    protected function getMessageForStage(int $stage, string $status): string
+    {
+        return PHP_EOL."<options=bold;fg=black;bg=white> >>>>> $status STAGE $stage <<<<< </>";
+    }
+
     protected function getTaskInfo(TaskInterface $task): string
     {
         $taskReflection = new ReflectionClass($task);
         $taskInfo       = $taskReflection->getShortName();
         if ($this->output->getVerbosity() >= $this->output::VERBOSITY_VERBOSE) {
             $taskInfo .= " (".$task->getName().")";
-            if ($task instanceof ParallelTaskInterface) {
-                $taskInfo .= " (stage {$task->getStage()})";
-            }
         }
         return $taskInfo;
     }

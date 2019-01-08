@@ -3,6 +3,7 @@
 namespace GrumPHP\Task;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
+use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
@@ -54,6 +55,11 @@ abstract class AbstractExternalParallelTask extends AbstractExternalTask impleme
         return $this->formatter;
     }
 
+    protected function getGrumPHP(): GrumPHP
+    {
+        return $this->grumPHP;
+    }
+
     public function run(ContextInterface $context): TaskResultInterface
     {
         if (!$this->hasWorkToDo($context)) {
@@ -100,13 +106,13 @@ abstract class AbstractExternalParallelTask extends AbstractExternalTask impleme
 
     public function getStage(): int
     {
-        $metadata = $this->grumPHP->getTaskMetadata($this->getName());
+        $metadata = $this->getGrumPHP()->getTaskMetadata($this->getName());
         return $metadata['stage'] ?? 0;
     }
 
     public function getPassthru(): string
     {
-        $metadata = $this->grumPHP->getTaskMetadata($this->getName());
+        $metadata = $this->getGrumPHP()->getTaskMetadata($this->getName());
         return $metadata['passthru'] ?? "";
     }
 

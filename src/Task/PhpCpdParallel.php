@@ -84,7 +84,7 @@ class PhpCpdParallel extends AbstractExternalParallelTask
         array $config,
         ContextInterface $context
     ): ProcessArgumentsCollection {
-        $arguments  = $this->processBuilder->createArgumentsForCommand('phpcpd');
+        $arguments  = $this->processBuilder->createArgumentsForCommand($command);
         $extensions = array_map(function ($extension) {
             return sprintf('*.%s', $extension);
         }, $config['triggered_by']);

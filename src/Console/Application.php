@@ -6,6 +6,8 @@ namespace GrumPHP\Console;
 
 use GrumPHP\Configuration\ContainerFactory;
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\FileProvider\DefaultProvider;
+use GrumPHP\FileProvider\GitChangedProvider;
 use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Locator\ConfigurationFile;
 use GrumPHP\Util\Composer;
@@ -24,7 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class Application extends SymfonyConsole
 {
-    const APP_NAME = 'GrumPHP';
+    const APP_NAME    = 'GrumPHP';
     const APP_VERSION = '0.14.3';
 
     /**
@@ -50,7 +52,7 @@ class Application extends SymfonyConsole
     public function __construct()
     {
         $this->filesystem = new Filesystem();
-        $this->container = $this->getContainer();
+        $this->container  = $this->getContainer();
         $this->setDispatcher($this->container->get('event_dispatcher'));
 
         parent::__construct(self::APP_NAME, self::APP_VERSION);
@@ -81,9 +83,14 @@ class Application extends SymfonyConsole
             $this->container->get('grumphp.util.filesystem'),
             $this->container->get('git.repository')
         );
+
+        $providers = [
+            DefaultProvider::NAME    => $this->container->get('file_provider.'.DefaultProvider::NAME),
+            GitChangedProvider::NAME => $this->container->get('file_provider.'.GitChangedProvider::NAME),
+        ];
         $commands[] = new Command\RunCommand(
             $this->container->get('config'),
-            $this->container->get('locator.registered_files')
+            $providers
         );
 
         $commands[] = new Command\Git\CommitMsgCommand(
@@ -134,10 +141,10 @@ class Application extends SymfonyConsole
         }
 
         // Load cli options:
-        $input = new ArgvInput();
+        $input      = new ArgvInput();
         $configPath = $input->getParameterOption(['--config', '-c'], $this->getDefaultConfigPath());
         $configPath = $this->updateUserConfigPath($configPath);
-        $output = new ConsoleOutput();
+        $output     = new ConsoleOutput();
 
         // Build the service container:
         $this->container = ContainerFactory::buildFromConfiguration($configPath);
@@ -168,7 +175,7 @@ class Application extends SymfonyConsole
             return $this->configDefaultPath;
         }
 
-        $locator = new ConfigurationFile($this->filesystem);
+        $locator                 = new ConfigurationFile($this->filesystem);
         $this->configDefaultPath = $locator->locate(
             getcwd(),
             $this->initializeComposerHelper()->getRootPackage()
@@ -184,13 +191,13 @@ class Application extends SymfonyConsole
         }
 
         try {
-            $composerFile = getcwd().DIRECTORY_SEPARATOR.'composer.json';
+            $composerFile  = getcwd().DIRECTORY_SEPARATOR.'composer.json';
             $configuration = Composer::loadConfiguration();
             Composer::ensureProjectBinDirInSystemPath($configuration->get('bin-dir'));
             $rootPackage = Composer::loadRootPackageFromJson($composerFile, $configuration);
         } catch (RuntimeException $e) {
             $configuration = null;
-            $rootPackage = null;
+            $rootPackage   = null;
         }
 
         return $this->composerHelper = new Helper\ComposerHelper($configuration, $rootPackage);

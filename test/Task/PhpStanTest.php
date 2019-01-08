@@ -4,13 +4,13 @@ namespace GrumPHPTest\Task;
 
 use GrumPHP\Task\Paratest;
 use GrumPHP\Task\PhpStanParallel;
-use GrumPHPTest\Helper\GrumPhpTestHelperTrait;
+use GrumPHPTest\Helper\GrumPHPTestHelperTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 
 class PhpStanTest extends TestCase
 {
-    use GrumPhpTestHelperTrait;
+    use GrumPHPTestHelperTrait;
 
     /**
      * @dataProvider buildProcess_dataProvider

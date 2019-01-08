@@ -2,135 +2,34 @@
 
 namespace GrumPHPTest\Helper;
 
-use GrumPHP\Collection\ProcessArgumentsCollection;
-use GrumPHP\Formatter\RawProcessFormatter;
-use GrumPHP\Process\ProcessFactory;
-use GrumPHP\Task\AbstractExternalParallelTask;
+use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
+use GrumPHP\Task\AbstractExternalTask;
 use GrumPHP\Task\Context\ContextInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
-class ExternalTestTask extends AbstractExternalParallelTask
+class ExternalTestTask extends AbstractExternalTask implements TestTaskInterface
 {
-    /**
-     * @var string
-     */
-    protected $name;
+    use ExternalTestTaskTrait;
 
-    /**
-     * @var int|null
-     */
-    protected $returnCode;
-    /**
-     * @var string|null
-     */
-    protected $stdOutString;
-    /**
-     * @var string|null
-     */
-    protected $stdErrString;
-    /**
-     * @var int|null
-     */
-    protected $runtime;
-    /**
-     * @var int|null
-     */
-    protected $stage;
-
-    /**
-     * ExternalTestTask constructor.
-     *
-     * @param string $name
-     * @param int|null $returnCode
-     * @param string|null $stdOutString
-     * @param string|null $stdErrString
-     * @param int|null $runtime
-     * @param int|null $stage
-     */
-    public function __construct(
-        string $name,
-        int $returnCode = null,
-        string $stdOutString = null,
-        string $stdErrString = null,
-        int $runtime = null,
-        int $stage = null
-    ) {
-        $this->name         = $name;
-        $this->returnCode   = $returnCode;
-        $this->stdOutString = $stdOutString;
-        $this->stdErrString = $stdErrString;
-        $this->runtime      = $runtime;
-        $this->stage        = $stage ?? 0;
-
-        $this->formatter = new RawProcessFormatter();
+    public function run(ContextInterface $context): TaskResultInterface
+    {
+        $process = $this->resolveProcess($context);
+        $process->run();
+        return $this->getTaskResult($process, $context);
     }
 
     /**
-     * Override in Task
-     *
-     * @param string $command
-     * @param  array $config
+     * @param Process $process
      * @param ContextInterface $context
-     * @return ProcessArgumentsCollection
+     * @return TaskResult
      */
-    protected function buildArguments(string $command, array $config, ContextInterface $context): ProcessArgumentsCollection
+    public function getTaskResult(Process $process, ContextInterface $context): TaskResultInterface
     {
-        $executable = __DIR__."/process_helper";
+        if (!$process->isSuccessful()) {
+            return TaskResult::createFailed($this, $context, $this->formatter->format($process));
+        }
 
-        $args = new ProcessArgumentsCollection();
-        $args->add("php");
-        $args->add($executable);
-        $args->addOptionalArgument('-c=%s', $this->returnCode);
-        $args->addOptionalArgument('-o=%s', $this->stdOutString);
-        $args->addOptionalArgument('-e=%s', $this->stdErrString);
-        $args->addOptionalArgument('-t=%s', (string) $this->runtime);
-        return $args;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function resolveProcess(ContextInterface $context, string $passthru = ""): Process
-    {
-        $executable = $this->getExecutableName();
-        $arguments  = $this->buildArguments($executable, [], $context);
-        $process    = ProcessFactory::fromArguments($arguments, $passthru);
-        return $process;
-    }
-
-    /**
-     * Dummy
-     *
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions(): OptionsResolver
-    {
-        return new OptionsResolver();
-    }
-
-    /**
-     * Dummy
-     *
-     * @param ContextInterface $context
-     * @return bool
-     */
-
-    public function canRunInContext(ContextInterface $context): bool
-    {
-        return true;
-    }
-
-    public function getStage(): int
-    {
-        return $this->stage;
-    }
-
-    // TODO: make configurable
-    public function getPassthru(): string
-    {
-        return "";
+        return TaskResult::createPassed($this, $context);
     }
 }

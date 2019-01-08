@@ -46,6 +46,23 @@ class ComposerRequireCheckerParallel extends AbstractExternalParallelTask
         return $resolver;
     }
 
+
+    public function getConfiguration(): array
+    {
+        // triggered_by is usually and array of extensions,
+        // but in this case it's actually a whitelist
+        // so we "move" it there so that it adheres to
+        // the FiltersFilesTrait convention
+        // TODO: Not sure if this is a good way to do that?
+        // it might be confusing for the end user because
+        // the triggered_by syntax is different in this case
+        $config = parent::getConfiguration();
+
+        $config["whitelist_patterns"] = $config["triggered_by"];
+        unset($config["triggered_by"]);
+        return $config;
+    }
+
     /**
      * {@inheritdoc}
      */

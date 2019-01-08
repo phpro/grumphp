@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 
-trait GrumPhpTestHelperTrait
+trait GrumPHPTestHelperTrait
 {
     public function resolveContext(array $files = []): RunContext
     {
@@ -88,7 +88,7 @@ trait GrumPhpTestHelperTrait
                 "grumphp",
                 "--config=$filename",
             ];
-            // change cwd - required because GrumPhp uses
+            // change cwd - required because GrumPHP uses
             // the cwd to determine the config path
             chdir($dir);
 
@@ -128,6 +128,15 @@ trait GrumPhpTestHelperTrait
                 public function getTaskRunner()
                 {
                     return $this->container->get("task_runner");
+                }
+
+                /**
+                 * @return TaskRunner
+                 * @throws \Exception
+                 */
+                public function getGrumPhp()
+                {
+                    return $this->container->get("config");
                 }
             };
 
@@ -198,11 +207,17 @@ trait GrumPhpTestHelperTrait
                 $task = $data[0];
                 $meta = $data[1] ?? [];
                 $tasks->add($task);
+                if($task instanceof TestTaskInterface){
+                    /** @noinspection PhpUndefinedMethodInspection */
+                    $task->setGrumPHP($app->getGrumPhp());
+                }
                 $meta = $meta + [
-                        "priority" => 1,
+                        "priority" => 0,
                         "blocking" => true,
+                        "stage"    => 0,
+                        "passthru" => "",
                     ];
-                $this->registerInContainer(
+                $this->registerParameterInContainer(
                     $app,
                     "grumphp.tasks.metadata",
                     [
@@ -216,7 +231,7 @@ trait GrumPhpTestHelperTrait
         return $r;
     }
 
-    protected function registerInContainer(Application $app, $key, $value, $append = true)
+    protected function registerParameterInContainer(Application $app, $key, $value, $append = true)
     {
         /**
          * @var ContainerBuilder $container
@@ -237,7 +252,6 @@ trait GrumPhpTestHelperTrait
         // }else{
         //     $parameters[$key] = $value;
         // }
-
         $modifyParameters = function () use ($parameters, $append, $key, $value) {
             $current = $parameters[$key];
             if (is_array($current) && $append) {
@@ -337,21 +351,22 @@ trait GrumPhpTestHelperTrait
         // so we need to "parse" the given expected command line
         // string first and then put it back together to compare
         // the same "format"
-        $normalizeCommandline = function($string) {
+        $normalizeCommandline = function ($string) {
             global $argv;
-            preg_match_all ('/(?<=^|\s)([\'"]?)(.+?)(?<!\\\\)\1(?=$|\s)/', $string, $ms);
-            $argv = $ms[2];
+            preg_match_all('/(?<=^|\s)([\'"]?)(.+?)(?<!\\\\)\1(?=$|\s)/', $string, $ms);
+            $argv        = $ms[2];
             $commandline = ProcessFactory::fromArguments(new ProcessArgumentsCollection($argv))->getCommandLine();
             return $commandline;
         };
-        $normalizeExpected = $normalizeCommandline($expected);
+        $normalizeExpected    = $normalizeCommandline($expected);
 
         $actual = $process->getCommandLine();
 
         $this->assertEquals($normalizeExpected, $actual, "Original expected commandline string: $expected");
     }
 
-    protected function normalizeLineEndings(string $string){
+    protected function normalizeLineEndings(string $string)
+    {
         return str_replace(PHP_EOL, "\n", $string);
     }
 }

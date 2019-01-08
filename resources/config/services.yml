@@ -70,6 +70,18 @@ services:
           - '@git.repository'
         public: true
 
+    file_provider.default:
+        class: GrumPHP\FileProvider\DefaultProvider
+        arguments:
+          - '@locator.registered_files'
+        public: true
+
+    file_provider.changed:
+        class: GrumPHP\FileProvider\GitChangedProvider
+        arguments:
+          - '@locator.changed_files'
+        public: true
+
     grumphp.io:
         alias: grumphp.io.console
 

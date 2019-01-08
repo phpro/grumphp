@@ -78,7 +78,12 @@ class Paratest extends AbstractExternalParallelTask
         $arguments->addOptionalArgumentWithSeparatedValue('-c', $config['config']);
         $arguments->addOptionalArgumentWithSeparatedValue('-p', (string) $config['processes']);
 
-        if (!empty($config['debugger'])) {
+        $coverageEnabled = function ($config) {
+            return !empty($config['coverage-xml'])
+                || !empty($config['coverage-html'])
+                || !empty($config['log-junit']);
+        };
+        if ($coverageEnabled($config) && !empty($config['debugger'])) {
             $bin       = $config['debugger']['bin'];
             $args      = $config['debugger']['args'];
             $arguments = new ProcessArgumentsCollection(array_merge([$bin], $args, $arguments->toArray()));

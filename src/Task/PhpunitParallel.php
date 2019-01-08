@@ -8,6 +8,7 @@ use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use GrumPHP\Task\Traits\FiltersFilesTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PhpunitParallel extends AbstractExternalParallelTask

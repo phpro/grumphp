@@ -4,13 +4,13 @@ namespace GrumPHPTest\Task;
 
 use GrumPHP\Task\Paratest;
 use GrumPHP\Task\SecurityCheckerParallel;
-use GrumPHPTest\Helper\GrumPhpTestHelperTrait;
+use GrumPHPTest\Helper\GrumPHPTestHelperTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 
 class SecurityCheckerTest extends TestCase
 {
-    use GrumPhpTestHelperTrait;
+    use GrumPHPTestHelperTrait;
 
     /**
      * @dataProvider buildProcess_dataProvider
@@ -42,25 +42,6 @@ class SecurityCheckerTest extends TestCase
     public function buildProcess_dataProvider()
     {
         $services = [];
-//
-//        $services = [
-//            "services" => [
-//                "task.securitychecker_parallel" => [
-//                    "class"     => SecurityCheckerParallel::class,
-//                    "arguments" => [
-//                        "@config",
-//                        "@process_builder",
-//                        "@formatter.raw_process",
-//                    ],
-//                    "tags"      => [
-//                        [
-//                            "name"   => "grumphp.task",
-//                            "config" => "securitychecker_parallel",
-//                        ],
-//                    ],
-//                ],
-//            ],
-//        ];
 
         return [
             "default" => [

@@ -10,6 +10,8 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Event\RunnerEvents;
 use GrumPHP\Event\RunnerFailedEvent;
+use GrumPHP\Event\StageEvent;
+use GrumPHP\Event\StageEvents;
 use GrumPHP\Event\TaskEvent;
 use GrumPHP\Event\TaskEvents;
 use GrumPHP\Event\TaskFailedEvent;
@@ -247,7 +249,9 @@ class TaskRunner
         TaskRunnerContext $runnerContext,
         TaskResultCollection $taskResults
     ): TaskResultCollection {
-        // STAGE_START $stage
+        $event = new StageEvent($stage, $taskList, $runnerContext->getTaskContext(), $taskResults);
+        $this->eventDispatcher->dispatch(StageEvents::STAGE_RUN, $event);
+
         /**
          * @var TasksCollection $parallelTasks
          * @var TasksCollection $sequentialTasks
@@ -256,17 +260,18 @@ class TaskRunner
             return $task instanceof ParallelTaskInterface;
         });
 
-        // STAGE_START_PARALLEL $stage
         $parallelTasks = $parallelTasks->sortByPriority($this->grumPHP);
         $taskResults   = $this->runTasksInParallel($parallelTasks, $runnerContext, $taskResults);
-        // STAGE_FINISH_PARALLEL $stage
 
-        // STAGE_START_SEQUENTIAL $stage
+        // TODO Check if a result is failed, blocking and we should stop on failure
         $sequentialTasks = $sequentialTasks->sortByPriority($this->grumPHP);
         $taskResults     = $this->runTasksInSequence($sequentialTasks, $runnerContext->getTaskContext(), $taskResults);
-        // STAGE_FINISH_SEQUENTIAL $stage
-        // STAGE_FINISH $stage
 
+        // Note: Same event as before
+        // Duplicating this here because otherwise we would rely on
+        // everything being modiefied as "reference" -> feels brittle
+        $event = new StageEvent($stage, $taskList, $runnerContext->getTaskContext(), $taskResults);
+        $this->eventDispatcher->dispatch(StageEvents::STAGE_COMPLETE, $event);
         return $taskResults;
     }
 

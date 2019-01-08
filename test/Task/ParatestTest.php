@@ -3,13 +3,13 @@
 namespace GrumPHPTest\Task;
 
 use GrumPHP\Task\Paratest;
-use GrumPHPTest\Helper\GrumPhpTestHelperTrait;
+use GrumPHPTest\Helper\GrumPHPTestHelperTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 
 class ParatestTest extends TestCase
 {
-    use GrumPhpTestHelperTrait;
+    use GrumPHPTestHelperTrait;
 
     /**
      * @dataProvider buildProcess_dataProvider
@@ -41,25 +41,6 @@ class ParatestTest extends TestCase
     public function buildProcess_dataProvider()
     {
         $services = [];
-//
-//        $services = [
-//            "services" => [
-//                "task.paratest" => [
-//                    "class"     => Paratest::class,
-//                    "arguments" => [
-//                        "@config",
-//                        "@process_builder",
-//                        "@formatter.raw_process",
-//                    ],
-//                    "tags"      => [
-//                        [
-//                            "name"   => "grumphp.task",
-//                            "config" => "paratest",
-//                        ],
-//                    ],
-//                ],
-//            ],
-//        ];
 
         return [
             "default"     => [
@@ -86,6 +67,7 @@ class ParatestTest extends TestCase
                             "tasks" => [
                                 "paratest" => [
                                     'runner'   => 'runner',
+                                    'coverage-xml'  => 'coverage-xml',
                                     'debugger' => [
                                         'bin' => 'phpdbg',
                                         'args' => [
@@ -96,7 +78,25 @@ class ParatestTest extends TestCase
                             ],
                         ],
                     ] + $services,
-                "expected" => "'phpdbg' '-qrr' 'paratest' '--runner' 'runner'",
+                "expected" => "'phpdbg' '-qrr' 'paratest' '--runner' 'runner' '--coverage-xml' 'coverage-xml'",
+            ],
+            "does not add phpdbg when no coverage is generated" => [
+                "data"     => [
+                        "parameters" => [
+                            "tasks" => [
+                                "paratest" => [
+                                    'runner'   => 'runner',
+                                    'debugger' => [
+                                        'bin' => 'phpdbg',
+                                        'args' => [
+                                            '-qrr'
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ] + $services,
+                "expected" => "'paratest' '--runner' 'runner'",
             ],
         ];
     }

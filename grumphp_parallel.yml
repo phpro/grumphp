@@ -1,6 +1,6 @@
 parameters:
   run_in_parallel: true
-  parallel_process_limit: 3
+  parallel_process_limit: 6
   parallel_process_wait: 1
   process_timeout: 120
   tasks:
@@ -11,25 +11,20 @@ parameters:
         - "test/*.php"
       metadata:
         priority: 300
-        stage: 300
         passthru: "-s"
     phpspec_parallel:
       format: progress
       verbose: true
       metadata:
         priority: 200
-        stage: 300
     phpunit_parallel:
       metadata:
         priority: 100
-        stage: 300
     composer_parallel:
       no_check_lock: true
       metadata:
-        stage: 200
     phplint_parallel:
       metadata:
-        stage: 200
     yamllint:
       ignore_patterns:
         - "#test/(.*).yml#"
