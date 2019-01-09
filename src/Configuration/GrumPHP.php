@@ -84,6 +84,22 @@ class GrumPHP
         return (int) $this->container->getParameter('parallel_process_wait');
     }
 
+    // TODO add spec
+    public function logTaskOutput(): bool
+    {
+        return (bool) $this->container->getParameter('log_task_output');
+    }
+
+    // TODO add spec
+    public function getLogDir(): string
+    {
+        $dir = (string) $this->container->getParameter('log_dir');
+        if (empty($dir)) {
+            $dir = sys_get_temp_dir()."/grumphp";
+        }
+        return $dir;
+    }
+
     /**
      * @return float|null
      */

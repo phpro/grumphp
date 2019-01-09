@@ -20,7 +20,9 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\ParallelTaskInterface;
 use GrumPHP\Task\TaskInterface;
+use GrumPHP\Util\Filesystem;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Process\PhpProcess;
 use Symfony\Component\Process\Process;
 
 class TaskRunner
@@ -39,6 +41,11 @@ class TaskRunner
      * @var GrumPHP
      */
     private $grumPHP;
+
+    /**
+     * @var Filesystem
+     */
+    protected $filesystem;
 
     public function __construct(GrumPHP $grumPHP, EventDispatcherInterface $eventDispatcher)
     {
@@ -74,6 +81,10 @@ class TaskRunner
             ->filterByTaskNames($runnerContext->getTasks())
             ->sortByPriority($this->grumPHP)
         ;
+
+        if ($this->logTaskOutput()) {
+            $this->setupLogDirectory();
+        }
 
         if ($runnerContext->runInParallel()) {
             return $this->runTasksParallely($tasks, $runnerContext);
@@ -315,6 +326,17 @@ class TaskRunner
                 try {
                     $this->eventDispatcher->dispatch(TaskEvents::TASK_RUN, new TaskEvent($task, $context));
                     $process = $task->resolveProcess($context, $passthru);
+
+                    // Note:
+                    // if there is "nothing" to do, we will just fake an immediately returning process
+                    // Unfortunetaly, we can't just "not start" the process, because that might lead to
+                    // errors downstream (e.g. because you can't getOutput() on a non-started process.
+                    // TODO:
+                    // - Maybe there's an easier way?
+                    // - if we keep this, than we should use "run" instead of "start"
+                    if (!$task->hasWorkToDo($context)) {
+                        $process = new PhpProcess("<php? return 0; ?>");
+                    }
                     $process->start();
                     $runningProcesses[$taskName] = $process;
                 } catch (PlatformException $e) {
@@ -327,6 +349,9 @@ class TaskRunner
 
             // regularly check all running processes if they are finished
             foreach ($runningProcesses as $taskName => $process) {
+                if ($this->logTaskOutput()) {
+                    $this->logIncrementalProcessOutput($taskName, $process);
+                }
                 if (!$process->isRunning()) {
                     unset($runningProcesses[$taskName]);
                     $task = $tasksToRun[$taskName];
@@ -342,6 +367,9 @@ class TaskRunner
                     if (!$result->isPassed() && $result->isBlocking() && $this->grumPHP->stopOnFailure()) {
                         $executionShouldStop = true;
                         break;
+                    }
+                    if ($this->logTaskOutput()) {
+                        $this->logFinalProcessOutput($taskName, $process);
                     }
                 }
             }
@@ -445,5 +473,70 @@ class TaskRunner
             return $taskName;
         }
         return null;
+    }
+
+    protected function logTaskOutput(): bool
+    {
+        return $this->grumPHP->logTaskOutput();
+    }
+
+    protected function getLogDirectory(): string
+    {
+        return $this->grumPHP->getLogDir();
+    }
+
+    protected function getLogPath($taskName, $extension)
+    {
+        $directory = $this->getLogDirectory();
+        $path      = "$directory/$taskName.$extension";
+        return $path;
+    }
+
+    protected function getStdOutLogPath(string $taskName): string
+    {
+        return $this->getLogPath($taskName, "stdout.log");
+    }
+
+    protected function getStdErrLogPath(string $taskName): string
+    {
+        return $this->getLogPath($taskName, "stderr.log");
+    }
+
+    /**
+     * Make sure the log directory is setup correctly
+     */
+    protected function setupLogDirectory()
+    {
+        $filesystem = $this->getFilesystem();
+        $directory  = $this->getLogDirectory();
+        $filesystem->exists($directory);
+        $filesystem->remove($directory);
+        $filesystem->mkdir($directory);
+    }
+
+    protected function logIncrementalProcessOutput(string $taskName, Process $process)
+    {
+        if ($process->isRunning()) {
+            $filesystem = $this->getFilesystem();
+            $filesystem->appendToFile($this->getStdOutLogPath($taskName), $process->getIncrementalOutput());
+            $filesystem->appendToFile($this->getStdErrLogPath($taskName), $process->getIncrementalErrorOutput());
+        }
+    }
+    protected function logFinalProcessOutput(string $taskName, Process $process)
+    {
+        if ($process->isTerminated()) {
+            $filesystem = $this->getFilesystem();
+            $filesystem->appendToFile($this->getStdOutLogPath($taskName), $process->getOutput());
+            $filesystem->appendToFile($this->getStdErrLogPath($taskName), $process->getErrorOutput());
+        }
+    }
+
+    protected function getFilesystem(): Filesystem
+    {
+        // TODO: inject via constructor
+        if ($this->filesystem === null) {
+            $this->filesystem = new Filesystem();
+        }
+        return $this->filesystem;
     }
 }

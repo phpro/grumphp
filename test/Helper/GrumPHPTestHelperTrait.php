@@ -25,43 +25,13 @@ use Symfony\Component\Yaml\Yaml;
 
 trait GrumPHPTestHelperTrait
 {
-    public function resolveContext(array $files = []): RunContext
-    {
-        return new RunContext(new FilesCollection($files));
-    }
-
-    /**
-     * @param TaskRunnerContext|array|null $context
-     * @return TaskRunnerContext
-     */
-    protected function resolveTaskRunnerContext($context = null): TaskRunnerContext
-    {
-        if ($context instanceof TaskRunnerContext) {
-            return $context;
-        }
-
-        $files           = [];
-        $tasks           = [];
-        $testSuite       = null;
-        $parallelOptions = null;
-        if (is_array($context)) {
-            $files           = $context["files"] ?? $files;
-            $tasks           = $context["tasks"] ?? $tasks;
-            $testSuite       = $context["testSuite"] ?? $testSuite;
-            $parallelOptions = $context["parallelOptions"] ?? $parallelOptions;
-        }
-
-        $context = new RunContext(new FilesCollection($files));
-        return new TaskRunnerContext($context, $tasks, $testSuite, $parallelOptions);
-    }
-
     /**
      * @param array $config
      * @param bool $removeConfigFileAfterCreation
      * @return Application
      * @throws \ReflectionException
      */
-    protected function resolveApplication(array $config, $removeConfigFileAfterCreation = true)
+    protected function resolveApplication(array $config, $disableTaskLogging = true, $removeConfigFileAfterCreation = true)
     {
         $backup = $_SERVER['argv'];
         $cwd    = getcwd();
@@ -139,6 +109,7 @@ trait GrumPHPTestHelperTrait
                     return $this->container->get("config");
                 }
             };
+            $this->registerParameterInContainer($app, "log_task_output", !$disableTaskLogging, false);
 
             return $app;
         } finally {
@@ -149,6 +120,36 @@ trait GrumPHPTestHelperTrait
                 unlink($path);
             }
         }
+    }
+
+    public function resolveContext(array $files = []): RunContext
+    {
+        return new RunContext(new FilesCollection($files));
+    }
+
+    /**
+     * @param TaskRunnerContext|array|null $context
+     * @return TaskRunnerContext
+     */
+    protected function resolveTaskRunnerContext($context = null): TaskRunnerContext
+    {
+        if ($context instanceof TaskRunnerContext) {
+            return $context;
+        }
+
+        $files           = [];
+        $tasks           = [];
+        $testSuite       = null;
+        $parallelOptions = null;
+        if (is_array($context)) {
+            $files           = $context["files"] ?? $files;
+            $tasks           = $context["tasks"] ?? $tasks;
+            $testSuite       = $context["testSuite"] ?? $testSuite;
+            $parallelOptions = $context["parallelOptions"] ?? $parallelOptions;
+        }
+
+        $context = new RunContext(new FilesCollection($files));
+        return new TaskRunnerContext($context, $tasks, $testSuite, $parallelOptions);
     }
 
     /**
@@ -341,7 +342,7 @@ trait GrumPHPTestHelperTrait
     {
         $actual = $this->normalizeLineEndings($actual);
 
-        $this->assertEquals($expected, $actual, "Failed asserting run output, found:\n".$actual);
+        $this->assertEquals($expected, $actual, "FaiAled asserting run output, found:\n".$actual);
     }
 
     protected function assertProcessCommand(string $expected, Process $process)

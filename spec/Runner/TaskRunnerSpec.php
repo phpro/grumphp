@@ -45,6 +45,7 @@ class TaskRunnerSpec extends ObjectBehavior
         $task2->canRunInContext($taskContext)->willReturn(true);
         $task2->run($taskContext)->willReturn(TaskResult::createPassed($task2->getWrappedObject(), $taskContext->getWrappedObject()));
 
+        $grumPHP->logTaskOutput()->willReturn(false);
         $grumPHP->stopOnFailure()->willReturn(false);
         $grumPHP->getTaskMetadata('task1')->willReturn(['priority' => 0]);
         $grumPHP->getTaskMetadata('task2')->willReturn(['priority' => 0]);

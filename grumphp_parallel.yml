@@ -2,6 +2,7 @@ parameters:
   run_in_parallel: true
   parallel_process_limit: 6
   parallel_process_wait: 1
+  log_task_output: true
   process_timeout: 120
   tasks:
     phpcs_parallel:

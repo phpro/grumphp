@@ -20,6 +20,9 @@ use Symfony\Component\Process\Process;
 
 class ComposerParallel extends AbstractExternalParallelTask
 {
+    /**
+     * @var Filesystem
+     */
     private $filesystem;
 
     public function __construct(
@@ -91,13 +94,13 @@ class ComposerParallel extends AbstractExternalParallelTask
         return TaskResult::createPassed($this, $context);
     }
 
-    protected function hasWorkToDo(ContextInterface $context): bool
+    public function hasWorkToDo(ContextInterface $context): bool
     {
         $config = $this->getConfiguration();
 
         $files = $this->getFiles($config, $context);
 
-        if (0 === \count($files) && !$config['run_always']) {
+        if (0 === \count($files)) {
             return true;
         }
         return false;

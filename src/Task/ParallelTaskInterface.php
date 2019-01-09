@@ -29,13 +29,23 @@ interface ParallelTaskInterface extends TaskInterface
     public function getTaskResult(Process $process, ContextInterface $context): TaskResultInterface;
 
     /**
+     * Determines if the task hsa any work to do for the given $context.
+     *
+     * @param ContextInterface $context
+     * @return bool
+     */
+    public function hasWorkToDo(ContextInterface $context): bool;
+
+    /**
      * Defines the "stage" on which the task should run
+     *
      * @return int
      */
     public function getStage(): int;
 
     /**
      * Allows to provide arbitrary arguments/options for the command
+     *
      * @return string
      */
     public function getPassthru(): string;

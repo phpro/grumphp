@@ -92,7 +92,7 @@ class PhpCsParallel extends AbstractExternalParallelTask
     /**
      * {@inheritdoc}
      */
-    protected function hasWorkToDo(ContextInterface $context): bool
+    public function hasWorkToDo(ContextInterface $context): bool
     {
         $config = $this->getConfiguration();
         $files  = $this->getFilteredFiles($config, $context);

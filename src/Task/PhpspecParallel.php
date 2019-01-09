@@ -75,7 +75,7 @@ class PhpspecParallel extends AbstractExternalParallelTask
     }
 
 
-    protected function hasWorkToDo(ContextInterface $context): bool
+    public function hasWorkToDo(ContextInterface $context): bool
     {
         $files = $context->getFiles()->name('*.php');
         if (0 === \count($files)) {

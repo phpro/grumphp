@@ -124,7 +124,7 @@ abstract class AbstractExternalParallelTask extends AbstractExternalTask impleme
      *
      * @return bool
      */
-    protected function hasWorkToDo(ContextInterface $context): bool
+    public function hasWorkToDo(ContextInterface $context): bool
     {
         return true;
     }

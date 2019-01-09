@@ -46,7 +46,7 @@ class PhpunitParallel extends AbstractExternalParallelTask
         return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
-    protected function hasWorkToDo(ContextInterface $context): bool
+    public function hasWorkToDo(ContextInterface $context): bool
     {
         $config = $this->getConfiguration();
 

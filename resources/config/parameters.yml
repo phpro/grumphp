@@ -15,6 +15,8 @@ parameters:
   run_in_parallel: false
   parallel_process_limit: 2
   parallel_process_wait: 1
+  log_task_output: false
+  log_dir: ~
   extensions: []
   ascii:
     failed: grumphp-grumpy.txt
