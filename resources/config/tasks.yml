@@ -471,6 +471,14 @@ services:
             - '@formatter.phpcs'
         tags:
             - {name: grumphp.task, config: phpcs_parallel}
+    task.phpcbf:
+        class: GrumPHP\Task\PhpCbf
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.phpcs'
+        tags:
+            - {name: grumphp.task, config: phpcbf}
     task.phpmnd_parallel:
         class: GrumPHP\Task\PhpMndParallel
         arguments:

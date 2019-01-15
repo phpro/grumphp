@@ -134,7 +134,6 @@ a list of files, grumphp will resolve the files from the provider it finds in th
 vendor/bin/grumphp run test.php dir/test.php file3
 ````
 
-
 ### --tasks=task1,task2
 This options allows to execute only a subset of tasks that are configured in the `grumphp.yml` file.
 
@@ -178,6 +177,8 @@ parameters:
   run_in_parallel: false
   parallel_process_limit: 2
   parallel_process_wait: 1
+  log_task_output: false
+  log_dir: ~
   tasks:
     foo_task:
       metadata:
@@ -198,6 +199,20 @@ If `run_in_parallel` is enabled, this setting denotes the maximum number of para
 ## parallel_process_wait (int; 1)
 If `run_in_parallel` is enabled, this setting denotes the time in seconds that the main process sleeps before checking if
 any of the parallel running tasks have finished.
+
+## log_task_output (bool; false)
+If `log_task_output` is enabled, the stdOut and stdErr streams are written to a log file while each task is running. 
+This functionality let's you inspect the output of a task while it is being executed by grumphp. The log file is placed
+in the directory specified by `log_dir`. The following patterns are used:
+- stdOut: `"$log_dir/$task_name.stdout.log"`
+- stdErr: `"$log_dir/$task_name.stderr.log"`
+
+**CAUTION**: This feature only works for `*Parallel` tasks!
+**CAUTION**: This feature is currenlty not covered by tests!
+
+## log_dir (string; null)
+The `log_dir` denotes the directory the gumphp uses to store log files of running tasks. It defaults to `null`, 
+which then falls back to `system_get_temp_dir()."/grumphp"` (which usually resolves to `/tmp/grumphp`).
 
 ## stage (int; 0)
 If `run_in_parallel` is enabled, this setting is used to group tasks together that should run parallely. This comes in handy
