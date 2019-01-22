@@ -20,6 +20,7 @@ parameters:
             force_patterns: []
             ignore_patterns: []
             triggered_by: ['php']
+            memory_limit: -1
 ```
 
 **autoload_file**
@@ -57,3 +58,9 @@ This is a list of patterns that will be ignored by phpstan. With this option you
 *Default: [php]*
 
 This is a list of extensions to be sniffed.
+
+**memory_limit**
+
+*Default: -1*
+
+With this parameter you can specify the memory limit.
