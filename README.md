@@ -83,6 +83,7 @@ parameters:
         clover_coverage: ~
         codeception: ~
         composer: ~
+        composer_normalize: ~
         composer_require_checker: ~
         composer_script: ~
         deptrac: ~
