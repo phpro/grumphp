@@ -1,8 +1,18 @@
 {
     "name": "phpro/grumphp",
-    "description": "A composer plugin that enables source code quality checks.",
     "type": "composer-plugin",
+    "description": "A composer plugin that enables source code quality checks.",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Toon Verwerft",
+            "email": "toon.verwerft@phpro.be"
+        },
+        {
+            "name": "Community",
+            "homepage": "https://github.com/phpro/grumphp/graphs/contributors"
+        }
+    ],
     "require": {
         "php": ">=5.6.0",
         "composer-plugin-api": "~1.0",
@@ -11,23 +21,23 @@
         "gitonomy/gitlib": "^1.0.3",
         "monolog/monolog": "~1.16",
         "seld/jsonlint": "~1.1",
-        "symfony/config": "~2.7|~3.0|~4.0",
-        "symfony/console": "~2.7|~3.0|~4.0",
-        "symfony/dependency-injection": "~2.7|~3.0|~4.0",
-        "symfony/event-dispatcher": "~2.7|~3.0|~4.0",
-        "symfony/filesystem": "~2.7|~3.0|~4.0",
-        "symfony/finder": "~2.7|~3.0|~4.0",
-        "symfony/options-resolver": "~2.7|~3.0|~4.0",
-        "symfony/process": "~3.2|~4.0",
-        "symfony/yaml": "~2.7|~3.0|~4.0"
+        "symfony/config": "~2.7 || ~3.0 || ~4.0",
+        "symfony/console": "~2.7 || ~3.0 || ~4.0",
+        "symfony/dependency-injection": "~2.7 || ~3.0 || ~4.0",
+        "symfony/event-dispatcher": "~2.7 || ~3.0 || ~4.0",
+        "symfony/filesystem": "~2.7 || ~3.0 || ~4.0",
+        "symfony/finder": "~2.7 || ~3.0 || ~4.0",
+        "symfony/options-resolver": "~2.7 || ~3.0 || ~4.0",
+        "symfony/process": "~3.2 || ~4.0",
+        "symfony/yaml": "~2.7 || ~3.0 || ~4.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "~1|~2",
+        "friendsofphp/php-cs-fixer": "~1 || ~2",
         "jakub-onderka/php-parallel-lint": "^0.9.2",
         "nikic/php-parser": "~2.1",
         "phpspec/phpspec": "^3.2.2",
         "phpspec/prophecy": "^1.6.2",
-        "phpunit/phpunit": "^5.7.27|^6.4.4",
+        "phpunit/phpunit": "^5.7.27 || ^6.4.4",
         "sebastian/comparator": "^1.2.4",
         "sensiolabs/security-checker": "^4.0",
         "squizlabs/php_codesniffer": "~2.4"
@@ -39,19 +49,19 @@
         "codegyre/robo": "Lets GrumPHP run your automated PHP tasks.",
         "designsecurity/progpilot": "Lets GrumPHP be sure that there are no vulnerabilities in your code.",
         "doctrine/orm": "Lets GrumPHP validate your Doctrine mapping files.",
-        "phan/phan": "Lets GrumPHP unleash a static analyzer on your code",
         "friendsofphp/php-cs-fixer": "Lets GrumPHP automatically fix your codestyle.",
         "infection/infection": "Lets GrumPHP evaluate the quality your unit tests",
         "jakub-onderka/php-parallel-lint": "Lets GrumPHP quickly lint your entire code base.",
         "maglnet/composer-require-checker": "Lets GrumPHP analyze composer dependencies.",
         "malukenho/kawaii-gherkin": "Lets GrumPHP lint your Gherkin files.",
         "nikic/php-parser": "Lets GrumPHP run static analyses through your PHP files.",
+        "phan/phan": "Lets GrumPHP unleash a static analyzer on your code",
         "phing/phing": "Lets GrumPHP run your automated PHP tasks.",
         "phpmd/phpmd": "Lets GrumPHP sort out the mess in your code",
-        "povils/phpmnd": "Lets GrumPHP help you detect magic numbers in PHP code.",
         "phpspec/phpspec": "Lets GrumPHP spec your code.",
         "phpstan/phpstan": "Lets GrumPHP discover bugs in your code without running it.",
         "phpunit/phpunit": "Lets GrumPHP run your unit tests.",
+        "povils/phpmnd": "Lets GrumPHP help you detect magic numbers in PHP code.",
         "roave/security-advisories": "Lets GrumPHP be sure that there are no known security issues.",
         "sebastian/phpcpd": "Lets GrumPHP find duplicated code.",
         "sensiolabs/security-checker": "Lets GrumPHP be sure that there are no known security issues.",
@@ -60,29 +70,11 @@
         "symfony/phpunit-bridge": "Lets GrumPHP run your unit tests with the phpunit-bridge of Symfony.",
         "vimeo/psalm": "Lets GrumPHP discover errors in your code without running it."
     },
-    "authors": [
-        {
-            "name": "Toon Verwerft",
-            "email": "toon.verwerft@phpro.be"
-        },
-        {
-            "name": "Community",
-            "homepage": "https://github.com/phpro/grumphp/graphs/contributors"
-        }
-    ],
     "config": {
         "sort-packages": true
     },
     "extra": {
         "class": "GrumPHP\\Composer\\GrumPHPPlugin"
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "GrumPHP\\Composer\\DevelopmentIntegrator::integrate"
-        ],
-        "post-update-cmd": [
-            "GrumPHP\\Composer\\DevelopmentIntegrator::integrate"
-        ]
     },
     "autoload": {
         "psr-4": {
@@ -94,5 +86,15 @@
             "GrumPHPTest\\": "test"
         }
     },
-    "bin": ["bin/grumphp"]
+    "bin": [
+        "bin/grumphp"
+    ],
+    "scripts": {
+        "post-install-cmd": [
+            "GrumPHP\\Composer\\DevelopmentIntegrator::integrate"
+        ],
+        "post-update-cmd": [
+            "GrumPHP\\Composer\\DevelopmentIntegrator::integrate"
+        ]
+    }
 }
