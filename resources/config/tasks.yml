@@ -62,6 +62,15 @@ services:
         tags:
             - {name: grumphp.task, config: composer}
 
+    task.composer_normalize:
+        class: GrumPHP\Task\ComposerNormalize
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: composer_normalize}
+
     task.composer.script:
         class: GrumPHP\Task\ComposerScript
         arguments:
