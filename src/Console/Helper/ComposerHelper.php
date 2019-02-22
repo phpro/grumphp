@@ -27,22 +27,13 @@ class ComposerHelper extends Helper
      */
     private $configuration;
 
-    /**
-     * ComposerHelper constructor.
-     *
-     * @param Config|null               $configuration
-     * @param RootPackageInterface|null $rootPackage
-     */
-    public function __construct(Config $configuration = null, RootPackageInterface $rootPackage = null)
+    public function __construct(?Config $configuration = null, ?RootPackageInterface $rootPackage = null)
     {
         $this->rootPackage = $rootPackage;
         $this->configuration = $configuration;
     }
 
-    /**
-     * @return RootPackageInterface|null
-     */
-    public function getRootPackage()
+    public function getRootPackage(): ?RootPackageInterface
     {
         return $this->rootPackage;
     }
@@ -52,10 +43,7 @@ class ComposerHelper extends Helper
         return null !== $this->rootPackage;
     }
 
-    /**
-     * @return Config|null
-     */
-    public function getConfiguration()
+    public function getConfiguration(): ?Config
     {
         return $this->configuration;
     }
@@ -65,10 +53,7 @@ class ComposerHelper extends Helper
         return null !== $this->configuration;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return self::HELPER_NAME;
     }

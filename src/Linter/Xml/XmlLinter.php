@@ -96,10 +96,7 @@ class XmlLinter implements LinterInterface
         return libxml_use_internal_errors($useInternalErrors);
     }
 
-    /**
-     * @return DOMDocument|null
-     */
-    private function loadDocument(SplFileInfo $file)
+    private function loadDocument(SplFileInfo $file): ?DOMDocument
     {
         $this->registerXmlStreamContext();
 

@@ -24,10 +24,7 @@ class ConfigurationFile
         $this->filesystem = $filesystem;
     }
 
-    /**
-     * @param PackageInterface|null $package
-     */
-    public function locate(string $workingDir, PackageInterface $package = null): string
+    public function locate(string $workingDir, ?PackageInterface $package = null): string
     {
         $defaultPath = $workingDir.DIRECTORY_SEPARATOR.self::APP_CONFIG_FILE;
         $defaultPath = $this->locateConfigFileWithDistSupport($defaultPath);

@@ -59,18 +59,12 @@ class TaskRunnerContext
         return null !== $this->testSuite;
     }
 
-    /**
-     * @return null|TestSuiteInterface
-     */
-    public function getTestSuite()
+    public function getTestSuite(): ?TestSuiteInterface
     {
         return $this->testSuite;
     }
 
-    /**
-     * @param null|TestSuiteInterface $testSuite
-     */
-    public function setTestSuite(TestSuiteInterface $testSuite): void
+    public function setTestSuite(?TestSuiteInterface $testSuite): void
     {
         $this->testSuite = $testSuite;
     }
