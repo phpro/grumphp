@@ -49,7 +49,7 @@ class PhpParser implements ParserInterface
         $this->filesystem = $filesystem;
     }
 
-    public function setParserOptions(array $options)
+    public function setParserOptions(array $options): void
     {
         $this->parserOptions = $options;
     }

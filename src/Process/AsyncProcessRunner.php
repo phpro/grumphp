@@ -35,7 +35,7 @@ class AsyncProcessRunner
     /**
      * @param Process[] $processes
      */
-    public function run(array $processes)
+    public function run(array $processes): void
     {
         $this->processes = $processes;
         $this->running = 0;

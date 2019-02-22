@@ -9,7 +9,7 @@ use PhpParser\Node;
 
 class NoExitStatementsVisitor extends AbstractVisitor
 {
-    public function leaveNode(Node $node)
+    public function leaveNode(Node $node): void
     {
         if (!$node instanceof Node\Expr\Exit_) {
             return;

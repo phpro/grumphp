@@ -46,7 +46,7 @@ class TraverserConfigurator
     /**
      * @throws \GrumPHP\Exception\RuntimeException
      */
-    public function registerVisitorId(string $alias, string $visitorId)
+    public function registerVisitorId(string $alias, string $visitorId): void
     {
         if (array_key_exists($alias, $this->registeredVisitorIds)) {
             $registeredId = $this->registeredVisitorIds[$alias];
@@ -61,7 +61,7 @@ class TraverserConfigurator
     /**
      * @throws \GrumPHP\Exception\RuntimeException
      */
-    public function registerStandardEnabledVisitor(string $alias, array $visitorOptions = null)
+    public function registerStandardEnabledVisitor(string $alias, array $visitorOptions = null): void
     {
         if (array_key_exists($alias, $this->standardEnabledVisitors)) {
             throw new RuntimeException(
@@ -72,12 +72,12 @@ class TraverserConfigurator
         $this->standardEnabledVisitors[$alias] = $visitorOptions;
     }
 
-    public function registerOptions(array $options)
+    public function registerOptions(array $options): void
     {
         $this->options = $options;
     }
 
-    public function registerContext(ParserContext $context)
+    public function registerContext(ParserContext $context): void
     {
         $this->context = $context;
     }
@@ -85,7 +85,7 @@ class TraverserConfigurator
     /**
      * @throws \GrumPHP\Exception\RuntimeException
      */
-    public function configure(NodeTraverserInterface $traverser)
+    public function configure(NodeTraverserInterface $traverser): void
     {
         $this->guardTaskHasVisitors();
         $this->guardContextIsRegistered();
@@ -137,7 +137,7 @@ class TraverserConfigurator
     /**
      * @throws \GrumPHP\Exception\RuntimeException
      */
-    private function guardTaskHasVisitors()
+    private function guardTaskHasVisitors(): void
     {
         if (!isset($this->options['visitors'])) {
             throw new RuntimeException('The parser context is not set. Please register it to the configurator!');
@@ -147,7 +147,7 @@ class TraverserConfigurator
     /**
      * @throws \GrumPHP\Exception\RuntimeException
      */
-    private function guardContextIsRegistered()
+    private function guardContextIsRegistered(): void
     {
         if (!$this->context instanceof ParserContext) {
             throw new RuntimeException('The parser context is not set. Please register it to the configurator!');

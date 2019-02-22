@@ -17,7 +17,7 @@ class TaskCompilerPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $definition = $container->findDefinition('task_runner');
         $taggedServices = $container->findTaggedServiceIds(self::TAG_GRUMPHP_TASK);

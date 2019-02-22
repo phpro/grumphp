@@ -14,7 +14,7 @@ class DevelopmentIntegrator
     /**
      * This method makes sure that GrumPHP registers itself during development.
      */
-    public static function integrate(Event $event)
+    public static function integrate(Event $event): void
     {
         $filesystem = new Filesystem();
 

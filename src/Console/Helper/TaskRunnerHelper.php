@@ -79,7 +79,7 @@ class TaskRunnerHelper extends Helper
         return $this->returnSuccessMessage($output, $warnings->getAllMessages());
     }
 
-    private function registerEventListeners(OutputInterface $output)
+    private function registerEventListeners(OutputInterface $output): void
     {
         if ($output instanceof ConsoleOutputInterface) {
             $output = $output->getErrorOutput();
@@ -125,7 +125,7 @@ class TaskRunnerHelper extends Helper
         return self::CODE_SUCCESS;
     }
 
-    private function returnWarningMessages(OutputInterface $output, array $warningMessages)
+    private function returnWarningMessages(OutputInterface $output, array $warningMessages): void
     {
         foreach ($warningMessages as $warningMessage) {
             $output->writeln('<fg=yellow>'.$warningMessage.'</fg=yellow>');
@@ -135,7 +135,7 @@ class TaskRunnerHelper extends Helper
     /**
      * @param OutputInterface $output
      */
-    private function returnAdditionalInfo(OutputInterface $output)
+    private function returnAdditionalInfo(OutputInterface $output): void
     {
         if (null !== $this->config->getAdditionalInfo()) {
             $output->writeln($this->config->getAdditionalInfo());

@@ -51,7 +51,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function activate(Composer $composer, IOInterface $io)
+    public function activate(Composer $composer, IOInterface $io): void
     {
         $this->composer = $composer;
         $this->io = $io;
@@ -76,7 +76,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * When this package is updated, the git hook is also initialized.
      */
-    public function postPackageInstall(PackageEvent $event)
+    public function postPackageInstall(PackageEvent $event): void
     {
         /** @var InstallOperation $operation */
         $operation = $event->getOperation();
@@ -94,7 +94,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * When this package is updated, the git hook is also updated.
      */
-    public function postPackageUpdate(PackageEvent $event)
+    public function postPackageUpdate(PackageEvent $event): void
     {
         /** @var UpdateOperation $operation */
         $operation = $event->getOperation();
@@ -111,7 +111,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * When this package is uninstalled, the generated git hooks need to be removed.
      */
-    public function prePackageUninstall(PackageEvent $event)
+    public function prePackageUninstall(PackageEvent $event): void
     {
         /** @var UninstallOperation $operation */
         $operation = $event->getOperation();
@@ -125,7 +125,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         $this->deInitGitHook();
     }
 
-    public function runScheduledTasks(Event $event)
+    public function runScheduledTasks(Event $event): void
     {
         if ($this->initScheduled) {
             $this->runGrumPhpCommand(ConfigureCommand::COMMAND_NAME);
@@ -143,7 +143,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * Initialize git hooks.
      */
-    protected function initGitHook()
+    protected function initGitHook(): void
     {
         $this->runGrumPhpCommand(InitCommand::COMMAND_NAME);
     }
@@ -151,7 +151,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * Deinitialize git hooks.
      */
-    protected function deInitGitHook()
+    protected function deInitGitHook(): void
     {
         $this->runGrumPhpCommand(DeInitCommand::COMMAND_NAME);
     }
@@ -159,7 +159,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * Run the GrumPHP console to (de)init the git hooks.
      */
-    protected function runGrumPhpCommand(string $command)
+    protected function runGrumPhpCommand(string $command): void
     {
         $config = $this->composer->getConfig();
         $commandLocator = new ExternalCommand($config->get('bin-dir'), new ExecutableFinder());

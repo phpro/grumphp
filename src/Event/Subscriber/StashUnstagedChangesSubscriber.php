@@ -70,7 +70,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         return $events;
     }
 
-    public function saveStash(RunnerEvent $e)
+    public function saveStash(RunnerEvent $e): void
     {
         if (!$this->isStashEnabled($e->getContext())) {
             return;
@@ -82,7 +82,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     /**
      * @throws ProcessException
      */
-    public function popStash(RunnerEvent $e)
+    public function popStash(RunnerEvent $e): void
     {
         if (!$this->isStashEnabled($e->getContext())) {
             return;
@@ -91,7 +91,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         $this->doPopStash();
     }
 
-    public function handleErrors()
+    public function handleErrors(): void
     {
         if (!$this->grumPHP->ignoreUnstagedChanges()) {
             return;
@@ -105,7 +105,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
      *
      * @reurn void
      */
-    private function doSaveStash()
+    private function doSaveStash(): void
     {
         $pending = $this->repository->getWorkingCopy()->getDiffPending();
         if (!\count($pending->getFiles())) {
@@ -126,7 +126,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         $this->registerShutdownHandler();
     }
 
-    private function doPopStash()
+    private function doPopStash(): void
     {
         if (!$this->stashIsApplied) {
             return;
@@ -155,14 +155,14 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     /**
      * Make sure to fetch errors and pop the stash before crashing.
      */
-    private function registerShutdownHandler()
+    private function registerShutdownHandler(): void
     {
         if ($this->shutdownFunctionRegistered) {
             return;
         }
 
         $subscriber = $this;
-        register_shutdown_function(function () use ($subscriber) {
+        register_shutdown_function(function () use ($subscriber): void {
             if (!$error = error_get_last()) {
                 return;
             }

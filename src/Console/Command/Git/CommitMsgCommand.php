@@ -54,7 +54,7 @@ class CommitMsgCommand extends Command
     /**
      * Configure command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName(self::COMMAND_NAME);
         $this->addOption('git-user', null, InputOption::VALUE_REQUIRED, 'The configured git user name.', '');

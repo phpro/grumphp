@@ -41,7 +41,7 @@ class RunCommand extends Command
     /**
      * Configure command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName(self::COMMAND_NAME);
         $this->addOption(

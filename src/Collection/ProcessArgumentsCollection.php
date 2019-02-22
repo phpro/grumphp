@@ -17,7 +17,7 @@ class ProcessArgumentsCollection extends ArrayCollection
     /**
      * @param string|null $value
      */
-    public function addOptionalArgument(string $argument, $value)
+    public function addOptionalArgument(string $argument, $value): void
     {
         if (!$value) {
             return;
@@ -26,7 +26,7 @@ class ProcessArgumentsCollection extends ArrayCollection
         $this->add(sprintf($argument, $value));
     }
 
-    public function addOptionalArgumentWithSeparatedValue(string $argument, $value)
+    public function addOptionalArgumentWithSeparatedValue(string $argument, $value): void
     {
         if (!$value) {
             return;
@@ -36,7 +36,7 @@ class ProcessArgumentsCollection extends ArrayCollection
         $this->add($value);
     }
 
-    public function addOptionalCommaSeparatedArgument(string $argument, array $values, string $delimiter = ',')
+    public function addOptionalCommaSeparatedArgument(string $argument, array $values, string $delimiter = ','): void
     {
         if (!\count($values)) {
             return;
@@ -45,7 +45,7 @@ class ProcessArgumentsCollection extends ArrayCollection
         $this->add(sprintf($argument, implode($delimiter, $values)));
     }
 
-    public function addArgumentArray(string $argument, array $values)
+    public function addArgumentArray(string $argument, array $values): void
     {
         foreach ($values as $value) {
             $this->add(sprintf($argument, $value));
@@ -55,7 +55,7 @@ class ProcessArgumentsCollection extends ArrayCollection
     /**
      * Some CLI tools prefer to split the argument and the value.
      */
-    public function addArgumentArrayWithSeparatedValue(string $argument, array $values)
+    public function addArgumentArrayWithSeparatedValue(string $argument, array $values): void
     {
         foreach ($values as $value) {
             $this->add(sprintf($argument, $value));
@@ -63,7 +63,7 @@ class ProcessArgumentsCollection extends ArrayCollection
         }
     }
 
-    public function addSeparatedArgumentArray(string $argument, array $values)
+    public function addSeparatedArgumentArray(string $argument, array $values): void
     {
         if (!\count($values)) {
             return;
@@ -75,7 +75,7 @@ class ProcessArgumentsCollection extends ArrayCollection
         }
     }
 
-    public function addRequiredArgument(string $argument, string $value)
+    public function addRequiredArgument(string $argument, string $value): void
     {
         if (!$value) {
             throw new InvalidArgumentException(sprintf('The argument %s is required.', $argument));
@@ -84,14 +84,14 @@ class ProcessArgumentsCollection extends ArrayCollection
         $this->add(sprintf($argument, $value));
     }
 
-    public function addFiles(FilesCollection $files)
+    public function addFiles(FilesCollection $files): void
     {
         foreach ($files as $file) {
             $this->add($file->getPathname());
         }
     }
 
-    public function addCommaSeparatedFiles(FilesCollection $files)
+    public function addCommaSeparatedFiles(FilesCollection $files): void
     {
         $paths = [];
 
@@ -102,7 +102,7 @@ class ProcessArgumentsCollection extends ArrayCollection
         $this->add(implode(',', $paths));
     }
 
-    public function addArgumentWithCommaSeparatedFiles(string $argument, FilesCollection $files)
+    public function addArgumentWithCommaSeparatedFiles(string $argument, FilesCollection $files): void
     {
         $paths = [];
 
@@ -113,7 +113,7 @@ class ProcessArgumentsCollection extends ArrayCollection
         $this->add(sprintf($argument, implode(',', $paths)));
     }
 
-    public function addOptionalBooleanArgument(string $argument, $value, string $trueFormat, string $falseFormat)
+    public function addOptionalBooleanArgument(string $argument, $value, string $trueFormat, string $falseFormat): void
     {
         if (null === $value) {
             return;
@@ -126,7 +126,7 @@ class ProcessArgumentsCollection extends ArrayCollection
      * @param string   $argument
      * @param int|null $value
      */
-    public function addOptionalIntegerArgument(string $argument, $value)
+    public function addOptionalIntegerArgument(string $argument, $value): void
     {
         if (null === $value) {
             return;

@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TestSuiteCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $testSuites = $container->getParameter('testsuites');
         $registeredTasks = (array) $container->getParameter('grumphp.tasks.registered');
