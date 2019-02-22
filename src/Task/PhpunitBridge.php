@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Task;
 
 use GrumPHP\Runner\TaskResult;
