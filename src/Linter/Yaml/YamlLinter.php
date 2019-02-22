@@ -100,7 +100,7 @@ class YamlLinter implements LinterInterface
     /**
      * @throws ParseException
      */
-    private function parseYaml(string $content)
+    private function parseYaml(string $content): void
     {
         // Lint on Symfony Yaml < 3.1
         if (!self::supportsFlags()) {
@@ -123,23 +123,23 @@ class YamlLinter implements LinterInterface
         return class_exists(Yaml::class);
     }
 
-    public function setObjectSupport(bool $objectSupport)
+    public function setObjectSupport(bool $objectSupport): void
     {
         $this->objectSupport = $objectSupport;
     }
 
-    public function setExceptionOnInvalidType(bool $exceptionOnInvalidType)
+    public function setExceptionOnInvalidType(bool $exceptionOnInvalidType): void
     {
         $this->exceptionOnInvalidType = $exceptionOnInvalidType;
     }
 
-    public function setParseCustomTags(bool $parseCustomTags)
+    public function setParseCustomTags(bool $parseCustomTags): void
     {
         // Yaml::PARSE_CONSTANT is only available in Symfony Yaml >= 3.2
         $this->parseCustomTags = $parseCustomTags && defined('Symfony\Component\Yaml\Yaml::PARSE_CONSTANT');
     }
 
-    public function setParseConstants(bool $parseConstants)
+    public function setParseConstants(bool $parseConstants): void
     {
         // Yaml::PARSE_CUSTOM_TAGS is only available in Symfony Yaml >= 3.3
         $this->parseConstants = $parseConstants && defined('Symfony\Component\Yaml\Yaml::PARSE_CUSTOM_TAGS');

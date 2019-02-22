@@ -46,7 +46,7 @@ class JsonLinter implements LinterInterface
         return class_exists(JsonParser::class);
     }
 
-    public function setDetectKeyConflicts(bool $detectKeyConflicts)
+    public function setDetectKeyConflicts(bool $detectKeyConflicts): void
     {
         $this->detectKeyConflicts = $detectKeyConflicts;
     }

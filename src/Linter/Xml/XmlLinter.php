@@ -71,22 +71,22 @@ class XmlLinter implements LinterInterface
         return \in_array('libxml', $extensions, true) && \in_array('dom', $extensions, true);
     }
 
-    public function setLoadFromNet(bool $loadFromNet)
+    public function setLoadFromNet(bool $loadFromNet): void
     {
         $this->loadFromNet = $loadFromNet;
     }
 
-    public function setXInclude(bool $xInclude)
+    public function setXInclude(bool $xInclude): void
     {
         $this->xInclude = $xInclude;
     }
 
-    public function setDtdValidation(bool $dtdValidation)
+    public function setDtdValidation(bool $dtdValidation): void
     {
         $this->dtdValidation = $dtdValidation;
     }
 
-    public function setSchemeValidation(bool $schemeValidation)
+    public function setSchemeValidation(bool $schemeValidation): void
     {
         $this->schemeValidation = $schemeValidation;
     }
@@ -118,7 +118,7 @@ class XmlLinter implements LinterInterface
      * @see http://stackoverflow.com/questions/4062792/domdocumentvalidate-problem
      * @see https://bugs.php.net/bug.php?id=48080
      */
-    private function registerXmlStreamContext()
+    private function registerXmlStreamContext(): void
     {
         libxml_set_streams_context(stream_context_create([
             'http' => [
@@ -127,7 +127,7 @@ class XmlLinter implements LinterInterface
         ]));
     }
 
-    private function collectXmlErrors(LintErrorsCollection $errors)
+    private function collectXmlErrors(LintErrorsCollection $errors): void
     {
         foreach (libxml_get_errors() as $error) {
             $errors->add(XmlLintError::fromLibXmlError($error));
@@ -138,7 +138,7 @@ class XmlLinter implements LinterInterface
     /**
      * Make sure the libxml errors are flushed and won't be occurring again.
      */
-    private function flushXmlErrors()
+    private function flushXmlErrors(): void
     {
         libxml_clear_errors();
     }

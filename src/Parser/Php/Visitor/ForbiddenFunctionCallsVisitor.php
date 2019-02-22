@@ -14,7 +14,7 @@ class ForbiddenFunctionCallsVisitor extends AbstractVisitor implements Configura
      */
     private $blacklist = [];
 
-    public function configure(array $options)
+    public function configure(array $options): void
     {
         $resolver = new OptionsResolver();
 
@@ -28,7 +28,7 @@ class ForbiddenFunctionCallsVisitor extends AbstractVisitor implements Configura
         $this->blacklist = $config['blacklist'];
     }
 
-    public function leaveNode(Node $node)
+    public function leaveNode(Node $node): void
     {
         if (!$node instanceof Node\Expr\FuncCall) {
             return;

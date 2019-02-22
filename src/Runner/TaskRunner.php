@@ -46,7 +46,7 @@ class TaskRunner
         $this->grumPHP = $grumPHP;
     }
 
-    public function addTask(TaskInterface $task)
+    public function addTask(TaskInterface $task): void
     {
         if ($this->tasks->contains($task)) {
             return;

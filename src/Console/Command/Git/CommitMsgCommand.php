@@ -54,7 +54,7 @@ class CommitMsgCommand extends Command
     /**
      * Configure command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName(self::COMMAND_NAME);
         $this->setDescription('Executed by the commit-msg commit hook');

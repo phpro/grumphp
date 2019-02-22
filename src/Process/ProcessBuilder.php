@@ -49,7 +49,7 @@ class ProcessBuilder
     /**
      * @throws PlatformException
      */
-    private function guardWindowsCmdMaxInputStringLimitation(Process $process)
+    private function guardWindowsCmdMaxInputStringLimitation(Process $process): void
     {
         if (!Platform::isWindows()) {
             return;
@@ -62,7 +62,7 @@ class ProcessBuilder
         throw PlatformException::commandLineStringLimit($process);
     }
 
-    private function logProcessInVerboseMode(Process $process)
+    private function logProcessInVerboseMode(Process $process): void
     {
         if ($this->io->isVeryVerbose()) {
             $this->io->write([PHP_EOL.'Command: '.$process->getCommandLine()], true);

@@ -16,12 +16,12 @@ class AbstractVisitor extends NodeVisitorAbstract implements ContextAwareVisitor
      */
     protected $context;
 
-    public function setContext(ParserContext $context)
+    public function setContext(ParserContext $context): void
     {
         $this->context = $context;
     }
 
-    protected function addError(string $message, int $line = -1, string $type = ParseError::TYPE_ERROR)
+    protected function addError(string $message, int $line = -1, string $type = ParseError::TYPE_ERROR): void
     {
         $errors = $this->context->getErrors();
         $fileName = $this->context->getFile()->getPath();

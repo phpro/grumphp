@@ -193,7 +193,7 @@ class CommitMessage implements TaskInterface
         return TaskResult::createPassed($this, $context);
     }
 
-    private function runMatcher(array $config, string $commitMessage, string $rule, string $ruleName)
+    private function runMatcher(array $config, string $commitMessage, string $rule, string $ruleName): void
     {
         $regex = new Regex($rule);
 
