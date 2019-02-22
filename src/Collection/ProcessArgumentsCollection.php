@@ -14,10 +14,7 @@ class ProcessArgumentsCollection extends ArrayCollection
         return new self([$executable]);
     }
 
-    /**
-     * @param string|null $value
-     */
-    public function addOptionalArgument(string $argument, $value): void
+    public function addOptionalArgument(string $argument, $value = null): void
     {
         if (!$value) {
             return;
@@ -26,7 +23,7 @@ class ProcessArgumentsCollection extends ArrayCollection
         $this->add(sprintf($argument, $value));
     }
 
-    public function addOptionalArgumentWithSeparatedValue(string $argument, $value): void
+    public function addOptionalArgumentWithSeparatedValue(string $argument, $value = null): void
     {
         if (!$value) {
             return;
@@ -113,8 +110,12 @@ class ProcessArgumentsCollection extends ArrayCollection
         $this->add(sprintf($argument, implode(',', $paths)));
     }
 
-    public function addOptionalBooleanArgument(string $argument, $value, string $trueFormat, string $falseFormat): void
-    {
+    public function addOptionalBooleanArgument(
+        string $argument,
+        ?bool $value,
+        string $trueFormat,
+        string $falseFormat
+    ): void {
         if (null === $value) {
             return;
         }
@@ -122,11 +123,7 @@ class ProcessArgumentsCollection extends ArrayCollection
         $this->add(sprintf($argument, $value ? $trueFormat : $falseFormat));
     }
 
-    /**
-     * @param string   $argument
-     * @param int|null $value
-     */
-    public function addOptionalIntegerArgument(string $argument, $value): void
+    public function addOptionalIntegerArgument(string $argument, ?int $value): void
     {
         if (null === $value) {
             return;

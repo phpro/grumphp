@@ -20,10 +20,7 @@ class TasksCollection extends ArrayCollection
         });
     }
 
-    /**
-     * @param TestSuiteInterface|null $testSuite
-     */
-    public function filterByTestSuite(TestSuiteInterface $testSuite = null): self
+    public function filterByTestSuite(?TestSuiteInterface $testSuite = null): self
     {
         if (null === $testSuite) {
             return new self($this->toArray());

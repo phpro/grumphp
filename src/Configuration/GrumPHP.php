@@ -33,10 +33,7 @@ class GrumPHP
         return $this->container->getParameter('git_dir');
     }
 
-    /**
-     * @return string|null
-     */
-    public function getHooksDir()
+    public function getHooksDir(): ?string
     {
         return $this->container->getParameter('hooks_dir');
     }
@@ -66,10 +63,7 @@ class GrumPHP
         return (int) $this->container->getParameter('process_async_wait');
     }
 
-    /**
-     * @return float|null
-     */
-    public function getProcessTimeout()
+    public function getProcessTimeout(): ?float
     {
         $timeout = $this->container->getParameter('process_timeout');
         if (null === $timeout) {
@@ -79,10 +73,7 @@ class GrumPHP
         return (float) $timeout;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getAdditionalInfo()
+    public function getAdditionalInfo(): ?string
     {
         return $this->container->getParameter('additional_info');
     }
@@ -125,12 +116,7 @@ class GrumPHP
         return $this->container->getParameter('grumphp.testsuites');
     }
 
-    /**
-     * Get ascii content path from grumphp.yml file.
-     *
-     * @return string|null
-     */
-    public function getAsciiContentPath(string $resource)
+    public function getAsciiContentPath(string $resource): ?string
     {
         if (null === $this->container->getParameter('ascii')) {
             return null;
