@@ -24,12 +24,14 @@ class PhpLint extends AbstractExternalTask
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'jobs' => null,
+            'short_open_tag' => false,
             'exclude' => [],
             'ignore_patterns' => [],
             'triggered_by' => ['php', 'phtml', 'php3', 'php4', 'php5'],
         ]);
 
         $resolver->setAllowedTypes('jobs', ['int', 'null']);
+        $resolver->setAllowedTypes('short_open_tag', 'bool');
         $resolver->setAllowedTypes('exclude', 'array');
         $resolver->addAllowedTypes('ignore_patterns', ['array']);
         $resolver->setAllowedTypes('triggered_by', 'array');
@@ -54,6 +56,7 @@ class PhpLint extends AbstractExternalTask
         $arguments = $this->processBuilder->createArgumentsForCommand('parallel-lint');
         $arguments->add('--no-colors');
         $arguments->addOptionalArgumentWithSeparatedValue('-j', $config['jobs']);
+        $arguments->addOptionalArgument('--short', $config['short_open_tag']);
         $arguments->addArgumentArrayWithSeparatedValue('--exclude', $config['exclude']);
         $arguments->add('--stdin');
 
