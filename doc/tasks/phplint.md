@@ -40,7 +40,7 @@ defaults to 10.
 
 *Default: false*
 
-This option will change short_open_tag config. 
+This option can allow PHP short open tags. 
 
 **ignore_patterns**
 
