@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Configuration;
 
 use GrumPHP\Collection\TestSuiteCollection;
@@ -16,74 +18,50 @@ class GrumPHP
      */
     private $container;
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
-    /**
-     * @return string
-     */
-    public function getBinDir()
+    public function getBinDir(): string
     {
         return $this->container->getParameter('bin_dir');
     }
 
-    /**
-     * @return string
-     */
-    public function getGitDir()
+    public function getGitDir(): string
     {
         return $this->container->getParameter('git_dir');
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getHooksDir()
     {
         return $this->container->getParameter('hooks_dir');
     }
 
-    /**
-     * @return string
-     */
-    public function getHooksPreset()
+    public function getHooksPreset(): string
     {
         return $this->container->getParameter('hooks_preset');
     }
 
-    /**
-     * @return bool
-     */
-    public function stopOnFailure()
+    public function stopOnFailure(): bool
     {
         return (bool) $this->container->getParameter('stop_on_failure');
     }
 
-    /**
-     * @return bool
-     */
-    public function ignoreUnstagedChanges()
+    public function ignoreUnstagedChanges(): bool
     {
         return (bool) $this->container->getParameter('ignore_unstaged_changes');
     }
 
-    /**
-     * @return int
-     */
-    public function getProcessAsyncLimit()
+    public function getProcessAsyncLimit(): int
     {
         return (int) $this->container->getParameter('process_async_limit');
     }
 
-    /**
-     * @return int
-     */
-    public function getProcessAsyncWaitTime()
+    public function getProcessAsyncWaitTime(): int
     {
         return (int) $this->container->getParameter('process_async_wait');
     }
@@ -109,70 +87,50 @@ class GrumPHP
         return $this->container->getParameter('additional_info');
     }
 
-    /**
-     * @return array
-     */
-    public function getRegisteredTasks()
+    public function getRegisteredTasks(): array
     {
         return $this->container->getParameter('grumphp.tasks.registered');
     }
 
     /**
      * Gets a value indicating whether the Git commit hook circumvention tip should be shown when a task fails.
-     *
-     * @return bool True to hide the tip, otherwise false.
      */
-    public function hideCircumventionTip()
+    public function hideCircumventionTip(): bool
     {
-        return (bool)$this->container->getParameter('hide_circumvention_tip');
+        return (bool) $this->container->getParameter('hide_circumvention_tip');
     }
 
-    /**
-     * @param string $taskName
-     *
-     * @return array
-     */
-    public function getTaskConfiguration($taskName)
+    public function getTaskConfiguration(string $taskName): array
     {
         $tasksConfiguration = $this->container->getParameter('grumphp.tasks.configuration');
         if (!array_key_exists($taskName, $tasksConfiguration)) {
-            throw new RuntimeException('Could not find task configuration. Invalid task: ' . $taskName);
+            throw new RuntimeException('Could not find task configuration. Invalid task: '.$taskName);
         }
 
         return $tasksConfiguration[$taskName];
     }
 
-    /**
-     * @param $taskName
-     *
-     * @return array
-     */
-    public function getTaskMetadata($taskName)
+    public function getTaskMetadata($taskName): array
     {
         $tasksMetadata = $this->container->getParameter('grumphp.tasks.metadata');
         if (!array_key_exists($taskName, $tasksMetadata)) {
-            throw new RuntimeException('Could not find task metadata. Invalid task: ' . $taskName);
+            throw new RuntimeException('Could not find task metadata. Invalid task: '.$taskName);
         }
 
         return $tasksMetadata[$taskName];
     }
 
-    /**
-     * @return TestSuiteCollection
-     */
-    public function getTestSuites()
+    public function getTestSuites(): TestSuiteCollection
     {
         return $this->container->getParameter('grumphp.testsuites');
     }
 
     /**
-     * Get ascii content path from grumphp.yml file
-     *
-     * @param $resource
+     * Get ascii content path from grumphp.yml file.
      *
      * @return string|null
      */
-    public function getAsciiContentPath($resource)
+    public function getAsciiContentPath(string $resource)
     {
         if (null === $this->container->getParameter('ascii')) {
             return null;
@@ -184,7 +142,7 @@ class GrumPHP
         }
 
         // Deal with multiple ascii files by returning one at random.
-        if (is_array($paths[$resource])) {
+        if (\is_array($paths[$resource])) {
             shuffle($paths[$resource]);
             return reset($paths[$resource]);
         }
@@ -192,13 +150,10 @@ class GrumPHP
         return $paths[$resource];
     }
 
-    /**
-     * @param string $taskName
-     * @return bool
-     */
-    public function isBlockingTask($taskName)
+    public function isBlockingTask(string $taskName): bool
     {
         $taskMetadata = $this->getTaskMetadata($taskName);
+
         return $taskMetadata['blocking'];
     }
 }

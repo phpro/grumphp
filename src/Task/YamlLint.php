@@ -1,32 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Task;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @property \GrumPHP\Linter\Yaml\YamlLinter $linter
- */
 class YamlLint extends AbstractLinterTask
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'yamllint';
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = parent::getConfigurableOptions();
         $resolver->setDefaults([
@@ -46,18 +40,12 @@ class YamlLint extends AbstractLinterTask
         return $resolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         /** @var array $config */
         $config = $this->getConfiguration();
@@ -66,10 +54,10 @@ class YamlLint extends AbstractLinterTask
 
         /** @var FilesCollection $files */
         $files = $context->getFiles()->name($extensions);
-        if (count($whitelistPatterns) >= 1) {
+        if (\count($whitelistPatterns)) {
             $files = $context->getFiles()->paths($whitelistPatterns)->name($extensions);
         }
-        if (0 === count($files)) {
+        if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 

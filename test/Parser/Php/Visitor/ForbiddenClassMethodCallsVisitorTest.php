@@ -4,14 +4,12 @@ namespace GrumPHPTest\Parser\Php\Visitor;
 
 use GrumPHP\Parser\ParseError;
 use GrumPHP\Parser\Php\Visitor\ConfigurableVisitorInterface;
+use GrumPHP\Parser\Php\Visitor\ContextAwareVisitorInterface;
 use GrumPHP\Parser\Php\Visitor\ForbiddenClassMethodCallsVisitor;
 
 class ForbiddenClassMethodCallsVisitorTest extends AbstractVisitorTest
 {
-    /**
-     * @return ForbiddenClassMethodCallsVisitor
-     */
-    protected function getVisitor()
+    protected function getVisitor(): ContextAwareVisitorInterface
     {
         $visitor = new ForbiddenClassMethodCallsVisitor();
         $visitor->configure(array(

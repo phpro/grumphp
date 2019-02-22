@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Util;
 
 use SplFileInfo;
@@ -7,11 +9,7 @@ use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 
 class Filesystem extends SymfonyFilesystem
 {
-    /**
-     * @param SplFileInfo $file
-     * @return string
-     */
-    public function readFromFileInfo(SplFileInfo $file)
+    public function readFromFileInfo(SplFileInfo $file): string
     {
         $handle = $file->openFile('r');
         $content = '';

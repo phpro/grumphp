@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Collection\FilesCollection;
@@ -32,10 +34,6 @@ class PreCommitCommand extends Command
      */
     protected $changedFilesLocator;
 
-    /**
-     * @param GrumPHP $grumPHP
-     * @param ChangedFiles $changedFilesLocator
-     */
     public function __construct(GrumPHP $grumPHP, ChangedFiles $changedFilesLocator)
     {
         parent::__construct();
@@ -45,7 +43,7 @@ class PreCommitCommand extends Command
     }
 
     /**
-     * Configure command
+     * Configure command.
      */
     protected function configure()
     {
@@ -59,9 +57,6 @@ class PreCommitCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
      * @return int|void
      */
     public function execute(InputInterface $input, OutputInterface $output)
@@ -76,13 +71,11 @@ class PreCommitCommand extends Command
         $context->setSkipSuccessOutput((bool) $input->getOption('skip-success-output'));
 
         $output->writeln('<fg=yellow>GrumPHP detected a pre-commit command.</fg=yellow>');
+
         return $this->taskRunner()->run($output, $context);
     }
 
-    /**
-     * @return FilesCollection
-     */
-    protected function getCommittedFiles(ConsoleIO $io)
+    protected function getCommittedFiles(ConsoleIO $io): FilesCollection
     {
         if ($stdin = $io->readCommandInput(STDIN)) {
             return $this->changedFilesLocator->locateFromRawDiffInput($stdin);
@@ -91,18 +84,12 @@ class PreCommitCommand extends Command
         return $this->changedFilesLocator->locateFromGitRepository();
     }
 
-    /**
-     * @return TaskRunnerHelper
-     */
-    protected function taskRunner()
+    protected function taskRunner(): TaskRunnerHelper
     {
         return $this->getHelper(TaskRunnerHelper::HELPER_NAME);
     }
 
-    /**
-     * @return PathsHelper
-     */
-    protected function paths()
+    protected function paths(): PathsHelper
     {
         return $this->getHelper(PathsHelper::HELPER_NAME);
     }

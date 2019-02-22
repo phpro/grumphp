@@ -6,6 +6,7 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\PhpcsFormatter;
+use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
@@ -14,6 +15,7 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\Phpcs;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
@@ -62,8 +64,10 @@ class PhpcsSpec extends ObjectBehavior
         $this->canRunInContext($context)->shouldReturn(true);
     }
 
-    function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
-    {
+    function it_does_not_do_anything_if_there_are_no_files(
+        ProcessBuilder $processBuilder,
+        ContextInterface $context
+    ) {
         $processBuilder->buildProcess('phpcs')->shouldNotBeCalled();
         $processBuilder->buildProcess()->shouldNotBeCalled();
         $context->getFiles()->willReturn(new FilesCollection());
@@ -73,8 +77,11 @@ class PhpcsSpec extends ObjectBehavior
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
-    function it_does_not_runs_the_suite_with_invalid_extensions(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
-    {
+    function it_does_not_runs_the_suite_with_invalid_extensions(
+        ProcessBuilder $processBuilder,
+        Process $process,
+        ContextInterface $context
+    ) {
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('phpcs')->willReturn($arguments);
         $processBuilder->createArgumentsForCommand('phpcbf')->willReturn($arguments);
@@ -83,7 +90,7 @@ class PhpcsSpec extends ObjectBehavior
         $process->run()->shouldNotBeCalled();
 
         $context->getFiles()->willReturn(new FilesCollection([
-          new SplFileInfo('file1.txt', '.', 'file1.txt'),
+            new SplFileInfo('file1.txt', '.', 'file1.txt'),
         ]));
 
         $result = $this->run($context);
@@ -91,8 +98,11 @@ class PhpcsSpec extends ObjectBehavior
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
-    function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
-    {
+    function it_runs_the_suite(
+        ProcessBuilder $processBuilder,
+        Process $process,
+        ContextInterface $context
+    ) {
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('phpcs')->willReturn($arguments);
         $processBuilder->createArgumentsForCommand('phpcbf')->willReturn($arguments);
@@ -114,8 +124,11 @@ class PhpcsSpec extends ObjectBehavior
     function it_throws_exception_if_the_process_fails(
         ProcessBuilder $processBuilder,
         Process $process,
-        ContextInterface $context
+        ContextInterface $context,
+        ProcessFormatterInterface $formatter
     ) {
+        $formatter->format($process)->willReturn(Argument::type('string'));
+
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('phpcs')->willReturn($arguments);
         $processBuilder->createArgumentsForCommand('phpcbf')->willReturn($arguments);

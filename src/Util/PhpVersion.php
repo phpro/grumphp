@@ -1,53 +1,36 @@
 <?php
 
-namespace GrumPHP\Util;
+declare(strict_types=1);
 
-use DateTime;
+namespace GrumPHP\Util;
 
 class PhpVersion
 {
-    /**
-     * @var array
-     */
     private $versions;
 
-    /**
-     * PhpVersion constructor.
-     * @param array $versions
-     */
     public function __construct(array $versions)
     {
         $this->versions = $versions;
     }
 
     /**
-     * Check if the current version is supported
-     * @param string $currentVersion
-     * @return bool
      * @see https://secure.php.net/supported-versions.php for a list of currently supported versions
      */
-    public function isSupportedVersion($currentVersion)
+    public function isSupportedVersion(string $currentVersion): bool
     {
-        $versionIsSupported = false;
-        $now = new DateTime();
+        $now = new \DateTime();
         foreach ($this->versions as $number => $eol) {
-            $eol = new DateTime($eol);
-            if ($now < $eol && version_compare($currentVersion, $number) >= 0) {
-                $versionIsSupported = true;
+            $eol = new \DateTime($eol);
+            if ($now < $eol && (int) version_compare($currentVersion, $number) >= 0) {
+                return true;
             }
         }
 
-        return $versionIsSupported;
+        return false;
     }
 
-    /**
-     * Check if the project version is higher or equal to the given current version
-     * @param string $currentVersion
-     * @param string $projectVersion
-     * @return bool
-     */
-    public function isSupportedProjectVersion($currentVersion, $projectVersion)
+    public function isSupportedProjectVersion(string $currentVersion, string $projectVersion): bool
     {
-        return version_compare($currentVersion, $projectVersion) >= 0;
+        return (int) version_compare($currentVersion, $projectVersion) >= 0;
     }
 }

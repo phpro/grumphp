@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Parser\Php\Visitor;
 
-use GrumPHP\Parser\ParseError;
 use PhpParser\Node;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,9 +14,6 @@ class ForbiddenFunctionCallsVisitor extends AbstractVisitor implements Configura
      */
     private $blacklist = [];
 
-    /**
-     * @param array $options
-     */
     public function configure(array $options)
     {
         $resolver = new OptionsResolver();
@@ -30,11 +28,6 @@ class ForbiddenFunctionCallsVisitor extends AbstractVisitor implements Configura
         $this->blacklist = $config['blacklist'];
     }
 
-    /**
-     * @param Node $node
-     *
-     * @return void
-     */
     public function leaveNode(Node $node)
     {
         if (!$node instanceof Node\Expr\FuncCall) {
@@ -42,14 +35,13 @@ class ForbiddenFunctionCallsVisitor extends AbstractVisitor implements Configura
         }
 
         $function = $node->name;
-        if (!in_array($function, $this->blacklist)) {
+        if (!\in_array($function, $this->blacklist, false)) {
             return;
         }
 
         $this->addError(
             sprintf('Found blacklisted "%s" function call', $function),
-            $node->getLine(),
-            ParseError::TYPE_ERROR
+            $node->getLine()
         );
     }
 }

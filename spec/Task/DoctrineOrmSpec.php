@@ -84,8 +84,14 @@ class DoctrineOrmSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_throws_exception_if_the_process_fails(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
-    {
+    function it_throws_exception_if_the_process_fails(
+        ProcessBuilder $processBuilder,
+        Process $process,
+        ContextInterface $context,
+        ProcessFormatterInterface $formatter
+    ) {
+        $formatter->format($process)->willReturn('format string');
+
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('doctrine')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Parser\Php\Configurator;
 
 use GrumPHP\Exception\RuntimeException;
@@ -36,23 +38,15 @@ class TraverserConfigurator
      */
     private $context;
 
-    /**
-     * TraverserConfigurator constructor.
-     *
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
     /**
-     * @param string $alias
-     * @param string $visitorId
-     *
      * @throws \GrumPHP\Exception\RuntimeException
      */
-    public function registerVisitorId($alias, $visitorId)
+    public function registerVisitorId(string $alias, string $visitorId)
     {
         if (array_key_exists($alias, $this->registeredVisitorIds)) {
             $registeredId = $this->registeredVisitorIds[$alias];
@@ -61,16 +55,13 @@ class TraverserConfigurator
             );
         }
 
-        $this->registeredVisitorIds[$alias] = (string) $visitorId;
+        $this->registeredVisitorIds[$alias] = $visitorId;
     }
 
     /**
-     * @param            $alias
-     * @param array|null $visitorOptions
-     *
      * @throws \GrumPHP\Exception\RuntimeException
      */
-    public function registerStandardEnabledVisitor($alias, array $visitorOptions = null)
+    public function registerStandardEnabledVisitor(string $alias, array $visitorOptions = null)
     {
         if (array_key_exists($alias, $this->standardEnabledVisitors)) {
             throw new RuntimeException(
@@ -81,25 +72,17 @@ class TraverserConfigurator
         $this->standardEnabledVisitors[$alias] = $visitorOptions;
     }
 
-    /**
-     * @param array $options
-     */
     public function registerOptions(array $options)
     {
         $this->options = $options;
     }
 
-    /**
-     * @param ParserContext $context
-     */
     public function registerContext(ParserContext $context)
     {
         $this->context = $context;
     }
 
     /**
-     * @param NodeTraverserInterface $traverser
-     *
      * @throws \GrumPHP\Exception\RuntimeException
      */
     public function configure(NodeTraverserInterface $traverser)
@@ -115,7 +98,7 @@ class TraverserConfigurator
         $visitorIds = array_values(array_intersect($registeredVisitorsIds, $configuredVisitorIds));
         $unknownConfiguredVisitorIds = array_diff($configuredVisitorIds, $registeredVisitorsIds);
 
-        if (count($unknownConfiguredVisitorIds)) {
+        if (\count($unknownConfiguredVisitorIds)) {
             throw new RuntimeException(
                 sprintf('Found unknown php_parser visitors: %s', implode(',', $unknownConfiguredVisitorIds))
             );
@@ -130,7 +113,7 @@ class TraverserConfigurator
             }
 
             $options = $configuredVisitors[$visitorAlias];
-            if ($visitor instanceof ConfigurableVisitorInterface && is_array($options)) {
+            if ($visitor instanceof ConfigurableVisitorInterface && \is_array($options)) {
                 $visitor->configure($options);
             }
 
@@ -141,10 +124,7 @@ class TraverserConfigurator
         $this->context = null;
     }
 
-    /**
-     * @return array
-     */
-    private function loadEnabledVisitorsForCurrentOptions()
+    private function loadEnabledVisitorsForCurrentOptions(): array
     {
         $visitors = $this->standardEnabledVisitors;
         foreach ($this->options['visitors'] as $alias => $visitorOptions) {

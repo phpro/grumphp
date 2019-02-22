@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Util;
 
 use Composer\Config;
@@ -8,6 +10,7 @@ use Composer\IO\NullIO;
 use Composer\Json\JsonFile;
 use Composer\Package\Loader\RootPackageLoader;
 use Composer\Package\Loader\JsonLoader;
+use Composer\Package\RootPackageInterface;
 use Composer\Repository\RepositoryFactory;
 use Exception;
 use GrumPHP\Exception\RuntimeException;
@@ -16,11 +19,8 @@ class Composer
 {
     /**
      * @param string|JsonFile $json
-     * @param Config $config
-     *
-     * @return \Composer\Package\RootPackageInterface
      */
-    public static function loadRootPackageFromJson($json, Config $config = null)
+    public static function loadRootPackageFromJson($json, Config $config = null): RootPackageInterface
     {
         try {
             $config = (null !== $config) ? $config : self::loadConfiguration();
@@ -36,10 +36,7 @@ class Composer
         return $package;
     }
 
-    /**
-     * @return \Composer\Config
-     */
-    public static function loadConfiguration()
+    public static function loadConfiguration(): Config
     {
         try {
             $configuration = Factory::createConfig();
@@ -55,11 +52,9 @@ class Composer
      * To make sure this application works the same in CLI and Composer modus,
      * we'll have to ensure that the bin path is always prefixed.
      *
-     * @link https://github.com/composer/composer/blob/1.1/src/Composer/EventDispatcher/EventDispatcher.php#L147-L160
-     *
-     * @param string $binDir
+     * @see https://github.com/composer/composer/blob/1.1/src/Composer/EventDispatcher/EventDispatcher.php#L147-L160
      */
-    public static function ensureProjectBinDirInSystemPath($binDir)
+    public static function ensureProjectBinDirInSystemPath(string $binDir)
     {
         $pathStr = 'PATH';
         if (!isset($_SERVER[$pathStr]) && isset($_SERVER['Path'])) {
@@ -73,13 +68,13 @@ class Composer
         // add the bin dir to the PATH to make local binaries of deps usable in scripts
         $binDir = realpath($binDir);
         $hasBindDirInPath = preg_match(
-            '{(^|' . PATH_SEPARATOR . ')' . preg_quote($binDir) . '($|' . PATH_SEPARATOR . ')}',
+            '{(^|'.PATH_SEPARATOR.')'.preg_quote($binDir).'($|'.PATH_SEPARATOR.')}',
             $_SERVER[$pathStr]
         );
 
         if (!$hasBindDirInPath && isset($_SERVER[$pathStr])) {
-            $_SERVER[$pathStr] = $binDir . PATH_SEPARATOR . getenv($pathStr);
-            putenv($pathStr . '=' . $_SERVER[$pathStr]);
+            $_SERVER[$pathStr] = $binDir.PATH_SEPARATOR.getenv($pathStr);
+            putenv($pathStr.'='.$_SERVER[$pathStr]);
         }
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Formatter;
 
 use GrumPHP\IO\IOInterface;
@@ -20,19 +22,13 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
 
     /**
      * GitBlacklistFormatter constructor.
-     * @param IOInterface $IO
      */
     public function __construct(IOInterface $IO)
     {
         $this->IO = $IO;
     }
 
-    /**
-     * @param Process $process
-     *
-     * @return string
-     */
-    public function format(Process $process)
+    public function format(Process $process): string
     {
         $output = $process->getOutput();
         if (!$output) {
@@ -41,31 +37,24 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
         if (!$this->IO->isDecorated()) {
             return $output;
         }
+
         return $this->formatOutput($output);
     }
 
-    /**
-     * @param string $output
-     * @return string
-     */
-    private function formatOutput($output)
+    private function formatOutput(string $output): string
     {
         $result = static::RESET_COLOR;
         foreach (array_filter(explode("\n", $output)) as $lineNumber => $line) {
-            $result .= preg_match('/^[0-9]+/', $line) ? $this->trimOutputLine($line, (int)$lineNumber) : $line;
+            $result .= preg_match('/^[0-9]+/', $line) ? $this->trimOutputLine($line, (int) $lineNumber) : $line;
             $result .= PHP_EOL;
         }
+
         return trim($result);
     }
 
-    /**
-     * @param string $line
-     * @param int $lineNumber
-     * @return string
-     */
-    private function trimOutputLine($line, $lineNumber)
+    private function trimOutputLine(string $line, int $lineNumber): string
     {
-        if (strlen($line) < 80) {
+        if (\strlen($line) < 80) {
             return $line;
         }
 
@@ -75,16 +64,16 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
         $lastPos = 0;
 
         //iterate over all WORD_COLORs and save the positions into $positionsWordColor
-        while (($lastPos = mb_strpos($line, static::WORD_COLOR, $lastPos)) !== false) {
+        while (false !== ($lastPos = mb_strpos($line, static::WORD_COLOR, $lastPos))) {
             $positionsWordColor[] = $lastPos;
-            $lastPos = $lastPos + mb_strlen(static::WORD_COLOR);
+            $lastPos += mb_strlen(static::WORD_COLOR);
         }
         $lastPos = 0;
 
         //iterate over all RESET_COLORs and save the positions into $positionsResetColor
-        while (($lastPos = mb_strpos($line, static::RESET_COLOR, $lastPos)) !== false) {
+        while (false !== ($lastPos = mb_strpos($line, static::RESET_COLOR, $lastPos))) {
             $positionsResetColor[] = $lastPos;
-            $lastPos = $lastPos + mb_strlen(static::RESET_COLOR);
+            $lastPos += mb_strlen(static::RESET_COLOR);
         }
 
         foreach ($positionsWordColor as $pos) {
@@ -99,11 +88,12 @@ class GitBlacklistFormatter implements ProcessFormatterInterface
             }
             $pos2 += static::SPACE_AFTER;
 
-            $part = '  ' . $lineNumber . static::COLON_COLOR . ':' . static::RESET_COLOR;
-            $part .= ($pos + static::SPACE_BEFORE) . static::COLON_COLOR . ':' . static::RESET_COLOR;
-            $part .= ' ' . mb_substr($line, $pos, $pos2 - $pos) . static::RESET_COLOR;
+            $part = '  '.$lineNumber.static::COLON_COLOR.':'.static::RESET_COLOR;
+            $part .= ($pos + static::SPACE_BEFORE).static::COLON_COLOR.':'.static::RESET_COLOR;
+            $part .= ' '.mb_substr($line, $pos, $pos2 - $pos).static::RESET_COLOR;
             $parts[] = $part;
         }
+
         return implode(PHP_EOL, $parts);
     }
 }

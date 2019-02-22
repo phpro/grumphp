@@ -2,24 +2,19 @@
 
 namespace spec\GrumPHP\Util;
 
-use DateInterval;
-use DateTime;
-use GrumPHP\Util\PhpVersion;
 use PhpSpec\ObjectBehavior;
 
 class PhpVersionSpec extends ObjectBehavior
 {
-    function let(PhpVersion $phpVersion)
+    function let()
     {
-        $nextYear = new DateTime();
-        $previousYear = new DateTime();
-        $oneYear = new DateInterval('P1Y');
-        $this->beConstructedWith(
-            [
-                '5.3' => $previousYear->sub($oneYear)->format('Y-m-d H:i:s'),
-                '5.6' => $nextYear->add($oneYear)->format('Y-m-d H:i:s'),
-            ]
-        );
+        $nextYear = new \DateTime();
+        $previousYear = new \DateTime();
+        $oneYear = new \DateInterval('P1Y');
+        $this->beConstructedWith([
+            '5.3' => $previousYear->sub($oneYear)->format('Y-m-d H:i:s'),
+            '5.6' => $nextYear->add($oneYear)->format('Y-m-d H:i:s'),
+        ]);
     }
 
     function it_should_validate_php_version()

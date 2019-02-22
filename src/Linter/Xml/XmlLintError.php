@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Linter\Xml;
 
 use GrumPHP\Linter\LintError;
@@ -7,39 +9,23 @@ use LibXMLError;
 
 class XmlLintError extends LintError
 {
-    /**
-     * @var int
-     */
     private $code;
-
-    /**
-     * @var int
-     */
     private $column;
 
-    /**
-     * XmlLintError constructor.
-     *
-     * @param string $type
-     * @param int    $code
-     * @param string $error
-     * @param string $file
-     * @param int    $line
-     * @param int    $column
-     */
-    public function __construct($type, $code, $error, $file, $line, $column)
-    {
+    public function __construct(
+        string $type,
+        int $code,
+        string $error,
+        string $file,
+        int $line,
+        int $column
+    ) {
         parent::__construct($type, $error, $file, $line);
         $this->code = $code;
         $this->column = $column;
     }
 
-    /**
-     * @param LibXMLError $error
-     *
-     * @return XmlLintError
-     */
-    public static function fromLibXmlError(LibXMLError $error)
+    public static function fromLibXmlError(LibXMLError $error): self
     {
         $type = LintError::TYPE_NONE;
         switch ($error->level) {
@@ -54,29 +40,20 @@ class XmlLintError extends LintError
                 break;
         }
 
-        return new XmlLintError($type, $error->code, $error->message, $error->file, $error->line, $error->column);
+        return new self($type, $error->code, $error->message, $error->file, $error->line, $error->column);
     }
 
-    /**
-     * @return int
-     */
-    public function getCode()
+    public function getCode(): int
     {
         return $this->code;
     }
 
-    /**
-     * @return int
-     */
-    public function getColumn()
+    public function getColumn(): int
     {
         return $this->column;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf(
             '[%s] %s: %s (%s) on line %s,%s',

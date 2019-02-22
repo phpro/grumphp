@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Composer;
 
 use Composer\Script\Event;
@@ -17,8 +19,8 @@ class DevelopmentIntegrator
         $filesystem = new Filesystem();
 
         $composerBinDir = $event->getComposer()->getConfig()->get('bin-dir');
-        $executable = getcwd() . '/bin/grumphp';
-        $composerExecutable =  $composerBinDir . '/grumphp';
+        $executable = getcwd().'/bin/grumphp';
+        $composerExecutable = $composerBinDir.'/grumphp';
         $filesystem->copy(
             self::noramlizePath($executable),
             self::noramlizePath($composerExecutable)
@@ -33,20 +35,16 @@ class DevelopmentIntegrator
             $event->getIO()->write(
                 '<fg=red>GrumPHP can not sniff your commits. Did you specify the correct git-dir?</fg=red>'
             );
-            $event->getIO()->write('<fg=red>' . $process->getErrorOutput() . '</fg=red>');
+            $event->getIO()->write('<fg=red>'.$process->getErrorOutput().'</fg=red>');
+
             return;
         }
 
-        $event->getIO()->write('<fg=yellow>' . $process->getOutput() . '</fg=yellow>');
+        $event->getIO()->write('<fg=yellow>'.$process->getOutput().'</fg=yellow>');
     }
 
-    /**
-     * @param $path
-     *
-     * @return string
-     */
-    private static function noramlizePath($path)
+    private static function noramlizePath(string $path): string
     {
-        return strtr($path, '/', DIRECTORY_SEPARATOR);
+        return str_replace('/', DIRECTORY_SEPARATOR, $path);
     }
 }

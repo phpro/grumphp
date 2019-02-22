@@ -1,37 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Task;
 
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * PhpMd task
+ * PhpMd task.
  */
 class PhpMd extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'phpmd';
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'whitelist_patterns' => [],
             'exclude' => [],
             'ruleset' => ['cleancode', 'codesize', 'naming'],
-            'triggered_by' => ['php']
+            'triggered_by' => ['php'],
         ]);
 
         $resolver->addAllowedTypes('whitelist_patterns', ['array']);
@@ -45,15 +42,15 @@ class PhpMd extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
 
@@ -61,12 +58,12 @@ class PhpMd extends AbstractExternalTask
         $extensions = $config['triggered_by'];
 
         $files = $context->getFiles();
-        if (0 !== count($whitelistPatterns)) {
+        if (\count($whitelistPatterns)) {
             $files = $files->paths($whitelistPatterns);
         }
         $files = $files->extensions($extensions);
 
-        if (0 === count($files)) {
+        if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 

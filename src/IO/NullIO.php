@@ -1,60 +1,41 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\IO;
 
 class NullIO implements IOInterface
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function isInteractive()
+    public function isInteractive(): bool
     {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function isVerbose()
+    public function isVerbose(): bool
     {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function isVeryVerbose()
+    public function isVeryVerbose(): bool
     {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function isDebug()
+    public function isDebug(): bool
     {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function isDecorated()
+    public function isDecorated(): bool
     {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function write($messages, $newline = true)
+    public function write(array $messages, bool $newline = true)
     {
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function writeError($messages, $newline = true)
+    public function writeError(array $messages, bool $newline = true)
     {
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Linter\Yaml;
 
 use GrumPHP\Linter\LintError;
@@ -7,34 +9,17 @@ use Symfony\Component\Yaml\Exception\ParseException;
 
 class YamlLintError extends LintError
 {
-    /**
-     * @var string
-     */
     private $snippet;
 
-    /**
-     * YamlLintError constructor.
-     *
-     * @param string $type
-     * @param string $error
-     * @param string $file
-     * @param int    $line
-     * @param string $snippet
-     */
-    public function __construct($type, $error, $file, $line = -1, $snippet = null)
+    public function __construct(string $type, string $error, string $file, int $line = -1, string $snippet = '')
     {
         parent::__construct($type, $error, $file, $line);
         $this->snippet = $snippet;
     }
 
-    /**
-     * @param ParseException $exception
-     *
-     * @return YamlLintError
-     */
-    public static function fromParseException(ParseException $exception)
+    public static function fromParseException(ParseException $exception): self
     {
-        return new YamlLintError(
+        return new self(
             LintError::TYPE_ERROR,
             $exception->getMessage(),
             $exception->getParsedFile(),
@@ -43,18 +28,12 @@ class YamlLintError extends LintError
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getSnippet()
+    public function getSnippet(): string
     {
         return $this->snippet;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('[%s] %s', strtoupper($this->getType()), $this->getError());
     }
