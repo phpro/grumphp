@@ -24,7 +24,7 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "~2",
         "jakub-onderka/php-parallel-lint": "^0.9.2",
-        "nikic/php-parser": "~2.1",
+        "nikic/php-parser": "^3.0",
         "phpspec/phpspec": "^3.2.2",
         "phpspec/prophecy": "^1.6.2",
         "phpunit/phpunit": "^6.5|^7.0",
