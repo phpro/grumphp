@@ -14,7 +14,12 @@ class ExternalCommand
 
     public function __construct(string $binDir, ExecutableFinder $executableFinder)
     {
-        $this->binDir = str_replace('~', $_SERVER['HOME'], rtrim($binDir, '/\\'));
+        $this->binDir = rtrim($binDir, '/\\');
+
+        if (!empty($_SERVER['HOME'])) {
+            $this->binDir = str_replace('~', $_SERVER['HOME'], rtrim($binDir, '/\\'));
+        }
+        
         $this->executableFinder = $executableFinder;
     }
 
@@ -30,8 +35,8 @@ class ExternalCommand
 
         // Make sure to add unix-style directory separators if unix-mode is enforced
         if ($forceUnix) {
-            $parts = pathinfo($executable);
-            $executable = $parts['dirname'].'/'.$parts['filename'];
+            $parts      = pathinfo($executable);
+            $executable = $parts['dirname'] . '/' . $parts['filename'];
         }
 
         return $executable;
