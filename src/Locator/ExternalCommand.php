@@ -14,7 +14,7 @@ class ExternalCommand
 
     public function __construct(string $binDir, ExecutableFinder $executableFinder)
     {
-        $this->binDir = rtrim($binDir, '/\\');
+        $this->binDir = str_replace('~', $_SERVER['HOME'], rtrim($binDir, '/\\'));
         $this->executableFinder = $executableFinder;
     }
 
