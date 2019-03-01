@@ -82,8 +82,8 @@ class PhpStan extends AbstractExternalTask
         $arguments->add('analyse');
         $arguments->addOptionalArgument('--autoload-file=%s', $config['autoload_file']);
         $arguments->addOptionalArgument('--configuration=%s', $config['configuration']);
+        $arguments->addOptionalArgument('--memory-limit=%s', $config['memory_limit']);
         $arguments->add(sprintf('--level=%u', $config['level']));
-        $arguments->add(sprintf('--memory-limit=%s', $config['memory_limit']));
         $arguments->add('--no-ansi');
         $arguments->add('--no-interaction');
         $arguments->add('--no-progress');
