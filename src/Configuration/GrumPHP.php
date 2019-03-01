@@ -46,10 +46,7 @@ class GrumPHP
         return $this->container->getParameter('hooks_preset');
     }
 
-    /**
-     * @return array
-     */
-    public function getGitHookVariables()
+    public function getGitHookVariables(): array
     {
         return $this->container->getParameter('git_hook_variables');
     }
