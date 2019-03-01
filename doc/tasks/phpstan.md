@@ -61,6 +61,6 @@ This is a list of extensions to be sniffed.
 
 **memory_limit**
 
-*Default: -1*
+*Default: null*
 
 With this parameter you can specify the memory limit.
