@@ -6,8 +6,6 @@ parameters:
   git_hook_variables:
     VAGRANT_HOST_DIR: .
     VAGRANT_PROJECT_DIR: /var/www
-  vagrant_dir: .
-  vagrant_project_dir: ~
   tasks: []
   testsuites: []
   stop_on_failure: false

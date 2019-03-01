@@ -6,6 +6,7 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Exception\FileNotFoundException;
 use GrumPHP\Process\ProcessBuilder;
+use GrumPHP\Process\ProcessUtils;
 use GrumPHP\Util\Filesystem;
 use RuntimeException;
 use SplFileInfo;
@@ -130,7 +131,7 @@ class InitCommand extends Command
         ];
 
         foreach ($this->grumPHP->getGitHookVariables() as $key => $value) {
-            $replacements[sprintf('$(%s)', $key)] = $value;
+            $replacements[sprintf('$(%s)', $key)] = ProcessUtils::escapeArgument($value);
         }
 
         return str_replace(array_keys($replacements), array_values($replacements), $content);
@@ -153,19 +154,6 @@ class InitCommand extends Command
         $process = $this->processBuilder->buildProcess($arguments);
 
         return $process->getCommandLine();
-    }
-
-    /**
-     * @return string
-     */
-    protected function determineProjectRootDir()
-    {
-        $rootDir = $this->paths()->getAbsolutePath('.');
-        if (null !== $this->grumPHP->getVagrantProjectDir()) {
-            $rootDir = $this->grumPHP->getVagrantProjectDir();
-        }
-
-        return $rootDir;
     }
 
     /**
