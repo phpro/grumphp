@@ -1,29 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Task;
 
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Php-cs-fixer task
+ * Php-cs-fixer task.
  */
 class PhpCsFixer extends AbstractPhpCsFixerTask
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'phpcsfixer';
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -46,10 +43,10 @@ class PhpCsFixer extends AbstractPhpCsFixerTask
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $files = $context->getFiles()->name('*.php');
-        if (0 === count($files)) {
+        if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 
@@ -66,7 +63,7 @@ class PhpCsFixer extends AbstractPhpCsFixerTask
         $arguments->addOptionalCommaSeparatedArgument('--fixers=%s', $config['fixers']);
         $arguments->add('fix');
 
-        if ($context instanceof RunContext && $config['config_file'] !== null) {
+        if ($context instanceof RunContext && null !== $config['config_file']) {
             return $this->runOnAllFiles($context, $arguments);
         }
 

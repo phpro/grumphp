@@ -13,8 +13,10 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\PhpLint;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Process\InputStream;
 use Symfony\Component\Process\Process;
 
 class PhpLintSpec extends ObjectBehavior
@@ -40,7 +42,9 @@ class PhpLintSpec extends ObjectBehavior
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('jobs');
+        $options->getDefinedOptions()->shouldContain('short_open_tag');
         $options->getDefinedOptions()->shouldContain('exclude');
+        $options->getDefinedOptions()->shouldContain('ignore_patterns');
         $options->getDefinedOptions()->shouldContain('triggered_by');
     }
 
@@ -60,7 +64,9 @@ class PhpLintSpec extends ObjectBehavior
         $processBuilder->createArgumentsForCommand('parallel-lint')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
-        $process->run()->shouldBeCalled();
+        $process->setInput(null)->shouldBeCalled()->withArguments([new \Prophecy\Argument\Token\TypeToken(InputStream::class)]);
+        $process->start()->shouldBeCalled();
+        $process->wait()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
 
         $context->getFiles()->willReturn(new FilesCollection([
@@ -72,13 +78,21 @@ class PhpLintSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_throws_exception_if_the_process_fails(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
-    {
+    function it_throws_exception_if_the_process_fails(
+        ProcessBuilder $processBuilder,
+        Process $process,
+        ContextInterface $context,
+        ProcessFormatterInterface $formatter
+    ) {
+        $formatter->format($process)->willReturn(Argument::type('string'));
+
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('parallel-lint')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
-        $process->run()->shouldBeCalled();
+        $process->setInput(null)->shouldBeCalled()->withArguments([new \Prophecy\Argument\Token\TypeToken(InputStream::class)]);;
+        $process->start()->shouldBeCalled();
+        $process->wait()->shouldBeCalled();
         $process->isSuccessful()->willReturn(false);
 
         $context->getFiles()->willReturn(new FilesCollection([

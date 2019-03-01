@@ -113,6 +113,7 @@ parameters:
         phpspec: ~
         phpstan: ~
         phpunit: ~
+        phpunitbridge: ~
         phpversion: ~
         progpilot: ~
         psalm: ~

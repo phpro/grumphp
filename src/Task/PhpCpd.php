@@ -1,30 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Task;
 
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * PhpCpd task
+ * PhpCpd task.
  */
 class PhpCpd extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'phpcpd';
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -53,20 +50,20 @@ class PhpCpd extends AbstractExternalTask
     /**
      * {@inheritdoc}
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
         $files = $context->getFiles()->extensions($config['triggered_by']);
 
-        if (0 === count($files)) {
+        if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 
@@ -78,8 +75,8 @@ class PhpCpd extends AbstractExternalTask
         $arguments->addArgumentArray('--exclude=%s', $config['exclude']);
         $arguments->addArgumentArray('--names-exclude=%s', $config['names_exclude']);
         $arguments->addOptionalCommaSeparatedArgument('--regexps-exclude=%s', $config['regexps_exclude']);
-        $arguments->addRequiredArgument('--min-lines=%u', $config['min_lines']);
-        $arguments->addRequiredArgument('--min-tokens=%u', $config['min_tokens']);
+        $arguments->addRequiredArgument('--min-lines=%u', (string) $config['min_lines']);
+        $arguments->addRequiredArgument('--min-tokens=%u', (string) $config['min_tokens']);
         $arguments->addOptionalCommaSeparatedArgument('--names=%s', $extensions);
         $arguments->addOptionalArgument('--fuzzy', $config['fuzzy']);
         $arguments->add($config['directory']);

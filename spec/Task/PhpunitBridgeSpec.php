@@ -12,37 +12,39 @@ use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
-use GrumPHP\Task\Make;
+use GrumPHP\Task\Phpunit;
+use GrumPHP\Task\PhpunitBridge;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
-class MakeSpec extends ObjectBehavior
+class PhpunitBridgeSpec extends ObjectBehavior
 {
     function let(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
-        $grumPHP->getTaskConfiguration('make')->willReturn([]);
+        $grumPHP->getTaskConfiguration('phpunitbridge')->willReturn([]);
         $this->beConstructedWith($grumPHP, $processBuilder, $formatter);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(Make::class);
+        $this->shouldHaveType(PhpunitBridge::class);
     }
 
     function it_should_have_a_name()
     {
-        $this->getName()->shouldBe('make');
+        $this->getName()->shouldBe('phpunitbridge');
     }
 
     function it_should_have_configurable_options()
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
-        $options->getDefinedOptions()->shouldContain('make_file');
-        $options->getDefinedOptions()->shouldContain('task');
-        $options->getDefinedOptions()->shouldContain('triggered_by');
+        $options->getDefinedOptions()->shouldContain('config_file');
+        $options->getDefinedOptions()->shouldContain('testsuite');
+        $options->getDefinedOptions()->shouldContain('group');
+        $options->getDefinedOptions()->shouldContain('always_execute');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
@@ -57,7 +59,7 @@ class MakeSpec extends ObjectBehavior
 
     function it_does_not_do_anything_if_there_are_no_files(ProcessBuilder $processBuilder, ContextInterface $context)
     {
-        $processBuilder->createArgumentsForCommand('make')->shouldNotBeCalled();
+        $processBuilder->buildProcess('phpunitbridge')->shouldNotBeCalled();
         $processBuilder->buildProcess()->shouldNotBeCalled();
         $context->getFiles()->willReturn(new FilesCollection());
 
@@ -66,10 +68,30 @@ class MakeSpec extends ObjectBehavior
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
+    function it_runs_if_there_are_no_files_but_always_execute_is_passed(GrumPHP $grumPHP, Process $process, ProcessBuilder $processBuilder, ContextInterface $context)
+    {
+        $grumPHP->getTaskConfiguration('phpunitbridge')->willReturn([
+            'always_execute' => true,
+        ]);
+
+        $arguments = new ProcessArgumentsCollection();
+        $processBuilder->createArgumentsForCommand('simple-phpunit')->willReturn($arguments);
+        $processBuilder->buildProcess($arguments)->willReturn($process);
+
+        $process->run()->shouldBeCalled();
+        $process->isSuccessful()->willReturn(true);
+
+        $context->getFiles()->willReturn(new FilesCollection());
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
+        $result->isPassed()->shouldBe(true);
+    }
+
     function it_runs_the_suite(ProcessBuilder $processBuilder, Process $process, ContextInterface $context)
     {
         $arguments = new ProcessArgumentsCollection();
-        $processBuilder->createArgumentsForCommand('make')->willReturn($arguments);
+        $processBuilder->createArgumentsForCommand('simple-phpunit')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
         $process->run()->shouldBeCalled();
@@ -78,6 +100,7 @@ class MakeSpec extends ObjectBehavior
         $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('test.php', '.', 'test.php')
         ]));
+
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(true);
@@ -88,11 +111,12 @@ class MakeSpec extends ObjectBehavior
         Process $process,
         ContextInterface $context,
         ProcessFormatterInterface $formatter
-    ) {
+    )
+    {
         $formatter->format($process)->willReturn('format string');
 
         $arguments = new ProcessArgumentsCollection();
-        $processBuilder->createArgumentsForCommand('make')->willReturn($arguments);
+        $processBuilder->createArgumentsForCommand('simple-phpunit')->willReturn($arguments);
         $processBuilder->buildProcess($arguments)->willReturn($process);
 
         $process->run()->shouldBeCalled();

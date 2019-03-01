@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Parser\Php\Visitor;
 
 use GrumPHP\Parser\ParseError;
@@ -8,12 +10,8 @@ use PhpParser\Node;
 class NeverUseElseVisitor extends AbstractVisitor
 {
     /**
-     * @link http://www.slideshare.net/rdohms/your-code-sucks-lets-fix-it-15471808
-     * @link http://www.slideshare.net/guilhermeblanco/object-calisthenics-applied-to-php
-     *
-     * @param Node $node
-     *
-     * @return void
+     * @see http://www.slideshare.net/rdohms/your-code-sucks-lets-fix-it-15471808
+     * @see http://www.slideshare.net/guilhermeblanco/object-calisthenics-applied-to-php
      */
     public function leaveNode(Node $node)
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Task;
 
 use GrumPHP\Runner\TaskResult;
@@ -10,22 +12,16 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Deptrac task
+ * Deptrac task.
  */
 class Deptrac extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'deptrac';
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -47,35 +43,23 @@ class Deptrac extends AbstractExternalTask
         return $resolver;
     }
 
-    /**
-     * This methods specifies if a task can run in a specific context.
-     *
-     * @param ContextInterface $context
-     *
-     * @return bool
-     */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
-    /**
-     * @param ContextInterface $context
-     *
-     * @return TaskResultInterface
-     */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
 
         $files = $context->getFiles()->name('*.php');
-        if (0 === count($files)) {
+        if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 
         $arguments = $this->processBuilder->createArgumentsForCommand('deptrac');
         $arguments->add('analyze');
-        $arguments->add('--formatter-graphviz=' . (int)$config['formatter_graphviz']);
+        $arguments->add('--formatter-graphviz='.(int) $config['formatter_graphviz']);
         $arguments->addOptionalArgument('--formatter-graphviz-display=%s', $config['formatter_graphviz_display']);
         $arguments->addOptionalArgument('--formatter-graphviz-dump-image=%s', $config['formatter_graphviz_dump_image']);
         $arguments->addOptionalArgument('--formatter-graphviz-dump-dot=%s', $config['formatter_graphviz_dump_dot']);

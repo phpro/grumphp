@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Configuration\GrumPHP;
@@ -49,11 +51,6 @@ class InitCommand extends Command
      */
     private $processBuilder;
 
-    /**
-     * @param GrumPHP $grumPHP
-     * @param Filesystem $filesystem
-     * @param ProcessBuilder $processBuilder
-     */
     public function __construct(GrumPHP $grumPHP, Filesystem $filesystem, ProcessBuilder $processBuilder)
     {
         parent::__construct();
@@ -64,7 +61,7 @@ class InitCommand extends Command
     }
 
     /**
-     * Configure command
+     * Configure command.
      */
     protected function configure()
     {
@@ -72,16 +69,13 @@ class InitCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
      * @return int|void
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
         $gitHooksPath = $this->paths()->getGitHooksDir();
-        $resourceHooksPath = $this->paths()->getGitHookTemplatesDir() . $this->grumPHP->getHooksPreset();
+        $resourceHooksPath = $this->paths()->getGitHookTemplatesDir().$this->grumPHP->getHooksPreset();
         $resourceHooksPath = $this->paths()->getPathWithTrailingSlash($resourceHooksPath);
         $customHooksPath = $this->paths()->getPathWithTrailingSlash($this->grumPHP->getHooksDir());
 
@@ -95,10 +89,10 @@ class InitCommand extends Command
         }
 
         foreach (self::$hooks as $hook) {
-            $gitHook = $gitHooksPath . $hook;
-            $hookTemplate = new SplFileInfo($resourceHooksPath . $hook);
-            if ($customHooksPath && $this->filesystem->exists($customHooksPath . $hook)) {
-                $hookTemplate = new SplFileInfo($customHooksPath . $hook);
+            $gitHook = $gitHooksPath.$hook;
+            $hookTemplate = new SplFileInfo($resourceHooksPath.$hook);
+            if ($customHooksPath && $this->filesystem->exists($customHooksPath.$hook)) {
+                $hookTemplate = new SplFileInfo($customHooksPath.$hook);
             }
 
             if (!$this->filesystem->exists($hookTemplate)) {
@@ -115,19 +109,13 @@ class InitCommand extends Command
         $output->writeln('<fg=yellow>Watch out! GrumPHP is sniffing your commits!<fg=yellow>');
     }
 
-    /**
-     * @param $hook
-     * @param $templateFile
-     *
-     * @return mixed
-     */
-    protected function parseHookBody($hook, SplFileInfo $templateFile)
+    protected function parseHookBody(string $hook, SplFileInfo $templateFile): string
     {
         $content = $this->filesystem->readFromFileInfo($templateFile);
 
         $replacements = [
             '${HOOK_EXEC_PATH}' => $this->paths()->getGitHookExecutionPath(),
-            '$(HOOK_COMMAND)' => $this->generateHookCommand('git:' . $hook),
+            '$(HOOK_COMMAND)' => $this->generateHookCommand('git:'.$hook),
         ];
 
         foreach ($this->grumPHP->getGitHookVariables() as $key => $value) {
@@ -138,12 +126,9 @@ class InitCommand extends Command
     }
 
     /**
-     * @param $command
-     *
-     * @return string
      * @throws \GrumPHP\Exception\FileNotFoundException
      */
-    protected function generateHookCommand($command)
+    protected function generateHookCommand(string $command): string
     {
         $configFile = $this->useExoticConfigFile();
 
@@ -165,7 +150,7 @@ class InitCommand extends Command
     {
         try {
             $configPath = $this->paths()->getAbsolutePath($this->input->getOption('config'));
-            if ($configPath != $this->paths()->getDefaultConfigPath()) {
+            if ($configPath !== $this->paths()->getDefaultConfigPath()) {
                 return $this->paths()->getRelativeProjectPath($configPath);
             }
         } catch (FileNotFoundException $e) {
@@ -175,10 +160,7 @@ class InitCommand extends Command
         return null;
     }
 
-    /**
-     * @return PathsHelper
-     */
-    protected function paths()
+    protected function paths(): PathsHelper
     {
         return $this->getHelper(PathsHelper::HELPER_NAME);
     }

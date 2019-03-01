@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Task;
 
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -13,7 +16,7 @@ use SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Clover unit test coverage task
+ * Clover unit test coverage task.
  */
 class CloverCoverage implements TaskInterface
 {
@@ -27,10 +30,6 @@ class CloverCoverage implements TaskInterface
      */
     protected $filesystem;
 
-    /**
-     * @param GrumPHP $grumPHP
-     * @param Filesystem $filesystem
-     */
     public function __construct(GrumPHP $grumPHP, Filesystem $filesystem)
     {
         $this->grumPHP = $grumPHP;
@@ -40,25 +39,19 @@ class CloverCoverage implements TaskInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         $configured = $this->grumPHP->getTaskConfiguration($this->getName());
 
         return $this->getConfigurableOptions()->resolve($configured);
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'clover_coverage';
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
 
@@ -80,15 +73,15 @@ class CloverCoverage implements TaskInterface
     /**
      * {@inheritdoc}
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $configuration = $this->getConfiguration();
         $percentage = round(min(100, max(0, (float) $configuration['level'])), 2);
@@ -106,11 +99,11 @@ class CloverCoverage implements TaskInterface
             );
         }
 
-        $xml             = new SimpleXMLElement($this->filesystem->readFromFileInfo(new SplFileInfo($cloverFile)));
-        $totalElements   = (string)current($xml->xpath('/coverage/project/metrics/@elements'));
-        $checkedElements = (string)current($xml->xpath('/coverage/project/metrics/@coveredelements'));
+        $xml = new SimpleXMLElement($this->filesystem->readFromFileInfo(new SplFileInfo($cloverFile)));
+        $totalElements = (string) current($xml->xpath('/coverage/project/metrics/@elements'));
+        $checkedElements = (string) current($xml->xpath('/coverage/project/metrics/@coveredelements'));
 
-        if ((int)$totalElements === 0) {
+        if (0 === (int) $totalElements) {
             return TaskResult::createSkipped($this, $context);
         }
 
@@ -118,10 +111,11 @@ class CloverCoverage implements TaskInterface
 
         if ($coverage < $percentage) {
             $message = sprintf(
-                'Code coverage is %1$d%%, which is below the accepted %2$d%%' . PHP_EOL,
+                'Code coverage is %1$d%%, which is below the accepted %2$d%%'.PHP_EOL,
                 $coverage,
                 $percentage
             );
+
             return TaskResult::createFailed($this, $context, $message);
         }
 

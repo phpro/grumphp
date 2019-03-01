@@ -59,14 +59,14 @@ class ConsoleIOSpec extends ObjectBehavior
 
     function it_should_write_messages(OutputInterface $output)
     {
-        $output->write('test', true)->shouldBeCalled();
-        $this->write('test');
+        $output->write(['test'], true)->shouldBeCalled();
+        $this->write(['test']);
     }
 
     function it_should_write_error_messages(OutputInterface $output)
     {
-        $output->write('test', true)->shouldBeCalled();
-        $this->writeError('test');
+        $output->write(['test'], true)->shouldBeCalled();
+        $this->writeError(['test']);
     }
 
     function it_should_write_error_messages_to_stderr(ConsoleOutput $cliOutput, OutputInterface $output, InputInterface $input)
@@ -74,8 +74,8 @@ class ConsoleIOSpec extends ObjectBehavior
         $this->beConstructedWith($input, $cliOutput);
         $cliOutput->getErrorOutput()->willReturn($output);
 
-        $output->write('test', true)->shouldBeCalled();
-        $this->writeError('test');
+        $output->write(['test'], true)->shouldBeCalled();
+        $this->writeError(['test']);
     }
 
     function it_reads_command_input()

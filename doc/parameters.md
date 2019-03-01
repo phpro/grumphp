@@ -16,6 +16,7 @@ parameters:
     process_async_limit: 10
     process_async_wait: 1000
     process_timeout: 60
+    additonal_info: ~
     ascii:
         failed: resource/grumphp-grumpy.txt
         succeeded: resource/grumphp-happy.txt
@@ -106,6 +107,28 @@ If you've got tools that run more then 60 seconds, you can increase this paramet
 It is also possible to disable the timeout by setting the value to `null`.
 When receiving a `Symfony\Component\Process\Exception\ProcessTimedOutException` during the execution of GrumPHP, you probably need to increment this setting.
 
+**additional_info**
+
+*Default: null*
+
+This parameter will display additional information at the end of a `success` *or* `error` task.
+
+```yaml
+# grumphp.yml
+parameters:
+  additional_info: "\nTo get full documentation for the project!\nVisit https://docs.example.com\n"
+```
+
+*Example Result:*
+```
+GrumPHP is sniffing your code!
+Running task 1/1: Phpcs... ✔
+
+To get full documentation for the project!
+Visit https://docs.example.com
+
+```
+
 **ascii**
 
 *Default: {failed: grumphp-grumpy.txt, succeeded: grumphp-happy.txt}*
@@ -114,7 +137,31 @@ This parameter will tell GrumPHP where it can locate ascii images used in pre-co
 Currently there are only two images `failed` and `succeeded`. If path is not specified default image from
 `resources/ascii/` folder are used.
 
-To disable banner set ascii images path to `~`:
+You may also specify lists of ascii images, and GrumPHP will choose a random one
+from the list.
+
+```yaml
+# grumphp.yml
+parameters:
+    ascii:
+        failed:
+            - resource/grumphp-grumpy1.txt
+            - resource/grumphp-grumpy2.txt
+        succeeded:
+            - resource/grumphp-happy1.txt
+            - resource/grumphp-happy2.txt
+            - resource/grumphp-happy3.txt
+```
+
+To disable all banners set ascii to `~`:
+
+```yaml
+# grumphp.yml
+parameters:
+    ascii: ~
+```
+
+To disable a specific banner set ascii image path to `~`:
 
 ```yaml
 # grumphp.yml

@@ -84,7 +84,7 @@ class JsonLintSpec extends AbstractLinterTaskSpec
         $linter->isInstalled()->willReturn(true);
         $linter->setDetectKeyConflicts(false)->shouldBeCalled();
         $linter->lint(Argument::type('SplFileInfo'))->willReturn(new LintErrorsCollection([
-            new JsonLintError(LintError::TYPE_ERROR, 0, 'error', 'file.json', 1, 1)
+            new JsonLintError(LintError::TYPE_ERROR, 'error', 'file.json', 1)
         ]));
 
         $context->getFiles()->willReturn(new FilesCollection([

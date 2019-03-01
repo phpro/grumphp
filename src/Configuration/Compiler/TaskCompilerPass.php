@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Configuration\Compiler;
 
 use GrumPHP\Exception\RuntimeException;
@@ -27,7 +29,7 @@ class TaskCompilerPass implements CompilerPassInterface
         foreach ($taggedServices as $id => $tags) {
             $taskTag = $this->getTaskTag($tags);
             $configKey = $taskTag['config'];
-            if (in_array($configKey, $tasksRegistered)) {
+            if (\in_array($configKey, $tasksRegistered, true)) {
                 throw new RuntimeException(
                     sprintf('The name of a task should be unique. Duplicate found: %s', $configKey)
                 );
@@ -39,7 +41,7 @@ class TaskCompilerPass implements CompilerPassInterface
             }
 
             // Load configuration and metadata:
-            $taskConfig = is_array($configuration[$configKey]) ? $configuration[$configKey] : [];
+            $taskConfig = \is_array($configuration[$configKey]) ? $configuration[$configKey] : [];
             $tasksMetadata[$configKey] = $this->parseTaskMetadata($taskConfig);
 
             // The metadata can't be part of the actual configuration.
@@ -58,12 +60,7 @@ class TaskCompilerPass implements CompilerPassInterface
         $container->setParameter('grumphp.tasks.metadata', $tasksMetadata);
     }
 
-    /**
-     * @param array $tags
-     *
-     * @return array
-     */
-    private function getTaskTag(array $tags)
+    private function getTaskTag(array $tags): array
     {
         $resolver = new OptionsResolver();
         $resolver->setRequired(['config']);
@@ -71,12 +68,7 @@ class TaskCompilerPass implements CompilerPassInterface
         return $resolver->resolve(current($tags));
     }
 
-    /**
-     * @param $configuration
-     *
-     * @return array
-     */
-    private function parseTaskMetadata($configuration)
+    private function parseTaskMetadata(array $configuration): array
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -84,7 +76,7 @@ class TaskCompilerPass implements CompilerPassInterface
             'blocking' => true,
         ]);
 
-        $metadata = isset($configuration['metadata']) ? $configuration['metadata'] : [];
+        $metadata = $configuration['metadata'] ?? [];
 
         return $resolver->resolve($metadata);
     }

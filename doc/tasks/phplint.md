@@ -17,6 +17,8 @@ parameters:
         phplint:
             exclude: []
             jobs: ~
+            short_open_tag: false
+            ignore_patterns: []
             triggered_by: ['php', 'phtml', 'php3', 'php4', 'php5']
 ```
 **exclude**
@@ -33,6 +35,18 @@ directories you wish to exclude, such as the vendor directory.
 The number of jobs you wish to use for parallel processing. If no number
 is given, it is left up to parallel-lint itself, which currently
 defaults to 10.
+
+**short_open_tag**
+
+*Default: false*
+
+This option can allow PHP short open tags. 
+
+**ignore_patterns**
+
+*Default: []*
+
+This is a list of patterns that will be ignored by PHPLint. Leave this option blank to run PHPLint for every php file.
 
 **trigered_by**
 

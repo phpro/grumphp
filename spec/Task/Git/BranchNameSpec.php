@@ -19,7 +19,8 @@ class BranchNameSpec extends ObjectBehavior
     {
         $this->beConstructedWith($grumPHP, $repository);
         $grumPHP->getTaskConfiguration('git_branch_name')->willReturn([
-            'matchers' => ['test', '*es*', 'te[s][t]', '/^te(.*)/', '/(.*)st$/', '/t(e|a)st/', 'TEST'],
+            'whitelist' => ['test', '*es*', 'te[s][t]', '/^te(.*)/', '/(.*)st$/', '/t(e|a)st/', 'TEST'],
+            'blacklist' => ['develop', 'master'],
             'additional_modifiers' => 'i',
         ]);
         $repository->run('symbolic-ref', ['HEAD', '--short'])->willReturn('test');
@@ -34,8 +35,11 @@ class BranchNameSpec extends ObjectBehavior
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
-        $options->getDefinedOptions()->shouldContain('matchers');
+        $options->getDefinedOptions()->shouldContain('whitelist');
+        $options->getDefinedOptions()->shouldContain('blacklist');
+        $options->getDefinedOptions()->shouldContain('allow_detached_head');
         $options->getDefinedOptions()->shouldContain('additional_modifiers');
+        $options->getDefinedOptions()->shouldContain('allow_detached_head');
     }
 
     function it_is_initializable()
@@ -77,7 +81,7 @@ class BranchNameSpec extends ObjectBehavior
     function it_runs_with_additional_modifiers(RunContext $context, GrumPHP $grumPHP, Repository $repository)
     {
         $grumPHP->getTaskConfiguration('git_branch_name')->willReturn([
-            'matchers' => ['/^ümlaut/'],
+            'whitelist' => ['/^ümlaut/'],
             'additional_modifiers' => 'u',
         ]);
 
@@ -104,6 +108,21 @@ class BranchNameSpec extends ObjectBehavior
         ]);
 
         $result = $this->run($context);
+        $result->isPassed()->shouldBe(false);
+    }
+
+    function it_runs_with_blacklisted_items(RunContext $context, GrumPHP $grumPHP, Repository $repository)
+    {
+        $grumPHP->getTaskConfiguration('git_branch_name')->willReturn([
+            'blacklist' => [
+                'master',
+                'develop',
+            ]
+        ]);
+        $repository->run('symbolic-ref', ['HEAD', '--short'])->willReturn('master');
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(false);
     }
 }

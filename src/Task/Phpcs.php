@@ -1,38 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Task;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Phpcs task
- *
- * @property \GrumPHP\Formatter\PhpcsFormatter $formatter
- */
 class Phpcs extends AbstractExternalTask
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'phpcs';
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'standard' => null,
+            'standard' => [],
             'tab_width' => null,
             'encoding' => null,
             'whitelist_patterns' => [],
@@ -46,7 +38,7 @@ class Phpcs extends AbstractExternalTask
             'report_width' => null,
         ]);
 
-        $resolver->addAllowedTypes('standard', ['null', 'string']);
+        $resolver->addAllowedTypes('standard', ['array', 'null', 'string']);
         $resolver->addAllowedTypes('tab_width', ['null', 'int']);
         $resolver->addAllowedTypes('encoding', ['null', 'string']);
         $resolver->addAllowedTypes('whitelist_patterns', ['array']);
@@ -62,18 +54,12 @@ class Phpcs extends AbstractExternalTask
         return $resolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         /** @var array $config */
         $config = $this->getConfiguration();
@@ -84,12 +70,12 @@ class Phpcs extends AbstractExternalTask
 
         /** @var \GrumPHP\Collection\FilesCollection $files */
         $files = $context->getFiles();
-        if (0 !== count($whitelistPatterns)) {
+        if (\count($whitelistPatterns)) {
             $files = $files->paths($whitelistPatterns);
         }
         $files = $files->extensions($extensions);
 
-        if (0 === count($files)) {
+        if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 
@@ -108,24 +94,20 @@ class Phpcs extends AbstractExternalTask
                 $arguments = $this->addArgumentsFromConfig($arguments, $config);
                 $output .= $this->formatter->formatErrorMessage($arguments, $this->processBuilder);
             } catch (RuntimeException $exception) { // phpcbf could not get found.
-                $output .= PHP_EOL . 'Info: phpcbf could not get found. Please consider to install it for suggestions.';
+                $output .= PHP_EOL.'Info: phpcbf could not get found. Please consider to install it for suggestions.';
             }
+
             return TaskResult::createFailed($this, $context, $output);
         }
 
         return TaskResult::createPassed($this, $context);
     }
 
-    /**
-     * @param ProcessArgumentsCollection $arguments
-     *
-     * @param array $config
-     *
-     * @return ProcessArgumentsCollection
-     */
-    protected function addArgumentsFromConfig(ProcessArgumentsCollection $arguments, array $config)
-    {
-        $arguments->addOptionalArgument('--standard=%s', $config['standard']);
+    protected function addArgumentsFromConfig(
+        ProcessArgumentsCollection $arguments,
+        array $config
+    ): ProcessArgumentsCollection {
+        $arguments->addOptionalCommaSeparatedArgument('--standard=%s', (array) $config['standard']);
         $arguments->addOptionalArgument('--tab-width=%s', $config['tab_width']);
         $arguments->addOptionalArgument('--encoding=%s', $config['encoding']);
         $arguments->addOptionalArgument('--report=%s', $config['report']);

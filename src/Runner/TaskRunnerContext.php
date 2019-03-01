@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrumPHP\Runner;
 
 use GrumPHP\Task\Context\ContextInterface;
@@ -24,9 +26,6 @@ class TaskRunnerContext
 
     /**
      * TaskRunnerContext constructor.
-     *
-     * @param ContextInterface   $taskContext
-     * @param TestSuiteInterface $testSuite
      */
     public function __construct(ContextInterface $taskContext, TestSuiteInterface $testSuite = null)
     {
@@ -34,36 +33,24 @@ class TaskRunnerContext
         $this->testSuite = $testSuite;
     }
 
-    /**
-     * @return ContextInterface
-     */
-    public function getTaskContext()
+    public function getTaskContext(): ContextInterface
     {
         return $this->taskContext;
     }
 
-    /**
-     * @return bool
-     */
-    public function skipSuccessOutput()
+    public function skipSuccessOutput(): bool
     {
         return $this->skipSuccessOutput;
     }
 
-    /**
-     * @param bool $skipSuccessOutput
-     */
-    public function setSkipSuccessOutput($skipSuccessOutput)
+    public function setSkipSuccessOutput(bool $skipSuccessOutput)
     {
-        $this->skipSuccessOutput = (bool)$skipSuccessOutput;
+        $this->skipSuccessOutput = $skipSuccessOutput;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasTestSuite()
+    public function hasTestSuite(): bool
     {
-        return $this->testSuite !== null;
+        return null !== $this->testSuite;
     }
 
     /**
