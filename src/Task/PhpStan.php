@@ -34,13 +34,13 @@ class PhpStan extends AbstractExternalTask
             'ignore_patterns' => [],
             'force_patterns' => [],
             'triggered_by' => ['php'],
-            'memory_limit' => '-1',
+            'memory_limit' => null
         ]);
 
         $resolver->addAllowedTypes('autoload_file', ['null', 'string']);
         $resolver->addAllowedTypes('configuration', ['null', 'string']);
+        $resolver->addAllowedTypes('memory_limit', ['null', 'string']);
         $resolver->addAllowedTypes('level', ['int']);
-        $resolver->addAllowedTypes('memory_limit', ['string']);
         $resolver->addAllowedTypes('ignore_patterns', ['array']);
         $resolver->addAllowedTypes('force_patterns', ['array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
