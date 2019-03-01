@@ -44,7 +44,7 @@ class ComposerNormalizeSpec extends ObjectBehavior
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
         $options->getDefinedOptions()->shouldContain('indent_style');
         $options->getDefinedOptions()->shouldContain('indent_size');
-        $options->getDefinedOptions()->shouldContain('update_lock');
+        $options->getDefinedOptions()->shouldContain('no_update_lock');
         $options->getDefinedOptions()->shouldContain('verbose');
     }
 

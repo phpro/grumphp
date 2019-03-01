@@ -14,7 +14,7 @@ parameters:
         composer_normalize:
             indent_size: 4
             indent_style: space
-            update_lock: true
+            no_update_lock: true
             verbose: false
 ```
 
@@ -30,7 +30,7 @@ Indent size (an integer greater than 0); must be used with the `indent_style` op
 
 Indent style (one of "space", "tab"); must be used with the `indent_size` option
 
-**update_lock**
+**no_update_lock**
 
 *Default: true*
 
