@@ -136,7 +136,7 @@ Visit https://docs.example.com
 *Default: {failed: grumphp-grumpy.txt, succeeded: grumphp-happy.txt}*
 
 This parameter will tell GrumPHP where it can locate ascii images used in pre-commit hook.
-Currently there are only two images `failed` and `succeeded`. If path is not specified default image from
+Currently there are only three images `failed` and `succeeded`. If path is not specified default image from
 `resources/ascii/` folder are used.
 
 You may also specify lists of ascii images, and GrumPHP will choose a random one
@@ -147,13 +147,13 @@ from the list.
 parameters:
     ascii:
         failed:
-            - resource/grumphp-grumpy1.txt
-            - resource/grumphp-grumpy2.txt
+            - resource/grumphp-grumpy.txt
+            - resource/nopecat.txt
+            - resource/failed.txt
         succeeded:
-            - resource/grumphp-happy1.txt
-            - resource/grumphp-happy2.txt
-            - resource/grumphp-happy3.txt
-```
+            - resource/grumphp-happy.txt
+            - resource/me-gusta.txt
+            - resource/succeeded.txt
 
 To disable all banners set ascii to `~`:
 
