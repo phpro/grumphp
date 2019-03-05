@@ -137,6 +137,14 @@ class PathsHelper extends Helper
     }
 
     /**
+     * Returns the git dir from the configfile with ONLY a trailing slash, no leading slash.
+     */
+    public function getGitPrefix(): string
+    {
+        return trim($this->config->getGitDir(), '/') . '/';
+    }
+
+    /**
      * Returns the directory where the git hooks are installed.
      */
     public function getGitHooksDir(): string

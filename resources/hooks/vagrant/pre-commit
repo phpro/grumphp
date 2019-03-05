@@ -6,7 +6,7 @@
 #
 
 # Fetch the GIT diff and format it as command input:
-DIFF=$(git -c diff.mnemonicprefix=false --no-pager diff -r -p -m -M --full-index --no-color --staged | cat)
+DIFF=$(git -c diff.mnemonicprefix=false --no-pager diff -r -p -m -M --full-index --no-color --staged --src-prefix="a/${HOOK_PREFIX}" --dst-prefix="b/${HOOK_PREFIX}" | cat)
 
 # Run GrumPHP
 vagrant ssh --command '$(which sh)' << COMMANDS

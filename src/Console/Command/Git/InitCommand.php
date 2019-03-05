@@ -112,6 +112,7 @@ class InitCommand extends Command
     {
         $content = $this->filesystem->readFromFileInfo($templateFile);
         $replacements = [
+            '${HOOK_PREFIX}' => $this->paths()->getGitPrefix(),
             '${HOOK_EXEC_PATH}' => $this->paths()->getGitHookExecutionPath(),
             '$(HOOK_COMMAND)' => $this->generateHookCommand('git:'.$hook),
         ];
