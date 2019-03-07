@@ -118,7 +118,7 @@ class PhpCsFixerSpec extends ObjectBehavior
 
         $processBuilder->createArgumentsForCommand('php-cs-fixer')->willReturn(new ProcessArgumentsCollection());
         $processBuilder->buildProcess(Argument::that(function (ProcessArgumentsCollection $args) use ($file1, $file2) {
-            return $args->contains($file1) || $args->contains($file2);
+            return $args->contains($file1->getPathname()) || $args->contains($file2->getPathname());
         }))->willReturn($process);
 
         $processRunner->run(Argument::type('array'))->shouldBeCalled();

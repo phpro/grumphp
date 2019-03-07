@@ -87,6 +87,16 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
         $this->getValues()->shouldBe(['--argument=value']);
     }
 
+    function it_should_be_able_to_add_file()
+    {
+        $file = new SplFileInfo('file1.txt');
+        $this->addFile($file);
+
+        $this->getValues()->shouldBe([
+            'file1.txt',
+        ]);
+    }
+
     function it_should_be_able_to_add_files()
     {
         $files = new FilesCollection([
