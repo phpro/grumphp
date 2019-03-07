@@ -46,6 +46,7 @@ class PhpStanSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('force_patterns');
         $options->getDefinedOptions()->shouldContain('level');
         $options->getDefinedOptions()->shouldContain('triggered_by');
+        $options->getDefinedOptions()->shouldContain('memory_limit');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)

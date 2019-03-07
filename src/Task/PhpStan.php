@@ -31,10 +31,12 @@ class PhpStan extends AbstractExternalTask
             'ignore_patterns' => [],
             'force_patterns' => [],
             'triggered_by' => ['php'],
+            'memory_limit' => null
         ]);
 
         $resolver->addAllowedTypes('autoload_file', ['null', 'string']);
         $resolver->addAllowedTypes('configuration', ['null', 'string']);
+        $resolver->addAllowedTypes('memory_limit', ['null', 'string']);
         $resolver->addAllowedTypes('level', ['int']);
         $resolver->addAllowedTypes('ignore_patterns', ['array']);
         $resolver->addAllowedTypes('force_patterns', ['array']);
@@ -77,6 +79,7 @@ class PhpStan extends AbstractExternalTask
         $arguments->add('analyse');
         $arguments->addOptionalArgument('--autoload-file=%s', $config['autoload_file']);
         $arguments->addOptionalArgument('--configuration=%s', $config['configuration']);
+        $arguments->addOptionalArgument('--memory-limit=%s', $config['memory_limit']);
         $arguments->add(sprintf('--level=%u', $config['level']));
         $arguments->add('--no-ansi');
         $arguments->add('--no-interaction');
