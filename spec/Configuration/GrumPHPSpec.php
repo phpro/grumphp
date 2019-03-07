@@ -44,6 +44,16 @@ class GrumPHPSpec extends ObjectBehavior
         $this->getHooksPreset()->shouldReturn('local');
     }
 
+    function it_knows_the_git_hook_variables(ContainerInterface $container)
+    {
+        $data = [
+            'VAGRANT_HOST_DIR' => '.',
+            'VAGRANT_PROJECT_DIR' => '/var/www'
+        ];
+        $container->getParameter('git_hook_variables')->willReturn($data);
+        $this->getGitHookVariables()->shouldReturn($data);
+    }
+
     function it_knows_to_stop_on_failure(ContainerInterface $container)
     {
         $container->getParameter('stop_on_failure')->willReturn(true);

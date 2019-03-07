@@ -16,7 +16,9 @@ COMMIT_MSG=$(cat "${COMMIT_MSG_FILE}")
 DIFF=$(git -c diff.mnemonicprefix=false --no-pager diff -r -p -m -M --full-index --no-color --staged | cat)
 
 # Copy the commit message and run GrumPHP
-vagrant ssh --command '$(which sh)' << COMMANDS
+cd $(VAGRANT_HOST_DIR) && vagrant ssh --command '$(which sh)' << COMMANDS
+
+  cd $(VAGRANT_PROJECT_DIR)
 
   # Transfer the DIFF
   DIFF=\$(cat <<- '__GRUMPHP_DIFF_HEREDOC__'

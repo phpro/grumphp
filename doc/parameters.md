@@ -7,6 +7,9 @@ parameters:
     git_dir: .
     hooks_dir: ~
     hooks_preset: local
+    git_hook_variables:
+        VAGRANT_HOST_DIR: .
+        VAGRANT_PROJECT_DIR: /var/www
     stop_on_failure: false
     ignore_unstaged_changes: false
     hide_circumvention_tip: false
@@ -50,19 +53,14 @@ Presets are only used when you did NOT specify a custom `hooks_dir`.
 GrumPHP comes with following presets:
 
 - `local`: All checks will run on your local computer.
-- `vagrant`: All checks will run in your vagrant box.
+- `vagrant`: All checks will run in your vagrant box (your certainly want to customize `git_hook_variables` default values in this case).
 
+**git_hook_variables**
 
-*Note:*
-When using the vagrant preset, you are required to set the vagrant SSH home folder to your working directory.
-This can be done by altering the `.bashrc` or `.zshrc` inside your vagrant box:
+This parameter will allow you to customize git hooks templates. For now, those parameters are used in the templates : 
 
-```sh
-echo 'cd /remote/path/to/your/project' >> ~/.bashrc
-```
-
-You can also add the `.bashrc` or `.zshrc` to your vagrant provision script.
-This way the home directory will be set for all the people who are using your vagrant box.
+-  `VAGRANT_HOST_DIR` : specifies the vagrant location on your host machine (_default_ `.`)
+-  `VAGRANT_PROJECT_DIR` : specifies the project dir location **inside** the vagrant box (_default_ `/var/www`)
 
 **stop_on_failure**
 

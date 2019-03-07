@@ -46,6 +46,11 @@ class GrumPHP
         return $this->container->getParameter('hooks_preset');
     }
 
+    public function getGitHookVariables(): array
+    {
+        return $this->container->getParameter('git_hook_variables');
+    }
+
     public function stopOnFailure(): bool
     {
         return (bool) $this->container->getParameter('stop_on_failure');
