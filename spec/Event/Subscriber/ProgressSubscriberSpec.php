@@ -58,7 +58,7 @@ class ProgressSubscriberSpec extends ObjectBehavior
 
         $event->getTask()->willReturn($task);
 
-        $output->writeln('')->shouldBeCalled();
+        $output->writeln('')->willReturn(null);
         $output->write(Argument::containingString('Running task'))->shouldBeCalled();
         $output->write(Argument::containingString('1/2'))->shouldBeCalled();
 
@@ -77,7 +77,7 @@ class ProgressSubscriberSpec extends ObjectBehavior
     function it_finishes_progress_early(OutputInterface $output, RunnerEvent $event)
     {
         $this->beConstructedWith($output, $progress = new ProgressBar($output->getWrappedObject(), 2));
-        $output->write('<fg=red>Aborted ...</fg=red>')->shouldBeCalled();
+        $output->write(Argument::containingString('<fg=red>Aborted ...</fg=red>'))->shouldBeCalled();
         $output->writeln('')->shouldBeCalled();
 
         $this->finishProgress($event);
