@@ -87,8 +87,13 @@ class ProcessArgumentsCollection extends ArrayCollection
     public function addFiles(FilesCollection $files)
     {
         foreach ($files as $file) {
-            $this->add($file->getPathname());
+            $this->addFile($file);
         }
+    }
+
+    public function addFile(\SplFileInfo $file)
+    {
+        $this->add($file->getPathname());
     }
 
     public function addCommaSeparatedFiles(FilesCollection $files)
