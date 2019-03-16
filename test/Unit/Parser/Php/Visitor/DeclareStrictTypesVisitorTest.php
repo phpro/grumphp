@@ -1,6 +1,6 @@
 <?php
 
-namespace GrumPHPTest\Parser\Php\Visitor;
+namespace GrumPHPTest\Unit\Parser\Php\Visitor;
 
 use GrumPHP\Parser\ParseError;
 use GrumPHP\Parser\Php\Visitor\ContextAwareVisitorInterface;
