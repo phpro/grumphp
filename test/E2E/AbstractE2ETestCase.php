@@ -75,6 +75,7 @@ abstract class AbstractE2ETestCase extends TestCase
                 '--name=grumphp/testsuite'.$this->hash,
                 '--type=library',
                 '--require-dev=phpro/grumphp:*',
+                '--require-dev=phpunit/phpunit:*',
                 '--repository='.json_encode([
                     'type' => 'path',
                     'url' => PROJECT_BASE_PATH,

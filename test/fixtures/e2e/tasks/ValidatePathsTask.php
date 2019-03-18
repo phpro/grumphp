@@ -5,6 +5,8 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ValidatePathsTask implements TaskInterface
@@ -45,10 +47,17 @@ class ValidatePathsTask implements TaskInterface
             return $file->getPathname();
         })->toArray();
 
-        $diff = array_diff($this->availableFiles, $contextFiles);
 
-        if (count($diff)) {
-            return TaskResult::createFailed($this, $context, 'Unexpected files: '.implode(PHP_EOL, $diff));
+        try {
+            Assert::assertEquals($this->availableFiles, $contextFiles);
+        } catch (ExpectationFailedException $exception) {
+            $message = $exception->getComparisonFailure()
+                ? $exception->getComparisonFailure()->toString()
+                : $exception->toString();
+        }
+
+        if ($message !== null) {
+            return TaskResult::createFailed($this, $context, 'Unexpected files: '.$message);
         }
 
         return TaskResult::createPassed($this, $context);
