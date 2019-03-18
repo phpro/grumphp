@@ -157,11 +157,16 @@ abstract class AbstractE2ETestCase extends TestCase
         ]);
     }
 
+    protected function ensureGrumphpE2eTasksDir(string $projectDir): string
+    {
+        return $this->mkdir($projectDir.'/src/GrumPHPE2E');
+    }
+
     protected function enableValidatePathsTask(string $grumphpFile, string $projectDir)
     {
-        $this->mkdir($projectDir.'/src');
+        $e2eDir = $this->ensureGrumphpE2eTasksDir($projectDir);
         $this->dumpFile(
-            $projectDir.'/src/ValidatePathTask.php',
+            $e2eDir.'/ValidatePathsTask.php',
             file_get_contents(TEST_BASE_PATH.'/fixtures/e2e/tasks/ValidatePathsTask.php')
         );
 
@@ -173,7 +178,7 @@ abstract class AbstractE2ETestCase extends TestCase
             ],
             'services' => [
                 'task.validatePaths' => [
-                    'class' => 'GrumPHP\\E2E\\ValidatePathsTask',
+                    'class' => 'GrumPHPE2E\\ValidatePathsTask',
                     'arguments' => [
                         $this->getAvailableFilesInPath($projectDir),
                     ],
