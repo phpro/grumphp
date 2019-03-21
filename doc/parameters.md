@@ -152,6 +152,7 @@ parameters:
             - resource/grumphp-happy.txt
             - resource/me-gusta.txt
             - resource/succeeded.txt
+```
 
 To disable all banners set ascii to `~`:
 
