@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHPTest\E2E;
 
+use GrumPHP\Util\Platform;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ExecutableFinder;
@@ -41,7 +42,7 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->hash = md5(get_class($this).'::'.$this->getName());
         $this->rootDir = $tmpDir.$this->useCorrectDirectorySeparator('/'.$this->hash);
 
-        $this->filesystem->remove($this->rootDir);
+        $this->removeRootDir();
         $this->filesystem->mkdir($this->rootDir);
 
         // Basic actions
@@ -51,7 +52,7 @@ abstract class AbstractE2ETestCase extends TestCase
 
     protected function tearDown()
     {
-        $this->filesystem->remove($this->rootDir);
+        $this->removeRootDir();
     }
 
     private function initializeGit()
@@ -69,7 +70,7 @@ abstract class AbstractE2ETestCase extends TestCase
     protected function initializeComposer(string $path): string
     {
         $process = new Process(
-            [
+            $this->prefixPhpExecutableOnWindows([
                 $this->executableFinder->find('composer'),
                 'init',
                 '--name=grumphp/testsuite'.$this->hash,
@@ -81,7 +82,7 @@ abstract class AbstractE2ETestCase extends TestCase
                     'url' => PROJECT_BASE_PATH,
                 ]),
                 '--no-interaction',
-            ],
+            ]),
             $path
         );
 
@@ -197,12 +198,12 @@ abstract class AbstractE2ETestCase extends TestCase
     protected function installComposer(string $path)
     {
         $process = new Process(
-            [
+            $this->prefixPhpExecutableOnWindows([
                 $this->executableFinder->find('composer'),
                 'install',
                 '--optimize-autoloader',
                 '--no-interaction',
-            ],
+            ]),
             $path
         );
 
@@ -229,7 +230,10 @@ abstract class AbstractE2ETestCase extends TestCase
     protected function runGrumphp(string $projectPath)
     {
         $projectPath = $this->relativeRootPath($projectPath);
-        $this->runCommand('grumphp run', new Process(['./vendor/bin/grumphp', 'run'], $projectPath));
+        $this->runCommand('grumphp run', new Process(
+            ['./vendor/bin/grumphp', 'run'],
+            $projectPath
+        ));
     }
 
     protected function mkdir(string $path): string
@@ -282,5 +286,27 @@ abstract class AbstractE2ETestCase extends TestCase
     protected function useCorrectDirectorySeparator(string $path): string
     {
         return str_replace('/', DIRECTORY_SEPARATOR, $path);
+    }
+
+    protected function prefixPhpExecutableOnWindows(array $command): array
+    {
+        if (!Platform::isWindows()) {
+            return $command;
+        }
+
+        return array_merge(
+            [$this->executableFinder->find('php')],
+            $command
+        );
+    }
+
+    protected function removeRootDir()
+    {
+        // Change permissions on git dir since windows is not allowing us to remove it.
+        if (Platform::isWindows() && $this->filesystem->exists($gitDir = $this->relativeRootPath('.git'))) {
+            $this->filesystem->chmod($gitDir, 0777, 0000, true);
+        }
+
+        $this->filesystem->remove($this->rootDir);
     }
 }
