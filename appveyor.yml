@@ -41,4 +41,4 @@ before_test:
 test_script:
     - cd c:\projects\grumphp
     - php ./bin/grumphp run
-    - php ./vendor/phpunit/phpunit/phpunit --testsuite=E2E
+    - vendor/bin/phpunit --testsuite=E2E
