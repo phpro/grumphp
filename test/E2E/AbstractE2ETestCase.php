@@ -230,7 +230,6 @@ abstract class AbstractE2ETestCase extends TestCase
     {
         $projectPath = $this->relativeRootPath($projectPath);
         $this->runCommand('grumphp run', new Process(['./vendor/bin/grumphp', 'run'], $projectPath));
-
     }
 
     protected function mkdir(string $path): string
