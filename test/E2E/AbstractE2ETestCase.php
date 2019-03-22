@@ -252,7 +252,10 @@ abstract class AbstractE2ETestCase extends TestCase
     {
         $process->run();
         if (!$process->isSuccessful()) {
-            throw new \RuntimeException('Could not '.$action.'! '.$process->getErrorOutput());
+            throw new \RuntimeException(
+                'Could not '.$action.'! '.$process->getErrorOutput()
+                . PHP_EOL . 'While running '.$process->getCommandLine()
+            );
         }
     }
 
