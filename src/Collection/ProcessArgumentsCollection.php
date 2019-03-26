@@ -133,6 +133,15 @@ class ProcessArgumentsCollection extends ArrayCollection
      */
     public function addOptionalIntegerArgument(string $argument, $value)
     {
+        $this->addOptionalMixedArgument($argument, $value);
+    }
+
+    /**
+     * @param string $argument
+     * @param mixed $value
+     */
+    public function addOptionalMixedArgument(string $argument, $value)
+    {
         if (null === $value) {
             return;
         }
