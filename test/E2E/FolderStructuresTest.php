@@ -81,5 +81,6 @@ class FolderStructuresTest extends AbstractE2ETestCase
      *
      * - test git submodule
      * - test bamarni/composer-bin-plugin
+     * - test git commit -a and -p
      */
 }
