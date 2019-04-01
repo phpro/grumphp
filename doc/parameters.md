@@ -10,6 +10,7 @@ parameters:
     git_hook_variables:
         VAGRANT_HOST_DIR: .
         VAGRANT_PROJECT_DIR: /var/www
+        EXEC_GRUMPHP_COMMAND: exec
     stop_on_failure: false
     ignore_unstaged_changes: false
     hide_circumvention_tip: false
@@ -61,6 +62,7 @@ This parameter will allow you to customize git hooks templates. For now, those p
 
 -  `VAGRANT_HOST_DIR` : specifies the vagrant location on your host machine (_default_ `.`)
 -  `VAGRANT_PROJECT_DIR` : specifies the project dir location **inside** the vagrant box (_default_ `/var/www`)
+-  `EXEC_GRUMPHP_COMMAND` : specifies the name of the command that will execute the grumphp script (_default_ `exec`)
 
 **stop_on_failure**
 

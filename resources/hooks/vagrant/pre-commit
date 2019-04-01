@@ -19,5 +19,5 @@ cd $(VAGRANT_HOST_DIR) && vagrant ssh --command '$(which sh)' << COMMANDS
 	__GRUMPHP_DIFF_HEREDOC__
   )
 
-  printf "%s\n" "\${DIFF}" | exec $(HOOK_COMMAND) '--ansi' '--skip-success-output'
+  printf "%s\n" "\${DIFF}" | $(EXEC_GRUMPHP_COMMAND) $(HOOK_COMMAND) '--ansi' '--skip-success-output'
 COMMANDS
