@@ -145,7 +145,7 @@ parameters:
 
 ### Magento 
 
-If you want to use Phpcs for your Magento projects, you can require the magento-ecg repo.
+If you want to use Phpcs for your Magento projects, you can require the magento-ecg repo ( works with Magento 1 and Magento 2 ).
 
 ```sh
 composer require --dev magento-ecg/coding-standard
@@ -160,6 +160,28 @@ parameters:
         phpcs:
             standard: "vendor/magento-ecg/coding-standard/Ecg/"
             warning_severity: 0
+```
+
+For Magento 2 projects, you can require the Magento Coding Standard repo.
+```sh
+composer require --dev magento/magento-coding-standard
+```
+
+Next, add the following to your `composer.json` file, and run `composer run-script post-install-cmd`.
+```sh
+"scripts": {
+    "post-install-cmd": "vendor/bin/phpcs --config-set installed_paths ../../magento/magento-coding-standard/",
+    "post-update-cmd": "vendor/bin/phpcs --config-set installed_paths ../../magento/magento-coding-standard/"
+}
+```
+
+Following this, you can add the path to your phpcs task.
+```yaml
+# gumphp.yml
+parameters:
+    tasks:
+        phpcs:
+            standard: "Magento2"
 ```
 
 ### Drupal
