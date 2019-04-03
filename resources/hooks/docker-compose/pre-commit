@@ -1,0 +1,12 @@
+#!/bin/sh
+
+#
+# Run the hook command.
+# Note: this will be replaced by the real command during copy.
+#
+
+# Fetch the GIT diff and format it as command input:
+DIFF=$(git -c diff.mnemonicprefix=false --no-pager diff -r -p -m -M --full-index --no-color --staged | cat)
+
+# Run GrumPHP
+(cd "${HOOK_EXEC_PATH}" && printf "%s\n" "${DIFF}" | exec 'docker-compose' 'run' '--rm' '--no-deps' $(DOCKER_COMPOSE_CONTAINER) $(HOOK_COMMAND) '--skip-success-output')
