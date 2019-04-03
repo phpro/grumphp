@@ -48,7 +48,8 @@ class GrumPHPSpec extends ObjectBehavior
     {
         $data = [
             'VAGRANT_HOST_DIR' => '.',
-            'VAGRANT_PROJECT_DIR' => '/var/www'
+            'VAGRANT_PROJECT_DIR' => '/var/www',
+            'DOCKER_COMPOSE_CONTAINER' => 'php'
         ];
         $container->getParameter('git_hook_variables')->willReturn($data);
         $this->getGitHookVariables()->shouldReturn($data);
