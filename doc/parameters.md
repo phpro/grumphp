@@ -54,6 +54,7 @@ GrumPHP comes with following presets:
 
 - `local`: All checks will run on your local computer.
 - `vagrant`: All checks will run in your vagrant box (your certainly want to customize `git_hook_variables` default values in this case).
+- `docker-compose`: All checks will run in your docker-compose container (you need to specify container name in `git_hook_variables`)
 
 **git_hook_variables**
 
@@ -61,6 +62,7 @@ This parameter will allow you to customize git hooks templates. For now, those p
 
 -  `VAGRANT_HOST_DIR` : specifies the vagrant location on your host machine (_default_ `.`)
 -  `VAGRANT_PROJECT_DIR` : specifies the project dir location **inside** the vagrant box (_default_ `/var/www`)
+-  `DOCKER_COMPOSE_CONTAINER` : specifies the container name to use (*default `php`*)
 
 **stop_on_failure**
 
