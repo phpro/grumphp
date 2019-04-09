@@ -1,4 +1,4 @@
-# Phpunit
+# Paratest
 
 The Paratest task will run your PHPUnit tests in parallel.
 
@@ -36,10 +36,10 @@ parameters:
 *Default: null*
 
 The number of test processes to run. (Default: auto)
-                             Possible values:
-                             - Integer (>= 1): Number of processes to run.
-                             - auto (default): Number of processes is automatically set to the number of logical CPU cores.
-                             - half: Number of processes is automatically set to half the number of logical CPU cores.
+ Possible values:
+ - Integer (>= 1): Number of processes to run.
+ - auto (default): Number of processes is automatically set to the number of logical CPU cores.
+ - half: Number of processes is automatically set to half the number of logical CPU cores.
 
 **functional**
 
@@ -85,6 +85,7 @@ Runner, WrapperRunner or SqliteRunner. (Default: Runner)
 *Default: null*
 
 Debugger settings for code coverage.
+It can have a bin and a args key. These can be used to set the debug binary and additional arguments.
 
 **coverage-xml**
 

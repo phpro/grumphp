@@ -65,7 +65,7 @@ class Paratest extends AbstractExternalTask
         $config = $this->getConfiguration();
 
         $files = $context->getFiles()->name('*.php');
-        if (0 === \count($files) && !$config['always_execute']) {
+        if (!$config['always_execute'] && 0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 
@@ -81,12 +81,11 @@ class Paratest extends AbstractExternalTask
         $arguments->addOptionalArgument('--testsuite %s', $config['testsuite']);
         $arguments->addOptionalCommaSeparatedArgument('--group=%s', $config['group']);
 
-        $coverageEnabled = function ($config) {
-            return !empty($config['coverage-xml'])
-                || !empty($config['coverage-html'])
-                || !empty($config['log-junit']);
-        };
-        if ($coverageEnabled($config) && !empty($config['debugger'])) {
+        $coverageEnabled = !empty($config['coverage-xml'])
+            || !empty($config['coverage-html'])
+            || !empty($config['log-junit']);
+
+        if ($coverageEnabled && !empty($config['debugger'])) {
             $bin = $config['debugger']['bin'];
             $args = $config['debugger']['args'];
             $arguments = new ProcessArgumentsCollection(array_merge([$bin], $args, $arguments->toArray()));
