@@ -18,6 +18,7 @@ parameters:
         composer_script: ~
         deptrac: ~
         doctrine_orm: ~
+        ecs: ~
         file_size: ~
         gherkin: ~
         git_blacklist: ~
@@ -69,6 +70,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Composer Require Checker](tasks/composer_require_checker.md)
 - [Composer Script](tasks/composer_script.md)
 - [Doctrine ORM](tasks/doctrine_orm.md)
+- [Ecs EasyCodingStandard](tasks/ecs.md)
 - [File size](tasks/file_size.md)
 - [Deptrac](tasks/deptrac.md)
 - [Gherkin](tasks/gherkin.md)
