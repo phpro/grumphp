@@ -37,6 +37,7 @@
     "suggest": {
         "atoum/atoum": "Lets GrumPHP run your unit tests.",
         "behat/behat": "Lets GrumPHP validate your project features.",
+        "brianium/paratest": "Lets GrumPHP run PHPUnit in parallel.",
         "codeception/codeception": "Lets GrumPHP run your project's full stack tests",
         "codegyre/robo": "Lets GrumPHP run your automated PHP tasks.",
         "designsecurity/progpilot": "Lets GrumPHP be sure that there are no vulnerabilities in your code.",

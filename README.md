@@ -99,6 +99,7 @@ parameters:
         kahlan: ~
         make: ~
         npm_script: ~
+        paratest: ~
         phan: ~        
         phing: ~
         php7cc: ~

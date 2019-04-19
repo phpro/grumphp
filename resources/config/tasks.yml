@@ -201,6 +201,15 @@ services:
         tags:
             - {name: grumphp.task, config: npm_script}
 
+    task.paratest:
+        class: GrumPHP\Task\Paratest
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: paratest}
+
     task.phan:
         class: GrumPHP\Task\Phan
         arguments:
