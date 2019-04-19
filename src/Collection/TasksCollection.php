@@ -26,7 +26,7 @@ class TasksCollection extends ArrayCollection
     public function filterByTestSuite(TestSuiteInterface $testSuite = null): self
     {
         if (null === $testSuite) {
-            return new self($this->toArray());
+            return $this;
         }
 
         return $this->filter(function (TaskInterface $task) use ($testSuite) {
@@ -40,7 +40,7 @@ class TasksCollection extends ArrayCollection
     public function filterByTaskNames(array $tasks): self
     {
         if (empty($tasks)) {
-            return new self($this->toArray());
+            return $this;
         }
 
         return $this->filter(function (TaskInterface $task) use ($tasks) {
