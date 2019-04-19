@@ -1,6 +1,6 @@
 <?php
 
-namespace GrumPHPTest\Linter\Xml;
+namespace GrumPHPTest\Unit\Linter\Xml;
 
 use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Linter\Xml\XmlLinter;

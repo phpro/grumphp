@@ -1,6 +1,6 @@
 <?php
 
-namespace GrumPHPTest\Linter\Json;
+namespace GrumPHPTest\Unit\Linter\Json;
 
 use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Linter\Json\JsonLinter;

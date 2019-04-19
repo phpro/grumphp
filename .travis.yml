@@ -30,6 +30,7 @@ install:
 
 script:
    - bin/grumphp run
+   - vendor/bin/phpunit --testsuite=E2E
 
 notifications:
   irc:

@@ -16,6 +16,7 @@ parameters:
         metadata:
           priority: 200
       phpunit:
+        testsuite: Unit
         metadata:
           priority: 100
       composer:

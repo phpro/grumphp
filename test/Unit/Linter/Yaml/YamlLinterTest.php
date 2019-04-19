@@ -1,6 +1,6 @@
 <?php
 
-namespace GrumPHPTest\Linter\Yaml;
+namespace GrumPHPTest\Unit\Linter\Yaml;
 
 use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Linter\Yaml\YamlLinter;
