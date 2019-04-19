@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
@@ -31,7 +30,6 @@ class Paratest extends AbstractExternalTask
                 'always_execute' => false,
                 'group'          => [],
                 'runner'         => null,
-                'debugger'       => null,
                 'coverage-xml'   => null,
                 'coverage-html'  => null,
                 'log-junit'      => null,
@@ -46,7 +44,6 @@ class Paratest extends AbstractExternalTask
         $resolver->addAllowedTypes('configuration', ['null', 'string']);
         $resolver->addAllowedTypes('always_execute', ['bool']);
         $resolver->addAllowedTypes('runner', ['null', 'string']);
-        $resolver->addAllowedTypes('debugger', ['null', 'array']);
         $resolver->addAllowedTypes('coverage-xml', ['null', 'string']);
         $resolver->addAllowedTypes('coverage-html', ['null', 'string']);
         $resolver->addAllowedTypes('log-junit', ['null', 'string']);
@@ -65,7 +62,7 @@ class Paratest extends AbstractExternalTask
         $config = $this->getConfiguration();
 
         $files = $context->getFiles()->name('*.php');
-        if (!$config['always_execute'] && 0 === \count($files)) {
+        if (!$config['always_execute'] && 0 === count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 
@@ -80,16 +77,6 @@ class Paratest extends AbstractExternalTask
         $arguments->addOptionalArgument('--log-junit %s', $config['log-junit']);
         $arguments->addOptionalArgument('--testsuite %s', $config['testsuite']);
         $arguments->addOptionalCommaSeparatedArgument('--group=%s', $config['group']);
-
-        $coverageEnabled = !empty($config['coverage-xml'])
-            || !empty($config['coverage-html'])
-            || !empty($config['log-junit']);
-
-        if ($coverageEnabled && !empty($config['debugger'])) {
-            $bin = $config['debugger']['bin'];
-            $args = $config['debugger']['args'];
-            $arguments = new ProcessArgumentsCollection(array_merge([$bin], $args, $arguments->toArray()));
-        }
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();

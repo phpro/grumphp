@@ -80,13 +80,6 @@ The PHPUnit configuration file to use.
 
 Runner, WrapperRunner or SqliteRunner. (Default: Runner)
 
-**debugger**
-
-*Default: null*
-
-Debugger settings for code coverage.
-It can have a bin and a args key. These can be used to set the debug binary and additional arguments.
-
 **coverage-xml**
 
 *Default: null*
