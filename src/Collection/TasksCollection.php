@@ -37,7 +37,7 @@ class TasksCollection extends ArrayCollection
     /**
      * @param string[] $tasks
      */
-    public function filterByTaskNames($tasks): self
+    public function filterByTaskNames(array $tasks): self
     {
         if (empty($tasks)) {
             return new self($this->toArray());
@@ -53,7 +53,7 @@ class TasksCollection extends ArrayCollection
      */
     public function sortByPriority(GrumPHP $grumPHP): self
     {
-        $priorityQueue   = new SplPriorityQueue();
+        $priorityQueue = new SplPriorityQueue();
         $stableSortIndex = PHP_INT_MAX;
         foreach ($this->getIterator() as $task) {
             $metadata = $grumPHP->getTaskMetadata($task->getName());
