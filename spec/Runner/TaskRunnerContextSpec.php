@@ -11,7 +11,7 @@ class TaskRunnerContextSpec extends ObjectBehavior
 {
     function let(ContextInterface $context, TestSuiteInterface $testSuite)
     {
-        $this->beConstructedWith($context, [], $testSuite);
+        $this->beConstructedWith($context, $testSuite);
     }
 
     function it_is_initializable()
@@ -32,7 +32,7 @@ class TaskRunnerContextSpec extends ObjectBehavior
 
     function it_has_no_test_suite(ContextInterface $context)
     {
-        $this->beConstructedWith($context, []);
+        $this->beConstructedWith($context);
         $this->hasTestSuite()->shouldBe(false);
         $this->getTestSuite()->shouldBe(null);
     }
@@ -43,10 +43,10 @@ class TaskRunnerContextSpec extends ObjectBehavior
         $this->getTasks()->shouldBe([]);
     }
 
-    function it_has_tasks(ContextInterface $context)
+    function it_has_tasks(ContextInterface $context, TestSuiteInterface $testSuite)
     {
         $tasks = ["task_1"];
-        $this->beConstructedWith($context, $tasks);
+        $this->beConstructedWith($context, $testSuite, $tasks);
         $this->hasTasks()->shouldBe(true);
         $this->getTasks()->shouldBe($tasks);
     }

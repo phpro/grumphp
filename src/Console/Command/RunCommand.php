@@ -69,8 +69,8 @@ class RunCommand extends Command
 
         $context = new TaskRunnerContext(
             new RunContext($files),
-            $tasks,
-            (bool) $input->getOption('testsuite') ? $testSuites->getRequired($input->getOption('testsuite')) : null
+            (bool) $input->getOption('testsuite') ? $testSuites->getRequired($input->getOption('testsuite')) : null,
+            $tasks
         );
 
         return $this->taskRunner()->run($output, $context);
