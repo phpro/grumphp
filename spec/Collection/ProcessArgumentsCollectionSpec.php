@@ -168,4 +168,28 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
         $this->addOptionalIntegerArgument('--argument=%s', 0);
         $this->getValues()->shouldBe(['--argument=0']);
     }
+
+    function it_should_be_able_to_add_optional_mixed_argument_with_null_as_value()
+    {
+        $this->addOptionalMixedArgument('--argument=%s', null);
+        $this->getValues()->shouldBe([]);
+    }
+
+    function it_should_be_able_to_add_optional_mixed_argument_with_0_as_value()
+    {
+        $this->addOptionalMixedArgument('--argument=%s', 0);
+        $this->getValues()->shouldBe(['--argument=0']);
+    }
+
+    function it_should_be_able_to_add_optional_mixed_argument_with_a_string_value()
+    {
+        $this->addOptionalMixedArgument('--argument=%s', 'string');
+        $this->getValues()->shouldBe(['--argument=string']);
+    }
+
+    function it_should_be_able_to_add_optional_mixed_argument_with_a_int_value()
+    {
+        $this->addOptionalMixedArgument('--argument=%s', 12345);
+        $this->getValues()->shouldBe(['--argument=12345']);
+    }
 }

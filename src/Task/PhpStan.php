@@ -37,7 +37,12 @@ class PhpStan extends AbstractExternalTask
         $resolver->addAllowedTypes('autoload_file', ['null', 'string']);
         $resolver->addAllowedTypes('configuration', ['null', 'string']);
         $resolver->addAllowedTypes('memory_limit', ['null', 'string']);
-        $resolver->addAllowedTypes('level', ['int']);
+        $resolver->setAllowedValues('level', function ($value) {
+            if ($value === null || $value === 'max') {
+                return true;
+            }
+            return false !== filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+        });
         $resolver->addAllowedTypes('ignore_patterns', ['array']);
         $resolver->addAllowedTypes('force_patterns', ['array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
@@ -80,7 +85,7 @@ class PhpStan extends AbstractExternalTask
         $arguments->addOptionalArgument('--autoload-file=%s', $config['autoload_file']);
         $arguments->addOptionalArgument('--configuration=%s', $config['configuration']);
         $arguments->addOptionalArgument('--memory-limit=%s', $config['memory_limit']);
-        $arguments->add(sprintf('--level=%u', $config['level']));
+        $arguments->addOptionalMixedArgument('--level=%s', $config['level']);
         $arguments->add('--no-ansi');
         $arguments->add('--no-interaction');
         $arguments->add('--no-progress');
