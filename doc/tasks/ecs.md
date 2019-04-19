@@ -17,9 +17,10 @@ The task lives under the `ecs` namespace and has following configurable paramete
 parameters:
     tasks:
         ecs:
-            config:
-            level:
-            whitelist_patterns:
+            config: ~
+            level: ~
+            whitelist_patterns: []
+            triggered_by: ['php']
             fix: false
             clear-cache: false
             no-progress-bar: true
@@ -42,9 +43,15 @@ If you want to use a different level than the default one, specify it with this 
 
 **whitelist_patterns**
 
-*Default: null*
+*Default: []*
 
 If you want to run on particular directories only, specify it with this option.
+
+**triggered_by**
+
+*Default: [php]*
+
+This option will specify which file extensions will trigger this task.
 
 
 **fix**

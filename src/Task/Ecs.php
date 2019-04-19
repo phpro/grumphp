@@ -31,6 +31,7 @@ class Ecs extends AbstractExternalTask
             'no-progress-bar' => true,
             'config' => null,
             'level' => null,
+            'triggered_by' => ['php'],
         ]);
 
         $resolver->addAllowedTypes('whitelist_patterns', ['array']);
@@ -39,6 +40,7 @@ class Ecs extends AbstractExternalTask
         $resolver->addAllowedTypes('no-progress-bar', ['bool']);
         $resolver->addAllowedTypes('config', ['null', 'string']);
         $resolver->addAllowedTypes('level', ['null', 'string']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
     }
@@ -50,12 +52,12 @@ class Ecs extends AbstractExternalTask
 
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $files = $context->getFiles()->name('*.php');
+        $config = $this->getConfiguration();
+
+        $files = $context->getFiles()->extensions($config['triggered_by']);
         if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
-
-        $config = $this->getConfiguration();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('ecs');
         $arguments->add('check');
