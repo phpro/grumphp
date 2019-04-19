@@ -11,6 +11,7 @@ use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\Locator\RegisteredFiles;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\Context\RunContext;
+use GrumPHP\Util\Str;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -65,7 +66,7 @@ class RunCommand extends Command
         $files = $this->getRegisteredFiles();
         $testSuites = $this->grumPHP->getTestSuites();
 
-        $tasks = $this->parseCommaSeparatedOption($input->getOption("tasks") ?? "");
+        $tasks = Str::explodeWithCleanup(',', $input->getOption("tasks") ?? '');
 
         $context = new TaskRunnerContext(
             new RunContext($files),
@@ -89,26 +90,5 @@ class RunCommand extends Command
     protected function paths(): PathsHelper
     {
         return $this->getHelper(PathsHelper::HELPER_NAME);
-    }
-
-    /**
-     * Split $value on ",", trim the individual parts and
-     * de-deduplicate the remaining values
-     *
-     * @param string $value
-     * @return string[]
-     */
-    protected function parseCommaSeparatedOption(string $value)
-    {
-        $stringValues = explode(",", $value);
-        $parsedValues = [];
-        foreach ($stringValues as $k => $v) {
-            $v = trim($v);
-            if (empty($v)) {
-                continue;
-            }
-            $parsedValues[] = $v;
-        }
-        return $parsedValues;
     }
 }
