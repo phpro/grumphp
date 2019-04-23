@@ -98,6 +98,15 @@ services:
         tags:
           - {name: grumphp.task, config: doctrine_orm}
 
+    task.ecs:
+        class: GrumPHP\Task\Ecs
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: ecs}
+
     task.git.gherkin:
         class: GrumPHP\Task\Gherkin
         arguments:

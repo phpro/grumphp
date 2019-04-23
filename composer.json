@@ -61,7 +61,8 @@
         "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",
         "sstalle/php7cc": "Lets GrumPHP check PHP 5.3 - 5.6 code compatibility with PHP 7.",
         "symfony/phpunit-bridge": "Lets GrumPHP run your unit tests with the phpunit-bridge of Symfony.",
-        "vimeo/psalm": "Lets GrumPHP discover errors in your code without running it."
+        "vimeo/psalm": "Lets GrumPHP discover errors in your code without running it.",
+        "symplify/easycodingstandard": "Lets GrumPHP check coding standard."
     },
     "authors": [
         {
