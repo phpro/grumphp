@@ -26,7 +26,6 @@ class Ecs extends AbstractExternalTask
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'whitelist_patterns' => [],
-            'fix' => false,
             'clear-cache' => false,
             'no-progress-bar' => true,
             'config' => null,
@@ -35,7 +34,6 @@ class Ecs extends AbstractExternalTask
         ]);
 
         $resolver->addAllowedTypes('whitelist_patterns', ['array']);
-        $resolver->addAllowedTypes('fix', ['bool']);
         $resolver->addAllowedTypes('clear-cache', ['bool']);
         $resolver->addAllowedTypes('no-progress-bar', ['bool']);
         $resolver->addAllowedTypes('config', ['null', 'string']);
@@ -68,7 +66,6 @@ class Ecs extends AbstractExternalTask
 
         $arguments->addOptionalArgument('--config=%s', $config['config']);
         $arguments->addOptionalArgument('--level=%s', $config['level']);
-        $arguments->addOptionalArgument('--fix', $config['fix']);
         $arguments->addOptionalArgument('--clear-cache', $config['clear-cache']);
         $arguments->addOptionalArgument('--no-progress-bar', $config['no-progress-bar']);
         $arguments->addOptionalArgument('--ansi', true);

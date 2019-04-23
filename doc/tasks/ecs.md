@@ -21,7 +21,6 @@ parameters:
             level: ~
             whitelist_patterns: []
             triggered_by: ['php']
-            fix: false
             clear-cache: false
             no-progress-bar: true
 
@@ -52,13 +51,6 @@ If you want to run on particular directories only, specify it with this option.
 *Default: [php]*
 
 This option will specify which file extensions will trigger this task.
-
-
-**fix**
-
-*Default: false*
-
-Fix found violations.
 
 
 **clear-cache**

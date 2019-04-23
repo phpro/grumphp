@@ -43,7 +43,7 @@ class EcsSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('config');
         $options->getDefinedOptions()->shouldContain('level');
         $options->getDefinedOptions()->shouldContain('whitelist_patterns');
-        $options->getDefinedOptions()->shouldContain('fix');
+        $options->getDefinedOptions()->shouldContain('triggered_by');
         $options->getDefinedOptions()->shouldContain('clear-cache');
         $options->getDefinedOptions()->shouldContain('no-progress-bar');
     }
