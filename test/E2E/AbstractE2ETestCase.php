@@ -103,21 +103,26 @@ abstract class AbstractE2ETestCase extends TestCase
 
     private function detectCurrentGrumphpGitBranchForComposerWithFallback(): string
     {
-        $process = new Process([
-            $this->executableFinder->find('git'),
-            'rev-parse',
-            '--abbrev-ref',
-            'HEAD'
-        ]);
+        $gitExecutable = $this->executableFinder->find('git');
+        $process = new Process([$gitExecutable, 'rev-parse', '--abbrev-ref', 'HEAD']);
         $process->run();
 
         if (!$process->isSuccessful()) {
             return '*';
         }
 
-        // Todo : fall back during detached HEAD mode if required!
+        // Detached HEAD (for CI)
+        $version = trim($process->getOutput());
+        if ('HEAD' === $version) {
+            $process = new Process([$gitExecutable, 'rev-parse', '--verify', 'HEAD']);
+            $process->run();
+            if (!$process->isSuccessful()) {
+                return '*';
+            }
+            $version = trim($process->getOutput());
+        }
 
-        return 'dev-'.trim($process->getOutput());
+        return 'dev-'.$version;
     }
 
     protected function mergeComposerConfig(string $composerFile, array $config)
