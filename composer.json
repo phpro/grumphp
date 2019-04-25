@@ -32,7 +32,7 @@
         "sebastian/diff": "^2.0",
         "sebastian/exporter": "^3.1",
         "sensiolabs/security-checker": "^5.0",
-        "squizlabs/php_codesniffer": "~2.4"
+        "squizlabs/php_codesniffer": "~2.9"
     },
     "suggest": {
         "atoum/atoum": "Lets GrumPHP run your unit tests.",
