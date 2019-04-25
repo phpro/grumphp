@@ -120,7 +120,7 @@ class InitCommand extends Command
         ];
 
         foreach ($this->grumPHP->getGitHookVariables() as $key => $value) {
-            $replacements[sprintf('$(%s)', $key)] = ProcessUtils::escapeArgument($value);
+            $replacements[sprintf('$(%s)', $key)] = ProcessUtils::escapeArgumentsFromString($value);
         }
 
         return str_replace(array_keys($replacements), array_values($replacements), $content);

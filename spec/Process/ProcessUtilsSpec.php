@@ -47,4 +47,24 @@ class ProcessUtilsSpec extends ObjectBehavior
         self::escapeArgument('a\\\\"\\"')->shouldReturn("'a\\\\\"\\\"'");
         self::escapeArgument('éÉèÈàÀöä')->shouldReturn("'éÉèÈàÀöä'");
     }
+
+    function it_escapes_multiple_arguments()
+    {
+        self::escapeArguments(explode(' ', 'php    script.php'))
+            ->shouldBe(
+                ProcessUtils::escapeArgument('php')
+                .' '
+                .ProcessUtils::escapeArgument('script.php')
+            );
+    }
+
+    function it_escapes_multiple_arguments_from_string()
+    {
+        self::escapeArgumentsFromString('php    script.php')
+            ->shouldBe(
+                ProcessUtils::escapeArgument('php')
+                .' '
+                .ProcessUtils::escapeArgument('script.php')
+            );
+    }
 }
