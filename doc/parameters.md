@@ -64,6 +64,17 @@ This parameter will allow you to customize git hooks templates. For now, those p
 -  `VAGRANT_PROJECT_DIR` : specifies the project dir location **inside** the vagrant box (_default_ `/var/www`)
 -  `EXEC_GRUMPHP_COMMAND` : specifies the name of the command that will execute the grumphp script (_default_ `exec`)
 
+Examples: 
+
+```yaml
+parameters:
+    git_hook_variables:
+        EXEC_GRUMPHP_COMMAND: '/usr/local/bin/php72'
+        EXEC_GRUMPHP_COMMAND: 'lando php'
+        EXEC_GRUMPHP_COMMAND: 'php -c /custom/config.ini'
+        EXEC_GRUMPHP_COMMAND: 'docker-compose run --rm --no-deps php'
+```
+
 **stop_on_failure**
 
 *Default: false*
