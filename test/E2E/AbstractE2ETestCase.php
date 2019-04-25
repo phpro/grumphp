@@ -110,13 +110,13 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->dumpFile($composerFile, json_encode($newSource,  $flags));
     }
 
-    protected function ensureHooksExist()
+    protected function ensureHooksExist(string $containsPattern = '{grumphp}')
     {
         $hooks = ['pre-commit', 'commit-msg'];
         foreach ($hooks as $hook) {
             $hookFile = $this->rootDir.$this->useCorrectDirectorySeparator('/.git/hooks/'.$hook);
             $this->assertFileExists($hookFile);
-            $this->assertContains('grumphp', file_get_contents($hookFile));
+            $this->assertRegExp($containsPattern, file_get_contents($hookFile));
         }
     }
 

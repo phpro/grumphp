@@ -15,13 +15,13 @@ class GitHookParametersTest extends AbstractE2ETestCase
         $this->mergeGrumphpConfig($grumphpFile, [
             'parameters' => [
                 'git_hook_variables' => [
-                    'EXEC_GRUMPHP_COMMAND' => $this->executableFinder->find('php')
+                    'EXEC_GRUMPHP_COMMAND' => $php = $this->executableFinder->find('php')
                 ],
             ],
         ]);
 
         $this->installComposer($this->rootDir);
-        $this->ensureHooksExist();
+        $this->ensureHooksExist('{'.preg_quote($php, '{').'}i');
 
         $this->enableValidatePathsTask($grumphpFile, $this->rootDir);
 
@@ -34,16 +34,19 @@ class GitHookParametersTest extends AbstractE2ETestCase
         $this->initializeComposer($this->rootDir);
         $grumphpFile = $this->initializeGrumphpConfig($this->rootDir);
 
+        $php = $this->executableFinder->find('php');
         $this->mergeGrumphpConfig($grumphpFile, [
             'parameters' => [
                 'git_hook_variables' => [
-                    'EXEC_GRUMPHP_COMMAND' => $this->executableFinder->find('php').' -d date.timezone=Europe/Brussels'
+                    'EXEC_GRUMPHP_COMMAND' => $php.' -d date.timezone=Europe/Brussels'
                 ],
             ],
         ]);
 
         $this->installComposer($this->rootDir);
-        $this->ensureHooksExist();
+
+        $hookPattern = '{'.preg_quote($php, '{').' [\'"]-d[\'"] [\'"]date\.timezone=Europe/Brussels[\'"]}';
+        $this->ensureHooksExist($hookPattern);
 
         $this->enableValidatePathsTask($grumphpFile, $this->rootDir);
 
