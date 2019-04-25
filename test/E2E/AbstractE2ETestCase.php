@@ -75,7 +75,7 @@ abstract class AbstractE2ETestCase extends TestCase
                 'init',
                 '--name=grumphp/testsuite'.$this->hash,
                 '--type=library',
-                '--require-dev=phpro/grumphp:*',
+                '--require-dev=phpro/grumphp:'.$this->detectCurrentGrumphpGitBranchForComposerWithFallback(),
                 '--require-dev=phpunit/phpunit:*',
                 '--repository='.json_encode([
                     'type' => 'path',
@@ -99,6 +99,25 @@ abstract class AbstractE2ETestCase extends TestCase
         ]);
 
         return $composerFile;
+    }
+
+    private function detectCurrentGrumphpGitBranchForComposerWithFallback(): string
+    {
+        $process = new Process([
+            $this->executableFinder->find('git'),
+            'rev-parse',
+            '--abbrev-ref',
+            'HEAD'
+        ]);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            return '*';
+        }
+
+        // Todo : fall back during detached HEAD mode if required!
+
+        return 'dev-'.trim($process->getOutput());
     }
 
     protected function mergeComposerConfig(string $composerFile, array $config)

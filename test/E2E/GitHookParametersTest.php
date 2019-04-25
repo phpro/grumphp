@@ -21,7 +21,7 @@ class GitHookParametersTest extends AbstractE2ETestCase
         ]);
 
         $this->installComposer($this->rootDir);
-        $this->ensureHooksExist('{'.preg_quote($php, '{').'}i');
+        $this->ensureHooksExist('{[\'"]'.preg_quote($php, '{').'[\'"]}i');
 
         $this->enableValidatePathsTask($grumphpFile, $this->rootDir);
 
@@ -45,7 +45,7 @@ class GitHookParametersTest extends AbstractE2ETestCase
 
         $this->installComposer($this->rootDir);
 
-        $hookPattern = '{'.preg_quote($php, '{').' [\'"]-d[\'"] [\'"]date\.timezone=Europe/Brussels[\'"]}';
+        $hookPattern = '{[\'"]'.preg_quote($php, '{').'[\'"] [\'"]-d[\'"] [\'"]date\.timezone=Europe/Brussels[\'"]}';
         $this->ensureHooksExist($hookPattern);
 
         $this->enableValidatePathsTask($grumphpFile, $this->rootDir);
