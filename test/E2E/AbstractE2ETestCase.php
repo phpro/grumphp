@@ -80,6 +80,9 @@ abstract class AbstractE2ETestCase extends TestCase
                 '--repository='.json_encode([
                     'type' => 'path',
                     'url' => PROJECT_BASE_PATH,
+                    'options' => [
+                        'symlink' => false,
+                    ],
                 ]),
                 '--no-interaction',
             ]),
@@ -310,6 +313,11 @@ abstract class AbstractE2ETestCase extends TestCase
     protected function useCorrectDirectorySeparator(string $path): string
     {
         return str_replace('/', DIRECTORY_SEPARATOR, $path);
+    }
+
+    protected function useUnixDirectorySeparator(string $path): string
+    {
+        return str_replace('\\', '/', $path);
     }
 
     protected function prefixPhpExecutableOnWindows(array $command): array
