@@ -54,7 +54,7 @@ class RunCommand extends Command
     }
 
     /**
-     * @return int|void
+     * @return int
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {

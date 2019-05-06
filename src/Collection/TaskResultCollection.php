@@ -29,9 +29,9 @@ class TaskResultCollection extends ArrayCollection
     }
 
     /**
-     * @return int|mixed
+     * @return int
      */
-    public function getResultCode()
+    public function getResultCode(): int
     {
         $resultCode = static::NO_TASKS;
         foreach ($this as $taskResult) {
