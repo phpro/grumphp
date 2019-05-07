@@ -50,6 +50,7 @@ class DeInitCommand extends Command
     protected function configure()
     {
         $this->setName(self::COMMAND_NAME);
+        $this->setDescription('Removes the commit hooks');
     }
 
     /**

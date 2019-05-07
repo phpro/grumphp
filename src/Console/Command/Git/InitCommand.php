@@ -66,6 +66,7 @@ class InitCommand extends Command
     protected function configure()
     {
         $this->setName(self::COMMAND_NAME);
+        $this->setDescription('Registers the Git hooks');
     }
 
     /**
