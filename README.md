@@ -121,6 +121,7 @@ parameters:
         robo: ~
         securitychecker: ~
         shell: ~
+        twigcs: ~
         xmllint: ~
         yamllint: ~
     testsuites: []
