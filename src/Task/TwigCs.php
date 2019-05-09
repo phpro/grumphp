@@ -43,6 +43,11 @@ class TwigCs extends AbstractExternalTask
     {
         $config = $this->getConfiguration();
 
+        $files = $context->getFiles()->extensions(['twig']);
+        if (0 === \count($files)) {
+            return TaskResult::createSkipped($this, $context);
+        }
+
         $arguments = $this->processBuilder->createArgumentsForCommand('twigcs');
         $arguments->add($config['path']);
 
