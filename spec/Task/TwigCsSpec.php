@@ -43,6 +43,7 @@ class TwigCsSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('path');
         $options->getDefinedOptions()->shouldContain('severity');
         $options->getDefinedOptions()->shouldContain('ruleset');
+        $options->getDefinedOptions()->shouldContain('triggered_by');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)

@@ -25,11 +25,13 @@ class TwigCs extends AbstractExternalTask
             'path' => '.',
             'severity' => 'warning',
             'ruleset' => 'Allocine\Twigcs\Ruleset\Official',
+            'triggered_by' => ['twig'],
         ]);
 
         $resolver->addAllowedTypes('path', ['string']);
         $resolver->addAllowedTypes('severity', ['string']);
         $resolver->addAllowedTypes('ruleset', ['string']);
+        $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
     }
@@ -43,7 +45,7 @@ class TwigCs extends AbstractExternalTask
     {
         $config = $this->getConfiguration();
 
-        $files = $context->getFiles()->extensions(['twig']);
+        $files = $context->getFiles()->extensions($config['triggered_by']);
         if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
