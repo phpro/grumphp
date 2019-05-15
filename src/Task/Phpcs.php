@@ -51,7 +51,7 @@ class Phpcs extends AbstractExternalTask
         $resolver->addAllowedTypes('triggered_by', ['array']);
         $resolver->addAllowedTypes('report', ['null', 'string']);
         $resolver->addAllowedTypes('report_width', ['null', 'int']);
-        $resolver->addAllowedTypes('standard', ['array']);
+        $resolver->addAllowedTypes('exclude', ['array']);
 
         return $resolver;
     }
