@@ -29,6 +29,7 @@ parameters:
             ignore_patterns: []
             sniffs: []
             triggered_by: [php]
+            exclude: []
             
 ```
 
@@ -122,6 +123,12 @@ This is a list of sniffs that need to be executed. Leave this option blank to ru
 *Default: [php]:
 
 This is a list of extensions to be sniffed. 
+
+**exclude**
+
+*Default: []*
+
+A list of rules that should not be checked. Leave this option blank to run all configured rules for the selected standard.
 
 ## Framework presets
 
