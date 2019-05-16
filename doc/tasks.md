@@ -53,6 +53,7 @@ parameters:
         robo: ~
         securitychecker: ~
         shell: ~
+        twigcs: ~
         xmllint: ~
         yamllint: ~
 ```
@@ -107,6 +108,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Robo](tasks/robo.md)
 - [Security Checker](tasks/securitychecker.md)
 - [Shell](tasks/shell.md)
+- [TwigCs](tasks/twigcs.md)
 - [XmlLint](tasks/xmllint.md)
 - [YamlLint](tasks/yamllint.md)
 
