@@ -26,11 +26,25 @@ class TasksCollection extends ArrayCollection
     public function filterByTestSuite(TestSuiteInterface $testSuite = null): self
     {
         if (null === $testSuite) {
-            return new self($this->toArray());
+            return $this;
         }
 
         return $this->filter(function (TaskInterface $task) use ($testSuite) {
             return \in_array($task->getName(), $testSuite->getTaskNames(), true);
+        });
+    }
+
+    /**
+     * @param string[] $tasks
+     */
+    public function filterByTaskNames(array $tasks): self
+    {
+        if (empty($tasks)) {
+            return $this;
+        }
+
+        return $this->filter(function (TaskInterface $task) use ($tasks) {
+            return \in_array($task->getName(), $tasks, true);
         });
     }
 

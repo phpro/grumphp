@@ -42,3 +42,12 @@ php ./vendor/bin/grumphp run --testsuite=mytestsuite
 
 This command can also be used for continious integration.
 More information about the testsuites can be found in the [testsuites documentation](testsuites.md).
+
+If you want to run only a subset of the configured tasks, you can run the command with the `--tasks` option:
+
+```sh
+php ./vendor/bin/grumphp run --tasks=task1,task2
+```
+
+The `--tasks` value has to be a comma-separated string of task names that match the keys in the `tasks` section 
+of the `grumphp.yml` file. See [#580](https://github.com/phpro/grumphp/issues/580) for a more exhaustive explanation.

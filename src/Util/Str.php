@@ -2,7 +2,7 @@
 
 namespace GrumPHP\Util;
 
-class Str
+final class Str
 {
     /**
      * String contains one of the provided needles
@@ -16,5 +16,16 @@ class Str
         }
 
         return false;
+    }
+
+    /**
+     * Split $value on ",", trim the individual parts and
+     * de-deduplicate the remaining values
+     */
+    public static function explodeWithCleanup(string $delimiter, string $value): array
+    {
+        return array_unique(array_map(function (string $value) {
+            return trim($value);
+        }, explode($delimiter, $value)));
     }
 }

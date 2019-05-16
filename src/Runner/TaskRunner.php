@@ -69,6 +69,7 @@ class TaskRunner
         $tasks = $this->tasks
             ->filterByContext($runnerContext->getTaskContext())
             ->filterByTestSuite($runnerContext->getTestSuite())
+            ->filterByTaskNames($runnerContext->getTasks())
             ->sortByPriority($this->grumPHP);
         $taskResults = new TaskResultCollection();
 

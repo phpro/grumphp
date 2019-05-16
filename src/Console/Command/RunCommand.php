@@ -11,6 +11,7 @@ use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\Locator\RegisteredFiles;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\Context\RunContext;
+use GrumPHP\Util\Str;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -51,6 +52,13 @@ class RunCommand extends Command
             'Specify which testsuite you want to run.',
             null
         );
+        $this->addOption(
+            'tasks',
+            null,
+            InputOption::VALUE_REQUIRED,
+            'Specify which tasks you want to run (comma separated). Example --tasks=task1,task2',
+            null
+        );
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -58,9 +66,12 @@ class RunCommand extends Command
         $files = $this->getRegisteredFiles();
         $testSuites = $this->grumPHP->getTestSuites();
 
+        $tasks = Str::explodeWithCleanup(',', $input->getOption("tasks") ?? '');
+
         $context = new TaskRunnerContext(
             new RunContext($files),
-            (bool) $input->getOption('testsuite') ? $testSuites->getRequired($input->getOption('testsuite')) : null
+            (bool) $input->getOption('testsuite') ? $testSuites->getRequired($input->getOption('testsuite')) : null,
+            $tasks
         );
 
         return $this->taskRunner()->run($output, $context);

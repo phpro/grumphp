@@ -37,6 +37,20 @@ class TaskRunnerContextSpec extends ObjectBehavior
         $this->getTestSuite()->shouldBe(null);
     }
 
+    function it_has_no_tasks()
+    {
+        $this->hasTasks()->shouldBe(false);
+        $this->getTasks()->shouldBe([]);
+    }
+
+    function it_has_tasks(ContextInterface $context, TestSuiteInterface $testSuite)
+    {
+        $tasks = ["task_1"];
+        $this->beConstructedWith($context, $testSuite, $tasks);
+        $this->hasTasks()->shouldBe(true);
+        $this->getTasks()->shouldBe($tasks);
+    }
+
     function it_knows_to_skip_the_success_message()
     {
         $this->skipSuccessOutput()->shouldBe(false);
