@@ -28,14 +28,11 @@ class TaskResultCollection extends ArrayCollection
         return false;
     }
 
-    /**
-     * @return int
-     */
     public function getResultCode(): int
     {
         $resultCode = static::NO_TASKS;
         foreach ($this as $taskResult) {
-            $resultCode = max($resultCode, $taskResult->getResultCode());
+            $resultCode = (int) max($resultCode, $taskResult->getResultCode());
         }
 
         return $resultCode;

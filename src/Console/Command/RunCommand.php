@@ -53,9 +53,6 @@ class RunCommand extends Command
         );
     }
 
-    /**
-     * @return int
-     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $files = $this->getRegisteredFiles();
