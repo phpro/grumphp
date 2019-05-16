@@ -12,21 +12,21 @@ The default configuration looks like:
 parameters:
     tasks:
         composer_normalize:
-            indent_size: 4
-            indent_style: space
+            indent_size: ~
+            indent_style: ~
             no_update_lock: true
             verbose: false
 ```
 
 **indent_size**
 
-*Default: 4*
+*Default: null*
 
 Indent size (an integer greater than 0); must be used with the `indent_style` option
 
 **indent_style**
 
-*Default: space*
+*Default: null*
 
 Indent style (one of "space", "tab"); must be used with the `indent_size` option
 

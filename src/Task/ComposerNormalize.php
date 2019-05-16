@@ -9,22 +9,13 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class ComposerNormalize.
- */
 class ComposerNormalize extends AbstractExternalTask
 {
-    /**
-     * {@inheritdoc}
-     */
     public function canRunInContext(ContextInterface $context): bool
     {
         return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
@@ -44,17 +35,11 @@ class ComposerNormalize extends AbstractExternalTask
         return $resolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'composer_normalize';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
