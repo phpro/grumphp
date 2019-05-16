@@ -46,6 +46,7 @@
         "friendsofphp/php-cs-fixer": "Lets GrumPHP automatically fix your codestyle.",
         "infection/infection": "Lets GrumPHP evaluate the quality your unit tests",
         "jakub-onderka/php-parallel-lint": "Lets GrumPHP quickly lint your entire code base.",
+        "localheinz/composer-normalize": "Lets GrumPHP tidy and normalize your composer.json file.",
         "maglnet/composer-require-checker": "Lets GrumPHP analyze composer dependencies.",
         "malukenho/kawaii-gherkin": "Lets GrumPHP lint your Gherkin files.",
         "nikic/php-parser": "Lets GrumPHP run static analyses through your PHP files.",
