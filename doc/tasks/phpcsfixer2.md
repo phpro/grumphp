@@ -49,7 +49,7 @@ When no cache_file is set, the default file `.php_cs.cache` will be used.
 
 *Default: null*
 
-By defaut the `.php_cs` wil be used.
+By default the `.php_cs` wil be used.
 You can specify an alternate location for this file by changing this option.
 
 
