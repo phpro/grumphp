@@ -52,6 +52,7 @@ class PhpcsSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('ignore_patterns');
         $options->getDefinedOptions()->shouldContain('sniffs');
         $options->getDefinedOptions()->shouldContain('triggered_by');
+        $options->getDefinedOptions()->shouldContain('exclude');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)

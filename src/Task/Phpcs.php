@@ -36,6 +36,7 @@ class Phpcs extends AbstractExternalTask
             'triggered_by' => ['php'],
             'report' => 'full',
             'report_width' => null,
+            'exclude' => [],
         ]);
 
         $resolver->addAllowedTypes('standard', ['array', 'null', 'string']);
@@ -50,6 +51,7 @@ class Phpcs extends AbstractExternalTask
         $resolver->addAllowedTypes('triggered_by', ['array']);
         $resolver->addAllowedTypes('report', ['null', 'string']);
         $resolver->addAllowedTypes('report_width', ['null', 'int']);
+        $resolver->addAllowedTypes('exclude', ['array']);
 
         return $resolver;
     }
@@ -117,6 +119,7 @@ class Phpcs extends AbstractExternalTask
         $arguments->addOptionalIntegerArgument('--warning-severity=%s', $config['warning_severity']);
         $arguments->addOptionalCommaSeparatedArgument('--sniffs=%s', $config['sniffs']);
         $arguments->addOptionalCommaSeparatedArgument('--ignore=%s', $config['ignore_patterns']);
+        $arguments->addOptionalCommaSeparatedArgument('--exclude=%s', $config['exclude']);
 
         return $arguments;
     }
