@@ -25,9 +25,10 @@ parameters:
 
 **path**
 
-*Default: '.' (actual directory)*
+*Default: null*
 
-If you want to use a sub-directory where twigcs is apply.
+By default `.` (current folder) will be used.
+You can specify an alternate location by changing this option.
 
 **severity**
 
