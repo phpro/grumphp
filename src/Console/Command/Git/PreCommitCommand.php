@@ -48,6 +48,7 @@ class PreCommitCommand extends Command
     protected function configure()
     {
         $this->setName(self::COMMAND_NAME);
+        $this->setDescription('Executed by the pre-commit hook');
         $this->addOption(
             'skip-success-output',
             null,

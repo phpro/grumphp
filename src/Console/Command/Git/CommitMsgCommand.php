@@ -57,6 +57,7 @@ class CommitMsgCommand extends Command
     protected function configure()
     {
         $this->setName(self::COMMAND_NAME);
+        $this->setDescription('Executed by the commit-msg commit hook');
         $this->addOption('git-user', null, InputOption::VALUE_REQUIRED, 'The configured git user name.', '');
         $this->addOption('git-email', null, InputOption::VALUE_REQUIRED, 'The configured git email.', '');
         $this->addArgument('commit-msg-file', InputArgument::REQUIRED, 'The configured commit message file.');
