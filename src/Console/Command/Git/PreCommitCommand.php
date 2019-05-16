@@ -57,9 +57,6 @@ class PreCommitCommand extends Command
         );
     }
 
-    /**
-     * @return int|void
-     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new ConsoleIO($input, $output);
