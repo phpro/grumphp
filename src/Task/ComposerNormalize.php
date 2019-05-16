@@ -52,7 +52,7 @@ class ComposerNormalize extends AbstractExternalTask
         }
 
         $arguments = $this->processBuilder->createArgumentsForCommand('composer');
-
+        $arguments->add('normalize');
         $arguments->add('--dry-run');
 
         if ($config['indent_size'] !== null && $config['indent_style'] !== null) {
@@ -60,18 +60,14 @@ class ComposerNormalize extends AbstractExternalTask
             $arguments->addOptionalArgument('--indent-size=%s', $config['indent_size']);
         }
 
-        $arguments->addOptionalArgument('--no-update-lock', !$config['no_update_lock']);
-        $arguments->addOptionalArgument('-q', !$config['verbose']);
-
-        $arguments->add('normalize');
+        $arguments->addOptionalArgument('--no-update-lock', $config['no_update_lock']);
+        $arguments->addOptionalArgument('-q', $config['verbose']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
 
         if (!$process->isSuccessful()) {
-            $messages = [$this->formatter->format($process)];
-
-            return TaskResult::createFailed($this, $context, $messages);
+            return TaskResult::createFailed($this, $context, $this->formatter->format($process));
         }
 
         return TaskResult::createPassed($this, $context);
