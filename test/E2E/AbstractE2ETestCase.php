@@ -75,11 +75,14 @@ abstract class AbstractE2ETestCase extends TestCase
                 'init',
                 '--name=grumphp/testsuite'.$this->hash,
                 '--type=library',
-                '--require-dev=phpro/grumphp:*',
+                '--require-dev=phpro/grumphp:'.$this->detectCurrentGrumphpGitBranchForComposerWithFallback(),
                 '--require-dev=phpunit/phpunit:*',
                 '--repository='.json_encode([
                     'type' => 'path',
                     'url' => PROJECT_BASE_PATH,
+                    'options' => [
+                        'symlink' => false,
+                    ],
                 ]),
                 '--no-interaction',
             ]),
@@ -101,6 +104,30 @@ abstract class AbstractE2ETestCase extends TestCase
         return $composerFile;
     }
 
+    private function detectCurrentGrumphpGitBranchForComposerWithFallback(): string
+    {
+        $gitExecutable = $this->executableFinder->find('git');
+        $process = new Process([$gitExecutable, 'rev-parse', '--abbrev-ref', 'HEAD']);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            return '*';
+        }
+
+        // Detached HEAD (for CI)
+        $version = trim($process->getOutput());
+        if ('HEAD' === $version) {
+            $process = new Process([$gitExecutable, 'rev-parse', '--verify', 'HEAD']);
+            $process->run();
+            if (!$process->isSuccessful()) {
+                return '*';
+            }
+            $version = trim($process->getOutput());
+        }
+
+        return 'dev-'.$version;
+    }
+
     protected function mergeComposerConfig(string $composerFile, array $config)
     {
         $this->assertFileExists($composerFile);
@@ -110,13 +137,13 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->dumpFile($composerFile, json_encode($newSource,  $flags));
     }
 
-    protected function ensureHooksExist()
+    protected function ensureHooksExist(string $containsPattern = '{grumphp}')
     {
         $hooks = ['pre-commit', 'commit-msg'];
         foreach ($hooks as $hook) {
             $hookFile = $this->rootDir.$this->useCorrectDirectorySeparator('/.git/hooks/'.$hook);
             $this->assertFileExists($hookFile);
-            $this->assertContains('grumphp', file_get_contents($hookFile));
+            $this->assertRegExp($containsPattern, file_get_contents($hookFile));
         }
     }
 
@@ -286,6 +313,11 @@ abstract class AbstractE2ETestCase extends TestCase
     protected function useCorrectDirectorySeparator(string $path): string
     {
         return str_replace('/', DIRECTORY_SEPARATOR, $path);
+    }
+
+    protected function useUnixDirectorySeparator(string $path): string
+    {
+        return str_replace('\\', '/', $path);
     }
 
     protected function prefixPhpExecutableOnWindows(array $command): array

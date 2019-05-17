@@ -6,6 +6,7 @@ parameters:
   git_hook_variables:
     VAGRANT_HOST_DIR: .
     VAGRANT_PROJECT_DIR: /var/www
+    EXEC_GRUMPHP_COMMAND: exec
   additional_info: ~
   tasks: []
   testsuites: []
