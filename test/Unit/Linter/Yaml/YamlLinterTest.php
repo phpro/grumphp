@@ -169,6 +169,7 @@ class YamlLinterTest extends TestCase
         }
 
         $this->linter->setExceptionOnInvalidType(true);
+        $this->linter->setParseCustomTags(true);
         $this->linter->setParseConstants(true);
         $fixture = 'constant-support.yml';
         $this->validateFixture($fixture, 0);

@@ -36,4 +36,7 @@ parameters:
       paratest:
           testsuite: E2E
           metadata:
-            priority: 110000
+            priority: 50
+  testsuites:
+      git_pre_commit:
+          tasks: [phpcs, phpspec, phpunit, composer, yamllint, phplint, phpparser]

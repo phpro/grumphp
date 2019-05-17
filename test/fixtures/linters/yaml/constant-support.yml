@@ -1,1 +1,1 @@
-foo: !php/const:PHP_EOL
+foo: !php/const PHP_EOL

@@ -67,15 +67,15 @@ class Paratest extends AbstractExternalTask
         }
 
         $arguments = $this->processBuilder->createArgumentsForCommand('paratest');
-        $arguments->addOptionalArgument('-p %s', $config['processes']);
+        $arguments->addOptionalArgument('-p=%s', $config['processes']);
         $arguments->addOptionalArgument('-f', $config['functional']);
-        $arguments->addOptionalArgument('-c %s', $config['configuration']);
-        $arguments->addOptionalArgument('--phpunit %s', $config['phpunit']);
-        $arguments->addOptionalArgument('--runner %s', $config['runner']);
-        $arguments->addOptionalArgument('--coverage-xml %s', $config['coverage-xml']);
-        $arguments->addOptionalArgument('--coverage-html %s', $config['coverage-html']);
-        $arguments->addOptionalArgument('--log-junit %s', $config['log-junit']);
-        $arguments->addOptionalArgument('--testsuite %s', $config['testsuite']);
+        $arguments->addOptionalArgument('-c=%s', $config['configuration']);
+        $arguments->addOptionalArgument('--phpunit=%s', $config['phpunit']);
+        $arguments->addOptionalArgument('--runner=%s', $config['runner']);
+        $arguments->addOptionalArgument('--coverage-xml=%s', $config['coverage-xml']);
+        $arguments->addOptionalArgument('--coverage-html=%s', $config['coverage-html']);
+        $arguments->addOptionalArgument('--log-junit=%s', $config['log-junit']);
+        $arguments->addOptionalArgument('--testsuite=%s', $config['testsuite']);
         $arguments->addOptionalCommaSeparatedArgument('--group=%s', $config['group']);
 
         $process = $this->processBuilder->buildProcess($arguments);
