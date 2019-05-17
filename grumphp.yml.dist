@@ -33,3 +33,7 @@ parameters:
             blacklist: [var_dump]
         metadata:
           priority: 100000
+      paratest:
+          testsuite: E2E
+          metadata:
+            priority: 110000

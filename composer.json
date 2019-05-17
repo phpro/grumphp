@@ -4,7 +4,7 @@
     "type": "composer-plugin",
     "license": "MIT",
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.1",
         "composer-plugin-api": "~1.0",
         "composer/composer": "^1.0",
         "doctrine/collections": "~1.2",
@@ -22,15 +22,12 @@
         "symfony/yaml": "~3.4|~4.0"
     },
     "require-dev": {
+        "brianium/paratest": "^3.0",
         "friendsofphp/php-cs-fixer": "~2",
         "jakub-onderka/php-parallel-lint": "^0.9.2",
         "nikic/php-parser": "~2.1",
-        "phpspec/phpspec": "^3.2.2",
-        "phpspec/prophecy": "^1.6.2",
-        "phpunit/phpunit": "^6.5|^7.0",
-        "sebastian/comparator": "^2.1",
-        "sebastian/diff": "^2.0",
-        "sebastian/exporter": "^3.1",
+        "phpspec/phpspec": "^5.1",
+        "phpunit/phpunit": "^8.1",
         "sensiolabs/security-checker": "^5.0",
         "squizlabs/php_codesniffer": "~2.9"
     },

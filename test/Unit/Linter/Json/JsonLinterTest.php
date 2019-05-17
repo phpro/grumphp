@@ -18,7 +18,7 @@ class JsonLinterTest extends TestCase
      */
     protected $linter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->linter = new JsonLinter(
             new Filesystem(),

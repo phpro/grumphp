@@ -24,7 +24,7 @@ class ProcessFactorySpec extends ObjectBehavior
         $process->getCommandLine()->shouldBeQuoted('/usr/bin/grumphp');
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'beQuoted' => function ($subject, $string) {

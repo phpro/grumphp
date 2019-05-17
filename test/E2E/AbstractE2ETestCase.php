@@ -33,7 +33,7 @@ abstract class AbstractE2ETestCase extends TestCase
      */
     protected $rootDir;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->filesystem = new Filesystem();
         $this->executableFinder = new ExecutableFinder();
@@ -50,7 +50,7 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->appendToGitignore(['vendor']);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->removeRootDir();
     }
@@ -117,6 +117,14 @@ abstract class AbstractE2ETestCase extends TestCase
         // Detached HEAD (for CI)
         $version = trim($process->getOutput());
         if ('HEAD' === $version) {
+            // Check if current commit matches a tag:
+            $process = new Process([$gitExecutable, 'describe', '--exact-match']);
+            $process->run();
+            if ($process->isSuccessful()) {
+                return trim($process->getOutput());
+            }
+
+            // Load the sha hash instead
             $process = new Process([$gitExecutable, 'rev-parse', '--verify', 'HEAD']);
             $process->run();
             if (!$process->isSuccessful()) {
@@ -244,7 +252,7 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->runCommand('commit', $commit = new Process([$git, 'commit', '-mtest'], $this->rootDir));
 
         $allOutput = $commit->getOutput().$commit->getErrorOutput();
-        $this->assertContains('GrumPHP', $allOutput);
+        $this->assertStringContainsString('GrumPHP', $allOutput);
     }
 
     protected function gitAddPath(string $path)
