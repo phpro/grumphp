@@ -26,6 +26,6 @@ final class Str
     {
         return array_unique(array_map(function (string $value) {
             return trim($value);
-        }, explode($delimiter, $value)));
+        }, array_filter(explode($delimiter, $value))));
     }
 }
