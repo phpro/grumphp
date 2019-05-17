@@ -22,7 +22,7 @@
         "symfony/yaml": "~3.4|~4.0"
     },
     "require-dev": {
-        "brianium/paratest": "^3.0",
+        "brianium/paratest": "^3.0|^2.1",
         "friendsofphp/php-cs-fixer": "~2",
         "jakub-onderka/php-parallel-lint": "^0.9.2",
         "nikic/php-parser": "~2.1",

@@ -55,9 +55,6 @@ install:
   - ps: Add-Content -Path php.ini -Value 'extension=php_curl.dll'
   - ps: Add-Content -Path php.ini -Value 'extension=php_mbstring.dll'
   - ps: Add-Content -Path php.ini -Value 'extension=php_openssl.dll'
-  - ps: Add-Content -Path php.ini -Value 'extension=php_soap.dll'
-  - ps: Add-Content -Path php.ini -Value 'extension=php_mysqli.dll'
-  - ps: Add-Content -Path php.ini -Value 'extension=php_intl.dll'
   - ps: php --version
 
   # Prepare composer
@@ -65,6 +62,7 @@ install:
   - ps: If ((Test-Path $Env:composer_installer) -eq $False) { appveyor-retry appveyor DownloadFile https://getcomposer.org/installer -FileName $Env:composer_installer }
   - ps: If ((Test-Path $Env:composer_executable) -eq $False) { php $Env:composer_installer --install-dir=$Env:composer_directory }
   - ps: Set-Content -Path ($Env:composer_directory + '\composer.bat') -Value ('@php ' + $Env:composer_executable + ' %*')
+  - ps: Copy-Item "$Env:composer_executable" "$Env:composer_directory\composer"
 
   # Install dependencies
   - ps: cd $Env:project_directory
