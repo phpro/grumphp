@@ -20,5 +20,9 @@ class StrSpec extends ObjectBehavior
         $this::explodeWithCleanup(',', ' a random,list, of things ')->shouldBe([
             'a random', 'list', 'of things'
         ]);
+        $this::explodeWithCleanup(',', 'double,double')->shouldBe([
+            'double',
+        ]);
+        $this::explodeWithCleanup(',', '')->shouldBe([]);
     }
 }
