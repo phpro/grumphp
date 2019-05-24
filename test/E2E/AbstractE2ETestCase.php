@@ -46,7 +46,7 @@ abstract class AbstractE2ETestCase extends TestCase
         try {
             $this->filesystem->mkdir($this->rootDir);
         } catch (\Throwable $e) {
-            throw new \RuntimeException(json_encode(stat($this->rootDir)));
+            throw new \RuntimeException(json_encode($this->debugWhatsInDirectory(sys_get_temp_dir())));
         }
 
         // Basic actions
@@ -350,7 +350,7 @@ abstract class AbstractE2ETestCase extends TestCase
 
         return array_map(
             function(\SplFileInfo $item): string {
-                return $item->getPathname();
+                return $item->getPathname() . ' ('.$item->getPerms().')';
             },
             array_values(iterator_to_array($iterator))
         );
