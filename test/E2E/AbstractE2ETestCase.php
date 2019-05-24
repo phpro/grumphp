@@ -38,16 +38,13 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->executableFinder = new ExecutableFinder();
 
         $tmpDir = sys_get_temp_dir().$this->useCorrectDirectorySeparator('/grumpytests');
+        $this->mkdir($tmpDir);
+
         $this->hash = md5(get_class($this).'::'.$this->getName());
         $this->rootDir = $tmpDir.$this->useCorrectDirectorySeparator('/'.$this->hash);
 
         $this->removeRootDir();
-
-        try {
-            $this->filesystem->mkdir($this->rootDir);
-        } catch (\Throwable $e) {
-            throw new \RuntimeException(json_encode($this->debugWhatsInDirectory(sys_get_temp_dir())));
-        }
+        $this->filesystem->mkdir($this->rootDir);
 
         // Basic actions
         $this->initializeGit();
