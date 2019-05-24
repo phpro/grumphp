@@ -91,6 +91,8 @@ abstract class AbstractE2ETestCase extends TestCase
 
         $this->runCommand('initialize composer', $process);
 
+        var_dump($path, is_dir($path), $process->getCommandLine(), $process->getOutput(), $process->getErrorOutput());
+
         $composerFile = $path.$this->useCorrectDirectorySeparator('/composer.json');
 
         $this->mergeComposerConfig($composerFile, [
