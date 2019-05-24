@@ -43,12 +43,11 @@ abstract class AbstractE2ETestCase extends TestCase
 
         $this->removeRootDir();
 
-        // Debug what is still in root:
-        if ($this->filesystem->exists($this->rootDir)) {
-            throw new \RuntimeException(json_encode($this->debugWhatsInDirectory($this->rootDir)));
+        try {
+            $this->filesystem->mkdir($this->rootDir);
+        } catch (\Throwable $e) {
+            throw new \RuntimeException(json_encode($this->debugWhatsInDirectory($this->rootDir)), 0, $e);
         }
-
-        $this->filesystem->mkdir($this->rootDir);
 
         // Basic actions
         $this->initializeGit();
