@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHPTest\E2E;
 
-use GrumPHP\Util\Platform;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
@@ -44,6 +42,12 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->rootDir = $tmpDir.$this->useCorrectDirectorySeparator('/'.$this->hash);
 
         $this->removeRootDir();
+
+        // Debug what is still in root:
+        if ($this->filesystem->exists($this->rootDir)) {
+            throw new \RuntimeException(json_encode($this->debugWhatsInDirectory($this->rootDir)));
+        }
+
         $this->filesystem->mkdir($this->rootDir);
 
         // Basic actions
@@ -336,16 +340,20 @@ abstract class AbstractE2ETestCase extends TestCase
             $this->filesystem->chmod($gitDir, 0777, 0000, true);
         }
 
-        try {
+        $this->filesystem->remove($this->rootDir);
+    }
 
-            $this->filesystem->remove($this->rootDir);
-        } catch (IOException $e) {
+    protected function debugWhatsInDirectory(string $directory): array
+    {
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS)
+        );
 
-            $directory = new \RecursiveDirectoryIterator($this->rootDir);
-            $iterator = new \RecursiveIteratorIterator($directory);
-            var_dump(iterator_to_array($iterator));
-
-            throw $e;
-        }
+        return array_map(
+            function(\SplFileInfo $item): string {
+                return $item->getPathname();
+            },
+            array_values(iterator_to_array($iterator))
+        );
     }
 }
