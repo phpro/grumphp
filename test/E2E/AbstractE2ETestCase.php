@@ -46,7 +46,7 @@ abstract class AbstractE2ETestCase extends TestCase
         try {
             $this->filesystem->mkdir($this->rootDir);
         } catch (\Throwable $e) {
-            throw new \RuntimeException(json_encode($this->debugWhatsInDirectory($this->rootDir)), 0, $e);
+            throw new \RuntimeException(json_encode(stat($this->rootDir)));
         }
 
         // Basic actions
