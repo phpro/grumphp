@@ -70,7 +70,7 @@ abstract class AbstractE2ETestCase extends TestCase
     protected function initializeComposer(string $path): string
     {
         $process = new Process(
-            $this->prefixPhpExecutableOnWindows([
+            [
                 $this->executableFinder->find('composer'),
                 'init',
                 '--name=grumphp/testsuite'.$this->hash,
@@ -85,13 +85,11 @@ abstract class AbstractE2ETestCase extends TestCase
                     ],
                 ]),
                 '--no-interaction',
-            ]),
+            ],
             $path
         );
 
         $this->runCommand('initialize composer', $process);
-
-        var_dump($path, is_dir($path), $process->getCommandLine(), $process->getOutput(), $process->getErrorOutput());
 
         $composerFile = $path.$this->useCorrectDirectorySeparator('/composer.json');
 
@@ -235,12 +233,12 @@ abstract class AbstractE2ETestCase extends TestCase
     protected function installComposer(string $path)
     {
         $process = new Process(
-            $this->prefixPhpExecutableOnWindows([
+            [
                 $this->executableFinder->find('composer'),
                 'install',
                 '--optimize-autoloader',
                 '--no-interaction',
-            ]),
+            ],
             $path
         );
 
@@ -328,18 +326,6 @@ abstract class AbstractE2ETestCase extends TestCase
     protected function useUnixDirectorySeparator(string $path): string
     {
         return str_replace('\\', '/', $path);
-    }
-
-    protected function prefixPhpExecutableOnWindows(array $command): array
-    {
-        if (!Platform::isWindows()) {
-            return $command;
-        }
-
-        return array_merge(
-            [$this->executableFinder->find('php')],
-            $command
-        );
     }
 
     protected function removeRootDir()
