@@ -6,6 +6,7 @@ namespace GrumPHPTest\E2E;
 
 use GrumPHP\Util\Platform;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
@@ -330,11 +331,21 @@ abstract class AbstractE2ETestCase extends TestCase
 
     protected function removeRootDir()
     {
-        // Change permissions on git dir since windows is not allowing us to remove it.
-        if (Platform::isWindows() && $this->filesystem->exists($gitDir = $this->relativeRootPath('.git'))) {
+        // Change permissions on git dir since it might not be removeable.
+        if ($this->filesystem->exists($gitDir = $this->relativeRootPath('.git'))) {
             $this->filesystem->chmod($gitDir, 0777, 0000, true);
         }
 
-        $this->filesystem->remove($this->rootDir);
+        try {
+
+            $this->filesystem->remove($this->rootDir);
+        } catch (IOException $e) {
+
+            $directory = new \RecursiveDirectoryIterator($this->rootDir);
+            $iterator = new \RecursiveIteratorIterator($directory);
+            var_dump(iterator_to_array($iterator));
+
+            throw $e;
+        }
     }
 }

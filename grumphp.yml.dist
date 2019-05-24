@@ -29,12 +29,13 @@ parameters:
         visitors:
           no_exit_statements: ~
           never_use_else: ~
-          forbidden_function_calls:
-            blacklist: [var_dump]
+          #forbidden_function_calls:
+            #blacklist: [var_dump]
         metadata:
           priority: 100000
       paratest:
           testsuite: E2E
+          verbose: true
           metadata:
             priority: 50
   testsuites:

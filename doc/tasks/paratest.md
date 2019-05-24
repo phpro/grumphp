@@ -29,6 +29,7 @@ parameters:
             coverage-html: null
             log-junit: null
             testsuite: null
+            verbose: false
 ```
 
 **processes**
@@ -103,5 +104,12 @@ Log test execution in JUnit XML format to file.
 *Default: null*
 
 Filter which testsuite to run. Run multiple suits by separating them with ",". Example:  --testsuite suite1,suite2
+
+
+**verbose**
+
+*Default: false*
+
+Adds additional debugging information to the screen when running paratest.
 
 

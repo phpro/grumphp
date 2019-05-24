@@ -35,6 +35,7 @@ class Paratest extends AbstractExternalTask
                 'log-junit'      => null,
                 'testsuite'      => null,
                 'config'         => null,
+                'verbose'        => false,
             ]
         );
 
@@ -48,6 +49,7 @@ class Paratest extends AbstractExternalTask
         $resolver->addAllowedTypes('coverage-html', ['null', 'string']);
         $resolver->addAllowedTypes('log-junit', ['null', 'string']);
         $resolver->addAllowedTypes('testsuite', ['null', 'string']);
+        $resolver->addAllowedTypes('verbose', ['bool']);
 
         return $resolver;
     }
@@ -76,6 +78,7 @@ class Paratest extends AbstractExternalTask
         $arguments->addOptionalArgument('--coverage-html=%s', $config['coverage-html']);
         $arguments->addOptionalArgument('--log-junit=%s', $config['log-junit']);
         $arguments->addOptionalArgument('--testsuite=%s', $config['testsuite']);
+        $arguments->addOptionalArgument('--verbose=1', $config['verbose']);
         $arguments->addOptionalCommaSeparatedArgument('--group=%s', $config['group']);
 
         $process = $this->processBuilder->buildProcess($arguments);
