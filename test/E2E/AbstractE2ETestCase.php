@@ -38,7 +38,7 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->executableFinder = new ExecutableFinder();
 
         $tmpDir = sys_get_temp_dir().$this->useCorrectDirectorySeparator('/grumpytests');
-        $this->mkdir($tmpDir);
+        $this->filesystem->mkdir($tmpDir);
 
         $this->hash = md5(get_class($this).'::'.$this->getName());
         $this->rootDir = $tmpDir.$this->useCorrectDirectorySeparator('/'.$this->hash);
