@@ -36,6 +36,7 @@ parameters:
       paratest:
           testsuite: E2E
           verbose: true
+          functional: true
           metadata:
             priority: 50
   testsuites:
