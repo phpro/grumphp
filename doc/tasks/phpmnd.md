@@ -17,7 +17,6 @@ The task lives under the `phpmnd` namespace and has following configurable param
 parameters:
     tasks:
         phpmnd:
-            directory: .
             whitelist_patterns: []
             exclude: []
             exclude_name: []
@@ -28,13 +27,7 @@ parameters:
             ignore_strings: []
             strings: false
             triggered_by: ['php']
-```
-
-**directory**
-
-*Default: .*
-
-With this parameter you can define which directory you want to run `phpmnd` in (must be relative to cwd).
+`
 
 **whitelist_patterns**
 

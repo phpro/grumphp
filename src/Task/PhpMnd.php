@@ -25,7 +25,6 @@ class PhpMnd extends AbstractExternalTask
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'directory' => '.',
             'whitelist_patterns' => [],
             'exclude' => [],
             'exclude_name' => [],
@@ -38,7 +37,6 @@ class PhpMnd extends AbstractExternalTask
             'triggered_by' => ['php'],
         ]);
 
-        $resolver->addAllowedTypes('directory', ['string']);
         $resolver->addAllowedTypes('whitelist_patterns', ['array']);
         $resolver->addAllowedTypes('exclude', ['array']);
         $resolver->addAllowedTypes('exclude_name', ['array']);
@@ -95,7 +93,7 @@ class PhpMnd extends AbstractExternalTask
         $arguments->addOptionalArgument('--strings', $config['strings']);
         $arguments->addOptionalCommaSeparatedArgument('--suffixes=%s', $config['triggered_by']);
         $arguments->add('--non-zero-exit-on-violation');
-        $arguments->add($config['directory']);
+        $arguments->addFiles($files);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
