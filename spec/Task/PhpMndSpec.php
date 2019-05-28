@@ -48,6 +48,7 @@ class PhpMndSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('exclude_path');
         $options->getDefinedOptions()->shouldContain('extensions');
         $options->getDefinedOptions()->shouldContain('hint');
+        $options->getDefinedOptions()->shouldContain('ignore_funcs');
         $options->getDefinedOptions()->shouldContain('ignore_numbers');
         $options->getDefinedOptions()->shouldContain('ignore_strings');
         $options->getDefinedOptions()->shouldContain('strings');
