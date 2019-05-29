@@ -24,6 +24,7 @@ parameters:
             exclude_path: []
             extensions: []
             hint: false
+            ignore_funcs: []
             ignore_numbers: []
             ignore_strings: []
             strings: false
@@ -116,6 +117,12 @@ You can use `all` to include all extensions. If an extension starts with minus (
 *Default: false*
 
 This parameter will suggest replacements for magic numbers based on your codebase constants.
+
+**ignore_funcs**
+
+*Default: []*
+
+This parameter will exclude a list of comma separated functions from the code analysis, when using the "argument" extension. Defaults to intval, floatval, strval.
 
 **ignore_numbers**
 

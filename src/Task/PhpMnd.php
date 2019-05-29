@@ -32,6 +32,7 @@ class PhpMnd extends AbstractExternalTask
             'exclude_path' => [],
             'extensions' => [],
             'hint' => false,
+            'ignore_funcs' => [],
             'ignore_numbers' => [],
             'ignore_strings' => [],
             'strings' => false,
@@ -45,6 +46,7 @@ class PhpMnd extends AbstractExternalTask
         $resolver->addAllowedTypes('exclude_path', ['array']);
         $resolver->addAllowedTypes('extensions', ['array']);
         $resolver->addAllowedTypes('hint', ['bool']);
+        $resolver->addAllowedTypes('ignore_funcs', ['array']);
         $resolver->addAllowedTypes('ignore_numbers', ['array']);
         $resolver->addAllowedTypes('ignore_strings', ['array']);
         $resolver->addAllowedTypes('strings', ['bool']);
@@ -90,6 +92,7 @@ class PhpMnd extends AbstractExternalTask
         $arguments->addArgumentArray('--exclude-path=%s', $config['exclude_path']);
         $arguments->addOptionalCommaSeparatedArgument('--extensions=%s', $config['extensions']);
         $arguments->addOptionalArgument('--hint', $config['hint']);
+        $arguments->addOptionalCommaSeparatedArgument('--ignore-funcs=%s', $config['ignore_funcs']);
         $arguments->addOptionalCommaSeparatedArgument('--ignore-numbers=%s', $config['ignore_numbers']);
         $arguments->addOptionalCommaSeparatedArgument('--ignore-strings=%s', $config['ignore_strings']);
         $arguments->addOptionalArgument('--strings', $config['strings']);
