@@ -236,7 +236,7 @@ class TaskRunnerSpec extends ObjectBehavior
         $this->run($runnerContext);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'containFailedTaskResult' => function (TaskResultCollection $taskResultCollection) {

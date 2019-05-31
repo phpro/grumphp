@@ -1,46 +1,70 @@
 build: false
+clone_folder: c:\projects\grumphp
+clone_depth: 1
 shallow_clone: false
 platform:
-  - x86
   - x64
-clone_folder: c:\projects\grumphp
 
 environment:
-    matrix:
-        - php_ver: 7.1.2
+  matrix:
+    - dependencies: highest
+      php_version: 7.1
+    - dependencies: highest
+      php_version: 7.2
+    - dependencies: highest
+      php_version: 7.3
+
+  project_directory: c:\projects\grumphp
+  composer_directory: c:\tools\composer
+  composer_executable: c:\tools\composer\composer.phar
+  composer_installer: c:\tools\composer\installer.php
+  php_root_directory: c:\tools\php
 
 cache:
-    - '%APPDATA%\Composer'
-    - c:\tools\php -> appveyor.yml
+  - c:\ProgramData\chocolatey\bin -> appveyor.yml
+  - c:\ProgramData\chocolatey\lib -> appveyor.yml
+  - c:\tools\composer -> appveyor.yml
+  - '%LOCALAPPDATA%\Composer -> appveyor.yml'
+  - c:\tools\php -> appveyor.yml
+
 init:
-    - SET PATH=C:\Program Files\OpenSSL;c:\tools\php71;C:\tools;%PATH%
-    - SET COMPOSER_NO_INTERACTION=1
-    - SET PHP=1
-    - SET ANSICON=121x90 (121x90)
+  - ps: $Env:php_directory = $Env:php_root_directory + '\' + $Env:php_version
+  - ps: $Env:exact_php_version = (((choco search php --exact --all-versions --limit-output | Select-String -pattern $Env:php_version) -replace '[php|]', '') | %{ New-Object System.Version $_ } | Sort-Object | Select-Object -Last 1).ToString()
+  - ps: $Env:PATH = $Env:php_directory + ';' + $Env:composer_directory + ';' + $Env:PATH
+  - ps: $Env:COMPOSER_NO_INTERACTION = 1
+  - ps: $Env:ANSICON = '121x90 (121x90)'
 
 install:
-    - ps: Set-Service wuauserv -StartupType Manual
-    - IF EXIST c:\tools\php71 (SET PHP=0)
-    - IF %PHP%==1 cinst -y OpenSSL.Light
-    - IF %PHP%==1 cinst -y php -version %php_ver%
-    - cd C:\tools\php71
-    - IF %PHP%==1 copy php.ini-production php.ini
-    - IF %PHP%==1 echo date.timezone="UTC" >> php.ini
-    - IF %PHP%==1 echo memory_limit=1024M >> php.ini
-    - IF %PHP%==1 echo extension_dir=ext >> php.ini
-    - IF %PHP%==1 echo extension=php_curl.dll >> php.ini
-    - IF %PHP%==1 echo extension=php_mbstring.dll >> php.ini
-    - IF %PHP%==1 echo extension=php_openssl.dll >> php.ini
-    - cd C:\tools
-    - appveyor DownloadFile https://getcomposer.org/composer.phar -FileName composer
+  # Install PHP
+  - ps: If ((Test-Path $Env:php_directory) -eq $False) { New-Item -Path $Env:php_directory -ItemType 'directory' }
+  - ps: $php_install_parameters = '"/DontAddToPath /InstallDir:' + $Env:php_directory + '"'
+  - ps: appveyor-retry choco upgrade php --yes --version=$Env:exact_php_version --params=$php_install_parameters
 
-before_test:
-    - cd C:\projects\grumphp
-    - php C:\tools\composer update --no-progress --profile --prefer-dist --no-scripts --no-interaction --no-suggest
-    - git config --global user.email "doesntmatter@dispostable.com"
-    - git config --global user.name "GrumPHP"
+  # Prepare PHP
+  - ps: cd $Env:php_directory
+  - ps: Copy-Item php.ini-production -Destination php.ini
+  - ps: Add-Content -Path php.ini -Value 'memory_limit=1G'
+  - ps: Add-Content -Path php.ini -Value 'date.timezone="UTC"'
+  - ps: Add-Content -Path php.ini -Value 'extension_dir=ext'
+  - ps: Add-Content -Path php.ini -Value 'extension=php_curl.dll'
+  - ps: Add-Content -Path php.ini -Value 'extension=php_mbstring.dll'
+  - ps: Add-Content -Path php.ini -Value 'extension=php_openssl.dll'
+  - ps: php --version
+
+  # Prepare composer
+  - ps: If ((Test-Path $Env:composer_directory) -eq $False) { New-Item -Path $Env:composer_directory -ItemType 'directory' }
+  - ps: If ((Test-Path $Env:composer_installer) -eq $False) { appveyor-retry appveyor DownloadFile https://getcomposer.org/installer -FileName $Env:composer_installer }
+  - ps: If ((Test-Path $Env:composer_executable) -eq $False) { php $Env:composer_installer --install-dir=$Env:composer_directory }
+  - ps: Set-Content -Path ($Env:composer_directory + '\composer.bat') -Value ('@php ' + $Env:composer_executable + ' %*')
+  - ps: Copy-Item "$Env:composer_executable" "$Env:composer_directory\composer"
+
+  # Install dependencies
+  - ps: cd $Env:project_directory
+  - IF %dependencies%==lowest composer update --prefer-dist --prefer-lowest --prefer-stable --no-progress --no-scripts --no-suggest --profile
+  - IF %dependencies%==highest composer update --prefer-dist --no-progress --no-scripts --no-suggest --profile
+  - git config --global user.email "doesntmatter@dispostable.com"
+  - git config --global user.name "GrumPHP"
 
 test_script:
-    - cd c:\projects\grumphp
-    - php ./bin/grumphp run
-    - php ./vendor/phpunit/phpunit/phpunit --testsuite=E2E
+  - ps: cd $Env:project_directory
+  - php ./bin/grumphp run

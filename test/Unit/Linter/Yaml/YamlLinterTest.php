@@ -17,7 +17,7 @@ class YamlLinterTest extends TestCase
      */
     protected $linter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->linter = new YamlLinter(
             new Filesystem()
@@ -169,6 +169,7 @@ class YamlLinterTest extends TestCase
         }
 
         $this->linter->setExceptionOnInvalidType(true);
+        $this->linter->setParseCustomTags(true);
         $this->linter->setParseConstants(true);
         $fixture = 'constant-support.yml';
         $this->validateFixture($fixture, 0);

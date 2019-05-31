@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GrumPHPTest\E2E;
 
-use GrumPHP\Util\Platform;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ExecutableFinder;
@@ -33,12 +32,14 @@ abstract class AbstractE2ETestCase extends TestCase
      */
     protected $rootDir;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->filesystem = new Filesystem();
         $this->executableFinder = new ExecutableFinder();
 
         $tmpDir = sys_get_temp_dir().$this->useCorrectDirectorySeparator('/grumpytests');
+        $this->filesystem->mkdir($tmpDir);
+
         $this->hash = md5(get_class($this).'::'.$this->getName());
         $this->rootDir = $tmpDir.$this->useCorrectDirectorySeparator('/'.$this->hash);
 
@@ -50,7 +51,7 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->appendToGitignore(['vendor']);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->removeRootDir();
     }
@@ -70,7 +71,7 @@ abstract class AbstractE2ETestCase extends TestCase
     protected function initializeComposer(string $path): string
     {
         $process = new Process(
-            $this->prefixPhpExecutableOnWindows([
+            [
                 $this->executableFinder->find('composer'),
                 'init',
                 '--name=grumphp/testsuite'.$this->hash,
@@ -85,7 +86,7 @@ abstract class AbstractE2ETestCase extends TestCase
                     ],
                 ]),
                 '--no-interaction',
-            ]),
+            ],
             $path
         );
 
@@ -117,6 +118,14 @@ abstract class AbstractE2ETestCase extends TestCase
         // Detached HEAD (for CI)
         $version = trim($process->getOutput());
         if ('HEAD' === $version) {
+            // Check if current commit matches a tag:
+            $process = new Process([$gitExecutable, 'describe', '--exact-match']);
+            $process->run();
+            if ($process->isSuccessful()) {
+                return trim($process->getOutput());
+            }
+
+            // Load the sha hash instead
             $process = new Process([$gitExecutable, 'rev-parse', '--verify', 'HEAD']);
             $process->run();
             if (!$process->isSuccessful()) {
@@ -143,7 +152,11 @@ abstract class AbstractE2ETestCase extends TestCase
         foreach ($hooks as $hook) {
             $hookFile = $this->rootDir.$this->useCorrectDirectorySeparator('/.git/hooks/'.$hook);
             $this->assertFileExists($hookFile);
-            $this->assertRegExp($containsPattern, file_get_contents($hookFile));
+            $this->assertRegExp(
+                $containsPattern,
+                file_get_contents($hookFile),
+                $hookFile.' does not contain '.$containsPattern
+            );
         }
     }
 
@@ -225,12 +238,12 @@ abstract class AbstractE2ETestCase extends TestCase
     protected function installComposer(string $path)
     {
         $process = new Process(
-            $this->prefixPhpExecutableOnWindows([
+            [
                 $this->executableFinder->find('composer'),
                 'install',
                 '--optimize-autoloader',
                 '--no-interaction',
-            ]),
+            ],
             $path
         );
 
@@ -244,7 +257,7 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->runCommand('commit', $commit = new Process([$git, 'commit', '-mtest'], $this->rootDir));
 
         $allOutput = $commit->getOutput().$commit->getErrorOutput();
-        $this->assertContains('GrumPHP', $allOutput);
+        $this->assertStringContainsString('GrumPHP', $allOutput);
     }
 
     protected function gitAddPath(string $path)
@@ -320,25 +333,27 @@ abstract class AbstractE2ETestCase extends TestCase
         return str_replace('\\', '/', $path);
     }
 
-    protected function prefixPhpExecutableOnWindows(array $command): array
-    {
-        if (!Platform::isWindows()) {
-            return $command;
-        }
-
-        return array_merge(
-            [$this->executableFinder->find('php')],
-            $command
-        );
-    }
-
     protected function removeRootDir()
     {
-        // Change permissions on git dir since windows is not allowing us to remove it.
-        if (Platform::isWindows() && $this->filesystem->exists($gitDir = $this->relativeRootPath('.git'))) {
+        // Change permissions on git dir since it might not be removeable.
+        if ($this->filesystem->exists($gitDir = $this->relativeRootPath('.git'))) {
             $this->filesystem->chmod($gitDir, 0777, 0000, true);
         }
 
         $this->filesystem->remove($this->rootDir);
+    }
+
+    protected function debugWhatsInDirectory(string $directory): array
+    {
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS)
+        );
+
+        return array_map(
+            function(\SplFileInfo $item): string {
+                return $item->getPathname() . ' ('.$item->getPerms().')';
+            },
+            array_values(iterator_to_array($iterator))
+        );
     }
 }

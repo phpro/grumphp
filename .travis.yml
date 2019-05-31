@@ -1,7 +1,6 @@
 language: php
 
 php:
-  - 7.0
   - 7.1
   - 7.2
   - 7.3
@@ -22,6 +21,7 @@ matrix:
     - php: nightly
 
 before_install:
+  - phpenv config-rm xdebug.ini
   - alias composer=composer\ --no-interaction && composer selfupdate
   - composer global require hirak/prestissimo
 
@@ -30,7 +30,6 @@ install:
 
 script:
    - bin/grumphp run
-   - vendor/bin/phpunit --testsuite=E2E
 
 notifications:
   irc:

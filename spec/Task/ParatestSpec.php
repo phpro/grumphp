@@ -50,6 +50,7 @@ class ParatestSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('coverage-html');
         $options->getDefinedOptions()->shouldContain('log-junit');
         $options->getDefinedOptions()->shouldContain('testsuite');
+        $options->getDefinedOptions()->shouldContain('verbose');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)

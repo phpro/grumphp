@@ -33,3 +33,12 @@ parameters:
             blacklist: [var_dump]
         metadata:
           priority: 100000
+      paratest:
+          testsuite: E2E
+          verbose: true
+          functional: true
+          metadata:
+            priority: 50
+  testsuites:
+      git_pre_commit:
+          tasks: [phpcs, phpspec, phpunit, composer, yamllint, phplint, phpparser]

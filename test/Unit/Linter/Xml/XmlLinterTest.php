@@ -16,7 +16,7 @@ class XmlLinterTest extends TestCase
      */
     protected $linter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->linter = new XmlLinter();
     }

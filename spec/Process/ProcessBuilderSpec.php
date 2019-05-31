@@ -78,7 +78,7 @@ class ProcessBuilderSpec extends ObjectBehavior
         $this->buildProcess($arguments);
     }
 
-    function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'beQuoted' => function ($subject, $string) {
