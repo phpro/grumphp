@@ -54,9 +54,7 @@ class ValidatePathsTask implements TaskInterface
             $message = $exception->getComparisonFailure()
                 ? $exception->getComparisonFailure()->toString()
                 : $exception->toString();
-        }
 
-        if ($message !== null) {
             return TaskResult::createFailed($this, $context, 'Unexpected files: '.$message);
         }
 
