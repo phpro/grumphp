@@ -32,6 +32,18 @@ class GrumPHPSpec extends ObjectBehavior
         $this->getGitDir()->shouldReturn('.');
     }
 
+    function it_knows_the_config_file(ContainerInterface $container)
+    {
+        $container->getParameter('config_file')->willReturn('/users/grumphp.yml');
+        $this->getGitDir()->shouldReturn('/users/grumphp.yml');
+    }
+
+    function it_knows_the_working_dir(ContainerInterface $container)
+    {
+        $container->getParameter('working_dir')->willReturn('/users');
+        $this->getGitDir()->shouldReturn('/users');
+    }
+
     function it_knows_the_hooks_dir(ContainerInterface $container)
     {
         $container->getParameter('hooks_dir')->willReturn('./hooks/');

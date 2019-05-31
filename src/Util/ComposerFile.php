@@ -4,30 +4,22 @@ declare(strict_types=1);
 
 namespace GrumPHP\Util;
 
-use GrumPHP\Exception\FileNotFoundException;
-
 class ComposerFile
 {
+    /**
+     * @var array
+     */
     private $configuration;
 
-    public function __construct(array $configuration)
+    /**
+     * @var string
+     */
+    private $path;
+
+    public function __construct(string $path, array $configuration)
     {
+        $this->path = $path;
         $this->configuration = $configuration;
-    }
-
-    public static function createFrom(string $composerFileLocation): self
-    {
-        if (!\file_exists($composerFileLocation)) {
-            throw new FileNotFoundException($composerFileLocation);
-        }
-        $json = \file_get_contents($composerFileLocation);
-
-        return new self(json_decode($json, true));
-    }
-
-    public static function createEmpty(): self
-    {
-        return new self([]);
     }
 
     /**
@@ -74,11 +66,13 @@ class ComposerFile
         return 'vendor/bin';
     }
 
-    /**
-     * @return string|null
-     */
-    public function getConfigDefaultPath()
+    public function getConfigDefaultPath(): ?string
     {
         return $this->configuration['extra']['grumphp']['config-default-path'] ?? null;
+    }
+
+    public function getPath(): string
+    {
+        return $this->path;
     }
 }

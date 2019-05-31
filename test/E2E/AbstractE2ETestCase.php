@@ -190,12 +190,14 @@ abstract class AbstractE2ETestCase extends TestCase
 
     protected function registerGrumphpDefaultPathInComposer(string $composerFile, string $grumphpFile)
     {
+        $configDefaultPath = rtrim($this->filesystem->makePathRelative($grumphpFile, $this->rootDir), '\\/');
+
         $this->mergeComposerConfig($composerFile, [
             'extra' => [
                 'grumphp' => [
-                    'config-default-path' => $grumphpFile
-                ]
-            ]
+                    'config-default-path' => $this->useUnixDirectorySeparator($configDefaultPath),
+                ],
+            ],
         ]);
     }
 

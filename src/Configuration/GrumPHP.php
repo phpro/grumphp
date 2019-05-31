@@ -6,6 +6,7 @@ namespace GrumPHP\Configuration;
 
 use GrumPHP\Collection\TestSuiteCollection;
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Util\ComposerFile;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -36,6 +37,16 @@ class GrumPHP
     public function getConfigFile(): string
     {
         return $this->container->getParameter('config_file');
+    }
+
+    public function getWorkingDir(): string
+    {
+        return $this->container->getParameter('working_dir');
+    }
+
+    public function getComposerFile(): ComposerFile
+    {
+        // TODO : return composerfile
     }
 
     public function getHooksDir(): ?string
