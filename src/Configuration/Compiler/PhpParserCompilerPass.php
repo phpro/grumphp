@@ -24,7 +24,7 @@ class PhpParserCompilerPass implements CompilerPassInterface
      * @throws \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
      * @throws \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $traverserConfigurator = $container->findDefinition('grumphp.parser.php.configurator.traverser');
         foreach ($container->findTaggedServiceIds(self::TAG) as $id => $tags) {
@@ -46,7 +46,7 @@ class PhpParserCompilerPass implements CompilerPassInterface
      *
      * @throws \GrumPHP\Exception\RuntimeException
      */
-    public function markServiceAsPrototype(Definition $definition)
+    public function markServiceAsPrototype(Definition $definition): void
     {
         if (method_exists($definition, 'setShared')) {
             $definition->setShared(false);

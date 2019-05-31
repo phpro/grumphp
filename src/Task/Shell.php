@@ -74,7 +74,7 @@ class Shell extends AbstractExternalTask
         return TaskResult::createPassed($this, $context);
     }
 
-    private function runShell(array $scriptArguments)
+    private function runShell(array $scriptArguments): void
     {
         $arguments = $this->processBuilder->createArgumentsForCommand('sh');
         $arguments->addArgumentArray('%s', $scriptArguments);

@@ -50,12 +50,12 @@ class ConsoleIO implements IOInterface
         return $this->output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG;
     }
 
-    public function write(array $messages, bool $newline = true)
+    public function write(array $messages, bool $newline = true): void
     {
         $this->doWrite($messages, $newline, false);
     }
 
-    public function writeError(array $messages, bool $newline = true)
+    public function writeError(array $messages, bool $newline = true): void
     {
         $this->doWrite($messages, $newline, true);
     }
@@ -93,7 +93,7 @@ class ConsoleIO implements IOInterface
         return $this->stdin;
     }
 
-    private function doWrite(array $messages, bool $newline, bool $stderr)
+    private function doWrite(array $messages, bool $newline, bool $stderr): void
     {
         if (true === $stderr && $this->output instanceof ConsoleOutputInterface) {
             $this->output->getErrorOutput()->write($messages, $newline);

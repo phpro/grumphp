@@ -147,7 +147,7 @@ class Application extends SymfonyConsole
         return $this->container;
     }
 
-    protected function configureIO(InputInterface $input, OutputInterface $output)
+    protected function configureIO(InputInterface $input, OutputInterface $output): void
     {
         parent::configureIO($input, $output);
 

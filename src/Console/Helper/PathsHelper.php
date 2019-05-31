@@ -226,10 +226,7 @@ class PathsHelper extends Helper
         return $realpath;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getPathWithTrailingSlash(string $path = null)
+    public function getPathWithTrailingSlash(string $path = null): ?string
     {
         if (!$path) {
             return $path;
@@ -243,10 +240,7 @@ class PathsHelper extends Helper
         return $this->defaultConfigPath;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return self::HELPER_NAME;
     }

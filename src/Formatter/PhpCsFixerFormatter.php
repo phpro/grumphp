@@ -17,7 +17,7 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
     /**
      * Resets the internal counter.
      */
-    public function resetCounter()
+    public function resetCounter(): void
     {
         $this->counter = 0;
     }

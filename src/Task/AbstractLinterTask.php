@@ -53,7 +53,7 @@ abstract class AbstractLinterTask implements TaskInterface
      *
      * @throws RuntimeException
      */
-    protected function guardLinterIsInstalled()
+    protected function guardLinterIsInstalled(): void
     {
         if (!$this->linter->isInstalled()) {
             throw new RuntimeException(

@@ -15,7 +15,7 @@ class ForbiddenStaticMethodCallsVisitor extends AbstractVisitor implements Confi
      */
     private $blacklist = [];
 
-    public function configure(array $options)
+    public function configure(array $options): void
     {
         $resolver = new OptionsResolver();
 
@@ -29,7 +29,7 @@ class ForbiddenStaticMethodCallsVisitor extends AbstractVisitor implements Confi
         $this->blacklist = $config['blacklist'];
     }
 
-    public function leaveNode(Node $node)
+    public function leaveNode(Node $node): void
     {
         if (!$node instanceof Node\Expr\StaticCall) {
             return;

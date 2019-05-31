@@ -49,7 +49,7 @@ class TaskRunnerContext
         return $this->skipSuccessOutput;
     }
 
-    public function setSkipSuccessOutput(bool $skipSuccessOutput)
+    public function setSkipSuccessOutput(bool $skipSuccessOutput): void
     {
         $this->skipSuccessOutput = $skipSuccessOutput;
     }
@@ -59,18 +59,12 @@ class TaskRunnerContext
         return null !== $this->testSuite;
     }
 
-    /**
-     * @return null|TestSuiteInterface
-     */
-    public function getTestSuite()
+    public function getTestSuite(): ?TestSuiteInterface
     {
         return $this->testSuite;
     }
 
-    /**
-     * @param null|TestSuiteInterface $testSuite
-     */
-    public function setTestSuite(TestSuiteInterface $testSuite)
+    public function setTestSuite(?TestSuiteInterface $testSuite): void
     {
         $this->testSuite = $testSuite;
     }

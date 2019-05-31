@@ -4,7 +4,7 @@
     "type": "composer-plugin",
     "license": "MIT",
     "require": {
-        "php": ">=7.1",
+        "php": "^7.1",
         "composer-plugin-api": "~1.0",
         "composer/composer": "^1.8.5",
         "doctrine/collections": "~1.2",
@@ -25,7 +25,7 @@
         "brianium/paratest": "^2.2.0",
         "friendsofphp/php-cs-fixer": "~2",
         "jakub-onderka/php-parallel-lint": "^0.9.2",
-        "nikic/php-parser": "~2.1",
+        "nikic/php-parser": "^3.0",
         "phpspec/phpspec": "^5.1",
         "phpunit/phpunit": "^7.5.12",
         "sensiolabs/security-checker": "^5.0",

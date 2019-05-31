@@ -54,7 +54,7 @@ class Composer
      *
      * @see https://github.com/composer/composer/blob/1.1/src/Composer/EventDispatcher/EventDispatcher.php#L147-L160
      */
-    public static function ensureProjectBinDirInSystemPath(string $binDir)
+    public static function ensureProjectBinDirInSystemPath(string $binDir): void
     {
         $pathStr = 'PATH';
         if (!isset($_SERVER[$pathStr]) && isset($_SERVER['Path'])) {

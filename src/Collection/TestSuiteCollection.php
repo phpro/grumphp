@@ -10,9 +10,6 @@ use GrumPHP\TestSuite\TestSuiteInterface;
 
 class TestSuiteCollection extends ArrayCollection
 {
-    /**
-     * @throws \GrumPHP\Exception\InvalidArgumentException
-     */
     public function getRequired(string $name): TestSuiteInterface
     {
         if (!$this->containsKey($name)) {
@@ -22,10 +19,7 @@ class TestSuiteCollection extends ArrayCollection
         return $this->get($name);
     }
 
-    /**
-     * @return TestSuiteInterface|null
-     */
-    public function getOptional(string $name)
+    public function getOptional(string $name): ?TestSuiteInterface
     {
         return $this->get($name);
     }

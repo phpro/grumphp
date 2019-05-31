@@ -55,7 +55,7 @@ class Regex
         return $this->isRegex($string) ? $string : Glob::toRegex($string);
     }
 
-    public function addPatternModifier(string $modifier)
+    public function addPatternModifier(string $modifier): void
     {
         if ('' === $modifier || false === strpos(self::ALLOWED_MODIFIERS, $modifier)) {
             throw new RuntimeException('Invalid regex modifier: '.$modifier);

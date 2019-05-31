@@ -31,11 +31,11 @@ class NullIO implements IOInterface
         return false;
     }
 
-    public function write(array $messages, bool $newline = true)
+    public function write(array $messages, bool $newline = true): void
     {
     }
 
-    public function writeError(array $messages, bool $newline = true)
+    public function writeError(array $messages, bool $newline = true): void
     {
     }
 }
