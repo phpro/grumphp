@@ -16,6 +16,9 @@ class PathsHelperSpec extends ObjectBehavior
     function let(GrumPHP $config, Filesystem $filesystem, ExternalCommand $externalCommandLocator)
     {
         $this->beConstructedWith($config, $filesystem, $externalCommandLocator, '/grumphp.yml');
+
+        $filesystem->getProjectDir()->willReturn('/my/project');
+        $filesystem->getGitDir()->willReturn('/my/project');
     }
 
     function it_is_a_console_helper()

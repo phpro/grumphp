@@ -10,6 +10,7 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Locator\ChangedFiles;
 use GrumPHP\Util\Filesystem;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Prophecy\Prophet;
 
 class ChangedFilesSpec extends ObjectBehavior
@@ -17,6 +18,11 @@ class ChangedFilesSpec extends ObjectBehavior
     function let(Repository $repository, Filesystem $filesystem)
     {
         $this->beConstructedWith($repository, $filesystem);
+        $filesystem->makePathRelativeToProjectDir(Argument::type('string'))->will(
+            function (array $arguments): string {
+                return $arguments[0];
+            }
+        );
     }
 
     function it_is_initializable()

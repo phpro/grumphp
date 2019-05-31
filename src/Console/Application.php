@@ -9,7 +9,6 @@ use GrumPHP\Exception\FileNotFoundException;
 use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Locator\ConfigurationFile;
 use GrumPHP\Util\ComposerFile;
-use GrumPHP\Util\Filesystem;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Symfony\Component\Console\Application as SymfonyConsole;
@@ -21,6 +20,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Filesystem\Filesystem;
 
 class Application extends SymfonyConsole
 {

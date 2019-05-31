@@ -5,6 +5,8 @@ services:
     grumphp.util.filesystem:
         class: GrumPHP\Util\Filesystem
         public: true
+        arguments:
+            - '@config'
 
     grumphp.util.phpversion:
         class: GrumPHP\Util\PhpVersion
@@ -14,3 +16,4 @@ services:
               '7.0': '2018-12-03 23:59:59'
               '7.1': '2019-12-01 23:59:59'
               '7.2': '2020-11-30 23:59:59'
+              '7.3': '2021-12-06 23:59:59'

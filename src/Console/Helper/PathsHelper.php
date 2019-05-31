@@ -14,6 +14,8 @@ use Symfony\Component\Console\Helper\Helper;
 
 /**
  * This class will return all configured paths relative to the working directory.
+ * @deprecated Try to use Filesystem instead
+ * @see Filesystem
  */
 class PathsHelper extends Helper
 {
@@ -107,23 +109,24 @@ class PathsHelper extends Helper
     /**
      * This is the directory in which the cli script is initialized.
      * Normally this should be the directory where the composer.json file is located.
+     *
+     * @deprecated use Filesystem::getProjectDir() instead
+     * @see Filesystem::getProjectDir()
      */
     public function getWorkingDir(): string
     {
-        return getcwd();
+        return $this->fileSystem->getProjectDir();
     }
 
     /**
      * Find the relative git directory.
+     *
+     * @deprecated use Filesystem::getRelativeGitDir() instead
+     * @see Filesystem::getRelativeGitDir()
      */
     public function getGitDir(): string
     {
-        $gitDir = $this->config->getGitDir();
-        if (!$this->fileSystem->exists($gitDir)) {
-            throw new RuntimeException('The configured GIT directory could not be found.');
-        }
-
-        return $this->getRelativePath($gitDir);
+        return $this->fileSystem->getRelativeGitDir();
     }
 
     /**

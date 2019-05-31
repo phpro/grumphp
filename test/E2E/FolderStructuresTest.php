@@ -23,11 +23,6 @@ class FolderStructuresTest extends AbstractE2ETestCase
     /** @test */
     function it_has_project_subfolder()
     {
-        $this->markTestSkipped('This flow is broken: make sure paths are relative to the project dir.');
-        // Extra info: the project directory should be removed from the the file paths.
-        // All files outside the project dir should not be passed to grumphp.
-        // This requires some changes in the file locators
-
         $projectDir = $this->mkdir('project');
         $this->initializeComposer($projectDir);
         $grumphpFile = $this->initializeGrumphpConfig($projectDir);
