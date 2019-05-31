@@ -152,7 +152,11 @@ abstract class AbstractE2ETestCase extends TestCase
         foreach ($hooks as $hook) {
             $hookFile = $this->rootDir.$this->useCorrectDirectorySeparator('/.git/hooks/'.$hook);
             $this->assertFileExists($hookFile);
-            $this->assertRegExp($containsPattern, file_get_contents($hookFile));
+            $this->assertRegExp(
+                $containsPattern,
+                file_get_contents($hookFile),
+                $hookFile.' does not contain '.$containsPattern
+            );
         }
     }
 
