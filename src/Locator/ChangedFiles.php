@@ -51,9 +51,7 @@ class ChangedFiles
         $files = [];
         /** @var File $file */
         foreach ($diff->getFiles() as $file) {
-            $fileName = $file->isRename() ? $file->getNewName() : $file->getName();
-            $fileObject = new SplFileInfo($fileName, dirname($fileName), $fileName);
-
+            $fileObject = $this->makeFileRelativeToProjectDir($file);
             if ($file->isDeletion() || !$this->filesystem->exists($fileObject->getPathname())) {
                 continue;
             }
@@ -62,5 +60,14 @@ class ChangedFiles
         }
 
         return new FilesCollection($files);
+    }
+
+    private function makeFileRelativeToProjectDir(File $file): SplFileInfo
+    {
+        $filePath = $this->filesystem->makePathRelativeToProjectDir(
+            $file->isRename() ? $file->getNewName() : $file->getName()
+        );
+
+        return new SplFileInfo($filePath, dirname($filePath), $filePath);
     }
 }

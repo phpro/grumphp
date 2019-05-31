@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace GrumPHP\Configuration;
 
-use GrumPHP\Util\Filesystem;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
+use Symfony\Component\Filesystem\Filesystem;
 
 final class ContainerFactory
 {
@@ -41,6 +41,7 @@ final class ContainerFactory
         if ($filesystem->exists($path)) {
             $loader->load($path);
         }
+        $container->setParameter('config_file', $path);
 
         // Compile configuration to make sure that tasks are added to the taskrunner
         $container->compile();

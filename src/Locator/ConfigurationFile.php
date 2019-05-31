@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace GrumPHP\Locator;
 
 use GrumPHP\Util\ComposerFile;
-use GrumPHP\Util\Filesystem;
+use Symfony\Component\Filesystem\Filesystem;
 
 class ConfigurationFile
 {

@@ -7,7 +7,7 @@ namespace GrumPHP\Composer;
 use Composer\Script\Event;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Process\ProcessFactory;
-use GrumPHP\Util\Filesystem;
+use Symfony\Component\Filesystem\Filesystem;
 
 class DevelopmentIntegrator
 {
