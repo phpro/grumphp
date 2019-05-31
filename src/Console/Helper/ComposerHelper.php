@@ -4,53 +4,23 @@ declare(strict_types=1);
 
 namespace GrumPHP\Console\Helper;
 
-use Composer\Config;
-use Composer\Package\RootPackageInterface;
+use GrumPHP\Util\ComposerFile;
 use Symfony\Component\Console\Helper\Helper;
 
-/**
- * This class will make the composer configurationa available for the commands.
- *
- * Class ComposerHelper
- */
 class ComposerHelper extends Helper
 {
     const HELPER_NAME = 'composer';
 
-    /**
-     * @var RootPackageInterface
-     */
-    private $rootPackage;
+    private $composerFile;
 
-    /**
-     * @var Config
-     */
-    private $configuration;
-
-    public function __construct(?Config $configuration = null, ?RootPackageInterface $rootPackage = null)
+    public function __construct(ComposerFile $composerFile)
     {
-        $this->rootPackage = $rootPackage;
-        $this->configuration = $configuration;
+        $this->composerFile = $composerFile;
     }
 
-    public function getRootPackage(): ?RootPackageInterface
+    public function getComposerFile(): ComposerFile
     {
-        return $this->rootPackage;
-    }
-
-    public function hasRootPackage(): bool
-    {
-        return null !== $this->rootPackage;
-    }
-
-    public function getConfiguration(): ?Config
-    {
-        return $this->configuration;
-    }
-
-    public function hasConfiguration(): bool
-    {
-        return null !== $this->configuration;
+        return $this->composerFile;
     }
 
     public function getName(): string

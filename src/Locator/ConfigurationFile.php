@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Locator;
 
-use Composer\Package\PackageInterface;
+use GrumPHP\Util\ComposerFile;
 use GrumPHP\Util\Filesystem;
 
 class ConfigurationFile
@@ -16,22 +16,16 @@ class ConfigurationFile
      */
     private $filesystem;
 
-    /**
-     * ConfigurationFile constructor.
-     */
     public function __construct(Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
     }
 
-    public function locate(string $workingDir, ?PackageInterface $package = null): string
+    public function locate(string $workingDir, ComposerFile $composerFile): string
     {
         $defaultPath = $workingDir.DIRECTORY_SEPARATOR.self::APP_CONFIG_FILE;
         $defaultPath = $this->locateConfigFileWithDistSupport($defaultPath);
-
-        if (null !== $package) {
-            $defaultPath = $this->useConfigPathFromComposer($package, $defaultPath);
-        }
+        $defaultPath = $this->useConfigPathFromComposer($composerFile, $defaultPath);
 
         // Make sure to set the full path when it is declared relative
         // This will fix some issues in windows.
@@ -42,16 +36,11 @@ class ConfigurationFile
         return $defaultPath;
     }
 
-    private function useConfigPathFromComposer(PackageInterface $package, string $defaultPath): string
+    private function useConfigPathFromComposer(ComposerFile $composerFile, string $defaultPath): string
     {
-        $extra = $package->getExtra();
-        if (!isset($extra['grumphp']['config-default-path'])) {
-            return $defaultPath;
-        }
+        $composerDefaultPath = $composerFile->getConfigDefaultPath();
 
-        $composerDefaultPath = $extra['grumphp']['config-default-path'];
-
-        return $this->locateConfigFileWithDistSupport($composerDefaultPath);
+        return $this->locateConfigFileWithDistSupport($composerDefaultPath ?: $defaultPath);
     }
 
     private function locateConfigFileWithDistSupport(string $defaultPath): string

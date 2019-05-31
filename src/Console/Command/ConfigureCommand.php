@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GrumPHP\Console\Command;
 
-use Composer\Config;
 use Exception;
 use Gitonomy\Git\Repository;
 use GrumPHP\Configuration\GrumPHP;
@@ -183,22 +182,9 @@ class ConfigureCommand extends Command
         return false;
     }
 
-    /**
-     * Make a guess to the bin dir.
-     */
     protected function guessBinDir(): string
     {
-        $defaultBinDir = $this->config->getBinDir();
-        if (!$this->composer()->hasConfiguration()) {
-            return $defaultBinDir;
-        }
-
-        $config = $this->composer()->getConfiguration();
-        if (!$config->has('bin-dir')) {
-            return $defaultBinDir;
-        }
-
-        return $config->get('bin-dir', Config::RELATIVE_PATHS);
+        return $this->composer()->getComposerFile()->getBinDir();
     }
 
     protected function guessGitDir(): string
