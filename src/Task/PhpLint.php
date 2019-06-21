@@ -53,6 +53,10 @@ class PhpLint extends AbstractExternalTask
             ->notPaths($config['ignore_patterns'])
             ->extensions($config['triggered_by']);
 
+        if ($files->isEmpty()) {
+            return TaskResult::createSkipped($this, $context);
+        }
+
         $arguments = $this->processBuilder->createArgumentsForCommand('parallel-lint');
         $arguments->add('--no-colors');
         $arguments->addOptionalArgumentWithSeparatedValue('-j', $config['jobs']);
