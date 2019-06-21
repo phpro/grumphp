@@ -51,32 +51,6 @@ services:
           - '@event_dispatcher'
         public: true
 
-    locator.external_command:
-        class: GrumPHP\Locator\ExternalCommand
-        arguments:
-          - '%bin_dir%'
-          - '@executable_finder'
-        public: true
-
-    locator.changed_files:
-        class: GrumPHP\Locator\ChangedFiles
-        arguments:
-          - '@git.repository'
-          - '@filesystem'
-          - '@GrumPHP\Util\Paths'
-        public: true
-
-    locator.registered_files:
-        class: GrumPHP\Locator\RegisteredFiles
-        arguments:
-          - '@git.repository'
-        public: true
-
-    GrumPHP\Locator\GitDirLocator:
-        arguments:
-            - 'process_builder'
-        public: true
-
     grumphp.io:
         alias: grumphp.io.console
 

@@ -7,6 +7,7 @@ namespace GrumPHP\Console;
 use GrumPHP\Configuration\ContainerFactory;
 use GrumPHP\Configuration\GuessedPaths;
 use GrumPHP\IO\ConsoleIO;
+use GrumPHP\Locator\AsciiLocator;
 use GrumPHP\Locator\GitDirLocator;
 use GrumPHP\Util\Filesystem;
 use GrumPHP\Util\Paths;
@@ -106,14 +107,14 @@ class Application extends SymfonyConsole
         $helperSet->set(new Helper\PathsHelper(
             $this->container->get('config'),
             $this->container->get('grumphp.util.filesystem'),
-            $this->container->get('locator.external_command'),
             $this->guessPaths(),
             $this->container->get(Paths::class)
         ));
         $helperSet->set(new Helper\TaskRunnerHelper(
             $this->container->get('config'),
             $this->container->get('task_runner'),
-            $this->container->get('event_dispatcher')
+            $this->container->get('event_dispatcher'),
+            $this->container->get(AsciiLocator::class)
         ));
 
         return $helperSet;

@@ -26,6 +26,29 @@ class Paths
         $this->filesystem = $filesystem;
     }
 
+    /**
+     * The root dir of this package!
+     */
+    public function getGrumPHPExecutableRootDir(): string
+    {
+        return dirname(__DIR__, 2);
+    }
+
+    public function getInternalResourcesDir(): string
+    {
+        return $this->filesystem->buildPath($this->getGrumPHPExecutableRootDir(), 'resources');
+    }
+
+    public function getInternalAsciiPath(): string
+    {
+        return $this->filesystem->buildPath($this->getInternalResourcesDir(), 'ascii');
+    }
+
+    public function getInternalGitHookTemplatesPath(): string
+    {
+        return $this->filesystem->buildPath($this->getInternalResourcesDir(), 'hooks');
+    }
+
     public function getGrumPHPConfigDir(): string
     {
         return \dirname($this->config->getConfigFile());

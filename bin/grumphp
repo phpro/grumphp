@@ -1,8 +1,6 @@
 #!/usr/bin/env php
 <?php
 
-define('GRUMPHP_PATH', realpath(__DIR__ . '/..'));
-
 $autoloadLocations = [
     getcwd() . '/vendor/autoload.php',
     getcwd() . '/../../autoload.php',

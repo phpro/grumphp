@@ -8,7 +8,6 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Configuration\GuessedPaths;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Exception\FileNotFoundException;
-use GrumPHP\Locator\ExternalCommand;
 use GrumPHP\Util\Filesystem;
 use GrumPHP\Util\Paths;
 use SplFileInfo;
@@ -16,8 +15,9 @@ use Symfony\Component\Console\Helper\Helper;
 
 /**
  * This class will return all configured paths relative to the working directory.
- * @deprecated Try to use Filesystem instead
+ * @deprecated Try to use Paths or Filesystem instead
  * @see Filesystem
+ * @see Paths
  */
 class PathsHelper extends Helper
 {
@@ -34,11 +34,6 @@ class PathsHelper extends Helper
     protected $fileSystem;
 
     /**
-     * @var ExternalCommand
-     */
-    private $externalCommandLocator;
-
-    /**
      * @var GuessedPaths
      */
     private $guessedPaths;
@@ -51,68 +46,13 @@ class PathsHelper extends Helper
     public function __construct(
         GrumPHP $config,
         Filesystem $fileSystem,
-        ExternalCommand $externalCommandLocator,
         GuessedPaths $guessedPaths,
         Paths $paths
     ) {
         $this->config = $config;
         $this->fileSystem = $fileSystem;
-        $this->externalCommandLocator = $externalCommandLocator;
         $this->guessedPaths = $guessedPaths;
         $this->paths = $paths;
-    }
-
-    /**
-     * Get the root path of the GrumPHP package:.
-     */
-    public function getGrumPHPPath(): string
-    {
-        $path = __DIR__.'/../../..';
-
-        return $this->getRelativePath($path);
-    }
-
-    /**
-     * Get the folder which contains all resources.
-     */
-    public function getResourcesPath(): string
-    {
-        return $this->getGrumPHPPath().'resources/';
-    }
-
-    /**
-     * Get the path with all ascii art.
-     */
-    public function getAsciiPath(): string
-    {
-        return $this->getResourcesPath().'ascii/';
-    }
-
-    /**
-     * Load an ascii image.
-     */
-    public function getAsciiContent(string $resource): string
-    {
-        $file = $this->config->getAsciiContentPath($resource);
-
-        // Disabled:
-        if (null === $file) {
-            return '';
-        }
-
-        // Specified by user:
-        if ($this->fileSystem->exists($file)) {
-            return $this->fileSystem->readFromFileInfo(new SplFileInfo($file));
-        }
-
-        // Embedded ASCII art:
-        $embeddedFile = $this->getAsciiPath().$file;
-        if ($this->fileSystem->exists($embeddedFile)) {
-            return $this->fileSystem->readFromFileInfo(new SplFileInfo($embeddedFile));
-        }
-
-        // Error:
-        return sprintf('ASCII file %s could not be found.', $file);
     }
 
     /**
@@ -173,7 +113,7 @@ class PathsHelper extends Helper
      */
     public function getGitHookTemplatesDir(): string
     {
-        return $this->getResourcesPath().'hooks/';
+        return $this->paths->getInternalGitHookTemplatesPath().'/';
     }
 
     /**
@@ -187,15 +127,6 @@ class PathsHelper extends Helper
         }
 
         return $this->getRelativePath($binDir);
-    }
-
-    /**
-     * Search a command in the bin folder
-     * Note: the command locator is not injected because it needs the relative bin path.
-     */
-    public function getBinCommand(string $command, bool $forceUnix = false): string
-    {
-        return $this->externalCommandLocator->locate($command, $forceUnix);
     }
 
     /**
