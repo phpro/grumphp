@@ -19,19 +19,27 @@ class GrumPHP
      */
     private $container;
 
-    public function __construct(ContainerInterface $container)
-    {
+    /**
+     * @var GuessedPaths
+     */
+    private $guessedPaths;
+
+    public function __construct(
+        ContainerInterface $container,
+        GuessedPaths $guessedPaths
+    ) {
         $this->container = $container;
+        $this->guessedPaths = $guessedPaths;
     }
 
     public function getBinDir(): string
     {
-        return $this->container->getParameter('bin_dir');
+        return $this->guessedPaths->getBinDir();
     }
 
     public function getGitDir(): string
     {
-        return $this->container->getParameter('git_dir');
+        return $this->guessedPaths->getGitDir();
     }
 
     public function getConfigFile(): string
@@ -41,12 +49,12 @@ class GrumPHP
 
     public function getWorkingDir(): string
     {
-        return $this->container->getParameter('working_dir');
+        return $this->guessedPaths->getWorkingDir();
     }
 
     public function getComposerFile(): ComposerFile
     {
-        // TODO : return composerfile
+        return $this->guessedPaths->getComposerFile();
     }
 
     public function getHooksDir(): ?string

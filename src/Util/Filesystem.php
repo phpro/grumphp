@@ -45,4 +45,26 @@ class Filesystem extends SymfonyFilesystem
 
         return current($dirs) ?? '';
     }
+
+    public function guessFile(array $paths, array $fileNames): string
+    {
+        foreach ($paths as $path) {
+            if (!$this->exists($path)) {
+                continue;
+            }
+
+            if (is_file($path)) {
+                return $path;
+            }
+
+            foreach ($fileNames as $fileName) {
+                $filePath = $this->buildPath($path, $fileName);
+                if ($this->exists($fileName)) {
+                    return $filePath;
+                }
+            }
+        }
+
+        return $this->buildPath(current($paths), current($fileNames));
+    }
 }

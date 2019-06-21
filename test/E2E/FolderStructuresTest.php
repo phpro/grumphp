@@ -45,8 +45,6 @@ class FolderStructuresTest extends AbstractE2ETestCase
         $this->mergeGrumphpConfig($grumphpFile, ['parameters' => ['git_dir' => '.']]);
         $this->installComposer($this->rootDir);
 
-
-        var_dump($this->rootDir);exit;
         $this->ensureHooksExist();
 
         $this->enableValidatePathsTask($grumphpFile, $this->rootDir);
@@ -81,14 +79,7 @@ class FolderStructuresTest extends AbstractE2ETestCase
         $grumphpFile = $this->initializeGrumphpConfig($projectDir, $this->rootDir);
         $this->registerGrumphpDefaultPathInComposer($composerFile, $grumphpFile);
         $this->installComposer($this->rootDir);
-
-
-        var_dump($this->rootDir);exit;
-
         $this->ensureHooksExist();
-
-
-
 
         $this->enableValidatePathsTask($grumphpFile, $projectDir);
 

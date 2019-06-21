@@ -44,7 +44,6 @@ final class ContainerFactory
 
         // Add additional paths
         $container->setParameter('config_file', $path);
-        $container->setParameter('working_dir', getcwd());
 
         // Compile configuration to make sure that tasks are added to the taskrunner
         $container->compile();

@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace GrumPHP\Console\Helper;
 
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Configuration\GuessedPaths;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Exception\FileNotFoundException;
 use GrumPHP\Locator\ExternalCommand;
 use GrumPHP\Util\Filesystem;
+use GrumPHP\Util\Paths;
 use SplFileInfo;
 use Symfony\Component\Console\Helper\Helper;
 
@@ -37,20 +39,27 @@ class PathsHelper extends Helper
     private $externalCommandLocator;
 
     /**
-     * @var string
+     * @var GuessedPaths
      */
-    private $defaultConfigPath;
+    private $guessedPaths;
+
+    /**
+     * @var Paths
+     */
+    private $paths;
 
     public function __construct(
         GrumPHP $config,
         Filesystem $fileSystem,
         ExternalCommand $externalCommandLocator,
-        string $defaultConfigPath
+        GuessedPaths $guessedPaths,
+        Paths $paths
     ) {
         $this->config = $config;
         $this->fileSystem = $fileSystem;
         $this->externalCommandLocator = $externalCommandLocator;
-        $this->defaultConfigPath = $defaultConfigPath;
+        $this->guessedPaths = $guessedPaths;
+        $this->paths = $paths;
     }
 
     /**
@@ -110,23 +119,23 @@ class PathsHelper extends Helper
      * This is the directory in which the cli script is initialized.
      * Normally this should be the directory where the composer.json file is located.
      *
-     * @deprecated use Filesystem::getProjectDir() instead
-     * @see Filesystem::getProjectDir()
+     * @deprecated use Paths::getWorkingDir() instead
+     * @see Paths::getWorkingDir()
      */
     public function getWorkingDir(): string
     {
-        return $this->fileSystem->getProjectDir();
+        return $this->paths->getWorkingDir();
     }
 
     /**
      * Find the relative git directory.
      *
-     * @deprecated use Filesystem::getRelativeGitDir() instead
-     * @see Filesystem::getRelativeGitDir()
+     * @deprecated use Paths::getGitDirRelativeToConfig() instead
+     * @see Paths::getGitDirRelativeToConfig()
      */
     public function getGitDir(): string
     {
-        return $this->fileSystem->getRelativeGitDir();
+        return $this->paths->getGitDirRelativeToConfig();
     }
 
     /**
@@ -238,9 +247,12 @@ class PathsHelper extends Helper
         return rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
     }
 
+    /**
+     * @deprecated
+     */
     public function getDefaultConfigPath(): string
     {
-        return $this->defaultConfigPath;
+        return $this->guessedPaths->getDefaultConfigFile();
     }
 
     public function getName(): string

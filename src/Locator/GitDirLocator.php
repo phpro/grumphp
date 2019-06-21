@@ -4,34 +4,36 @@ declare(strict_types=1);
 
 namespace GrumPHP\Locator;
 
+use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Exception\RuntimeException;
-use GrumPHP\Process\ProcessBuilder;
+use GrumPHP\Process\ProcessFactory;
+use Symfony\Component\Process\ExecutableFinder;
 
 class GitDirLocator
 {
     /**
-     * @var ProcessBuilder
+     * @var ExecutableFinder
      */
-    private $processBuilder;
+    private $executableFinder;
 
-    public function __construct(ProcessBuilder $processBuilder)
+    public function __construct(ExecutableFinder $executableFinder)
     {
-        $this->processBuilder = $processBuilder;
+        $this->executableFinder = $executableFinder;
     }
 
     public function locate(): string
     {
-        $arguments = $this->processBuilder->createArgumentsForCommand('git');
+        $arguments = ProcessArgumentsCollection::forExecutable($this->executableFinder->find('git'));
         $arguments->add('rev-parse');
         $arguments->add('--show-toplevel');
 
-        $process = $this->processBuilder->buildProcess($arguments);
+        $process = ProcessFactory::fromArguments($arguments);
         $process->run();
 
-        if ( ! $process->isSuccessful()) {
+        if (!$process->isSuccessful()) {
             throw new RuntimeException('The git directory could not be found. Did you initialize git?');
         }
 
-        return $process->getOutput();
+        return trim($process->getOutput());
     }
 }

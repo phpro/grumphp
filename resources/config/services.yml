@@ -8,6 +8,12 @@ services:
         class: GrumPHP\Configuration\GrumPHP
         arguments:
           - '@service_container'
+          - '@GrumPHP\Configuration\GuessedPaths'
+        public: true
+
+    GrumPHP\Configuration\GuessedPaths:
+        class: GrumPHP\Configuration\GuessedPaths
+        synthetic: true
         public: true
 
     event_dispatcher:
@@ -52,22 +58,23 @@ services:
           - '@executable_finder'
         public: true
 
-    locator.configuration_file:
-        class: GrumPHP\Locator\ConfigurationFile
-        arguments:
-          - '@filesystem'
-
     locator.changed_files:
         class: GrumPHP\Locator\ChangedFiles
         arguments:
           - '@git.repository'
           - '@filesystem'
+          - '@GrumPHP\Util\Paths'
         public: true
 
     locator.registered_files:
         class: GrumPHP\Locator\RegisteredFiles
         arguments:
           - '@git.repository'
+        public: true
+
+    GrumPHP\Locator\GitDirLocator:
+        arguments:
+            - 'process_builder'
         public: true
 
     grumphp.io:

@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace GrumPHP\Console;
 
 use GrumPHP\Configuration\ContainerFactory;
-use GrumPHP\Exception\FileNotFoundException;
+use GrumPHP\Configuration\GuessedPaths;
 use GrumPHP\IO\ConsoleIO;
-use GrumPHP\Locator\ConfigurationFile;
-use GrumPHP\Util\ComposerFile;
+use GrumPHP\Locator\GitDirLocator;
+use GrumPHP\Util\Filesystem;
+use GrumPHP\Util\Paths;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Symfony\Component\Console\Application as SymfonyConsole;
@@ -20,7 +21,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\ExecutableFinder;
 
 class Application extends SymfonyConsole
 {
@@ -33,19 +34,9 @@ class Application extends SymfonyConsole
     protected $container;
 
     /**
-     * @var string
-     */
-    protected $configDefaultPath;
-
-    /**
      * @var Filesystem
      */
     protected $filesystem;
-
-    /**
-     * @var Helper\ComposerHelper
-     */
-    protected $composerHelper;
 
     public function __construct()
     {
@@ -65,7 +56,7 @@ class Application extends SymfonyConsole
                 'c',
                 InputOption::VALUE_OPTIONAL,
                 'Path to config',
-                $this->getDefaultConfigPath()
+                $this->guessPaths()->getDefaultConfigFile()
             )
         );
 
@@ -111,12 +102,13 @@ class Application extends SymfonyConsole
     protected function getDefaultHelperSet(): HelperSet
     {
         $helperSet = parent::getDefaultHelperSet();
-        $helperSet->set($this->initializeComposerHelper());
+        $helperSet->set($this->getComposerHelper());
         $helperSet->set(new Helper\PathsHelper(
             $this->container->get('config'),
             $this->container->get('grumphp.util.filesystem'),
             $this->container->get('locator.external_command'),
-            $this->getDefaultConfigPath()
+            $this->guessPaths(),
+            $this->container->get(Paths::class)
         ));
         $helperSet->set(new Helper\TaskRunnerHelper(
             $this->container->get('config'),
@@ -134,17 +126,31 @@ class Application extends SymfonyConsole
         }
 
         // Load cli options:
+        $guessedPaths = $this->guessPaths();
         $input = new ArgvInput();
-        $configPath = $input->getParameterOption(['--config', '-c'], $this->getDefaultConfigPath());
-        $configPath = $this->updateUserConfigPath($configPath);
+        $configPath = $input->getParameterOption(['--config', '-c'], $guessedPaths->getDefaultConfigFile());
         $output = new ConsoleOutput();
 
         // Build the service container:
         $this->container = ContainerFactory::buildFromConfiguration($configPath);
         $this->container->set('console.input', $input);
         $this->container->set('console.output', $output);
+        $this->container->set(GuessedPaths::class, $guessedPaths);
 
         return $this->container;
+    }
+
+    private function guessPaths(): GuessedPaths
+    {
+        static $guessedPaths;
+        if (!$guessedPaths) {
+            $guessedPaths = GuessedPaths::guess(
+                $this->filesystem,
+                new GitDirLocator(new ExecutableFinder())
+            );
+        }
+
+        return $guessedPaths;
     }
 
     protected function configureIO(InputInterface $input, OutputInterface $output): void
@@ -162,48 +168,20 @@ class Application extends SymfonyConsole
         }
     }
 
-    protected function getDefaultConfigPath(): string
+    /**
+     * TODO : get rid of the helper
+     */
+    protected function getComposerHelper(): Helper\ComposerHelper
     {
-        if ($this->configDefaultPath) {
-            return $this->configDefaultPath;
+        static $composerHelper;
+        if ($composerHelper) {
+            return $composerHelper;
         }
 
-        $locator = new ConfigurationFile($this->filesystem);
-        $this->configDefaultPath = $locator->locate(
-            getcwd(),
-            $this->initializeComposerHelper()->getComposerFile()
-        );
-
-        return $this->configDefaultPath;
-    }
-
-    protected function initializeComposerHelper(): Helper\ComposerHelper
-    {
-        if ($this->composerHelper) {
-            return $this->composerHelper;
-        }
-
-        try {
-            $composerFileLocation = getcwd().DIRECTORY_SEPARATOR.'composer.json';
-            $composerFile = ComposerFile::createFrom($composerFileLocation);
-        } catch (FileNotFoundException $exception) {
-            $composerFile = ComposerFile::createEmpty();
-        }
+        $composerFile = $this->guessPaths()->getComposerFile();
         $composerFile->ensureProjectBinDirInSystemPath();
 
-        return $this->composerHelper = new Helper\ComposerHelper($composerFile);
-    }
-
-    /**
-     * Prefixes the cwd to the path given by the user.
-     */
-    private function updateUserConfigPath(string $configPath): string
-    {
-        if ($configPath !== $this->getDefaultConfigPath()) {
-            $configPath = getcwd().DIRECTORY_SEPARATOR.$configPath;
-        }
-
-        return $configPath;
+        return $composerHelper = new Helper\ComposerHelper($composerFile);
     }
 
     public function run(InputInterface $input = null, OutputInterface $output = null)

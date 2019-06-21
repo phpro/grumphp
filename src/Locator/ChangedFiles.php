@@ -9,6 +9,7 @@ use Gitonomy\Git\Diff\File;
 use Gitonomy\Git\Repository;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Util\Filesystem;
+use GrumPHP\Util\Paths;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -25,10 +26,16 @@ class ChangedFiles
      */
     private $filesystem;
 
-    public function __construct(Repository $repository, Filesystem $filesystem)
+    /**
+     * @var Paths
+     */
+    private $paths;
+
+    public function __construct(Repository $repository, Filesystem $filesystem, Paths $paths)
     {
         $this->repository = $repository;
         $this->filesystem = $filesystem;
+        $this->paths = $paths;
     }
 
     public function locateFromGitRepository(): FilesCollection
@@ -64,7 +71,7 @@ class ChangedFiles
 
     private function makeFileRelativeToProjectDir(File $file): SplFileInfo
     {
-        $filePath = $this->filesystem->makePathRelativeToProjectDir(
+        $filePath = $this->paths->makePathRelativeToProjectDir(
             $file->isRename() ? $file->getNewName() : $file->getName()
         );
 

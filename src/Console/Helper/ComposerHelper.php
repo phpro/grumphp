@@ -7,6 +7,10 @@ namespace GrumPHP\Console\Helper;
 use GrumPHP\Util\ComposerFile;
 use Symfony\Component\Console\Helper\Helper;
 
+/**
+ * @deprecated  Use Grumphp::getComposerFile() instead
+ * @see \GrumPHP\Configuration\GrumPHP::getComposerFile()
+ */
 class ComposerHelper extends Helper
 {
     const HELPER_NAME = 'composer';
