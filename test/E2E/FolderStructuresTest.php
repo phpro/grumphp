@@ -90,7 +90,7 @@ class FolderStructuresTest extends AbstractE2ETestCase
     /**
      * TODO
      *
-     * - test git submodule
+     * - test git submodule  -> #459
      * - test git commit -a and -p
      */
 }

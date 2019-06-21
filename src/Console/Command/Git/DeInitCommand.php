@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Console\Command\Git;
 
-use GrumPHP\Configuration\GrumPHP;
-use GrumPHP\Console\Helper\PathsHelper;
+use GrumPHP\Locator\GitHooksDirLocator;
 use GrumPHP\Util\Filesystem;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,21 +26,23 @@ class DeInitCommand extends Command
     ];
 
     /**
-     * @var GrumPHP
-     */
-    protected $grumPHP;
-
-    /**
      * @var Filesystem
      */
-    protected $filesystem;
+    private $filesystem;
 
-    public function __construct(GrumPHP $grumPHP, Filesystem $filesystem)
-    {
+    /**
+     * @var GitHooksDirLocator
+     */
+    private $gitHooksDirLocator;
+
+    public function __construct(
+        Filesystem $filesystem,
+        GitHooksDirLocator $gitHooksDirLocator
+    ) {
         parent::__construct();
 
-        $this->grumPHP = $grumPHP;
         $this->filesystem = $filesystem;
+        $this->gitHooksDirLocator = $gitHooksDirLocator;
     }
 
     /**
@@ -58,7 +59,7 @@ class DeInitCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $gitHooksPath = $this->paths()->getGitHooksDir();
+        $gitHooksPath = $this->gitHooksDirLocator->locate();
 
         foreach (InitCommand::$hooks as $hook) {
             $hookPath = $gitHooksPath.$hook;
@@ -70,10 +71,5 @@ class DeInitCommand extends Command
         }
 
         $output->writeln('<fg=yellow>GrumPHP stopped sniffing your commits! Too bad ...<fg=yellow>');
-    }
-
-    protected function paths(): PathsHelper
-    {
-        return $this->getHelper(PathsHelper::HELPER_NAME);
     }
 }

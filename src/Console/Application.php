@@ -9,6 +9,7 @@ use GrumPHP\Configuration\GuessedPaths;
 use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Locator\AsciiLocator;
 use GrumPHP\Locator\GitDirLocator;
+use GrumPHP\Locator\GitHooksDirLocator;
 use GrumPHP\Util\Filesystem;
 use GrumPHP\Util\Paths;
 use Monolog\Handler\StreamHandler;
@@ -81,16 +82,19 @@ class Application extends SymfonyConsole
         $commands[] = new Command\Git\CommitMsgCommand(
             $this->container->get('config'),
             $this->container->get('locator.changed_files'),
-            $this->container->get('grumphp.util.filesystem')
+            $this->container->get('grumphp.util.filesystem'),
+            $this->container->get(Paths::class)
         );
         $commands[] = new Command\Git\DeInitCommand(
-            $this->container->get('config'),
-            $this->container->get('grumphp.util.filesystem')
+            $this->container->get('grumphp.util.filesystem'),
+            $this->container->get(GitHooksDirLocator::class)
         );
         $commands[] = new Command\Git\InitCommand(
             $this->container->get('config'),
             $this->container->get('grumphp.util.filesystem'),
-            $this->container->get('process_builder')
+            $this->container->get('process_builder'),
+            $this->container->get(Paths::class),
+            $this->container->get(GitHooksDirLocator::class)
         );
         $commands[] = new Command\Git\PreCommitCommand(
             $this->container->get('config'),
@@ -103,13 +107,6 @@ class Application extends SymfonyConsole
     protected function getDefaultHelperSet(): HelperSet
     {
         $helperSet = parent::getDefaultHelperSet();
-        $helperSet->set($this->getComposerHelper());
-        $helperSet->set(new Helper\PathsHelper(
-            $this->container->get('config'),
-            $this->container->get('grumphp.util.filesystem'),
-            $this->guessPaths(),
-            $this->container->get(Paths::class)
-        ));
         $helperSet->set(new Helper\TaskRunnerHelper(
             $this->container->get('config'),
             $this->container->get('task_runner'),
@@ -126,11 +123,14 @@ class Application extends SymfonyConsole
             return $this->container;
         }
 
-        // Load cli options:
+        // Load cli stuff:
         $guessedPaths = $this->guessPaths();
         $input = new ArgvInput();
         $configPath = $input->getParameterOption(['--config', '-c'], $guessedPaths->getDefaultConfigFile());
         $output = new ConsoleOutput();
+
+        // Make sure to register bin dir in PATHS
+        $guessedPaths->getComposerFile()->ensureProjectBinDirInSystemPath();
 
         // Build the service container:
         $this->container = ContainerFactory::buildFromConfiguration($configPath);
@@ -167,22 +167,6 @@ class Application extends SymfonyConsole
             $logger = $this->container->get('grumphp.logger');
             $logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
         }
-    }
-
-    /**
-     * TODO : get rid of the helper
-     */
-    protected function getComposerHelper(): Helper\ComposerHelper
-    {
-        static $composerHelper;
-        if ($composerHelper) {
-            return $composerHelper;
-        }
-
-        $composerFile = $this->guessPaths()->getComposerFile();
-        $composerFile->ensureProjectBinDirInSystemPath();
-
-        return $composerHelper = new Helper\ComposerHelper($composerFile);
     }
 
     public function run(InputInterface $input = null, OutputInterface $output = null)

@@ -21,6 +21,16 @@ class Filesystem extends SymfonyFilesystem
         return $content;
     }
 
+    public function readPath(string $path): string
+    {
+        return $this->readFromFileInfo(new SplFileInfo($path));
+    }
+
+    public function isFile(string $path): bool
+    {
+        return \is_file($path);
+    }
+
     public function realpath(string $path): string
     {
         if (!$this->exists($path)) {

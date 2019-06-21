@@ -31,3 +31,9 @@ services:
         arguments:
             - '@executable_finder'
         public: false
+
+    GrumPHP\Locator\GitHooksDirLocator:
+        arguments:
+            - '@filesystem'
+            - '@GrumPHP\Util\Paths'
+        public: true

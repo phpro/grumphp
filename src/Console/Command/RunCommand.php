@@ -6,7 +6,6 @@ namespace GrumPHP\Console\Command;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
-use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\Locator\RegisteredFiles;
 use GrumPHP\Runner\TaskRunnerContext;
@@ -31,11 +30,11 @@ class RunCommand extends Command
      */
     protected $registeredFilesLocator;
 
-    public function __construct(GrumPHP $grumPHP, RegisteredFiles $registeredFilesLocator)
+    public function __construct(GrumPHP $config, RegisteredFiles $registeredFilesLocator)
     {
         parent::__construct();
 
-        $this->grumPHP = $grumPHP;
+        $this->grumPHP = $config;
         $this->registeredFilesLocator = $registeredFilesLocator;
     }
 
@@ -85,10 +84,5 @@ class RunCommand extends Command
     protected function taskRunner(): TaskRunnerHelper
     {
         return $this->getHelper(TaskRunnerHelper::HELPER_NAME);
-    }
-
-    protected function paths(): PathsHelper
-    {
-        return $this->getHelper(PathsHelper::HELPER_NAME);
     }
 }

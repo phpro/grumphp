@@ -57,7 +57,7 @@ class GuessedPaths
         $guessed->composerFile = new ComposerFile(
             $composerFilePath,
             $filesystem->exists($composerFilePath)
-                    ? json_decode($filesystem->readFromFileInfo(new \SplFileInfo($composerFilePath)), true)
+                ? json_decode($filesystem->readFromFileInfo(new \SplFileInfo($composerFilePath)), true)
                 : []
         );
 

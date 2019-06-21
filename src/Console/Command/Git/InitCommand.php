@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Configuration\GrumPHP;
-use GrumPHP\Console\Helper\PathsHelper;
-use GrumPHP\Exception\FileNotFoundException;
+use GrumPHP\Locator\GitHooksDirLocator;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Process\ProcessUtils;
 use GrumPHP\Util\Filesystem;
+use GrumPHP\Util\Paths;
 use RuntimeException;
-use SplFileInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,7 +33,7 @@ class InitCommand extends Command
     /**
      * @var GrumPHP
      */
-    protected $grumPHP;
+    protected $config;
 
     /**
      * @var Filesystem
@@ -51,13 +50,30 @@ class InitCommand extends Command
      */
     private $processBuilder;
 
-    public function __construct(GrumPHP $grumPHP, Filesystem $filesystem, ProcessBuilder $processBuilder)
-    {
+    /**
+     * @var Paths
+     */
+    private $paths;
+
+    /**
+     * @var GitHooksDirLocator
+     */
+    private $gitHooksDirLocator;
+
+    public function __construct(
+        GrumPHP $config,
+        Filesystem $filesystem,
+        ProcessBuilder $processBuilder,
+        Paths $paths,
+        GitHooksDirLocator $gitHooksDirLocator
+    ) {
         parent::__construct();
 
-        $this->grumPHP = $grumPHP;
+        $this->config = $config;
         $this->filesystem = $filesystem;
         $this->processBuilder = $processBuilder;
+        $this->paths = $paths;
+        $this->gitHooksDirLocator = $gitHooksDirLocator;
     }
 
     /**
@@ -75,10 +91,12 @@ class InitCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
-        $gitHooksPath = $this->paths()->getGitHooksDir();
-        $resourceHooksPath = $this->paths()->getGitHookTemplatesDir().$this->grumPHP->getHooksPreset();
-        $resourceHooksPath = $this->paths()->getPathWithTrailingSlash($resourceHooksPath);
-        $customHooksPath = $this->paths()->getPathWithTrailingSlash($this->grumPHP->getHooksDir());
+        $gitHooksPath = $this->gitHooksDirLocator->locate();
+        $resourceHooksPath = $this->filesystem->buildPath(
+            $this->paths->getInternalGitHookTemplatesPath(),
+            $this->config->getHooksPreset()
+        );
+        $customHooksPath = $this->config->getHooksDir();
 
         // Some git clients do not automatically create a git hooks folder.
         if (!$this->filesystem->exists($gitHooksPath)) {
@@ -91,10 +109,13 @@ class InitCommand extends Command
 
         foreach (self::$hooks as $hook) {
             $gitHook = $gitHooksPath.$hook;
-            $hookTemplate = new SplFileInfo($resourceHooksPath.$hook);
-            if ($customHooksPath && $this->filesystem->exists($customHooksPath.$hook)) {
-                $hookTemplate = new SplFileInfo($customHooksPath.$hook);
-            }
+            $hookTemplate = $this->filesystem->guessFile(
+                array_filter([
+                    $customHooksPath,
+                    $resourceHooksPath,
+                ]),
+                [$hook]
+            );
 
             if (!$this->filesystem->exists($hookTemplate)) {
                 throw new RuntimeException(
@@ -110,16 +131,16 @@ class InitCommand extends Command
         $output->writeln('<fg=yellow>Watch out! GrumPHP is sniffing your commits!<fg=yellow>');
     }
 
-    protected function parseHookBody(string $hook, SplFileInfo $templateFile): string
+    protected function parseHookBody(string $hook, string $templateFile): string
     {
-        $content = $this->filesystem->readFromFileInfo($templateFile);
+        $content = $this->filesystem->readPath($templateFile);
 
         $replacements = [
-            '${HOOK_EXEC_PATH}' => $this->paths()->getGitHookExecutionPath(),
+            '${HOOK_EXEC_PATH}' => $this->paths->getConfigRelativeToGitDir(),
             '$(HOOK_COMMAND)' => $this->generateHookCommand('git:'.$hook),
         ];
 
-        foreach ($this->grumPHP->getGitHookVariables() as $key => $value) {
+        foreach ($this->config->getGitHookVariables() as $key => $value) {
             $replacements[sprintf('$(%s)', $key)] = ProcessUtils::escapeArgumentsFromString($value);
         }
 
@@ -149,20 +170,15 @@ class InitCommand extends Command
      */
     protected function useExoticConfigFile()
     {
-        try {
-            $configPath = $this->paths()->getAbsolutePath($this->input->getOption('config'));
-            if ($configPath !== $this->paths()->getDefaultConfigPath()) {
-                return $this->paths()->getRelativeProjectPath($configPath);
-            }
-        } catch (FileNotFoundException $e) {
-            // no config file should be set.
+        if (!$configPath = $this->input->getOption('config')) {
+            // Auto discovereable ...
+            return null;
         }
 
-        return null;
-    }
+        if (!$this->filesystem->exists($configPath)) {
+            return null;
+        }
 
-    protected function paths(): PathsHelper
-    {
-        return $this->getHelper(PathsHelper::HELPER_NAME);
+        return $this->paths->makePathRelativeToProjectDir($configPath);
     }
 }
