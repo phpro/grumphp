@@ -111,6 +111,12 @@ class Blacklist extends AbstractExternalTask
                 PHP_EOL,
                 $this->formatter->format($process)
             ));
+        } elseif ($process->getExitCode() !== 1) {
+            return TaskResult::createFailed(
+                $this,
+                $context,
+                'Something went wrong with Grep or Git. Error output: "' . trim($process->getErrorOutput()) . '"'
+            );
         }
 
         return TaskResult::createPassed($this, $context);
