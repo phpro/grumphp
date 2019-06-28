@@ -416,6 +416,15 @@ services:
         tags:
             - {name: grumphp.task, config: shell}
 
+    task.tester:
+        class: GrumPHP\Task\Tester
+        arguments:
+            - '@config'
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, config: tester}
+
     task.twigcs:
         class: GrumPHP\Task\TwigCs
         arguments:

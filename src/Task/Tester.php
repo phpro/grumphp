@@ -11,27 +11,21 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class Phpspec extends AbstractExternalTask
+class Tester extends AbstractExternalTask
 {
     public function getName(): string
     {
-        return 'phpspec';
+        return 'tester';
     }
 
     public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'config_file' => null,
-            'format' => null,
-            'stop_on_failure' => false,
-            'verbose' => false,
+            'always_execute' => false,
         ]);
 
-        $resolver->addAllowedTypes('config_file', ['null', 'string']);
-        $resolver->addAllowedTypes('format', ['null', 'string']);
-        $resolver->addAllowedTypes('stop_on_failure', ['bool']);
-        $resolver->addAllowedTypes('verbose', ['bool']);
+        $resolver->addAllowedTypes('always_execute', ['bool']);
 
         return $resolver;
     }
@@ -43,20 +37,14 @@ class Phpspec extends AbstractExternalTask
 
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $files = $context->getFiles()->name('*.phpt');
-        if (0 === \count($files)) {
+        $config = $this->getConfiguration();
+
+        $files = $context->getFiles()->names(['*Test.php', '*.phpt']);
+        if (0 === \count($files) && !$config['always_execute']) {
             return TaskResult::createSkipped($this, $context);
         }
 
-        $config = $this->getConfiguration();
-
-        $arguments = $this->processBuilder->createArgumentsForCommand('phpspec');
-        $arguments->add('run');
-        $arguments->add('--no-interaction');
-        $arguments->addOptionalArgument('--config=%s', $config['config_file']);
-        $arguments->addOptionalArgument('--format=%s', $config['format']);
-        $arguments->addOptionalArgument('--stop-on-failure', $config['stop_on_failure']);
-        $arguments->addOptionalArgument('--verbose', $config['verbose']);
+        $arguments = $this->processBuilder->createArgumentsForCommand('tester');
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
