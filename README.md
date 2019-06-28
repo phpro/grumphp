@@ -123,6 +123,7 @@ parameters:
         robo: ~
         securitychecker: ~
         shell: ~
+        tester: ~
         twigcs: ~
         xmllint: ~
         yamllint: ~
