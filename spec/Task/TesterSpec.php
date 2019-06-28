@@ -12,7 +12,6 @@ use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
-use GrumPHP\Task\Phpunit;
 use GrumPHP\Task\Tester;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Finder\SplFileInfo;
@@ -64,8 +63,12 @@ class TesterSpec extends ObjectBehavior
         $result->getResultCode()->shouldBe(TaskResult::SKIPPED);
     }
 
-    function it_runs_if_there_are_no_files_but_always_execute_is_passed(GrumPHP $grumPHP, Process $process, ProcessBuilder $processBuilder, ContextInterface $context)
-    {
+    function it_runs_if_there_are_no_files_but_always_execute_is_passed(
+        GrumPHP $grumPHP,
+        Process $process,
+        ProcessBuilder $processBuilder,
+        ContextInterface $context
+    ) {
         $grumPHP->getTaskConfiguration('tester')->willReturn([
             'always_execute' => true,
         ]);
@@ -94,7 +97,7 @@ class TesterSpec extends ObjectBehavior
         $process->isSuccessful()->willReturn(true);
 
         $context->getFiles()->willReturn(new FilesCollection([
-            new SplFileInfo('test.php', '.', 'test.php')
+            new SplFileInfo('testTest.php', '.', 'testTest.php')
         ]));
 
         $result = $this->run($context);
@@ -118,7 +121,7 @@ class TesterSpec extends ObjectBehavior
         $process->isSuccessful()->willReturn(false);
 
         $context->getFiles()->willReturn(new FilesCollection([
-            new SplFileInfo('test.php', '.', 'test.php')
+            new SplFileInfo('testTest.php', '.', 'testTest.php')
         ]));
 
         $result = $this->run($context);
