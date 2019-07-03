@@ -70,6 +70,7 @@ class Ecs extends AbstractExternalTask
         $arguments->addOptionalArgument('--no-progress-bar', $config['no-progress-bar']);
         $arguments->addOptionalArgument('--ansi', true);
         $arguments->addOptionalArgument('--no-interaction', true);
+        $arguments->addFiles($files);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
