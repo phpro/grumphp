@@ -31,6 +31,7 @@ class Ecs extends AbstractExternalTask
             'config' => null,
             'level' => null,
             'triggered_by' => ['php'],
+            'files_on_pre_commit' => false,
         ]);
 
         $resolver->addAllowedTypes('whitelist_patterns', ['array']);
@@ -39,6 +40,7 @@ class Ecs extends AbstractExternalTask
         $resolver->addAllowedTypes('config', ['null', 'string']);
         $resolver->addAllowedTypes('level', ['null', 'string']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
+        $resolver->addAllowedTypes('files_on_pre_commit', ['bool']);
 
         return $resolver;
     }
@@ -67,11 +69,11 @@ class Ecs extends AbstractExternalTask
         $arguments = $this->processBuilder->createArgumentsForCommand('ecs');
         $arguments->add('check');
 
-        if ($context instanceof GitPreCommitContext) {
+        if ($config['files_on_pre_commit'] && $context instanceof GitPreCommitContext) {
             $arguments->addFiles($files);
         }
 
-        if ($context instanceof RunContext) {
+        if (!$config['files_on_pre_commit'] && $context instanceof RunContext) {
             foreach ($whitelistPatterns as $whitelistPattern) {
                 $arguments->add($whitelistPattern);
             }
