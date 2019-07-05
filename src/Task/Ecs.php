@@ -52,7 +52,14 @@ class Ecs extends AbstractExternalTask
     {
         $config = $this->getConfiguration();
 
+        /** @var array $whitelistPatterns */
+        $whitelistPatterns = $config['whitelist_patterns'];
+
         $files = $context->getFiles()->extensions($config['triggered_by']);
+        if (\count($whitelistPatterns)) {
+            $files = $files->paths($whitelistPatterns);
+        }
+
         if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
@@ -60,8 +67,14 @@ class Ecs extends AbstractExternalTask
         $arguments = $this->processBuilder->createArgumentsForCommand('ecs');
         $arguments->add('check');
 
-        foreach ($config['whitelist_patterns'] as $whitelistPattern) {
-            $arguments->add($whitelistPattern);
+        if ($context instanceof GitPreCommitContext) {
+            $arguments->addFiles($files);
+        }
+
+        if ($context instanceof RunContext) {
+            foreach ($whitelistPatterns as $whitelistPattern) {
+                $arguments->add($whitelistPattern);
+            }
         }
 
         $arguments->addOptionalArgument('--config=%s', $config['config']);
