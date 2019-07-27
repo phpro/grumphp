@@ -43,7 +43,7 @@
         "squizlabs/php_codesniffer": "~2.9"
     },
     "suggest": {
-        "allocine/twigcs": "Lets GrumPHP check Twig coding standard.",
+        "friendsoftwig/twigcs": "Lets GrumPHP check Twig coding standard.",
         "atoum/atoum": "Lets GrumPHP run your unit tests.",
         "behat/behat": "Lets GrumPHP validate your project features.",
         "brianium/paratest": "Lets GrumPHP run PHPUnit in parallel.",

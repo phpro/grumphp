@@ -1,11 +1,11 @@
 #  TwigCs
 
-Check Twig coding standard based on [Allocine/TwigCs](https://github.com/allocine/twigcs) .
+Check Twig coding standard based on [FriendsOfTwig/TwigCs](https://github.com/FriendsOfTwig/TwigCs) .
 
 ***Composer***
 
 ```
-composer require --dev allocine/twigcs
+composer require --dev friendsoftwig/twigcs
 ```
 
 ***Config***
@@ -19,7 +19,7 @@ parameters:
         twigcs:
             path: '.'
             severity: 'warning'
-            ruleset: 'Allocine\Twigcs\Ruleset\Official'
+            ruleset: 'FriendsOfTwig\Twigcs\Ruleset\Official'
             triggered_by: ['twig']
 ```
 
@@ -38,7 +38,7 @@ Severity level of sniffing (possibles values are : 'IGNORE', 'INFO', 'WARNING', 
 
 **ruleset**
 
-*Default: 'Allocine\Twigcs\Ruleset\Official'*
+*Default: 'FriendsOfTwig\Twigcs\Ruleset\Official'*
 
 Ruleset used, default ruleset is based on [official one from twig](https://twig.symfony.com/doc/2.x/coding_standards.html)
 
