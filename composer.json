@@ -43,7 +43,6 @@
         "squizlabs/php_codesniffer": "~2.9"
     },
     "suggest": {
-        "friendsoftwig/twigcs": "Lets GrumPHP check Twig coding standard.",
         "atoum/atoum": "Lets GrumPHP run your unit tests.",
         "behat/behat": "Lets GrumPHP validate your project features.",
         "brianium/paratest": "Lets GrumPHP run PHPUnit in parallel.",
@@ -52,6 +51,7 @@
         "designsecurity/progpilot": "Lets GrumPHP be sure that there are no vulnerabilities in your code.",
         "doctrine/orm": "Lets GrumPHP validate your Doctrine mapping files.",
         "friendsofphp/php-cs-fixer": "Lets GrumPHP automatically fix your codestyle.",
+        "friendsoftwig/twigcs": "Lets GrumPHP check Twig coding standard.",
         "infection/infection": "Lets GrumPHP evaluate the quality your unit tests",
         "jakub-onderka/php-parallel-lint": "Lets GrumPHP quickly lint your entire code base.",
         "localheinz/composer-normalize": "Lets GrumPHP tidy and normalize your composer.json file.",
