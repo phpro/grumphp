@@ -5,7 +5,7 @@ Check coding standard in one or more directories.
 ***Composer***
 
 ```
-composer require --dev symplify/easycodingstandard
+composer require --dev symplify/easy-coding-standard
 ```
 
 ***Config***
