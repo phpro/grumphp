@@ -3,6 +3,14 @@
 If you are using `composer`, you have probably modified the file `composer.json` at least once to keep things nice
 and tidy.
 
+***Composer***
+
+```
+composer require --dev localheinz/composer-normalize
+```
+
+***Config***
+
 This task is a wrapper around a composer plugin for tidying up the file `composer.json`.
 
 The default configuration looks like:
