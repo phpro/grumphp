@@ -24,7 +24,7 @@ class TwigCs extends AbstractExternalTask
         $resolver->setDefaults([
             'path' => '.',
             'severity' => 'warning',
-            'ruleset' => 'Allocine\Twigcs\Ruleset\Official',
+            'ruleset' => 'FriendsOfTwig\Twigcs\Ruleset\Official',
             'triggered_by' => ['twig'],
         ]);
 
