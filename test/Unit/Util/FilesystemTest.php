@@ -14,11 +14,6 @@ use Symfony\Component\Filesystem\Tests\FilesystemTestCase;
 class FilesystemTest extends FilesystemTestCase
 {
     /**
-     * @var GrumPHP|ObjectProphecy
-     */
-    private $config;
-
-    /**
      * @var Filesystem
      */
     protected $filesystem;
@@ -26,11 +21,7 @@ class FilesystemTest extends FilesystemTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->config = $this->prophesize(GrumPHP::class);
-        $this->filesystem = new Filesystem($this->config->reveal());
-
-        $this->config->getConfigFile()->willReturn($this->buildPath('grumphp.yml'));
-        $this->config->getGitDir()->willReturn($this->workspace);
+        $this->filesystem = new Filesystem();
     }
 
     /** @test */
@@ -42,7 +33,7 @@ class FilesystemTest extends FilesystemTestCase
     /** @test */
     public function it_can_load_file_contents(): void
     {
-        $file = $this->workspace.DIRECTORY_SEPARATOR.'helloworld.txt';
+        $file = $this->buildPath('helloworld.txt');
         file_put_contents($file, $content = 'hello world');
 
         $this->assertEquals(
@@ -52,71 +43,28 @@ class FilesystemTest extends FilesystemTestCase
     }
 
     /** @test */
-    public function it_knows_the_git_directory(): void
+    public function it_knows_an_item_is_a_file(): void
     {
-        $this->assertSame(
-            $this->workspace,
-            $this->filesystem->getGitDir()
-        );
+        $file = $this->buildPath('helloworld.txt');
+        $folder = $this->buildPath('folder');
+
+        $this->filesystem->touch($file);
+        $this->filesystem->mkdir($folder);
+
+        $this->assertTrue($this->filesystem->isFile($file));
+        $this->assertFalse($this->filesystem->isFile($folder));
     }
 
     /** @test */
-    public function it_knows_the_project_directory(): void
+    public function it_can_load_file_paths(): void
     {
-        $this->assertSame(
-            $this->workspace,
-            $this->filesystem->getProjectDir()
+        $file = $this->buildPath('helloworld.txt');
+        file_put_contents($file, $content = 'hello world');
+
+        $this->assertEquals(
+            $content,
+            $this->filesystem->readPath($file)
         );
-    }
-
-    /**
-     * @test
-     * @dataProvider provideRelativeProjectDirCases
-     */
-    public function it_can_load_relative_project_dir_path(
-        string $projectDir,
-        string $gitDir,
-        string $expected,
-        bool $forceGitDirAsAbsolute = false
-    ): void {
-        $this->filesystem->mkdir($this->buildPath($projectDir));
-        $this->config->getConfigFile()->willReturn($this->buildPath($projectDir.'/grumphp.yml'));
-        $this->config->getGitDir()->willReturn($forceGitDirAsAbsolute ? $this->buildPath($gitDir) : $gitDir);
-
-        $this->assertSame($expected, $this->filesystem->getRelativeProjectDir());
-    }
-
-    public function provideRelativeProjectDirCases(): array
-    {
-        return [
-            [
-                '',
-                '.',
-                './'
-            ],
-            [
-                '',
-                '',
-                './',
-                true
-            ],
-            [
-                'project',
-                '..',
-                'project/'
-            ],
-            [
-                'project',
-                '',
-                'project/',
-                true
-            ],
-            [
-                'project/hello/world',
-                '../..',
-                'hello/world/'
-            ],
-        ];
     }
 
     /**
@@ -166,48 +114,127 @@ class FilesystemTest extends FilesystemTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider provideFilenamesRelativeToProjectDirCases()
-     */
-    public function it_can_make_file_paths_relative_to_project_dir($projectDir, $path, $expected): void
+    /** @test */
+    public function it_can_build_paths(): void
     {
-        $this->filesystem->mkdir($this->buildPath($projectDir));
-        $this->config->getConfigFile()->willReturn($this->buildPath($projectDir.'/grumphp.yml'));
-
-        $result = $this->filesystem->makePathRelativeToProjectDir($path);
-
-        $this->assertSame($expected, $result);
+        $this->assertSame(
+            $this->buildPath('hello.txt'),
+            $this->filesystem->buildPath($this->workspace, 'hello.txt')
+        );
     }
 
-    public function provideFilenamesRelativeToProjectDirCases()
+    /**
+     * @test
+     * @dataProvider provideGuessedPaths
+     */
+    public function it_can_guess_paths(callable $setupWorkspace, array $paths, array $fileNames, string $expected)
     {
-        return [
-            [
-                'project',
-                'project/somefile',
-                'somefile',
-            ],
-            [
-                'project',
-                'project/somefile/somewhere',
-                'somefile/somewhere',
-            ],
-            [
-                'project',
-                'somefile',
-                'somefile'
-            ],
+        $setupWorkspace($this->filesystem, $this->workspace);
+
+        $this->assertSame(
+            $this->buildPath($expected),
+            $this->filesystem->guessFile(
+                array_map(
+                    function ($path) {
+                        return rtrim($this->buildPath($path), '/\\');
+                    },
+                    $paths
+                ),
+                $fileNames
+            )
+        );
+    }
+
+    public function provideGuessedPaths()
+    {
+        yield [
+            static function(Filesystem $filesystem, string $workspace) {
+                $filesystem->touch($filesystem->buildPath($workspace, 'grumphp.yml'));
+                $filesystem->mkdir($filesystem->buildPath($workspace, 'second'));
+                $filesystem->touch($filesystem->buildPath($workspace, 'second/grumphp.yml'));
+                $filesystem->mkdir($filesystem->buildPath($workspace, 'third'));
+            },
             [
                 '',
-                'somefile',
-                'somefile'
+                'second',
+                'third',
             ],
             [
+                'grumphp.yml',
+            ],
+            'grumphp.yml',
+        ];
+
+        yield [
+            static function(Filesystem $filesystem, string $workspace) {
+                $filesystem->touch($filesystem->buildPath($workspace, 'grumphp.yml'));
+                $filesystem->mkdir($filesystem->buildPath($workspace, 'second'));
+                $filesystem->touch($filesystem->buildPath($workspace, 'second/grumphp.yml'));
+                $filesystem->mkdir($filesystem->buildPath($workspace, 'third'));
+            },
+            [
+                'third',
+                'second',
                 '',
-                'somefile/somewhere/sometime',
-                'somefile/somewhere/sometime'
-            ]
+            ],
+            [
+                'grumphp.yml',
+            ],
+            'second/grumphp.yml',
+        ];
+
+        yield [
+            static function(Filesystem $filesystem, string $workspace) {
+                $filesystem->touch($filesystem->buildPath($workspace, 'grumphp.yml'));
+                $filesystem->mkdir($filesystem->buildPath($workspace, 'second'));
+                $filesystem->touch($filesystem->buildPath($workspace, 'second/grumphp.yml.dist'));
+                $filesystem->mkdir($filesystem->buildPath($workspace, 'third'));
+            },
+            [
+                'third',
+                'second',
+                '',
+            ],
+            [
+                'grumphp.yml',
+                'grumphp.yml.dist',
+            ],
+            'second/grumphp.yml.dist',
+        ];
+
+        yield [
+            static function(Filesystem $filesystem, string $workspace) {
+                $filesystem->touch($filesystem->buildPath($workspace, 'grumphp.yml'));
+                $filesystem->mkdir($filesystem->buildPath($workspace, 'second'));
+                $filesystem->touch($filesystem->buildPath($workspace, 'second/grumphp.yml'));
+                $filesystem->touch($filesystem->buildPath($workspace, 'second/grumphp.yml.dist'));
+                $filesystem->mkdir($filesystem->buildPath($workspace, 'third'));
+            },
+            [
+                'third',
+                'second/grumphp.yml.dist',
+                '',
+            ],
+            [
+                'grumphp.yml',
+                'grumphp.yml.dist',
+            ],
+            'second/grumphp.yml.dist',
+        ];
+
+        yield [
+            static function(Filesystem $filesystem, string $workspace) {
+            },
+            [
+                'third',
+                'second/grumphp.yml.dist',
+                '',
+            ],
+            [
+                'grumphp.yml',
+                'grumphp.yml.dist',
+            ],
+            'third/grumphp.yml',
         ];
     }
 

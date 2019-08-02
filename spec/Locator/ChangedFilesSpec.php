@@ -9,16 +9,17 @@ use Gitonomy\Git\Repository;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Locator\ChangedFiles;
 use GrumPHP\Util\Filesystem;
+use GrumPHP\Util\Paths;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Prophecy\Prophet;
 
 class ChangedFilesSpec extends ObjectBehavior
 {
-    function let(Repository $repository, Filesystem $filesystem)
+    function let(Repository $repository, Filesystem $filesystem, Paths $paths)
     {
-        $this->beConstructedWith($repository, $filesystem);
-        $filesystem->makePathRelativeToProjectDir(Argument::type('string'))->will(
+        $this->beConstructedWith($repository, $filesystem, $paths);
+        $paths->makePathRelativeToProjectDir(Argument::type('string'))->will(
             function (array $arguments): string {
                 return $arguments[0];
             }

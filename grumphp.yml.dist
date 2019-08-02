@@ -23,6 +23,7 @@ parameters:
       no_check_lock: true
     composer_normalize: ~
     yamllint:
+      parse_custom_tags: true
       ignore_patterns:
         - "#test/(.*).yml#"
     phplint: ~

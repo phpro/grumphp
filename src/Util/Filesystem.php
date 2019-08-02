@@ -58,7 +58,7 @@ class Filesystem extends SymfonyFilesystem
 
             foreach ($fileNames as $fileName) {
                 $filePath = $this->buildPath($path, $fileName);
-                if ($this->exists($fileName)) {
+                if ($this->exists($filePath)) {
                     return $filePath;
                 }
             }

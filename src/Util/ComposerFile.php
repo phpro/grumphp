@@ -60,7 +60,7 @@ class ComposerFile
         $binDir = $this->configuration['config']['bin-dir'] ?? null;
 
         if (null !== $binDir && is_dir($binDir)) {
-            return $binDir;
+            return (string) $binDir;
         }
 
         return 'vendor/bin';

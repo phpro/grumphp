@@ -4,15 +4,16 @@ namespace spec\GrumPHP\Configuration;
 
 use GrumPHP\Collection\TestSuiteCollection;
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Configuration\GuessedPaths;
 use GrumPHP\Exception\RuntimeException;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class GrumPHPSpec extends ObjectBehavior
 {
-    function let(ContainerInterface $container)
+    function let(ContainerInterface $container, GuessedPaths $guessedPaths)
     {
-        $this->beConstructedWith($container);
+        $this->beConstructedWith($container, $guessedPaths);
     }
 
     function it_is_initializable()
@@ -20,28 +21,28 @@ class GrumPHPSpec extends ObjectBehavior
         $this->shouldHaveType(GrumPHP::class);
     }
 
-    function it_knows_the_bin_dir(ContainerInterface $container)
+    function it_knows_the_bin_dir(GuessedPaths $guessedPaths)
     {
-        $container->getParameter('bin_dir')->willReturn('./vendor/bin');
+        $guessedPaths->getBinDir()->willReturn('./vendor/bin');
         $this->getBinDir()->shouldReturn('./vendor/bin');
     }
 
-    function it_knows_the_git_dir(ContainerInterface $container)
+    function it_knows_the_git_dir(GuessedPaths $guessedPaths)
     {
-        $container->getParameter('git_dir')->willReturn('.');
+        $guessedPaths->getGitDir()->willReturn('.');
         $this->getGitDir()->shouldReturn('.');
     }
 
     function it_knows_the_config_file(ContainerInterface $container)
     {
         $container->getParameter('config_file')->willReturn('/users/grumphp.yml');
-        $this->getGitDir()->shouldReturn('/users/grumphp.yml');
+        $this->getConfigFile()->shouldReturn('/users/grumphp.yml');
     }
 
-    function it_knows_the_working_dir(ContainerInterface $container)
+    function it_knows_the_working_dir(GuessedPaths $guessedPaths)
     {
-        $container->getParameter('working_dir')->willReturn('/users');
-        $this->getGitDir()->shouldReturn('/users');
+        $guessedPaths->getWorkingDir()->willReturn('/users');
+        $this->getWorkingDir()->shouldReturn('/users');
     }
 
     function it_knows_the_hooks_dir(ContainerInterface $container)
