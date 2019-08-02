@@ -112,7 +112,7 @@ class InitCommand extends Command
         }
 
         foreach (self::$hooks as $hook) {
-            $gitHook = $gitHooksPath.$hook;
+            $gitHook = $this->filesystem->buildPath($gitHooksPath, $hook);
             $hookTemplate = $this->filesystem->guessFile(
                 array_filter([
                     $customHooksPath,
@@ -164,7 +164,8 @@ class InitCommand extends Command
 
         $process = $this->processBuilder->buildProcess($arguments);
 
-        return $process->getCommandLine();
+        // Make the grumphp command relative to path where the config is stored (if it uses that executable)
+        return str_replace($this->paths->getGrumPHPConfigDir(), '.', $process->getCommandLine());
     }
 
     /**

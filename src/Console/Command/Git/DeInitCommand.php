@@ -66,7 +66,7 @@ class DeInitCommand extends Command
         $gitHooksPath = $this->gitHooksDirLocator->locate();
 
         foreach (InitCommand::$hooks as $hook) {
-            $hookPath = $gitHooksPath.$hook;
+            $hookPath = $this->filesystem->buildPath($gitHooksPath, $hook);
             if (!$this->filesystem->exists($hookPath)) {
                 continue;
             }

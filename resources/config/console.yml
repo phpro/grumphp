@@ -12,6 +12,7 @@ services:
 
     GrumPHP\Console\ApplicationConfigurator:
         arguments:
+            - '@config'
             - !tagged console.helper
 
     #

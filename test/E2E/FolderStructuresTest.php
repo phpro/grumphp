@@ -30,7 +30,6 @@ class FolderStructuresTest extends AbstractE2ETestCase
         $this->ensureHooksExist();
 
         $this->enableValidatePathsTask($grumphpFile, $projectDir);
-
         $this->commitAll();
         $this->runGrumphp($projectDir);
     }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace GrumPHP\Console;
 
+use GrumPHP\Configuration\GrumPHP;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\InputOption;
 
 class ApplicationConfigurator
 {
@@ -12,12 +14,18 @@ class ApplicationConfigurator
     const APP_VERSION = '0.15.2';
 
     /**
+     * @var GrumPHP
+     */
+    private $config;
+
+    /**
      * @var iterable
      */
     private $helpers;
 
-    public function __construct(iterable $helpers)
+    public function __construct(GrumPHP $config, iterable $helpers)
     {
+        $this->config = $config;
         $this->helpers = $helpers;
     }
 
@@ -25,6 +33,7 @@ class ApplicationConfigurator
     {
         $application->setVersion(self::APP_VERSION);
         $application->setName(self::APP_NAME);
+        $this->registerInputDefinitions($application);
         $this->registerHelpers($application);
     }
 
@@ -34,5 +43,18 @@ class ApplicationConfigurator
         foreach ($this->helpers as $helper) {
             $helperSet->set($helper);
         }
+    }
+
+    private function registerInputDefinitions(Application $application): void
+    {
+        $definition = $application->getDefinition();
+        $definition->addOption(
+            new InputOption(
+                'config',
+                'c',
+                InputOption::VALUE_REQUIRED,
+                'Path to config'
+            )
+        );
     }
 }

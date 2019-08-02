@@ -31,7 +31,9 @@ class GitDirLocator
         $process->run();
 
         if (!$process->isSuccessful()) {
-            throw new RuntimeException('The git directory could not be found. Did you initialize git?');
+            throw new RuntimeException(
+                'The git directory could not be found. Did you initialize git? ('.$process->getErrorOutput().')'
+            );
         }
 
         return trim($process->getOutput());
