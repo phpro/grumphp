@@ -41,12 +41,16 @@ class PreCommitCommand extends Command
         $this->changedFilesLocator = $changedFilesLocator;
     }
 
+    public static function getDefaultName(): string
+    {
+        return self::COMMAND_NAME;
+    }
+
     /**
      * Configure command.
      */
     protected function configure(): void
     {
-        $this->setName(self::COMMAND_NAME);
         $this->setDescription('Executed by the pre-commit hook');
         $this->addOption(
             'skip-success-output',

@@ -35,6 +35,11 @@ class DeInitCommand extends Command
      */
     private $gitHooksDirLocator;
 
+    public static function getDefaultName(): string
+    {
+        return self::COMMAND_NAME;
+    }
+
     public function __construct(
         Filesystem $filesystem,
         GitHooksDirLocator $gitHooksDirLocator
@@ -50,7 +55,6 @@ class DeInitCommand extends Command
      */
     protected function configure(): void
     {
-        $this->setName(self::COMMAND_NAME);
         $this->setDescription('Removes the commit hooks');
     }
 

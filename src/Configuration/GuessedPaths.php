@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Configuration;
 
-use GrumPHP\Locator\GitDirLocator;
 use GrumPHP\Util\ComposerFile;
-use GrumPHP\Util\Filesystem;
 
 class GuessedPaths
 {
@@ -35,48 +33,19 @@ class GuessedPaths
      */
     private $defaultConfigFile;
 
-    private function __construct()
-    {
-    }
-
-    public static function guess(Filesystem $filesystem, GitDirLocator $gitDirLocator): self
-    {
-        $guessed = new self();
-        $guessed->workingDir = getcwd();
-        $guessed->gitDir = $gitDirLocator->locate();
-
-        $composerFilePath = $filesystem->guessFile(
-            [
-                $guessed->workingDir,
-                $guessed->gitDir
-            ],
-            [
-                'composer.json'
-            ]
-        );
-        $guessed->composerFile = new ComposerFile(
-            $composerFilePath,
-            $filesystem->exists($composerFilePath)
-                ? json_decode($filesystem->readFromFileInfo(new \SplFileInfo($composerFilePath)), true)
-                : []
-        );
-
-        $guessed->binDir = $guessed->composerFile->getBinDir();
-        $guessed->defaultConfigFile = $filesystem->guessFile(
-            array_filter([
-                $guessed->composerFile->getConfigDefaultPath(),
-                $guessed->workingDir,
-                $guessed->gitDir,
-            ]),
-            [
-                'grumphp.yml',
-                'grumphp.yaml',
-                'grumphp.yml.dist',
-                'grumphp.yaml.dist',
-            ]
-        );
-
-        return $guessed;
+    public function __construct(
+        string $gitDir,
+        string $workingDir,
+        string $binDir,
+        ComposerFile $composerFile,
+        string $defaultConfigFile
+    ) {
+    
+        $this->gitDir = $gitDir;
+        $this->workingDir = $workingDir;
+        $this->binDir = $binDir;
+        $this->composerFile = $composerFile;
+        $this->defaultConfigFile = $defaultConfigFile;
     }
 
     public function getGitDir(): string

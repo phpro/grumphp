@@ -1,20 +1,26 @@
 #!/usr/bin/env php
 <?php
 
-$autoloadLocations = [
-    getcwd() . '/vendor/autoload.php',
-    getcwd() . '/../../autoload.php',
-    __DIR__ . '/../vendor/autoload.php',
-    __DIR__ . '/../../../autoload.php',
-];
+use GrumPHP\Configuration\ContainerFactory;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
-$loaded = false;
-foreach ($autoloadLocations as $autoload) {
-    if (is_file($autoload)) {
-        require_once($autoload);
-        $loaded = true;
+$loaded = array_reduce(
+    [
+        __DIR__ . '/../vendor/autoload.php', // (Normal bin dir)
+        __DIR__ . '/../../../autoload.php', // From location inside folder
+        __DIR__ . '/../../vendor/autoload.php' // (Development integration)
+    ],
+    static function (?string $loaded, string $file): ?string {
+        if (!$loaded && is_file($file)) {
+            require_once($file);
+
+            return $file;
+        }
+
+        return $loaded;
     }
-}
+);
 
 if (!$loaded) {
     fwrite(STDERR,
@@ -25,5 +31,10 @@ if (!$loaded) {
     exit(1);
 }
 
-$app = new GrumPHP\Console\Application();
-$app->run();
+$container = ContainerFactory::build(
+    $input = new ArgvInput(),
+    $output = new ConsoleOutput()
+);
+
+$application = $container->get('GrumPHP\Console\Application');
+$application->run($input, $output);

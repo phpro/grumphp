@@ -38,12 +38,16 @@ class RunCommand extends Command
         $this->registeredFilesLocator = $registeredFilesLocator;
     }
 
+    public static function getDefaultName(): string
+    {
+        return self::COMMAND_NAME;
+    }
+
     /**
      * Configure command.
      */
     protected function configure(): void
     {
-        $this->setName(self::COMMAND_NAME);
         $this->addOption(
             'testsuite',
             null,

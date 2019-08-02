@@ -4,51 +4,38 @@ declare(strict_types=1);
 
 namespace GrumPHP\Configuration;
 
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
-use Symfony\Component\Filesystem\Filesystem;
+use GrumPHP\Locator\GitDirLocator;
+use GrumPHP\Locator\GuessedPathsLocator;
+use GrumPHP\Util\Filesystem;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Process\ExecutableFinder;
 
-final class ContainerFactory
+class ContainerFactory
 {
-    public static function buildFromConfiguration(string $path): ContainerBuilder
+    public static function build(InputInterface $input, OutputInterface $output): Container
     {
-        $container = new ContainerBuilder();
+        $cliConfigFile = $input->getParameterOption(['--config', '-c'], null);
+        $guessedPaths = self::guessPaths($cliConfigFile);
 
-        // Add compiler passes:
-        $container->addCompilerPass(new Compiler\ExtensionCompilerPass());
-        $container->addCompilerPass(new Compiler\PhpParserCompilerPass());
-        $container->addCompilerPass(new Compiler\TaskCompilerPass());
-        $container->addCompilerPass(new Compiler\TestSuiteCompilerPass());
-        $container->addCompilerPass(
-            new RegisterListenersPass('event_dispatcher', 'grumphp.event_listener', 'grumphp.event_subscriber')
-        );
+        // Make sure to register bin dir in PATHS
+        $guessedPaths->getComposerFile()->ensureProjectBinDirInSystemPath();
 
-        // Load basic service file + custom user configuration
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../../resources/config'));
-        $loader->load('formatter.yml');
-        $loader->load('linters.yml');
-        $loader->load('locators.yml');
-        $loader->load('parameters.yml');
-        $loader->load('parsers.yml');
-        $loader->load('services.yml');
-        $loader->load('subscribers.yml');
-        $loader->load('tasks.yml');
-        $loader->load('util.yml');
-
-        // Load grumphp.yml file:
-        $filesystem = new Filesystem();
-        if ($filesystem->exists($path)) {
-            $loader->load($path);
-        }
-
-        // Add additional paths
-        $container->setParameter('config_file', $path);
-
-        // Compile configuration to make sure that tasks are added to the taskrunner
-        $container->compile();
+        // Build the service container:
+        $container = ContainerBuilder::buildFromConfiguration($guessedPaths->getDefaultConfigFile());
+        $container->set('console.input', $input);
+        $container->set('console.output', $output);
+        $container->set(GuessedPaths::class, $guessedPaths);
 
         return $container;
+    }
+
+    private static function guessPaths(?string $cliConfigFile): GuessedPaths
+    {
+        return (new GuessedPathsLocator(
+            new Filesystem(),
+            new GitDirLocator(new ExecutableFinder())
+        ))->locate($cliConfigFile);
     }
 }

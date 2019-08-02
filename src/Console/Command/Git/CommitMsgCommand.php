@@ -61,12 +61,16 @@ class CommitMsgCommand extends Command
         $this->paths = $paths;
     }
 
+    public static function getDefaultName(): string
+    {
+        return self::COMMAND_NAME;
+    }
+
     /**
      * Configure command.
      */
     protected function configure(): void
     {
-        $this->setName(self::COMMAND_NAME);
         $this->setDescription('Executed by the commit-msg commit hook');
         $this->addOption('git-user', null, InputOption::VALUE_REQUIRED, 'The configured git user name.', '');
         $this->addOption('git-email', null, InputOption::VALUE_REQUIRED, 'The configured git email.', '');
