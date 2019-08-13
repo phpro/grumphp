@@ -2,6 +2,7 @@ help:
 	@echo "Please use \`make <target>' where <target> is one of"
 	@echo "  run            to perform GrumPHP tests"
 	@echo "  tag            to modify the version and tag"
+	@echo "  compile        to Compile grumphp"
 
 run:
 	./vendor/bin/grumphp run
@@ -14,3 +15,6 @@ tag:
 	git add -A
 	git commit -m '$(TAG) release'
 	git tag -s 'v$(TAG)' -m'Version $(TAG)'
+
+compile:
+	./vendor/bin/box compile
