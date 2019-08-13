@@ -1,4 +1,3 @@
-bin
 !bin/grumphp
 vendor
 composer.lock
