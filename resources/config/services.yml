@@ -39,8 +39,8 @@ services:
 
     git.repository:
         class: Gitonomy\Git\Repository
+        factory: ['@GrumPHP\Locator\GitRepositoryLocator', 'locate']
         arguments:
-          - '%git_dir%'
           - { logger: '@grumphp.logger' }
         public: true
 

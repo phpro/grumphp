@@ -45,6 +45,17 @@ class Filesystem extends SymfonyFilesystem
         return $baseDir.DIRECTORY_SEPARATOR.$path;
     }
 
+    public function guessDir(array $paths): string
+    {
+        foreach ($paths as $path) {
+            if ($this->exists($path) && is_dir($path)) {
+                return $path;
+            }
+        }
+
+        return current($paths);
+    }
+
     public function guessFile(array $paths, array $fileNames): string
     {
         foreach ($paths as $path) {

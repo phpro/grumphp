@@ -64,30 +64,32 @@ class Paths
         return $this->config->getWorkingDir();
     }
 
+    public function getProjectDir(): string
+    {
+        return $this->config->getProjectDir();
+    }
+
     public function getGitDir(): string
     {
         return $this->config->getGitDir();
     }
 
-    public function getConfigRelativeToGitDir(): string
+    public function getBinDir(): string
     {
-        return $this->filesystem->makePathRelative(
-            $this->getGrumPHPConfigDir(),
-            $this->getGitDir()
-        );
+        return $this->config->getBinDir();
     }
 
-    public function getGitDirRelativeToConfig(): string
+    public function getProjectDirRelativeToGitDir(): string
     {
         return $this->filesystem->makePathRelative(
-            $this->getGitDir(),
-            $this->getGrumPHPConfigDir()
+            $this->getProjectDir(),
+            $this->getGitDir()
         );
     }
 
     public function makePathRelativeToProjectDir(string $filePath): string
     {
-        $relativeProjectDir = $this->getConfigRelativeToGitDir();
+        $relativeProjectDir = $this->getProjectDirRelativeToGitDir();
         $relativePath = preg_replace('#^('.preg_quote($relativeProjectDir, '#').')#', '', $filePath);
 
         if (strpos($relativePath, './') === 0) {

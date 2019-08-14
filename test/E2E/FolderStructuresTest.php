@@ -41,7 +41,6 @@ class FolderStructuresTest extends AbstractE2ETestCase
         $conventionsDir = $this->mkdir('vendor/phpro/conventions');
         $grumphpFile = $this->initializeGrumphpConfig($conventionsDir);
         $this->registerGrumphpDefaultPathInComposer($composerFile, $grumphpFile);
-        $this->mergeGrumphpConfig($grumphpFile, ['parameters' => ['git_dir' => '.']]);
         $this->installComposer($this->rootDir);
 
         $this->ensureHooksExist();
@@ -55,14 +54,13 @@ class FolderStructuresTest extends AbstractE2ETestCase
     /** @test */
     function it_has_grumphp_in_root_but_composer_in_project_folder()
     {
-        $this->markTestSkipped('This flow is broken: git hooks are placed in project dir instead of git dir.');
-
         $projectDir = $this->mkdir('project');
         $composerFile = $this->initializeComposer($projectDir);
-        $grumphpFile = $this->initializeGrumphpConfig($this->rootDir, $projectDir);
+        $grumphpFile = $this->initializeGrumphpConfig($this->rootDir);
         $this->registerGrumphpDefaultPathInComposer($composerFile, $grumphpFile);
         $this->installComposer($projectDir);
         $this->ensureHooksExist();
+        //die($this->rootDir);exit;
 
         $this->enableValidatePathsTask($grumphpFile, $projectDir);
 
@@ -73,17 +71,20 @@ class FolderStructuresTest extends AbstractE2ETestCase
     /** @test */
     function it_has_composer_in_root_but_grumphp_in_project_folder()
     {
+        //$this->markTestSkipped('TODO : how shall we specify another root path? Another composer config entry? Doest this folder structure makes sense or does convention solve this?');
+
         $projectDir = $this->mkdir('project');
         $composerFile = $this->initializeComposer($this->rootDir);
-        $grumphpFile = $this->initializeGrumphpConfig($projectDir, $this->rootDir);
+        $grumphpFile = $this->initializeGrumphpConfig($projectDir);
         $this->registerGrumphpDefaultPathInComposer($composerFile, $grumphpFile);
+        $this->registerGrumphpProjectPathInComposer($composerFile, $projectDir);
         $this->installComposer($this->rootDir);
         $this->ensureHooksExist();
 
         $this->enableValidatePathsTask($grumphpFile, $projectDir);
 
         $this->commitAll();
-        $this->runGrumphp($projectDir);
+        $this->runGrumphp($projectDir, '../vendor');
     }
 
     /**
@@ -91,5 +92,21 @@ class FolderStructuresTest extends AbstractE2ETestCase
      *
      * - test git submodule  -> #459
      * - test git commit -a and -p
+     * - test file names grumphp.yaml grumphp.yml.dist, grumphp.yaml.dist : maybe better in a paths tester though
+     * - test symlinks (git dir is on another drive for example : windows)
+     * - test new GRUMPHP_ environment vars
+     * - test with --config param
+     * - test completely insane structure
+     *
+     *
+     * *Global / yay or nay:*
+     * - test global install / or at random place is also good enough
+     * - test phar ?
+     *
+     * * Manual for now*
+     * - vagrant
+     * - docker
+     * - composer-bin-plugin
+     *
      */
 }

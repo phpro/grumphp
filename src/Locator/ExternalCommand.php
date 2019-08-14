@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GrumPHP\Locator;
 
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Util\Paths;
 use Symfony\Component\Process\ExecutableFinder;
 
 class ExternalCommand
@@ -16,6 +17,14 @@ class ExternalCommand
     {
         $this->binDir = rtrim($binDir, '/\\');
         $this->executableFinder = $executableFinder;
+    }
+
+    public static function loadWithPaths(Paths $paths, ExecutableFinder $executableFinder): self
+    {
+        return new self(
+            $paths->getBinDir(),
+            $executableFinder
+        );
     }
 
     public function locate(string $command, bool $forceUnix = false): string

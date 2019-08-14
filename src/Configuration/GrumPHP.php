@@ -32,31 +32,57 @@ class GrumPHP
         $this->guessedPaths = $guessedPaths;
     }
 
+    /**
+     * @deprecated Gotta move logic to Paths util
+     */
     public function getBinDir(): string
     {
         return $this->guessedPaths->getBinDir();
     }
 
+    /**
+     * @deprecated Gotta move logic to Paths util
+     */
     public function getGitDir(): string
     {
         return $this->guessedPaths->getGitDir();
     }
 
+    /**
+     * @deprecated Gotta move logic to Paths util
+     */
     public function getConfigFile(): string
     {
         return $this->container->getParameter('config_file');
     }
 
+    /**
+     * @deprecated Gotta move logic to Paths util
+     */
     public function getWorkingDir(): string
     {
         return $this->guessedPaths->getWorkingDir();
     }
 
+    /**
+     * @deprecated Gotta move logic to Paths util
+     */
+    public function getProjectDir(): string
+    {
+        return $this->guessedPaths->getProjectDir();
+    }
+
+    /**
+     * @deprecated Gotta move logic to Paths util
+     */
     public function getComposerFile(): ComposerFile
     {
         return $this->guessedPaths->getComposerFile();
     }
 
+    /**
+     * @deprecated Gotta move logic to Paths util
+     */
     public function getHooksDir(): ?string
     {
         return $this->container->getParameter('hooks_dir');

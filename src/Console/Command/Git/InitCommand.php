@@ -140,7 +140,7 @@ class InitCommand extends Command
         $content = $this->filesystem->readPath($templateFile);
 
         $replacements = [
-            '${HOOK_EXEC_PATH}' => $this->paths->getConfigRelativeToGitDir(),
+            '${HOOK_EXEC_PATH}' => $this->paths->getProjectDirRelativeToGitDir(),
             '$(HOOK_COMMAND)' => $this->generateHookCommand('git:'.$hook),
         ];
 

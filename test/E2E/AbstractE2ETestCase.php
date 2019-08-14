@@ -137,11 +137,11 @@ abstract class AbstractE2ETestCase extends TestCase
         return 'dev-'.$version;
     }
 
-    protected function mergeComposerConfig(string $composerFile, array $config)
+    protected function mergeComposerConfig(string $composerFile, array $config, $recursive = true)
     {
         $this->assertFileExists($composerFile);
         $source = json_decode(file_get_contents($composerFile), true);
-        $newSource = array_merge_recursive($source, $config);
+        $newSource = $recursive ? array_merge_recursive($source, $config) : array_merge($source, $config);
         $flags = JSON_FORCE_OBJECT+JSON_PRETTY_PRINT+JSON_UNESCAPED_SLASHES;
         $this->dumpFile($composerFile, json_encode($newSource,  $flags));
     }
@@ -160,18 +160,14 @@ abstract class AbstractE2ETestCase extends TestCase
         }
     }
 
-    protected function initializeGrumphpConfig(string $path, string $composerDir = null): string
+    protected function initializeGrumphpConfig(string $path, string $fileName = 'grumphp.yml'): string
     {
-        $composerDir = $composerDir ?: $path;
-        $binDir = $composerDir.$this->useCorrectDirectorySeparator('/vendor/bin');
-        $grumphpFile = $path.'/grumphp.yml';
+        $grumphpFile = $this->useCorrectDirectorySeparator($path.'/'.$fileName);
 
         $this->filesystem->dumpFile(
-            $this->useCorrectDirectorySeparator($grumphpFile),
+            $grumphpFile,
             Yaml::dump([
                 'parameters' => [
-                    'bin_dir' => $this->filesystem->makePathRelative($binDir, $path),
-                    'git_dir' => $this->filesystem->makePathRelative($this->rootDir, $path),
                     'tasks' => []
                 ]
             ])
@@ -190,7 +186,7 @@ abstract class AbstractE2ETestCase extends TestCase
 
     protected function registerGrumphpDefaultPathInComposer(string $composerFile, string $grumphpFile)
     {
-        $configDefaultPath = rtrim($this->filesystem->makePathRelative($grumphpFile, $this->rootDir), '\\/');
+        $configDefaultPath = rtrim($this->filesystem->makePathRelative($grumphpFile, dirname($composerFile)), '\\/');
 
         $this->mergeComposerConfig($composerFile, [
             'extra' => [
@@ -199,6 +195,30 @@ abstract class AbstractE2ETestCase extends TestCase
                 ],
             ],
         ]);
+    }
+
+    protected function registerGrumphpProjectPathInComposer(string $composerFile, string $projectPath): void
+    {
+        $relativeProjectPath = $this->useUnixDirectorySeparator(
+            rtrim($this->filesystem->makePathRelative($projectPath, dirname($composerFile)), '\\/')
+        );
+
+        $this->mergeComposerConfig(
+            $composerFile,
+            [
+                'autoload' => [
+                    'psr-4' => [
+                        '' => $relativeProjectPath.'/src/',
+                    ],
+                ],
+                'extra' => [
+                    'grumphp' => [
+                        'project-path' => $relativeProjectPath,
+                    ],
+                ],
+            ],
+            false
+        );
     }
 
     protected function ensureGrumphpE2eTasksDir(string $projectDir): string
@@ -269,11 +289,11 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->runCommand('add files to git', new Process([$git, 'add', '-A'], $path));
     }
 
-    protected function runGrumphp(string $projectPath)
+    protected function runGrumphp(string $projectPath, $vendorPath = './vendor')
     {
         $projectPath = $this->relativeRootPath($projectPath);
         $this->runCommand('grumphp run', new Process(
-            ['./vendor/bin/grumphp', 'run'],
+            [$vendorPath.'/bin/grumphp', 'run'],
             $projectPath
         ));
     }

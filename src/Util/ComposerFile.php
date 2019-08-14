@@ -71,6 +71,11 @@ class ComposerFile
         return $this->configuration['extra']['grumphp']['config-default-path'] ?? null;
     }
 
+    public function getProjectPath(): ?string
+    {
+        return $this->configuration['extra']['grumphp']['project-path'] ?? null;
+    }
+
     public function getPath(): string
     {
         return $this->path;

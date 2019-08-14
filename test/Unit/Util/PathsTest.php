@@ -47,6 +47,7 @@ class PathsTest extends FilesystemTestCase
         $this->config->getComposerFile()->willReturn(
             new ComposerFile($this->buildPath($this->workspace, 'composer.json'), [])
         );
+        $this->config->getProjectDir()->willReturn($this->workspace);
 
         $this->paths = new Paths($this->filesystem, $this->config->reveal());
         $this->packageRootDir = dirname(__DIR__, 3);
@@ -124,6 +125,15 @@ class PathsTest extends FilesystemTestCase
         );
     }
 
+    /** @test */
+    public function it_knows_the_project_directory(): void
+    {
+        $this->assertSame(
+            $this->workspace,
+            $this->paths->getProjectDir()
+        );
+    }
+
     /**
      * @test
      * @dataProvider provideFilenamesRelativeToProjectDirCases()
@@ -131,7 +141,7 @@ class PathsTest extends FilesystemTestCase
     public function it_can_make_file_paths_relative_to_project_dir($projectDir, $path, $expected): void
     {
         $this->filesystem->mkdir($this->buildPath($this->workspace, $projectDir));
-        $this->config->getConfigFile()->willReturn($this->buildPath($this->workspace, $projectDir.'/grumphp.yml'));
+        $this->config->getProjectDir()->willReturn($this->buildPath($this->workspace, $projectDir));
 
         $result = $this->paths->makePathRelativeToProjectDir($path);
 

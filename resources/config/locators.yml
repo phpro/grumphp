@@ -8,8 +8,9 @@ services:
 
     locator.external_command:
         class: GrumPHP\Locator\ExternalCommand
+        factory: ['GrumPHP\Locator\ExternalCommand', 'loadWithPaths']
         arguments:
-            - '%bin_dir%'
+            - '@GrumPHP\Util\Paths'
             - '@executable_finder'
         public: true
 
@@ -37,3 +38,7 @@ services:
             - '@filesystem'
             - '@GrumPHP\Util\Paths'
         public: true
+
+    GrumPHP\Locator\GitRepositoryLocator:
+        arguments:
+            - '@GrumPHP\Util\Paths'
