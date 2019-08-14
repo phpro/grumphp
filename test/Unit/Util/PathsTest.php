@@ -84,7 +84,7 @@ class PathsTest extends FilesystemTestCase
     public function it_knows_internal_hooks_template_dir(): void
     {
         $this->assertSame(
-            $this->filesystem->buildPath($this->packageRootDir, 'resources/hooks'),
+            $this->buildPath($this->packageRootDir, 'resources/hooks'),
             $this->paths->getInternalGitHookTemplatesPath()
         );
     }
