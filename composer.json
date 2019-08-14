@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "composer-plugin-api": "~1.0",
         "doctrine/collections": "~1.2",
         "gitonomy/gitlib": "^1.0.3",
