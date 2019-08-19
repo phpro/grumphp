@@ -82,8 +82,8 @@ class Paths
     public function getProjectDirRelativeToGitDir(): string
     {
         return $this->filesystem->makePathRelative(
-            $this->getProjectDir(),
-            $this->getGitDir()
+            $this->filesystem->realpath($this->getProjectDir()),
+            $this->filesystem->realpath($this->getGitDir())
         );
     }
 

@@ -26,6 +26,7 @@ services:
         class: GrumPHP\Locator\RegisteredFiles
         arguments:
             - '@git.repository'
+            - '@GrumPHP\Util\Paths'
         public: true
 
     GrumPHP\Locator\GitDirLocator:

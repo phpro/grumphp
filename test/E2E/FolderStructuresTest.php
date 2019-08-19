@@ -58,21 +58,24 @@ class FolderStructuresTest extends AbstractE2ETestCase
         $composerFile = $this->initializeComposer($projectDir);
         $grumphpFile = $this->initializeGrumphpConfig($this->rootDir);
         $this->registerGrumphpDefaultPathInComposer($composerFile, $grumphpFile);
+        $this->registerGrumphpProjectPathInComposer($composerFile, $projectDir);
         $this->installComposer($projectDir);
         $this->ensureHooksExist();
-        //die($this->rootDir);exit;
 
         $this->enableValidatePathsTask($grumphpFile, $projectDir);
 
         $this->commitAll();
         $this->runGrumphp($projectDir);
+
+        // Since composer cannot be detected, a project_dir needs to be specified:
+        $this->runGrumphp($this->rootDir, $this->filesystem->buildPath($projectDir, 'vendor'), [
+            'GRUMPHP_PROJECT_DIR' => $projectDir,
+        ]);
     }
 
     /** @test */
     function it_has_composer_in_root_but_grumphp_in_project_folder()
     {
-        //$this->markTestSkipped('TODO : how shall we specify another root path? Another composer config entry? Doest this folder structure makes sense or does convention solve this?');
-
         $projectDir = $this->mkdir('project');
         $composerFile = $this->initializeComposer($this->rootDir);
         $grumphpFile = $this->initializeGrumphpConfig($projectDir);
@@ -84,12 +87,19 @@ class FolderStructuresTest extends AbstractE2ETestCase
         $this->enableValidatePathsTask($grumphpFile, $projectDir);
 
         $this->commitAll();
+        $this->runGrumphp($this->rootDir);
         $this->runGrumphp($projectDir, '../vendor');
     }
 
     /**
      * TODO
      *
+     * Known issues:
+     * - test different paths have same outputs during run (e.g. composer / grumphp in different paths)
+     * - test relative grumphp path in git commit hooks:
+     * - test relative paths in global environment vars (currently throws exception on Filesystem::..relative()
+     *
+     * Should handle:
      * - test git submodule  -> #459
      * - test git commit -a and -p
      * - test file names grumphp.yaml grumphp.yml.dist, grumphp.yaml.dist : maybe better in a paths tester though

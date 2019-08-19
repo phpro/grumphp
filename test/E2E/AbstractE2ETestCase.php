@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace GrumPHPTest\E2E;
 
+use GrumPHP\Util\Filesystem;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
@@ -289,13 +289,15 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->runCommand('add files to git', new Process([$git, 'add', '-A'], $path));
     }
 
-    protected function runGrumphp(string $projectPath, $vendorPath = './vendor')
+    protected function runGrumphp(string $projectPath, $vendorPath = './vendor', $environment = [])
     {
         $projectPath = $this->relativeRootPath($projectPath);
-        $this->runCommand('grumphp run', new Process(
-            [$vendorPath.'/bin/grumphp', 'run'],
-            $projectPath
-        ));
+        $this->runCommand('grumphp run', (
+            new Process(
+                [$vendorPath.'/bin/grumphp', 'run', '-vvv'],
+                $projectPath
+            )
+        )->setEnv($environment));
     }
 
     protected function mkdir(string $path): string
@@ -319,7 +321,7 @@ abstract class AbstractE2ETestCase extends TestCase
         $process->run();
         if (!$process->isSuccessful()) {
             throw new \RuntimeException(
-                'Could not '.$action.'! '.$process->getErrorOutput()
+                'Could not '.$action.'! '.$process->getOutput().PHP_EOL.$process->getErrorOutput()
                 . PHP_EOL . 'While running '.$process->getCommandLine()
             );
         }
