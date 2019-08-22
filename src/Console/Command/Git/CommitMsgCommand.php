@@ -89,7 +89,7 @@ class CommitMsgCommand extends Command
         $commitMsgPath = $input->getArgument('commit-msg-file');
 
         if (!$this->filesystem->isAbsolutePath($commitMsgPath)) {
-            $commitMsgPath = $this->filesystem->buildPath($this->paths->getGitDir(), $commitMsgPath);
+            $commitMsgPath = $this->filesystem->buildPath($this->paths->getGitWorkingDir(), $commitMsgPath);
         }
 
         $commitMsgFile = new SplFileInfo($commitMsgPath);

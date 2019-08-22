@@ -9,6 +9,7 @@ class FolderStructuresTest extends AbstractE2ETestCase
     /** @test */
     function it_has_all_config_files_in_root_git_dir()
     {
+        $this->initializeGitInRootDir();
         $this->initializeComposer($this->rootDir);
         $grumphpFile = $this->initializeGrumphpConfig($this->rootDir);
         $this->installComposer($this->rootDir);
@@ -23,6 +24,7 @@ class FolderStructuresTest extends AbstractE2ETestCase
     /** @test */
     function it_has_project_subfolder()
     {
+        $this->initializeGitInRootDir();
         $projectDir = $this->mkdir('project');
         $this->initializeComposer($projectDir);
         $grumphpFile = $this->initializeGrumphpConfig($projectDir);
@@ -37,6 +39,7 @@ class FolderStructuresTest extends AbstractE2ETestCase
     /** @test */
     function it_can_define_conventions_at_another_location()
     {
+        $this->initializeGitInRootDir();
         $composerFile = $this->initializeComposer($this->rootDir);
         $conventionsDir = $this->mkdir('vendor/phpro/conventions');
         $grumphpFile = $this->initializeGrumphpConfig($conventionsDir);
@@ -54,6 +57,7 @@ class FolderStructuresTest extends AbstractE2ETestCase
     /** @test */
     function it_has_grumphp_in_root_but_composer_in_project_folder()
     {
+        $this->initializeGitInRootDir();
         $projectDir = $this->mkdir('project');
         $composerFile = $this->initializeComposer($projectDir);
         $grumphpFile = $this->initializeGrumphpConfig($this->rootDir);
@@ -76,6 +80,7 @@ class FolderStructuresTest extends AbstractE2ETestCase
     /** @test */
     function it_has_composer_in_root_but_grumphp_in_project_folder()
     {
+        $this->initializeGitInRootDir();
         $projectDir = $this->mkdir('project');
         $composerFile = $this->initializeComposer($this->rootDir);
         $grumphpFile = $this->initializeGrumphpConfig($projectDir);
@@ -95,12 +100,10 @@ class FolderStructuresTest extends AbstractE2ETestCase
      * TODO
      *
      * Known issues:
-     * - test different paths have same outputs during run (e.g. composer / grumphp in different paths)
      * - test relative grumphp path in git commit hooks:
      * - test relative paths in global environment vars (currently throws exception on Filesystem::..relative()
      *
      * Should handle:
-     * - test git submodule  -> #459
      * - test git commit -a and -p
      * - test file names grumphp.yaml grumphp.yml.dist, grumphp.yaml.dist : maybe better in a paths tester though
      * - test symlinks (git dir is on another drive for example : windows)
@@ -110,13 +113,12 @@ class FolderStructuresTest extends AbstractE2ETestCase
      *
      *
      * *Global / yay or nay:*
-     * - test global install / or at random place is also good enough
-     * - test phar ?
      *
      * * Manual for now*
      * - vagrant
      * - docker
      * - composer-bin-plugin
+     * - test phar / global?
      *
      */
 }

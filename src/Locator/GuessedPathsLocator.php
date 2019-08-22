@@ -16,14 +16,23 @@ class GuessedPathsLocator
     private $filesystem;
 
     /**
-     * @var GitDirLocator
+     * @var GitWorkingDirLocator
      */
-    private $gitDirLocator;
+    private $gitWorkingDirLocator;
 
-    public function __construct(Filesystem $filesystem, GitDirLocator $gitDirLocator)
-    {
+    /**
+     * @var GitRepositoryDirLocator
+     */
+    private $gitRepositoryDirLocator;
+
+    public function __construct(
+        Filesystem $filesystem,
+        GitWorkingDirLocator $gitWorkingDirLocator,
+        GitRepositoryDirLocator $gitRepositoryDirLocator
+    ) {
         $this->filesystem = $filesystem;
-        $this->gitDirLocator = $gitDirLocator;
+        $this->gitWorkingDirLocator = $gitWorkingDirLocator;
+        $this->gitRepositoryDirLocator = $gitRepositoryDirLocator;
     }
 
     public function locate(?string $cliConfigFile): GuessedPaths
@@ -32,14 +41,18 @@ class GuessedPathsLocator
         $workingDir = getcwd();
         $projectDirEnv = (string) ($_SERVER['GRUMPHP_PROJECT_DIR'] ?? '');
 
-        $gitDir = (string) ($_SERVER['GRUMPHP_GIT_DIR'] ?? $this->gitDirLocator->locate());
+        $gitWorkingDir = (string) ($_SERVER['GRUMPHP_GIT_WORKING_DIR'] ?? $this->gitWorkingDirLocator->locate());
+        $gitRepositoryDir = (string) ($_SERVER['GRUMPHP_GIT_REPOSITORY_DIR'] ?? $this->gitRepositoryDirLocator->locate(
+            $this->filesystem->buildPath($gitWorkingDir, '.git')
+        ));
+
         $composerFilePathname = $this->filesystem->guessFile(
             array_filter([
                 (string) ($_SERVER['GRUMPHP_COMPOSER_DIR'] ?? ''),
                 $cliConfigPath,
                 $projectDirEnv,
                 $workingDir,
-                $gitDir
+                $gitWorkingDir
             ]),
             [
                 'composer.json'
@@ -63,7 +76,7 @@ class GuessedPathsLocator
             $composerFile->getConfigDefaultPath()
         );
 
-        $projectDir = $this->filesystem->guessDir([
+        $projectDir = $this->filesystem->guessPath([
             $projectDirEnv,
             $this->makeComposerPathAbsolute($composerFilePath, $composerFile->getProjectPath()),
             $workingDir
@@ -76,7 +89,7 @@ class GuessedPathsLocator
                 $composerConfigDefaultPath,
                 $projectDir,
                 $workingDir,
-                $gitDir,
+                $gitWorkingDir,
             ]),
             [
                 'grumphp.yml',
@@ -86,7 +99,15 @@ class GuessedPathsLocator
             ]
         );
 
-        return new GuessedPaths($gitDir, $workingDir, $projectDir, $binDir, $composerFile, $defaultConfigFile);
+        return new GuessedPaths(
+            $gitWorkingDir,
+            $gitRepositoryDir,
+            $workingDir,
+            $projectDir,
+            $binDir,
+            $composerFile,
+            $defaultConfigFile
+        );
     }
 
     private function makeComposerPathAbsolute(string $composerFilePath, ?string $path): ?string

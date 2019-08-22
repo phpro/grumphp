@@ -11,7 +11,12 @@ class GuessedPaths
     /**
      * @var string
      */
-    private $gitDir;
+    private $gitWorkingDir;
+
+    /**
+     * @var string
+     */
+    private $gitRepositoryDir;
 
     /**
      * @var string
@@ -36,28 +41,34 @@ class GuessedPaths
     /**
      * @var string
      */
-    private $defaultConfigFile;
+    private $configFile;
 
     public function __construct(
-        string $gitDir,
+        string $gitWorkingDir,
+        string $gitRepositoryDir,
         string $workingDir,
         string $projectDir,
         string $binDir,
         ComposerFile $composerFile,
-        string $defaultConfigFile
+        string $configFile
     ) {
-    
-        $this->gitDir = $gitDir;
+        $this->gitWorkingDir = $gitWorkingDir;
+        $this->gitRepositoryDir = $gitRepositoryDir;
         $this->workingDir = $workingDir;
         $this->projectDir = $projectDir;
         $this->binDir = $binDir;
         $this->composerFile = $composerFile;
-        $this->defaultConfigFile = $defaultConfigFile;
+        $this->configFile = $configFile;
     }
 
-    public function getGitDir(): string
+    public function getGitWorkingDir(): string
     {
-        return $this->gitDir;
+        return $this->gitWorkingDir;
+    }
+
+    public function getGitRepositoryDir(): string
+    {
+        return $this->gitRepositoryDir;
     }
 
     public function getWorkingDir(): string
@@ -80,8 +91,8 @@ class GuessedPaths
         return $this->composerFile;
     }
 
-    public function getDefaultConfigFile(): string
+    public function getConfigFile(): string
     {
-        return $this->defaultConfigFile;
+        return $this->configFile;
     }
 }

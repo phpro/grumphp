@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace GrumPHPTest\Unit\Util;
 
-use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Configuration\GuessedPaths;
 use GrumPHP\Util\ComposerFile;
 use GrumPHP\Util\Filesystem;
 use GrumPHP\Util\Paths;
-use Prophecy\Prophecy\ObjectProphecy;
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
-use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 use Symfony\Component\Filesystem\Tests\FilesystemTestCase;
 
 class PathsTest extends FilesystemTestCase
@@ -21,9 +18,9 @@ class PathsTest extends FilesystemTestCase
     private $paths;
 
     /**
-     * @var GrumPHP|ObjectProphecy
+     * @var GuessedPaths
      */
-    private $config;
+    private $guessedPaths;
 
     /**
      * @var Filesystem
@@ -38,18 +35,19 @@ class PathsTest extends FilesystemTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->config = $this->prophesize(GrumPHP::class);
         $this->filesystem = new Filesystem();
 
-        $this->config->getConfigFile()->willReturn($this->buildPath($this->workspace, 'grumphp.yml'));
-        $this->config->getGitDir()->willReturn($this->workspace);
-        $this->config->getWorkingDir()->willReturn($this->workspace);
-        $this->config->getComposerFile()->willReturn(
-            new ComposerFile($this->buildPath($this->workspace, 'composer.json'), [])
+        $this->guessedPaths = new GuessedPaths(
+            $this->workspace,
+            $this->buildPath($this->workspace, '.git'),
+            $this->workspace,
+            $this->workspace,
+            $this->buildPath($this->workspace, 'vendor/bin'),
+            new ComposerFile($this->buildPath($this->workspace, 'composer.json'), []),
+            $this->buildPath($this->workspace, 'grumphp.json')
         );
-        $this->config->getProjectDir()->willReturn($this->workspace);
 
-        $this->paths = new Paths($this->filesystem, $this->config->reveal());
+        $this->paths = new Paths($this->filesystem, $this->guessedPaths);
         $this->packageRootDir = dirname(__DIR__, 3);
     }
 
@@ -90,38 +88,29 @@ class PathsTest extends FilesystemTestCase
     }
 
     /** @test */
-    public function it_knows_the_grumphp_config_directory(): void
+    public function it_knows_the_git_working_directory(): void
     {
         $this->assertSame(
-            $this->workspace,
-            $this->paths->getGrumPHPConfigDir()
+            $this->guessedPaths->getGitWorkingDir(),
+            $this->paths->getGitWorkingDir()
         );
     }
 
     /** @test */
-    public function it_knows_the_composer_config_directory(): void
+    public function it_knows_the_git_repository_directory(): void
     {
         $this->assertSame(
-            $this->workspace,
-            $this->paths->getComposerConfigDir()
+            $this->guessedPaths->getGitRepositoryDir(),
+            $this->paths->getGitRepositoryDir()
         );
     }
 
     /** @test */
-    public function it_knows_the_git_directory(): void
+    public function it_knows_the_git_hooks_directory(): void
     {
         $this->assertSame(
-            $this->workspace,
-            $this->paths->getGitDir()
-        );
-    }
-
-    /** @test */
-    public function it_knows_the_working_directory(): void
-    {
-        $this->assertSame(
-            $this->workspace,
-            $this->paths->getWorkingDir()
+            $this->buildPath($this->guessedPaths->getGitRepositoryDir(), 'hooks'),
+            $this->paths->getGitHooksDir()
         );
     }
 
@@ -140,8 +129,13 @@ class PathsTest extends FilesystemTestCase
      */
     public function it_can_make_file_paths_relative_to_project_dir($projectDir, $path, $expected): void
     {
+        $guessedPaths = $this->prophesize(GuessedPaths::class);
+        $guessedPaths->getGitWorkingDir()->willReturn($this->workspace);
+        $guessedPaths->getProjectDir()->willReturn($this->buildPath($this->workspace, $projectDir));
+        $this->guessedPaths = $guessedPaths->reveal();
+        $this->paths = new Paths($this->filesystem, $this->guessedPaths);
+
         $this->filesystem->mkdir($this->buildPath($this->workspace, $projectDir));
-        $this->config->getProjectDir()->willReturn($this->buildPath($this->workspace, $projectDir));
 
         $result = $this->paths->makePathRelativeToProjectDir($path);
 

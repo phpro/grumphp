@@ -9,7 +9,7 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Process\ProcessFactory;
 use Symfony\Component\Process\ExecutableFinder;
 
-class GitDirLocator
+class GitWorkingDirLocator
 {
     /**
      * @var ExecutableFinder

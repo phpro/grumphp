@@ -29,17 +29,12 @@ services:
             - '@GrumPHP\Util\Paths'
         public: true
 
-    GrumPHP\Locator\GitDirLocator:
+    GrumPHP\Locator\GitWorkingDirLocator:
         arguments:
             - '@executable_finder'
-        public: false
-
-    GrumPHP\Locator\GitHooksDirLocator:
+    GrumPHP\Locator\GitRepositoryDirLocator:
         arguments:
-            - '@filesystem'
-            - '@GrumPHP\Util\Paths'
-        public: true
-
+            - '@grumphp.util.filesystem'
     GrumPHP\Locator\GitRepositoryLocator:
         arguments:
             - '@GrumPHP\Util\Paths'

@@ -4,26 +4,26 @@ declare(strict_types=1);
 
 namespace GrumPHP\Util;
 
-use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Configuration\GuessedPaths;
 
 class Paths
 {
-    /**
-     * @var GrumPHP
-     */
-    private $config;
-
     /**
      * @var Filesystem
      */
     private $filesystem;
 
+    /**
+     * @var GuessedPaths
+     */
+    private $guessedPaths;
+
     public function __construct(
         Filesystem $filesystem,
-        GrumPHP $config
+        GuessedPaths $guessedPaths
     ) {
-        $this->config = $config;
         $this->filesystem = $filesystem;
+        $this->guessedPaths = $guessedPaths;
     }
 
     /**
@@ -49,41 +49,36 @@ class Paths
         return $this->filesystem->buildPath($this->getInternalResourcesDir(), 'hooks');
     }
 
-    public function getGrumPHPConfigDir(): string
-    {
-        return \dirname($this->config->getConfigFile());
-    }
-
-    public function getComposerConfigDir(): string
-    {
-        return \dirname($this->config->getComposerFile()->getPath());
-    }
-
-    public function getWorkingDir(): string
-    {
-        return $this->config->getWorkingDir();
-    }
-
     public function getProjectDir(): string
     {
-        return $this->config->getProjectDir();
+        return $this->guessedPaths->getProjectDir();
     }
 
-    public function getGitDir(): string
+    public function getGitWorkingDir(): string
     {
-        return $this->config->getGitDir();
+        return $this->guessedPaths->getGitWorkingDir();
+    }
+
+    public function getGitHooksDir(): string
+    {
+        return $this->filesystem->buildPath($this->getGitRepositoryDir(), 'hooks');
+    }
+
+    public function getGitRepositoryDir(): string
+    {
+        return $this->guessedPaths->getGitRepositoryDir();
     }
 
     public function getBinDir(): string
     {
-        return $this->config->getBinDir();
+        return $this->guessedPaths->getBinDir();
     }
 
     public function getProjectDirRelativeToGitDir(): string
     {
         return $this->filesystem->makePathRelative(
             $this->filesystem->realpath($this->getProjectDir()),
-            $this->filesystem->realpath($this->getGitDir())
+            $this->filesystem->realpath($this->getGitWorkingDir())
         );
     }
 

@@ -10,7 +10,7 @@ services:
         public: true
         arguments:
             - '@grumphp.util.filesystem'
-            - '@config'
+            - '@GrumPHP\Configuration\GuessedPaths'
 
     grumphp.util.phpversion:
         class: GrumPHP\Util\PhpVersion

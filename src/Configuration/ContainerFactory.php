@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace GrumPHP\Configuration;
 
-use GrumPHP\Locator\GitDirLocator;
+use GrumPHP\Locator\GitRepositoryDirLocator;
+use GrumPHP\Locator\GitWorkingDirLocator;
 use GrumPHP\Locator\GuessedPathsLocator;
 use GrumPHP\Util\Filesystem;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,7 +24,7 @@ class ContainerFactory
         $guessedPaths->getComposerFile()->ensureProjectBinDirInSystemPath();
 
         // Build the service container:
-        $container = ContainerBuilder::buildFromConfiguration($guessedPaths->getDefaultConfigFile());
+        $container = ContainerBuilder::buildFromConfiguration($guessedPaths->getConfigFile());
         $container->set('console.input', $input);
         $container->set('console.output', $output);
         $container->set(GuessedPaths::class, $guessedPaths);
@@ -33,9 +34,12 @@ class ContainerFactory
 
     private static function guessPaths(?string $cliConfigFile): GuessedPaths
     {
+        $fileSystem = new Filesystem();
+
         return (new GuessedPathsLocator(
-            new Filesystem(),
-            new GitDirLocator(new ExecutableFinder())
+            $fileSystem,
+            new GitWorkingDirLocator(new ExecutableFinder()),
+            new GitRepositoryDirLocator($fileSystem)
         ))->locate($cliConfigFile);
     }
 }

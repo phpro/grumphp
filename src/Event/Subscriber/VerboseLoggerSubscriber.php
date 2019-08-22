@@ -50,10 +50,11 @@ class VerboseLoggerSubscriber implements EventSubscriberInterface
 
     private function logGuessedPaths(OutputInterface $output): void
     {
-        $output->writeln('Config file: '. $this->guessedPaths->getDefaultConfigFile());
+        $output->writeln('Config file: '. $this->guessedPaths->getConfigFile());
         $output->writeln('Working dir: '. $this->guessedPaths->getWorkingDir());
         $output->writeln('Project dir: '. $this->guessedPaths->getProjectDir());
-        $output->writeln('GIT dir: '. $this->guessedPaths->getGitDir());
+        $output->writeln('GIT working dir: '. $this->guessedPaths->getGitWorkingDir());
+        $output->writeln('GIT repository dir: '. $this->guessedPaths->getGitRepositoryDir());
         $output->writeln('Bin dir: '. $this->guessedPaths->getBinDir());
         $output->writeln('Composer file: '. $this->guessedPaths->getComposerFile()->getPath());
     }

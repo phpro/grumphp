@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace GrumPHP\Console\Command\Git;
 
-use GrumPHP\Locator\GitHooksDirLocator;
 use GrumPHP\Util\Filesystem;
+use GrumPHP\Util\Paths;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,9 +31,9 @@ class DeInitCommand extends Command
     private $filesystem;
 
     /**
-     * @var GitHooksDirLocator
+     * @var Paths
      */
-    private $gitHooksDirLocator;
+    private $paths;
 
     public static function getDefaultName(): string
     {
@@ -42,12 +42,12 @@ class DeInitCommand extends Command
 
     public function __construct(
         Filesystem $filesystem,
-        GitHooksDirLocator $gitHooksDirLocator
+        Paths $paths
     ) {
         parent::__construct();
 
         $this->filesystem = $filesystem;
-        $this->gitHooksDirLocator = $gitHooksDirLocator;
+        $this->paths = $paths;
     }
 
     /**
@@ -63,7 +63,7 @@ class DeInitCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $gitHooksPath = $this->gitHooksDirLocator->locate();
+        $gitHooksPath = $this->paths->getGitHooksDir();
 
         foreach (InitCommand::$hooks as $hook) {
             $hookPath = $this->filesystem->buildPath($gitHooksPath, $hook);

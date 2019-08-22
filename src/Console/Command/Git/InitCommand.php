@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Configuration\GrumPHP;
-use GrumPHP\Locator\GitHooksDirLocator;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Process\ProcessUtils;
 use GrumPHP\Util\Filesystem;
@@ -55,17 +54,11 @@ class InitCommand extends Command
      */
     private $paths;
 
-    /**
-     * @var GitHooksDirLocator
-     */
-    private $gitHooksDirLocator;
-
     public function __construct(
         GrumPHP $config,
         Filesystem $filesystem,
         ProcessBuilder $processBuilder,
-        Paths $paths,
-        GitHooksDirLocator $gitHooksDirLocator
+        Paths $paths
     ) {
         parent::__construct();
 
@@ -73,7 +66,6 @@ class InitCommand extends Command
         $this->filesystem = $filesystem;
         $this->processBuilder = $processBuilder;
         $this->paths = $paths;
-        $this->gitHooksDirLocator = $gitHooksDirLocator;
     }
 
     public static function getDefaultName(): string
@@ -95,7 +87,7 @@ class InitCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
-        $gitHooksPath = $this->gitHooksDirLocator->locate();
+        $gitHooksPath = $this->paths->getGitHooksDir();
         $resourceHooksPath = $this->filesystem->buildPath(
             $this->paths->getInternalGitHookTemplatesPath(),
             $this->config->getHooksPreset()

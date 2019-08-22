@@ -21,6 +21,14 @@ class GitRepositoryLocator
 
     public function locate(array $options): Repository
     {
-        return new Repository($this->paths->getGitDir(), $options);
+        return new Repository(
+            $this->paths->getGitRepositoryDir(),
+            array_merge(
+                [
+                    'working_dir' => $this->paths->getGitWorkingDir(),
+                ],
+                $options
+            )
+        );
     }
 }

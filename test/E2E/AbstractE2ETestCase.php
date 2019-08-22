@@ -45,10 +45,6 @@ abstract class AbstractE2ETestCase extends TestCase
 
         $this->removeRootDir();
         $this->filesystem->mkdir($this->rootDir);
-
-        // Basic actions
-        $this->initializeGit();
-        $this->appendToGitignore(['vendor']);
     }
 
     protected function tearDown(): void
@@ -56,15 +52,38 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->removeRootDir();
     }
 
-    private function initializeGit()
+    protected function initializeGitInRootDir()
     {
-        $process = new Process([$this->executableFinder->find('git'), 'init'], $this->rootDir);
-        $this->runCommand('install git', $process);
+        $this->initializeGit($this->rootDir);
+        $this->appendToGitignore($this->rootDir, ['vendor']);
     }
 
-    protected function appendToGitignore(array $paths)
+    protected function initializeGit(string $gitPath)
     {
-        $gitignore = $this->rootDir.$this->useCorrectDirectorySeparator('/.gitignore');
+        $process = new Process([$this->executableFinder->find('git'), 'init'], $gitPath);
+        $this->runCommand('install git', $process);
+
+        // Change permissions on git dir since it might not be removeable.
+        $gitWorkingDir = $this->filesystem->buildPath($gitPath, '.git');
+        if ($this->filesystem->exists($gitWorkingDir)) {
+            $this->filesystem->chmod($gitWorkingDir, 0777, 0000, true);
+        }
+    }
+
+    protected function initializeGitSubModule(string $gitPath, string $submodulePath): string
+    {
+        $process = new Process(
+            [$this->executableFinder->find('git'), 'submodule', 'add', $submodulePath],
+            $gitPath
+        );
+        $this->runCommand('init git submodule', $process);
+
+        return $this->filesystem->buildPath($gitPath, basename($submodulePath));
+    }
+
+    protected function appendToGitignore(string $gitPath, array $paths)
+    {
+        $gitignore = $this->filesystem->buildPath($gitPath, '.gitignore');
         $this->filesystem->appendToFile($gitignore, implode(PHP_EOL, $paths));
     }
 
@@ -146,11 +165,12 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->dumpFile($composerFile, json_encode($newSource,  $flags));
     }
 
-    protected function ensureHooksExist(string $containsPattern = '{grumphp}')
+    protected function ensureHooksExist(string $gitPath = null, string $containsPattern = '{grumphp}')
     {
+        $gitPath = $gitPath ?: $this->rootDir;
         $hooks = ['pre-commit', 'commit-msg'];
         foreach ($hooks as $hook) {
-            $hookFile = $this->rootDir.$this->useCorrectDirectorySeparator('/.git/hooks/'.$hook);
+            $hookFile = $gitPath.$this->useCorrectDirectorySeparator('/.git/hooks/'.$hook);
             $this->assertFileExists($hookFile);
             $this->assertRegExp(
                 $containsPattern,
@@ -272,11 +292,27 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->runCommand('install composer', $process);
     }
 
-    protected function commitAll()
+    protected function commitAll(string $gitPath = null)
     {
+        $gitPath = $gitPath ?: $this->rootDir;
         $git = $this->executableFinder->find('git');
-        $this->gitAddPath($this->rootDir);
-        $this->runCommand('commit', $commit = new Process([$git, 'commit', '-mtest'], $this->rootDir));
+        $this->gitAddPath($gitPath);
+        $this->runCommand('commit', $commit = new Process([$git, 'commit', '-mtest'], $gitPath));
+
+        $allOutput = $commit->getOutput().$commit->getErrorOutput();
+        $this->assertStringContainsString('GrumPHP', $allOutput);
+    }
+
+    /**
+     * This method triggers a partial commit and uses the diff command in the git hooks:
+     * --all: Tell the command to automatically stage files that have been modified and deleted,
+     * but new files you have not told Git about are not affected.
+     */
+    protected function commitModifiedAndDeleted(string $gitPath = null)
+    {
+        $gitPath = $gitPath ?: $this->rootDir;
+        $git = $this->executableFinder->find('git');
+        $this->runCommand('commit', $commit = new Process([$git, 'commit', '--all', '-mtest'], $gitPath));
 
         $allOutput = $commit->getOutput().$commit->getErrorOutput();
         $this->assertStringContainsString('GrumPHP', $allOutput);
@@ -284,7 +320,6 @@ abstract class AbstractE2ETestCase extends TestCase
 
     protected function gitAddPath(string $path)
     {
-        $path = $this->relativeRootPath($path);
         $git = $this->executableFinder->find('git');
         $this->runCommand('add files to git', new Process([$git, 'add', '-A'], $path));
     }
@@ -359,11 +394,6 @@ abstract class AbstractE2ETestCase extends TestCase
 
     protected function removeRootDir()
     {
-        // Change permissions on git dir since it might not be removeable.
-        if ($this->filesystem->exists($gitDir = $this->relativeRootPath('.git'))) {
-            $this->filesystem->chmod($gitDir, 0777, 0000, true);
-        }
-
         $this->filesystem->remove($this->rootDir);
     }
 

@@ -42,7 +42,7 @@ services:
     GrumPHP\Console\Command\Git\DeInitCommand:
         arguments:
             - '@grumphp.util.filesystem'
-            - '@GrumPHP\Locator\GitHooksDirLocator'
+            - '@GrumPHP\Util\Paths'
         tags:
             - { name: 'console.command' }
     GrumPHP\Console\Command\Git\InitCommand:
@@ -51,7 +51,6 @@ services:
             - '@grumphp.util.filesystem'
             - '@process_builder'
             - '@GrumPHP\Util\Paths'
-            - '@GrumPHP\Locator\GitHooksDirLocator'
         tags:
             - { name: 'console.command' }
     GrumPHP\Console\Command\Git\PreCommitCommand:

@@ -4,45 +4,20 @@ namespace spec\GrumPHP\Configuration;
 
 use GrumPHP\Collection\TestSuiteCollection;
 use GrumPHP\Configuration\GrumPHP;
-use GrumPHP\Configuration\GuessedPaths;
 use GrumPHP\Exception\RuntimeException;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class GrumPHPSpec extends ObjectBehavior
 {
-    function let(ContainerInterface $container, GuessedPaths $guessedPaths)
+    function let(ContainerInterface $container)
     {
-        $this->beConstructedWith($container, $guessedPaths);
+        $this->beConstructedWith($container);
     }
 
     function it_is_initializable()
     {
         $this->shouldHaveType(GrumPHP::class);
-    }
-
-    function it_knows_the_bin_dir(GuessedPaths $guessedPaths)
-    {
-        $guessedPaths->getBinDir()->willReturn('./vendor/bin');
-        $this->getBinDir()->shouldReturn('./vendor/bin');
-    }
-
-    function it_knows_the_git_dir(GuessedPaths $guessedPaths)
-    {
-        $guessedPaths->getGitDir()->willReturn('.');
-        $this->getGitDir()->shouldReturn('.');
-    }
-
-    function it_knows_the_config_file(ContainerInterface $container)
-    {
-        $container->getParameter('config_file')->willReturn('/users/grumphp.yml');
-        $this->getConfigFile()->shouldReturn('/users/grumphp.yml');
-    }
-
-    function it_knows_the_working_dir(GuessedPaths $guessedPaths)
-    {
-        $guessedPaths->getWorkingDir()->willReturn('/users');
-        $this->getWorkingDir()->shouldReturn('/users');
     }
 
     function it_knows_the_hooks_dir(ContainerInterface $container)
