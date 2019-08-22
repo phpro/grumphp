@@ -55,7 +55,7 @@ abstract class AbstractE2ETestCase extends TestCase
     protected function initializeGitInRootDir()
     {
         $this->initializeGit($this->rootDir);
-        $this->appendToGitignore($this->rootDir, ['vendor']);
+        $this->appendToGitignore($this->rootDir);
     }
 
     protected function initializeGit(string $gitPath)
@@ -81,7 +81,7 @@ abstract class AbstractE2ETestCase extends TestCase
         return $this->filesystem->buildPath($gitPath, basename($submodulePath));
     }
 
-    protected function appendToGitignore(string $gitPath, array $paths)
+    protected function appendToGitignore(string $gitPath, array $paths = ['vendor'])
     {
         $gitignore = $this->filesystem->buildPath($gitPath, '.gitignore');
         $this->filesystem->appendToFile($gitignore, implode(PHP_EOL, $paths));
@@ -277,15 +277,17 @@ abstract class AbstractE2ETestCase extends TestCase
         ]);
     }
 
-    protected function installComposer(string $path)
+    protected function installComposer(string $path, array $arguments = [])
     {
         $process = new Process(
-            [
-                $this->executableFinder->find('composer'),
-                'install',
-                '--optimize-autoloader',
-                '--no-interaction',
-            ],
+            array_merge(
+                [
+                    $this->executableFinder->find('composer'),
+                    'install',
+                    '--optimize-autoloader',
+                    '--no-interaction',
+                ],
+                $arguments),
             $path
         );
 
@@ -333,6 +335,28 @@ abstract class AbstractE2ETestCase extends TestCase
                 $projectPath
             )
         )->setEnv($environment));
+    }
+
+    protected function runGrumphpWithConfig(string $projectPath, string $grumphpFile, $vendorPath = './vendor')
+    {
+        $projectPath = $this->relativeRootPath($projectPath);
+        $this->runCommand('grumphp run with config',
+            new Process(
+                [$vendorPath.'/bin/grumphp', 'run', '-vvv', '--config='.$grumphpFile],
+                $projectPath
+            )
+        );
+    }
+
+    protected function initializeGrumphpGitHooksWithConfig(string $grumphpFile, $vendorPath = './vendor')
+    {
+        $this->runCommand(
+            'grumphp git:init',
+            new Process(
+                [$vendorPath.'/bin/grumphp', 'git:init', '--config='.$grumphpFile],
+                $this->rootDir
+            )
+        );
     }
 
     protected function mkdir(string $path): string

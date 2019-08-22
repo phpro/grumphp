@@ -55,6 +55,24 @@ class FolderStructuresTest extends AbstractE2ETestCase
     }
 
     /** @test */
+    function it_has_convention_at_another_location_through_cli_params()
+    {
+        $this->initializeGitInRootDir();
+        $this->initializeComposer($this->rootDir);
+        $conventionsDir = $this->mkdir('vendor/phpro/conventions');
+        $grumphpFile = $this->initializeGrumphpConfig($conventionsDir);
+
+        $this->installComposer($this->rootDir, ['--no-plugins']);
+        $this->initializeGrumphpGitHooksWithConfig($grumphpFile);
+        $this->ensureHooksExist($this->rootDir, '#--config='.preg_quote($grumphpFile, '#').'#');
+
+        $this->enableValidatePathsTask($grumphpFile, $this->rootDir);
+
+        $this->commitAll();
+        $this->runGrumphpWithConfig($this->rootDir, $grumphpFile);
+    }
+
+    /** @test */
     function it_has_grumphp_in_root_but_composer_in_project_folder()
     {
         $this->initializeGitInRootDir();
@@ -96,20 +114,67 @@ class FolderStructuresTest extends AbstractE2ETestCase
         $this->runGrumphp($projectDir, '../vendor');
     }
 
+    /** @test */
+    public function it_can_manipulate_guessed_paths_by_environment_variables_for_mega_insane_project_structures(): void
+    {
+        $gitDir = $this->mkdir('git');
+        $this->initializeGit($gitDir);
+
+        $projectDir = $this->mkdir($this->filesystem->buildPath($gitDir, 'project'));
+        $composerDir = $this->mkdir('composer');
+        $binDir = $this->mkdir('composer/bin');
+        $configDir = $this->mkdir('config');
+        $grumphpFile = $this->initializeGrumphpConfig($configDir);
+
+        $composerFile = $this->initializeComposer($composerDir);
+        $this->mergeComposerConfig($composerFile, ['config' => ['bin-dir' => 'bin']]);
+        $this->installComposer($composerDir, ['--no-plugins']);
+
+        $this->enableValidatePathsTask($grumphpFile, $projectDir);
+        $this->runGrumphp($this->rootDir, $composerDir, [
+            'GRUMPHP_PROJECT_DIR' => $projectDir,
+            'GRUMPHP_GIT_WORKING_DIR' => $gitDir,
+            'GRUMPHP_GIT_REPOSITORY_DIR' => $this->filesystem->buildPath($gitDir, '.git'),
+            'GRUMPHP_COMPOSER_DIR' => $composerDir,
+            'GRUMPHP_BIN_DIR' => $binDir,
+        ]);
+
+        // Also test relative paths
+        $this->runGrumphp($this->rootDir, $composerDir, [
+            'GRUMPHP_PROJECT_DIR' => $this->useCorrectDirectorySeparator('git/project'),
+            'GRUMPHP_GIT_WORKING_DIR' => $this->useCorrectDirectorySeparator('git'),
+            'GRUMPHP_GIT_REPOSITORY_DIR' => $this->useCorrectDirectorySeparator('git/.git'),
+            'GRUMPHP_COMPOSER_DIR' => $this->useCorrectDirectorySeparator('composer'),
+            'GRUMPHP_BIN_DIR' => $this->useCorrectDirectorySeparator('composer/bin'),
+        ]);
+    }
+
+
+    /** @test */
+    function it_can_deal_with_symlinks()
+    {
+        $sourceLocation = $this->mkdir('project-src');
+        $linkLocation = $this->filesystem->buildPath($this->rootDir, 'project-linked');
+        $this->filesystem->symlink($sourceLocation, $linkLocation, true);
+
+        $this->initializeGit($linkLocation);
+        $this->appendToGitignore($linkLocation);
+        $this->initializeComposer($linkLocation);
+        $grumphpFile = $this->initializeGrumphpConfig($linkLocation);
+        $this->installComposer($linkLocation);
+        $this->ensureHooksExist($linkLocation);
+
+        $this->enableValidatePathsTask($grumphpFile, $linkLocation);
+
+        $this->commitAll($linkLocation);
+        $this->runGrumphp($linkLocation);
+    }
+
     /**
      * TODO
      *
-     * Known issues:
-     * - test relative grumphp path in git commit hooks:
-     * - test relative paths in global environment vars (currently throws exception on Filesystem::..relative()
-     *
      * Should handle:
      * - test file names grumphp.yaml grumphp.yml.dist, grumphp.yaml.dist : maybe better in a paths tester though
-     * - test symlinks (git dir is on another drive for example : windows)
-     * - test new GRUMPHP_ environment vars
-     * - test with --config param
-     * - test completely insane structure
-     *
      *
      * * Manual for now*
      * - vagrant

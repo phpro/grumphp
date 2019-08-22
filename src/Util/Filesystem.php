@@ -40,6 +40,15 @@ class Filesystem extends SymfonyFilesystem
         return realpath($path);
     }
 
+    public function makePathAbsolute(string $path, string $basePath): string
+    {
+        if ($this->isAbsolutePath($path)) {
+            return $path;
+        }
+
+        return $this->buildPath($basePath, $path);
+    }
+
     public function buildPath(string $baseDir, string $path): string
     {
         return $baseDir.DIRECTORY_SEPARATOR.$path;

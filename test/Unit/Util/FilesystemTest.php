@@ -67,6 +67,16 @@ class FilesystemTest extends FilesystemTestCase
         );
     }
 
+    /** @test */
+    public function it_can_make_paths_absolute(): void
+    {
+        $file = $this->buildPath($fileName = 'somefile.txt');
+        $this->filesystem->touch($file);
+
+        $this->assertSame($this->filesystem->makePathAbsolute($fileName, $this->workspace), $file);
+        $this->assertSame($this->filesystem->makePathAbsolute($file, $this->workspace), $file);
+    }
+
     /**
      * @test
      * @dataProvider provideRealpathTestcases

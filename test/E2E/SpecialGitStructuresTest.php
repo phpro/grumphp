@@ -13,7 +13,7 @@ class SpecialGitStructuresTest extends AbstractE2ETestCase
         $main = $this->mkdir('main');
 
         $this->initializeGit($subModule);
-        $this->appendToGitignore($subModule, ['vendor']);
+        $this->appendToGitignore($subModule);
         $this->initializeComposer($subModule);
         $grumphpFile = $this->initializeGrumphpConfig($subModule);
         $this->installComposer($subModule);

@@ -39,16 +39,22 @@ class GuessedPathsLocator
     {
         $cliConfigPath = $cliConfigFile ? dirname($cliConfigFile) : null;
         $workingDir = getcwd();
-        $projectDirEnv = (string) ($_SERVER['GRUMPHP_PROJECT_DIR'] ?? '');
+        $projectDirEnv = $this->makeOptionalPathAbsolute($workingDir, (string) ($_SERVER['GRUMPHP_PROJECT_DIR'] ?? ''));
 
-        $gitWorkingDir = (string) ($_SERVER['GRUMPHP_GIT_WORKING_DIR'] ?? $this->gitWorkingDirLocator->locate());
-        $gitRepositoryDir = (string) ($_SERVER['GRUMPHP_GIT_REPOSITORY_DIR'] ?? $this->gitRepositoryDirLocator->locate(
-            $this->filesystem->buildPath($gitWorkingDir, '.git')
-        ));
+        $gitWorkingDir = $this->filesystem->makePathAbsolute(
+            (string) ($_SERVER['GRUMPHP_GIT_WORKING_DIR'] ?? $this->gitWorkingDirLocator->locate()),
+            $workingDir
+        );
+        $gitRepositoryDir = $this->filesystem->makePathAbsolute(
+            (string) ($_SERVER['GRUMPHP_GIT_REPOSITORY_DIR'] ?? $this->gitRepositoryDirLocator->locate(
+                $this->filesystem->buildPath($gitWorkingDir, '.git')
+            )),
+            $workingDir
+        );
 
         $composerFilePathname = $this->filesystem->guessFile(
             array_filter([
-                (string) ($_SERVER['GRUMPHP_COMPOSER_DIR'] ?? ''),
+                $this->makeOptionalPathAbsolute($workingDir, (string) ($_SERVER['GRUMPHP_COMPOSER_DIR'] ?? '')),
                 $cliConfigPath,
                 $projectDirEnv,
                 $workingDir,
@@ -66,19 +72,19 @@ class GuessedPathsLocator
                 : []
         );
 
-        $binDir = $this->makeComposerPathAbsolute(
-            $composerFilePath,
-            (string) ($_SERVER['GRUMPHP_BIN_DIR'] ?? $composerFile->getBinDir())
-        );
+        $binDir = $this->filesystem->guessPath(array_filter([
+            $this->makeOptionalPathAbsolute($workingDir, (string) ($_SERVER['GRUMPHP_BIN_DIR'] ?? '')),
+            $this->makeOptionalPathAbsolute($composerFilePath, $composerFile->getBinDir())
+        ]));
 
-        $composerConfigDefaultPath = $this->makeComposerPathAbsolute(
+        $composerConfigDefaultPath = $this->makeOptionalPathAbsolute(
             $composerFilePath,
             $composerFile->getConfigDefaultPath()
         );
 
         $projectDir = $this->filesystem->guessPath([
             $projectDirEnv,
-            $this->makeComposerPathAbsolute($composerFilePath, $composerFile->getProjectPath()),
+            $this->makeOptionalPathAbsolute($composerFilePath, $composerFile->getProjectPath()),
             $workingDir
         ]);
 
@@ -110,14 +116,12 @@ class GuessedPathsLocator
         );
     }
 
-    private function makeComposerPathAbsolute(string $composerFilePath, ?string $path): ?string
+    private function makeOptionalPathAbsolute(string $baseDir, ?string $path): ?string
     {
         if (!$path) {
             return null;
         }
 
-        return $this->filesystem->isAbsolutePath($path)
-            ? $path
-            : $this->filesystem->buildPath($composerFilePath, $path);
+        return $this->filesystem->makePathAbsolute($path, $baseDir);
     }
 }
