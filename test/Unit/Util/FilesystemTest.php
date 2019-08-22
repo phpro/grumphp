@@ -124,10 +124,10 @@ class FilesystemTest extends FilesystemTestCase
     }
 
     /**
-     * @test
-     * @dataProvider provideGuessedPaths
-     */
-    public function it_can_guess_paths(callable $setupWorkspace, array $paths, array $fileNames, string $expected)
+ * @test
+ * @dataProvider provideGuessedFiles
+ */
+    public function it_can_guess_files(callable $setupWorkspace, array $paths, array $fileNames, string $expected)
     {
         $setupWorkspace($this->filesystem, $this->workspace);
 
@@ -145,7 +145,28 @@ class FilesystemTest extends FilesystemTestCase
         );
     }
 
-    public function provideGuessedPaths()
+    /**
+     * @test
+     * @dataProvider provideGuessedPaths
+     */
+    public function it_can_guess_paths(callable $setupWorkspace, array $paths, string $expected)
+    {
+        $setupWorkspace($this->filesystem, $this->workspace);
+
+        $this->assertSame(
+            $expected ? $this->buildPath($expected) : $this->workspace,
+            $this->filesystem->guessPath(
+                array_map(
+                    function ($path) {
+                        return rtrim($this->buildPath($path), '/\\');
+                    },
+                    $paths
+                )
+            )
+        );
+    }
+
+    public function provideGuessedFiles()
     {
         yield [
             static function(Filesystem $filesystem, string $workspace) {
@@ -235,6 +256,50 @@ class FilesystemTest extends FilesystemTestCase
                 'grumphp.yml.dist',
             ],
             'third/grumphp.yml',
+        ];
+    }
+
+    public function provideGuessedPaths()
+    {
+        yield [
+            static function(Filesystem $filesystem, string $workspace) {
+                $filesystem->mkdir($filesystem->buildPath($workspace, 'second'));
+                $filesystem->mkdir($filesystem->buildPath($workspace, 'third'));
+                $filesystem->mkdir($filesystem->buildPath($workspace, 'third/fourth'));
+            },
+            [
+                '',
+                'second',
+                'third',
+            ],
+            '',
+        ];
+
+        yield [
+            static function(Filesystem $filesystem, string $workspace) {
+                $filesystem->mkdir($filesystem->buildPath($workspace, 'second'));
+                $filesystem->mkdir($filesystem->buildPath($workspace, 'third'));
+                $filesystem->mkdir($filesystem->buildPath($workspace, 'third/fourth'));
+            },
+            [
+                'doesnotexist',
+                'third/fourth',
+                'third',
+            ],
+            'third/fourth',
+        ];
+
+        yield [
+            static function(Filesystem $filesystem, string $workspace) {
+                $filesystem->mkdir($filesystem->buildPath($workspace, 'second'));
+                $filesystem->mkdir($filesystem->buildPath($workspace, 'third'));
+                $filesystem->mkdir($filesystem->buildPath($workspace, 'third/fourth'));
+            },
+            [
+                'second',
+                'third',
+            ],
+            'second',
         ];
     }
 

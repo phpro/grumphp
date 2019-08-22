@@ -104,7 +104,6 @@ class FolderStructuresTest extends AbstractE2ETestCase
      * - test relative paths in global environment vars (currently throws exception on Filesystem::..relative()
      *
      * Should handle:
-     * - test git commit -a and -p
      * - test file names grumphp.yaml grumphp.yml.dist, grumphp.yaml.dist : maybe better in a paths tester though
      * - test symlinks (git dir is on another drive for example : windows)
      * - test new GRUMPHP_ environment vars
@@ -112,13 +111,10 @@ class FolderStructuresTest extends AbstractE2ETestCase
      * - test completely insane structure
      *
      *
-     * *Global / yay or nay:*
-     *
      * * Manual for now*
      * - vagrant
      * - docker
      * - composer-bin-plugin
      * - test phar / global?
-     *
      */
 }
