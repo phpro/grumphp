@@ -27,7 +27,11 @@ We don't want to bore you with all the details, so quick: install it yourself an
 
 ## Installation
 
-*If you are trying to install GrumPHP on Windows: please read the windows pre-install section.*
+In order for this package to work, you have to make sure following tools are discoverable on the command-line:
+
+- php
+- composer
+- git
 
 This package is a composer plugin and should be installed to your project's dev dependency using composer:
 
@@ -49,7 +53,6 @@ Having trouble installing GrumPHP? Find out how to:
 
 - [Install globally](doc/installation/global.md)
 - [Install with an exotic project structure](doc/installation/exotic.md)
-- [Install on Windows](doc/installation/windows.md)
 
 ## Configuration
 
@@ -59,8 +62,6 @@ You can specify a custom config filename and location in `composer.json` or in t
 ```yaml
 # grumphp.yml
 parameters:
-    bin_dir: "./vendor/bin"
-    git_dir: "."
     hooks_dir: ~
     hooks_preset: local
     git_hook_variables:
@@ -166,20 +167,12 @@ This package has been tested with following git clients:
 ## Roadmap
 
 Lots of tasks are already available to make sure your team writes great code.
-There is one major part missing before we can release v1.0.0:
-
-- [A PHAR executable](https://github.com/phpro//grumphp/issues/61)
-
 We are always looking to support new tasks.
 Feel free to log an issue or create a pull request for a task we forgot.
 
 Are you missing a feature or did you find a bug?
 Log it in the [issue tracker](https://github.com/phpro/grumphp/issues)!
 Want to help out? Feel free to contact us!
-
-## Solving issues
-
-- [GrumPHP does not work with submodules](doc/issues/grumphp-is-not-working-with-submodules.md)
 
 ## FAQ
 - [FAQ](doc/faq.md)

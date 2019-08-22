@@ -1,23 +1,105 @@
 # Installation with an exotic project structure
 
-When your application has a project structure that is not covered by the default configuration settings,
-you will have to create a `grumphp.yml` *before* installing the package
-and add next config into your application's `composer.json`:
+By default, GrumPHP` is trying to auto-discover a lot of possible project structures.
+If for some reason GrumPHP is not able to find everything, you can help it out.
+Here are some possible solutions:
+
+
+## Register paths in your composer file
+
+You can manipulate how GrumPHP works based on settings in your composer file:
+
 
 ```json
 # composer.json
 {
     "extra": {
         "grumphp": {
-            "config-default-path": "path/to/grumphp.yml"
+            "config-default-path": "path/to/grumphp.yml",
+            "project-path": "path/to/your/project/folder"
         }
     }
 }
 ```
+**config-default-path**
 
-You can also change the configuration after installation.
-The only downfall is that you will have to initialize the git hook manually:
+*Default: null*
+
+The path to your Grumphp configuration file.
+
+
+**project-path**
+
+*Default: null*
+
+The path to the root of your project. This must be a subdirectory of your git working directory.
+
+
+When your application has a project structure that is not covered by the default configuration settings,
+you will have to create a `grumphp.yml` *before* installing the package
+and add next config into your application's `composer.json`:
+
+All parameters above are optional.
+After changing a parameter, you might want to re-initialize your git hooks:
 
 ```sh
-php ./vendor/bin/grumphp git:init --config=path/to/grumphp.yml
+php ./vendor/bin/grumphp git:init
+```
+
+
+## Changing paths by using environment variables
+
+You can set one or multiple of the environment variables below.
+Paths can be absolute or relative against current working directory.
+You can also set these variables directly in your git hook. However, this might require a custom hook template.
+
+```sh
+GRUMPHP_PROJECT_DIR=...
+GRUMPHP_GIT_WORKING_DIR=....
+GRUMPHP_GIT_REPOSITORY_DIR=...
+GRUMPHP_COMPOSER_DIR=...
+GRUMPHP_BIN_DIR=...
+```
+
+**GRUMPHP_PROJECT_DIR**
+
+*Default: null*
+
+The path to the root of your project. This must be a subdirectory of your git working directory.
+
+**GRUMPHP_GIT_WORKING_DIR**
+
+*Default: null*
+
+The path to the root directory of your git project.
+
+**GRUMPHP_GIT_REPOSITORY_DIR**
+
+*Default: null*
+
+The path to the directory in which git stores it objects etc.
+Most of the time this is the .git folder.
+When using GIT submodules, this is the location of the submodule .git folder.
+
+**GRUMPHP_COMPOSER_DIR**
+
+*Default: null*
+
+The directory in which your `composer.json` file is available.
+
+**GRUMPHP_BIN_DIR**
+
+*Default: null*
+
+The directory in which your executables are located.
+
+
+## Running GrumPHP with a custom config file
+
+In some situations, you might want to use a different GrumPHP configuration file.
+You can switch configuration by using the `--config` parameter that is available on the CLI.
+
+```sh
+php ./vendor/bin/grumphp git:init --config='custom/grumphp.yml'
+php ./vendor/bin/grumphp run --config='custom/grumphp.yml'
 ```
