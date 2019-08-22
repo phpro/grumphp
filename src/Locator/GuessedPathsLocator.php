@@ -37,8 +37,9 @@ class GuessedPathsLocator
 
     public function locate(?string $cliConfigFile): GuessedPaths
     {
-        $cliConfigPath = $cliConfigFile ? dirname($cliConfigFile) : null;
         $workingDir = getcwd();
+        $cliConfigFile = $this->makeOptionalPathAbsolute($workingDir, $cliConfigFile);
+        $cliConfigPath = $cliConfigFile ? dirname($cliConfigFile) : null;
         $projectDirEnv = $this->makeOptionalPathAbsolute($workingDir, (string) ($_SERVER['GRUMPHP_PROJECT_DIR'] ?? ''));
 
         $gitWorkingDir = $this->filesystem->makePathAbsolute(

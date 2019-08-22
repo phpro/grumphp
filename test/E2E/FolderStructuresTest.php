@@ -61,10 +61,11 @@ class FolderStructuresTest extends AbstractE2ETestCase
         $this->initializeComposer($this->rootDir);
         $conventionsDir = $this->mkdir('vendor/phpro/conventions');
         $grumphpFile = $this->initializeGrumphpConfig($conventionsDir);
+        $grumphpConfigValue = $this->filesystem->buildPath('vendor/phpro/conventions', 'grumphp.yml');
 
         $this->installComposer($this->rootDir, ['--no-plugins']);
         $this->initializeGrumphpGitHooksWithConfig($grumphpFile);
-        $this->ensureHooksExist($this->rootDir, '#--config='.preg_quote($grumphpFile, '#').'#');
+        $this->ensureHooksExist($this->rootDir, '#--config=(\.[\\\/])?'.preg_quote($grumphpConfigValue, '#').'#');
 
         $this->enableValidatePathsTask($grumphpFile, $this->rootDir);
 

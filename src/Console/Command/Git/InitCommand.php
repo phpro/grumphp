@@ -176,6 +176,8 @@ class InitCommand extends Command
             return null;
         }
 
-        return $this->paths->makePathRelativeToProjectDir($configPath);
+        return $this->paths->makePathRelativeToProjectDir(
+            $this->filesystem->realpath($configPath)
+        );
     }
 }

@@ -84,6 +84,12 @@ class Paths
 
     public function makePathRelativeToProjectDir(string $filePath): string
     {
+        // Transform absolute paths to the git root:
+        if ($this->filesystem->isAbsolutePath($filePath)) {
+            $this->filesystem->makePathRelative($filePath, $this->getGitWorkingDir());
+        }
+
+        // Transform from git root to project relative:
         $relativeProjectDir = $this->getProjectDirRelativeToGitDir();
         $relativePath = preg_replace('#^('.preg_quote($relativeProjectDir, '#').')#', '', $filePath);
 
