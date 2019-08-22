@@ -7,6 +7,15 @@ namespace GrumPHPTest\E2E;
 class FolderStructuresTest extends AbstractE2ETestCase
 {
     /** @test */
+    function it_should_be_able_to_load_cli_info_when_no_git_repo()
+    {
+        $this->initializeComposer($this->rootDir);
+        $this->initializeGrumphpConfig($this->rootDir);
+        $this->installComposer($this->rootDir, ['--no-plugins']);
+        $this->runGrumphpInfo($this->rootDir);
+    }
+
+    /** @test */
     function it_has_all_config_files_in_root_git_dir()
     {
         $this->initializeGitInRootDir();
@@ -181,6 +190,6 @@ class FolderStructuresTest extends AbstractE2ETestCase
      * - vagrant
      * - docker
      * - composer-bin-plugin
-     * - test phar / global?
+     * - OK : test phar / global?
      */
 }

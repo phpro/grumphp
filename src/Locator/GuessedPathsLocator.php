@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GrumPHP\Locator;
 
 use GrumPHP\Configuration\GuessedPaths;
+use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Util\ComposerFile;
 use GrumPHP\Util\Filesystem;
 
@@ -43,7 +44,7 @@ class GuessedPathsLocator
         $projectDirEnv = $this->makeOptionalPathAbsolute($workingDir, (string) ($_SERVER['GRUMPHP_PROJECT_DIR'] ?? ''));
 
         $gitWorkingDir = $this->filesystem->makePathAbsolute(
-            (string) ($_SERVER['GRUMPHP_GIT_WORKING_DIR'] ?? $this->gitWorkingDirLocator->locate()),
+            (string) ($_SERVER['GRUMPHP_GIT_WORKING_DIR'] ?? $this->safelyLocateGitWorkingDir($workingDir)),
             $workingDir
         );
         $gitRepositoryDir = $this->filesystem->makePathAbsolute(
@@ -124,5 +125,19 @@ class GuessedPathsLocator
         }
 
         return $this->filesystem->makePathAbsolute($path, $baseDir);
+    }
+
+    /**
+     * The git locator fails when no git dir can be found.
+     * However : that might degrade the user experience when just running the info commands on the cli tool.
+     * Gitonomy will detect invalid git dirs anyways. So it is ok to fall back to e.g. the current working dir.
+     */
+    private function safelyLocateGitWorkingDir(string $fallbackDir): string
+    {
+        try {
+            return $this->gitWorkingDirLocator->locate();
+        } catch (RuntimeException $e) {
+            return $fallbackDir;
+        }
     }
 }

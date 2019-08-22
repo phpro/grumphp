@@ -348,6 +348,17 @@ abstract class AbstractE2ETestCase extends TestCase
         );
     }
 
+    protected function runGrumphpInfo(string $projectPath, $vendorPath = './vendor')
+    {
+        $projectPath = $this->relativeRootPath($projectPath);
+        $this->runCommand('grumphp info',
+            new Process(
+                [$vendorPath.'/bin/grumphp'],
+                $projectPath
+            )
+        );
+    }
+
     protected function initializeGrumphpGitHooksWithConfig(string $grumphpFile, $vendorPath = './vendor')
     {
         $this->runCommand(
