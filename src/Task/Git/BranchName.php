@@ -5,24 +5,30 @@ declare(strict_types=1);
 namespace GrumPHP\Task\Git;
 
 use Gitonomy\Git\Exception\ProcessException;
+use GrumPHP\Git\GitRepository;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Util\Regex;
-use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Task\TaskInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Gitonomy\Git\Repository;
 
 class BranchName implements TaskInterface
 {
+    /**
+     * @var GrumPHP
+     */
     protected $grumPHP;
+
+    /**
+     * @var GitRepository
+     */
     protected $repository;
 
-    public function __construct(GrumPHP $grumPHP, Repository $repository)
+    public function __construct(GrumPHP $grumPHP, GitRepository $repository)
     {
         $this->grumPHP = $grumPHP;
         $this->repository = $repository;

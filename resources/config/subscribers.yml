@@ -3,7 +3,7 @@ services:
     class: GrumPHP\Event\Subscriber\StashUnstagedChangesSubscriber
     arguments:
       - '@config'
-      - '@git.repository'
+      - '@GrumPHP\Git\GitRepository'
       - '@grumphp.io'
     tags:
       - { name: grumphp.event_subscriber }

@@ -37,12 +37,10 @@ services:
         - '@grumphp.io'
       public: true
 
-    git.repository:
-        class: Gitonomy\Git\Repository
-        factory: ['@GrumPHP\Locator\GitRepositoryLocator', 'locate']
+    GrumPHP\Git\GitRepository:
         arguments:
-          - { logger: '@grumphp.logger' }
-        public: true
+            - '@GrumPHP\Locator\GitRepositoryLocator'
+            - { logger: '@grumphp.logger' }
 
     task_runner:
         class: GrumPHP\Runner\TaskRunner

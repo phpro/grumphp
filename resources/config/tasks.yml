@@ -146,7 +146,7 @@ services:
         class: GrumPHP\Task\Git\BranchName
         arguments:
             - '@config'
-            - '@git.repository'
+            - '@GrumPHP\Git\GitRepository'
         tags:
             - {name: grumphp.task, config: git_branch_name}
 

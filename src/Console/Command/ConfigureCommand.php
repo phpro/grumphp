@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace GrumPHP\Console\Command;
 
 use Exception;
-use Gitonomy\Git\Repository;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Util\Filesystem;
 use Symfony\Component\Console\Command\Command;
@@ -32,22 +31,16 @@ class ConfigureCommand extends Command
     protected $filesystem;
 
     /**
-     * @var Repository
-     */
-    protected $repository;
-
-    /**
      * @var InputInterface
      */
     protected $input;
 
-    public function __construct(GrumPHP $config, Filesystem $filesystem, Repository $repository)
+    public function __construct(GrumPHP $config, Filesystem $filesystem)
     {
         parent::__construct();
 
         $this->config = $config;
         $this->filesystem = $filesystem;
-        $this->repository = $repository;
     }
 
     public static function getDefaultName(): string

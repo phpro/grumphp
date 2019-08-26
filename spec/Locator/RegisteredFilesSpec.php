@@ -2,8 +2,8 @@
 
 namespace spec\GrumPHP\Locator;
 
-use Gitonomy\Git\Repository;
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Git\GitRepository;
 use GrumPHP\Locator\RegisteredFiles;
 use GrumPHP\Util\Paths;
 use PhpSpec\ObjectBehavior;
@@ -11,7 +11,7 @@ use Prophecy\Argument;
 
 class RegisteredFilesSpec extends ObjectBehavior
 {
-    function let(Repository $repository, Paths $paths)
+    function let(GitRepository $repository, Paths $paths)
     {
         $this->beConstructedWith($repository, $paths);
         $paths->makePathRelativeToProjectDir(Argument::type('string'))->will(
@@ -26,7 +26,7 @@ class RegisteredFilesSpec extends ObjectBehavior
         $this->shouldHaveType(RegisteredFiles::class);
     }
 
-    function it_will_list_all_diffed_files(Repository $repository, Paths $paths)
+    function it_will_list_all_diffed_files(GitRepository $repository, Paths $paths)
     {
         $paths->getProjectDir()->willReturn($projectDir = '/path/to/project');
         $files = ['file1.txt', 'file2.txt'];

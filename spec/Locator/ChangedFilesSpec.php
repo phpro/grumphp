@@ -5,8 +5,8 @@ namespace spec\GrumPHP\Locator;
 use Gitonomy\Git\Diff\Diff;
 use Gitonomy\Git\Diff\File;
 use Gitonomy\Git\WorkingCopy;
-use Gitonomy\Git\Repository;
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Git\GitRepository;
 use GrumPHP\Locator\ChangedFiles;
 use GrumPHP\Util\Filesystem;
 use GrumPHP\Util\Paths;
@@ -16,7 +16,7 @@ use Prophecy\Prophet;
 
 class ChangedFilesSpec extends ObjectBehavior
 {
-    function let(Repository $repository, Filesystem $filesystem, Paths $paths)
+    function let(GitRepository $repository, Filesystem $filesystem, Paths $paths)
     {
         $this->beConstructedWith($repository, $filesystem, $paths);
         $paths->makePathRelativeToProjectDir(Argument::type('string'))->will(
@@ -42,7 +42,7 @@ class ChangedFilesSpec extends ObjectBehavior
         return $file->reveal();
     }
 
-    function it_will_list_all_diffed_files(Repository $repository, Filesystem $filesystem, Diff $diff, WorkingCopy $workingCopy)
+    function it_will_list_all_diffed_files(GitRepository $repository, Filesystem $filesystem, Diff $diff, WorkingCopy $workingCopy)
     {
         $changedFile = $this->mockFile('file1.txt');
         $movedFile = $this->mockFile('file2.txt', true);
@@ -63,7 +63,7 @@ class ChangedFilesSpec extends ObjectBehavior
         $result->getIterator()->count()->shouldBe(2);
     }
 
-    function it_will_not_list_non_existing_files(Repository $repository, Filesystem $filesystem, Diff $diff, WorkingCopy $workingCopy)
+    function it_will_not_list_non_existing_files(GitRepository $repository, Filesystem $filesystem, Diff $diff, WorkingCopy $workingCopy)
     {
         $changedFile = $this->mockFile('file1.txt');
         $filesystem->exists('file1.txt')->willReturn(false);
@@ -77,7 +77,7 @@ class ChangedFilesSpec extends ObjectBehavior
         $result->getIterator()->count()->shouldBe(0);
     }
 
-    function it_will_list_all_diffed_files_from_raw_diff_input(Filesystem $filesystem)
+    function it_will_list_all_diffed_files_from_raw_diff_input(GitRepository $repository, Filesystem $filesystem)
     {
         $rawDiff = 'diff --git a/file.txt b/file.txt
 new file mode 100644
@@ -88,6 +88,7 @@ index 0000000000000000000000000000000000000000..9766475a4185a151dc9d56d614ffb9aa
 +content
 ';
 
+        $repository->createRawDiff($rawDiff)->willReturn(Diff::parse($rawDiff));
         $filesystem->exists('file.txt')->willReturn(true);
 
         $result = $this->locateFromRawDiffInput($rawDiff);

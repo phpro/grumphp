@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Locator;
 
-use GrumPHP\Collection\ProcessArgumentsCollection;
-use GrumPHP\Exception\RuntimeException;
-use GrumPHP\Process\ProcessFactory;
 use GrumPHP\Util\Filesystem;
-use Symfony\Component\Process\ExecutableFinder;
 
 class GitRepositoryDirLocator
 {

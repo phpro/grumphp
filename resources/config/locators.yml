@@ -17,7 +17,7 @@ services:
     locator.changed_files:
         class: GrumPHP\Locator\ChangedFiles
         arguments:
-            - '@git.repository'
+            - '@GrumPHP\Git\GitRepository'
             - '@filesystem'
             - '@GrumPHP\Util\Paths'
         public: true
@@ -25,7 +25,7 @@ services:
     locator.registered_files:
         class: GrumPHP\Locator\RegisteredFiles
         arguments:
-            - '@git.repository'
+            - '@GrumPHP\Git\GitRepository'
             - '@GrumPHP\Util\Paths'
         public: true
 

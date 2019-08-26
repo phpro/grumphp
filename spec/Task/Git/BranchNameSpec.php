@@ -3,8 +3,8 @@
 namespace spec\GrumPHP\Task\Git;
 
 use Gitonomy\Git\Exception\ProcessException;
-use Gitonomy\Git\Repository;
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Git\GitRepository;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BranchNameSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, Repository $repository)
+    function let(GrumPHP $grumPHP, GitRepository $repository)
     {
         $this->beConstructedWith($grumPHP, $repository);
         $grumPHP->getTaskConfiguration('git_branch_name')->willReturn([
@@ -69,7 +69,7 @@ class BranchNameSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_throws_exception_if_the_process_fails(RunContext $context, Repository $repository)
+    function it_throws_exception_if_the_process_fails(RunContext $context, GitRepository $repository)
     {
         $repository->run('symbolic-ref', ['HEAD', '--short'])->willReturn('not-good');
 
@@ -78,7 +78,7 @@ class BranchNameSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(false);
     }
 
-    function it_runs_with_additional_modifiers(RunContext $context, GrumPHP $grumPHP, Repository $repository)
+    function it_runs_with_additional_modifiers(RunContext $context, GrumPHP $grumPHP, GitRepository $repository)
     {
         $grumPHP->getTaskConfiguration('git_branch_name')->willReturn([
             'whitelist' => ['/^ümlaut/'],
@@ -92,7 +92,7 @@ class BranchNameSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(true);
     }
 
-    function it_runs_with_detached_head_setting(RunContext $context, GrumPHP $grumPHP, Repository $repository)
+    function it_runs_with_detached_head_setting(RunContext $context, GrumPHP $grumPHP, GitRepository $repository)
     {
         $repository->run('symbolic-ref', ['HEAD', '--short'])->willThrow(ProcessException::class);
 
@@ -111,7 +111,7 @@ class BranchNameSpec extends ObjectBehavior
         $result->isPassed()->shouldBe(false);
     }
 
-    function it_runs_with_blacklisted_items(RunContext $context, GrumPHP $grumPHP, Repository $repository)
+    function it_runs_with_blacklisted_items(RunContext $context, GrumPHP $grumPHP, GitRepository $repository)
     {
         $grumPHP->getTaskConfiguration('git_branch_name')->willReturn([
             'blacklist' => [

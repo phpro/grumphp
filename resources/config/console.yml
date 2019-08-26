@@ -22,7 +22,6 @@ services:
         arguments:
             - '@config'
             - '@grumphp.util.filesystem'
-            - '@git.repository'
         tags:
             - { name: 'console.command' }
     GrumPHP\Console\Command\RunCommand:

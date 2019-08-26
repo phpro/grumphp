@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace GrumPHP\Locator;
 
-use Gitonomy\Git\Repository;
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Git\GitRepository;
 use GrumPHP\Util\Paths;
 use Symfony\Component\Finder\SplFileInfo;
 
 class RegisteredFiles
 {
     /**
-     * @var Repository
+     * @var GitRepository
      */
     private $repository;
 
@@ -21,7 +21,7 @@ class RegisteredFiles
      */
     private $paths;
 
-    public function __construct(Repository $repository, Paths $paths)
+    public function __construct(GitRepository $repository, Paths $paths)
     {
         $this->repository = $repository;
         $this->paths = $paths;
