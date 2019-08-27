@@ -11,8 +11,8 @@ environment:
       php_version: 7.1
     - dependencies: highest
       php_version: 7.2
-    - dependencies: highest
-      php_version: 7.3
+#    - dependencies: highest
+#      php_version: 7.3
 
   project_directory: c:\projects\grumphp
   composer_directory: c:\tools\composer
@@ -29,6 +29,7 @@ cache:
 
 init:
   - ps: $Env:php_directory = $Env:php_root_directory + '\' + $Env:php_version
+  - ps: choco search php --exact --all-versions --limit-output
   - ps: $Env:exact_php_version = (((choco search php --exact --all-versions --limit-output | Select-String -pattern $Env:php_version) -replace '[php|]', '') | %{ New-Object System.Version $_ } | Sort-Object | Select-Object -Last 1).ToString()
   - ps: $Env:PATH = $Env:php_directory + ';' + $Env:composer_directory + ';' + $Env:PATH
   - ps: $Env:COMPOSER_NO_INTERACTION = 1
