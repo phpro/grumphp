@@ -29,6 +29,7 @@ cache:
 
 init:
   - ps: $Env:php_directory = $Env:php_root_directory + '\' + $Env:php_version
+  - ps: choco feature disable -n usePackageRepositoryOptimizations
   - ps: choco search php --exact -all --limit-output
   - ps: $Env:exact_php_version = (((choco search php --exact --all --limit-output | Select-String -pattern $Env:php_version) -replace '[php|]', '') | %{ New-Object System.Version $_ } | Sort-Object | Select-Object -Last 1).ToString()
   - ps: $Env:PATH = $Env:php_directory + ';' + $Env:composer_directory + ';' + $Env:PATH
