@@ -80,7 +80,7 @@ namespace GrumPHPTest\Unit\Locator {
             ?string $cliConfigFile
         ): void {
             $createSystem($this->filesystem, $this->workspace);
-            $guessed = $this->guesser->locate($cliConfigFile);
+            $guessed = $this->guesser->locate($cliConfigFile ? $this->path($cliConfigFile) : null);
             $this->assertEquals($createExpexted($this->workspace), $guessed);
         }
 

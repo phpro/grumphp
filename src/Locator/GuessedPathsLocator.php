@@ -76,17 +76,23 @@ class GuessedPathsLocator
 
         $binDir = $this->filesystem->guessPath(array_filter([
             $this->makeOptionalPathAbsolute($workingDir, (string) ($_SERVER['GRUMPHP_BIN_DIR'] ?? '')),
-            $this->makeOptionalPathAbsolute($composerFilePath, $composerFile->getBinDir())
+            $this->makeOptionalPathAbsolute(
+                $composerFilePath,
+                $this->ensureOptionalArgumentWithValidSlashes($composerFile->getBinDir())
+            )
         ]));
 
         $composerConfigDefaultPath = $this->makeOptionalPathAbsolute(
             $composerFilePath,
-            $composerFile->getConfigDefaultPath()
+            $this->ensureOptionalArgumentWithValidSlashes($composerFile->getConfigDefaultPath())
         );
 
         $projectDir = $this->filesystem->guessPath([
             $projectDirEnv,
-            $this->makeOptionalPathAbsolute($composerFilePath, $composerFile->getProjectPath()),
+            $this->makeOptionalPathAbsolute(
+                $composerFilePath,
+                $this->ensureOptionalArgumentWithValidSlashes($composerFile->getProjectPath())
+            ),
             $workingDir
         ]);
 
@@ -125,6 +131,15 @@ class GuessedPathsLocator
         }
 
         return $this->filesystem->makePathAbsolute($path, $baseDir);
+    }
+
+    private function ensureOptionalArgumentWithValidSlashes(?string $path): ?string
+    {
+        if (!$path) {
+            return null;
+        }
+
+        return $this->filesystem->ensureValidSlashes($path);
     }
 
     /**

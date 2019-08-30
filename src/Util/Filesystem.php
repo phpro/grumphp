@@ -84,7 +84,14 @@ class Filesystem extends SymfonyFilesystem
             }
         }
 
-        return $this->buildPath(current($paths), current($fileNames));
+        $firstPath = current($paths);
+        $firstName = current($fileNames);
+
+        if (preg_match('#'.preg_quote($firstName, '#').'$#', $firstPath)) {
+            return $firstPath;
+        }
+
+        return $this->buildPath($firstPath, $firstName);
     }
 
     public function ensureUnixPath(string $path): string
@@ -97,6 +104,23 @@ class Filesystem extends SymfonyFilesystem
         // Convert backslashes, remove duplicate slashes and transform drive letter to uppercase:
         $path = str_replace('\\', '/', $path);
         $path = preg_replace('|(?<=.)/+|', '/', $path);
+        if (':' === ($path[1] ?? '')) {
+            $path = ucfirst($path);
+        }
+
+        return $path;
+    }
+
+    public function ensureValidSlashes(string $path): string
+    {
+        // Unix systems know best ...
+        if (DIRECTORY_SEPARATOR === '/') {
+            return $path;
+        }
+
+        // Convert / slash to \ on windows:
+        $path = str_replace('/', '\\', $path);
+        $path = preg_replace('|(?<=.)\\\\+|', '\\', $path);
         if (':' === ($path[1] ?? '')) {
             $path = ucfirst($path);
         }

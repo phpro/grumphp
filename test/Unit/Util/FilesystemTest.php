@@ -267,6 +267,21 @@ class FilesystemTest extends FilesystemTestCase
             ],
             'third/grumphp.yml',
         ];
+
+        yield [
+            static function(Filesystem $filesystem, string $workspace) {
+            },
+            [
+                'file/grumphp.yml',
+                'second/grumphp.yml.dist',
+                '',
+            ],
+            [
+                'grumphp.yml',
+                'grumphp.yml.dist',
+            ],
+            'file/grumphp.yml',
+        ];
     }
 
     public function provideGuessedPaths()
