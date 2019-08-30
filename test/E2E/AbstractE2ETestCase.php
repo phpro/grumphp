@@ -67,6 +67,9 @@ abstract class AbstractE2ETestCase extends TestCase
 
     protected function initializeGitSubModule(string $gitPath, string $submodulePath): string
     {
+        // Change permissions on windows before submodule can be added:
+        $this->changeGitPermissions();
+
         $process = new Process(
             [$this->executableFinder->find('git'), 'submodule', 'add', $submodulePath],
             $gitPath

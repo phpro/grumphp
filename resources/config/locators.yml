@@ -12,6 +12,7 @@ services:
         arguments:
             - '@GrumPHP\Util\Paths'
             - '@executable_finder'
+            - '@grumphp.util.filesystem'
         public: true
 
     locator.changed_files:
