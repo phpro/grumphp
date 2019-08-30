@@ -30,7 +30,7 @@ class GitRepositorySpec extends ObjectBehavior
         $this->run('command', []);
         $this->run('command', []);
 
-        $locator->locate([])->shouldBeCalledOnce();
+        $locator->locate([])->shouldBeCalledTimes(1);
     }
 
     public function it_can_run_commands(Repository $repository): void

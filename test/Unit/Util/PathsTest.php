@@ -32,7 +32,7 @@ class PathsTest extends FilesystemTestCase
      */
     protected $packageRootDir;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->filesystem = new Filesystem();

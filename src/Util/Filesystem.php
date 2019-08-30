@@ -86,4 +86,21 @@ class Filesystem extends SymfonyFilesystem
 
         return $this->buildPath(current($paths), current($fileNames));
     }
+
+    public function ensureUnixPath(string $path): string
+    {
+        // Unix systems know best ...
+        if (DIRECTORY_SEPARATOR === '/') {
+            return $path;
+        }
+
+        // Convert backslashes, remove duplicate slashes and transform drive letter to uppercase:
+        $path = str_replace('\\', '/', $path);
+        $path = preg_replace('|(?<=.)/+|', '/', $path);
+        if (':' === ($path[1] ?? '')) {
+            $path = ucfirst($path);
+        }
+
+        return $path;
+    }
 }

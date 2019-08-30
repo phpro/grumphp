@@ -157,7 +157,11 @@ class InitCommand extends Command
         $process = $this->processBuilder->buildProcess($arguments);
 
         // Make the grumphp command relative to path where the config is stored (if it uses that executable)
-        return str_replace($this->paths->getProjectDir(), '.', $process->getCommandLine());
+        return str_replace(
+            $this->filesystem->ensureUnixPath($this->paths->getProjectDir()),
+            '.',
+            $process->getCommandLine()
+        );
     }
 
     /**
@@ -176,8 +180,10 @@ class InitCommand extends Command
             return null;
         }
 
-        return $this->paths->makePathRelativeToProjectDir(
-            $this->filesystem->realpath($configPath)
+        return $this->filesystem->ensureUnixPath(
+            $this->paths->makePathRelativeToProjectDir(
+                $this->filesystem->realpath($configPath)
+            )
         );
     }
 }

@@ -6,6 +6,7 @@ namespace GrumPHPTest\E2E;
 
 use GrumPHP\Util\Filesystem;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
@@ -62,12 +63,6 @@ abstract class AbstractE2ETestCase extends TestCase
     {
         $process = new Process([$this->executableFinder->find('git'), 'init'], $gitPath);
         $this->runCommand('install git', $process);
-
-        // Change permissions on git dir since it might not be removeable.
-        $gitWorkingDir = $this->filesystem->buildPath($gitPath, '.git');
-        if ($this->filesystem->exists($gitWorkingDir)) {
-            $this->filesystem->chmod($gitWorkingDir, 0777, 0000, true);
-        }
     }
 
     protected function initializeGitSubModule(string $gitPath, string $submodulePath): string
@@ -388,6 +383,7 @@ abstract class AbstractE2ETestCase extends TestCase
 
     protected function runCommand(string $action, Process $process)
     {
+        $process->inheritEnvironmentVariables(true);
         $process->run();
         if (!$process->isSuccessful()) {
             throw new \RuntimeException(
@@ -429,7 +425,34 @@ abstract class AbstractE2ETestCase extends TestCase
 
     protected function removeRootDir()
     {
+        if (!$this->filesystem->exists($this->rootDir)) {
+            return;
+        }
+
+        $this->changeGitPermissions();
         $this->filesystem->remove($this->rootDir);
+    }
+
+    /**
+     * On WIndows / Appveyor : there are some issues while trying to remove the .git folders.
+     * They are fixed by changing the permissions of those git dirs.
+     */
+    protected function changeGitPermissions()
+    {
+        if (!$this->filesystem->exists($this->rootDir)) {
+            return;
+        }
+
+        $gitDirs = Finder::create()
+            ->ignoreDotFiles(false)
+            ->ignoreVCS(false)
+            ->directories()
+            ->in($this->rootDir)
+            ->path('.git');
+
+        foreach ($gitDirs as $gitDir) {
+            $this->filesystem->chmod($gitDir, 0777, 0000, true);
+        }
     }
 
     protected function debugWhatsInDirectory(string $directory): array

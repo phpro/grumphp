@@ -74,7 +74,7 @@ class FolderStructuresTest extends AbstractE2ETestCase
 
         $this->installComposer($this->rootDir, ['--no-plugins']);
         $this->initializeGrumphpGitHooksWithConfig($grumphpFile);
-        $this->ensureHooksExist($this->rootDir, '#--config=(\.[\\\/])?'.preg_quote($grumphpConfigValue, '#').'#');
+        $this->ensureHooksExist($this->rootDir, '#--config=(\.[\/])?'.preg_quote($grumphpConfigValue, '#').'#');
 
         $this->enableValidatePathsTask($grumphpFile, $this->rootDir);
 
@@ -179,17 +179,4 @@ class FolderStructuresTest extends AbstractE2ETestCase
         $this->commitAll($linkLocation);
         $this->runGrumphp($linkLocation);
     }
-
-    /**
-     * TODO
-     *
-     * Should handle:
-     * - test file names grumphp.yaml grumphp.yml.dist, grumphp.yaml.dist : maybe better in a paths tester though
-     *
-     * * Manual for now*
-     * - vagrant
-     * - docker
-     * - composer-bin-plugin
-     * - OK : test phar / global?
-     */
 }
