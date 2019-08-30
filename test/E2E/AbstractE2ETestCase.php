@@ -71,7 +71,13 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->changeGitPermissions();
 
         $process = new Process(
-            [$this->executableFinder->find('git'), 'submodule', 'add', '-f', $submodulePath],
+            [
+                $this->executableFinder->find('git'),
+                'submodule',
+                'add',
+                '-f',
+                $this->filesystem->makePathRelative($submodulePath, $gitPath)
+            ],
             $gitPath
         );
         $this->runCommand('init git submodule', $process);
