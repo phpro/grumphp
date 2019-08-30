@@ -22,6 +22,7 @@ use GrumPHP\Console\Command\Git\DeInitCommand;
 use GrumPHP\Console\Command\Git\InitCommand;
 use GrumPHP\Locator\ExternalCommand;
 use GrumPHP\Process\ProcessFactory;
+use GrumPHP\Util\Filesystem;
 use Symfony\Component\Process\ExecutableFinder;
 
 class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
@@ -162,7 +163,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     protected function runGrumPhpCommand(string $command): void
     {
         $config = $this->composer->getConfig();
-        $commandLocator = new ExternalCommand($config->get('bin-dir'), new ExecutableFinder());
+        $commandLocator = new ExternalCommand($config->get('bin-dir'), new ExecutableFinder(), new Filesystem());
         $executable = $commandLocator->locate('grumphp');
 
         $commandlineArgs = ProcessArgumentsCollection::forExecutable($executable);
