@@ -177,11 +177,11 @@ namespace GrumPHPTest\Unit\Locator {
                 function (Filesystem $filesystem, string $workspace) use ($configure) {
                     $configure($workspace);
 
-                    $_SERVER['GRUMPHP_PROJECT_DIR'] = 'project';
-                    $_SERVER['GRUMPHP_GIT_WORKING_DIR'] = 'git';
-                    $_SERVER['GRUMPHP_GIT_REPOSITORY_DIR'] = 'git/.git/submodule/name';
-                    $_SERVER['GRUMPHP_COMPOSER_DIR'] = 'composer';
-                    $_SERVER['GRUMPHP_BIN_DIR'] = 'composer/vendor/my-bin';
+                    $_SERVER['GRUMPHP_PROJECT_DIR'] = $this->validSlash('project');
+                    $_SERVER['GRUMPHP_GIT_WORKING_DIR'] = $this->validSlash('git');
+                    $_SERVER['GRUMPHP_GIT_REPOSITORY_DIR'] = $this->validSlash('git/.git/submodule/name');
+                    $_SERVER['GRUMPHP_COMPOSER_DIR'] = $this->validSlash('composer');
+                    $_SERVER['GRUMPHP_BIN_DIR'] = $this->validSlash('composer/vendor/my-bin');
 
                     $filesystem->mkdir($this->path('project'));
                     $filesystem->mkdir($this->path('git'));
@@ -275,10 +275,14 @@ namespace GrumPHPTest\Unit\Locator {
             ];
         }
 
+        private function validSlash(string $path): string
+        {
+            return str_replace('/', DIRECTORY_SEPARATOR, $path);
+        }
 
         private function path(string $path): string
         {
-            return $this->workspace.DIRECTORY_SEPARATOR.str_replace('/', DIRECTORY_SEPARATOR, $path);
+            return $this->workspace.DIRECTORY_SEPARATOR.$this->validSlash($path);
         }
     }
 }
