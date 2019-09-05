@@ -22,6 +22,7 @@ parameters:
 *Default: null*
 
 Use this parameter to specify your blacklisted keywords list.
+Please note that reserved regex characters require proper escaping i.e. `"$_GET\\["` in the yaml.
 
 **whitelist_patterns**
 
