@@ -20,7 +20,7 @@ parameters:
             force_patterns: []
             ignore_patterns: []
             triggered_by: ['php']
-            memory_limit: -1
+            memory_limit: "-1"
 ```
 
 **autoload_file**
