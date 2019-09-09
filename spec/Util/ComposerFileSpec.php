@@ -7,68 +7,87 @@ use PhpSpec\ObjectBehavior;
 
 class ComposerFileSpec extends ObjectBehavior
 {
+    public function let(): void
+    {
+        $this->beConstructedWith('/my/location/composer.json', []);
+    }
+
     function it_is_initializable()
     {
-        $this->beConstructedWith([
-            'config' => [
-                'sort-packages' => true,
+        $this->beConstructedWith(
+            '/my/location/composer.json',
+            [
+                'config' => [
+                    'sort-packages' => true,
+                ]
             ]
-        ]);
+        );
         $this->shouldHaveType(ComposerFile::class);
     }
 
-    function it_should_create_itself_from_a_composer_file_location()
+    function it_knows_the_composer_file_path()
     {
-        $this->beConstructedThrough('createFrom', ['composer.json']);
-        $this->ensureProjectBinDirInSystemPath()->shouldBe(true);
+        $this->getPath()->shouldBe('/my/location/composer.json');
     }
 
     function it_should_have_a_default_bin_dir()
     {
-        $this->beConstructedWith([
-            'config' => [
-                'sort-packages' => true,
+        $this->beConstructedWith(
+            '/my/location/composer.json',
+            [
+                'config' => [
+                    'sort-packages' => true,
+                ]
             ]
-        ]);
+        );
 
         $this->getBinDir()->shouldBe('vendor/bin');
     }
 
     function it_should_have_a_custom_bin_dir()
     {
-        $this->beConstructedWith([
-            'config' => [
-                'sort-packages' => true,
-                'bin-dir' => 'bin'
+        $this->beConstructedWith(
+            '/my/location/composer.json',
+            [
+                'config' => [
+                    'sort-packages' => true,
+                    'bin-dir' => 'bin'
+                ]
             ]
-        ]);
+        );
 
         $this->getBinDir()->shouldBe('bin');
     }
 
     function it_should_have_a_default_config_path()
     {
-        $this->beConstructedWith([
-            'config' => [
-                'sort-packages' => true,
+        $this->beConstructedWith(
+            '/my/location/composer.json',
+            [
+                'config' => [
+                    'sort-packages' => true,
+                ]
             ]
-        ]);
+        );
 
         $this->getConfigDefaultPath()->shouldBe(null);
     }
 
     function it_should_have_a_custom_config_path()
     {
-        $this->beConstructedWith([
-            'config' => [
-                'sort-packages' => true,
-            ],
-            'extra' => [
-                'grumphp' => [
-                    'config-default-path' => 'some/folder'
+        $this->beConstructedWith(
+            '/my/location/composer.json',
+            [
+                'config' => [
+                    'sort-packages' => true,
+                ],
+                'extra' => [
+                    'grumphp' => [
+                        'config-default-path' => 'some/folder'
+                    ]
                 ]
             ]
-        ]);
+        );
 
         $this->getConfigDefaultPath()->shouldBe('some/folder');
     }

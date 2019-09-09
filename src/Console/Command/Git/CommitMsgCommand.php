@@ -6,13 +6,13 @@ namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
-use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Locator\ChangedFiles;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use GrumPHP\Util\Filesystem;
+use GrumPHP\Util\Paths;
 use SplFileInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -42,13 +42,28 @@ class CommitMsgCommand extends Command
      */
     private $filesystem;
 
-    public function __construct(GrumPHP $grumPHP, ChangedFiles $changedFilesLocator, Filesystem $filesystem)
-    {
+    /**
+     * @var Paths
+     */
+    private $paths;
+
+    public function __construct(
+        GrumPHP $config,
+        ChangedFiles $changedFilesLocator,
+        Filesystem $filesystem,
+        Paths $paths
+    ) {
         parent::__construct();
 
-        $this->grumPHP = $grumPHP;
+        $this->grumPHP = $config;
         $this->changedFilesLocator = $changedFilesLocator;
         $this->filesystem = $filesystem;
+        $this->paths = $paths;
+    }
+
+    public static function getDefaultName(): string
+    {
+        return self::COMMAND_NAME;
     }
 
     /**
@@ -56,7 +71,6 @@ class CommitMsgCommand extends Command
      */
     protected function configure(): void
     {
-        $this->setName(self::COMMAND_NAME);
         $this->setDescription('Executed by the commit-msg commit hook');
         $this->addOption('git-user', null, InputOption::VALUE_REQUIRED, 'The configured git user name.', '');
         $this->addOption('git-email', null, InputOption::VALUE_REQUIRED, 'The configured git email.', '');
@@ -75,7 +89,7 @@ class CommitMsgCommand extends Command
         $commitMsgPath = $input->getArgument('commit-msg-file');
 
         if (!$this->filesystem->isAbsolutePath($commitMsgPath)) {
-            $commitMsgPath = $this->paths()->getGitDir().$commitMsgPath;
+            $commitMsgPath = $this->filesystem->buildPath($this->paths->getGitWorkingDir(), $commitMsgPath);
         }
 
         $commitMsgFile = new SplFileInfo($commitMsgPath);
@@ -103,10 +117,5 @@ class CommitMsgCommand extends Command
     protected function taskRunner(): TaskRunnerHelper
     {
         return $this->getHelper(TaskRunnerHelper::HELPER_NAME);
-    }
-
-    protected function paths(): PathsHelper
-    {
-        return $this->getHelper(PathsHelper::HELPER_NAME);
     }
 }

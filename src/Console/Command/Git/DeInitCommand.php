@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace GrumPHP\Console\Command\Git;
 
-use GrumPHP\Configuration\GrumPHP;
-use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Util\Filesystem;
+use GrumPHP\Util\Paths;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,21 +26,28 @@ class DeInitCommand extends Command
     ];
 
     /**
-     * @var GrumPHP
-     */
-    protected $grumPHP;
-
-    /**
      * @var Filesystem
      */
-    protected $filesystem;
+    private $filesystem;
 
-    public function __construct(GrumPHP $grumPHP, Filesystem $filesystem)
+    /**
+     * @var Paths
+     */
+    private $paths;
+
+    public static function getDefaultName(): string
     {
+        return self::COMMAND_NAME;
+    }
+
+    public function __construct(
+        Filesystem $filesystem,
+        Paths $paths
+    ) {
         parent::__construct();
 
-        $this->grumPHP = $grumPHP;
         $this->filesystem = $filesystem;
+        $this->paths = $paths;
     }
 
     /**
@@ -49,7 +55,6 @@ class DeInitCommand extends Command
      */
     protected function configure(): void
     {
-        $this->setName(self::COMMAND_NAME);
         $this->setDescription('Removes the commit hooks');
     }
 
@@ -58,10 +63,10 @@ class DeInitCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $gitHooksPath = $this->paths()->getGitHooksDir();
+        $gitHooksPath = $this->paths->getGitHooksDir();
 
         foreach (InitCommand::$hooks as $hook) {
-            $hookPath = $gitHooksPath.$hook;
+            $hookPath = $this->filesystem->buildPath($gitHooksPath, $hook);
             if (!$this->filesystem->exists($hookPath)) {
                 continue;
             }
@@ -70,10 +75,5 @@ class DeInitCommand extends Command
         }
 
         $output->writeln('<fg=yellow>GrumPHP stopped sniffing your commits! Too bad ...<fg=yellow>');
-    }
-
-    protected function paths(): PathsHelper
-    {
-        return $this->getHelper(PathsHelper::HELPER_NAME);
     }
 }

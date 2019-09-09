@@ -6,9 +6,10 @@ namespace GrumPHP\Locator;
 
 use Gitonomy\Git\Diff\Diff;
 use Gitonomy\Git\Diff\File;
-use Gitonomy\Git\Repository;
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Git\GitRepository;
 use GrumPHP\Util\Filesystem;
+use GrumPHP\Util\Paths;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -17,18 +18,25 @@ use Symfony\Component\Finder\SplFileInfo;
 class ChangedFiles
 {
     /**
-     * @var Repository
+     * @var GitRepository
      */
-    protected $repository;
+    private $repository;
+
     /**
      * @var Filesystem
      */
     private $filesystem;
 
-    public function __construct(Repository $repository, Filesystem $filesystem)
+    /**
+     * @var Paths
+     */
+    private $paths;
+
+    public function __construct(GitRepository $repository, Filesystem $filesystem, Paths $paths)
     {
         $this->repository = $repository;
         $this->filesystem = $filesystem;
+        $this->paths = $paths;
     }
 
     public function locateFromGitRepository(): FilesCollection
@@ -40,8 +48,7 @@ class ChangedFiles
 
     public function locateFromRawDiffInput(string $rawDiff): FilesCollection
     {
-        $diff = Diff::parse($rawDiff);
-        $diff->setRepository($this->repository);
+        $diff = $this->repository->createRawDiff($rawDiff);
 
         return $this->parseFilesFromDiff($diff);
     }
@@ -64,7 +71,7 @@ class ChangedFiles
 
     private function makeFileRelativeToProjectDir(File $file): SplFileInfo
     {
-        $filePath = $this->filesystem->makePathRelativeToProjectDir(
+        $filePath = $this->paths->makePathRelativeToProjectDir(
             $file->isRename() ? $file->getNewName() : $file->getName()
         );
 

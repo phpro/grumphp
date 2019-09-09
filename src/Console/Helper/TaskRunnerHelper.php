@@ -6,6 +6,7 @@ namespace GrumPHP\Console\Helper;
 
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\Subscriber\ProgressSubscriber;
+use GrumPHP\Locator\AsciiLocator;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Runner\TaskRunnerContext;
@@ -37,16 +38,21 @@ class TaskRunnerHelper extends Helper
      */
     private $config;
 
-    public function __construct(GrumPHP $config, TaskRunner $taskRunner, EventDispatcherInterface $eventDispatcher)
-    {
+    /**
+     * @var AsciiLocator
+     */
+    private $asciiLocator;
+
+    public function __construct(
+        GrumPHP $config,
+        TaskRunner $taskRunner,
+        EventDispatcherInterface $eventDispatcher,
+        AsciiLocator $asciiLocator
+    ) {
         $this->config = $config;
         $this->taskRunner = $taskRunner;
         $this->eventDispatcher = $eventDispatcher;
-    }
-
-    private function paths(): PathsHelper
-    {
-        return $this->getHelperSet()->get(PathsHelper::HELPER_NAME);
+        $this->asciiLocator = $asciiLocator;
     }
 
     public function run(OutputInterface $output, TaskRunnerContext $context): int
@@ -90,7 +96,7 @@ class TaskRunnerHelper extends Helper
 
     private function returnErrorMessages(OutputInterface $output, array $errorMessages, array $warnings): int
     {
-        $failed = $this->paths()->getAsciiContent('failed');
+        $failed = $this->asciiLocator->locate('failed');
         if ($failed) {
             $output->writeln('<fg=red>'.$failed.'</fg=red>');
         }
@@ -114,7 +120,7 @@ class TaskRunnerHelper extends Helper
 
     private function returnSuccessMessage(OutputInterface $output, array $warnings): int
     {
-        $succeeded = $this->paths()->getAsciiContent('succeeded');
+        $succeeded = $this->asciiLocator->locate('succeeded');
         if ($succeeded) {
             $output->write('<fg=green>'.$succeeded.'</fg=green>');
         }

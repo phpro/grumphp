@@ -3,14 +3,12 @@
 namespace GrumPHPTest\Unit\Linter\Yaml;
 
 use GrumPHP\Collection\LintErrorsCollection;
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Linter\Yaml\YamlLinter;
 use GrumPHP\Linter\Yaml\YamlLintError;
 use GrumPHP\Util\Filesystem;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use SplFileInfo;
-use Symfony\Component\DependencyInjection\Container;
 
 class YamlLinterTest extends TestCase
 {
@@ -22,7 +20,7 @@ class YamlLinterTest extends TestCase
     protected function setUp(): void
     {
         $this->linter = new YamlLinter(
-            new Filesystem(new GrumPHP(new Container()))
+            new Filesystem()
         );
     }
 

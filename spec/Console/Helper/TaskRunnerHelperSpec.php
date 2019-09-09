@@ -6,6 +6,7 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\Event\Subscriber\ProgressSubscriber;
+use GrumPHP\Locator\AsciiLocator;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Runner\TaskRunner;
@@ -25,15 +26,11 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         GrumPHP $config,
         TaskRunner $taskRunner,
         EventDispatcherInterface $eventDispatcher,
-        HelperSet $helperSet,
-        PathsHelper $pathsHelper,
+        AsciiLocator $asciiLocator,
         TaskRunnerContext $runnerContext,
         ContextInterface $taskContext
     ) {
-        $this->beConstructedWith($config, $taskRunner, $eventDispatcher);
-
-        $helperSet->get(PathsHelper::HELPER_NAME)->willreturn($pathsHelper);
-        $this->setHelperSet($helperSet);
+        $this->beConstructedWith($config, $taskRunner, $eventDispatcher, $asciiLocator);
 
         $runnerContext->getTaskContext()->willReturn($taskContext);
         $runnerContext->hasTestSuite()->willReturn(false);
@@ -41,6 +38,8 @@ class TaskRunnerHelperSpec extends ObjectBehavior
 
         $config->getAdditionalInfo()->willReturn(null);
         $config->hideCircumventionTip()->willReturn(false);
+
+        $asciiLocator->locate(Argument::any())->will(function (array $arguments) { return (string) $arguments[0]; });
     }
 
     function it_is_a_console_helper()
@@ -53,10 +52,8 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         TaskRunner $taskRunner,
         TaskInterface $task,
         TaskRunnerContext $runnerContext,
-        ContextInterface $taskContext,
-        PathsHelper $pathsHelper
+        ContextInterface $taskContext
     ) {
-        $pathsHelper->getAsciiContent('failed')->willReturn('ascii content');
         $taskResults = new TaskResultCollection();
         $taskResults->add(TaskResult::createPassed($task->getWrappedObject(), $taskContext->getWrappedObject()));
         $taskResults->add(TaskResult::createFailed($task->getWrappedObject(), $taskContext->getWrappedObject(), 'failed task message'));
@@ -69,10 +66,8 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         TaskRunner $taskRunner,
         TaskInterface $task,
         TaskRunnerContext $runnerContext,
-        ContextInterface $taskContext,
-        PathsHelper $pathsHelper
+        ContextInterface $taskContext
     ) {
-        $pathsHelper->getAsciiContent('succeeded')->willReturn('ascii content');
         $taskResults = new TaskResultCollection();
         $taskResults->add(TaskResult::createPassed($task->getWrappedObject(), $taskContext->getWrappedObject()));
         $taskRunner->run($runnerContext)->willReturn($taskResults);
@@ -84,10 +79,8 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         TaskRunner $taskRunner,
         TaskInterface $task,
         TaskRunnerContext $runnerContext,
-        ContextInterface $taskContext,
-        PathsHelper $pathsHelper
+        ContextInterface $taskContext
     ) {
-        $pathsHelper->getAsciiContent('succeeded')->willReturn('ascii content');
         $testResults = new TaskResultCollection();
         $testResults->add(TaskResult::createNonBlockingFailed($task->getWrappedObject(), $taskContext->getWrappedObject(), 'failed task message'));
         $taskRunner->run($runnerContext)->willReturn($testResults);
@@ -99,10 +92,8 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         TaskRunner $taskRunner,
         TaskInterface $task,
         TaskRunnerContext $runnerContext,
-        ContextInterface $taskContext,
-        PathsHelper $pathsHelper
+        ContextInterface $taskContext
     ) {
-        $pathsHelper->getAsciiContent('failed')->willReturn('ascii content');
         $taskResults = new TaskResultCollection();
         $taskResults->add(TaskResult::createFailed($task->getWrappedObject(), $taskContext->getWrappedObject(), 'failed task message'));
         $taskResults->add(TaskResult::createFailed($task->getWrappedObject(), $taskContext->getWrappedObject(), 'another failed task message'));
@@ -122,10 +113,8 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         TaskRunner $taskRunner,
         TaskInterface $task,
         TaskRunnerContext $runnerContext,
-        ContextInterface $taskContext,
-        PathsHelper $pathsHelper
+        ContextInterface $taskContext
     ) {
-        $pathsHelper->getAsciiContent('succeeded')->willReturn('ascii content');
         $taskResults = new TaskResultCollection();
         $taskResults->add(TaskResult::createNonBlockingFailed($task->getWrappedObject(), $taskContext->getWrappedObject(), 'non blocking task message'));
         $taskRunner->run($runnerContext)->willReturn($taskResults);
@@ -137,10 +126,8 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         OutputInterface $output,
         TaskRunner $taskRunner,
         TaskRunnerContext $runnerContext,
-        EventDispatcherInterface $eventDispatcher,
-        PathsHelper $pathsHelper
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $pathsHelper->getAsciiContent('succeeded')->willReturn('ascii content');
         $taskRunner->run($runnerContext)->willReturn(new TaskResultCollection());
         $eventDispatcher->addSubscriber(Argument::type(ProgressSubscriber::class))->shouldBeCalled();
         $this->run($output, $runnerContext)->shouldReturn(TaskRunnerHelper::CODE_SUCCESS);

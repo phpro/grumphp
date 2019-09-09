@@ -6,6 +6,7 @@ namespace GrumPHP\Configuration;
 
 use GrumPHP\Collection\TestSuiteCollection;
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Util\ComposerFile;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -21,21 +22,6 @@ class GrumPHP
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-    }
-
-    public function getBinDir(): string
-    {
-        return $this->container->getParameter('bin_dir');
-    }
-
-    public function getGitDir(): string
-    {
-        return $this->container->getParameter('git_dir');
-    }
-
-    public function getConfigFile(): string
-    {
-        return $this->container->getParameter('config_file');
     }
 
     public function getHooksDir(): ?string

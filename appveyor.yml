@@ -29,7 +29,10 @@ cache:
 
 init:
   - ps: $Env:php_directory = $Env:php_root_directory + '\' + $Env:php_version
-  - ps: $Env:exact_php_version = (((choco search php --exact --all-versions --limit-output | Select-String -pattern $Env:php_version) -replace '[php|]', '') | %{ New-Object System.Version $_ } | Sort-Object | Select-Object -Last 1).ToString()
+  # TODO: This is a workaround for https://github.com/chocolatey/choco/issues/1843. Once this is fixed we
+  #       should go back to latest version in appveyor saving ourselves test time
+  - ps: choco install chocolatey -y --version 0.10.13 --allow-downgrade
+  - ps: $Env:exact_php_version = (((choco search php --exact --all --limit-output | Select-String -pattern $Env:php_version) -replace '[php|]', '') | %{ New-Object System.Version $_ } | Sort-Object | Select-Object -Last 1).ToString()
   - ps: $Env:PATH = $Env:php_directory + ';' + $Env:composer_directory + ';' + $Env:PATH
   - ps: $Env:COMPOSER_NO_INTERACTION = 1
   - ps: $Env:ANSICON = '121x90 (121x90)'

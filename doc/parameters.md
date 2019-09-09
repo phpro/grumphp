@@ -3,8 +3,6 @@
 ```yaml
 # grumphp.yml
 parameters:
-    bin_dir: ./vendor/bin
-    git_dir: .
     hooks_dir: ~
     hooks_preset: local
     git_hook_variables:
@@ -22,20 +20,6 @@ parameters:
         failed: resource/grumphp-grumpy.txt
         succeeded: resource/grumphp-happy.txt
 ```
-
-**bin_dir**
-
-*Default: ./vendor/bin*
-
-This parameter will tell GrumPHP where it can locate external commands like phpcs and phpspec.
-It defaults to the default composer bin directory.
-
-**git_dir**
-
-*Default: .*
-
-This parameter will tell GrumPHP in which folder it can find the .git folder.
-This parameter is used to create the git hooks at the correct location. It defaults to the working directory.
 
 **hooks_dir**
 
@@ -60,7 +44,7 @@ GrumPHP comes with following presets:
 
 This parameter will allow you to customize git hooks templates. For now, those parameters are used in the templates : 
 
--  `VAGRANT_HOST_DIR` : specifies the vagrant location on your host machine (_default_ `.`)
+-  `VAGRANT_HOST_DIR` : specifies the vagrant location on your host machine relative to the git working folder (_default_ `.`)
 -  `VAGRANT_PROJECT_DIR` : specifies the project dir location **inside** the vagrant box (_default_ `/var/www`)
 -  `EXEC_GRUMPHP_COMMAND` : specifies the name of the command that will execute the grumphp script (_default_ `exec`)
 

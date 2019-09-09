@@ -4,23 +4,12 @@ declare(strict_types=1);
 
 namespace GrumPHP\Util;
 
-use GrumPHP\Configuration\GrumPHP;
 use SplFileInfo;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 
 class Filesystem extends SymfonyFilesystem
 {
-    /**
-     * @var GrumPHP
-     */
-    private $config;
-
-    public function __construct(GrumPHP $config)
-    {
-        $this->config = $config;
-    }
-
     public function readFromFileInfo(SplFileInfo $file): string
     {
         $handle = $file->openFile('r');
@@ -32,49 +21,14 @@ class Filesystem extends SymfonyFilesystem
         return $content;
     }
 
-    public function getProjectDir(): string
+    public function readPath(string $path): string
     {
-        return dirname($this->config->getConfigFile());
+        return $this->readFromFileInfo(new SplFileInfo($path));
     }
 
-    public function getGitDir(): string
+    public function isFile(string $path): bool
     {
-        $gitDir = $this->config->getGitDir();
-        if ($this->isAbsolutePath($gitDir)) {
-            return $gitDir;
-        }
-
-        $relativeGitDir = $this->getProjectDir() . DIRECTORY_SEPARATOR . $this->ltrimSlashes($gitDir);
-
-        return $this->realpath($relativeGitDir);
-    }
-
-    public function getRelativeProjectDir(): string
-    {
-        return $this->makePathRelative(
-            $this->getProjectDir(),
-            $this->getGitDir()
-        );
-    }
-
-    public function getRelativeGitDir(): string
-    {
-        return $this->makePathRelative(
-            $this->getGitDir(),
-            $this->getProjectDir()
-        );
-    }
-
-    public function makePathRelativeToProjectDir(string $filePath): string
-    {
-        $relativeProjectDir = $this->getRelativeProjectDir();
-        $relativePath = preg_replace('#^('.preg_quote($relativeProjectDir, '#').')#', '', $filePath);
-
-        if (strpos($relativePath, './') === 0) {
-            return substr($relativePath, 2);
-        }
-
-        return $relativePath;
+        return \is_file($path);
     }
 
     public function realpath(string $path): string
@@ -86,8 +40,91 @@ class Filesystem extends SymfonyFilesystem
         return realpath($path);
     }
 
-    private function ltrimSlashes(string $path): string
+    public function makePathAbsolute(string $path, string $basePath): string
     {
-        return ltrim($path, '\\/');
+        if ($this->isAbsolutePath($path)) {
+            return $path;
+        }
+
+        return $this->buildPath($basePath, $path);
+    }
+
+    public function buildPath(string $baseDir, string $path): string
+    {
+        return $baseDir.DIRECTORY_SEPARATOR.$path;
+    }
+
+    public function guessPath(array $paths): string
+    {
+        foreach ($paths as $path) {
+            if ($this->exists($path) && is_dir($path)) {
+                return $path;
+            }
+        }
+
+        return current($paths);
+    }
+
+    public function guessFile(array $paths, array $fileNames): string
+    {
+        foreach ($paths as $path) {
+            if (!$this->exists($path)) {
+                continue;
+            }
+
+            if (is_file($path)) {
+                return $path;
+            }
+
+            foreach ($fileNames as $fileName) {
+                $filePath = $this->buildPath($path, $fileName);
+                if ($this->exists($filePath)) {
+                    return $filePath;
+                }
+            }
+        }
+
+        $firstPath = current($paths);
+        $firstName = current($fileNames);
+
+        if (preg_match('#'.preg_quote($firstName, '#').'$#', $firstPath)) {
+            return $firstPath;
+        }
+
+        return $this->buildPath($firstPath, $firstName);
+    }
+
+    public function ensureUnixPath(string $path): string
+    {
+        // Unix systems know best ...
+        if (DIRECTORY_SEPARATOR === '/') {
+            return $path;
+        }
+
+        // Convert backslashes, remove duplicate slashes and transform drive letter to uppercase:
+        $path = str_replace('\\', '/', $path);
+        $path = preg_replace('|(?<=.)/+|', '/', $path);
+        if (':' === ($path[1] ?? '')) {
+            $path = ucfirst($path);
+        }
+
+        return $path;
+    }
+
+    public function ensureValidSlashes(string $path): string
+    {
+        // Unix systems know best ...
+        if (DIRECTORY_SEPARATOR === '/') {
+            return $path;
+        }
+
+        // Convert / slash to \ on windows:
+        $path = str_replace('/', '\\', $path);
+        $path = preg_replace('|(?<=.)\\\\+|', '\\', $path);
+        if (':' === ($path[1] ?? '')) {
+            $path = ucfirst($path);
+        }
+
+        return $path;
     }
 }

@@ -5,17 +5,41 @@ declare(strict_types=1);
 namespace GrumPHP\Locator;
 
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Util\Filesystem;
+use GrumPHP\Util\Paths;
 use Symfony\Component\Process\ExecutableFinder;
 
 class ExternalCommand
 {
+    /**
+     * @var string
+     */
     protected $binDir;
+
+    /**
+     * @var ExecutableFinder
+     */
     protected $executableFinder;
 
-    public function __construct(string $binDir, ExecutableFinder $executableFinder)
+    /**
+     * @var Filesystem
+     */
+    private $filesystem;
+
+    public function __construct(string $binDir, ExecutableFinder $executableFinder, Filesystem $filesystem)
     {
         $this->binDir = rtrim($binDir, '/\\');
         $this->executableFinder = $executableFinder;
+        $this->filesystem = $filesystem;
+    }
+
+    public static function loadWithPaths(Paths $paths, ExecutableFinder $executableFinder, Filesystem $filesystem): self
+    {
+        return new self(
+            $paths->getBinDir(),
+            $executableFinder,
+            $filesystem
+        );
     }
 
     public function locate(string $command, bool $forceUnix = false): string
@@ -28,10 +52,8 @@ class ExternalCommand
             );
         }
 
-        // Make sure to add unix-style directory separators if unix-mode is enforced
         if ($forceUnix) {
-            $parts = pathinfo($executable);
-            $executable = $parts['dirname'].'/'.$parts['filename'];
+            $executable = $this->filesystem->ensureUnixPath($executable);
         }
 
         return $executable;

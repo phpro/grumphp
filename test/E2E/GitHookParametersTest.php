@@ -9,6 +9,7 @@ class GitHookParametersTest extends AbstractE2ETestCase
     /** @test */
     function it_can_specify_simple_hook_exec_command()
     {
+        $this->initializeGitInRootDir();
         $this->initializeComposer($this->rootDir);
         $grumphpFile = $this->initializeGrumphpConfig($this->rootDir);
 
@@ -22,7 +23,7 @@ class GitHookParametersTest extends AbstractE2ETestCase
         ]);
 
         $this->installComposer($this->rootDir);
-        $this->ensureHooksExist('{[\'"]?'.preg_quote($php, '{').'[\'"]?}i');
+        $this->ensureHooksExist($this->rootDir, '{[\'"]?'.preg_quote($php, '{').'[\'"]?}i');
 
         $this->enableValidatePathsTask($grumphpFile, $this->rootDir);
 
@@ -32,6 +33,7 @@ class GitHookParametersTest extends AbstractE2ETestCase
     /** @test */
     function it_can_specify_hook_exec_command_with_additional_arguments()
     {
+        $this->initializeGitInRootDir();
         $this->initializeComposer($this->rootDir);
         $grumphpFile = $this->initializeGrumphpConfig($this->rootDir);
 
@@ -47,7 +49,7 @@ class GitHookParametersTest extends AbstractE2ETestCase
         $this->installComposer($this->rootDir);
 
         $hookPattern = '{[\'"]?'.preg_quote($php, '{').'[\'"]? [\'"]?-d[\'"]? [\'"]?date\.timezone=Europe/Brussels[\'"]?}';
-        $this->ensureHooksExist($hookPattern);
+        $this->ensureHooksExist($this->rootDir, $hookPattern);
 
         $this->enableValidatePathsTask($grumphpFile, $this->rootDir);
 

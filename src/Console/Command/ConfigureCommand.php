@@ -5,12 +5,8 @@ declare(strict_types=1);
 namespace GrumPHP\Console\Command;
 
 use Exception;
-use Gitonomy\Git\Repository;
 use GrumPHP\Configuration\GrumPHP;
-use GrumPHP\Console\Helper\ComposerHelper;
-use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Util\Filesystem;
-use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,7 +14,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Yaml\Yaml;
 
 class ConfigureCommand extends Command
@@ -36,22 +31,21 @@ class ConfigureCommand extends Command
     protected $filesystem;
 
     /**
-     * @var Repository
-     */
-    protected $repository;
-
-    /**
      * @var InputInterface
      */
     protected $input;
 
-    public function __construct(GrumPHP $config, Filesystem $filesystem, Repository $repository)
+    public function __construct(GrumPHP $config, Filesystem $filesystem)
     {
         parent::__construct();
 
         $this->config = $config;
         $this->filesystem = $filesystem;
-        $this->repository = $repository;
+    }
+
+    public static function getDefaultName(): string
+    {
+        return self::COMMAND_NAME;
     }
 
     /**
@@ -59,7 +53,6 @@ class ConfigureCommand extends Command
      */
     protected function configure(): void
     {
-        $this->setName(self::COMMAND_NAME);
         $this->addOption(
             'force',
             null,
@@ -123,26 +116,12 @@ class ConfigureCommand extends Command
             return [];
         }
 
-        // Search for git_dir
-        $default = $this->guessGitDir();
-        $questionString = $this->createQuestionString('In which folder is GIT initialized?', $default);
-        $question = new Question($questionString, $default);
-        $question->setValidator([$this, 'pathValidator']);
-        $gitDir = $helper->ask($input, $output, $question);
-
-        // Search for bin_dir
-        $default = $this->guessBinDir();
-        $questionString = $this->createQuestionString('Where can we find the executables?', $default);
-        $question = new Question($questionString, $default);
-        $question->setValidator([$this, 'pathValidator']);
-        $binDir = $helper->ask($input, $output, $question);
-
         // Search tasks
         $tasks = [];
         if ($input->isInteractive()) {
             $question = new ChoiceQuestion(
                 'Which tasks do you want to run?',
-                $this->getAvailableTasks($this->config)
+                $this->config->getRegisteredTasks()
             );
             $question->setMultiselect(true);
             $tasks = (array) $helper->ask($input, $output, $question);
@@ -151,8 +130,6 @@ class ConfigureCommand extends Command
         // Build configuration
         return [
             'parameters' => [
-                'git_dir' => $gitDir,
-                'bin_dir' => $binDir,
                 'tasks' => array_map(function ($task) {
                     return null;
                 }, array_flip($tasks)),
@@ -180,49 +157,5 @@ class ConfigureCommand extends Command
         }
 
         return false;
-    }
-
-    protected function guessBinDir(): string
-    {
-        return $this->composer()->getComposerFile()->getBinDir();
-    }
-
-    protected function guessGitDir(): string
-    {
-        $defaultGitDir = $this->config->getGitDir();
-        try {
-            $topLevel = $this->repository->run('rev-parse', ['--show-toplevel']);
-        } catch (Exception $e) {
-            return $defaultGitDir;
-        }
-
-        return rtrim($this->paths()->getRelativePath($topLevel), '/');
-    }
-
-    public function pathValidator(string $path): string
-    {
-        if (!$this->filesystem->exists($path)) {
-            throw new RuntimeException(sprintf('The path %s could not be found!', $path));
-        }
-
-        return $path;
-    }
-
-    /**
-     * Return a list of all available tasks.
-     */
-    protected function getAvailableTasks(GrumPHP $config): array
-    {
-        return $config->getRegisteredTasks();
-    }
-
-    protected function paths(): PathsHelper
-    {
-        return $this->getHelper(PathsHelper::HELPER_NAME);
-    }
-
-    protected function composer(): ComposerHelper
-    {
-        return $this->getHelper(ComposerHelper::HELPER_NAME);
     }
 }

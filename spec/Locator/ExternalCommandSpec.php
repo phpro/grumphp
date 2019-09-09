@@ -4,14 +4,15 @@ namespace spec\GrumPHP\Locator;
 
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Locator\ExternalCommand;
+use GrumPHP\Util\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Process\ExecutableFinder;
 
 class ExternalCommandSpec extends ObjectBehavior
 {
-    function let(ExecutableFinder $executableFinder)
+    function let(ExecutableFinder $executableFinder, Filesystem $filesystem)
     {
-        $this->beConstructedWith('bin', $executableFinder);
+        $this->beConstructedWith('bin', $executableFinder, $filesystem);
     }
 
     function it_is_initializable()

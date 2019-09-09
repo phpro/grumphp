@@ -5,8 +5,12 @@ services:
     grumphp.util.filesystem:
         class: GrumPHP\Util\Filesystem
         public: true
+
+    GrumPHP\Util\Paths:
+        public: true
         arguments:
-            - '@config'
+            - '@grumphp.util.filesystem'
+            - '@GrumPHP\Configuration\GuessedPaths'
 
     grumphp.util.phpversion:
         class: GrumPHP\Util\PhpVersion

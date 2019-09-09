@@ -1,6 +1,4 @@
 parameters:
-  bin_dir: ./vendor/bin
-  git_dir: .
   hooks_dir: ~
   hooks_preset: local
   git_hook_variables:

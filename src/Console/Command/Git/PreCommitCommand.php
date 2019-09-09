@@ -6,7 +6,6 @@ namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
-use GrumPHP\Console\Helper\PathsHelper;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Locator\ChangedFiles;
@@ -34,12 +33,17 @@ class PreCommitCommand extends Command
      */
     protected $changedFilesLocator;
 
-    public function __construct(GrumPHP $grumPHP, ChangedFiles $changedFilesLocator)
+    public function __construct(GrumPHP $config, ChangedFiles $changedFilesLocator)
     {
         parent::__construct();
 
-        $this->grumPHP = $grumPHP;
+        $this->grumPHP = $config;
         $this->changedFilesLocator = $changedFilesLocator;
+    }
+
+    public static function getDefaultName(): string
+    {
+        return self::COMMAND_NAME;
     }
 
     /**
@@ -47,7 +51,6 @@ class PreCommitCommand extends Command
      */
     protected function configure(): void
     {
-        $this->setName(self::COMMAND_NAME);
         $this->setDescription('Executed by the pre-commit hook');
         $this->addOption(
             'skip-success-output',
@@ -85,10 +88,5 @@ class PreCommitCommand extends Command
     protected function taskRunner(): TaskRunnerHelper
     {
         return $this->getHelper(TaskRunnerHelper::HELPER_NAME);
-    }
-
-    protected function paths(): PathsHelper
-    {
-        return $this->getHelper(PathsHelper::HELPER_NAME);
     }
 }

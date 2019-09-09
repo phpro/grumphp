@@ -6,11 +6,11 @@ namespace GrumPHP\Event\Subscriber;
 
 use Exception;
 use Gitonomy\Git\Exception\ProcessException;
-use Gitonomy\Git\Repository;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Event\RunnerEvents;
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Git\GitRepository;
 use GrumPHP\IO\IOInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -25,7 +25,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     private $grumPHP;
 
     /**
-     * @var Repository
+     * @var GitRepository
      */
     private $repository;
 
@@ -44,7 +44,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
      */
     private $shutdownFunctionRegistered = false;
 
-    public function __construct(GrumPHP $grumPHP, Repository $repository, IOInterface $io)
+    public function __construct(GrumPHP $grumPHP, GitRepository $repository, IOInterface $io)
     {
         $this->grumPHP = $grumPHP;
         $this->repository = $repository;

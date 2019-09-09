@@ -1,0 +1,72 @@
+services:
+    #
+    # Cli Application
+    #
+    GrumPHP\Console\Application:
+        class: Symfony\Component\Console\Application
+        calls:
+            - { method: 'setDispatcher', arguments: ['@event_dispatcher'] }
+            - { method: 'setCommandLoader', arguments: ['@console.command_loader'] }
+        configurator: ['@GrumPHP\Console\ApplicationConfigurator', 'configure']
+        public: true
+
+    GrumPHP\Console\ApplicationConfigurator:
+        arguments:
+            - '@config'
+            - !tagged console.helper
+
+    #
+    # Commands
+    #
+    GrumPHP\Console\Command\ConfigureCommand:
+        arguments:
+            - '@config'
+            - '@grumphp.util.filesystem'
+        tags:
+            - { name: 'console.command' }
+    GrumPHP\Console\Command\RunCommand:
+        arguments:
+            - '@config'
+            - '@locator.registered_files'
+        tags:
+            - { name: 'console.command' }
+    GrumPHP\Console\Command\Git\CommitMsgCommand:
+        arguments:
+            - '@config'
+            - '@locator.changed_files'
+            - '@grumphp.util.filesystem'
+            - '@GrumPHP\Util\Paths'
+        tags:
+            - { name: 'console.command' }
+    GrumPHP\Console\Command\Git\DeInitCommand:
+        arguments:
+            - '@grumphp.util.filesystem'
+            - '@GrumPHP\Util\Paths'
+        tags:
+            - { name: 'console.command' }
+    GrumPHP\Console\Command\Git\InitCommand:
+        arguments:
+            - '@config'
+            - '@grumphp.util.filesystem'
+            - '@process_builder'
+            - '@GrumPHP\Util\Paths'
+        tags:
+            - { name: 'console.command' }
+    GrumPHP\Console\Command\Git\PreCommitCommand:
+        arguments:
+            - '@config'
+            - '@locator.changed_files'
+        tags:
+            - { name: 'console.command' }
+
+    #
+    # Helper
+    #
+    GrumPHP\Console\Helper\TaskRunnerHelper:
+        arguments:
+            - '@config'
+            - '@task_runner'
+            - '@event_dispatcher'
+            - '@GrumPHP\Locator\AsciiLocator'
+        tags:
+            - { name: 'console.helper' }

@@ -20,18 +20,6 @@ class GrumPHPSpec extends ObjectBehavior
         $this->shouldHaveType(GrumPHP::class);
     }
 
-    function it_knows_the_bin_dir(ContainerInterface $container)
-    {
-        $container->getParameter('bin_dir')->willReturn('./vendor/bin');
-        $this->getBinDir()->shouldReturn('./vendor/bin');
-    }
-
-    function it_knows_the_git_dir(ContainerInterface $container)
-    {
-        $container->getParameter('git_dir')->willReturn('.');
-        $this->getGitDir()->shouldReturn('.');
-    }
-
     function it_knows_the_hooks_dir(ContainerInterface $container)
     {
         $container->getParameter('hooks_dir')->willReturn('./hooks/');

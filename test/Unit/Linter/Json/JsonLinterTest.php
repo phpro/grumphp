@@ -3,7 +3,6 @@
 namespace GrumPHPTest\Unit\Linter\Json;
 
 use GrumPHP\Collection\LintErrorsCollection;
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Linter\Json\JsonLinter;
 use GrumPHP\Linter\Json\JsonLintError;
 use GrumPHP\Util\Filesystem;
@@ -11,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Seld\JsonLint\JsonParser;
 use SplFileInfo;
-use Symfony\Component\DependencyInjection\Container;
 
 class JsonLinterTest extends TestCase
 {
@@ -23,7 +21,7 @@ class JsonLinterTest extends TestCase
     protected function setUp(): void
     {
         $this->linter = new JsonLinter(
-            new Filesystem(new GrumPHP(new Container())),
+            new Filesystem(),
             new JsonParser()
         );
     }

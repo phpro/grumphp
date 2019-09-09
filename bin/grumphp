@@ -1,31 +1,51 @@
 #!/usr/bin/env php
 <?php
 
-define('GRUMPHP_PATH', realpath(__DIR__ . '/..'));
+use GrumPHP\Configuration\ContainerFactory;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
-$autoloadLocations = [
-    getcwd() . '/vendor/autoload.php',
-    getcwd() . '/../../autoload.php',
-    __DIR__ . '/../vendor/autoload.php',
-    __DIR__ . '/../../../autoload.php',
-];
-
-$loaded = false;
-foreach ($autoloadLocations as $autoload) {
-    if (is_file($autoload)) {
-        require_once($autoload);
-        $loaded = true;
+(function () {
+    // First load current projects autoloader for smarter  global / phar installs ....
+    // A bit opinionated at the moment though:
+    $autoloaderInWorkingDirectory = getcwd() . '/vendor/autoload.php';
+    if (is_file($autoloaderInWorkingDirectory)) {
+        require_once $autoloaderInWorkingDirectory;
     }
-}
 
-if (!$loaded) {
-    fwrite(STDERR,
-        'You must set up the project dependencies, run the following commands:' . PHP_EOL .
-        'curl -s http://getcomposer.org/installer | php' . PHP_EOL .
-        'php composer.phar install' . PHP_EOL
+    // Next load the GrumPHP autoloader
+    $loaded = array_reduce(
+        [
+            __DIR__.'/../vendor/autoload.php', // (Normal bin dir)
+            __DIR__.'/../../../autoload.php', // From location inside folder
+            __DIR__.'/../../vendor/autoload.php' // (Development integration)
+        ],
+        static function (?string $loaded, string $file): ?string {
+            if ( ! $loaded && is_file($file)) {
+                require_once($file);
+
+                return $file;
+            }
+
+            return $loaded;
+        }
     );
-    exit(1);
-}
 
-$app = new GrumPHP\Console\Application();
-$app->run();
+    if (!$loaded) {
+        fwrite(
+            STDERR,
+            'You must set up the project dependencies, run the following commands:'.PHP_EOL.
+            'curl -s http://getcomposer.org/installer | php'.PHP_EOL.
+            'php composer.phar install'.PHP_EOL
+        );
+        exit(1);
+    }
+
+    $container = ContainerFactory::build(
+        $input = new ArgvInput(),
+        $output = new ConsoleOutput()
+    );
+
+    $application = $container->get('GrumPHP\Console\Application');
+    $application->run($input, $output);
+})();

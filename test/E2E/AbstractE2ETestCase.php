@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace GrumPHPTest\E2E;
 
+use GrumPHP\Util\Filesystem;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
@@ -45,10 +46,6 @@ abstract class AbstractE2ETestCase extends TestCase
 
         $this->removeRootDir();
         $this->filesystem->mkdir($this->rootDir);
-
-        // Basic actions
-        $this->initializeGit();
-        $this->appendToGitignore(['vendor']);
     }
 
     protected function tearDown(): void
@@ -56,15 +53,41 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->removeRootDir();
     }
 
-    private function initializeGit()
+    protected function initializeGitInRootDir()
     {
-        $process = new Process([$this->executableFinder->find('git'), 'init'], $this->rootDir);
+        $this->initializeGit($this->rootDir);
+        $this->appendToGitignore($this->rootDir);
+    }
+
+    protected function initializeGit(string $gitPath)
+    {
+        $process = new Process([$this->executableFinder->find('git'), 'init'], $gitPath);
         $this->runCommand('install git', $process);
     }
 
-    protected function appendToGitignore(array $paths)
+    protected function initializeGitSubModule(string $gitPath, string $submodulePath): string
     {
-        $gitignore = $this->rootDir.$this->useCorrectDirectorySeparator('/.gitignore');
+        // Change permissions on windows before submodule can be added:
+        $this->changeGitPermissions();
+
+        $process = new Process(
+            [
+                $this->executableFinder->find('git'),
+                'submodule',
+                'add',
+                '-f',
+                $this->filesystem->makePathRelative($submodulePath, $gitPath)
+            ],
+            $gitPath
+        );
+        $this->runCommand('init git submodule', $process);
+
+        return $this->filesystem->buildPath($gitPath, basename($submodulePath));
+    }
+
+    protected function appendToGitignore(string $gitPath, array $paths = ['vendor'])
+    {
+        $gitignore = $this->filesystem->buildPath($gitPath, '.gitignore');
         $this->filesystem->appendToFile($gitignore, implode(PHP_EOL, $paths));
     }
 
@@ -137,20 +160,21 @@ abstract class AbstractE2ETestCase extends TestCase
         return 'dev-'.$version;
     }
 
-    protected function mergeComposerConfig(string $composerFile, array $config)
+    protected function mergeComposerConfig(string $composerFile, array $config, $recursive = true)
     {
         $this->assertFileExists($composerFile);
         $source = json_decode(file_get_contents($composerFile), true);
-        $newSource = array_merge_recursive($source, $config);
+        $newSource = $recursive ? array_merge_recursive($source, $config) : array_merge($source, $config);
         $flags = JSON_FORCE_OBJECT+JSON_PRETTY_PRINT+JSON_UNESCAPED_SLASHES;
         $this->dumpFile($composerFile, json_encode($newSource,  $flags));
     }
 
-    protected function ensureHooksExist(string $containsPattern = '{grumphp}')
+    protected function ensureHooksExist(string $gitPath = null, string $containsPattern = '{grumphp}')
     {
+        $gitPath = $gitPath ?: $this->rootDir;
         $hooks = ['pre-commit', 'commit-msg'];
         foreach ($hooks as $hook) {
-            $hookFile = $this->rootDir.$this->useCorrectDirectorySeparator('/.git/hooks/'.$hook);
+            $hookFile = $gitPath.$this->useCorrectDirectorySeparator('/.git/hooks/'.$hook);
             $this->assertFileExists($hookFile);
             $this->assertRegExp(
                 $containsPattern,
@@ -160,18 +184,14 @@ abstract class AbstractE2ETestCase extends TestCase
         }
     }
 
-    protected function initializeGrumphpConfig(string $path, string $composerDir = null): string
+    protected function initializeGrumphpConfig(string $path, string $fileName = 'grumphp.yml'): string
     {
-        $composerDir = $composerDir ?: $path;
-        $binDir = $composerDir.$this->useCorrectDirectorySeparator('/vendor/bin');
-        $grumphpFile = $path.'/grumphp.yml';
+        $grumphpFile = $this->useCorrectDirectorySeparator($path.'/'.$fileName);
 
         $this->filesystem->dumpFile(
-            $this->useCorrectDirectorySeparator($grumphpFile),
+            $grumphpFile,
             Yaml::dump([
                 'parameters' => [
-                    'bin_dir' => $this->filesystem->makePathRelative($binDir, $path),
-                    'git_dir' => $this->filesystem->makePathRelative($this->rootDir, $path),
                     'tasks' => []
                 ]
             ])
@@ -190,13 +210,39 @@ abstract class AbstractE2ETestCase extends TestCase
 
     protected function registerGrumphpDefaultPathInComposer(string $composerFile, string $grumphpFile)
     {
+        $configDefaultPath = rtrim($this->filesystem->makePathRelative($grumphpFile, dirname($composerFile)), '\\/');
+
         $this->mergeComposerConfig($composerFile, [
             'extra' => [
                 'grumphp' => [
-                    'config-default-path' => $grumphpFile
-                ]
-            ]
+                    'config-default-path' => $this->useUnixDirectorySeparator($configDefaultPath),
+                ],
+            ],
         ]);
+    }
+
+    protected function registerGrumphpProjectPathInComposer(string $composerFile, string $projectPath): void
+    {
+        $relativeProjectPath = $this->useUnixDirectorySeparator(
+            rtrim($this->filesystem->makePathRelative($projectPath, dirname($composerFile)), '\\/')
+        );
+
+        $this->mergeComposerConfig(
+            $composerFile,
+            [
+                'autoload' => [
+                    'psr-4' => [
+                        '' => $relativeProjectPath.'/src/',
+                    ],
+                ],
+                'extra' => [
+                    'grumphp' => [
+                        'project-path' => $relativeProjectPath,
+                    ],
+                ],
+            ],
+            false
+        );
     }
 
     protected function ensureGrumphpE2eTasksDir(string $projectDir): string
@@ -235,26 +281,44 @@ abstract class AbstractE2ETestCase extends TestCase
         ]);
     }
 
-    protected function installComposer(string $path)
+    protected function installComposer(string $path, array $arguments = [])
     {
         $process = new Process(
-            [
-                $this->executableFinder->find('composer'),
-                'install',
-                '--optimize-autoloader',
-                '--no-interaction',
-            ],
+            array_merge(
+                [
+                    $this->executableFinder->find('composer'),
+                    'install',
+                    '--optimize-autoloader',
+                    '--no-interaction',
+                ],
+                $arguments),
             $path
         );
 
         $this->runCommand('install composer', $process);
     }
 
-    protected function commitAll()
+    protected function commitAll(string $gitPath = null)
     {
+        $gitPath = $gitPath ?: $this->rootDir;
         $git = $this->executableFinder->find('git');
-        $this->gitAddPath($this->rootDir);
-        $this->runCommand('commit', $commit = new Process([$git, 'commit', '-mtest'], $this->rootDir));
+        $this->gitAddPath($gitPath);
+        $this->runCommand('commit', $commit = new Process([$git, 'commit', '-mtest'], $gitPath));
+
+        $allOutput = $commit->getOutput().$commit->getErrorOutput();
+        $this->assertStringContainsString('GrumPHP', $allOutput);
+    }
+
+    /**
+     * This method triggers a partial commit and uses the diff command in the git hooks:
+     * --all: Tell the command to automatically stage files that have been modified and deleted,
+     * but new files you have not told Git about are not affected.
+     */
+    protected function commitModifiedAndDeleted(string $gitPath = null)
+    {
+        $gitPath = $gitPath ?: $this->rootDir;
+        $git = $this->executableFinder->find('git');
+        $this->runCommand('commit', $commit = new Process([$git, 'commit', '--all', '-mtest'], $gitPath));
 
         $allOutput = $commit->getOutput().$commit->getErrorOutput();
         $this->assertStringContainsString('GrumPHP', $allOutput);
@@ -262,18 +326,52 @@ abstract class AbstractE2ETestCase extends TestCase
 
     protected function gitAddPath(string $path)
     {
-        $path = $this->relativeRootPath($path);
         $git = $this->executableFinder->find('git');
         $this->runCommand('add files to git', new Process([$git, 'add', '-A'], $path));
     }
 
-    protected function runGrumphp(string $projectPath)
+    protected function runGrumphp(string $projectPath, $vendorPath = './vendor', $environment = [])
     {
         $projectPath = $this->relativeRootPath($projectPath);
-        $this->runCommand('grumphp run', new Process(
-            ['./vendor/bin/grumphp', 'run'],
-            $projectPath
-        ));
+        $this->runCommand('grumphp run', (
+            new Process(
+                [$vendorPath.'/bin/grumphp', 'run', '-vvv'],
+                $projectPath
+            )
+        )->setEnv($environment));
+    }
+
+    protected function runGrumphpWithConfig(string $projectPath, string $grumphpFile, $vendorPath = './vendor')
+    {
+        $projectPath = $this->relativeRootPath($projectPath);
+        $this->runCommand('grumphp run with config',
+            new Process(
+                [$vendorPath.'/bin/grumphp', 'run', '-vvv', '--config='.$grumphpFile],
+                $projectPath
+            )
+        );
+    }
+
+    protected function runGrumphpInfo(string $projectPath, $vendorPath = './vendor')
+    {
+        $projectPath = $this->relativeRootPath($projectPath);
+        $this->runCommand('grumphp info',
+            new Process(
+                [$vendorPath.'/bin/grumphp'],
+                $projectPath
+            )
+        );
+    }
+
+    protected function initializeGrumphpGitHooksWithConfig(string $grumphpFile, $vendorPath = './vendor')
+    {
+        $this->runCommand(
+            'grumphp git:init',
+            new Process(
+                [$vendorPath.'/bin/grumphp', 'git:init', '--config='.$grumphpFile],
+                $this->rootDir
+            )
+        );
     }
 
     protected function mkdir(string $path): string
@@ -294,10 +392,11 @@ abstract class AbstractE2ETestCase extends TestCase
 
     protected function runCommand(string $action, Process $process)
     {
+        $process->inheritEnvironmentVariables(true);
         $process->run();
         if (!$process->isSuccessful()) {
             throw new \RuntimeException(
-                'Could not '.$action.'! '.$process->getErrorOutput()
+                'Could not '.$action.'! '.$process->getOutput().PHP_EOL.$process->getErrorOutput()
                 . PHP_EOL . 'While running '.$process->getCommandLine()
             );
         }
@@ -335,12 +434,34 @@ abstract class AbstractE2ETestCase extends TestCase
 
     protected function removeRootDir()
     {
-        // Change permissions on git dir since it might not be removeable.
-        if ($this->filesystem->exists($gitDir = $this->relativeRootPath('.git'))) {
-            $this->filesystem->chmod($gitDir, 0777, 0000, true);
+        if (!$this->filesystem->exists($this->rootDir)) {
+            return;
         }
 
+        $this->changeGitPermissions();
         $this->filesystem->remove($this->rootDir);
+    }
+
+    /**
+     * On WIndows / Appveyor : there are some issues while trying to remove the .git folders.
+     * They are fixed by changing the permissions of those git dirs.
+     */
+    protected function changeGitPermissions()
+    {
+        if (!$this->filesystem->exists($this->rootDir)) {
+            return;
+        }
+
+        $gitDirs = Finder::create()
+            ->ignoreDotFiles(false)
+            ->ignoreVCS(false)
+            ->directories()
+            ->in($this->rootDir)
+            ->path('.git');
+
+        foreach ($gitDirs as $gitDir) {
+            $this->filesystem->chmod($gitDir, 0777, 0000, true);
+        }
     }
 
     protected function debugWhatsInDirectory(string $directory): array
