@@ -7,6 +7,8 @@ Here are some possible solutions:
 
 ## Register paths in your composer file
 
+**High priority**: Composer settings will be used when no environment variables are set.
+
 You can manipulate how GrumPHP works based on settings in your composer file:
 
 
@@ -48,6 +50,8 @@ php ./vendor/bin/grumphp git:init
 
 
 ## Changing paths by using environment variables
+
+**Highest priority**: Environment variables will always be used when available.
 
 You can set one or multiple of the environment variables below.
 Paths can be absolute or relative against current working directory.
@@ -95,6 +99,8 @@ The directory in which your executables are located.
 
 
 ## Running GrumPHP with a custom config file
+
+**Highest priority**: When adding a config CLI attribute, this will always be used.
 
 In some situations, you might want to use a different GrumPHP configuration file.
 You can switch configuration by using the `--config` parameter that is available on the CLI.
