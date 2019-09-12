@@ -6,28 +6,25 @@ namespace GrumPHP\Composer;
 
 use Composer\Composer;
 use Composer\DependencyResolver\Operation\InstallOperation;
+use Composer\DependencyResolver\Operation\OperationInterface;
 use Composer\DependencyResolver\Operation\UninstallOperation;
 use Composer\DependencyResolver\Operation\UpdateOperation;
 use Composer\EventDispatcher\EventSubscriberInterface;
-use Composer\Installer\PackageEvents;
-use Composer\Installer\PackageEvent;
+use Composer\Installer\InstallerEvent;
+use Composer\Installer\InstallerEvents;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
-use GrumPHP\Collection\ProcessArgumentsCollection;
-use GrumPHP\Console\Command\ConfigureCommand;
-use GrumPHP\Console\Command\Git\DeInitCommand;
-use GrumPHP\Console\Command\Git\InitCommand;
-use GrumPHP\Locator\ExternalCommand;
-use GrumPHP\Process\ProcessFactory;
-use GrumPHP\Util\Filesystem;
-use Symfony\Component\Process\ExecutableFinder;
 
 class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 {
-    const PACKAGE_NAME = 'phpro/grumphp';
+    private const PACKAGE_NAME = 'phpro/grumphp';
+    private const APP_NAME = 'grumphp';
+    private const COMMAND_CONFIGURE = 'configure';
+    private const COMMAND_INIT = 'git:init';
+    private const COMMAND_DEINIT = 'git:deinit';
 
     /**
      * @var Composer
@@ -56,6 +53,8 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     {
         $this->composer = $composer;
         $this->io = $io;
+
+        $this->fixBrokenComposerPluginUpdate();
     }
 
     /**
@@ -66,127 +65,169 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            PackageEvents::POST_PACKAGE_INSTALL => 'postPackageInstall',
-            PackageEvents::POST_PACKAGE_UPDATE => 'postPackageUpdate',
-            PackageEvents::PRE_PACKAGE_UNINSTALL => 'prePackageUninstall',
+            InstallerEvents::POST_DEPENDENCIES_SOLVING => 'detectGrumphpActions',
             ScriptEvents::POST_INSTALL_CMD => 'runScheduledTasks',
             ScriptEvents::POST_UPDATE_CMD => 'runScheduledTasks',
         ];
     }
 
-    /**
-     * When this package is updated, the git hook is also initialized.
-     */
-    public function postPackageInstall(PackageEvent $event): void
+    public function detectGrumphpActions(InstallerEvent $event): void
     {
-        /** @var InstallOperation $operation */
-        $operation = $event->getOperation();
-        $package = $operation->getPackage();
-
-        if (!$this->guardIsGrumPhpPackage($package)) {
+        if (!$this->guardPluginIsEnabled()) {
             return;
         }
 
-        // Schedule init when command is completed
-        $this->configureScheduled = true;
-        $this->initScheduled = true;
-    }
-
-    /**
-     * When this package is updated, the git hook is also updated.
-     */
-    public function postPackageUpdate(PackageEvent $event): void
-    {
-        /** @var UpdateOperation $operation */
-        $operation = $event->getOperation();
-        $package = $operation->getTargetPackage();
-
-        if (!$this->guardIsGrumPhpPackage($package)) {
+        if (!$operation = $this->detectGrumphpOperation($event->getOperations())) {
             return;
         }
 
-        // Schedule init when command is completed
-        $this->initScheduled = true;
-    }
-
-    /**
-     * When this package is uninstalled, the generated git hooks need to be removed.
-     */
-    public function prePackageUninstall(PackageEvent $event): void
-    {
-        /** @var UninstallOperation $operation */
-        $operation = $event->getOperation();
-        $package = $operation->getPackage();
-
-        if (!$this->guardIsGrumPhpPackage($package)) {
-            return;
+        switch (true) {
+            case $operation instanceof UpdateOperation:
+                $this->initScheduled = true;
+                break;
+            case $operation instanceof InstallOperation:
+                $this->initScheduled = true;
+                $this->configureScheduled = true;
+                break;
+            case $operation instanceof UninstallOperation:
+                $this->runGrumPhpCommand(self::COMMAND_DEINIT);
+                break;
         }
-
-        // First remove the hook, before everything is deleted!
-        $this->deInitGitHook();
     }
 
     public function runScheduledTasks(Event $event): void
     {
-        if ($this->initScheduled) {
-            $this->runGrumPhpCommand(ConfigureCommand::COMMAND_NAME);
+        if ($this->configureScheduled) {
+            $this->runGrumPhpCommand(self::COMMAND_CONFIGURE);
         }
         if ($this->initScheduled) {
-            $this->initGitHook();
+            $this->runGrumPhpCommand(self::COMMAND_INIT);
         }
     }
 
-    protected function guardIsGrumPhpPackage(PackageInterface $package): bool
+
+    private function fixBrokenComposerPluginUpdate()
     {
-        return self::PACKAGE_NAME === $package->getName();
+        return;
+
+        // TODO ....
+
+        // to avoid issues when Flex is upgraded, we load all PHP classes now
+        // that way, we are sure to use all classes from the same version
+        foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(__DIR__, \FilesystemIterator::SKIP_DOTS)) as $file) {
+            if ('.php' === substr($file, -4)) {
+                class_exists(__NAMESPACE__.str_replace('/', '\\', substr($file, \strlen(__DIR__), -4)));
+            }
+        }
     }
 
-    /**
-     * Initialize git hooks.
-     */
-    protected function initGitHook(): void
+    private function detectGrumphpOperation(iterable $operations): ?OperationInterface
     {
-        $this->runGrumPhpCommand(InitCommand::COMMAND_NAME);
+        foreach ($operations as $operation) {
+            $package = $this->detectOperationPackage($operation);
+            if ($this->guardIsGrumPhpPackage($package)) {
+                return $operation;
+            }
+        }
+
+        return null;
     }
 
-    /**
-     * Deinitialize git hooks.
-     */
-    protected function deInitGitHook(): void
+    private function detectOperationPackage(OperationInterface $operation): ?PackageInterface
     {
-        $this->runGrumPhpCommand(DeInitCommand::COMMAND_NAME);
+        switch (true) {
+            case $operation instanceof UpdateOperation:
+                return $operation->getTargetPackage();
+            case $operation instanceof InstallOperation:
+            case $operation instanceof UninstallOperation:
+                return $operation->getPackage();
+            default:
+                return null;
+        }
     }
 
-    /**
-     * Run the GrumPHP console to (de)init the git hooks.
-     */
-    protected function runGrumPhpCommand(string $command): void
+    private function guardIsGrumPhpPackage(?PackageInterface $package): bool
     {
-        $config = $this->composer->getConfig();
-        $commandLocator = new ExternalCommand($config->get('bin-dir'), new ExecutableFinder(), new Filesystem());
-        $executable = $commandLocator->locate('grumphp');
+        if (!$package) {
+            return false;
+        }
 
-        $commandlineArgs = ProcessArgumentsCollection::forExecutable($executable);
-        $commandlineArgs->add($command);
-        $commandlineArgs->add('--no-interaction');
+        $normalizedNames = array_map('strtolower', $package->getNames());
 
-        $process = ProcessFactory::fromArguments($commandlineArgs);
+        return in_array(self::PACKAGE_NAME, $normalizedNames, true);
+    }
+
+    private function guardPluginIsEnabled(): bool
+    {
+        $extra = $this->composer->getPackage()->getExtra();
+
+        return !(bool) ($extra['grumphp']['disable-plugin'] ?? false);
+    }
+
+    private function runGrumPhpCommand(string $command): void
+    {
+        if (!$grumphp = $this->detectGrumphpExecutable()) {
+            $this->io->writeError('GrumPHP can not sniff your commits! (ERR: no-exectuable)');
+        }
+
+
+        $process = proc_open(
+            $run = implode(' ', array_map('escapeshellarg', [$grumphp, $command])),
+            $descriptors = [
+                0 => ['pipe', 'r'],
+                1 => ['pipe', 'w'],
+                2 => ['pipe', 'w'],
+            ],
+    $pipes = [
+                0 => STDIN,
+                1 => STDOUT,
+                2 => STDERR,
+            ]
+        );
 
         // Check executable which is running:
         if ($this->io->isVeryVerbose()) {
-            $this->io->write('Running process : '.$process->getCommandLine());
+            $this->io->write('Running process : '.$run);
         }
 
-        $process->run();
-        if (!$process->isSuccessful()) {
-            $this->io->write(
-                '<fg=red>GrumPHP can not sniff your commits. Did you specify the correct git-dir?</fg=red>'
-            );
-            $this->io->write('<fg=red>'.$process->getErrorOutput().'</fg=red>');
+
+        $stdout = stream_get_contents($pipes[1]);
+        $stderr = stream_get_contents($pipes[2]);
+
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+
+        $exitCode = proc_close($process);
+
+
+        if ($exitCode !== 0) {
+            $this->io->writeError('GrumPHP can not sniff your commits.');
+            if ($this->io->isVeryVerbose()) {
+                $this->io->writeError([$stdout, $stderr]);
+            }
 
             return;
         }
 
-        $this->io->write('<fg=yellow>'.$process->getOutput().'</fg=yellow>');
+        $this->io->write('<fg=yellow>'.$stdout.'</fg=yellow>');
+    }
+
+    private function detectGrumphpExecutable(): ?string
+    {
+        $config = $this->composer->getConfig();
+        $binDir = $config->get('bin-dir');
+        $suffixes = ['.phar', '', '.bat'];
+
+        return array_reduce(
+            $suffixes,
+            function(?string $carry, string $suffix) use ($binDir): ?string {
+                $possiblePath = $binDir.DIRECTORY_SEPARATOR.self::APP_NAME.$suffix;
+                if ($carry || !file_exists($possiblePath) || !is_executable($possiblePath)) {
+                    return $carry;
+                }
+
+                return $possiblePath;
+            }
+        );
     }
 }

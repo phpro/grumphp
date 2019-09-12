@@ -19,7 +19,7 @@ class DevelopmentIntegrator
         $filesystem = new Filesystem();
 
         $composerBinDir = $event->getComposer()->getConfig()->get('bin-dir');
-        $executable = getcwd().'/bin/grumphp';
+        $executable = __DIR__.'/../../bin/grumphp';
         $composerExecutable = $composerBinDir.'/grumphp';
         $filesystem->copy(
             self::noramlizePath($executable),
