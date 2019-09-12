@@ -78,27 +78,33 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
             return;
         }
 
-        if (!$operation = $this->detectGrumphpOperation($event->getOperations())) {
-            $this->io->write('No GrumPHP operation found ....');
-            return;
+        $shouldRemove = false;
+        foreach ($this->detectGrumphpOperations($event->getOperations()) as $operation) {
+            switch (true) {
+                case $operation instanceof UpdateOperation:
+                    $this->io->write('<fg=yellow>Scheduled git:init</fg=yellow>');
+                    $this->initScheduled = true;
+                    $shouldRemove = false;
+                    break;
+                case $operation instanceof InstallOperation:
+                    $this->io->write('<fg=yellow>Scheduled configure + git:init</fg=yellow>');
+                    $this->initScheduled = true;
+                    $this->configureScheduled = true;
+                    $shouldRemove = false;
+                    break;
+                case $operation instanceof UninstallOperation:
+                    $this->io->write('<fg=yellow>Uninstalling grumphp!</fg=yellow>');
+                    $shouldRemove = true;
+
+                    break;
+                default:
+                    $this->io->write('Unhandled GRUMPHP operation');
+            }
         }
 
-        var_dump($operation);
-
-        switch (true) {
-            case $operation instanceof UpdateOperation:
-                $this->io->write('<fg=yellow>Scheduled git:init</fg=yellow>');
-                $this->initScheduled = true;
-                break;
-            case $operation instanceof InstallOperation:
-                $this->io->write('<fg=yellow>Scheduled configure + git:init</fg=yellow>');
-                $this->initScheduled = true;
-                $this->configureScheduled = true;
-                break;
-            case $operation instanceof UninstallOperation:
-                $this->io->write('<fg=yellow>Uninstalling grumphp!</fg=yellow>');
-                $this->runGrumPhpCommand(self::COMMAND_DEINIT);
-                break;
+        // Remove as quickly as possible before dependencies are removed ....
+        if ($shouldRemove) {
+            $this->runGrumPhpCommand(self::COMMAND_DEINIT);
         }
     }
 
@@ -128,16 +134,19 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
-    private function detectGrumphpOperation(iterable $operations): ?OperationInterface
+    /**
+     * @param iterable<OperationInterface> $operations
+     *
+     * @return iterable<OperationInterface>
+     */
+    private function detectGrumphpOperations(iterable $operations): \Generator
     {
         foreach ($operations as $operation) {
             $package = $this->detectOperationPackage($operation);
             if ($this->guardIsGrumPhpPackage($package)) {
-                return $operation;
+                yield $operation;
             }
         }
-
-        return null;
     }
 
     private function detectOperationPackage(OperationInterface $operation): ?PackageInterface
