@@ -53,8 +53,6 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     {
         $this->composer = $composer;
         $this->io = $io;
-
-        $this->fixBrokenComposerPluginUpdate();
     }
 
     /**
@@ -113,24 +111,9 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         if ($this->configureScheduled) {
             $this->runGrumPhpCommand(self::COMMAND_CONFIGURE);
         }
+
         if ($this->initScheduled) {
             $this->runGrumPhpCommand(self::COMMAND_INIT);
-        }
-    }
-
-
-    private function fixBrokenComposerPluginUpdate()
-    {
-        return;
-
-        // TODO ....
-
-        // to avoid issues when Flex is upgraded, we load all PHP classes now
-        // that way, we are sure to use all classes from the same version
-        foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(__DIR__, \FilesystemIterator::SKIP_DOTS)) as $file) {
-            if ('.php' === substr($file, -4)) {
-                class_exists(__NAMESPACE__.str_replace('/', '\\', substr($file, \strlen(__DIR__), -4)));
-            }
         }
     }
 
@@ -180,52 +163,66 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         return !(bool) ($extra['grumphp']['disable-plugin'] ?? false);
     }
 
+    /**
+     * @see https://gist.github.com/swichers/027d5ae903350cbd4af8
+     */
     private function runGrumPhpCommand(string $command): void
     {
         if (!$grumphp = $this->detectGrumphpExecutable()) {
-            $this->io->writeError('GrumPHP can not sniff your commits! (ERR: no-exectuable)');
+            $this->pluginErrored('no-exectuable');
+            return;
         }
 
-
-        $process = proc_open(
+        $process = @proc_open(
             $run = implode(' ', array_map('escapeshellarg', [$grumphp, $command])),
-            $descriptors = [
-                0 => ['pipe', 'r'],
-                1 => ['pipe', 'w'],
-                2 => ['pipe', 'w'],
-            ],
-    $pipes = [
-                0 => STDIN,
-                1 => STDOUT,
-                2 => STDERR,
-            ]
+            $descriptorspec = array(
+                // Must use php://stdin(out) in order to allow display of command output
+                // and the user to interact with the process.
+                0 => array('file', 'php://stdin', 'r'),
+                1 => array('file', 'php://stdout', 'w'),
+                2 => array('pipe', 'w'),
+            ),
+    $pipes = [],
+            null,
+            array_merge($this->getDefaultEnv(), ['SHELL_INTERACTIVE' => 1])
         );
+
+        // TODO : Check why proccess is marked as inactive ...
 
         // Check executable which is running:
         if (true || $this->io->isVeryVerbose()) {
             $this->io->write('Running process : '.$run);
         }
 
-
-        $stdout = stream_get_contents($pipes[1]);
-        $stderr = stream_get_contents($pipes[2]);
-
-        fclose($pipes[1]);
-        fclose($pipes[2]);
-
-        $exitCode = proc_close($process);
-
-
-        if ($exitCode !== 0) {
-            $this->io->writeError('GrumPHP can not sniff your commits.');
-            if (true || $this->io->isVeryVerbose()) {
-                $this->io->writeError([$stdout, $stderr]);
-            }
-
+        if (!is_resource($process)) {
+            $this->pluginErrored('no-process');
             return;
         }
 
-        $this->io->write('<fg=yellow>'.$stdout.'</fg=yellow>');
+        // Loop on process until it exits normally.
+        $stderr = [];
+        do {
+            $status = proc_get_status($process);
+            // If our stderr pipe has data, grab it for use later.
+            if (isset($pipes[2]) && !feof($pipes[2])) {
+                // Stack errors as they come in...
+                $stderr[] =  fgets($pipes[2]);
+            }
+        } while ($status['running']);
+
+
+        // According to documentation, the exit code is only valid the first call
+        // after a process is finished. We can't rely on the return value of
+        // proc_close because proc_get_status will read the exit code first.
+        $exitCode = $status['exitcode'];
+        proc_close($process);
+
+        if ($exitCode !== 0) {
+            $this->pluginErrored('invalid-exit-code', $stderr);
+            return;
+        }
+
+        // STDOut will be written since the pipe points to php://stdout ... ;-)
     }
 
     private function detectGrumphpExecutable(): ?string
@@ -245,5 +242,36 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
                 return $possiblePath;
             }
         );
+    }
+
+    private function pluginErrored(string $reason, array $stdErr = [])
+    {
+        $this->io->writeError('<fg=red>GrumPHP can not sniff your commits! ('.$reason.')</fg=red>');
+
+        if (count($stdErr) && (true || $this->io->isVerbose())) {
+            $this->io->write($stdErr);
+        }
+    }
+
+    /**
+     * @see symfony/process
+     */
+    private function getDefaultEnv(): array
+    {
+        $env = [];
+
+        foreach ($_SERVER as $k => $v) {
+            if (\is_string($v) && false !== $v = getenv($k)) {
+                $env[$k] = $v;
+            }
+        }
+
+        foreach ($_ENV as $k => $v) {
+            if (\is_string($v)) {
+                $env[$k] = $v;
+            }
+        }
+
+        return $env;
     }
 }
