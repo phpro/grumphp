@@ -74,12 +74,16 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     public function detectGrumphpActions(InstallerEvent $event): void
     {
         if (!$this->guardPluginIsEnabled()) {
+            $this->io->write('GRUMPHP Plugin is disabled...');
             return;
         }
 
         if (!$operation = $this->detectGrumphpOperation($event->getOperations())) {
+            $this->io->write('No GrumPHP operation found ....');
             return;
         }
+
+        var_dump($operation);
 
         switch (true) {
             case $operation instanceof UpdateOperation:
