@@ -83,13 +83,16 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 
         switch (true) {
             case $operation instanceof UpdateOperation:
+                $this->io->write('<fg=yellow>Scheduled git:init</fg=yellow>');
                 $this->initScheduled = true;
                 break;
             case $operation instanceof InstallOperation:
+                $this->io->write('<fg=yellow>Scheduled configure + git:init</fg=yellow>');
                 $this->initScheduled = true;
                 $this->configureScheduled = true;
                 break;
             case $operation instanceof UninstallOperation:
+                $this->io->write('<fg=yellow>Uninstalling grumphp!</fg=yellow>');
                 $this->runGrumPhpCommand(self::COMMAND_DEINIT);
                 break;
         }
@@ -186,7 +189,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         );
 
         // Check executable which is running:
-        if ($this->io->isVeryVerbose()) {
+        if (true || $this->io->isVeryVerbose()) {
             $this->io->write('Running process : '.$run);
         }
 
@@ -202,7 +205,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 
         if ($exitCode !== 0) {
             $this->io->writeError('GrumPHP can not sniff your commits.');
-            if ($this->io->isVeryVerbose()) {
+            if (true || $this->io->isVeryVerbose()) {
                 $this->io->writeError([$stdout, $stderr]);
             }
 
