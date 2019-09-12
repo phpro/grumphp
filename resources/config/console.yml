@@ -22,6 +22,7 @@ services:
         arguments:
             - '@config'
             - '@grumphp.util.filesystem'
+            - '@GrumPHP\Util\Paths'
         tags:
             - { name: 'console.command' }
     GrumPHP\Console\Command\RunCommand:
