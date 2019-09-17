@@ -26,8 +26,14 @@ services:
     filesystem:
         alias: grumphp.util.filesystem
 
+    GrumPHP\Configuration\Configurator\ExecutableFinderConfigurator:
+        arguments:
+            - '@GrumPHP\Util\Paths'
     executable_finder:
         class: Symfony\Component\Process\ExecutableFinder
+        configurator: ['@GrumPHP\Configuration\Configurator\ExecutableFinderConfigurator', 'configure']
+        calls:
+            - { method: 'setSuffixes', arguments: [['.phar', '.exe', '.bat', '.cmd', '.com']] }
 
     process_builder:
       class: GrumPHP\Process\ProcessBuilder
