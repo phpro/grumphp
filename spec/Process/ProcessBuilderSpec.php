@@ -27,21 +27,23 @@ class ProcessBuilderSpec extends ObjectBehavior
 
     function it_should_be_able_to_create_process_arguments_based_on_taskname(ExternalCommand $externalCommandLocator)
     {
-        $externalCommandLocator->locate('grumphp', false)->willReturn('/usr/bin/grumphp');
+        $externalCommandLocator->locate('grumphp')->willReturn('/usr/bin/grumphp');
 
-        $arguments = $this->createArgumentsForCommand('grumphp', false);
+        $arguments = $this->createArgumentsForCommand('grumphp');
         $arguments->shouldHaveType(ProcessArgumentsCollection::class);
         $arguments[0]->shouldBe('/usr/bin/grumphp');
         $arguments->count()->shouldBe(1);
     }
 
-    function it_should_be_able_to_create_process_arguments_based_on_taskname_and_force_unix_path(ExternalCommand $externalCommandLocator)
+    function it_should_be_able_to_create_process_arguments_based_on_taskname_and_manipulate_path(ExternalCommand $externalCommandLocator)
     {
-        $externalCommandLocator->locate('grumphp', true)->willReturn('/usr/bin/grumphp');
+        $externalCommandLocator->locate('grumphp')->willReturn('/usr/bin/grumphp');
 
-        $arguments = $this->createArgumentsForCommand('grumphp', true);
+        $arguments = $this->createArgumentsForCommand('grumphp', function (string $path): string {
+            return $path . '.manipulated';
+        });
         $arguments->shouldHaveType(ProcessArgumentsCollection::class);
-        $arguments[0]->shouldBe('/usr/bin/grumphp');
+        $arguments[0]->shouldBe('/usr/bin/grumphp.manipulated');
         $arguments->count()->shouldBe(1);
     }
 
