@@ -10,9 +10,9 @@ use Symfony\Component\Process\ExecutableFinder;
 
 class ExternalCommandSpec extends ObjectBehavior
 {
-    function let(ExecutableFinder $executableFinder, Filesystem $filesystem)
+    function let(ExecutableFinder $executableFinder)
     {
-        $this->beConstructedWith('bin', $executableFinder, $filesystem);
+        $this->beConstructedWith('bin', $executableFinder);
     }
 
     function it_is_initializable()

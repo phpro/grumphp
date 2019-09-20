@@ -135,11 +135,13 @@ class PathsTest extends FilesystemTestCase
         $this->guessedPaths = $guessedPaths->reveal();
         $this->paths = new Paths($this->filesystem, $this->guessedPaths);
 
+        // Create dirs:
         $this->filesystem->mkdir($this->buildPath($this->workspace, $projectDir));
+        $this->filesystem->mkdir($this->buildPath($this->workspace, $path));
 
-        $result = $this->paths->makePathRelativeToProjectDir($path);
-
-        $this->assertSame($expected, $result);
+        // Try both relative + absolute paths
+        $this->assertSame($expected, $this->paths->makePathRelativeToProjectDir($path));
+        $this->assertSame($expected, $this->paths->makePathRelativeToProjectDir($this->buildPath($this->workspace, $path)));
     }
 
     public function provideFilenamesRelativeToProjectDirCases()
@@ -169,6 +171,70 @@ class PathsTest extends FilesystemTestCase
                 '',
                 'somefile/somewhere/sometime',
                 'somefile/somewhere/sometime'
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider provideFilenamesRelativeToProjectDirWhenInProjectPathCases()
+     */
+    public function it_can_make_file_paths_relative_to_project_dir_when_in_project_folder(
+        $projectDir,
+        $path,
+        $expected,
+        bool $shortened
+    ): void {
+        $guessedPaths = $this->prophesize(GuessedPaths::class);
+        $guessedPaths->getGitWorkingDir()->willReturn($this->workspace);
+        $guessedPaths->getProjectDir()->willReturn($this->buildPath($this->workspace, $projectDir));
+        $this->guessedPaths = $guessedPaths->reveal();
+        $this->paths = new Paths($this->filesystem, $this->guessedPaths);
+
+        // Create dirs:
+        $this->filesystem->mkdir($fullProjectPath = $this->buildPath($this->workspace, $projectDir));
+        $this->filesystem->mkdir($fullPath = $this->buildPath($this->workspace, $path));
+
+        $this->assertSame(
+            $shortened ? $expected : $fullPath,
+            $this->paths->makePathRelativeToProjectDirWhenInSubFolder(
+                $this->buildPath($this->workspace, $path)
+            )
+        );
+    }
+
+    public function provideFilenamesRelativeToProjectDirWhenInProjectPathCases()
+    {
+        return [
+            [
+                'project',
+                'project/somefile',
+                'somefile',
+                true,
+            ],
+            [
+                'project',
+                'project/somefile/somewhere',
+                'somefile/somewhere',
+                true,
+            ],
+            [
+                'project',
+                'somefile',
+                'somefile',
+                false,
+            ],
+            [
+                'project',
+                'somefile',
+                'somefile',
+                false,
+            ],
+            [
+                'project',
+                'somefile/somewhere/sometime',
+                'somefile/somewhere/sometime',
+                false
             ]
         ];
     }
