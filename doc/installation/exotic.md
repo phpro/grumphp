@@ -63,6 +63,7 @@ GRUMPHP_GIT_WORKING_DIR=....
 GRUMPHP_GIT_REPOSITORY_DIR=...
 GRUMPHP_COMPOSER_DIR=...
 GRUMPHP_BIN_DIR=...
+PATH=/additional/bin/dirs:$PATH
 ```
 
 **GRUMPHP_PROJECT_DIR**
@@ -95,7 +96,13 @@ The directory in which your `composer.json` file is available.
 
 *Default: null*
 
-The directory in which your executables are located.
+The directory in which the executables installed by composer are located.
+
+**PATH**
+
+*Default: system specific*
+
+If you want to support multiple bin directories, you can prepend them to your path variable.
 
 
 ## Running GrumPHP with a custom config file
