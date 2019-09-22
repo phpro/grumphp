@@ -150,18 +150,18 @@ class InitCommand extends Command
     {
         $configFile = $this->useExoticConfigFile();
 
-        $arguments = $this->processBuilder->createArgumentsForCommand('grumphp', true);
+        $arguments = $this->processBuilder->createArgumentsForCommand(
+            'grumphp',
+            function (string $executablePath): string {
+                return $this->proposeRelativeUnixPath($executablePath);
+            }
+        );
         $arguments->add($command);
         $arguments->addOptionalArgument('--config=%s', $configFile);
 
         $process = $this->processBuilder->buildProcess($arguments);
 
-        // Make the grumphp command relative to path where the config is stored (if it uses that executable)
-        return str_replace(
-            $this->filesystem->ensureUnixPath($this->paths->getProjectDir()),
-            '.',
-            $process->getCommandLine()
-        );
+        return $process->getCommandLine();
     }
 
     /**
@@ -180,10 +180,17 @@ class InitCommand extends Command
             return null;
         }
 
+        return $this->proposeRelativeUnixPath($configPath);
+    }
+
+    /**
+     * Always try to make paths relative against the project dir inside the git hooks.
+     * If it is not possible: the full path will be used.
+     */
+    private function proposeRelativeUnixPath(string $path): string
+    {
         return $this->filesystem->ensureUnixPath(
-            $this->paths->makePathRelativeToProjectDir(
-                $this->filesystem->realpath($configPath)
-            )
+            $this->paths->makePathRelativeToProjectDirWhenInSubFolder($path)
         );
     }
 }

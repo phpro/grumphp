@@ -49,6 +49,14 @@ class Filesystem extends SymfonyFilesystem
         return $this->buildPath($basePath, $path);
     }
 
+    public function isPathInFolder(string $path, string $folder): bool
+    {
+        $realPath = $this->realpath($path);
+        $realDirectory = $this->isFile($realPath) ? dirname($realPath) : $realPath;
+
+        return strpos($realDirectory, $this->realpath($folder)) === 0;
+    }
+
     public function buildPath(string $baseDir, string $path): string
     {
         return $baseDir.DIRECTORY_SEPARATOR.$path;

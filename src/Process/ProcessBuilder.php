@@ -25,11 +25,17 @@ class ProcessBuilder
         $this->io = $io;
     }
 
-    public function createArgumentsForCommand(string $command, bool $forceUnix = false): ProcessArgumentsCollection
-    {
-        $executable = $this->externalCommandLocator->locate($command, $forceUnix);
+    /**
+     * @param callable<string, string>|null $pathManipulator
+     */
+    public function createArgumentsForCommand(
+        string $command,
+        callable $pathManipulator = null
+    ): ProcessArgumentsCollection {
+        $executable = $this->externalCommandLocator->locate($command);
+        $manipulatedExecutable = $pathManipulator ? $pathManipulator($executable) : $executable;
 
-        return ProcessArgumentsCollection::forExecutable($executable);
+        return ProcessArgumentsCollection::forExecutable((string) $manipulatedExecutable);
     }
 
     /**

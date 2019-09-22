@@ -86,7 +86,13 @@ class Paths
     {
         // Transform absolute paths to the git root:
         if ($this->filesystem->isAbsolutePath($filePath)) {
-            $this->filesystem->makePathRelative($filePath, $this->getGitWorkingDir());
+            $filePath = rtrim(
+                $this->filesystem->makePathRelative(
+                    $this->filesystem->realpath($filePath),
+                    $this->getGitWorkingDir()
+                ),
+                '/\\'
+            );
         }
 
         // Transform from git root to project relative:
@@ -98,5 +104,14 @@ class Paths
         }
 
         return $relativePath;
+    }
+
+    public function makePathRelativeToProjectDirWhenInSubFolder(string $path): string
+    {
+        if (!$this->filesystem->isPathInFolder($path, $this->getProjectDir())) {
+            return $this->filesystem->realpath($path);
+        }
+
+        return $this->makePathRelativeToProjectDir($path);
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace GrumPHP\Locator;
 
 use GrumPHP\Exception\RuntimeException;
-use GrumPHP\Util\Filesystem;
 use GrumPHP\Util\Paths;
 use Symfony\Component\Process\ExecutableFinder;
 
@@ -21,28 +20,21 @@ class ExternalCommand
      */
     protected $executableFinder;
 
-    /**
-     * @var Filesystem
-     */
-    private $filesystem;
-
-    public function __construct(string $binDir, ExecutableFinder $executableFinder, Filesystem $filesystem)
+    public function __construct(string $binDir, ExecutableFinder $executableFinder)
     {
         $this->binDir = rtrim($binDir, '/\\');
         $this->executableFinder = $executableFinder;
-        $this->filesystem = $filesystem;
     }
 
-    public static function loadWithPaths(Paths $paths, ExecutableFinder $executableFinder, Filesystem $filesystem): self
+    public static function loadWithPaths(Paths $paths, ExecutableFinder $executableFinder): self
     {
         return new self(
             $paths->getBinDir(),
-            $executableFinder,
-            $filesystem
+            $executableFinder
         );
     }
 
-    public function locate(string $command, bool $forceUnix = false): string
+    public function locate(string $command): string
     {
         // Search executable:
         $executable = $this->executableFinder->find($command, null, [$this->binDir]);
@@ -50,10 +42,6 @@ class ExternalCommand
             throw new RuntimeException(
                 sprintf('The executable for "%s" could not be found.', $command)
             );
-        }
-
-        if ($forceUnix) {
-            $executable = $this->filesystem->ensureUnixPath($executable);
         }
 
         return $executable;

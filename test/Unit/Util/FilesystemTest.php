@@ -176,6 +176,31 @@ class FilesystemTest extends FilesystemTestCase
         );
     }
 
+    /** @test */
+    public function it_knows_if_a_path_is_in_a_folder(): void
+    {
+        $this->filesystem->mkdir($projectDir = $this->buildPath('project'));
+        $this->filesystem->mkdir($composerDir = $this->buildPath('composer'));
+        $this->filesystem->mkdir($composerSubDir = $this->buildPath('composer/subdir'));
+        $this->filesystem->touch($composerJson = $this->buildPath('composer/composer.json'));
+
+        $this->assertTrue($this->filesystem->isPathInFolder($projectDir, $this->workspace));
+        $this->assertTrue($this->filesystem->isPathInFolder($composerDir, $this->workspace));
+        $this->assertTrue($this->filesystem->isPathInFolder($composerJson, $this->workspace));
+        $this->assertTrue($this->filesystem->isPathInFolder($composerJson, $composerDir));
+        $this->assertTrue($this->filesystem->isPathInFolder($composerSubDir, $composerDir));
+        $this->assertTrue($this->filesystem->isPathInFolder($composerSubDir, $this->workspace));
+
+        $this->assertFalse($this->filesystem->isPathInFolder($projectDir, $composerDir));
+        $this->assertFalse($this->filesystem->isPathInFolder($projectDir, $composerSubDir));
+        $this->assertFalse($this->filesystem->isPathInFolder($composerSubDir, $projectDir));
+        $this->assertFalse($this->filesystem->isPathInFolder($composerDir, $projectDir));
+        $this->assertFalse($this->filesystem->isPathInFolder($composerJson, $projectDir));
+        $this->assertFalse($this->filesystem->isPathInFolder($this->workspace, $projectDir));
+        $this->assertFalse($this->filesystem->isPathInFolder($this->workspace, $composerDir));
+        $this->assertFalse($this->filesystem->isPathInFolder($this->workspace, $composerSubDir));
+    }
+
     public function provideGuessedFiles()
     {
         yield [
