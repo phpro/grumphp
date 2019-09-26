@@ -12,6 +12,8 @@ use Composer\DependencyResolver\Operation\UpdateOperation;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Installer\InstallerEvent;
 use Composer\Installer\InstallerEvents;
+use Composer\Installer\PackageEvent;
+use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Plugin\PluginInterface;
@@ -63,49 +65,71 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            InstallerEvents::POST_DEPENDENCIES_SOLVING => 'detectGrumphpActions',
+            PackageEvents::POST_PACKAGE_INSTALL => 'detectGrumphpInstall',
+            PackageEvents::POST_PACKAGE_UPDATE => 'detectGrumphpUpdate',
+            InstallerEvents::POST_DEPENDENCIES_SOLVING => 'detectGrumphpUninstall',
             ScriptEvents::POST_INSTALL_CMD => 'runScheduledTasks',
             ScriptEvents::POST_UPDATE_CMD => 'runScheduledTasks',
         ];
     }
 
-    public function detectGrumphpActions(InstallerEvent $event): void
+    /**
+     * Runs install commands at the end of the composer command.
+     */
+    public function detectGrumphpInstall(PackageEvent $event): void
     {
-        if (!$this->guardPluginIsEnabled()) {
-            $this->io->write('GRUMPHP Plugin is disabled...');
+        /** @var InstallOperation $operation */
+        $operation = $event->getOperation();
+        $package = $operation->getPackage();
+        if (!$this->guardPluginIsEnabled() || !$this->guardIsGrumPhpPackage($package)) {
             return;
         }
 
-        $shouldRemove = false;
-        foreach ($this->detectGrumphpOperations($event->getOperations()) as $operation) {
-            switch (true) {
-                case $operation instanceof UpdateOperation:
-                    $this->io->write('<fg=yellow>Scheduled git:init</fg=yellow>');
-                    $this->initScheduled = true;
-                    $shouldRemove = false;
-                    break;
-                case $operation instanceof InstallOperation:
-                    $this->io->write('<fg=yellow>Scheduled configure + git:init</fg=yellow>');
-                    $this->initScheduled = true;
-                    $this->configureScheduled = true;
-                    $shouldRemove = false;
-                    break;
-                case $operation instanceof UninstallOperation:
-                    $this->io->write('<fg=yellow>Uninstalling grumphp!</fg=yellow>');
-                    $shouldRemove = true;
+        // Schedule init when command is completed
+        $this->configureScheduled = true;
+        $this->initScheduled = true;
+    }
 
-                    break;
-                default:
-                    $this->io->write('Unhandled GRUMPHP operation');
-            }
+    /**
+     * Runs update commands at the end of the composer command.
+     */
+    public function detectGrumphpUpdate(PackageEvent $event): void
+    {
+        /** @var UpdateOperation $operation */
+        $operation = $event->getOperation();
+        $package = $operation->getTargetPackage();
+        if (!$this->guardPluginIsEnabled() || !$this->guardIsGrumPhpPackage($package)) {
+            return;
         }
 
-        // Remove as quickly as possible before dependencies are removed ....
-        if ($shouldRemove) {
+        // Schedule init when command is completed
+        $this->initScheduled = true;
+    }
+
+    /**
+     * Runs uninstall commands before composer starts removing packages.
+     */
+    public function detectGrumphpUninstall(InstallerEvent $event): void
+    {
+        if (!$this->guardPluginIsEnabled()) {
+            return;
+        }
+
+        $deleteOperations = array_filter(
+            iterator_to_array($this->detectGrumphpOperations($event->getOperations())),
+            function (OperationInterface $operation): bool {
+                return $operation instanceof UninstallOperation;
+            }
+        );
+
+        if (count($deleteOperations)) {
             $this->runGrumPhpCommand(self::COMMAND_DEINIT);
         }
     }
 
+    /**
+     * Runs the scheduled tasks after an update / install command.
+     */
     public function runScheduledTasks(Event $event): void
     {
         if ($this->configureScheduled) {
@@ -182,12 +206,8 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
                 1 => array('file', 'php://stdout', 'w'),
                 2 => array('pipe', 'w'),
             ),
-    $pipes = [],
-            null,
-            array_merge($this->getDefaultEnv(), ['SHELL_INTERACTIVE' => 1])
+    $pipes = []
         );
-
-        // TODO : Check why proccess is marked as inactive ...
 
         // Check executable which is running:
         if (true || $this->io->isVeryVerbose()) {
@@ -251,27 +271,5 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         if (count($stdErr) && (true || $this->io->isVerbose())) {
             $this->io->write($stdErr);
         }
-    }
-
-    /**
-     * @see symfony/process
-     */
-    private function getDefaultEnv(): array
-    {
-        $env = [];
-
-        foreach ($_SERVER as $k => $v) {
-            if (\is_string($v) && false !== $v = getenv($k)) {
-                $env[$k] = $v;
-            }
-        }
-
-        foreach ($_ENV as $k => $v) {
-            if (\is_string($v)) {
-                $env[$k] = $v;
-            }
-        }
-
-        return $env;
     }
 }
