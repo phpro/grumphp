@@ -20,9 +20,6 @@ class ContainerFactory
         $cliConfigFile = $input->getParameterOption(['--config', '-c'], null);
         $guessedPaths = self::guessPaths($cliConfigFile);
 
-        // Make sure to register bin dir in PATHS
-        $guessedPaths->getComposerFile()->ensureProjectBinDirInSystemPath();
-
         // Build the service container:
         $container = ContainerBuilder::buildFromConfiguration($guessedPaths->getConfigFile());
         $container->set('console.input', $input);
