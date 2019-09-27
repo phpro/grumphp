@@ -115,8 +115,11 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
             return;
         }
 
+        $grumphpOperations = $this->detectGrumphpOperations($event->getOperations());
+        var_dump($grumphpOperations);
+
         $deleteOperations = array_filter(
-            $this->detectGrumphpOperations($event->getOperations()),
+            $grumphpOperations,
             function (OperationInterface $operation): bool {
                 return $operation instanceof UninstallOperation;
             }
