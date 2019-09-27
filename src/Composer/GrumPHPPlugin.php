@@ -116,7 +116,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         }
 
         $deleteOperations = array_filter(
-            iterator_to_array($this->detectGrumphpOperations($event->getOperations())),
+            $this->detectGrumphpOperations($event->getOperations()),
             function (OperationInterface $operation): bool {
                 return $operation instanceof UninstallOperation;
             }
@@ -142,18 +142,19 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * @param iterable<OperationInterface> $operations
+     * @param OperationInterface[] $operations
      *
-     * @return iterable<OperationInterface>
+     * @return OperationInterface[]
      */
-    private function detectGrumphpOperations(iterable $operations): \Generator
+    private function detectGrumphpOperations(array $operations): array
     {
-        foreach ($operations as $operation) {
-            $package = $this->detectOperationPackage($operation);
-            if ($this->guardIsGrumPhpPackage($package)) {
-                yield $operation;
+        return array_values(array_filter(
+            $operations,
+            function (OperationInterface $operation): bool {
+                $package = $this->detectOperationPackage($operation);
+                return $this->guardIsGrumPhpPackage($package);
             }
-        }
+        ));
     }
 
     private function detectOperationPackage(OperationInterface $operation): ?PackageInterface
@@ -187,9 +188,6 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         return !(bool) ($extra['grumphp']['disable-plugin'] ?? false);
     }
 
-    /**
-     * @see https://gist.github.com/swichers/027d5ae903350cbd4af8
-     */
     private function runGrumPhpCommand(string $command): void
     {
         if (!$grumphp = $this->detectGrumphpExecutable()) {
@@ -205,24 +203,22 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         // Run command
         $process = @proc_open(
             $run = implode(' ', array_map(
-                function (string $argument): string
-                {
+                function (string $argument): string {
                     return escapeshellarg($argument);
                 },
                 array_filter([$grumphp, $command, $ansi, $silent, $interaction])
             )),
+            // Map process to current io
             $descriptorspec = array(
-                // Must use php://stdin(out) in order to allow display of command output
-                // and the user to interact with the process.
                 0 => array('file', 'php://stdin', 'r'),
                 1 => array('file', 'php://stdout', 'w'),
                 2 => array('file', 'php://stderr', 'w'),
             ),
-    $pipes = []
+            $pipes = []
         );
 
         // Check executable which is running:
-        if ($this->io->isVeryVerbose()) {
+        if ($this->io->isVerbose()) {
             $this->io->write('Running process : '.$run);
         }
 
@@ -232,25 +228,15 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         }
 
         // Loop on process until it exits normally.
-        $stderr = [];
         do {
             $status = proc_get_status($process);
-            // If our stderr pipe has data, grab it for use later.
-            //if (isset($pipes[2]) && !feof($pipes[2])) {
-                // Stack errors as they come in...
-            //    $stderr[] =  fgets($pipes[2]);
-            //}
-        } while ($status['running']);
+        } while ($status && $status['running']);
 
-
-        // According to documentation, the exit code is only valid the first call
-        // after a process is finished. We can't rely on the return value of
-        // proc_close because proc_get_status will read the exit code first.
-        $exitCode = $status['exitcode'];
+        $exitCode = $status['exitcode'] ?? -1;
         proc_close($process);
 
         if ($exitCode !== 0) {
-            $this->pluginErrored('invalid-exit-code', $stderr);
+            $this->pluginErrored('invalid-exit-code');
             return;
         }
     }
@@ -263,7 +249,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 
         return array_reduce(
             $suffixes,
-            function(?string $carry, string $suffix) use ($binDir): ?string {
+            function (?string $carry, string $suffix) use ($binDir): ?string {
                 $possiblePath = $binDir.DIRECTORY_SEPARATOR.self::APP_NAME.$suffix;
                 if ($carry || !file_exists($possiblePath) || !is_executable($possiblePath)) {
                     return $carry;
@@ -274,12 +260,8 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         );
     }
 
-    private function pluginErrored(string $reason, array $stdErr = [])
+    private function pluginErrored(string $reason)
     {
         $this->io->writeError('<fg=red>GrumPHP can not sniff your commits! ('.$reason.')</fg=red>');
-
-        if (count($stdErr) && ($this->io->isVerbose())) {
-            $this->io->write('<fg=red>'.$stdErr.'</fg=red>');
-        }
     }
 }
