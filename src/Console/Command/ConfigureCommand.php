@@ -65,6 +65,12 @@ class ConfigureCommand extends Command
             InputOption::VALUE_NONE,
             'Forces overwriting the configuration file when it already exists.'
         );
+        $this->addOption(
+            'silent',
+            null,
+            InputOption::VALUE_NONE,
+            'Only output what really matters.'
+        );
     }
 
     /**
@@ -76,7 +82,7 @@ class ConfigureCommand extends Command
         $configFile = $this->paths->getConfigFile();
         $force = $input->getOption('force');
         if ($this->filesystem->exists($configFile) && !$force) {
-            if ($input->isInteractive()) {
+            if (!$input->getOption('silent')) {
                 $output->writeln('<fg=yellow>GrumPHP is already configured!</fg=yellow>');
             }
 
@@ -99,7 +105,7 @@ class ConfigureCommand extends Command
             return;
         }
 
-        if ($input->isInteractive()) {
+        if (!$input->getOption('silent')) {
             $output->writeln('<fg=green>GrumPHP is configured and ready to kick ass!</fg=green>');
         }
     }
@@ -125,7 +131,7 @@ class ConfigureCommand extends Command
         $tasks = [];
         if ($input->isInteractive()) {
             $question = new ChoiceQuestion(
-                'Which tasks do you want to run?',
+                $this->createQuestionString('Which tasks do you want to run?', null, ''),
                 $this->config->getRegisteredTasks()
             );
             $question->setMultiselect(true);
@@ -145,8 +151,8 @@ class ConfigureCommand extends Command
     protected function createQuestionString(string $question, string $default = null, string $separator = ':'): string
     {
         return null !== $default ?
-            sprintf('<info>%s</info> [<comment>%s</comment>]%s ', $question, $default, $separator) :
-            sprintf('<info>%s</info>%s ', $question, $separator);
+            sprintf('<fg=green>%s</fg=green> [<fg=yellow>%s</fg=yellow>]%s ', $question, $default, $separator) :
+            sprintf('<fg=green>%s</fg=green>%s ', $question, $separator);
     }
 
     protected function writeConfiguration(string $configFile, array $configuration): bool
