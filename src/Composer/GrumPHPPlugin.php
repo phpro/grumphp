@@ -10,8 +10,6 @@ use Composer\DependencyResolver\Operation\OperationInterface;
 use Composer\DependencyResolver\Operation\UninstallOperation;
 use Composer\DependencyResolver\Operation\UpdateOperation;
 use Composer\EventDispatcher\EventSubscriberInterface;
-use Composer\Installer\InstallerEvent;
-use Composer\Installer\InstallerEvents;
 use Composer\Installer\PackageEvent;
 use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
@@ -31,22 +29,32 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * @var Composer
      */
-    protected $composer;
+    private $composer;
 
     /**
      * @var IOInterface
      */
-    protected $io;
+    private $io;
 
     /**
      * @var bool
      */
-    protected $configureScheduled = false;
+    private $handledPackageEvent = false;
 
     /**
      * @var bool
      */
-    protected $initScheduled = false;
+    private $configureScheduled = false;
+
+    /**
+     * @var bool
+     */
+    private $initScheduled = false;
+
+    /**
+     * @var bool
+     */
+    private $hasBeenRemoved = false;
 
     /**
      * {@inheritdoc}
@@ -65,69 +73,57 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            PackageEvents::POST_PACKAGE_INSTALL => 'detectGrumphpInstall',
-            PackageEvents::POST_PACKAGE_UPDATE => 'detectGrumphpUpdate',
-            InstallerEvents::POST_DEPENDENCIES_SOLVING => 'detectGrumphpUninstall',
+            PackageEvents::PRE_PACKAGE_INSTALL => 'detectGrumphpAction',
+            PackageEvents::POST_PACKAGE_INSTALL => 'detectGrumphpAction',
+            PackageEvents::PRE_PACKAGE_UPDATE => 'detectGrumphpAction',
+            PackageEvents::PRE_PACKAGE_UNINSTALL => 'detectGrumphpAction',
             ScriptEvents::POST_INSTALL_CMD => 'runScheduledTasks',
             ScriptEvents::POST_UPDATE_CMD => 'runScheduledTasks',
         ];
     }
 
     /**
-     * Runs install commands at the end of the composer command.
+     * This method can be called by pre/post package events;
+     * We make sure to only run it once. This way Grumphp won't execute multiple times.
+     * The goal is to run it as fast as possible.
+     * For first install, this should also happen on POST install (because otherwise the plugin doesn't exist yet)
      */
-    public function detectGrumphpInstall(PackageEvent $event): void
+    public function detectGrumphpAction(PackageEvent $event): void
     {
-        /** @var InstallOperation $operation */
-        $operation = $event->getOperation();
-        $package = $operation->getPackage();
-        if (!$this->guardPluginIsEnabled() || !$this->guardIsGrumPhpPackage($package)) {
+        if ($this->handledPackageEvent || !$this->guardPluginIsEnabled()) {
+            $this->handledPackageEvent = true;
             return;
         }
 
-        // Schedule init when command is completed
-        $this->configureScheduled = true;
-        $this->initScheduled = true;
-    }
+        $this->handledPackageEvent = true;
 
-    /**
-     * Runs update commands at the end of the composer command.
-     */
-    public function detectGrumphpUpdate(PackageEvent $event): void
-    {
-        /** @var UpdateOperation $operation */
-        $operation = $event->getOperation();
-        $package = $operation->getTargetPackage();
-        if (!$this->guardPluginIsEnabled() || !$this->guardIsGrumPhpPackage($package)) {
+        $grumPhpOperations = $this->detectGrumphpOperations($event->getOperations());
+        if (!count($grumPhpOperations)) {
             return;
         }
 
-        // Schedule init when command is completed
-        $this->initScheduled = true;
-    }
+        // Check all GrumPHP operations to see if they are unanimously removing GrumPHP
+        // For example: an update might trigger an uninstall first - but we don't care about that.
+        $removalScheduled = array_reduce(
+            $grumPhpOperations,
+            function (?bool $theVote, OperationInterface $operation): bool {
+                $myVote = $operation instanceof UninstallOperation;
 
-    /**
-     * Runs uninstall commands before composer starts removing packages.
-     */
-    public function detectGrumphpUninstall(InstallerEvent $event): void
-    {
-        if (!$this->guardPluginIsEnabled()) {
-            return;
-        }
-
-        $grumphpOperations = $this->detectGrumphpOperations($event->getOperations());
-        var_dump($grumphpOperations);
-
-        $deleteOperations = array_filter(
-            $grumphpOperations,
-            function (OperationInterface $operation): bool {
-                return $operation instanceof UninstallOperation;
-            }
+                return null === $theVote ? $myVote : ($theVote && $myVote);
+            },
+            null
         );
 
-        if (count($deleteOperations)) {
+        // Remove immediately once when we are positive about removal. (now that our dependencies are still there)
+        if ($removalScheduled) {
             $this->runGrumPhpCommand(self::COMMAND_DEINIT);
+            $this->hasBeenRemoved = true;
+            return;
         }
+
+        // Schedule install at the end of the process if we don't need to uninstall
+        $this->initScheduled = true;
+        $this->configureScheduled = true;
     }
 
     /**
@@ -173,6 +169,9 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
+    /**
+     * This method also detects aliases / replaces statements which makes grumphp-shim possible.
+     */
     private function guardIsGrumPhpPackage(?PackageInterface $package): bool
     {
         if (!$package) {
@@ -247,20 +246,25 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     private function detectGrumphpExecutable(): ?string
     {
         $config = $this->composer->getConfig();
-        $binDir = $config->get('bin-dir');
+        $binDir = $this->ensurePlatformSpecificDirectorySeparator((string) $config->get('bin-dir'));
         $suffixes = ['.phar', '', '.bat'];
 
         return array_reduce(
             $suffixes,
             function (?string $carry, string $suffix) use ($binDir): ?string {
                 $possiblePath = $binDir.DIRECTORY_SEPARATOR.self::APP_NAME.$suffix;
-                if ($carry || !file_exists($possiblePath) || !is_executable($possiblePath)) {
+                if ($carry || !file_exists($possiblePath)) {
                     return $carry;
                 }
 
                 return $possiblePath;
             }
         );
+    }
+
+    private function ensurePlatformSpecificDirectorySeparator(string $path): string
+    {
+        return str_replace('/', DIRECTORY_SEPARATOR, $path);
     }
 
     private function pluginErrored(string $reason)
