@@ -122,6 +122,8 @@ class ConfigureCommand extends Command
             'Do you want to create a grumphp.yml file?',
             'Yes'
         );
+
+        $output->write('<fg=green>Now you see mee!</fg=green>');
         $question = new ConfirmationQuestion($questionString, true);
         if (!$helper->ask($input, $output, $question)) {
             return [];
