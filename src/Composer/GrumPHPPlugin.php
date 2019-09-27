@@ -197,8 +197,9 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
             return;
         }
 
+        $ansi = $this->io->isDecorated() ? '--ansi' : '--no-ansi';
         $process = @proc_open(
-            $run = implode(' ', array_map('escapeshellarg', [$grumphp, $command, '--ansi'])),
+            $run = implode(' ', array_map('escapeshellarg', [$grumphp, $command, $ansi])),
             $descriptorspec = array(
                 // Must use php://stdin(out) in order to allow display of command output
                 // and the user to interact with the process.
