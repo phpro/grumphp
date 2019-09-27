@@ -198,7 +198,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         }
 
         $process = @proc_open(
-            $run = implode(' ', array_map('escapeshellarg', [$grumphp, $command])),
+            $run = implode(' ', array_map('escapeshellarg', [$grumphp, $command, '--ansi'])),
             $descriptorspec = array(
                 // Must use php://stdin(out) in order to allow display of command output
                 // and the user to interact with the process.
@@ -210,7 +210,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         );
 
         // Check executable which is running:
-        if (true || $this->io->isVeryVerbose()) {
+        if ($this->io->isVeryVerbose()) {
             $this->io->write('Running process : '.$run);
         }
 
@@ -241,8 +241,6 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
             $this->pluginErrored('invalid-exit-code', $stderr);
             return;
         }
-
-        // STDOut will be written since the pipe points to php://stdout ... ;-)
     }
 
     private function detectGrumphpExecutable(): ?string
@@ -268,8 +266,8 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     {
         $this->io->writeError('<fg=red>GrumPHP can not sniff your commits! ('.$reason.')</fg=red>');
 
-        if (count($stdErr) && (true || $this->io->isVerbose())) {
-            $this->io->write($stdErr);
+        if (count($stdErr) && ($this->io->isVerbose())) {
+            $this->io->write('<fg=red>'.$stdErr.'</fg=red>');
         }
     }
 }

@@ -72,9 +72,6 @@ class ConfigureCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        var_dump('interactive? ', $input->isInteractive(), $_ENV);
-
-
         $this->input = $input;
         $configFile = $this->paths->getConfigFile();
         $force = $input->getOption('force');
