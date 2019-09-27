@@ -216,7 +216,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
                 // and the user to interact with the process.
                 0 => array('file', 'php://stdin', 'r'),
                 1 => array('file', 'php://stdout', 'w'),
-                2 => array('pipe', 'w'),
+                2 => array('file', 'php://stderr', 'w'),
             ),
     $pipes = []
         );
@@ -236,10 +236,10 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         do {
             $status = proc_get_status($process);
             // If our stderr pipe has data, grab it for use later.
-            if (isset($pipes[2]) && !feof($pipes[2])) {
+            //if (isset($pipes[2]) && !feof($pipes[2])) {
                 // Stack errors as they come in...
-                $stderr[] =  fgets($pipes[2]);
-            }
+            //    $stderr[] =  fgets($pipes[2]);
+            //}
         } while ($status['running']);
 
 
