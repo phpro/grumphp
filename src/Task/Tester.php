@@ -22,10 +22,32 @@ class Tester extends AbstractExternalTask
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
+            'path' => '.',
             'always_execute' => false,
+            'log' => null,
+            'show_information_about_skipped_tests' => false,
+            'stop_on_fail' => false,
+            'parallel_processes' => null,
+            'output' => null,
+            'temp' => null,
+            'setup' => null,
+            'colors' => null,
+            'coverage' => null,
+            'coverage_src' => null,
         ]);
 
+        $resolver->addAllowedTypes('path', ['string']);
         $resolver->addAllowedTypes('always_execute', ['bool']);
+        $resolver->addAllowedTypes('log', ['null', 'string']);
+        $resolver->addAllowedTypes('show_information_about_skipped_tests', ['bool']);
+        $resolver->addAllowedTypes('stop_on_fail', ['bool']);
+        $resolver->addAllowedTypes('parallel_processes', ['null', 'int']);
+        $resolver->addAllowedTypes('output', ['null', 'string']);
+        $resolver->addAllowedTypes('temp', ['null', 'string']);
+        $resolver->addAllowedTypes('setup', ['null', 'string']);
+        $resolver->addAllowedTypes('colors', ['null', 'int']);
+        $resolver->addAllowedTypes('coverage', ['null', 'string']);
+        $resolver->addAllowedTypes('coverage_src', ['null', 'string']);
 
         return $resolver;
     }
@@ -45,6 +67,17 @@ class Tester extends AbstractExternalTask
         }
 
         $arguments = $this->processBuilder->createArgumentsForCommand('tester');
+        $arguments->add($config['path']);
+        $arguments->addOptionalArgument('--log=%s', $config['log']);
+        $arguments->addOptionalArgument('-s', $config['show_information_about_skipped_tests']);
+        $arguments->addOptionalArgument('--stop-on-fail', $config['stop_on_fail']);
+        $arguments->addOptionalIntegerArgument('-j', $config['parallel_processes']);
+        $arguments->addOptionalArgument('-o=%s', $config['output']);
+        $arguments->addOptionalArgument('--temp=%s', $config['temp']);
+        $arguments->addOptionalArgument('--setup=%s', $config['setup']);
+        $arguments->addOptionalArgument('--colors', $config['colors']);
+        $arguments->addOptionalArgument('--coverage=%s', $config['coverage']);
+        $arguments->addOptionalArgument('--coverage-src=%s', $config['coverage_src']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
