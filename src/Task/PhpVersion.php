@@ -7,6 +7,7 @@ namespace GrumPHP\Task;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
+use GrumPHP\Task\Config\TaskConfig;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -15,12 +16,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PhpVersion implements TaskInterface
 {
-    private $phpVersionUtility;
-    private $grumPHP;
+    /**
+     * @var TaskConfig
+     */
+    private $config;
 
-    public function __construct(GrumPHP $grumPHP, PhpVersionUtility $phpVersionUtility)
+    /**
+     * @var PhpVersionUtility
+     */
+    private $phpVersionUtility;
+
+    public function __construct(PhpVersionUtility $phpVersionUtility)
     {
-        $this->grumPHP = $grumPHP;
         $this->phpVersionUtility = $phpVersionUtility;
     }
 
@@ -31,7 +38,7 @@ class PhpVersion implements TaskInterface
 
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
         if (null === $config['project']) {
             return TaskResult::createPassed($this, $context);
         }
@@ -57,19 +64,20 @@ class PhpVersion implements TaskInterface
         return TaskResult::createPassed($this, $context);
     }
 
-    public function getConfiguration(): array
+    public function withConfig(TaskConfig $config): TaskInterface
     {
-        $configured = $this->grumPHP->getTaskConfiguration($this->getName());
+        $new = clone $this;
+        $new->config = $config;
 
-        return $this->getConfigurableOptions()->resolve($configured);
+        return $new;
     }
 
-    public function getName(): string
+    public function getConfig(): TaskConfig
     {
-        return 'phpversion';
+        return $this->config;
     }
 
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([

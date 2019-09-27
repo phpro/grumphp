@@ -4,27 +4,43 @@ declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\ProcessBuilder;
+use GrumPHP\Task\Config\TaskConfig;
 
 abstract class AbstractExternalTask implements TaskInterface
 {
-    protected $grumPHP;
+    /**
+     * @var TaskConfig
+     */
+    protected $config;
+
+    /**
+     * @var ProcessBuilder
+     */
     protected $processBuilder;
+
+    /**
+     * @var ProcessFormatterInterface
+     */
     protected $formatter;
 
-    public function __construct(GrumPHP $grumPHP, ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
+    public function __construct(ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
-        $this->grumPHP = $grumPHP;
         $this->processBuilder = $processBuilder;
         $this->formatter = $formatter;
     }
 
-    public function getConfiguration(): array
+    public function getConfig(): TaskConfig
     {
-        $configured = $this->grumPHP->getTaskConfiguration($this->getName());
+        return $this->config;
+    }
 
-        return $this->getConfigurableOptions()->resolve($configured);
+    public function withConfig(TaskConfig $config): TaskInterface
+    {
+        $new = clone $this;
+        $new->config = $config;
+
+        return $new;
     }
 }

@@ -16,7 +16,7 @@ class ComposerNormalize extends AbstractExternalTask
         return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -35,14 +35,9 @@ class ComposerNormalize extends AbstractExternalTask
         return $resolver;
     }
 
-    public function getName(): string
-    {
-        return 'composer_normalize';
-    }
-
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
         $files = $context->getFiles()
             ->path(pathinfo('composer.json', PATHINFO_DIRNAME))
             ->name(pathinfo('composer.json', PATHINFO_BASENAME));

@@ -16,12 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Kahlan extends AbstractExternalTask
 {
-    public function getName(): string
-    {
-        return 'kahlan';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -88,7 +83,7 @@ class Kahlan extends AbstractExternalTask
             return TaskResult::createSkipped($this, $context);
         }
 
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('kahlan');
         $arguments->addOptionalArgument('config', $config['config']);

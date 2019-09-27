@@ -7,6 +7,7 @@ namespace GrumPHP\Task;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
+use GrumPHP\Task\Config\TaskConfig;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -14,26 +15,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FileSize implements TaskInterface
 {
-    protected $grumPHP;
+    /**
+     * @var TaskConfig
+     */
+    private $config;
 
-    public function __construct(GrumPHP $grumPHP)
-    {
-        $this->grumPHP = $grumPHP;
-    }
-
-    public function getName(): string
-    {
-        return 'file_size';
-    }
-
-    public function getConfiguration(): array
-    {
-        $configured = $this->grumPHP->getTaskConfiguration($this->getName());
-
-        return $this->getConfigurableOptions()->resolve($configured);
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -47,6 +34,19 @@ class FileSize implements TaskInterface
         return $resolver;
     }
 
+    public function getConfig(): TaskConfig
+    {
+        return $this->config;
+    }
+
+    public function withConfig(TaskConfig $config): TaskInterface
+    {
+        $new = clone $this;
+        $new->config = $config;
+
+        return $new;
+    }
+
     public function canRunInContext(ContextInterface $context): bool
     {
         return $context instanceof RunContext || $context instanceof GitPreCommitContext;
@@ -54,7 +54,7 @@ class FileSize implements TaskInterface
 
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
 
         if (0 === $context->getFiles()->count()) {
             return TaskResult::createSkipped($this, $context);

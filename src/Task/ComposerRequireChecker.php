@@ -16,12 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ComposerRequireChecker extends AbstractExternalTask
 {
-    public function getName(): string
-    {
-        return 'composer_require_checker';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -52,7 +47,7 @@ class ComposerRequireChecker extends AbstractExternalTask
      */
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
         $files = $context->getFiles()->names($config['triggered_by']);
 
         if (0 === \count($files)) {

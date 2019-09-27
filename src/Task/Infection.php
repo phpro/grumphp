@@ -16,12 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Infection extends AbstractExternalTask
 {
-    public function getName(): string
-    {
-        return 'infection';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
 
@@ -63,7 +58,7 @@ class Infection extends AbstractExternalTask
      */
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
         $files = $context->getFiles()->extensions($config['triggered_by']);
 
         $files = $files->notPaths($config['ignore_patterns']);

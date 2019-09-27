@@ -13,12 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SecurityChecker extends AbstractExternalTask
 {
-    public function getName(): string
-    {
-        return 'securitychecker';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -45,7 +40,7 @@ class SecurityChecker extends AbstractExternalTask
 
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
 
         $files = $context->getFiles()
             ->path(pathinfo($config['lockfile'], PATHINFO_DIRNAME))

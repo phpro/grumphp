@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Task\Config\TaskConfig;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -16,12 +17,7 @@ class PhpParser extends AbstractParserTask
     const KIND_PHP5 = 'php5';
     const KIND_PHP7 = 'php7';
 
-    public function getName(): string
-    {
-        return 'phpparser';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = parent::getConfigurableOptions();
 
@@ -41,7 +37,7 @@ class PhpParser extends AbstractParserTask
 
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
 
         $files = $context->getFiles(false)->extensions($config['triggered_by']);
         if (0 === \count($files)) {

@@ -17,6 +17,6 @@ class RuntimeException extends BaseRuntimeException implements ExceptionInterfac
 
     public static function invalidTaskReturnType(TaskInterface $task): self
     {
-        return new self(sprintf('The %s task did not return a TaskResult.', $task->getName()));
+        return new self(sprintf('The %s task did not return a TaskResult.', $task->getConfig()->getName()));
     }
 }

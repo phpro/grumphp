@@ -13,12 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Phpspec extends AbstractExternalTask
 {
-    public function getName(): string
-    {
-        return 'phpspec';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -48,7 +43,7 @@ class Phpspec extends AbstractExternalTask
             return TaskResult::createSkipped($this, $context);
         }
 
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('phpspec');
         $arguments->add('run');

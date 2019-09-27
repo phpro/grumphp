@@ -16,12 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PhpMd extends AbstractExternalTask
 {
-    public function getName(): string
-    {
-        return 'phpmd';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -52,7 +47,7 @@ class PhpMd extends AbstractExternalTask
      */
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
 
         $whitelistPatterns = $config['whitelist_patterns'];
         $extensions = $config['triggered_by'];

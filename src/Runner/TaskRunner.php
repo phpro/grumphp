@@ -124,7 +124,7 @@ class TaskRunner
             throw RuntimeException::invalidTaskReturnType($task);
         }
 
-        if (!$result->isPassed() && !$this->grumPHP->isBlockingTask($task->getName())) {
+        if (!$result->isPassed() && !$this->grumPHP->isBlockingTask($task->getConfig()->getName())) {
             $result = TaskResult::createNonBlockingFailed(
                 $result->getTask(),
                 $result->getContext(),

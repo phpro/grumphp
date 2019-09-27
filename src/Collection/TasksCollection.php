@@ -27,7 +27,7 @@ class TasksCollection extends ArrayCollection
         }
 
         return $this->filter(function (TaskInterface $task) use ($testSuite) {
-            return \in_array($task->getName(), $testSuite->getTaskNames(), true);
+            return \in_array($task->getConfig()->getName(), $testSuite->getTaskNames(), true);
         });
     }
 
@@ -41,7 +41,7 @@ class TasksCollection extends ArrayCollection
         }
 
         return $this->filter(function (TaskInterface $task) use ($tasks) {
-            return \in_array($task->getName(), $tasks, true);
+            return \in_array($task->getConfig()->getName(), $tasks, true);
         });
     }
 
@@ -53,7 +53,7 @@ class TasksCollection extends ArrayCollection
         $priorityQueue = new SplPriorityQueue();
         $stableSortIndex = PHP_INT_MAX;
         foreach ($this->getIterator() as $task) {
-            $metadata = $grumPHP->getTaskMetadata($task->getName());
+            $metadata = $grumPHP->getTaskMetadata($task->getConfig()->getName());
             $priorityQueue->insert($task, [$metadata['priority'], $stableSortIndex--]);
         }
 

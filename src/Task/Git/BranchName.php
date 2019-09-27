@@ -8,6 +8,7 @@ use Gitonomy\Git\Exception\ProcessException;
 use GrumPHP\Git\GitRepository;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
+use GrumPHP\Task\Config\TaskConfig;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -19,34 +20,34 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class BranchName implements TaskInterface
 {
     /**
-     * @var GrumPHP
+     * @var TaskConfig
      */
-    protected $grumPHP;
+    private $config;
 
     /**
      * @var GitRepository
      */
-    protected $repository;
+    private $repository;
 
-    public function __construct(GrumPHP $grumPHP, GitRepository $repository)
+    public function __construct(GitRepository $repository)
     {
-        $this->grumPHP = $grumPHP;
         $this->repository = $repository;
     }
 
-    public function getName(): string
+    public function withConfig(TaskConfig $config): TaskInterface
     {
-        return 'git_branch_name';
+        $new = clone $this;
+        $new->config = $config;
+
+        return $new;
     }
 
-    public function getConfiguration(): array
+    public function getConfig(): TaskConfig
     {
-        $configured = $this->grumPHP->getTaskConfiguration($this->getName());
-
-        return $this->getConfigurableOptions()->resolve($configured);
+        return $this->config;
     }
 
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -71,7 +72,7 @@ class BranchName implements TaskInterface
 
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
         $errors = [];
 
         try {

@@ -6,30 +6,29 @@ namespace GrumPHP\Task;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\LintErrorsCollection;
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Linter\LinterInterface;
+use GrumPHP\Task\Config\TaskConfig;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractLinterTask implements TaskInterface
 {
     /**
-     * @var GrumPHP
+     * @var TaskConfig
      */
-    protected $grumPHP;
+    protected $config;
 
     /**
      * @var LinterInterface
      */
     protected $linter;
 
-    public function __construct(GrumPHP $grumPHP, LinterInterface $linter)
+    public function __construct(LinterInterface $linter)
     {
-        $this->grumPHP = $grumPHP;
         $this->linter = $linter;
     }
 
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -41,11 +40,17 @@ abstract class AbstractLinterTask implements TaskInterface
         return $resolver;
     }
 
-    public function getConfiguration(): array
+    public function withConfig(TaskConfig $config): TaskInterface
     {
-        $configured = $this->grumPHP->getTaskConfiguration($this->getName());
+        $new = clone $this;
+        $new->config = $config;
 
-        return $this->getConfigurableOptions()->resolve($configured);
+        return $new;
+    }
+
+    public function getConfig(): TaskConfig
+    {
+        return $this->config;
     }
 
     /**
@@ -67,7 +72,7 @@ abstract class AbstractLinterTask implements TaskInterface
         $this->guardLinterIsInstalled();
 
         // Skip ignored patterns:
-        $configuration = $this->getConfiguration();
+        $configuration = $this->getConfig()->getOptions();
         foreach ($configuration['ignore_patterns'] as $pattern) {
             $files = $files->notPath($pattern);
         }

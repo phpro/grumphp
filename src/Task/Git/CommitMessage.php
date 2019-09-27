@@ -8,6 +8,7 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
+use GrumPHP\Task\Config\TaskConfig;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use GrumPHP\Task\TaskInterface;
@@ -17,26 +18,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CommitMessage implements TaskInterface
 {
-    private $grumPHP;
+    /**
+     * @var TaskConfig
+     */
+    private $config;
 
-    public function __construct(GrumPHP $grumPHP)
-    {
-        $this->grumPHP = $grumPHP;
-    }
-
-    public function getName(): string
-    {
-        return 'git_commit_message';
-    }
-
-    public function getConfiguration(): array
-    {
-        $configured = $this->grumPHP->getTaskConfiguration($this->getName());
-
-        return $this->getConfigurableOptions()->resolve($configured);
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -70,6 +57,19 @@ class CommitMessage implements TaskInterface
         return $resolver;
     }
 
+    public function getConfig(): TaskConfig
+    {
+        return $this->config;
+    }
+
+    public function withConfig(TaskConfig $config): TaskInterface
+    {
+        $new = clone $this;
+        $new->config = $config;
+
+        return $new;
+    }
+
     public function canRunInContext(ContextInterface $context): bool
     {
         return $context instanceof GitCommitMsgContext;
@@ -77,7 +77,7 @@ class CommitMessage implements TaskInterface
 
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
         $commitMessage = $context->getCommitMessage();
         $exceptions = [];
 
@@ -156,7 +156,7 @@ class CommitMessage implements TaskInterface
     private function enforceTextWidth(ContextInterface $context): TaskResult
     {
         $commitMessage = $context->getCommitMessage();
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
 
         if ('' === trim($commitMessage)) {
             return TaskResult::createPassed($this, $context);
@@ -302,7 +302,7 @@ class CommitMessage implements TaskInterface
 
     private function enforceTypeScopeConventions()
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
 
         $conventionsKeys = array_keys($config['type_scope_conventions']);
 
@@ -317,7 +317,7 @@ class CommitMessage implements TaskInterface
      */
     private function checkTypeScopeConventions($context)
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
         $subjectLine = $this->getSubjectLine($context);
 
         $types = isset($config['type_scope_conventions']['types'])
