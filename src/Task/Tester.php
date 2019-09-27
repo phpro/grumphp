@@ -75,7 +75,7 @@ class Tester extends AbstractExternalTask
         $arguments->addOptionalArgument('-o=%s', $config['output']);
         $arguments->addOptionalArgument('--temp=%s', $config['temp']);
         $arguments->addOptionalArgument('--setup=%s', $config['setup']);
-        $arguments->addOptionalArgument('--colors', $config['colors']);
+        $arguments->addOptionalIntegerArgument('--colors', $config['colors']);
         $arguments->addOptionalArgument('--coverage=%s', $config['coverage']);
         $arguments->addOptionalArgument('--coverage-src=%s', $config['coverage_src']);
 

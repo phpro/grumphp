@@ -40,6 +40,18 @@ class TesterSpec extends ObjectBehavior
     {
         $options = $this->getConfigurableOptions();
         $options->shouldBeAnInstanceOf(OptionsResolver::class);
+        $options->getDefinedOptions()->shouldContain('path');
+        $options->getDefinedOptions()->shouldContain('always_execute');
+        $options->getDefinedOptions()->shouldContain('log');
+        $options->getDefinedOptions()->shouldContain('show_information_about_skipped_tests');
+        $options->getDefinedOptions()->shouldContain('stop_on_fail');
+        $options->getDefinedOptions()->shouldContain('parallel_processes');
+        $options->getDefinedOptions()->shouldContain('output');
+        $options->getDefinedOptions()->shouldContain('temp');
+        $options->getDefinedOptions()->shouldContain('setup');
+        $options->getDefinedOptions()->shouldContain('colors');
+        $options->getDefinedOptions()->shouldContain('coverage');
+        $options->getDefinedOptions()->shouldContain('coverage_src');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
