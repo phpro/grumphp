@@ -24,7 +24,7 @@ class PhpcsFormatter implements ProcessFormatterInterface
             return $process->getErrorOutput();
         }
 
-        $pos = strrpos($output, "\n");
+        $pos = strrpos(trim($output), "\n");
         if (false === $pos) {
             return $output;
         }
