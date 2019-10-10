@@ -21,7 +21,7 @@ class TwigCs extends AbstractExternalTask
             'severity' => 'warning',
             'ruleset' => 'FriendsOfTwig\Twigcs\Ruleset\Official',
             'triggered_by' => ['twig'],
-            'exclude' => [''],
+            'exclude' => [],
         ]);
 
         $resolver->addAllowedTypes('path', ['string']);
@@ -54,11 +54,9 @@ class TwigCs extends AbstractExternalTask
         $arguments->addOptionalArgument('--ruleset=%s', $config['ruleset']);
         $arguments->addOptionalArgument('--ansi', true);
 
-        if (\is_array($config['exclude'])) {
-            foreach ($config['exclude'] as $exclude) {
-                $arguments->addOptionalArgument('--exclude=%s', $exclude);
-            }
-        }
+        // removes all NULL, FALSE and Empty Strings
+        $exclude = array_filter($config['exclude'], 'strlen');
+        $arguments->addArgumentArray('--exclude=%s', $exclude);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();

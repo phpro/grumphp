@@ -21,7 +21,7 @@ parameters:
             severity: 'warning'
             ruleset: 'FriendsOfTwig\Twigcs\Ruleset\Official'
             triggered_by: ['twig']
-            exclude: ['']
+            exclude: []
 ```
 
 **path**
@@ -51,6 +51,6 @@ This option will specify which file extensions will trigger this task.
 
 **exclude**
 
-*Default: ['']*
+*Default: []*
 
 This option will specify which relative subfolders or files will be exclude to this task.
