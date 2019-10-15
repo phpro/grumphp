@@ -27,7 +27,7 @@ class Deptrac extends AbstractExternalTask
         $resolver->setDefaults([
             'depfile' => null,
             'formatter_graphviz' => false,
-            'formatter_graphviz_display' => false,
+            'formatter_graphviz_display' => true,
             'formatter_graphviz_dump_image' => null,
             'formatter_graphviz_dump_dot' => null,
             'formatter_graphviz_dump_html' => null,
