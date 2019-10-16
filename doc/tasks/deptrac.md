@@ -34,7 +34,7 @@ Set to `true` to enable the graphviz formatter.
 
 **formatter_graphviz_display**
 
-*Default: false*
+*Default: true*
 
 Open the generated graphviz image. Set to `true` to activate.
 

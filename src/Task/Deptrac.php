@@ -27,7 +27,7 @@ class Deptrac extends AbstractExternalTask
         $resolver->setDefaults([
             'depfile' => null,
             'formatter_graphviz' => false,
-            'formatter_graphviz_display' => false,
+            'formatter_graphviz_display' => true,
             'formatter_graphviz_dump_image' => null,
             'formatter_graphviz_dump_dot' => null,
             'formatter_graphviz_dump_html' => null,
@@ -60,7 +60,7 @@ class Deptrac extends AbstractExternalTask
         $arguments = $this->processBuilder->createArgumentsForCommand('deptrac');
         $arguments->add('analyze');
         $arguments->add('--formatter-graphviz='.(int) $config['formatter_graphviz']);
-        $arguments->addOptionalArgument('--formatter-graphviz-display=%s', $config['formatter_graphviz_display']);
+        $arguments->add('--formatter-graphviz-display='.(int) $config['formatter_graphviz_display']);
         $arguments->addOptionalArgument('--formatter-graphviz-dump-image=%s', $config['formatter_graphviz_dump_image']);
         $arguments->addOptionalArgument('--formatter-graphviz-dump-dot=%s', $config['formatter_graphviz_dump_dot']);
         $arguments->addOptionalArgument('--formatter-graphviz-dump-html=%s', $config['formatter_graphviz_dump_html']);
