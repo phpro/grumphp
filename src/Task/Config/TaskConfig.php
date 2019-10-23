@@ -17,11 +17,11 @@ class TaskConfig
     private $options;
 
     /**
-     * @var array
+     * @var Metadata
      */
     private $metadata;
 
-    public function __construct(string $name, array $options, array $metadata)
+    public function __construct(string $name, array $options, Metadata $metadata)
     {
         $this->name = $name;
         $this->options = $options;
@@ -38,7 +38,7 @@ class TaskConfig
         return $this->options;
     }
 
-    public function getMetadata(): array
+    public function getMetadata(): Metadata
     {
         return $this->metadata;
     }

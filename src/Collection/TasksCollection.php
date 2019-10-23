@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace GrumPHP\Collection;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\TestSuite\TestSuiteInterface;
@@ -48,13 +47,14 @@ class TasksCollection extends ArrayCollection
     /**
      * This method sorts the tasks by highest priority first.
      */
-    public function sortByPriority(GrumPHP $grumPHP): self
+    public function sortByPriority(): self
     {
         $priorityQueue = new SplPriorityQueue();
         $stableSortIndex = PHP_INT_MAX;
+        /** @var TaskInterface $task */
         foreach ($this->getIterator() as $task) {
-            $metadata = $grumPHP->getTaskMetadata($task->getConfig()->getName());
-            $priorityQueue->insert($task, [$metadata['priority'], $stableSortIndex--]);
+            $metadata = $task->getConfig()->getMetadata();
+            $priorityQueue->insert($task, [$metadata->priority(), $stableSortIndex--]);
         }
 
         return new self(array_values(iterator_to_array($priorityQueue)));

@@ -50,6 +50,7 @@ services:
     task_runner:
         class: GrumPHP\Runner\TaskRunner
         arguments:
+          - '@GrumPHP\Collection\TasksCollection'
           - '@config'
           - '@GrumPHP\Event\Dispatcher\EventDispatcherInterface'
         public: true
@@ -91,3 +92,6 @@ services:
 
     json.parser:
         class: Seld\JsonLint\JsonParser
+
+    GrumPHP\Configuration\Configurator\TaskConfigurator: ~
+    GrumPHP\Collection\TasksCollection: ~

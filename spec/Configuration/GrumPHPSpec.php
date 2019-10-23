@@ -98,7 +98,7 @@ class GrumPHPSpec extends ObjectBehavior
     {
         $container->getParameter('grumphp.tasks.registered')->willReturn(['phpspec']);
 
-        $this->getRegisteredTasks()->shouldBe(['phpspec']);
+        $this->getAvailableTasks()->shouldBe(['phpspec']);
     }
 
     function it_should_know_task_configuration(ContainerInterface $container)
