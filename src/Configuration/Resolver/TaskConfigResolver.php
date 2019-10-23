@@ -49,8 +49,9 @@ class TaskConfigResolver
             throw TaskConfigResolverException::unkownTask($taskName);
         }
 
+        // Try to use cached version first:
         $class = $this->taskMap[$taskName];
-        if (array_key_exists($taskName, $this->cachedResolvers)) {
+        if (array_key_exists($class, $this->cachedResolvers)) {
             return $this->cachedResolvers[$class];
         }
 
@@ -58,8 +59,6 @@ class TaskConfigResolver
             throw TaskConfigResolverException::unkownClass($class);
         }
 
-        $this->cachedResolvers[$class] = $class::getConfigurableOptions();
-
-        return $this->cachedResolvers[$class];
+        return $this->cachedResolvers[$class] = $class::getConfigurableOptions();
     }
 }
