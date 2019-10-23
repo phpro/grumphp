@@ -10,7 +10,7 @@ use GrumPHP\Formatter\PhpCsFixerFormatter;
 use GrumPHP\Process\AsyncProcessRunner;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
-use GrumPHP\Task\Config\TaskConfig;
+use GrumPHP\Task\Config\TaskConfigInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -21,7 +21,7 @@ use GrumPHP\Task\Context\RunContext;
 abstract class AbstractPhpCsFixerTask implements TaskInterface
 {
     /**
-     * @var TaskConfig
+     * @var TaskConfigInterface
      */
     protected $config;
 
@@ -61,7 +61,7 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
         return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
-    public function withConfig(TaskConfig $config): TaskInterface
+    public function withConfig(TaskConfigInterface $config): TaskInterface
     {
         $new = clone $this;
         $new->config = $config;
@@ -69,7 +69,7 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
         return $new;
     }
 
-    public function getConfig(): TaskConfig
+    public function getConfig(): TaskConfigInterface
     {
         return $this->config;
     }

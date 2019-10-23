@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Task\Config\TaskConfig;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;

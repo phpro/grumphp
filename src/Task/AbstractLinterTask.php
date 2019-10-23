@@ -8,13 +8,13 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Linter\LinterInterface;
-use GrumPHP\Task\Config\TaskConfig;
+use GrumPHP\Task\Config\TaskConfigInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractLinterTask implements TaskInterface
 {
     /**
-     * @var TaskConfig
+     * @var TaskConfigInterface
      */
     protected $config;
 
@@ -40,7 +40,7 @@ abstract class AbstractLinterTask implements TaskInterface
         return $resolver;
     }
 
-    public function withConfig(TaskConfig $config): TaskInterface
+    public function withConfig(TaskConfigInterface $config): TaskInterface
     {
         $new = clone $this;
         $new->config = $config;
@@ -48,7 +48,7 @@ abstract class AbstractLinterTask implements TaskInterface
         return $new;
     }
 
-    public function getConfig(): TaskConfig
+    public function getConfig(): TaskConfigInterface
     {
         return $this->config;
     }

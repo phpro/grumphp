@@ -8,6 +8,7 @@ use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Configuration\Configurator\TaskConfigurator;
 use GrumPHP\Configuration\Resolver\TaskConfigResolver;
 use GrumPHP\Exception\TaskConfigResolverException;
+use GrumPHP\Task\Config\LazyTaskConfig;
 use GrumPHP\Task\Config\Metadata;
 use GrumPHP\Task\Config\TaskConfig;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -47,10 +48,14 @@ class TaskCompilerPass implements CompilerPassInterface
             // Configure task:
             $taskBuilder = new Definition($taskClass, [
                 new Reference($taskId),
-                new TaskConfig(
-                    $taskName,
-                    $taskConfigResolver->resolve($currentTaskName, $taskConfig),
-                    $metadata
+                new LazyTaskConfig(
+                    function () use ($taskName, $taskConfigResolver, $currentTaskName, $taskConfig, $metadata) {
+                        return new TaskConfig(
+                            $taskName,
+                            $taskConfigResolver->resolve($currentTaskName, $taskConfig),
+                            $metadata
+                        );
+                    }
                 )
             ]);
             $taskBuilder->setFactory(new Reference(TaskConfigurator::class));

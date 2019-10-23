@@ -6,12 +6,12 @@ namespace GrumPHP\Task;
 
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\ProcessBuilder;
-use GrumPHP\Task\Config\TaskConfig;
+use GrumPHP\Task\Config\TaskConfigInterface;
 
 abstract class AbstractExternalTask implements TaskInterface
 {
     /**
-     * @var TaskConfig
+     * @var TaskConfigInterface
      */
     protected $config;
 
@@ -31,12 +31,12 @@ abstract class AbstractExternalTask implements TaskInterface
         $this->formatter = $formatter;
     }
 
-    public function getConfig(): TaskConfig
+    public function getConfig(): TaskConfigInterface
     {
         return $this->config;
     }
 
-    public function withConfig(TaskConfig $config): TaskInterface
+    public function withConfig(TaskConfigInterface $config): TaskInterface
     {
         $new = clone $this;
         $new->config = $config;

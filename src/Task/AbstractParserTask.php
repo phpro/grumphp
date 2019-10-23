@@ -8,13 +8,13 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ParseErrorsCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Parser\ParserInterface;
-use GrumPHP\Task\Config\TaskConfig;
+use GrumPHP\Task\Config\TaskConfigInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractParserTask implements TaskInterface
 {
     /**
-     * @var TaskConfig
+     * @var TaskConfigInterface
      */
     protected $configuration;
 
@@ -48,13 +48,13 @@ abstract class AbstractParserTask implements TaskInterface
         return $resolver;
     }
 
-    public function getConfig(): TaskConfig
+    public function getConfig(): TaskConfigInterface
     {
         return $this->configuration;
     }
 
 
-    public function withConfig(TaskConfig $config): TaskInterface
+    public function withConfig(TaskConfigInterface $config): TaskInterface
     {
         $new = clone $this;
         $new->configuration = $config;

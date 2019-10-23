@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
-use GrumPHP\Task\Config\TaskConfig;
+use GrumPHP\Task\Config\TaskConfigInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -27,7 +26,7 @@ class CloverCoverage implements TaskInterface
     private $filesystem;
 
     /**
-     * @var TaskConfig
+     * @var TaskConfigInterface
      */
     private $config;
 
@@ -36,7 +35,7 @@ class CloverCoverage implements TaskInterface
         $this->filesystem = $filesystem;
     }
 
-    public function withConfig(TaskConfig $config): TaskInterface
+    public function withConfig(TaskConfigInterface $config): TaskInterface
     {
         $new = clone $this;
         $new->config = $config;
@@ -44,7 +43,7 @@ class CloverCoverage implements TaskInterface
         return $new;
     }
 
-    public function getConfig(): TaskConfig
+    public function getConfig(): TaskConfigInterface
     {
         return $this->config;
     }

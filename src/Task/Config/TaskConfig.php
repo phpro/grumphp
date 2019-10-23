@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Task\Config;
 
-class TaskConfig
+class TaskConfig implements TaskConfigInterface
 {
     /**
      * @var string
