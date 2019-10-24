@@ -334,12 +334,12 @@ class CommitMessage implements TaskInterface
         $mergePattern = '(Merge branch \'.+\'\s.+|Merge remote-tracking branch \'.+\'|Merge pull request #\d+\s.+)';
 
         if (count($types) > 0) {
-            $types = implode($types, '|');
+            $types = implode('|', $types);
             $typesPattern = '(' . $types . ')';
         }
 
         if (count($scopes) > 0) {
-            $scopes = implode($scopes, '|');
+            $scopes = implode('|', $scopes);
             $scopesPattern = '(:\s|(\(' . $scopes . '\)?:\s))';
         }
 
