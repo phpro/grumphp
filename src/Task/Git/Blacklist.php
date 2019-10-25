@@ -15,9 +15,6 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Git Blacklist Task.
- */
 class Blacklist extends AbstractExternalTask
 {
     /**
@@ -63,17 +60,11 @@ class Blacklist extends AbstractExternalTask
         return $resolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function canRunInContext(ContextInterface $context): bool
     {
         return $context instanceof GitPreCommitContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
@@ -110,6 +101,14 @@ class Blacklist extends AbstractExternalTask
                 'You have blacklisted keywords in your commit:%s%s',
                 PHP_EOL,
                 $this->formatter->format($process)
+            ));
+        }
+
+        if (1 !== $process->getExitCode()) {
+            return TaskResult::createFailed($this, $context, sprintf(
+                'Something went wrong:%s%s',
+                PHP_EOL,
+                $process->getErrorOutput()
             ));
         }
 
