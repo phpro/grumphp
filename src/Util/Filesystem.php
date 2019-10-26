@@ -33,11 +33,12 @@ class Filesystem extends SymfonyFilesystem
 
     public function realpath(string $path): string
     {
-        if (!$this->exists($path)) {
+        $realPath = realpath($path);
+        if ($realPath === false) {
             throw new FileNotFoundException(sprintf('Path "%s" does not exist.', $path));
         }
 
-        return realpath($path);
+        return $realPath;
     }
 
     public function makePathAbsolute(string $path, string $basePath): string
