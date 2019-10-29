@@ -68,7 +68,7 @@ class PhpLint extends AbstractExternalTask
         $process = $this->processBuilder->buildProcess($arguments);
         $process->setInput($inputStream);
         $process->start();
-        $inputStream->write(\implode($files->toArray(), PHP_EOL));
+        $inputStream->write(\implode(PHP_EOL, $files->toArray()));
         $inputStream->close();
         $process->wait();
 
