@@ -723,6 +723,35 @@ MSG;
         $result->isPassed()->shouldBe(true);
     }
 
+    function it_should_pass_when_type_scope_conventions_does_use_an_available_type_and_special_prefix(
+        GrumPHP $grumPHP,
+        GitCommitMsgContext $context
+    ) {
+        $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([
+            'allow_empty_message' => false,
+            'enforce_capitalized_subject' => false,
+            'enforce_no_subject_trailing_period' => false,
+            'enforce_single_lined_subject' => true,
+            'type_scope_conventions' => [
+                'types' => ['fix']
+            ],
+        ]);
+
+        $commitMessage = <<<'MSG'
+fixup! fix: this type is in the available types array
+
+The body ...
+
+And footer #12
+MSG;
+
+        $context->getCommitMessage()->willReturn($commitMessage);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
+        $result->isPassed()->shouldBe(true);
+    }
+
     function it_should_fail_when_type_scope_conventions_does_not_use_an_available_scope(
         GrumPHP $grumPHP,
         GitCommitMsgContext $context
