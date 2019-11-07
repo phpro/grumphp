@@ -25,7 +25,7 @@ class PhpCpd extends AbstractExternalTask
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'directory' => '.',
+            'directory' => ['.'],
             'exclude' => ['vendor'],
             'names_exclude' => [],
             'regexps_exclude' => [],
@@ -35,7 +35,7 @@ class PhpCpd extends AbstractExternalTask
             'triggered_by' => ['php'],
         ]);
 
-        $resolver->addAllowedTypes('directory', ['string']);
+        $resolver->addAllowedTypes('directory', ['array']);
         $resolver->addAllowedTypes('exclude', ['array']);
         $resolver->addAllowedTypes('names_exclude', ['array']);
         $resolver->addAllowedTypes('regexps_exclude', ['array']);
@@ -79,7 +79,7 @@ class PhpCpd extends AbstractExternalTask
         $arguments->addRequiredArgument('--min-tokens=%u', (string) $config['min_tokens']);
         $arguments->addOptionalCommaSeparatedArgument('--names=%s', $extensions);
         $arguments->addOptionalArgument('--fuzzy', $config['fuzzy']);
-        $arguments->add($config['directory']);
+        $arguments->addArgumentArray('%s', $config['directory']);
 
         $process = $this->processBuilder->buildProcess($arguments);
 
