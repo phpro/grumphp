@@ -17,7 +17,7 @@ The task lives under the `phpcpd` namespace and has following configurable param
 parameters:
     tasks:
         phpcpd:
-            directory: '.'
+            directory: ['.']
             exclude: ['vendor']
             names_exclude: []
             regexps_exclude: []
@@ -29,9 +29,9 @@ parameters:
 
 **directory**
 
-*Default: .*
+*Default: [.]*
 
-With this parameter you can define which directory you want to run `phpcpd` in (must be relative to cwd).
+With this parameter you can define which directories you want to run `phpcpd` in (must be relative to cwd).
 
 **exclude**
 
