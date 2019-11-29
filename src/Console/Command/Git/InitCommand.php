@@ -84,7 +84,7 @@ class InitCommand extends Command
     /**
      * @return int|void
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
         $gitHooksPath = $this->paths->getGitHooksDir();
@@ -125,6 +125,8 @@ class InitCommand extends Command
         }
 
         $output->writeln('<fg=yellow>Watch out! GrumPHP is sniffing your commits!<fg=yellow>');
+
+        return 0;
     }
 
     protected function parseHookBody(string $hook, string $templateFile): string

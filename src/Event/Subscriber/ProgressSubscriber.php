@@ -16,26 +16,18 @@ use ReflectionClass;
 class ProgressSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var ProgressBar
+     * @var ProgressBar|null
      */
     private $progressBar;
-
-    /**
-     * @var string
-     */
-    private $progressFormat;
 
     /**
      * @var OutputInterface
      */
     private $output;
 
-    public function __construct(OutputInterface $output, ProgressBar $progressBar)
+    public function __construct(OutputInterface $output)
     {
         $this->output = $output;
-        $this->progressBar = $progressBar ?: new ProgressBar($output);
-        $this->progressBar->setOverwrite(false);
-        $this->progressFormat = '<fg=yellow>Running task %current%/%max%:</fg=yellow> %message%... ';
     }
 
     public static function getSubscribedEvents(): array
@@ -51,12 +43,20 @@ class ProgressSubscriber implements EventSubscriberInterface
         ];
     }
 
+    public function createProgressBar(int $totalTasks): ProgressBar
+    {
+        $this->progressBar = new ProgressBar($this->output, $totalTasks);
+        $this->progressBar->setOverwrite(false);
+        $this->progressBar->setFormat('<fg=yellow>Running task %current%/%max%:</fg=yellow> %message%... ');
+
+        return $this->progressBar;
+    }
+
     public function startProgress(RunnerEvent $event): void
     {
         $numberOftasks = $event->getTasks()->count();
-        $this->progressBar->setFormat('<fg=yellow>%message%</fg=yellow>');
-        $this->progressBar->setMessage('GrumPHP is sniffing your code!');
-        $this->progressBar->start($numberOftasks);
+        $this->createProgressBar($numberOftasks);
+        $this->output->write('<fg=yellow>GrumPHP is sniffing your code!</fg=yellow>');
     }
 
     public function advanceProgress(TaskEvent $event): void
@@ -64,7 +64,6 @@ class ProgressSubscriber implements EventSubscriberInterface
         $taskReflection = new ReflectionClass($event->getTask());
         $taskName = $taskReflection->getShortName();
 
-        $this->progressBar->setFormat($this->progressFormat);
         $this->progressBar->setMessage($taskName);
         $this->progressBar->advance();
     }

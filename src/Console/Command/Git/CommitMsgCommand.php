@@ -80,7 +80,7 @@ class CommitMsgCommand extends Command
     /**
      * @return int|void
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new ConsoleIO($input, $output);
         $files = $this->getCommittedFiles($io);

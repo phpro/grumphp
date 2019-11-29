@@ -2,11 +2,11 @@
 
 namespace spec\GrumPHP\Event;
 
+use GrumPHP\Event\Event;
 use GrumPHP\Event\TaskEvent;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\EventDispatcher\Event;
 
 class TaskEventSpec extends ObjectBehavior
 {
