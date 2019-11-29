@@ -5,7 +5,7 @@ services:
     GrumPHP\Console\Application:
         class: Symfony\Component\Console\Application
         calls:
-            - { method: 'setDispatcher', arguments: ['@event_dispatcher'] }
+            - { method: 'setDispatcher', arguments: ['@Symfony\Component\EventDispatcher\EventDispatcher'] }
             - { method: 'setCommandLoader', arguments: ['@console.command_loader'] }
         configurator: ['@GrumPHP\Console\ApplicationConfigurator', 'configure']
         public: true
@@ -67,7 +67,7 @@ services:
         arguments:
             - '@config'
             - '@task_runner'
-            - '@event_dispatcher'
+            - '@Symfony\Component\EventDispatcher\EventDispatcher'
             - '@GrumPHP\Locator\AsciiLocator'
         tags:
             - { name: 'console.helper' }

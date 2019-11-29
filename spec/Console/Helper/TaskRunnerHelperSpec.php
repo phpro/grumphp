@@ -14,9 +14,8 @@ use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use Symfony\Component\Console\Helper\Helper;
-use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -25,7 +24,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
     function let(
         GrumPHP $config,
         TaskRunner $taskRunner,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcher $eventDispatcher,
         AsciiLocator $asciiLocator,
         TaskRunnerContext $runnerContext,
         ContextInterface $taskContext
@@ -126,7 +125,7 @@ class TaskRunnerHelperSpec extends ObjectBehavior
         OutputInterface $output,
         TaskRunner $taskRunner,
         TaskRunnerContext $runnerContext,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcher $eventDispatcher
     ) {
         $taskRunner->run($runnerContext)->willReturn(new TaskResultCollection());
         $eventDispatcher->addSubscriber(Argument::type(ProgressSubscriber::class))->shouldBeCalled();

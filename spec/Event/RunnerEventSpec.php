@@ -4,10 +4,10 @@ namespace spec\GrumPHP\Event;
 
 use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Collection\TasksCollection;
+use GrumPHP\Event\Event;
 use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Task\Context\ContextInterface;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\EventDispatcher\Event;
 
 class RunnerEventSpec extends ObjectBehavior
 {

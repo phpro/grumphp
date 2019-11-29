@@ -4,6 +4,7 @@ namespace spec\GrumPHP\Runner;
 
 use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Event\Dispatcher\EventDispatcherInterface;
 use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Event\RunnerEvents;
 use GrumPHP\Event\RunnerFailedEvent;
@@ -19,7 +20,6 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class TaskRunnerSpec extends ObjectBehavior
 {
@@ -210,10 +210,10 @@ class TaskRunnerSpec extends ObjectBehavior
         $task1->run($taskContext)->shouldBeCalled();
         $task2->run($taskContext)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, Argument::type(RunnerEvent::class))->shouldBeCalled();
-        $eventDispatcher->dispatch(TaskEvents::TASK_RUN, Argument::type(TaskEvent::class))->shouldBeCalled();
-        $eventDispatcher->dispatch(TaskEvents::TASK_COMPLETE, Argument::type(TaskEvent::class))->shouldBeCalled();
-        $eventDispatcher->dispatch(RunnerEvents::RUNNER_COMPLETE, Argument::type(RunnerEvent::class))->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(RunnerEvent::class), RunnerEvents::RUNNER_RUN)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(TaskEvent::class), TaskEvents::TASK_RUN)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(TaskEvent::class), TaskEvents::TASK_COMPLETE)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(RunnerEvent::class), RunnerEvents::RUNNER_COMPLETE)->shouldBeCalled();
 
         $this->run($runnerContext);
     }
@@ -228,10 +228,10 @@ class TaskRunnerSpec extends ObjectBehavior
         $task1->run($taskContext)->willReturn(TaskResult::createFailed($task1->getWrappedObject(), $taskContext->getWrappedObject(), ''));
         $task2->run($taskContext)->willReturn(TaskResult::createFailed($task1->getWrappedObject(), $taskContext->getWrappedObject(), ''));
 
-        $eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, Argument::type(RunnerEvent::class))->shouldBeCalled();
-        $eventDispatcher->dispatch(TaskEvents::TASK_RUN, Argument::type(TaskEvent::class))->shouldBeCalled();
-        $eventDispatcher->dispatch(TaskEvents::TASK_FAILED, Argument::type(TaskFailedEvent::class))->shouldBeCalled();
-        $eventDispatcher->dispatch(RunnerEvents::RUNNER_FAILED, Argument::type(RunnerFailedEvent::class))->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(RunnerEvent::class), RunnerEvents::RUNNER_RUN)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(TaskEvent::class), TaskEvents::TASK_RUN)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(TaskFailedEvent::class), TaskEvents::TASK_FAILED)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(RunnerFailedEvent::class), RunnerEvents::RUNNER_FAILED)->shouldBeCalled();
 
         $this->run($runnerContext);
     }

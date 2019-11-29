@@ -61,7 +61,7 @@ class DeInitCommand extends Command
     /**
      * @return int|void
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $gitHooksPath = $this->paths->getGitHooksDir();
 
@@ -75,5 +75,7 @@ class DeInitCommand extends Command
         }
 
         $output->writeln('<fg=yellow>GrumPHP stopped sniffing your commits! Too bad ...<fg=yellow>');
+
+        return 0;
     }
 }

@@ -19,7 +19,7 @@ class PhpcsFormatter implements ProcessFormatterInterface
 
     public function format(Process $process): string
     {
-        $output = $process->getOutput();
+        $output = trim($process->getOutput());
         if (!$output) {
             return $process->getErrorOutput();
         }

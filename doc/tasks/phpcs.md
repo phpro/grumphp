@@ -41,7 +41,7 @@ This parameter will describe which standard/s is being used to validate your cod
 By default it is set to null so that the Phpcs defaults are being used.
 Phpcs will be using the PEAR or local `phpcs.xml` standard by default.
 You can configure this task to use any standard supported by the Phpcs CLI.
-For Example: `PEAR`, `PHPCS`, `PSR1`, `PSR2`, `Squiz` and `Zend`
+For Example: `PEAR`, `PHPCS`, `PSR1`, `PSR2`, `PSR12`, `Squiz` and `Zend`
 
 You can get a list of all installed phpcs standards with the command:
 

@@ -76,7 +76,7 @@ class ConfigureCommand extends Command
     /**
      * @return int|void
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
         $configFile = $this->paths->getConfigFile();
@@ -86,7 +86,7 @@ class ConfigureCommand extends Command
                 $output->writeln('<fg=yellow>GrumPHP is already configured!</fg=yellow>');
             }
 
-            return;
+            return 0;
         }
 
         // Check configuration:
@@ -94,7 +94,7 @@ class ConfigureCommand extends Command
         if (!$configuration) {
             $output->writeln('<fg=yellow>Skipped configuring GrumPHP. Using default configuration.</fg=yellow>');
 
-            return;
+            return 0;
         }
 
         // Check write action
@@ -102,12 +102,14 @@ class ConfigureCommand extends Command
         if (!$written) {
             $output->writeln('<fg=red>The configuration file could not be saved. Give me some permissions!</fg=red>');
 
-            return;
+            return 1;
         }
 
         if (!$input->getOption('silent')) {
             $output->writeln('<fg=green>GrumPHP is configured and ready to kick ass!</fg=green>');
         }
+
+        return 0;
     }
 
     /**

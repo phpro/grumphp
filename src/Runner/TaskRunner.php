@@ -7,6 +7,7 @@ namespace GrumPHP\Runner;
 use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Event\Dispatcher\EventDispatcherInterface;
 use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Event\RunnerEvents;
 use GrumPHP\Event\RunnerFailedEvent;
@@ -17,7 +18,6 @@ use GrumPHP\Exception\PlatformException;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class TaskRunner
 {
@@ -73,7 +73,7 @@ class TaskRunner
             ->sortByPriority($this->grumPHP);
         $taskResults = new TaskResultCollection();
 
-        $this->eventDispatcher->dispatch(RunnerEvents::RUNNER_RUN, new RunnerEvent($tasks, $context, $taskResults));
+        $this->eventDispatcher->dispatch(new RunnerEvent($tasks, $context, $taskResults), RunnerEvents::RUNNER_RUN);
         foreach ($tasks as $task) {
             try {
                 $taskResult = $this->runTask($task, $context);
@@ -89,16 +89,16 @@ class TaskRunner
 
         if ($taskResults->isFailed()) {
             $this->eventDispatcher->dispatch(
-                RunnerEvents::RUNNER_FAILED,
-                new RunnerFailedEvent($tasks, $context, $taskResults)
+                new RunnerFailedEvent($tasks, $context, $taskResults),
+                RunnerEvents::RUNNER_FAILED
             );
 
             return $taskResults;
         }
 
         $this->eventDispatcher->dispatch(
-            RunnerEvents::RUNNER_COMPLETE,
-            new RunnerEvent($tasks, $context, $taskResults)
+            new RunnerEvent($tasks, $context, $taskResults),
+            RunnerEvents::RUNNER_COMPLETE
         );
 
         return $taskResults;
@@ -110,10 +110,10 @@ class TaskRunner
     private function runTask(TaskInterface $task, ContextInterface $context): TaskResultInterface
     {
         try {
-            $this->eventDispatcher->dispatch(TaskEvents::TASK_RUN, new TaskEvent($task, $context));
+            $this->eventDispatcher->dispatch(new TaskEvent($task, $context), TaskEvents::TASK_RUN);
             $result = $task->run($context);
         } catch (PlatformException $e) {
-            $this->eventDispatcher->dispatch(TaskEvents::TASK_SKIPPED, new TaskEvent($task, $context));
+            $this->eventDispatcher->dispatch(new TaskEvent($task, $context), TaskEvents::TASK_SKIPPED);
 
             return TaskResult::createSkipped($task, $context);
         } catch (RuntimeException $e) {
@@ -134,12 +134,12 @@ class TaskRunner
 
         if ($result->hasFailed()) {
             $e = new RuntimeException($result->getMessage());
-            $this->eventDispatcher->dispatch(TaskEvents::TASK_FAILED, new TaskFailedEvent($task, $context, $e));
+            $this->eventDispatcher->dispatch(new TaskFailedEvent($task, $context, $e), TaskEvents::TASK_FAILED);
 
             return $result;
         }
 
-        $this->eventDispatcher->dispatch(TaskEvents::TASK_COMPLETE, new TaskEvent($task, $context));
+        $this->eventDispatcher->dispatch(new TaskEvent($task, $context), TaskEvents::TASK_COMPLETE);
 
         return $result;
     }

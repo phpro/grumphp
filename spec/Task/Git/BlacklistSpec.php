@@ -101,6 +101,8 @@ class BlacklistSpec extends ObjectBehavior
 
         // Assume that blacklisted keywords was not found by `git grep` process
         $process->isSuccessful()->willReturn(false);
+        $process->getExitCode()->willReturn(1);
+        $process->getErrorOutput()->willReturn('error output');
 
         $context->getFiles()->willReturn(new FilesCollection([
             new SplFileInfo('file1.php', '.', 'file1.php'),
@@ -121,7 +123,7 @@ class BlacklistSpec extends ObjectBehavior
     ) {
         $consoleIO->isDecorated()->willReturn(false);
 
-        $formatter->format($process)->willReturn(Argument::type('string'));
+        $formatter->format($process)->willReturn('process output');
 
         $grumPHP->getTaskConfiguration('git_blacklist')->willReturn([
             'keywords'=> ['var_dump('],
@@ -141,5 +143,43 @@ class BlacklistSpec extends ObjectBehavior
         $result = $this->run($context);
         $result->shouldBeAnInstanceOf(TaskResultInterface::class);
         $result->isPassed()->shouldBe(false);
+        $result->getMessage()->shouldBe(sprintf('You have blacklisted keywords in your commit:%s%s', PHP_EOL, 'process output'));
+    }
+
+    function it_throws_exception_if_the_process_has_failed(
+        GrumPHP $grumPHP,
+        ProcessBuilder $processBuilder,
+        Process $process,
+        ContextInterface $context,
+        ProcessFormatterInterface $formatter,
+        ConsoleIO $consoleIO
+    ) {
+        $formatter->format($process)->willReturn(Argument::type('string'));
+
+        $consoleIO->isDecorated()->willReturn(false);
+
+        $grumPHP->getTaskConfiguration('git_blacklist')->willReturn([
+            'keywords'=> ['var_dump('],
+        ]);
+
+        $arguments = new ProcessArgumentsCollection();
+        $processBuilder->createArgumentsForCommand('git')->willReturn($arguments);
+        $processBuilder->buildProcess($arguments)->willReturn($process);
+
+        $process->run()->shouldBeCalled();
+
+        // Assume that blacklisted keywords was not found by `git grep` process
+        $process->isSuccessful()->willReturn(false);
+        $process->getExitCode()->willReturn(2);
+        $process->getErrorOutput()->willReturn('error output');
+
+        $context->getFiles()->willReturn(new FilesCollection([
+            new SplFileInfo('file1.php', '.', 'file1.php'),
+        ]));
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
+        $result->isPassed()->shouldBe(false);
+        $result->getMessage()->shouldBe(sprintf('Something went wrong:%s%s', PHP_EOL, 'error output'));
     }
 }

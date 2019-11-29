@@ -11,10 +11,9 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Runner\TaskRunnerContext;
 use Symfony\Component\Console\Helper\Helper;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class TaskRunnerHelper extends Helper
 {
@@ -29,7 +28,7 @@ class TaskRunnerHelper extends Helper
     private $taskRunner;
 
     /**
-     * @var EventDispatcherInterface
+     * @var EventDispatcher
      */
     private $eventDispatcher;
 
@@ -46,7 +45,7 @@ class TaskRunnerHelper extends Helper
     public function __construct(
         GrumPHP $config,
         TaskRunner $taskRunner,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcher $eventDispatcher,
         AsciiLocator $asciiLocator
     ) {
         $this->config = $config;
@@ -91,7 +90,7 @@ class TaskRunnerHelper extends Helper
             $output = $output->getErrorOutput();
         }
 
-        $this->eventDispatcher->addSubscriber(new ProgressSubscriber($output, new ProgressBar($output)));
+        $this->eventDispatcher->addSubscriber(new ProgressSubscriber($output));
     }
 
     private function returnErrorMessages(OutputInterface $output, array $errorMessages, array $warnings): int

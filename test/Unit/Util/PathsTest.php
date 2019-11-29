@@ -8,7 +8,7 @@ use GrumPHP\Configuration\GuessedPaths;
 use GrumPHP\Util\ComposerFile;
 use GrumPHP\Util\Filesystem;
 use GrumPHP\Util\Paths;
-use Symfony\Component\Filesystem\Tests\FilesystemTestCase;
+use GrumPHPTest\Symfony\FilesystemTestCase;
 
 class PathsTest extends FilesystemTestCase
 {

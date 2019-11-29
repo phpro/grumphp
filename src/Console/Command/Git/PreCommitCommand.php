@@ -60,7 +60,7 @@ class PreCommitCommand extends Command
         );
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new ConsoleIO($input, $output);
         $files = $this->getCommittedFiles($io);

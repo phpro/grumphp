@@ -16,12 +16,11 @@ services:
         synthetic: true
         public: true
 
-    event_dispatcher:
-        class: Symfony\Component\EventDispatcher\EventDispatcherInterface
-        factory: GrumPHP\Event\EventDispatcherFactory::create
+    Symfony\Component\EventDispatcher\EventDispatcher: ~
+    GrumPHP\Event\Dispatcher\Bridge\SymfonyEventDispatcher:
         arguments:
-          - '@service_container'
-        public: true
+            - '@Symfony\Component\EventDispatcher\EventDispatcher'
+    GrumPHP\Event\Dispatcher\EventDispatcherInterface: '@GrumPHP\Event\Dispatcher\Bridge\SymfonyEventDispatcher'
 
     filesystem:
         alias: grumphp.util.filesystem
@@ -52,7 +51,7 @@ services:
         class: GrumPHP\Runner\TaskRunner
         arguments:
           - '@config'
-          - '@event_dispatcher'
+          - '@GrumPHP\Event\Dispatcher\EventDispatcherInterface'
         public: true
 
     grumphp.io:

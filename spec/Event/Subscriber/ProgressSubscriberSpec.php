@@ -10,7 +10,6 @@ use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Console\Formatter\OutputFormatter;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -22,9 +21,7 @@ class ProgressSubscriberSpec extends ObjectBehavior
         $output->isDecorated()->willReturn(false);
         $output->getFormatter()->willReturn(new OutputFormatter());
 
-        $progressBar = new ProgressBar($output->getWrappedObject());
-
-        $this->beConstructedWith($output, $progressBar);
+        $this->beConstructedWith($output);
     }
 
     function it_is_initializable()
@@ -54,32 +51,30 @@ class ProgressSubscriberSpec extends ObjectBehavior
 
     function it_should_advance_progress(OutputInterface $output, TaskEvent $event, TaskInterface $task)
     {
-        $this->beConstructedWith($output, $progress = new ProgressBar($output->getWrappedObject(), 2));
-
         $event->getTask()->willReturn($task);
 
         $output->writeln('')->willReturn(null);
         $output->write(Argument::containingString('Running task'))->shouldBeCalled();
         $output->write(Argument::containingString('1/2'))->shouldBeCalled();
 
+        $this->createProgressBar(2);
         $this->advanceProgress($event);
     }
 
     function it_finishes_progress(OutputInterface $output, RunnerEvent $event)
     {
-        $this->beConstructedWith($output, $progress = new ProgressBar($output->getWrappedObject(), 0));
-
         $output->writeln('')->shouldBeCalled();
 
+        $this->createProgressBar(0);
         $this->finishProgress($event);
     }
 
     function it_finishes_progress_early(OutputInterface $output, RunnerEvent $event)
     {
-        $this->beConstructedWith($output, $progress = new ProgressBar($output->getWrappedObject(), 2));
         $output->write(Argument::containingString('<fg=red>Aborted ...</fg=red>'))->shouldBeCalled();
         $output->writeln('')->shouldBeCalled();
 
+        $this->createProgressBar(2);
         $this->finishProgress($event);
     }
 }
