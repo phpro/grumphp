@@ -12,6 +12,7 @@ parameters:
             triggered_by: [js, jsx, coffee, ts, less, sass, scss]
             working_directory: "./"
             is_run_task: false
+            silent: false
 ```
 
 **script**
@@ -46,3 +47,9 @@ This option specifies in which directory the NPM script should be run.
 *Default: false*
 
 This option will append 'run' to the npm command to make it possible to run custom npm scripts.
+
+**silent**
+
+*Default: false*
+
+This option will append '--silent' to the npm script to supress `npm ERR!` messages from showing.
