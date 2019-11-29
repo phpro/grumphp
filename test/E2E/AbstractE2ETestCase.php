@@ -290,6 +290,7 @@ abstract class AbstractE2ETestCase extends TestCase
                     'install',
                     '--optimize-autoloader',
                     '--no-interaction',
+                    '-vvv'
                 ],
                 $arguments),
             $path

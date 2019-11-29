@@ -202,14 +202,20 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         $silent = $command === self::COMMAND_CONFIGURE ? '--silent' : '';
         $interaction = $this->io->isInteractive() ? '' : '--no-interaction';
 
+        // Windows requires double double quotes
+        // https://bugs.php.net/bug.php?id=49139
+        $windowsIsInsane = function (string $command) {
+            return $this->runsOnWindows() ? '"'.$command.'"' : $command;
+        };
+
         // Run command
         $process = @proc_open(
-            $run = implode(' ', array_map(
+            $run = $windowsIsInsane(implode(' ', array_map(
                 function (string $argument): string {
                     return escapeshellarg($argument);
                 },
                 array_filter([$grumphp, $command, $ansi, $silent, $interaction])
-            )),
+            ))),
             // Map process to current io
             $descriptorspec = array(
                 0 => array('file', 'php://stdin', 'r'),
@@ -247,7 +253,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     {
         $config = $this->composer->getConfig();
         $binDir = $this->ensurePlatformSpecificDirectorySeparator((string) $config->get('bin-dir'));
-        $suffixes = ['.phar', '', '.bat'];
+        $suffixes = $this->runsOnWindows() ? ['.bat', ''] : ['.phar', ''];
 
         return array_reduce(
             $suffixes,
@@ -260,6 +266,11 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
                 return $possiblePath;
             }
         );
+    }
+
+    private function runsOnWindows(): bool
+    {
+        return defined('PHP_WINDOWS_VERSION_BUILD');
     }
 
     private function ensurePlatformSpecificDirectorySeparator(string $path): string
