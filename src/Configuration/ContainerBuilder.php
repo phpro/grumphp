@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace GrumPHP\Configuration;
 
+use GrumPHP\Util\Filesystem;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
-use Symfony\Component\Filesystem\Filesystem;
 
 final class ContainerBuilder
 {
     public static function buildFromConfiguration(string $path): SymfonyContainerBuilder
     {
+        $filesystem = new Filesystem();
         $container = new SymfonyContainerBuilder();
 
         // Add compiler passes:
@@ -28,7 +29,8 @@ final class ContainerBuilder
         $container->addCompilerPass(new AddConsoleCommandPass());
 
         // Load basic service file + custom user configuration
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../../resources/config'));
+        $configDir = dirname(__DIR__, 2).$filesystem->ensureValidSlashes('/resources/config');
+        $loader = new YamlFileLoader($container, new FileLocator($configDir));
         $loader->load('console.yml');
         $loader->load('formatter.yml');
         $loader->load('linters.yml');
@@ -41,7 +43,6 @@ final class ContainerBuilder
         $loader->load('util.yml');
 
         // Load grumphp.yml file:
-        $filesystem = new Filesystem();
         if ($filesystem->exists($path)) {
             $loader->load($path);
         }

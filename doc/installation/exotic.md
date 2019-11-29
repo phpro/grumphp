@@ -18,7 +18,8 @@ You can manipulate how GrumPHP works based on settings in your composer file:
     "extra": {
         "grumphp": {
             "config-default-path": "path/to/grumphp.yml",
-            "project-path": "path/to/your/project/folder"
+            "project-path": "path/to/your/project/folder",
+            "disable-plugin": false
         }
     }
 }
@@ -47,6 +48,14 @@ After changing a parameter, you might want to re-initialize your git hooks:
 ```sh
 php ./vendor/bin/grumphp git:init
 ```
+
+**disable-plugin**
+
+*Default: false*
+
+In some cases, you don't want composer to initialise GrumPHP automatically.
+For example: on global installations activating the plugin is questionable.
+Luckily you can opt-out on this behaviour.
 
 
 ## Changing paths by using environment variables

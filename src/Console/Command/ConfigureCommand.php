@@ -7,6 +7,7 @@ namespace GrumPHP\Console\Command;
 use Exception;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Util\Filesystem;
+use GrumPHP\Util\Paths;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,18 +30,23 @@ class ConfigureCommand extends Command
      * @var Filesystem
      */
     protected $filesystem;
+    /**
+     * @var Paths
+     */
+    private $paths;
 
     /**
      * @var InputInterface
      */
     protected $input;
 
-    public function __construct(GrumPHP $config, Filesystem $filesystem)
+    public function __construct(GrumPHP $config, Filesystem $filesystem, Paths $paths)
     {
         parent::__construct();
 
         $this->config = $config;
         $this->filesystem = $filesystem;
+        $this->paths = $paths;
     }
 
     public static function getDefaultName(): string
@@ -59,6 +65,12 @@ class ConfigureCommand extends Command
             InputOption::VALUE_NONE,
             'Forces overwriting the configuration file when it already exists.'
         );
+        $this->addOption(
+            'silent',
+            null,
+            InputOption::VALUE_NONE,
+            'Only output what really matters.'
+        );
     }
 
     /**
@@ -67,11 +79,10 @@ class ConfigureCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
-
-        $grumphpConfigName = $this->input->getOption('config');
+        $configFile = $this->paths->getConfigFile();
         $force = $input->getOption('force');
-        if ($this->filesystem->exists($grumphpConfigName) && !$force) {
-            if ($input->isInteractive()) {
+        if ($this->filesystem->exists($configFile) && !$force) {
+            if (!$input->getOption('silent')) {
                 $output->writeln('<fg=yellow>GrumPHP is already configured!</fg=yellow>');
             }
 
@@ -87,14 +98,14 @@ class ConfigureCommand extends Command
         }
 
         // Check write action
-        $written = $this->writeConfiguration($configuration);
+        $written = $this->writeConfiguration($configFile, $configuration);
         if (!$written) {
             $output->writeln('<fg=red>The configuration file could not be saved. Give me some permissions!</fg=red>');
 
             return 1;
         }
 
-        if ($input->isInteractive()) {
+        if (!$input->getOption('silent')) {
             $output->writeln('<fg=green>GrumPHP is configured and ready to kick ass!</fg=green>');
         }
 
@@ -113,6 +124,7 @@ class ConfigureCommand extends Command
             'Do you want to create a grumphp.yml file?',
             'Yes'
         );
+
         $question = new ConfirmationQuestion($questionString, true);
         if (!$helper->ask($input, $output, $question)) {
             return [];
@@ -122,7 +134,7 @@ class ConfigureCommand extends Command
         $tasks = [];
         if ($input->isInteractive()) {
             $question = new ChoiceQuestion(
-                'Which tasks do you want to run?',
+                $this->createQuestionString('Which tasks do you want to run?', null, ''),
                 $this->config->getRegisteredTasks()
             );
             $question->setMultiselect(true);
@@ -142,16 +154,15 @@ class ConfigureCommand extends Command
     protected function createQuestionString(string $question, string $default = null, string $separator = ':'): string
     {
         return null !== $default ?
-            sprintf('<info>%s</info> [<comment>%s</comment>]%s ', $question, $default, $separator) :
-            sprintf('<info>%s</info>%s ', $question, $separator);
+            sprintf('<fg=green>%s</fg=green> [<fg=yellow>%s</fg=yellow>]%s ', $question, $default, $separator) :
+            sprintf('<fg=green>%s</fg=green>%s ', $question, $separator);
     }
 
-    protected function writeConfiguration(array $configuration): bool
+    protected function writeConfiguration(string $configFile, array $configuration): bool
     {
         try {
             $yaml = Yaml::dump($configuration);
-            $grumphpConfigName = $this->input->getOption('config');
-            $this->filesystem->dumpFile($grumphpConfigName, $yaml);
+            $this->filesystem->dumpFile($configFile, $yaml);
 
             return true;
         } catch (Exception $e) {

@@ -7,7 +7,7 @@ namespace GrumPHP\Composer;
 use Composer\Script\Event;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Process\ProcessFactory;
-use Symfony\Component\Filesystem\Filesystem;
+use GrumPHP\Util\Filesystem;
 
 class DevelopmentIntegrator
 {
@@ -19,11 +19,11 @@ class DevelopmentIntegrator
         $filesystem = new Filesystem();
 
         $composerBinDir = $event->getComposer()->getConfig()->get('bin-dir');
-        $executable = getcwd().'/bin/grumphp';
+        $executable = dirname(__DIR__, 2).$filesystem->ensureValidSlashes('/bin/grumphp');
         $composerExecutable = $composerBinDir.'/grumphp';
         $filesystem->copy(
-            self::noramlizePath($executable),
-            self::noramlizePath($composerExecutable)
+            $filesystem->ensureValidSlashes($executable),
+            $filesystem->ensureValidSlashes($composerExecutable)
         );
 
         $commandlineArgs = ProcessArgumentsCollection::forExecutable($composerExecutable);
@@ -41,10 +41,5 @@ class DevelopmentIntegrator
         }
 
         $event->getIO()->write('<fg=yellow>'.$process->getOutput().'</fg=yellow>');
-    }
-
-    private static function noramlizePath(string $path): string
-    {
-        return str_replace('/', DIRECTORY_SEPARATOR, $path);
     }
 }

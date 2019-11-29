@@ -74,6 +74,11 @@ class Paths
         return $this->guessedPaths->getBinDir();
     }
 
+    public function getConfigFile(): string
+    {
+        return $this->guessedPaths->getConfigFile();
+    }
+
     public function getProjectDirRelativeToGitDir(): string
     {
         return $this->filesystem->makePathRelative(
