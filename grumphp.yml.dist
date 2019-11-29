@@ -28,6 +28,9 @@ parameters:
         - "#test/(.*).yml#"
     phplint: ~
     phpparser:
+      ignore_patterns:
+        - '#src/Event/Event.php#'
+        - '#test/Symfony/(.*)#'
       visitors:
         no_exit_statements: ~
         never_use_else: ~

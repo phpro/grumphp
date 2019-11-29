@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace GrumPHPTest\Unit\Util;
 
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Util\Filesystem;
-use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
-use Symfony\Component\Filesystem\Tests\FilesystemTestCase;
+use GrumPHPTest\Symfony\FilesystemTestCase;
 
 class FilesystemTest extends FilesystemTestCase
 {

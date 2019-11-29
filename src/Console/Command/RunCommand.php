@@ -64,7 +64,7 @@ class RunCommand extends Command
         );
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $files = $this->getRegisteredFiles();
         $testSuites = $this->grumPHP->getTestSuites();

@@ -19,7 +19,7 @@ namespace GrumPHPTest\Unit\Locator {
     use GrumPHP\Util\Filesystem;
     use Prophecy\Argument;
     use Prophecy\Prophecy\ObjectProphecy;
-    use Symfony\Component\Filesystem\Tests\FilesystemTestCase;
+    use GrumPHPTest\Symfony\FilesystemTestCase;
 
     class GuessedPathsLocatorTest extends FilesystemTestCase
     {
