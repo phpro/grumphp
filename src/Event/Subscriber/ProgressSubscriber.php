@@ -45,7 +45,8 @@ class ProgressSubscriber implements EventSubscriberInterface
 
     public function createProgressBar(int $totalTasks): ProgressBar
     {
-        $this->progressBar = new ProgressBar($this->output, $totalTasks);
+        $minSecondsBetweenRedraws = 0.0; // New progressbar doesnt redraw frequently enough.
+        $this->progressBar = new ProgressBar($this->output, $totalTasks, $minSecondsBetweenRedraws);
         $this->progressBar->setOverwrite(false);
         $this->progressBar->setFormat('<fg=yellow>Running task %current%/%max%:</fg=yellow> %message%... ');
 
