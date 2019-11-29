@@ -14,7 +14,6 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\NpmScript;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
@@ -45,6 +44,7 @@ class NpmScriptSpec extends ObjectBehavior
         $options->getDefinedOptions()->shouldContain('triggered_by');
         $options->getDefinedOptions()->shouldContain('working_directory');
         $options->getDefinedOptions()->shouldContain('is_run_task');
+        $options->getDefinedOptions()->shouldContain('silent');
     }
 
     function it_should_run_in_git_pre_commit_context(GitPreCommitContext $context)
