@@ -35,8 +35,19 @@ In order for this package to work, you have to make sure following tools are dis
 
 This package is a composer plugin and should be installed to your project's dev dependency using composer:
 
+Install GrumPHP as a phar without dependencies:
 ```sh
+composer require --dev phpro/grumphp-shim
+```
+
+Install GrumPHP with dependencies:
+```
 composer require --dev phpro/grumphp
+```
+
+Install GrumPHP through phive
+```
+phive install grumphp
 ```
 
 When the package is installed, GrumPHP will attach itself to the git hooks of your project.
