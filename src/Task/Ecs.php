@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
@@ -58,7 +60,7 @@ class Ecs extends AbstractExternalTask
         $whitelistPatterns = $config['whitelist_patterns'];
 
         $files = $context->getFiles()->extensions($config['triggered_by']);
-        if (\count($whitelistPatterns)) {
+        if (0 < \count($whitelistPatterns)) {
             $files = $files->paths($whitelistPatterns);
         }
 
@@ -69,15 +71,12 @@ class Ecs extends AbstractExternalTask
         $arguments = $this->processBuilder->createArgumentsForCommand('ecs');
         $arguments->add('check');
 
-        if ($config['files_on_pre_commit'] && $context instanceof GitPreCommitContext) {
-            $arguments->addFiles($files);
-        }
-
-        if (!$config['files_on_pre_commit'] && $context instanceof RunContext) {
-            foreach ($whitelistPatterns as $whitelistPattern) {
-                $arguments->add($whitelistPattern);
-            }
-        }
+        $this->handleContextArguments(
+            $arguments,
+            $files,
+            $whitelistPatterns,
+            $config['files_on_pre_commit'] && $context instanceof GitPreCommitContext
+        );
 
         $arguments->addOptionalArgument('--config=%s', $config['config']);
         $arguments->addOptionalArgument('--level=%s', $config['level']);
@@ -94,5 +93,28 @@ class Ecs extends AbstractExternalTask
         }
 
         return TaskResult::createPassed($this, $context);
+    }
+
+    /**
+     * @param ProcessArgumentsCollection $arguments
+     * @param FilesCollection            $files
+     * @param array                      $whitelistPatterns
+     * @param bool                       $addAsFilesToArguments
+     */
+    private function handleContextArguments(
+        ProcessArgumentsCollection $arguments,
+        FilesCollection $files,
+        array $whitelistPatterns,
+        bool $addAsFilesToArguments
+    ): void {
+        if ($addAsFilesToArguments) {
+            $arguments->addFiles($files);
+
+            return;
+        }
+
+        foreach ($whitelistPatterns as $whitelistPattern) {
+            $arguments->add($whitelistPattern);
+        }
     }
 }
