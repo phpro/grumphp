@@ -65,7 +65,7 @@ class ProgressSubscriber implements EventSubscriberInterface
         $config = $event->getTask()->getConfig();
         $metadata = $config->getMetadata();
 
-        $this->progressBar->setMessage($metadata['label'] ?: $config->getName());
+        $this->progressBar->setMessage($metadata->label() ?: $config->getName());
         $this->progressBar->advance();
     }
 
