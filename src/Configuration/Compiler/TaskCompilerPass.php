@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TaskCompilerPass implements CompilerPassInterface
@@ -78,6 +79,15 @@ class TaskCompilerPass implements CompilerPassInterface
             $taskTagResolver = new OptionsResolver();
             $taskTagResolver->setRequired(['task']);
             $taskTagResolver->setAllowedTypes('task', ['string']);
+
+            // Clean fallback for installation with old tasks.
+            $taskTagResolver->setDefined('config');
+            $taskTagResolver->setNormalizer(
+                'config',
+                static function (Options $options, $value) {
+                    throw TaskConfigResolverException::deprectatedTask($value);
+                }
+            );
         }
 
         return $taskTagResolver->resolve(current($tags));
