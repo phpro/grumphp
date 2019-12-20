@@ -45,7 +45,7 @@ Install GrumPHP with dependencies:
 composer require --dev phpro/grumphp
 ```
 
-Install GrumPHP through phive
+Install GrumPHP without dependencies and automated git hooks through phive
 ```
 phive install grumphp
 ```
