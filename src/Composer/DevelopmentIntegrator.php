@@ -7,7 +7,9 @@ namespace GrumPHP\Composer;
 use Composer\Script\Event;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Process\ProcessFactory;
+use GrumPHP\Process\ProcessUtils;
 use GrumPHP\Util\Filesystem;
+use Symfony\Component\Process\Process;
 
 class DevelopmentIntegrator
 {
@@ -28,8 +30,8 @@ class DevelopmentIntegrator
 
         $commandlineArgs = ProcessArgumentsCollection::forExecutable($composerExecutable);
         $commandlineArgs->add('git:init');
+        $process = self::fixInternalComposerProcessVersion($commandlineArgs);
 
-        $process = ProcessFactory::fromArguments($commandlineArgs);
         $process->run();
         if (!$process->isSuccessful()) {
             $event->getIO()->write(
@@ -41,5 +43,23 @@ class DevelopmentIntegrator
         }
 
         $event->getIO()->write('<fg=yellow>'.$process->getOutput().'</fg=yellow>');
+    }
+
+    /**
+     * Composer contains symfony/process:v2.8 internally
+     * This causes this integration hook to fail. (Since the Process class is being loaded from internal composer PHAR)
+     * @see https://github.com/composer/composer/blob/1.9.1/composer.lock#L772-L773
+     *
+     * This one can be removed once composer udpates its dependencies to at least symfony/process 3.3
+     */
+    private static function fixInternalComposerProcessVersion(
+        ProcessArgumentsCollection $commandlineArgs
+    ): Process {
+        $process = ProcessFactory::fromArguments($commandlineArgs);
+        if (\is_string($process->getCommandLine())) {
+            return $process;
+        }
+
+        return new Process(ProcessUtils::escapeArguments($commandlineArgs->getValues()));
     }
 }
