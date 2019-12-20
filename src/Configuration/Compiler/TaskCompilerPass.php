@@ -59,7 +59,7 @@ class TaskCompilerPass implements CompilerPassInterface
                     }
                 )
             ]);
-            $taskBuilder->setFactory(new Reference(TaskConfigurator::class));
+            $taskBuilder->setFactory([new Reference(TaskConfigurator::class), '__invoke']);
             $taskBuilder->addTag('configured.task');
 
             // Register services:
