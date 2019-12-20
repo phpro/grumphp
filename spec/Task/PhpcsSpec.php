@@ -128,7 +128,11 @@ class PhpcsSpec extends ObjectBehavior
         ContextInterface $context,
         ProcessFormatterInterface $formatter
     ) {
-        $formatter->format($process)->willReturn(Argument::type('string'));
+        $formatter->format($process)->willReturn('output');
+        $formatter->formatErrorMessage(
+            Argument::type(ProcessArgumentsCollection::class),
+            $processBuilder
+        )->willReturn('error output');
 
         $arguments = new ProcessArgumentsCollection();
         $processBuilder->createArgumentsForCommand('phpcs')->willReturn($arguments);
