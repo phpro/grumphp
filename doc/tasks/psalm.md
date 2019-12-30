@@ -18,6 +18,7 @@ parameters:
             ignore_patterns: []
             no_cache: false
             report: ~ 
+            output_format: compact
             threads: 1
             triggered_by: ['php']
             show_info: false
@@ -53,6 +54,13 @@ With this parameter you can run Psalm without using the cache file.
 
 With this path you can specify the path your psalm report file 
 
+
+**output_format**
+
+*Default: compact*
+
+Changes the output format.
+Available formats: compact, console, emacs, json, pylint, xml, checkstyle, junit, sonarqube
 
 **threads**
 
