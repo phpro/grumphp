@@ -18,6 +18,7 @@ parameters:
     tasks:
         twigcs:
             path: '.'
+            exclude: []
             severity: 'warning'
             ruleset: 'FriendsOfTwig\Twigcs\Ruleset\Official'
             triggered_by: ['twig']
@@ -29,6 +30,12 @@ parameters:
 
 By default `.` (current folder) will be used.
 You can specify an alternate location by changing this option.
+
+**exclude**
+
+*Default: []*
+
+List of directories to exclude.
 
 **severity**
 
