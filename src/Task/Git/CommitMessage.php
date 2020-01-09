@@ -294,9 +294,14 @@ class CommitMessage implements TaskInterface
     private function getCommitMessageLinesWithoutComments(string $commitMessage): array
     {
         $lines = preg_split('/\R/u', $commitMessage);
+        $everythingBelowWillBeIgnored = false;
 
-        return array_values(array_filter($lines, function ($line) {
-            return 0 !== strpos($line, '#');
+        return array_values(array_filter($lines, function ($line) use (&$everythingBelowWillBeIgnored) {
+            if (mb_stripos($line, '# Everything below it will be ignored.') !== false) {
+                $everythingBelowWillBeIgnored = true;
+                return false;
+            }
+            return 0 !== strpos($line, '#') && !$everythingBelowWillBeIgnored;
         }));
     }
 
