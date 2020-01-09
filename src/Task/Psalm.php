@@ -26,7 +26,7 @@ class Psalm extends AbstractExternalTask
             'ignore_patterns' => [],
             'no_cache' => false,
             'report' => null,
-            'output_format' => 'compact',
+            'output_format' => null,
             'threads' => null,
             'triggered_by' => ['php'],
             'show_info' => false,
