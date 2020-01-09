@@ -122,7 +122,7 @@ This is a list of sniffs that need to be executed. Leave this option blank to ru
 
 *Default: [php]:
 
-This is a list of extensions to be sniffed. 
+This is a list of extensions to be sniffed. This list is also passed to phpcs using the `--extensions` parameter.
 
 **exclude**
 
