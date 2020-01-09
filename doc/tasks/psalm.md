@@ -18,7 +18,7 @@ parameters:
             ignore_patterns: []
             no_cache: false
             report: ~ 
-            output_format: compact
+            output_format: null
             threads: 1
             triggered_by: ['php']
             show_info: false
@@ -57,7 +57,7 @@ With this path you can specify the path your psalm report file
 
 **output_format**
 
-*Default: compact*
+*Default: null*
 
 Changes the output format.
 Available formats: compact, console, emacs, json, pylint, xml, checkstyle, junit, sonarqube
