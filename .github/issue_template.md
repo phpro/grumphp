@@ -30,7 +30,7 @@ composer require --dev phpro/grumphp
 # Please add the steps on how to reproduce the issue here.
 
 # Run GrumPHP:
-git commit -am"Test"
+git add -A && git commit -m"Test"
 # or
 ./vendor/bin/grumphp run
 ```
