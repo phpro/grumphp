@@ -101,6 +101,7 @@ parameters:
         composer_script: ~
         deptrac: ~
         doctrine_orm: ~
+        ecs: ~ # EasyCodingStandard
         file_size: ~
         gherkin: ~
         git_blacklist: ~
