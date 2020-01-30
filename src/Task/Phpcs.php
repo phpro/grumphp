@@ -105,6 +105,7 @@ class Phpcs extends AbstractExternalTask
         array $config
     ): ProcessArgumentsCollection {
         $arguments->addOptionalCommaSeparatedArgument('--standard=%s', (array) $config['standard']);
+        $arguments->addOptionalCommaSeparatedArgument('--extensions=%s', (array) $config['triggered_by']);
         $arguments->addOptionalArgument('--tab-width=%s', $config['tab_width']);
         $arguments->addOptionalArgument('--encoding=%s', $config['encoding']);
         $arguments->addOptionalArgument('--report=%s', $config['report']);
