@@ -46,7 +46,7 @@ class TaskConfigResolver
     public function fetchByName(string $taskName): OptionsResolver
     {
         if (!array_key_exists($taskName, $this->taskMap)) {
-            throw TaskConfigResolverException::unkownTask($taskName);
+            throw TaskConfigResolverException::unknownTask($taskName);
         }
 
         // Try to use cached version first:
@@ -56,7 +56,7 @@ class TaskConfigResolver
         }
 
         if (!class_exists($class) || !is_subclass_of($class, TaskInterface::class)) {
-            throw TaskConfigResolverException::unkownClass($class);
+            throw TaskConfigResolverException::unknownClass($class);
         }
 
         return $this->cachedResolvers[$class] = $class::getConfigurableOptions();

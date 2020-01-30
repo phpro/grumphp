@@ -8,12 +8,12 @@ use GrumPHP\Task\TaskInterface;
 
 class TaskConfigResolverException extends RuntimeException
 {
-    public static function unkownTask(string $task): self
+    public static function unknownTask(string $task): self
     {
         return new self('Could not load config resolver for task: "'.$task.'". The task is not known.');
     }
 
-    public static function unkownClass(string $class): self
+    public static function unknownClass(string $class): self
     {
         return new self(
             sprintf(

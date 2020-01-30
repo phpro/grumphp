@@ -39,7 +39,7 @@ class TaskCompilerPass implements CompilerPassInterface
             $metadata = new Metadata((array) ($taskConfig['metadata'] ?? []));
             $currentTaskName = $metadata->task() ?: $taskName;
             if (!array_key_exists($currentTaskName, $availableTasks)) {
-                throw TaskConfigResolverException::unkownTask($currentTaskName);
+                throw TaskConfigResolverException::unknownTask($currentTaskName);
             }
 
             // Determine Keys:
