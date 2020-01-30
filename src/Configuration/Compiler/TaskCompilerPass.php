@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -77,8 +78,18 @@ class TaskCompilerPass implements CompilerPassInterface
         static $taskTagResolver;
         if (null === $taskTagResolver) {
             $taskTagResolver = new OptionsResolver();
-            $taskTagResolver->setRequired(['task']);
+
+            // Instead of required task param : use this to enable the fallback for the deprecated tasks.
+            $taskTagResolver->setDefined(['task']);
             $taskTagResolver->setAllowedTypes('task', ['string']);
+            $taskTagResolver->setDefault('task', '');
+            $taskTagResolver->setNormalizer('task', static function (Options $options, $value) {
+                if (!$value && !$options->offsetExists('config')) {
+                    throw new MissingOptionsException('The required option "task" is missing.');
+                }
+
+                return $value;
+            });
 
             // Clean fallback for installation with old tasks.
             $taskTagResolver->setDefined('config');

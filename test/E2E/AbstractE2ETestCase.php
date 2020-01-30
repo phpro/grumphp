@@ -265,15 +265,14 @@ abstract class AbstractE2ETestCase extends TestCase
                 ],
             ],
             'services' => [
-                'task.validatePaths' => [
-                    'class' => 'GrumPHPE2E\\ValidatePathsTask',
+                'GrumPHPE2E\\ValidatePathsTask' => [
                     'arguments' => [
                         $this->getAvailableFilesInPath($projectDir),
                     ],
                     'tags' => [
                         [
                             'name' => 'grumphp.task',
-                            'config' => 'validatePaths'
+                            'task' => 'validatePaths'
                         ],
                     ]
                 ]

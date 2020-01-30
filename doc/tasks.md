@@ -126,16 +126,10 @@ parameters:
         anytask:
             metadata:
                 blocking: true
+                label: null
                 priority: 0
+                task: null
 ```
-
-**priority**
-
-*Default: 0*
-
-This option can be used to specify the order in which the tasks will be executed.
-The higher the priority, the sooner the task will be executed.
-
 
 **blocking**
 
@@ -145,12 +139,51 @@ This option can be used to make a failing task non-blocking.
 By default all tasks will be marked as blocking.
 When a task is non-blocking, the errors will be displayed but the tests will pass.
 
+**label**
+
+*Default: null*
+
+This option can be used to display a label instead of the task name whilst running GrumPHP.
+By default the task name will be displayed.
+
+**priority**
+
+*Default: 0*
+
+This option can be used to specify the order in which the tasks will be executed.
+The higher the priority, the sooner the task will be executed.
+
+**task**
+
+*Default: null*
+
+This option can be used to specify which task you want to run.
+This way you can configure the same task twice by using an alias with different options.
+([For more information see below.](#run-the-same-task-twice-with-different-configuration))
 
 ## Creating a custom task
 
-It is very easy to configure your own project specific task.
-You just have to create a class that implements the `GrumPHP\Task\TaskInterface`.
-Next register it to the service manager and add your task configuration:
+Creating a custom task is a matter of implementing the provided `GrumPHP\Task\TaskInterface`.
+When your task is written, you have to register it to the service manager and add your task configuration to `grumphp.yaml`:
+
+```php
+<?php
+
+interface TaskInterface
+{
+    public static function getConfigurableOptions(): OptionsResolver;
+    public function canRunInContext(ContextInterface $context): bool;
+    public function run(ContextInterface $context): TaskResultInterface;
+    public function getConfig(): TaskConfigInterface;
+    public function withConfig(TaskConfigInterface $config): TaskInterface;
+}
+```
+
+* `getConfigurableOptions`: This method has to return all configurable options for the task.
+* `canRunInContext`: Tells GrumPHP if it can run in `pre-commit`, `commit-msg` or `run` context.
+* `run`: Executes the task and returns a result
+* `getConfig`: Provides the resolved configuration for the task or an empty config for newly instantiated tasks.
+* `withConfig`: Is used by GrumPHP to inject configuration during runtime. It should be immutable by default.
 
 ```yaml
 # grumphp.yml
@@ -160,24 +193,21 @@ parameters:
             config1: config-value
 
 services:
-    task.myCustomTask:
-        class: My\Custom\Task
+    My\Custom\Task:
         arguments:
-          - '@config'
+          - '@some.required.dependency'
         tags:
-          - {name: grumphp.task, config: myConfigKey}
+          - {name: grumphp.task, task: defaultTaskName}
 ```
 
-**Note:** You do NOT have to add the main and task configuration. This example just shows you how to do it.
-You're welcome!
-
-You just registered your custom task in no time! Pretty cool right?!
+You just registered your custom task! Pretty cool right?!
 
 
 ## Run the same task twice with different configuration
 
 In some cases you might want to run the same task but with different configuration.
-The suggested way of doing this, is by registering the existing task with a different name.
+Good news: This is perfectly possible!
+You can use any name you want for the task, as long as you configure an existing task in the metadata section. 
 Configuration of the additional task will look like this:
 
 ```yaml
@@ -190,36 +220,7 @@ parameters:
         phpcsfixer2_typo3:
             allow_risky: true
             config: .typo3.php_cs
-            path_mode: intersection
-
-services:
-    task.phpcsfixer2_typo3:
-        class: Acme\Typo3\ConventionsChecker\Task\PhpCsFixerV2Typo3
-        arguments:
-            - '@config'
-            - '@process_builder'
-            - '@async_process_runner'
-            - '@formatter.phpcsfixer'
-        tags:
-            - {name: grumphp.task, config: phpcsfixer2_typo3}            
+            path_mode: intersection       
+            metadata:
+                task: phpcsfixer2
 ```
-
-Since we currently match the name based on the task name, you'll also have to create a new task class:
-
-````php
-<?php
-// Acme/Typo3/ConventionsChecker/Task/PhpCsFixerV2Typo3.php
-
-namespace Acme\Typo3\ConventionsChecker\Task;
-
-use GrumPHP\Task\PhpCsFixerV2;
-
-class PhpCsFixerV2Typo3 extends PhpCsFixerV2
-{
-    public function getName()
-    {
-        return 'phpcsfixer2_typo3';
-    }
-}
-````
-

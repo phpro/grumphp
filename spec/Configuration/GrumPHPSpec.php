@@ -94,42 +94,6 @@ class GrumPHPSpec extends ObjectBehavior
         $this->getAsciiContentPath('success')->shouldReturn('success.txt');
     }
 
-    function it_should_know_all_registered_tasks(ContainerInterface $container)
-    {
-        $container->getParameter('grumphp.tasks.registered')->willReturn(['phpspec']);
-
-        $this->getAvailableTasks()->shouldBe(['phpspec']);
-    }
-
-    function it_should_know_task_configuration(ContainerInterface $container)
-    {
-        $container->getParameter('grumphp.tasks.configuration')->willReturn(['phpspec' => []]);
-
-        $this->getTaskConfiguration('phpspec')->shouldReturn([]);
-        $this->shouldThrow(RuntimeException::class)->duringGetTaskConfiguration('phpunit');
-    }
-
-    function it_should_know_task_metadata(ContainerInterface $container)
-    {
-        $container->getParameter('grumphp.tasks.metadata')->willReturn(['phpspec' => []]);
-
-        $this->getTaskMetadata('phpspec')->shouldReturn([]);
-        $this->shouldThrow(RuntimeException::class)->duringGetTaskMetadata('phpunit');
-    }
-
-    function it_should_know_if_a_task_is_a_blocking_task(ContainerInterface $container)
-    {
-        $container->getParameter('grumphp.tasks.metadata')
-            ->willReturn(
-                [
-                    'phpspec' => ['blocking' => true],
-                    'phpunit' => ['blocking' => false],
-                ]
-            );
-        $this->isBlockingTask('phpunit')->shouldReturn(false);
-        $this->isBlockingTask('phpspec')->shouldReturn(true);
-    }
-
     function it_should_know_all_testsuites(ContainerInterface $container)
     {
         $container->getParameter('grumphp.testsuites')->willReturn($testSuites = new TestSuiteCollection());
