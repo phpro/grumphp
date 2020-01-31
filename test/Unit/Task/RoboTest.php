@@ -6,15 +6,15 @@ namespace GrumPHPTest\Uni\Task;
 
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
-use GrumPHP\Task\SecurityChecker;
+use GrumPHP\Task\Robo;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\Test\Task\AbstractExternalTaskTestCase;
 
-class SecurityCheckerTest extends AbstractExternalTaskTestCase
+class RoboTest extends AbstractExternalTaskTestCase
 {
     protected function provideTask(): TaskInterface
     {
-        return new SecurityChecker(
+        return new Robo(
             $this->processBuilder->reveal(),
             $this->formatter->reveal()
         );
@@ -25,11 +25,9 @@ class SecurityCheckerTest extends AbstractExternalTaskTestCase
         yield 'defaults' => [
             [],
             [
-                'lockfile' => './composer.lock',
-                'format' => null,
-                'end_point' => null,
-                'timeout' => null,
-                'run_always' => false,
+                'load_from' => null,
+                'task' => null,
+                'triggered_by' => ['php'],
             ]
         ];
     }
@@ -56,9 +54,9 @@ class SecurityCheckerTest extends AbstractExternalTaskTestCase
     {
         yield 'exitCode1' => [
             [],
-            $this->mockContext(RunContext::class, ['composer.lock']),
+            $this->mockContext(RunContext::class, ['hello.php']),
             function () {
-                $this->mockProcessBuilder('security-checker', $process = $this->mockProcess(1));
+                $this->mockProcessBuilder('robo', $process = $this->mockProcess(1));
                 $this->formatter->format($process)->willReturn('nope');
             },
             'nope'
@@ -69,18 +67,9 @@ class SecurityCheckerTest extends AbstractExternalTaskTestCase
     {
         yield 'exitCode0' => [
             [],
-            $this->mockContext(RunContext::class, ['composer.lock']),
+            $this->mockContext(RunContext::class, ['hello.php']),
             function () {
-                $this->mockProcessBuilder('security-checker', $this->mockProcess(0));
-            }
-        ];
-        yield 'exitCode0' => [
-            [
-                'run_always' => true
-            ],
-            $this->mockContext(RunContext::class, ['notrelated.php']),
-            function () {
-                $this->mockProcessBuilder('security-checker', $this->mockProcess(0));
+                $this->mockProcessBuilder('robo', $this->mockProcess(0));
             }
         ];
     }
@@ -92,9 +81,9 @@ class SecurityCheckerTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class),
             function () {}
         ];
-        yield 'no-composer-file' => [
+        yield 'no-files-after-triggered-by' => [
             [],
-            $this->mockContext(RunContext::class, ['thisisnotacomposerfile.lock']),
+            $this->mockContext(RunContext::class, ['notaphpfile.txt']),
             function () {}
         ];
     }
@@ -103,37 +92,30 @@ class SecurityCheckerTest extends AbstractExternalTaskTestCase
     {
         yield 'defaults' => [
             [],
-            $this->mockContext(RunContext::class, ['composer.lock']),
-            'security-checker',
+            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'robo',
+            []
+        ];
+
+        yield 'load-from' => [
             [
-                'security:check',
-                './composer.lock',
+                'load_from' => 'Robofile.php'
+            ],
+            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'robo',
+            [
+                '--load-from=Robofile.php'
             ]
         ];
 
-        yield 'endpoint' => [
+        yield 'task' => [
             [
-                'end_point' => $endpoint = 'http://myserver.com',
+                'task' => 'mytask',
             ],
-            $this->mockContext(RunContext::class, ['composer.lock']),
-            'security-checker',
+            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'robo',
             [
-                'security:check',
-                './composer.lock',
-                '--end-point='.$endpoint
-            ]
-        ];
-
-        yield 'timeout' => [
-            [
-                'timeout' => 2,
-            ],
-            $this->mockContext(RunContext::class, ['composer.lock']),
-            'security-checker',
-            [
-                'security:check',
-                './composer.lock',
-                '--timeout=2'
+                'mytask',
             ]
         ];
     }
