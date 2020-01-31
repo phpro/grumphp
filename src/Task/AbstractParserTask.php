@@ -8,6 +8,7 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ParseErrorsCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Parser\ParserInterface;
+use GrumPHP\Task\Config\EmptyTaskConfig;
 use GrumPHP\Task\Config\TaskConfigInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,6 +26,7 @@ abstract class AbstractParserTask implements TaskInterface
 
     public function __construct(ParserInterface $parser)
     {
+        $this->configuration = new EmptyTaskConfig();
         $this->parser = $parser;
 
         if (!$parser->isInstalled()) {
