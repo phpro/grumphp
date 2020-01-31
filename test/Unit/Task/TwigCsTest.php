@@ -91,18 +91,6 @@ class TwigCsTest extends AbstractExternalTaskTestCase
 
     public function provideExternalTaskRuns(): iterable
     {
-        //                 'path' => '.',
-        //                'severity' => 'warning',
-        //                'ruleset' => 'FriendsOfTwig\Twigcs\Ruleset\Official',
-        //                'triggered_by' => ['twig'],
-
-        //         $arguments = $this->processBuilder->createArgumentsForCommand('twigcs');
-        //        $arguments->add($config['path']);
-        //
-        //        $arguments->addOptionalArgument('--severity=%s', $config['severity']);
-        //        $arguments->addOptionalArgument('--ruleset=%s', $config['ruleset']);
-        //        $arguments->addOptionalArgument('--ansi', true);
-
         yield 'defaults' => [
             [],
             $this->mockContext(RunContext::class, ['hello.twig', 'hello2.twig']),
