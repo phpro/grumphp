@@ -9,12 +9,12 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Formatter\PhpcsFormatter;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
-use GrumPHP\Task\PhpCs;
+use GrumPHP\Task\Phpcs;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\Test\Task\AbstractExternalTaskTestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
-class PhpCsTest extends AbstractExternalTaskTestCase
+class PhpcsTest extends AbstractExternalTaskTestCase
 {
     /**
      * @var PhpcsFormatter|ObjectProphecy
@@ -24,7 +24,7 @@ class PhpCsTest extends AbstractExternalTaskTestCase
     protected function provideTask(): TaskInterface
     {
         $this->formatter = $this->prophesize(PhpcsFormatter::class);
-        return new PhpCs(
+        return new Phpcs(
             $this->processBuilder->reveal(),
             $this->formatter->reveal()
         );
