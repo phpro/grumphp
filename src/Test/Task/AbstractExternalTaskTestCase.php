@@ -12,6 +12,7 @@ use GrumPHP\Task\Context\ContextInterface;
 use PHPUnit\Framework\Assert;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
+use Symfony\Component\Process\InputStream;
 use Symfony\Component\Process\Process;
 
 abstract class AbstractExternalTaskTestCase extends AbstractTaskTestCase
@@ -44,7 +45,8 @@ abstract class AbstractExternalTaskTestCase extends AbstractTaskTestCase
         array $config,
         ContextInterface $context,
         string $taskName,
-        array $cliArguments
+        array $cliArguments,
+        ?Process $process = null
     ): void
     {
         $task = $this->configureTask($config);
@@ -52,7 +54,7 @@ abstract class AbstractExternalTaskTestCase extends AbstractTaskTestCase
             $arguments = new ProcessArgumentsCollection()
         );
 
-        $process = $this->mockProcess(0);
+        $process = $process ?? $this->mockProcess(0);
         $this->processBuilder->buildProcess(Argument::any())
             ->shouldBeCalled()
             ->will(function ($parameters) use ($cliArguments, $process) {
@@ -82,5 +84,18 @@ abstract class AbstractExternalTaskTestCase extends AbstractTaskTestCase
             $arguments = new ProcessArgumentsCollection()
         );
         $this->processBuilder->buildProcess($arguments)->willReturn($process);
+    }
+
+    protected function mockProcessWithStdIn(int $exitCode = 0, string $output = '', string $errors = '') {
+        /** @var Process|ObjectProphecy $process */
+        $process = $this->prophesize(Process::class);
+        $process->setInput(Argument::type(InputStream::class))->shouldBeCalled();
+        $process->start()->shouldBeCalled();
+        $process->wait()->shouldBeCalled();
+        $process->isSuccessful()->willReturn($exitCode === 0);
+        $process->getOutput()->willReturn($output);
+        $process->getErrorOutput()->willReturn($errors);
+
+        return $process->reveal();
     }
 }
