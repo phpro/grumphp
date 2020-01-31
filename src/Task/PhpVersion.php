@@ -6,6 +6,7 @@ namespace GrumPHP\Task;
 
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
+use GrumPHP\Task\Config\EmptyTaskConfig;
 use GrumPHP\Task\Config\TaskConfigInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -27,6 +28,7 @@ class PhpVersion implements TaskInterface
 
     public function __construct(PhpVersionUtility $phpVersionUtility)
     {
+        $this->config = new EmptyTaskConfig();
         $this->phpVersionUtility = $phpVersionUtility;
     }
 
@@ -39,7 +41,7 @@ class PhpVersion implements TaskInterface
     {
         $config = $this->getConfig()->getOptions();
         if (null === $config['project']) {
-            return TaskResult::createPassed($this, $context);
+            return TaskResult::createSkipped($this, $context);
         }
 
         // Check the current version
