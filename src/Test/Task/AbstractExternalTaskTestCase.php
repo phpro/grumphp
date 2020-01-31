@@ -75,6 +75,10 @@ abstract class AbstractExternalTaskTestCase extends AbstractTaskTestCase
         $process->getOutput()->willReturn($output);
         $process->getErrorOutput()->willReturn($errors);
 
+        $process->setWorkingDirectory(Argument::any())->will(function ($arguments) {
+            $this->getWorkingDirectory()->willReturn($arguments[0]);
+        });
+
         return $process->reveal();
     }
 
