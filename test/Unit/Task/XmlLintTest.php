@@ -7,30 +7,30 @@ namespace GrumPHPTest\Unit\Task;
 use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Linter\LintError;
-use GrumPHP\Linter\Yaml\YamlLinter;
-use GrumPHP\Linter\Yaml\YamlLintError;
+use GrumPHP\Linter\Xml\XmlLinter;
+use GrumPHP\Linter\Xml\XmlLintError;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\TaskInterface;
-use GrumPHP\Task\YamlLint;
+use GrumPHP\Task\XmlLint;
 use GrumPHP\Test\Task\AbstractTaskTestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 
-class YamlLintTest extends AbstractTaskTestCase
+class XmlLintTest extends AbstractTaskTestCase
 {
     /**
-     * @var YamlLinter|ObjectProphecy
+     * @var XmlLinter|ObjectProphecy
      */
     private $linter;
 
     protected function provideTask(): TaskInterface
     {
-        $this->linter = $this->prophesize(YamlLinter::class);
+        $this->linter = $this->prophesize(XmlLinter::class);
         $this->linter->isInstalled()->willReturn(true);
 
-        return new YamlLint($this->linter->reveal());
+        return new XmlLint($this->linter->reveal());
     }
 
     public function provideConfigurableOptions(): iterable
@@ -39,17 +39,17 @@ class YamlLintTest extends AbstractTaskTestCase
             [],
             [
                 'ignore_patterns' => [],
-                'object_support' => false,
-                'exception_on_invalid_type' => false,
-                'parse_constant' => false,
-                'parse_custom_tags' => false,
-                'whitelist_patterns' => [],
+                'load_from_net' => false,
+                'x_include' => false,
+                'dtd_validation' => false,
+                'scheme_validation' => false,
+                'triggered_by' => ['xml'],
             ]
         ];
 
         yield 'invalidcase' => [
             [
-                'whitelist_patterns' => 'thisisnotanarray'
+                'ignore_patterns' => 'thisisnotanarray'
             ],
             null
         ];
@@ -77,7 +77,7 @@ class YamlLintTest extends AbstractTaskTestCase
     {
         yield 'exception' => [
             [],
-            $this->mockContext(RunContext::class, ['hello.yml']),
+            $this->mockContext(RunContext::class, ['hello.xml']),
             function (array $options, ContextInterface $context) {
                 $this->assumeLinterConfig($options);
                 $this->linter->lint($context->getFiles()->first())->willThrow(new RuntimeException('nope'));
@@ -87,43 +87,43 @@ class YamlLintTest extends AbstractTaskTestCase
 
         yield 'lint-errors-on-one-file' => [
             [],
-            $this->mockContext(RunContext::class, ['hello.yml']),
+            $this->mockContext(RunContext::class, ['hello.xml']),
             function (array $options, ContextInterface $context) {
                 $this->assumeLinterConfig($options);
                 $this->linter->lint($context->getFiles()->first())->willReturn(
                     new LintErrorsCollection([
-                        $this->createLintError('hello.yml'),
-                        $this->createLintError('hello.yml'),
+                        $this->createLintError('hello.xml'),
+                        $this->createLintError('hello.xml'),
                     ])
                 );
             },
             (string) (new LintErrorsCollection([
-                $this->createLintError('hello.yml'),
-                $this->createLintError('hello.yml'),
+                $this->createLintError('hello.xml'),
+                $this->createLintError('hello.xml'),
             ]))
         ];
 
         yield 'lint-errors-on-multiple-file' => [
             [],
-            $this->mockContext(RunContext::class, ['hello.yml', 'world.yaml']),
+            $this->mockContext(RunContext::class, ['hello.xml', 'world.xml']),
             function (array $options, ContextInterface $context) {
                 $this->assumeLinterConfig($options);
                 $this->linter->lint($context->getFiles()[0])->willReturn(
                     new LintErrorsCollection([
-                        $this->createLintError('hello.yml'),
-                        $this->createLintError('hello.yml'),
+                        $this->createLintError('hello.xml'),
+                        $this->createLintError('hello.xml'),
                     ])
                 );
                 $this->linter->lint($context->getFiles()[1])->willReturn(
                     new LintErrorsCollection([
-                        $this->createLintError('world.yaml'),
+                        $this->createLintError('world.xml'),
                     ])
                 );
             },
             (string) (new LintErrorsCollection([
-                $this->createLintError('hello.yml'),
-                $this->createLintError('hello.yml'),
-                $this->createLintError('world.yml'),
+                $this->createLintError('hello.xml'),
+                $this->createLintError('hello.xml'),
+                $this->createLintError('world.xml'),
             ]))
         ];
     }
@@ -132,7 +132,7 @@ class YamlLintTest extends AbstractTaskTestCase
     {
         yield 'no-lint-errors' => [
             [],
-            $this->mockContext(RunContext::class, ['hello.yml']),
+            $this->mockContext(RunContext::class, ['hello.xml']),
             function (array $options, ContextInterface $context) {
                 $this->assumeLinterConfig($options);
                 $this->linter->lint($context->getFiles()[0])->willReturn(new LintErrorsCollection([]));
@@ -140,7 +140,7 @@ class YamlLintTest extends AbstractTaskTestCase
         ];
         yield 'no-lint-errors-on-multiple-files' => [
             [],
-            $this->mockContext(RunContext::class, ['hello.yml']),
+            $this->mockContext(RunContext::class, ['hello.xml']),
             function (array $options, ContextInterface $context) {
                 $this->assumeLinterConfig($options);
                 $this->linter->lint($context->getFiles()[0])->willReturn(new LintErrorsCollection([]));
@@ -148,12 +148,12 @@ class YamlLintTest extends AbstractTaskTestCase
         ];
         yield 'no-lint-errors-with-non-default-linter-options' => [
             [
-                'object_support' => true,
-                'exception_on_invalid_type' => true,
-                'parse_constant' => true,
-                'parse_custom_tags' => true,
+                'load_from_net' => true,
+                'x_include' => true,
+                'dtd_validation' => true,
+                'scheme_validation' => true,
             ],
-            $this->mockContext(RunContext::class, ['hello.yml']),
+            $this->mockContext(RunContext::class, ['hello.xml']),
             function (array $options, ContextInterface $context) {
                 $this->assumeLinterConfig($options);
                 $this->linter->lint($context->getFiles()[0])->willReturn(new LintErrorsCollection([]));
@@ -163,7 +163,7 @@ class YamlLintTest extends AbstractTaskTestCase
             [
                 'ignore_patterns' => ['src/'],
             ],
-            $this->mockContext(RunContext::class, ['src/hello.yml']),
+            $this->mockContext(RunContext::class, ['src/hello.xml']),
             function (array $options) {
                 $this->assumeLinterConfig($options);
                 $this->linter->lint(Argument::cetera())->shouldNotBeCalled();
@@ -180,28 +180,22 @@ class YamlLintTest extends AbstractTaskTestCase
         ];
         yield 'no-files-after-triggered-by' => [
             [],
-            $this->mockContext(RunContext::class, ['notaymlfile.txt']),
-            function () {}
-        ];
-        yield 'no-files-after-whitelist' => [
-            [
-                'whitelist_patterns' => ['src/'],
-            ],
-            $this->mockContext(RunContext::class, ['test/file.yml']),
+            $this->mockContext(RunContext::class, ['notaxmlfile.txt']),
             function () {}
         ];
     }
 
     private function assumeLinterConfig(array $options)
     {
-        $this->linter->setObjectSupport($options['object_support'])->shouldBeCalled();
-        $this->linter->setExceptionOnInvalidType($options['exception_on_invalid_type'])->shouldBeCalled();
-        $this->linter->setParseCustomTags($options['parse_custom_tags'])->shouldBeCalled();
-        $this->linter->setParseConstants($options['parse_constant'])->shouldBeCalled();
+        $this->linter->setLoadFromNet($options['load_from_net'])->shouldBeCalled();
+        $this->linter->setXInclude($options['x_include'])->shouldBeCalled();
+        $this->linter->setDtdValidation($options['dtd_validation'])->shouldBeCalled();
+        $this->linter->setSchemeValidation($options['scheme_validation'])->shouldBeCalled();
+
     }
 
-    private function createLintError(string $fileName): YamlLintError
+    private function createLintError(string $fileName): XmlLintError
     {
-        return new YamlLintError(LintError::TYPE_ERROR, 'error', $fileName);
+        return new XmlLintError(LintError::TYPE_ERROR, 0, 'error', $fileName, 10, 20);
     }
 }
