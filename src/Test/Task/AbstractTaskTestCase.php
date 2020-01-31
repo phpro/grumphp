@@ -94,7 +94,7 @@ abstract class AbstractTaskTestCase extends TestCase
         string $expectedErrorMessage
     ): void {
         $task = $this->configureTask($config);
-        \Closure::bind($configurator, $this)($task->getConfig()->getOptions());
+        \Closure::bind($configurator, $this)($task->getConfig()->getOptions(), $context);
 
         $result = $task->run($context);
         self::assertInstanceOf(TaskResult::class, $result);
@@ -114,7 +114,7 @@ abstract class AbstractTaskTestCase extends TestCase
         callable $configurator
     ): void {
         $task = $this->configureTask($config);
-        \Closure::bind($configurator, $this)($task->getConfig()->getOptions());
+        \Closure::bind($configurator, $this)($task->getConfig()->getOptions(), $context);
 
         $result = $task->run($context);
         self::assertInstanceOf(TaskResult::class, $result);

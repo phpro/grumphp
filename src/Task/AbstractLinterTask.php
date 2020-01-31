@@ -8,6 +8,7 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\LintErrorsCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Linter\LinterInterface;
+use GrumPHP\Task\Config\EmptyTaskConfig;
 use GrumPHP\Task\Config\TaskConfigInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -26,6 +27,7 @@ abstract class AbstractLinterTask implements TaskInterface
     public function __construct(LinterInterface $linter)
     {
         $this->linter = $linter;
+        $this->config = new EmptyTaskConfig();
     }
 
     public static function getConfigurableOptions(): OptionsResolver
