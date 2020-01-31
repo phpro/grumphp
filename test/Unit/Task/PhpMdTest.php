@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace GrumPHPTest\Unit\Task;
+namespace GrumPHPTest\Uni\Task;
 
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\PhpMd;
 use GrumPHP\Task\TaskInterface;
+use GrumPHP\Test\Task\AbstractExternalTaskTestCase;
 
 class PhpMdTest extends AbstractExternalTaskTestCase
 {

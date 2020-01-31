@@ -203,6 +203,15 @@ services:
 You just registered your custom task! Pretty cool right?!
 
 
+## Testing your custom task.
+
+We provided some base phpunit classes which you can use to test your tasks.
+For a more detailed view on how to use these classes, you can scroll through our own unit tests section.
+
+* `GrumPHP\Test\Task\AbstractTaskTestCase` : For testing basic tasks that don't trigger an external command.
+* `GrumPHP\Test\Task\AbstractExternalTaskTestCase` : For testing tasks that trigger external commands.
+
+
 ## Run the same task twice with different configuration
 
 In some cases you might want to run the same task but with different configuration.

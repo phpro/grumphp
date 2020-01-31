@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GrumPHPTest\Unit\Task;
+namespace GrumPHP\Test\Task;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Runner\TaskResult;
