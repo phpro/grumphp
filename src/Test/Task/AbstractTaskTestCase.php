@@ -163,8 +163,8 @@ abstract class AbstractTaskTestCase extends TestCase
         $context->getFiles()->willReturn(
             new FilesCollection(
                 array_map(
-                    static function (string $file): SplFileInfo {
-                        return new SplFileInfo($file, $file, $file);
+                    static function ($file): SplFileInfo {
+                        return $file instanceof SplFileInfo ? $file : new SplFileInfo($file, $file, $file);
                     },
                     $files
                 )

@@ -6,6 +6,7 @@ namespace GrumPHP\Task;
 
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
+use GrumPHP\Task\Config\EmptyTaskConfig;
 use GrumPHP\Task\Config\TaskConfigInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -18,6 +19,11 @@ class FileSize implements TaskInterface
      * @var TaskConfigInterface
      */
     private $config;
+
+    public function __construct()
+    {
+        $this->config = new EmptyTaskConfig();
+    }
 
     public static function getConfigurableOptions(): OptionsResolver
     {
