@@ -25,7 +25,7 @@ final class ProcessUtils
     public static function escapeArgument(string $argument): string
     {
         if ('\\' !== DIRECTORY_SEPARATOR) {
-            return "'".str_replace("'", "'\\''", $argument)."'";
+            return '"'.str_replace("'", "'\\''", $argument).'"';
         }
         if ('' === $argument = (string) $argument) {
             return '""';
