@@ -577,6 +577,59 @@ MSG;
         $result->getMessage()->shouldMatch('/keep.*subject <= 60.*\n.*line 3.*> 72.*/im');
     }
 
+    function it_should_pass_when_using_git_verbose_with_verbose_part_very_wide(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    {
+        $commitMessage = <<<'MSG'
+A subject line that is just fine
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch fix-ignore-git-verbose
+# Changes to be committed:
+#	modified:   src/Task/Git/CommitMessage.php
+#
+# ------------------------ >8 ------------------------
+# Do not modify or remove the line above.
+# Everything below it will be ignored.
+diff --git a/src/Task/Git/CommitMessage.php b/src/Task/Git/CommitMessage.php
+Something very long. Something very long. Something very long. Something very long. Something very long. Something very long.
+MSG;
+        $context->getCommitMessage()->willReturn($commitMessage);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
+        $result->isPassed()->shouldBe(true);
+    }
+
+    function it_should_fail_when_using_git_verbose_on_wide_body_but_not_with_with_verbose_part_very_wide(GrumPHP $grumPHP, GitCommitMsgContext $context)
+    {
+        $commitMessage = <<<'MSG'
+A subject line that is just fine
+
+Something very long. Something very long. Something very long. Something very long. Something very long. Something very long.
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch fix-ignore-git-verbose
+# Changes to be committed:
+#	modified:   src/Task/Git/CommitMessage.php
+#
+# ------------------------ >8 ------------------------
+# Do not modify or remove the line above.
+# Everything below it will be ignored.
+diff --git a/src/Task/Git/CommitMessage.php b/src/Task/Git/CommitMessage.php
+Something very long. Something very long. Something very long. Something very long. Something very long. Something very long.
+MSG;
+        $context->getCommitMessage()->willReturn($commitMessage);
+
+        $result = $this->run($context);
+        $result->shouldBeAnInstanceOf(TaskResultInterface::class);
+        $result->isPassed()->shouldBe(false);
+        $result->getMessage()->shouldMatch('/line 3.*> 72.*/im');
+    }
+
     function it_should_fail_when_subject_contains_a_trailing_period(GrumPHP $grumPHP, GitCommitMsgContext $context)
     {
         $grumPHP->getTaskConfiguration('git_commit_message')->willReturn([

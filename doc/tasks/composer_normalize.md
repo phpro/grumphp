@@ -6,7 +6,7 @@ and tidy.
 ***Composer***
 
 ```
-composer require --dev localheinz/composer-normalize
+composer require --dev ergebnis/composer-normalize
 ```
 
 ***Config***
