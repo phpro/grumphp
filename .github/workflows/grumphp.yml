@@ -26,7 +26,7 @@ jobs:
               run: composer update --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }}
             - name: Set git variables
               run: |
-                git config user.email "you@example.com"
-                git config user.name "Your Name"
+                git config --global user.email "you@example.com"
+                git config --global user.name "Your Name"
             - name: Run the tests
               run: vendor/bin/grumphp run
