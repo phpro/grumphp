@@ -7,6 +7,7 @@ namespace GrumPHP\Task\Git;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
+use GrumPHP\Task\Config\EmptyTaskConfig;
 use GrumPHP\Task\Config\TaskConfigInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitCommitMsgContext;
@@ -54,6 +55,11 @@ class CommitMessage implements TaskInterface
         $resolver->addAllowedTypes('additional_modifiers', ['string']);
 
         return $resolver;
+    }
+
+    public function __construct()
+    {
+        $this->config = new EmptyTaskConfig();
     }
 
     public function getConfig(): TaskConfigInterface
