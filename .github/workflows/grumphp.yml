@@ -1,6 +1,6 @@
 name: GrumPHP
 
-on: [push]
+on: [push, pull_request]
 jobs:
     run:
         runs-on: ${{ matrix.operating-system }}
@@ -29,4 +29,4 @@ jobs:
                 git config --global user.email "you@example.com"
                 git config --global user.name "Your Name"
             - name: Run the tests
-              run: vendor/bin/grumphp run
+              run: php vendor/bin/grumphp run
