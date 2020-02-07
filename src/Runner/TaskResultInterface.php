@@ -15,6 +15,10 @@ interface TaskResultInterface
 
     public function isPassed(): bool;
 
+    public function hasFailed(): bool;
+
+    public function isSkipped(): bool;
+
     public function isBlocking(): bool;
 
     public function getMessage(): string;

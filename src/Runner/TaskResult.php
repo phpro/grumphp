@@ -69,17 +69,22 @@ class TaskResult implements TaskResultInterface
 
     public function isPassed(): bool
     {
-        return self::PASSED === $this->getResultCode();
+        return self::PASSED === $this->resultCode;
     }
 
     public function hasFailed(): bool
     {
-        return self::FAILED === $this->getResultCode() || self::NONBLOCKING_FAILED === $this->getResultCode();
+        return self::FAILED === $this->resultCode || self::NONBLOCKING_FAILED === $this->resultCode;
+    }
+
+    public function isSkipped(): bool
+    {
+        return $this->resultCode === self::SKIPPED;
     }
 
     public function isBlocking(): bool
     {
-        return $this->getResultCode() >= self::FAILED;
+        return $this->resultCode >= self::FAILED;
     }
 
     public function getMessage(): string
