@@ -6,6 +6,7 @@ namespace GrumPHP\Task;
 
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
+use GrumPHP\Task\Config\EmptyTaskConfig;
 use GrumPHP\Task\Config\TaskConfigInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -32,6 +33,7 @@ class CloverCoverage implements TaskInterface
 
     public function __construct(Filesystem $filesystem)
     {
+        $this->config = new EmptyTaskConfig();
         $this->filesystem = $filesystem;
     }
 

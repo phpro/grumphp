@@ -8,6 +8,7 @@ use Gitonomy\Git\Exception\ProcessException;
 use GrumPHP\Git\GitRepository;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
+use GrumPHP\Task\Config\EmptyTaskConfig;
 use GrumPHP\Task\Config\TaskConfigInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -30,6 +31,7 @@ class BranchName implements TaskInterface
 
     public function __construct(GitRepository $repository)
     {
+        $this->config = new EmptyTaskConfig();
         $this->repository = $repository;
     }
 

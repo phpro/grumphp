@@ -58,7 +58,7 @@ class Behat extends AbstractExternalTask
         $arguments->addOptionalArgument('--config=%s', $config['config']);
         $arguments->addOptionalArgument('--format=%s', $config['format']);
         $arguments->addOptionalArgument('--suite=%s', $config['suite']);
-        $arguments->addOptionalArgument('--stop_on_failure', $config['stop_on_failure']);
+        $arguments->addOptionalArgument('--stop-on-failure', $config['stop_on_failure']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();

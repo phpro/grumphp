@@ -71,6 +71,7 @@ abstract class AbstractExternalTaskTestCase extends AbstractTaskTestCase
         /** @var Process|ObjectProphecy $process */
         $process = $this->prophesize(Process::class);
         $process->run()->willReturn($exitCode);
+        $process->getExitCode()->willReturn($exitCode);
         $process->isSuccessful()->willReturn($exitCode === 0);
         $process->getOutput()->willReturn($output);
         $process->getErrorOutput()->willReturn($errors);

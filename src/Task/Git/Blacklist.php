@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GrumPHP\Task\Git;
 
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\IO\IOInterface;
 use GrumPHP\Process\ProcessBuilder;
