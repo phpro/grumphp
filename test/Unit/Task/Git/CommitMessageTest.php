@@ -280,7 +280,7 @@ class CommitMessageTest extends AbstractTaskTestCase
         yield 'it_fails_on_matchers' => [
             [
                 'enforce_capitalized_subject' => false,
-                'matchers' => ['test', '*es*', '/^te(.*)/', '/(.*)st$/', '/t(e|a)st/', 'TEST'],
+                'matchers' => ['test', '*es*', 'te[s][t]', '/^te(.*)/', '/(.*)st$/', '/t(e|a)st/', 'TEST'],
             ],
             $this->mockCommitMsgContext('invalid'),
             function () {
@@ -288,10 +288,11 @@ class CommitMessageTest extends AbstractTaskTestCase
             $this->buildMultiLineString(
                 'Rule not matched: "0" test',
                 'Rule not matched: "1" *es*',
-                'Rule not matched: "2" /^te(.*)/',
-                'Rule not matched: "3" /(.*)st$/',
-                'Rule not matched: "4" /t(e|a)st/',
-                'Rule not matched: "5" TEST',
+                'Rule not matched: "2" te[s][t]',
+                'Rule not matched: "3" /^te(.*)/',
+                'Rule not matched: "4" /(.*)st$/',
+                'Rule not matched: "5" /t(e|a)st/',
+                'Rule not matched: "6" TEST',
                 'Original commit message: ',
                 'invalid'
             )
@@ -669,9 +670,9 @@ class CommitMessageTest extends AbstractTaskTestCase
         yield 'it_applies_matchers' => [
             [
                 'enforce_capitalized_subject' => false,
-                'matchers' => ['test', '*es*', '/^te(.*)/', '/(.*)st$/', '/t(e|a)st/', 'TEST'],
+                'matchers' => ['test', '*es*', 'te[s][t]', '/^te(.*)/', '/(.*)st$/', '/t(e|a)st/', 'TEST'],
             ],
-            $this->mockCommitMsgContext($this->buildMessage('test')),
+            $this->mockCommitMsgContext('test'),
             function () {
             },
         ];
