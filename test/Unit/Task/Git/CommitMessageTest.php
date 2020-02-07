@@ -232,6 +232,126 @@ class CommitMessageTest extends AbstractTaskTestCase
                 'Line 5 of commit message has > 10 characters.'
             )
         ];
+        yield 'type_scope_conventions_not_set_in_message' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'types' => [
+                        'fix'
+                    ]
+                ],
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('doesnt match type scope convention')),
+            function () {
+            },
+            'Rule not matched: "Invalid Type/Scope Format"'
+        ];
+        yield 'type_scope_conventions_invalid_type' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'types' => [
+                        'fix'
+                    ]
+                ],
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('bug: doesnt match type scope convention')),
+            function () {
+            },
+            'Rule not matched: "Invalid Type/Scope Format"'
+        ];
+        yield 'type_scope_conventions_invalid_scope' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'types' => [
+                        'fix'
+                    ],
+                    'scopes' => [
+                        'app'
+                    ]
+                ],
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('fix(api): doesnt match type scope convention')),
+            function () {
+            },
+            'Rule not matched: "Invalid Type/Scope Format"'
+        ];
+        yield 'it_fails_on_matchers' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'matchers' => ['test', '*es*', 'te[s][t]', '/^te(.*)/', '/(.*)st$/', '/t(e|a)st/', 'TEST'],
+            ],
+            $this->mockCommitMsgContext('invalid'),
+            function () {
+            },
+            $this->buildMultiLineString(
+                'Rule not matched: "0" test',
+                'Rule not matched: "1" *es*',
+                'Rule not matched: "2" te[s][t]',
+                'Rule not matched: "3" /^te(.*)/',
+                'Rule not matched: "4" /(.*)st$/',
+                'Rule not matched: "5" /t(e|a)st/',
+                'Rule not matched: "6" TEST',
+                'Original commit message: ',
+                'invalid'
+            )
+        ];
+        yield 'it_fails_on_names_matchers' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'matchers' => [
+                    'full' => 'test',
+                    'partial' => '*es*'
+                ],
+            ],
+            $this->mockCommitMsgContext('invalid'),
+            function () {
+            },
+            $this->buildMultiLineString(
+                'Rule not matched: "full" test',
+                'Rule not matched: "partial" *es*',
+                'Original commit message: ',
+                'invalid'
+            )
+        ];
+        yield 'it_applies_matchers_with_case_sensitive' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'matchers' => ['/TEST/'],
+                'case_insensitive' => false,
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('test')),
+            function () {
+            },
+            $this->buildMultiLineString(
+                'Rule not matched: "0" /TEST/',
+                'Original commit message: ',
+                'test'
+            )
+        ];
+        yield 'it_applies_matchers_with_multiline' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'matchers' => ['/^hello/'],
+                'multiline' => true,
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('you', 'me', 'there')),
+            function () {
+            },
+            'Rule not matched: "0" /^hello/'
+        ];
+        yield 'it_applies_matchers_without_multiline' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'matchers' => ['/^hello((.|[\n])*)bye$/'],
+                'multiline' => false,
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('hello there bye', 'bye good hello')),
+            function () {
+            },
+            'Rule not matched: "0" /^hello((.|[\n])*)bye$/'
+        ];
     }
 
     public function providePassesOnStuff(): iterable
@@ -374,6 +494,235 @@ class CommitMessageTest extends AbstractTaskTestCase
                 'max_body_width' => 10,
             ],
             $this->mockCommitMsgContext($this->addIgnoreBelowComment($this->buildMessage('Subject'))),
+            function () {
+            },
+        ];
+        yield 'empty-type_scope_conventions' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [],
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('doesnt match type scope convention')),
+            function () {
+            },
+        ];
+        yield 'type_scope_conventions_match_type' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'types' => [
+                        'fix'
+                    ]
+                ],
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('fix: match type scope convention')),
+            function () {
+            },
+        ];
+        yield 'type_scope_conventions_match_type_without_scope' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'types' => [
+                        'fix'
+                    ],
+                    'scopes' => [
+                        'app'
+                    ]
+                ],
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('fix: match type scope convention')),
+            function () {
+            },
+        ];
+        yield 'type_scope_conventions_match_type_with_scope' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'types' => [
+                        'fix'
+                    ],
+                    'scopes' => [
+                        'app'
+                    ]
+                ],
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('fix(app): match type scope convention')),
+            function () {
+            },
+        ];
+        yield 'fixup_type_scope_conventions_match_type_without_scope' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'types' => [
+                        'fix'
+                    ],
+                    'scopes' => [
+                        'app'
+                    ]
+                ],
+            ],
+            $this->mockCommitMsgContext($this->fixup('fix: match type scope convention')),
+            function () {
+            },
+        ];
+        yield 'fixup_type_scope_conventions_match_type_with_scope' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'types' => [
+                        'fix'
+                    ],
+                    'scopes' => [
+                        'app'
+                    ]
+                ],
+            ],
+            $this->mockCommitMsgContext($this->fixup('fix(app): match type scope convention')),
+            function () {
+            },
+        ];
+        yield 'squash_type_scope_conventions_match_type_without_scope' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'types' => [
+                        'fix'
+                    ],
+                    'scopes' => [
+                        'app'
+                    ]
+                ],
+            ],
+            $this->mockCommitMsgContext($this->squash('fix: match type scope convention')),
+            function () {
+            },
+        ];
+        yield 'squash_type_scope_conventions_match_type_with_scope' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'types' => [
+                        'fix'
+                    ],
+                    'scopes' => [
+                        'app'
+                    ]
+                ],
+            ],
+            $this->mockCommitMsgContext($this->squash('fix(app): match type scope convention')),
+            function () {
+            },
+        ];
+        yield 'skip_type_scope_conventions_on_merge' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'types' => [
+                        'fix'
+                    ],
+                ],
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('Merge branch \'x\' into')),
+            function () {
+            },
+        ];
+        yield 'skip_type_scope_conventions_on_merge_remote' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'types' => [
+                        'fix'
+                    ],
+                ],
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('Merge remote-tracking branch \'x\' into')),
+            function () {
+            },
+        ];
+        yield 'skip_type_scope_conventions_on_merge_PR' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'types' => [
+                        'fix'
+                    ],
+                ],
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('Merge pull request #123 into')),
+            function () {
+            },
+        ];
+        yield 'fixup_skip_type_scope_conventions_on_merge' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'types' => [
+                        'fix'
+                    ],
+                ],
+            ],
+            $this->mockCommitMsgContext($this->fixup('Merge branch \'x\' into')),
+            function () {
+            },
+        ];
+        yield 'it_applies_matchers' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'matchers' => ['test', '*es*', 'te[s][t]', '/^te(.*)/', '/(.*)st$/', '/t(e|a)st/', 'TEST'],
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('test')),
+            function () {
+            },
+        ];
+        yield 'it_applies_matchers_with_additional_modifiers' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'matchers' => ['/.*ümlaut/'],
+                'additional_modifiers' => 'u',
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('message containing ümlaut')),
+            function () {
+            },
+        ];
+        yield 'it_applies_matchers_with_case_sensitive' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'matchers' => ['/TEST/'],
+                'case_insensitive' => false,
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('TEST')),
+            function () {
+            },
+        ];
+        yield 'it_applies_matchers_with_every_multiline' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'matchers' => ['/^hello/'],
+                'multiline' => true,
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('hello you', 'hello me', 'hello there')),
+            function () {
+            },
+        ];
+        yield 'it_applies_matchers_with_single_multiline' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'matchers' => ['/^hello/'],
+                'multiline' => true,
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('you', 'hello me', 'there')),
+            function () {
+            },
+        ];
+        yield 'it_applies_matchers_without_multiline' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'matchers' => ['/^hello((.|[\n])*)bye$/'],
+                'multiline' => false,
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('hello there', 'good bye')),
             function () {
             },
         ];

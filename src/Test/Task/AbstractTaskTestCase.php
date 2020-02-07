@@ -101,7 +101,9 @@ abstract class AbstractTaskTestCase extends TestCase
         self::assertSame(TaskResult::FAILED, $result->getResultCode());
         self::assertSame($task, $result->getTask());
         self::assertSame($context, $result->getContext());
-        self::assertSame($expectedErrorMessage, $result->getMessage());
+
+        self::assertNotSame('', $expectedErrorMessage, 'Please specify (partial) expected error message!');
+        self::assertStringContainsString($expectedErrorMessage, $result->getMessage());
     }
 
     /**
