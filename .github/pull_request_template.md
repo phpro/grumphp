@@ -15,7 +15,6 @@
 
 # New Task Checklist:
 
-- [ ] Is the README.md file updated?
 - [ ] Are the dependencies added to the composer.json suggestions?
 - [ ] Is the doc/tasks.md file updated?
 - [ ] Are the task parameters documented?
