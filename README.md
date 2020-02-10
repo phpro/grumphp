@@ -88,56 +88,7 @@ parameters:
     ascii:
         failed: grumphp-grumpy.txt
         succeeded: grumphp-happy.txt
-    tasks:
-        ant: ~
-        atoum: ~
-        behat: ~
-        brunch: ~
-        clover_coverage: ~
-        codeception: ~
-        composer: ~
-        composer_normalize: ~
-        composer_require_checker: ~
-        composer_script: ~
-        deptrac: ~
-        doctrine_orm: ~
-        file_size: ~
-        gherkin: ~
-        git_blacklist: ~
-        git_branch_name: ~
-        git_commit_message: ~
-        grunt: ~
-        gulp: ~
-        infection: ~
-        jsonlint: ~
-        kahlan: ~
-        make: ~
-        npm_script: ~
-        paratest: ~
-        phan: ~        
-        phing: ~
-        php7cc: ~
-        phpcpd: ~
-        phpcs: ~
-        phpcsfixer: ~
-        phpcsfixer2: ~
-        phplint: ~
-        phpmd: ~
-        phpmnd: ~
-        phpparser: ~
-        phpspec: ~
-        phpstan: ~
-        phpunit: ~
-        phpunitbridge: ~
-        phpversion: ~
-        progpilot: ~
-        psalm: ~
-        robo: ~
-        securitychecker: ~
-        shell: ~
-        twigcs: ~
-        xmllint: ~
-        yamllint: ~
+    tasks: {}
     testsuites: []
     extensions: []
 ```
