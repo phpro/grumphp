@@ -16,12 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class DoctrineOrm extends AbstractExternalTask
 {
-    public function getName(): string
-    {
-        return 'doctrine_orm';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -50,7 +45,7 @@ class DoctrineOrm extends AbstractExternalTask
      */
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
         $files = $context->getFiles()->extensions($config['triggered_by']);
 
         if (0 === \count($files)) {

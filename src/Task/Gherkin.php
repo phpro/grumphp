@@ -16,12 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Gherkin extends AbstractExternalTask
 {
-    public function getName(): string
-    {
-        return 'gherkin';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -49,7 +44,7 @@ class Gherkin extends AbstractExternalTask
      */
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
         $files = $context->getFiles()->extensions(['feature']);
         if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);

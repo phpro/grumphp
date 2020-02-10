@@ -6,26 +6,27 @@ namespace GrumPHP\Task;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ParseErrorsCollection;
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Parser\ParserInterface;
+use GrumPHP\Task\Config\EmptyTaskConfig;
+use GrumPHP\Task\Config\TaskConfigInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractParserTask implements TaskInterface
 {
     /**
-     * @var GrumPHP
+     * @var TaskConfigInterface
      */
-    protected $grumPHP;
+    protected $configuration;
 
     /**
      * @var ParserInterface
      */
     protected $parser;
 
-    public function __construct(GrumPHP $grumPHP, ParserInterface $parser)
+    public function __construct(ParserInterface $parser)
     {
-        $this->grumPHP = $grumPHP;
+        $this->configuration = new EmptyTaskConfig();
         $this->parser = $parser;
 
         if (!$parser->isInstalled()) {
@@ -35,7 +36,7 @@ abstract class AbstractParserTask implements TaskInterface
         }
     }
 
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -49,20 +50,24 @@ abstract class AbstractParserTask implements TaskInterface
         return $resolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfiguration(): array
+    public function getConfig(): TaskConfigInterface
     {
-        $configured = $this->grumPHP->getTaskConfiguration($this->getName());
+        return $this->configuration;
+    }
 
-        return $this->getConfigurableOptions()->resolve($configured);
+
+    public function withConfig(TaskConfigInterface $config): TaskInterface
+    {
+        $new = clone $this;
+        $new->configuration = $config;
+
+        return $new;
     }
 
     protected function parse(FilesCollection $files): ParseErrorsCollection
     {
         // Skip ignored patterns:
-        $configuration = $this->getConfiguration();
+        $configuration = $this->getConfig()->getOptions();
         foreach ($configuration['ignore_patterns'] as $pattern) {
             $files = $files->notPath($pattern);
         }

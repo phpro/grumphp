@@ -21,21 +21,15 @@ class Composer extends AbstractExternalTask
     private $filesystem;
 
     public function __construct(
-        GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,
         ProcessFormatterInterface $formatter,
         Filesystem $filesystem
     ) {
-        parent::__construct($grumPHP, $processBuilder, $formatter);
+        parent::__construct($processBuilder, $formatter);
         $this->filesystem = $filesystem;
     }
 
-    public function getName(): string
-    {
-        return 'composer';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -66,7 +60,7 @@ class Composer extends AbstractExternalTask
 
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
         $files = $context->getFiles()
             ->path(pathinfo($config['file'], PATHINFO_DIRNAME))
             ->name(pathinfo($config['file'], PATHINFO_BASENAME));

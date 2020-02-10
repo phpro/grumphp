@@ -6,6 +6,8 @@ use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Event\Subscriber\ProgressSubscriber;
 use GrumPHP\Event\TaskEvent;
+use GrumPHP\Task\Config\Metadata;
+use GrumPHP\Task\Config\TaskConfig;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -52,6 +54,7 @@ class ProgressSubscriberSpec extends ObjectBehavior
     function it_should_advance_progress(OutputInterface $output, TaskEvent $event, TaskInterface $task)
     {
         $event->getTask()->willReturn($task);
+        $task->getConfig()->willReturn(new TaskConfig('task1', [], new Metadata([])));
 
         $output->writeln('')->willReturn(null);
         $output->write(Argument::containingString('Running task'))->shouldBeCalled();

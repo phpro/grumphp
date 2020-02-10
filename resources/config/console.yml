@@ -20,7 +20,7 @@ services:
     #
     GrumPHP\Console\Command\ConfigureCommand:
         arguments:
-            - '@config'
+            - '@GrumPHP\Configuration\Resolver\TaskConfigResolver'
             - '@grumphp.util.filesystem'
             - '@GrumPHP\Util\Paths'
         tags:

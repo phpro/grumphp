@@ -16,12 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PhpCsFixerV2 extends AbstractExternalTask
 {
-    public function getName(): string
-    {
-        return 'phpcsfixer2';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -62,7 +57,7 @@ class PhpCsFixerV2 extends AbstractExternalTask
      */
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
         $files = $context->getFiles()->extensions($config['triggered_by']);
         if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);

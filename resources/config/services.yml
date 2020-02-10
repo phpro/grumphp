@@ -20,6 +20,9 @@ services:
     GrumPHP\Event\Dispatcher\Bridge\SymfonyEventDispatcher:
         arguments:
             - '@Symfony\Component\EventDispatcher\EventDispatcher'
+    GrumPHP\Configuration\Resolver\TaskConfigResolver:
+        synthetic: true
+
     GrumPHP\Event\Dispatcher\EventDispatcherInterface: '@GrumPHP\Event\Dispatcher\Bridge\SymfonyEventDispatcher'
 
     filesystem:
@@ -50,6 +53,7 @@ services:
     task_runner:
         class: GrumPHP\Runner\TaskRunner
         arguments:
+          - '@GrumPHP\Collection\TasksCollection'
           - '@config'
           - '@GrumPHP\Event\Dispatcher\EventDispatcherInterface'
         public: true
@@ -91,3 +95,6 @@ services:
 
     json.parser:
         class: Seld\JsonLint\JsonParser
+
+    GrumPHP\Configuration\Configurator\TaskConfigurator: ~
+    GrumPHP\Collection\TasksCollection: ~

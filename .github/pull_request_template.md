@@ -15,12 +15,11 @@
 
 # New Task Checklist:
 
-- [ ] Is the README.md file updated?
 - [ ] Are the dependencies added to the composer.json suggestions?
 - [ ] Is the doc/tasks.md file updated?
 - [ ] Are the task parameters documented?
 - [ ] Is the task registered in the tasks.yml file?
-- [ ] Does the task contains phpspec tests?
+- [ ] Does the task contains phpunit tests?
 - [ ] Is the configuration having logical allowed types?
 - [ ] Does the task run in the correct context?
 - [ ] Is the `run()` method readable?

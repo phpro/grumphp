@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GrumPHP\Task\Git;
 
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\IO\IOInterface;
 use GrumPHP\Process\ProcessBuilder;
@@ -26,21 +25,15 @@ class Blacklist extends AbstractExternalTask
      * Blacklist constructor.
      */
     public function __construct(
-        GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,
         ProcessFormatterInterface $formatter,
         IOInterface $IO
     ) {
         $this->IO = $IO;
-        parent::__construct($grumPHP, $processBuilder, $formatter);
+        parent::__construct($processBuilder, $formatter);
     }
 
-    public function getName(): string
-    {
-        return 'git_blacklist';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -67,7 +60,7 @@ class Blacklist extends AbstractExternalTask
 
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
 
         $whitelistPatterns = $config['whitelist_patterns'];
         $extensions = $config['triggered_by'];

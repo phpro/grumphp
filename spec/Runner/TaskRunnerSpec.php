@@ -3,6 +3,7 @@
 namespace spec\GrumPHP\Runner;
 
 use GrumPHP\Collection\TaskResultCollection;
+use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\Dispatcher\EventDispatcherInterface;
 use GrumPHP\Event\RunnerEvent;
@@ -16,6 +17,8 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Runner\TaskRunnerContext;
+use GrumPHP\Task\Config\Metadata;
+use GrumPHP\Task\Config\TaskConfig;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
@@ -31,44 +34,30 @@ class TaskRunnerSpec extends ObjectBehavior
         TaskRunnerContext $runnerContext,
         ContextInterface $taskContext
     ) {
-        $this->beConstructedWith($grumPHP, $eventDispatcher);
-
         $runnerContext->getTaskContext()->willReturn($taskContext);
         $runnerContext->getTestSuite()->willReturn(null);
         $runnerContext->getTasks()->willReturn([]);
 
-        $task1->getName()->willReturn('task1');
+        $task1->getConfig()->willReturn(new TaskConfig('task1', [], new Metadata([])));
         $task1->canRunInContext($taskContext)->willReturn(true);
         $task1->run($taskContext)->willReturn(TaskResult::createPassed($task1->getWrappedObject(), $taskContext->getWrappedObject()));
-        $task2->getName()->willReturn('task2');
+
+        $task2->getConfig()->willReturn(new TaskConfig('task2', [], new Metadata([])));
         $task2->canRunInContext($taskContext)->willReturn(true);
         $task2->run($taskContext)->willReturn(TaskResult::createPassed($task2->getWrappedObject(), $taskContext->getWrappedObject()));
 
         $grumPHP->stopOnFailure()->willReturn(false);
-        $grumPHP->getTaskMetadata('task1')->willReturn(['priority' => 0]);
-        $grumPHP->getTaskMetadata('task2')->willReturn(['priority' => 0]);
-        $grumPHP->isBlockingTask('task1')->willReturn(true);
-        $grumPHP->isBlockingTask('task2')->willReturn(true);
 
-        $this->addTask($task1);
-        $this->addTask($task2);
+        $this->beConstructedWith(
+            new TasksCollection([$task1->getWrappedObject(), $task2->getWrappedObject()]),
+            $grumPHP,
+            $eventDispatcher
+        );
     }
 
     function it_is_initializable()
     {
         $this->shouldHaveType(TaskRunner::class);
-    }
-
-    function it_holds_tasks(TaskInterface $task1, TaskInterface $task2)
-    {
-        $this->getTasks()->toArray()->shouldEqual([$task1, $task2]);
-    }
-
-    function it_does_not_add_the_same_task_twice(TaskInterface $task1, TaskInterface $task2)
-    {
-        $this->addTask($task1);
-
-        $this->getTasks()->toArray()->shouldEqual([$task1, $task2]);
     }
 
     function it_runs_all_tasks(
@@ -143,13 +132,12 @@ class TaskRunnerSpec extends ObjectBehavior
     }
 
     function it_returns_a_failed_tasks_result_if_a_non_blocking_task_fails(
-        GrumPHP $grumPHP,
         TaskInterface $task1,
         TaskInterface $task2,
         TaskRunnerContext $runnerContext,
         ContextInterface $taskContext
     ) {
-        $grumPHP->isBlockingTask('task1')->willReturn(false);
+        $task1->getConfig()->willReturn(new TaskConfig('task1', [], new Metadata(['blocking' => false])));
         $task1->run($taskContext)->willReturn(TaskResult::createFailed($task1->getWrappedObject(), $taskContext->getWrappedObject(), ''));
         $task2->run($taskContext)->shouldBeCalled();
 
@@ -193,7 +181,7 @@ class TaskRunnerSpec extends ObjectBehavior
         ContextInterface $taskContext
     ) {
         $grumPHP->stopOnFailure()->willReturn(true);
-        $grumPHP->isBlockingTask('task1')->willReturn(false);
+        $task1->getConfig()->willReturn(new TaskConfig('task1', [], new Metadata(['blocking' => false])));
         $task1->run($taskContext)->willReturn(TaskResult::createFailed($task1->getWrappedObject(), $taskContext->getWrappedObject(), ''));
         $task2->run($taskContext)->shouldBeCalled();
 

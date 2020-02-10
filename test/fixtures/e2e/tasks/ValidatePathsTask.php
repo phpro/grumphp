@@ -3,6 +3,8 @@ namespace GrumPHPE2E;
 
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
+use GrumPHP\Task\Config\EmptyTaskConfig;
+use GrumPHP\Task\Config\TaskConfigInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use PHPUnit\Framework\Assert;
@@ -16,22 +18,31 @@ class ValidatePathsTask implements TaskInterface
      */
     private $availableFiles;
 
+    /**
+     * @var TaskConfigInterface
+     */
+    private $config;
+
     public function __construct(array $availableFiles)
     {
         $this->availableFiles = $availableFiles;
+        $this->config = new EmptyTaskConfig();
     }
 
-    public function getName(): string
+    public function getConfig(): TaskConfigInterface
     {
-        return 'validatePaths';
+        return $this->config;
     }
 
-    public function getConfiguration(): array
+    public function withConfig(TaskConfigInterface $config): TaskInterface
     {
-        return [];
+        $new = clone $this;
+        $new->config = $config;
+
+        return $new;
     }
 
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         return new OptionsResolver();
     }
@@ -46,7 +57,6 @@ class ValidatePathsTask implements TaskInterface
         $contextFiles = $context->getFiles()->map(function(\SplFileInfo $file) {
             return $file->getPathname();
         })->toArray();
-
 
         try {
             Assert::assertEquals($this->availableFiles, $contextFiles);

@@ -16,12 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Behat extends AbstractExternalTask
 {
-    public function getName(): string
-    {
-        return 'behat';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -57,13 +52,13 @@ class Behat extends AbstractExternalTask
             return TaskResult::createSkipped($this, $context);
         }
 
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('behat');
         $arguments->addOptionalArgument('--config=%s', $config['config']);
         $arguments->addOptionalArgument('--format=%s', $config['format']);
         $arguments->addOptionalArgument('--suite=%s', $config['suite']);
-        $arguments->addOptionalArgument('--stop_on_failure', $config['stop_on_failure']);
+        $arguments->addOptionalArgument('--stop-on-failure', $config['stop_on_failure']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();

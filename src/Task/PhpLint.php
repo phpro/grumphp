@@ -14,12 +14,7 @@ use Symfony\Component\Process\InputStream;
 
 class PhpLint extends AbstractExternalTask
 {
-    public function getName(): string
-    {
-        return 'phplint';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -46,7 +41,7 @@ class PhpLint extends AbstractExternalTask
 
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
 
         $files = $context
             ->getFiles()

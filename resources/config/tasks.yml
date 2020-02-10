@@ -1,442 +1,340 @@
 services:
-    task.ant:
-        class: GrumPHP\Task\Ant
+    GrumPHP\Task\Ant:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: ant}
+            - {name: grumphp.task, task: ant}
 
-    task.atoum:
-        class: GrumPHP\Task\Atoum
+    GrumPHP\Task\Atoum:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: atoum}
+            - {name: grumphp.task, task: atoum}
 
-    task.behat:
-        class: GrumPHP\Task\Behat
+    GrumPHP\Task\Behat:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: behat}
+            - {name: grumphp.task, task: behat}
 
-    task.brunch:
-        class: GrumPHP\Task\Brunch
+    GrumPHP\Task\Brunch:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: brunch}
+            - {name: grumphp.task, task: brunch}
 
-    task.clovercoverage:
-        class: GrumPHP\Task\CloverCoverage
+    GrumPHP\Task\CloverCoverage:
         arguments:
-            - '@config'
             - '@filesystem'
         tags:
-            - {name: grumphp.task, config: clover_coverage}
+            - {name: grumphp.task, task: clover_coverage}
 
-    task.codeception:
-        class: GrumPHP\Task\Codeception
+    GrumPHP\Task\Codeception:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: codeception}
+            - {name: grumphp.task, task: codeception}
 
-    task.composer:
-        class: GrumPHP\Task\Composer
+    GrumPHP\Task\Composer:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
             - '@grumphp.util.filesystem'
         tags:
-            - {name: grumphp.task, config: composer}
+            - {name: grumphp.task, task: composer}
 
-    task.composer_normalize:
-        class: GrumPHP\Task\ComposerNormalize
+    GrumPHP\Task\ComposerNormalize:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: composer_normalize}
+            - {name: grumphp.task, task: composer_normalize}
 
-    task.composer.script:
-        class: GrumPHP\Task\ComposerScript
+    GrumPHP\Task\ComposerScript:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: composer_script}
+            - {name: grumphp.task, task: composer_script}
 
-    task.composer_require_checker:
-        class: GrumPHP\Task\ComposerRequireChecker
+    GrumPHP\Task\ComposerRequireChecker:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: composer_require_checker}
+            - {name: grumphp.task, task: composer_require_checker}
 
-    task.deptrac:
-        class: GrumPHP\Task\Deptrac
+    GrumPHP\Task\Deptrac:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: deptrac}
+            - {name: grumphp.task, task: deptrac}
 
-    task.doctrine_orm:
-        class: GrumPHP\Task\DoctrineOrm
+    GrumPHP\Task\DoctrineOrm:
         arguments:
-          - '@config'
           - '@process_builder'
           - '@formatter.raw_process'
         tags:
-          - {name: grumphp.task, config: doctrine_orm}
+          - {name: grumphp.task, task: doctrine_orm}
 
-    task.ecs:
-        class: GrumPHP\Task\Ecs
+    GrumPHP\Task\Ecs:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: ecs}
+            - {name: grumphp.task, task: ecs}
 
-    task.git.gherkin:
-        class: GrumPHP\Task\Gherkin
+    GrumPHP\Task\Gherkin:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: gherkin}
+            - {name: grumphp.task, task: gherkin}
 
-    task.git.blacklist:
-        class: GrumPHP\Task\Git\Blacklist
+    GrumPHP\Task\Git\Blacklist:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.git_blacklist'
             - '@grumphp.io'
         tags:
-            - {name: grumphp.task, config: git_blacklist}
+            - {name: grumphp.task, task: git_blacklist}
 
-    task.git.commitmessage:
-        class: GrumPHP\Task\Git\CommitMessage
-        arguments:
-            - '@config'
+    GrumPHP\Task\Git\CommitMessage:
         tags:
-            - {name: grumphp.task, config: git_commit_message}
+            - {name: grumphp.task, task: git_commit_message}
 
-    task.git.branchname:
-        class: GrumPHP\Task\Git\BranchName
+    GrumPHP\Task\Git\BranchName:
         arguments:
-            - '@config'
             - '@GrumPHP\Git\GitRepository'
         tags:
-            - {name: grumphp.task, config: git_branch_name}
+            - {name: grumphp.task, task: git_branch_name}
 
-    task.git.filesize:
-        class: GrumPHP\Task\FileSize
-        arguments:
-            - '@config'
+    GrumPHP\Task\FileSize:
         tags:
-            - {name: grumphp.task, config: file_size}
+            - {name: grumphp.task, task: file_size}
 
-    task.grunt:
-        class: GrumPHP\Task\Grunt
+    GrumPHP\Task\Grunt:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: grunt}
+            - {name: grumphp.task, task: grunt}
 
-    task.gulp:
-        class: GrumPHP\Task\Gulp
+    GrumPHP\Task\Gulp:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: gulp}
+            - {name: grumphp.task, task: gulp}
 
-    task.infection:
-        class: GrumPHP\Task\Infection
+    GrumPHP\Task\Infection:
         arguments:
-          - '@config'
           - '@process_builder'
           - '@formatter.raw_process'
         tags:
-          - {name: grumphp.task, config: infection}
+          - {name: grumphp.task, task: infection}
 
-    task.jsonlint:
-        class: GrumPHP\Task\JsonLint
+    GrumPHP\Task\JsonLint:
         arguments:
-            - '@config'
             - '@linter.jsonlint'
         tags:
-            - {name: grumphp.task, config: jsonlint}
+            - {name: grumphp.task, task: jsonlint}
 
-    task.kahlan:
-        class: GrumPHP\Task\Kahlan
+    GrumPHP\Task\Kahlan:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: kahlan}
+            - {name: grumphp.task, task: kahlan}
 
-    task.make:
-        class: GrumPHP\Task\Make
+    GrumPHP\Task\Make:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: make}
+            - {name: grumphp.task, task: make}
 
-    task.npm.script:
-        class: GrumPHP\Task\NpmScript
+    GrumPHP\Task\NpmScript:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: npm_script}
+            - {name: grumphp.task, task: npm_script}
 
-    task.paratest:
-        class: GrumPHP\Task\Paratest
+    GrumPHP\Task\Paratest:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: paratest}
+            - {name: grumphp.task, task: paratest}
 
-    task.phan:
-        class: GrumPHP\Task\Phan
+    GrumPHP\Task\Phan:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: phan}
+            - {name: grumphp.task, task: phan}
 
-    task.phing:
-        class: GrumPHP\Task\Phing
+    GrumPHP\Task\Phing:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: phing}
+            - {name: grumphp.task, task: phing}
 
-    task.php7cc:
-        class: GrumPHP\Task\Php7cc
+    GrumPHP\Task\Php7cc:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: php7cc}
+            - {name: grumphp.task, task: php7cc}
 
-    task.phpcpd:
-        class: GrumPHP\Task\PhpCpd
+    GrumPHP\Task\PhpCpd:
         arguments:
-          - '@config'
           - '@process_builder'
           - '@formatter.raw_process'
         tags:
-          - {name: grumphp.task, config: phpcpd}
+          - {name: grumphp.task, task: phpcpd}
 
-    task.phpcs:
-        class: GrumPHP\Task\Phpcs
+    GrumPHP\Task\Phpcs:
         arguments:
-          - '@config'
           - '@process_builder'
           - '@formatter.phpcs'
         tags:
-          - {name: grumphp.task, config: phpcs}
+          - {name: grumphp.task, task: phpcs}
 
-    task.phpcsfixer:
-        class: GrumPHP\Task\PhpCsFixer
+    GrumPHP\Task\PhpCsFixer:
         arguments:
-          - '@config'
           - '@process_builder'
           - '@async_process_runner'
           - '@formatter.phpcsfixer'
         tags:
-          - {name: grumphp.task, config: phpcsfixer}
+          - {name: grumphp.task, task: phpcsfixer}
 
-    task.phpcsfixer2:
-        class: GrumPHP\Task\PhpCsFixerV2
+    GrumPHP\Task\PhpCsFixerV2:
         arguments:
-          - '@config'
           - '@process_builder'
           - '@formatter.phpcsfixer'
         tags:
-          - {name: grumphp.task, config: phpcsfixer2}
+          - {name: grumphp.task, task: phpcsfixer2}
 
-    task.phplint:
-        class: GrumPHP\Task\PhpLint
+    GrumPHP\Task\PhpLint:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: phplint}
+            - {name: grumphp.task, task: phplint}
 
-    task.phpmd:
-        class: GrumPHP\Task\PhpMd
+    GrumPHP\Task\PhpMd:
         arguments:
-          - '@config'
           - '@process_builder'
           - '@formatter.raw_process'
         tags:
-          - {name: grumphp.task, config: phpmd}
+          - {name: grumphp.task, task: phpmd}
 
-    task.phpmnd:
-        class: GrumPHP\Task\PhpMnd
+    GrumPHP\Task\PhpMnd:
         arguments:
-          - '@config'
           - '@process_builder'
           - '@formatter.raw_process'
         tags:
-          - {name: grumphp.task, config: phpmnd}
+          - {name: grumphp.task, task: phpmnd}
 
-    task.phpparser:
-        class: GrumPHP\Task\PhpParser
+    GrumPHP\Task\PhpParser:
         arguments:
-            - '@config'
             - '@grumphp.parser.php.parser'
         tags:
-          - {name: grumphp.task, config: phpparser}
+          - {name: grumphp.task, task: phpparser}
 
-    task.phpspec:
-        class: GrumPHP\Task\Phpspec
+    GrumPHP\Task\Phpspec:
         arguments:
-          - '@config'
           - '@process_builder'
           - '@formatter.raw_process'
         tags:
-          - {name: grumphp.task, config: phpspec}
+          - {name: grumphp.task, task: phpspec}
 
-    task.phpstan:
-        class: GrumPHP\Task\PhpStan
+    GrumPHP\Task\PhpStan:
         arguments:
-          - '@config'
           - '@process_builder'
           - '@formatter.raw_process'
         tags:
-          - {name: grumphp.task, config: phpstan}
+          - {name: grumphp.task, task: phpstan}
 
-    task.phpunit:
-        class: GrumPHP\Task\Phpunit
+    GrumPHP\Task\Phpunit:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: phpunit}
+            - {name: grumphp.task, task: phpunit}
 
-    task.phpunitbridge:
-        class: GrumPHP\Task\PhpunitBridge
+    GrumPHP\Task\PhpunitBridge:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: phpunitbridge}
+            - {name: grumphp.task, task: phpunitbridge}
 
-    task.phpversion:
-        class: GrumPHP\Task\PhpVersion
+    GrumPHP\Task\PhpVersion:
         arguments:
-            - '@config'
             - '@grumphp.util.phpversion'
         tags:
-            - {name: grumphp.task, config: phpversion}
+            - {name: grumphp.task, task: phpversion}
 
-    task.progpilot:
-        class: GrumPHP\Task\Progpilot
+    GrumPHP\Task\Progpilot:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: progpilot}
+            - {name: grumphp.task, task: progpilot}
 
-    task.psalm:
-        class: GrumPHP\Task\Psalm
+    GrumPHP\Task\Psalm:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: psalm}
+            - {name: grumphp.task, task: psalm}
 
-    task.robo:
-        class: GrumPHP\Task\Robo
+    GrumPHP\Task\Robo:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: robo}
+            - {name: grumphp.task, task: robo}
 
-    task.securitychecker:
-        class: GrumPHP\Task\SecurityChecker
+    GrumPHP\Task\SecurityChecker:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: securitychecker}
+            - {name: grumphp.task, task: securitychecker}
 
-    task.shell:
-        class: GrumPHP\Task\Shell
+    GrumPHP\Task\Shell:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: shell}
+            - {name: grumphp.task, task: shell}
 
-    task.twigcs:
-        class: GrumPHP\Task\TwigCs
+    GrumPHP\Task\TwigCs:
         arguments:
-            - '@config'
             - '@process_builder'
             - '@formatter.raw_process'
         tags:
-            - {name: grumphp.task, config: twigcs}
+            - {name: grumphp.task, task: twigcs}
 
-    task.xmllint:
-        class: GrumPHP\Task\XmlLint
+    GrumPHP\Task\XmlLint:
         arguments:
-            - '@config'
             - '@linter.xmllint'
         tags:
-            - {name: grumphp.task, config: xmllint}
+            - {name: grumphp.task, task: xmllint}
 
-    task.yamllint:
-        class: GrumPHP\Task\YamlLint
+    GrumPHP\Task\YamlLint:
         arguments:
-            - '@config'
             - '@linter.yamllint'
         tags:
-            - {name: grumphp.task, config: yamllint}
+            - {name: grumphp.task, task: yamllint}

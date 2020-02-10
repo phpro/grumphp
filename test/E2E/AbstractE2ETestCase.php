@@ -250,7 +250,7 @@ abstract class AbstractE2ETestCase extends TestCase
         return $this->mkdir($projectDir.'/src/GrumPHPE2E');
     }
 
-    protected function enableValidatePathsTask(string $grumphpFile, string $projectDir)
+    protected function enableValidatePathsTask(string $grumphpFile, string $projectDir, array $metadata = [])
     {
         $e2eDir = $this->ensureGrumphpE2eTasksDir($projectDir);
         $this->dumpFile(
@@ -258,22 +258,26 @@ abstract class AbstractE2ETestCase extends TestCase
             file_get_contents(TEST_BASE_PATH.'/fixtures/e2e/tasks/ValidatePathsTask.php')
         );
 
+        // Added to test aliases:
+        $taskName = array_key_exists('task', $metadata) ? 'dummyTaskName' : 'validatePaths';
+
         $this->mergeGrumphpConfig($grumphpFile, [
             'parameters' => [
                 'tasks' => [
-                    'validatePaths' => null,
+                    $taskName => [
+                        'metadata' => $metadata
+                    ],
                 ],
             ],
             'services' => [
-                'task.validatePaths' => [
-                    'class' => 'GrumPHPE2E\\ValidatePathsTask',
+                'GrumPHPE2E\\ValidatePathsTask' => [
                     'arguments' => [
                         $this->getAvailableFilesInPath($projectDir),
                     ],
                     'tags' => [
                         [
                             'name' => 'grumphp.task',
-                            'config' => 'validatePaths'
+                            'task' => 'validatePaths'
                         ],
                     ]
                 ]

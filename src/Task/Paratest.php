@@ -13,12 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Paratest extends AbstractExternalTask
 {
-    public function getName(): string
-    {
-        return 'paratest';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(
@@ -61,7 +56,7 @@ class Paratest extends AbstractExternalTask
 
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
 
         $files = $context->getFiles()->name('*.php');
         if (!$config['always_execute'] && 0 === count($files)) {

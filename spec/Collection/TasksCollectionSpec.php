@@ -5,6 +5,8 @@ namespace spec\GrumPHP\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Task\Config\Metadata;
+use GrumPHP\Task\Config\TaskConfig;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\TestSuite\TestSuiteInterface;
@@ -41,8 +43,8 @@ class TasksCollectionSpec extends ObjectBehavior
 
     function it_can_filter_by_testsuite(TaskInterface $task1, TaskInterface $task2, TestSuiteInterface $testSuite)
     {
-        $task1->getName()->willReturn('task1');
-        $task2->getName()->willReturn('task2');
+        $task1->getConfig()->willReturn(new TaskConfig('task1', [], new Metadata([])));
+        $task2->getConfig()->willReturn(new TaskConfig('task2', [], new Metadata([])));
         $testSuite->getTaskNames()->willReturn(['task1']);
 
         $result = $this->filterByTestSuite($testSuite);
@@ -64,8 +66,8 @@ class TasksCollectionSpec extends ObjectBehavior
 
     function it_can_filter_by_task_names(TaskInterface $task1, TaskInterface $task2)
     {
-        $task1->getName()->willReturn('task1');
-        $task2->getName()->willReturn('task2');
+        $task1->getConfig()->willReturn(new TaskConfig('task1', [], new Metadata([])));
+        $task2->getConfig()->willReturn(new TaskConfig('task2', [], new Metadata([])));
         $tasks = ['task1'];
 
         $result = $this->filterByTaskNames($tasks);
@@ -77,8 +79,8 @@ class TasksCollectionSpec extends ObjectBehavior
 
     function it_can_filter_by_duplicate_task_names(TaskInterface $task1, TaskInterface $task2)
     {
-        $task1->getName()->willReturn('task1');
-        $task2->getName()->willReturn('task2');
+        $task1->getConfig()->willReturn(new TaskConfig('task1', [], new Metadata([])));
+        $task2->getConfig()->willReturn(new TaskConfig('task2', [], new Metadata([])));
         $tasks = ['task1', 'task1'];
 
         $result = $this->filterByTaskNames($tasks);
@@ -90,8 +92,8 @@ class TasksCollectionSpec extends ObjectBehavior
 
     function it_can_filter_by_empty_task_names(TaskInterface $task1, TaskInterface $task2)
     {
-        $task1->getName()->willReturn('task1');
-        $task2->getName()->willReturn('task2');
+        $task1->getConfig()->willReturn(new TaskConfig('task1', [], new Metadata([])));
+        $task2->getConfig()->willReturn(new TaskConfig('task2', [], new Metadata([])));
         $tasks = [];
 
         $result = $this->filterByTaskNames($tasks);
@@ -106,13 +108,9 @@ class TasksCollectionSpec extends ObjectBehavior
     {
         $this->beConstructedWith([$task1, $task2, $task3]);
 
-        $task1->getName()->willReturn('task1');
-        $task2->getName()->willReturn('task2');
-        $task3->getName()->willReturn('task3');
-
-        $grumPHP->getTaskMetadata('task1')->willReturn(['priority' => 100]);
-        $grumPHP->getTaskMetadata('task2')->willReturn(['priority' => 200]);
-        $grumPHP->getTaskMetadata('task3')->willReturn(['priority' => 100]);
+        $task1->getConfig()->willReturn(new TaskConfig('task1', [], new Metadata(['priority' => 100])));
+        $task2->getConfig()->willReturn(new TaskConfig('task2', [], new Metadata(['priority' => 200])));
+        $task3->getConfig()->willReturn(new TaskConfig('task3', [], new Metadata(['priority' => 100])));
 
         $result = $this->sortByPriority($grumPHP);
         $result->shouldBeAnInstanceOf(TasksCollection::class);
