@@ -45,7 +45,7 @@ class TaskCompilerPass implements CompilerPassInterface
             // Determine Keys:
             $currentTaskService = $availableTasks[$currentTaskName];
             ['id' => $taskId, 'class' => $taskClass,] = $currentTaskService;
-            $configuredTaskKey = $taskName.'.configured';
+            $configuredTaskKey = $taskId.'.'.$taskName.'.configured';
 
             // Configure task:
             $taskBuilder = new Definition($taskClass, [
