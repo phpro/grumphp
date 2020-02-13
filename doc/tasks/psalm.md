@@ -8,6 +8,11 @@ It lives under the `psalm` namespace and has following configurable parameters:
 composer require --dev vimeo/psalm
 ```
 
+If you'd like to use the Phar version
+```bash
+composer require --dev psalm/phar
+```
+
 ## Config
 ```yaml
 # grumphp.yml
