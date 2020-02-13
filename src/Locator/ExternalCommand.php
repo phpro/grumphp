@@ -38,23 +38,18 @@ class ExternalCommand
 
     public function locate(string $command): string
     {
-        $executable = false;
         foreach ($this->suffixes as $suffix) {
             $cmdName = $command . $suffix;
             // Search executable:
             $executable = $this->executableFinder->find($cmdName, null, [$this->binDir]);
 
             if ($executable) {
-                break;
+                return $executable;
             }
         }
 
-        if (!$executable) {
-            throw new RuntimeException(
-                sprintf('The executable for "%s" could not be found.', $command)
-            );
-        }
-
-        return $executable;
+        throw new RuntimeException(
+            sprintf('The executable for "%s" could not be found.', $command)
+        );
     }
 }
