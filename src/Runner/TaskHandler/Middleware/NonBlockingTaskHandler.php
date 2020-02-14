@@ -16,6 +16,7 @@ class NonBlockingTaskHandler implements TaskHandlerInterface
         ContextInterface $context,
         callable $next
     ): TaskResultInterface {
+        /** @var TaskResultInterface $result */
         $result = $next($task, $context);
         if ($result->isPassed() || $result->isSkipped()) {
             return $result;

@@ -28,6 +28,7 @@ class EventDispatchingTaskHandler implements TaskHandlerInterface
     public function handle(TaskInterface $task, ContextInterface $context, callable $next): TaskResultInterface
     {
         $this->eventDispatcher->dispatch(new TaskEvent($task, $context), TaskEvents::TASK_RUN);
+        /** @var TaskResultInterface $result */
         $result = $next($task, $context);
 
         if ($result->isSkipped()) {
