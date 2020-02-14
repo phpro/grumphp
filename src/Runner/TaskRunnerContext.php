@@ -7,6 +7,9 @@ namespace GrumPHP\Runner;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\TestSuite\TestSuiteInterface;
 
+/**
+ * @psalm-immutable
+ */
 class TaskRunnerContext
 {
     /**
@@ -29,6 +32,9 @@ class TaskRunnerContext
      */
     private $tasks;
 
+    /**
+     * @psalm-param string[] $tasks
+     */
     public function __construct(
         ContextInterface $taskContext,
         TestSuiteInterface $testSuite = null,
@@ -49,9 +55,12 @@ class TaskRunnerContext
         return $this->skipSuccessOutput;
     }
 
-    public function setSkipSuccessOutput(bool $skipSuccessOutput): void
+    public function withSkippedSuccessOutput(bool $skipSuccessOutput): self
     {
-        $this->skipSuccessOutput = $skipSuccessOutput;
+        $new = clone $this;
+        $new->skipSuccessOutput = $skipSuccessOutput;
+
+        return $new;
     }
 
     public function hasTestSuite(): bool
@@ -62,11 +71,6 @@ class TaskRunnerContext
     public function getTestSuite(): ?TestSuiteInterface
     {
         return $this->testSuite;
-    }
-
-    public function setTestSuite(?TestSuiteInterface $testSuite): void
-    {
-        $this->testSuite = $testSuite;
     }
 
     /**

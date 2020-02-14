@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GrumPHP\Runner\TaskHandler;
+namespace GrumPHP\Runner\TaskHandler\Middleware;
 
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;

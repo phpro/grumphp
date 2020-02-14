@@ -8,22 +8,23 @@ use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Runner\TaskHandler\TaskHandlerInterface;
 use GrumPHP\Runner\RunnerInfo;
 use GrumPHP\Runner\Stack\StackInterface;
+use GrumPHP\Runner\TaskHandler\TaskHandlerStack;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\TaskInterface;
 
 class HandleMiddleware implements MiddlewareInterface
 {
     /**
-     * @var TaskHandlerInterface
+     * @var TaskHandlerStack
      */
     private $taskHandler;
 
-    public function __construct(TaskHandlerInterface $taskHandler)
+    public function __construct(TaskHandlerStack $taskHandler)
     {
         $this->taskHandler = $taskHandler;
     }
 
-    public function handle(RunnerInfo $info, StackInterface $stack): TaskResultCollection
+    public function handle(RunnerInfo $info, callable $next): TaskResultCollection
     {
         return new TaskResultCollection(
             array_map(

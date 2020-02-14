@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GrumPHP\Runner\TaskHandler;
+namespace GrumPHP\Runner\TaskHandler\Middleware;
 
 use GrumPHP\Exception\PlatformException;
 use GrumPHP\Exception\RuntimeException;

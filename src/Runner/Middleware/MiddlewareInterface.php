@@ -11,7 +11,7 @@ use GrumPHP\Runner\Stack\StackInterface;
 interface MiddlewareInterface
 {
     /**
-     * @return TaskResultCollection
+     * @psalm-param callable(RunnerInfo $info): TaskResultCollection $next
      */
-    public function handle(RunnerInfo $info, StackInterface $stack): TaskResultCollection;
+    public function handle(RunnerInfo $info, callable $next): TaskResultCollection;
 }

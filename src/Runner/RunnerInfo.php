@@ -7,6 +7,9 @@ namespace GrumPHP\Runner;
 use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Task\Context\ContextInterface;
 
+/**
+ * @psalm-immutable
+ */
 class RunnerInfo
 {
     /**
@@ -44,5 +47,13 @@ class RunnerInfo
     public function getRunnerContext(): TaskRunnerContext
     {
         return $this->runnerContext;
+    }
+
+    public function withTasks(TasksCollection $tasks): self
+    {
+        $new = clone $this;
+        $new->tasks = $tasks;
+
+        return $new;
     }
 }

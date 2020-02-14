@@ -7,6 +7,9 @@ namespace GrumPHP\Runner;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 
+/**
+ * @psalm-immutable
+ */
 class TaskResult implements TaskResultInterface
 {
     const SKIPPED = -100;

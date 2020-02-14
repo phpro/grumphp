@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GrumPHP\Runner\TaskHandler;
+namespace GrumPHP\Runner\TaskHandler\Middleware;
 
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
@@ -11,7 +11,7 @@ use GrumPHP\Task\TaskInterface;
 interface TaskHandlerInterface
 {
     /**
-     * @param callable<TaskResultInterface, TaskInterface, ContextInterface> $next
+     * @psalm-param callable(TaskInterface, ContextInterface): TaskResultInterface $next
      */
     public function handle(
         TaskInterface $task,

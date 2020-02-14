@@ -37,11 +37,12 @@
         "ergebnis/composer-normalize": "~2.1",
         "friendsofphp/php-cs-fixer": "~2.16",
         "jakub-onderka/php-parallel-lint": "~1.0",
-        "nikic/php-parser": "~3.1",
+        "nikic/php-parser": "~4.0",
         "phpspec/phpspec": "~6.1",
         "phpunit/phpunit": "^7.5.17",
         "sensiolabs/security-checker": "~6.0",
-        "squizlabs/php_codesniffer": "~3.5"
+        "squizlabs/php_codesniffer": "~3.5",
+        "vimeo/psalm": "^3.8"
     },
     "suggest": {
         "atoum/atoum": "Lets GrumPHP run your unit tests.",
