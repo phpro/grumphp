@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GrumPHP\Runner\Handler;
+namespace GrumPHP\Runner\TaskHandler;
 
 use GrumPHP\Event\Dispatcher\EventDispatcherInterface;
 use GrumPHP\Event\TaskEvent;
@@ -20,21 +20,15 @@ class EventDispatchingTaskHandler implements TaskHandlerInterface
      */
     private $eventDispatcher;
 
-    /**
-     * @var TaskHandlerInterface
-     */
-    private $taskHandler;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher, TaskHandlerInterface $taskHandler)
+    public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
-        $this->taskHandler = $taskHandler;
     }
 
-    public function handle(TaskInterface $task, ContextInterface $context): TaskResultInterface
+    public function handle(TaskInterface $task, ContextInterface $context, callable $next): TaskResultInterface
     {
         $this->eventDispatcher->dispatch(new TaskEvent($task, $context), TaskEvents::TASK_RUN);
-        $result = $this->taskHandler->handle($task, $context);
+        $result = $next($task, $context);
 
         if ($result->isSkipped()) {
             $this->eventDispatcher->dispatch(new TaskEvent($task, $context), TaskEvents::TASK_SKIPPED);

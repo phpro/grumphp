@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GrumPHP\Runner\Handler;
+namespace GrumPHP\Runner\TaskHandler;
 
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
@@ -11,20 +11,13 @@ use GrumPHP\Task\TaskInterface;
 
 class NonBlockingTaskHandler implements TaskHandlerInterface
 {
-    /**
-     * @var TaskHandlerInterface
-     */
-    private $taskHandler;
-
-    public function __construct(TaskHandlerInterface $taskHandler)
-    {
-        $this->taskHandler = $taskHandler;
-    }
-
-    public function handle(TaskInterface $task, ContextInterface $context): TaskResultInterface
-    {
-        $result = $this->taskHandler->handle($task, $context);
-        if ($result->isPassed()) {
+    public function handle(
+        TaskInterface $task,
+        ContextInterface $context,
+        callable $next
+    ): TaskResultInterface {
+        $result = $next($task, $context);
+        if ($result->isPassed() || $result->isSkipped()) {
             return $result;
         }
 

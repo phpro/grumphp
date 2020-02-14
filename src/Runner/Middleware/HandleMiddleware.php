@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace GrumPHP\Runner\Middleware;
 
 use GrumPHP\Collection\TaskResultCollection;
-use GrumPHP\Runner\Handler\TaskHandlerInterface;
+use GrumPHP\Runner\TaskHandler\TaskHandlerInterface;
 use GrumPHP\Runner\RunnerInfo;
 use GrumPHP\Runner\Stack\StackInterface;
 use GrumPHP\Runner\TaskResultInterface;
