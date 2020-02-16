@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace GrumPHP\Runner\TaskHandler;
 
-use GrumPHP\Runner\TaskHandler\Middleware\TaskHandlerInterface;
+use GrumPHP\Runner\TaskHandler\Middleware\TaskHandlerMiddlewareInterface;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 
-class TaskHandlerStack
+class TaskHandler
 {
     /**
      * @psalm-var callable(TaskInterface, ContextInterface): TaskResultInterface
@@ -18,9 +18,19 @@ class TaskHandlerStack
      */
     private $stack;
 
-    public function __construct(TaskHandlerInterface ... $handlers)
+    public function __construct(TaskHandlerMiddlewareInterface ... $handlers)
     {
         $this->stack = $this->createStack($handlers);
+    }
+
+    /**
+     * Shortcut function to work directly with tagged services from the Symfony service container.
+     */
+    public static function fromIterable(iterable $handlers): self
+    {
+        return new self(
+            ...($handlers instanceof \Traversable ? iterator_to_array($handlers) : $handlers)
+        );
     }
 
     /**
@@ -32,7 +42,7 @@ class TaskHandlerStack
     }
 
     /**
-     * @psalm-param TaskHandlerInterface[] $handlers
+     * @psalm-param TaskHandlerMiddlewareInterface[] $handlers
      * @psalm-return callable(TaskInterface, ContextInterface): TaskResultInterface
      */
     private function createStack(array $handlers): callable

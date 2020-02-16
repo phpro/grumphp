@@ -1,0 +1,10 @@
+services:
+    GrumPHP\Collection\TasksCollection: ~
+    GrumPHP\Runner\TaskRunner:
+        class:
+        arguments:
+            - '@GrumPHP\Collection\TasksCollection'
+            - '@GrumPHP\Runner\MiddlewareStack'
+    GrumPHP\Runner\MiddlewareStack:
+        arguments:
+            - [!tagged 'grumphp.runner_middleware']

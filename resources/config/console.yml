@@ -66,7 +66,7 @@ services:
     GrumPHP\Console\Helper\TaskRunnerHelper:
         arguments:
             - '@config'
-            - '@task_runner'
+            - '@GrumPHP\Runner\TaskRunner'
             - '@Symfony\Component\EventDispatcher\EventDispatcher'
             - '@GrumPHP\Locator\AsciiLocator'
         tags:

@@ -36,7 +36,7 @@ class TaskRunnerSpec extends ObjectBehavior
     ) {
         $runnerContext->getTaskContext()->willReturn($taskContext);
         $runnerContext->getTestSuite()->willReturn(null);
-        $runnerContext->getTasks()->willReturn([]);
+        $runnerContext->getTaskNames()->willReturn([]);
 
         $task1->getConfig()->willReturn(new TaskConfig('task1', [], new Metadata([])));
         $task1->canRunInContext($taskContext)->willReturn(true);

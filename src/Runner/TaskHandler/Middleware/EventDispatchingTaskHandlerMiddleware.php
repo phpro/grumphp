@@ -13,7 +13,7 @@ use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 
-class EventDispatchingTaskHandler implements TaskHandlerInterface
+class EventDispatchingTaskHandlerMiddleware implements TaskHandlerMiddlewareInterface
 {
     /**
      * @var EventDispatcherInterface

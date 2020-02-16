@@ -9,9 +9,9 @@ use GrumPHP\Event\Dispatcher\EventDispatcherInterface;
 use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Event\RunnerEvents;
 use GrumPHP\Event\RunnerFailedEvent;
-use GrumPHP\Runner\RunnerInfo;
+use GrumPHP\Runner\TaskRunnerContext;
 
-class EventDispatchingMiddleware implements MiddlewareInterface
+class EventDispatchingRunnerMiddleware implements RunnerMiddlewareInterface
 {
     /**
      * @var EventDispatcherInterface
@@ -23,18 +23,19 @@ class EventDispatchingMiddleware implements MiddlewareInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function handle(RunnerInfo $info, callable $next): TaskResultCollection
+    public function handle(TaskRunnerContext $context, callable $next): TaskResultCollection
     {
         $this->eventDispatcher->dispatch(
-            new RunnerEvent($info->getTasks(), $info->getContext(), new TaskResultCollection()),
+            new RunnerEvent($context->getTasks(), $context->getTaskContext(), new TaskResultCollection()),
             RunnerEvents::RUNNER_RUN
         );
 
-        $results = $next($info);
+        /** @var TaskResultCollection $results */
+        $results = $next($context);
 
         if ($results->isFailed()) {
             $this->eventDispatcher->dispatch(
-                new RunnerFailedEvent($info->getTasks(), $info->getContext(), $results),
+                new RunnerFailedEvent($context->getTasks(), $context->getTaskContext(), $results),
                 RunnerEvents::RUNNER_FAILED
             );
 
@@ -42,7 +43,7 @@ class EventDispatchingMiddleware implements MiddlewareInterface
         }
 
         $this->eventDispatcher->dispatch(
-            new RunnerEvent($info->getTasks(), $info->getContext(), $results),
+            new RunnerEvent($context->getTasks(), $context->getTaskContext(), $results),
             RunnerEvents::RUNNER_COMPLETE
         );
 

@@ -37,6 +37,7 @@ final class ContainerBuilder
         $loader->load('locators.yml');
         $loader->load('parameters.yml');
         $loader->load('parsers.yml');
+        $loader->load('runner.yml');
         $loader->load('services.yml');
         $loader->load('subscribers.yml');
         $loader->load('tasks.yml');

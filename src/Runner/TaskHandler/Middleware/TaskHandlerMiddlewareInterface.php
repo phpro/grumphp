@@ -8,7 +8,7 @@ use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 
-interface TaskHandlerInterface
+interface TaskHandlerMiddlewareInterface
 {
     /**
      * @psalm-param callable(TaskInterface, ContextInterface): TaskResultInterface $next

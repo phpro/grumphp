@@ -11,7 +11,7 @@ use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 
-class ErrorHandlingTaskHandler implements TaskHandlerInterface
+class ErrorHandlingTaskHandlerMiddleware implements TaskHandlerMiddlewareInterface
 {
     public function handle(
         TaskInterface $task,

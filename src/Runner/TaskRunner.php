@@ -28,11 +28,7 @@ class TaskRunner
     public function run(TaskRunnerContext $runnerContext): TaskResultCollection
     {
         return $this->middleware->handle(
-            new RunnerInfo(
-                $this->tasks,
-                $runnerContext->getTaskContext(),
-                $runnerContext
-            )
+            $runnerContext->withTasks($this->tasks)
         );
     }
 }

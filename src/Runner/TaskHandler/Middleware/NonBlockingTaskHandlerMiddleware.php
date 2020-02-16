@@ -9,7 +9,7 @@ use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 
-class NonBlockingTaskHandler implements TaskHandlerInterface
+class NonBlockingTaskHandlerMiddleware implements TaskHandlerMiddlewareInterface
 {
     public function handle(
         TaskInterface $task,

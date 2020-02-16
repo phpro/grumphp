@@ -50,14 +50,6 @@ services:
             - '@GrumPHP\Locator\GitRepositoryLocator'
             - { logger: '@grumphp.logger' }
 
-    task_runner:
-        class: GrumPHP\Runner\TaskRunner
-        arguments:
-          - '@GrumPHP\Collection\TasksCollection'
-          - '@config'
-          - '@GrumPHP\Event\Dispatcher\EventDispatcherInterface'
-        public: true
-
     grumphp.io:
         alias: grumphp.io.console
 
@@ -97,4 +89,3 @@ services:
         class: Seld\JsonLint\JsonParser
 
     GrumPHP\Configuration\Configurator\TaskConfigurator: ~
-    GrumPHP\Collection\TasksCollection: ~
