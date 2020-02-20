@@ -10,9 +10,10 @@ use GrumPHP\Util\Regex;
 use Symfony\Component\Finder\Comparator;
 use Symfony\Component\Finder\Iterator;
 use SplFileInfo;
+use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo;
 use Traversable;
 
-class FilesCollection extends ArrayCollection
+class FilesCollection extends ArrayCollection implements \Serializable
 {
     /**
      * Adds a rule that files must match.
@@ -206,5 +207,32 @@ class FilesCollection extends ArrayCollection
         return $this->filter(function (SplFileInfo $file) {
             return !$file->isLink();
         });
+    }
+
+    /*
+     * SplFileInfo cannot be serialized. Therefor, we help PHP a bit.
+     * This stuff is used for running tasks in parallel.
+     */
+    public function serialize(): string
+    {
+        return serialize($this->map(function(SplFileInfo $fileInfo): string {
+            return (string) (
+                $fileInfo instanceof SymfonySplFileInfo
+                    ? $fileInfo->getRelativePathname()
+                    : $fileInfo->getPathname()
+            );
+        })->toArray());
+    }
+
+    /*
+     * SplFileInfo cannot be serialized. Therefor, we help PHP a bit.
+     * This stuff is used for running tasks in parallel.
+     */
+    public function unserialize($serialized): void
+    {
+        $files = unserialize($serialized, ['allowed_classes' => false]);
+        foreach ($files as $file) {
+            $this->add(new SymfonySplFileInfo($file, dirname($file), $file));
+        }
     }
 }

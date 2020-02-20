@@ -22,6 +22,7 @@ class MiddlewareStack
 
     /**
      * Shortcut function to work directly with tagged services from the Symfony service container.
+     * @psalm-param iterable<RunnerMiddlewareInterface> $middlewares
      */
     public static function fromIterable(iterable $middlewares): self
     {

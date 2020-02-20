@@ -7,7 +7,7 @@ namespace GrumPHP\Task\Config;
 class LazyTaskConfig implements TaskConfigInterface
 {
     /**
-     * @var callable<TaskConfigInterface>
+     * @psalm-var callable() : TaskConfigInterface
      */
     private $configFactory;
 
@@ -16,6 +16,9 @@ class LazyTaskConfig implements TaskConfigInterface
      */
     private $config;
 
+    /**
+     * @psalm-param callable() : TaskConfigInterface $configFactory
+     */
     public function __construct(callable $configFactory)
     {
         $this->configFactory = $configFactory;

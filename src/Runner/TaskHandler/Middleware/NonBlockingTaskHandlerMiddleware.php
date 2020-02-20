@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace GrumPHP\Runner\TaskHandler\Middleware;
 
+use function Amp\call;
+use Amp\Promise;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
@@ -15,21 +17,25 @@ class NonBlockingTaskHandlerMiddleware implements TaskHandlerMiddlewareInterface
         TaskInterface $task,
         ContextInterface $context,
         callable $next
-    ): TaskResultInterface {
-        /** @var TaskResultInterface $result */
-        $result = $next($task, $context);
-        if ($result->isPassed() || $result->isSkipped()) {
-            return $result;
-        }
+    ): Promise {
+        return call(
+            /**
+             * @psalm-return \Generator<mixed, Promise<TaskResultInterface>, mixed, TaskResultInterface>
+             */
+            static function () use ($task, $context, $next): \Generator {
+                /** @var TaskResultInterface $result */
+                $result = yield $next($task, $context);
 
-        if ($task->getConfig()->getMetadata()->isBlocking()) {
-            return $result;
-        }
+                if ($result->isPassed() || $result->isSkipped() || $task->getConfig()->getMetadata()->isBlocking()) {
+                    return $result;
+                }
 
-        return TaskResult::createNonBlockingFailed(
-            $result->getTask(),
-            $result->getContext(),
-            $result->getMessage()
+                return TaskResult::createNonBlockingFailed(
+                    $result->getTask(),
+                    $result->getContext(),
+                    $result->getMessage()
+                );
+            }
         );
     }
 }
