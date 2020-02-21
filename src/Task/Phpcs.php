@@ -120,6 +120,7 @@ class Phpcs extends AbstractExternalTask
         $arguments->addOptionalCommaSeparatedArgument('--sniffs=%s', $config['sniffs']);
         $arguments->addOptionalCommaSeparatedArgument('--ignore=%s', $config['ignore_patterns']);
         $arguments->addOptionalCommaSeparatedArgument('--exclude=%s', $config['exclude']);
+        $arguments->addOptionalCommaSeparatedArgument('--extensions=%s', $config['triggered_by']);
 
         return $arguments;
     }
