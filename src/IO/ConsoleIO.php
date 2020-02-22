@@ -7,7 +7,10 @@ namespace GrumPHP\IO;
 use GrumPHP\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\StyleInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ConsoleIO implements IOInterface
 {
@@ -102,5 +105,15 @@ class ConsoleIO implements IOInterface
         }
 
         $this->output->write($messages, $newline);
+    }
+
+    public function style(): StyleInterface
+    {
+        return new SymfonyStyle($this->input, $this->output);
+    }
+
+    public function section(): ConsoleSectionOutput
+    {
+        return $this->output->section();
     }
 }

@@ -27,12 +27,18 @@ services:
             - '@GrumPHP\Event\Dispatcher\Bridge\SymfonyEventDispatcher'
         tags:
             - { name: 'grumphp.runner_middleware', priority: 500 }
+    GrumPHP\Runner\Middleware\GroupByPriorityMiddleware:
+        arguments:
+            - '@grumphp.io'
+        tags:
+            - { name: 'grumphp.runner_middleware', priority: 200 }
     GrumPHP\Runner\Middleware\StopOnFailureRunnerMiddleware:
         arguments: ~
         tags:
             - { name: 'grumphp.runner_middleware', priority: 100 }
     GrumPHP\Runner\Middleware\HandleRunnerMiddleware:
         arguments:
+            - '@grumphp.io'
             - '@GrumPHP\Runner\TaskHandler\TaskHandler'
         tags:
             - { name: 'grumphp.runner_middleware', priority: 0 }
@@ -50,7 +56,8 @@ services:
         tags:
             - { name: 'grumphp.task_handler', priority: 200 }
     GrumPHP\Runner\TaskHandler\Middleware\ParallelProcessingMiddleware:
-        arguments: ~
+        arguments:
+            - '@GrumPHP\Runner\Parallel\PoolFactory'
         tags:
             - { name: 'grumphp.task_handler', priority: 100 }
     GrumPHP\Runner\TaskHandler\Middleware\ErrorHandlingTaskHandlerMiddleware:
@@ -61,3 +68,6 @@ services:
     #
     # Configurable Parallel Pool
     #
+    GrumPHP\Runner\Parallel\PoolFactory:
+        arguments:
+            - '%parallel%'

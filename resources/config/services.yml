@@ -53,10 +53,6 @@ services:
     grumphp.io:
         alias: grumphp.io.console
 
-    grumphp.io.null:
-        class: GrumPHP\IO\NullIO
-        public: false
-
     grumphp.io.console:
         class: GrumPHP\IO\ConsoleIO
         arguments:

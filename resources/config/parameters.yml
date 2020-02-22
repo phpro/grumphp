@@ -18,3 +18,5 @@ parameters:
   ascii:
     failed: grumphp-grumpy.txt
     succeeded: grumphp-happy.txt
+  parallel:
+    max_size: 32

@@ -12,6 +12,11 @@ use GrumPHP\Task\TaskInterface;
  */
 interface TaskResultInterface
 {
+    const SKIPPED = -100;
+    const PASSED = 0;
+    const NONBLOCKING_FAILED = 90;
+    const FAILED = 99;
+
     public function getTask(): TaskInterface;
 
     public function getResultCode(): int;

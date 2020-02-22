@@ -12,11 +12,6 @@ use GrumPHP\Task\TaskInterface;
  */
 class TaskResult implements TaskResultInterface
 {
-    const SKIPPED = -100;
-    const PASSED = 0;
-    const NONBLOCKING_FAILED = 90;
-    const FAILED = 99;
-
     private $resultCode;
     private $task;
     private $context;

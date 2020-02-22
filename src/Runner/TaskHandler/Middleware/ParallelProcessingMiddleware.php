@@ -8,6 +8,7 @@ use function Amp\call;
 use function Amp\ParallelFunctions\parallel;
 use Amp\Promise;
 use function Amp\Promise\wait;
+use GrumPHP\Runner\Parallel\PoolFactory;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
@@ -15,19 +16,40 @@ use Opis\Closure\SerializableClosure;
 
 class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
 {
+    /**
+     * @var PoolFactory
+     */
+    private $poolFactory;
+
+    public function __construct(PoolFactory $poolFactory)
+    {
+        $this->poolFactory = $poolFactory;
+    }
+
     public function handle(TaskInterface $task, ContextInterface $context, callable $next): Promise
     {
         /**
+         * This method creates a callable that can be used to enqueue to run the task in parallel.
+         * The result is wrapped in a serializable closure to make sure all information inside the task can be serialized.
+         * This implies that the result of the parallel command is another callable that will return the task result.
+         *
          * @psalm-var callable(): Promise<TaskResultInterface> $enqueueParallelTask
          */
         $enqueueParallelTask = parallel(
             static function () use ($task, $context, $next): SerializableClosure {
+                /** @var TaskResultInterface $result */
                 $result = wait($next($task, $context));
 
-                return new SerializableClosure(static function () use ($result) {
-                    return $result;
-                });
-            }
+                return new SerializableClosure(
+                    /**
+                     * @return TaskResultInterface
+                     */
+                    static function () use ($result) {
+                        return $result;
+                    }
+                );
+            },
+            $this->poolFactory->create()
         );
 
         return call(

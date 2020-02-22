@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace GrumPHP\IO;
 
+use Symfony\Component\Console\Output\ConsoleSectionOutput;
+use Symfony\Component\Console\Style\StyleInterface;
+
 interface IOInterface
 {
     public function isInteractive(): bool;
@@ -19,4 +22,8 @@ interface IOInterface
     public function write(array $messages, bool $newline = true);
 
     public function writeError(array $messages, bool $newline = true);
+
+    public function style(): StyleInterface;
+
+    public function section(): ConsoleSectionOutput;
 }

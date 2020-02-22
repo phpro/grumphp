@@ -90,7 +90,7 @@ class TaskRunnerHelper extends Helper
             $output = $output->getErrorOutput();
         }
 
-        $this->eventDispatcher->addSubscriber(new ProgressSubscriber($output));
+        // $this->eventDispatcher->addSubscriber(new ProgressSubscriber($output));
     }
 
     private function returnErrorMessages(OutputInterface $output, array $errorMessages, array $warnings): int
