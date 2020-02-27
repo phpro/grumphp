@@ -12,7 +12,7 @@ use GrumPHP\Event\TaskEvents;
 use GrumPHP\Event\TaskFailedEvent;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Runner\TaskResultInterface;
-use GrumPHP\Task\Context\ContextInterface;
+use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\TaskInterface;
 
 class EventDispatchingTaskHandlerMiddleware implements TaskHandlerMiddlewareInterface
@@ -27,31 +27,32 @@ class EventDispatchingTaskHandlerMiddleware implements TaskHandlerMiddlewareInte
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function handle(TaskInterface $task, ContextInterface $context, callable $next): Promise
+    public function handle(TaskInterface $task, TaskRunnerContext $runnerContext, callable $next): Promise
     {
         return call(
             /**
              * @return \Generator<mixed, Promise<TaskResultInterface>, mixed, TaskResultInterface>
              */
-            function () use ($task, $context, $next): \Generator {
-                $this->eventDispatcher->dispatch(new TaskEvent($task, $context), TaskEvents::TASK_RUN);
+            function () use ($task, $runnerContext, $next): \Generator {
+                $taskContext = $runnerContext->getTaskContext();
+                $this->eventDispatcher->dispatch(new TaskEvent($task, $taskContext), TaskEvents::TASK_RUN);
 
                 /** @var TaskResultInterface $result */
-                $result = yield $next($task, $context);
+                $result = yield $next($task, $runnerContext);
 
                 if ($result->isSkipped()) {
-                    $this->eventDispatcher->dispatch(new TaskEvent($task, $context), TaskEvents::TASK_SKIPPED);
+                    $this->eventDispatcher->dispatch(new TaskEvent($task, $taskContext), TaskEvents::TASK_SKIPPED);
                     return $result;
                 }
 
                 if ($result->hasFailed()) {
                     $e = new RuntimeException($result->getMessage());
-                    $this->eventDispatcher->dispatch(new TaskFailedEvent($task, $context, $e), TaskEvents::TASK_FAILED);
+                    $this->eventDispatcher->dispatch(new TaskFailedEvent($task, $taskContext, $e), TaskEvents::TASK_FAILED);
 
                     return $result;
                 }
 
-                $this->eventDispatcher->dispatch(new TaskEvent($task, $context), TaskEvents::TASK_COMPLETE);
+                $this->eventDispatcher->dispatch(new TaskEvent($task, $taskContext), TaskEvents::TASK_COMPLETE);
 
                 return $result;
             }

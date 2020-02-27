@@ -10,7 +10,7 @@ use GrumPHP\Runner\TaskRunnerContext;
 interface RunnerMiddlewareInterface
 {
     /**
-     * @psalm-param callable(TaskRunnerContext $info): TaskResultCollection $next
+     * @param callable(TaskRunnerContext $info): TaskResultCollection $next
      */
     public function handle(TaskRunnerContext $context, callable $next): TaskResultCollection;
 }

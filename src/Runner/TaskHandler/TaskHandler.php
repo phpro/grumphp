@@ -9,13 +9,13 @@ use Amp\Success;
 use GrumPHP\Runner\TaskHandler\Middleware\TaskHandlerMiddlewareInterface;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
-use GrumPHP\Task\Context\ContextInterface;
+use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\TaskInterface;
 
 class TaskHandler
 {
     /**
-     * @psalm-var callable(TaskInterface, ContextInterface): Promise<TaskResultInterface>
+     * @var callable(TaskInterface, TaskRunnerContext): Promise<TaskResultInterface>
      * @var callable
      */
     private $stack;
@@ -27,7 +27,7 @@ class TaskHandler
 
     /**
      * Shortcut function to work directly with tagged services from the Symfony service container.
-     * @psalm-param iterable<TaskHandlerMiddlewareInterface> $handlers
+     * @param iterable<TaskHandlerMiddlewareInterface> $handlers
      */
     public static function fromIterable(iterable $handlers): self
     {
@@ -38,27 +38,27 @@ class TaskHandler
 
     /**
      * @psalm-pure
-     * @psalm-return Promise<TaskResultInterface>
+     * @return Promise<TaskResultInterface>
      */
-    public function handle(TaskInterface $task, ContextInterface $context): Promise
+    public function handle(TaskInterface $task, TaskRunnerContext $runnerContext): Promise
     {
-        return ($this->stack)($task, $context);
+        return ($this->stack)($task, $runnerContext);
     }
 
     /**
      * @param TaskHandlerMiddlewareInterface[] $handlers
-     * @psalm-return callable(TaskInterface, ContextInterface): Promise<TaskResultInterface>
+     * @return callable(TaskInterface, TaskRunnerContext): Promise<TaskResultInterface>
      */
     private function createStack(array $handlers): callable
     {
         $lastCallable = $this->fail();
 
         while($handler = array_pop($handlers)) {
-            $lastCallable = static function (TaskInterface $task, ContextInterface $context) use (
+            $lastCallable = static function (TaskInterface $task, TaskRunnerContext $runnerContext) use (
                 $handler,
                 $lastCallable
             ) : Promise {
-                return $handler->handle($task, $context, $lastCallable);
+                return $handler->handle($task, $runnerContext, $lastCallable);
             };
         }
 
@@ -66,13 +66,17 @@ class TaskHandler
     }
 
     /**
-     * @psalm-return callable(TaskInterface, ContextInterface): Promise<TaskResultInterface>
+     * @return callable(TaskInterface, TaskRunnerContext): Promise<TaskResultInterface>
      */
     private function fail(): callable
     {
-        return static function (TaskInterface $task, ContextInterface $context): Promise {
-            /** @psalm-var TaskResultInterface $result */
-            $result = TaskResult::createFailed($task, $context, 'Task could not be handled by a task handler!');
+        return static function (TaskInterface $task, TaskRunnerContext $runnerContext): Promise {
+            /** @var TaskResultInterface $result */
+            $result = TaskResult::createFailed(
+                $task,
+                $runnerContext->getTaskContext(),
+                'Task could not be handled by a task handler!'
+            );
 
             return new Success($result);
         };

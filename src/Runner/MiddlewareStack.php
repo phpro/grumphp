@@ -10,8 +10,7 @@ use GrumPHP\Runner\Middleware\RunnerMiddlewareInterface;
 class MiddlewareStack
 {
     /**
-     * @psalm-var callable(TaskRunnerContext): TaskResultCollection
-     * @var callable
+     * @var callable(TaskRunnerContext): TaskResultCollection
      */
     private $stack;
 
@@ -22,7 +21,7 @@ class MiddlewareStack
 
     /**
      * Shortcut function to work directly with tagged services from the Symfony service container.
-     * @psalm-param iterable<RunnerMiddlewareInterface> $middlewares
+     * @param iterable<RunnerMiddlewareInterface> $middlewares
      */
     public static function fromIterable(iterable $middlewares): self
     {
@@ -40,8 +39,8 @@ class MiddlewareStack
     }
 
     /**
-     * @psalm-param RunnerMiddlewareInterface[] $middlewares
-     * @psalm-return callable(TaskRunnerContext): TaskResultCollection
+     * @param RunnerMiddlewareInterface[] $middlewares
+     * @return callable(TaskRunnerContext): TaskResultCollection
      */
     private function createStack(array $middlewares): callable
     {
@@ -60,7 +59,7 @@ class MiddlewareStack
     }
 
     /**
-     * @psalm-return callable(TaskRunnerContext): TaskResultCollection
+     * @return callable(TaskRunnerContext): TaskResultCollection
      */
     private function fail(): callable
     {

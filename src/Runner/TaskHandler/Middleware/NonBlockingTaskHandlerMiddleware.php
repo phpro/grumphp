@@ -8,23 +8,23 @@ use function Amp\call;
 use Amp\Promise;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
-use GrumPHP\Task\Context\ContextInterface;
+use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\TaskInterface;
 
 class NonBlockingTaskHandlerMiddleware implements TaskHandlerMiddlewareInterface
 {
     public function handle(
         TaskInterface $task,
-        ContextInterface $context,
+        TaskRunnerContext $runnerContext,
         callable $next
     ): Promise {
         return call(
             /**
-             * @psalm-return \Generator<mixed, Promise<TaskResultInterface>, mixed, TaskResultInterface>
+             * @return \Generator<mixed, Promise<TaskResultInterface>, mixed, TaskResultInterface>
              */
-            static function () use ($task, $context, $next): \Generator {
+            static function () use ($task, $runnerContext, $next): \Generator {
                 /** @var TaskResultInterface $result */
-                $result = yield $next($task, $context);
+                $result = yield $next($task, $runnerContext);
 
                 if ($result->isPassed() || $result->isSkipped() || $task->getConfig()->getMetadata()->isBlocking()) {
                     return $result;

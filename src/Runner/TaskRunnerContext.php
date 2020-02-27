@@ -39,7 +39,7 @@ class TaskRunnerContext
     private $tasks;
 
     /**
-     * @psalm-param string[] $taskNames
+     * @param string[] $taskNames
      */
     public function __construct(
         ContextInterface $taskContext,

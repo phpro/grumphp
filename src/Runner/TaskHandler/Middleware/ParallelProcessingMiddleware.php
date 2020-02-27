@@ -9,8 +9,9 @@ use function Amp\ParallelFunctions\parallel;
 use Amp\Promise;
 use function Amp\Promise\wait;
 use GrumPHP\Runner\Parallel\PoolFactory;
+use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
-use GrumPHP\Task\Context\ContextInterface;
+use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\TaskInterface;
 use Opis\Closure\SerializableClosure;
 
@@ -26,19 +27,19 @@ class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
         $this->poolFactory = $poolFactory;
     }
 
-    public function handle(TaskInterface $task, ContextInterface $context, callable $next): Promise
+    public function handle(TaskInterface $task, TaskRunnerContext $runnerContext, callable $next): Promise
     {
         /**
          * This method creates a callable that can be used to enqueue to run the task in parallel.
          * The result is wrapped in a serializable closure to make sure all information inside the task can be serialized.
          * This implies that the result of the parallel command is another callable that will return the task result.
          *
-         * @psalm-var callable(): Promise<TaskResultInterface> $enqueueParallelTask
+         * @var callable(): Promise<TaskResultInterface> $enqueueParallelTask
          */
         $enqueueParallelTask = parallel(
-            static function () use ($task, $context, $next): SerializableClosure {
+            static function () use ($task, $runnerContext, $next): SerializableClosure {
                 /** @var TaskResultInterface $result */
-                $result = wait($next($task, $context));
+                $result = wait($next($task, $runnerContext));
 
                 return new SerializableClosure(
                     /**
@@ -54,9 +55,9 @@ class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
 
         return call(
             /**
-             * @psalm-return \Generator<mixed, Promise<TaskResultInterface>, mixed, TaskResultInterface>
+             * @return \Generator<mixed, Promise<TaskResultInterface>, mixed, TaskResultInterface>
              */
-            static function () use ($enqueueParallelTask): \Generator {
+            static function () use ($enqueueParallelTask, $task, $runnerContext): \Generator {
                 /** @var callable(): TaskResultInterface $resultProvider */
                 $resultProvider = yield $enqueueParallelTask();
 

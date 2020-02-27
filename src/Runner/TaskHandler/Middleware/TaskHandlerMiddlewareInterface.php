@@ -6,18 +6,18 @@ namespace GrumPHP\Runner\TaskHandler\Middleware;
 
 use Amp\Promise;
 use GrumPHP\Runner\TaskResultInterface;
-use GrumPHP\Task\Context\ContextInterface;
+use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\TaskInterface;
 
 interface TaskHandlerMiddlewareInterface
 {
     /**
-     * @psalm-param callable(TaskInterface, ContextInterface): Promise<TaskResultInterface> $next
-     * @psalm-return Promise<TaskResultInterface>
+     * @param callable(TaskInterface, TaskRunnerContext): Promise<TaskResultInterface> $next
+     * @return Promise<TaskResultInterface>
      */
     public function handle(
         TaskInterface $task,
-        ContextInterface $context,
+        TaskRunnerContext $runnercontext,
         callable $next
     ): Promise;
 }
