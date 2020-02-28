@@ -40,6 +40,7 @@ final class RunnerReporter
 
     public function start(TaskRunnerContext $context): void
     {
+        $this->IO->write($this->wrapMessagesInColor(['GrumPHP is sniffing your code!'], 'yellow'));
         if ($context->getTestSuite()) {
             $this->IO->style()->note('Running testsuite: '.$context->getTestSuite()->getName());
         }
@@ -47,6 +48,11 @@ final class RunnerReporter
 
     public function finish(TaskRunnerContext $context, TaskResultCollection $results): void
     {
+        // Stop on failure message:
+        if ($context->getTasks()->count() !== $results->count()) {
+            $this->IO->style()->error('Aborted ...');
+        }
+
         $warnings = $results->filterByResultCode(TaskResult::NONBLOCKING_FAILED);
         if ($results->isFailed()) {
             $failed = $results->filterByResultCode(TaskResult::FAILED);
