@@ -1,6 +1,6 @@
 name: GrumPHP
 
-on: [push]
+on: [push, pull_request]
 jobs:
     run:
         runs-on: ${{ matrix.operating-system }}
@@ -24,5 +24,9 @@ jobs:
               run: composer validate
             - name: Install dependencies
               run: composer update --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }}
-            - name: Run all the tests
-              run: vendor/bin/grumphp run
+            - name: Set git variables
+              run: |
+                git config --global user.email "you@example.com"
+                git config --global user.name "Your Name"
+            - name: Run the tests
+              run: php vendor/bin/grumphp run --no-interaction
