@@ -22,9 +22,15 @@ class ReportingTasksSectionRunnerMiddleware implements RunnerMiddlewareInterface
 
     public function handle(TaskRunnerContext $context, callable $next): TaskResultCollection
     {
-        $this->reporter->useNewSection();
-        $this->reporter->report($context);
+        return $this->reporter->runInSection(
+            /**
+             * @return TaskResultCollection
+             */
+            function () use ($context, $next): TaskResultCollection {
+                $this->reporter->report($context);
 
-        return $next($context);
+                return $next($context);
+            }
+        );
     }
 }

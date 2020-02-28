@@ -20,7 +20,7 @@ final class TaskResultsReporter
     private $IO;
 
     /**
-     * @var ConsoleSectionOutput
+     * @var ConsoleSectionOutput|null
      */
     private $outputSection;
 
@@ -33,16 +33,34 @@ final class TaskResultsReporter
     {
         $this->IO = $IO;
         $this->taskResultMap = $taskResultMap;
-        $this->useNewSection();
     }
 
-    public function useNewSection(): void
+    /**
+     * This method can be used to report output of tasks within a specific scope.
+     * It can be used to create new sections e.g. per grouped tasks by priority.
+     * If skip_on_failure is triggered, the output section will be closed when
+     * the amp/parallel promises return an error (because of canceled promise)
+     *
+     * @template TValue
+     * @param callable(): TValue $actionsInSection
+     * @return TValue
+     */
+    public function runInSection(callable $actionsInSection)
     {
         $this->outputSection = $this->IO->section();
+        $result = $actionsInSection();
+        $this->outputSection = null;
+
+        return $result;
     }
 
     public function report(TaskRunnerContext $context): void
     {
+        // Only log when there is an output section available!
+        if (!$this->outputSection) {
+            return;
+        }
+
         $info = 'Running task %s/%s: %s... %s';
         $tasks = $this->parseTasksDisplayMap($context);
 
