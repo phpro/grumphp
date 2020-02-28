@@ -39,6 +39,21 @@ interface Promise
 
 /**
  * @template TReturn
+ */
+final class LazyPromise
+{
+    /**
+     * @param callable(?\Throwable, ?TReturn):void $onResolved
+     *
+     * @return void
+     */
+    public function onResolve(callable $onResolved)
+    {
+    }
+}
+
+/**
+ * @template TReturn
  *
  * @template-implements Promise<TReturn>
  */
