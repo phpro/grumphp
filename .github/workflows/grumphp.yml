@@ -23,7 +23,8 @@ jobs:
               run: php -v
             - name: Validate composer.json and composer.lock
               run: composer validate
-            - uses: php-actions/composer@master
+            - name: Install dependencies
+              run: composer update --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }}
             - name: Set git variables
               run: |
                 git config --global user.email "you@example.com"
