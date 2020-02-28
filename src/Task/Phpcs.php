@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace GrumPHP\Task;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
+use GrumPHP\Formatter\PhpcsFormatter;
+use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
@@ -15,6 +17,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Phpcs extends AbstractExternalTask
 {
+    /**
+     * @var PhpcsFormatter
+     */
+    protected $formatter;
+
     public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();

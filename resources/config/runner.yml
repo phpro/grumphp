@@ -22,11 +22,11 @@ services:
         arguments:
             - '@GrumPHP\Runner\Reporting\RunnerReporter'
         tags:
-            - { name: 'grumphp.runner_middleware', priority: 1500 }
+            - { name: 'grumphp.runner_middleware', priority: 1000 }
     GrumPHP\Runner\Middleware\TasksFilteringRunnerMiddleware:
         arguments: []
         tags:
-            - { name: 'grumphp.runner_middleware', priority: 1000 }
+            - { name: 'grumphp.runner_middleware', priority: 750 }
     GrumPHP\Runner\Middleware\EventDispatchingRunnerMiddleware:
         arguments:
             - '@GrumPHP\Event\Dispatcher\Bridge\SymfonyEventDispatcher'
@@ -35,17 +35,14 @@ services:
     GrumPHP\Runner\Middleware\GroupByPriorityMiddleware:
         arguments:
             - '@grumphp.io'
+            - '%stop_on_failure%'
         tags:
-            - { name: 'grumphp.runner_middleware', priority: 200 }
+            - { name: 'grumphp.runner_middleware', priority: 250 }
     GrumPHP\Runner\Middleware\ReportingTasksSectionRunnerMiddleware:
         arguments:
             - '@GrumPHP\Runner\Reporting\TaskResultsReporter'
         tags:
             - { name: 'grumphp.runner_middleware', priority: 150 }
-    GrumPHP\Runner\Middleware\StopOnFailureRunnerMiddleware:
-        arguments: ~
-        tags:
-            - { name: 'grumphp.runner_middleware', priority: 100 }
     GrumPHP\Runner\Middleware\HandleRunnerMiddleware:
         arguments:
             - '@GrumPHP\Runner\TaskHandler\TaskHandler'
@@ -59,26 +56,26 @@ services:
         arguments:
             - '@GrumPHP\Event\Dispatcher\Bridge\SymfonyEventDispatcher'
         tags:
-            - { name: 'grumphp.task_handler', priority: 500 }
+            - { name: 'grumphp.task_handler', priority: 1000 }
     GrumPHP\Runner\TaskHandler\Middleware\ReportingTaskHandlerMiddleware:
         arguments:
             - '@GrumPHP\Runner\Reporting\TaskResultsReporter'
         tags:
-            - { name: 'grumphp.task_handler', priority: 400 }
+            - { name: 'grumphp.task_handler', priority: 750}
     GrumPHP\Runner\TaskHandler\Middleware\MemoizedResultsTaskHandlerMiddleware:
         arguments:
             - '@GrumPHP\Runner\MemoizedTaskResultMap'
         tags:
-            - { name: 'grumphp.task_handler', priority: 300 }
+            - { name: 'grumphp.task_handler', priority: 500 }
     GrumPHP\Runner\TaskHandler\Middleware\NonBlockingTaskHandlerMiddleware:
         arguments: ~
         tags:
-            - { name: 'grumphp.task_handler', priority: 200 }
+            - { name: 'grumphp.task_handler', priority: 250 }
     GrumPHP\Runner\TaskHandler\Middleware\ParallelProcessingMiddleware:
         arguments:
             - '@GrumPHP\Runner\Parallel\PoolFactory'
         tags:
-            - { name: 'grumphp.task_handler', priority: 100 }
+            - { name: 'grumphp.task_handler', priority: 150 }
     GrumPHP\Runner\TaskHandler\Middleware\ErrorHandlingTaskHandlerMiddleware:
         arguments: ~
         tags:

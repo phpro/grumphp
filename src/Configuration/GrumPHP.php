@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace GrumPHP\Configuration;
 
 use GrumPHP\Collection\TestSuiteCollection;
-use GrumPHP\Exception\RuntimeException;
-use GrumPHP\Util\ComposerFile;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -37,11 +35,6 @@ class GrumPHP
     public function getGitHookVariables(): array
     {
         return $this->container->getParameter('git_hook_variables');
-    }
-
-    public function stopOnFailure(): bool
-    {
-        return (bool) $this->container->getParameter('stop_on_failure');
     }
 
     public function ignoreUnstagedChanges(): bool

@@ -50,7 +50,7 @@ final class RunnerReporter
     {
         // Stop on failure message:
         if ($context->getTasks()->count() !== $results->count()) {
-            $this->IO->style()->error('Aborted ...');
+            $this->IO->writeError($this->wrapMessagesInColor(['Aborted ...'], 'red'));
         }
 
         $warnings = $results->filterByResultCode(TaskResult::NONBLOCKING_FAILED);

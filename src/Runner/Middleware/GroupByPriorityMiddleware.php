@@ -15,9 +15,15 @@ class GroupByPriorityMiddleware implements RunnerMiddlewareInterface
      */
     private $IO;
 
-    public function __construct(IOInterface $IO)
+    /**
+     * @var bool
+     */
+    private $stopOnFailure;
+
+    public function __construct(IOInterface $IO, bool $stopOnFailure)//, GrumPHP $config)
     {
         $this->IO = $IO;
+        $this->stopOnFailure = $stopOnFailure;
     }
 
     public function handle(TaskRunnerContext $context, callable $next): TaskResultCollection
@@ -30,6 +36,11 @@ class GroupByPriorityMiddleware implements RunnerMiddlewareInterface
                 $results->toArray(),
                 $next($context->withTasks($tasks))->toArray()
             ));
+
+            // Stop on failure:
+            if ($this->stopOnFailure && $results->isFailed()) {
+                return $results;
+            }
         }
 
         return $results;
