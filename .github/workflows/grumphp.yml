@@ -13,7 +13,7 @@ jobs:
         name: PHP ${{ matrix.php-versions }} @ ${{ matrix.operating-system }} ${{ matrix.composer-options }}
         steps:
             - name: Checkout
-              uses: actions/checkout@v1
+              uses: actions/checkout@master
             - name: Install PHP
               uses: shivammathur/setup-php@master
               with:
@@ -23,8 +23,7 @@ jobs:
               run: php -v
             - name: Validate composer.json and composer.lock
               run: composer validate
-            - name: Install dependencies
-              run: composer update --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }}
+            - uses: php-actions/composer@master
             - name: Set git variables
               run: |
                 git config --global user.email "you@example.com"
