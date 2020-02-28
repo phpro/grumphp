@@ -9,6 +9,7 @@ jobs:
                 operating-system: [ubuntu-latest, macos-latest, windows-latest]
                 php-versions: ['7.2', '7.3', '7.4']
                 composer-options: ['', '--prefer-lowest']
+            fail-fast: false
         name: PHP ${{ matrix.php-versions }} @ ${{ matrix.operating-system }} ${{ matrix.composer-options }}
         steps:
             - name: Checkout
