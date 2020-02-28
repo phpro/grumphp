@@ -15,12 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PhpCsFixer extends AbstractPhpCsFixerTask
 {
-    public function getName(): string
-    {
-        return 'phpcsfixer';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -50,7 +45,7 @@ class PhpCsFixer extends AbstractPhpCsFixerTask
             return TaskResult::createSkipped($this, $context);
         }
 
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
         $this->formatter->resetCounter();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('php-cs-fixer');

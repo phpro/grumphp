@@ -10,7 +10,7 @@ use GrumPHP\Util\ComposerFile;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * The code representation of our grumphp.yml file.
+ * @deprecated  : Directly inject parameters instead or move to new specialized class.
  */
 class GrumPHP
 {
@@ -74,37 +74,12 @@ class GrumPHP
         return $this->container->getParameter('additional_info');
     }
 
-    public function getRegisteredTasks(): array
-    {
-        return $this->container->getParameter('grumphp.tasks.registered');
-    }
-
     /**
      * Gets a value indicating whether the Git commit hook circumvention tip should be shown when a task fails.
      */
     public function hideCircumventionTip(): bool
     {
         return (bool) $this->container->getParameter('hide_circumvention_tip');
-    }
-
-    public function getTaskConfiguration(string $taskName): array
-    {
-        $tasksConfiguration = $this->container->getParameter('grumphp.tasks.configuration');
-        if (!array_key_exists($taskName, $tasksConfiguration)) {
-            throw new RuntimeException('Could not find task configuration. Invalid task: '.$taskName);
-        }
-
-        return $tasksConfiguration[$taskName];
-    }
-
-    public function getTaskMetadata($taskName): array
-    {
-        $tasksMetadata = $this->container->getParameter('grumphp.tasks.metadata');
-        if (!array_key_exists($taskName, $tasksMetadata)) {
-            throw new RuntimeException('Could not find task metadata. Invalid task: '.$taskName);
-        }
-
-        return $tasksMetadata[$taskName];
     }
 
     public function getTestSuites(): TestSuiteCollection
@@ -130,12 +105,5 @@ class GrumPHP
         }
 
         return $paths[$resource];
-    }
-
-    public function isBlockingTask(string $taskName): bool
-    {
-        $taskMetadata = $this->getTaskMetadata($taskName);
-
-        return $taskMetadata['blocking'];
     }
 }

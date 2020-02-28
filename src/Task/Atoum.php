@@ -16,12 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Atoum extends AbstractExternalTask
 {
-    public function getName(): string
-    {
-        return 'atoum';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -63,7 +58,7 @@ class Atoum extends AbstractExternalTask
             return TaskResult::createSkipped($this, $context);
         }
 
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('atoum');
         $arguments->addOptionalArgumentWithSeparatedValue('-c', $config['config_file']);

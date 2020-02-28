@@ -17,12 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class JsonLint extends AbstractLinterTask
 {
-    public function getName(): string
-    {
-        return 'jsonlint';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = parent::getConfigurableOptions();
         $resolver->setDefaults([
@@ -52,7 +47,7 @@ class JsonLint extends AbstractLinterTask
             return TaskResult::createSkipped($this, $context);
         }
 
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
         $this->linter->setDetectKeyConflicts($config['detect_key_conflicts']);
 
         try {

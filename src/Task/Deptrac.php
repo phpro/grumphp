@@ -16,12 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Deptrac extends AbstractExternalTask
 {
-    public function getName(): string
-    {
-        return 'deptrac';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -50,7 +45,7 @@ class Deptrac extends AbstractExternalTask
 
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
 
         $files = $context->getFiles()->name('*.php');
         if (0 === \count($files)) {

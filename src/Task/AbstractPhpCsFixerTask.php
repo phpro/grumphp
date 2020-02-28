@@ -6,11 +6,11 @@ namespace GrumPHP\Task;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\PhpCsFixerFormatter;
 use GrumPHP\Process\AsyncProcessRunner;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Task\Config\TaskConfigInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -21,9 +21,9 @@ use GrumPHP\Task\Context\RunContext;
 abstract class AbstractPhpCsFixerTask implements TaskInterface
 {
     /**
-     * @var GrumPHP
+     * @var TaskConfigInterface
      */
-    protected $grumPHP;
+    protected $config;
 
     /**
      * @var ProcessBuilder
@@ -44,7 +44,6 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
      * PhpCsFixerRunner constructor.
      */
     public function __construct(
-        GrumPHP $grumPHP,
         ProcessBuilder $processBuilder,
         AsyncProcessRunner $processRunner,
         PhpCsFixerFormatter $formatter
@@ -52,7 +51,6 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
         $this->processBuilder = $processBuilder;
         $this->processRunner = $processRunner;
         $this->formatter = $formatter;
-        $this->grumPHP = $grumPHP;
     }
 
     /**
@@ -63,14 +61,17 @@ abstract class AbstractPhpCsFixerTask implements TaskInterface
         return $context instanceof GitPreCommitContext || $context instanceof RunContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfiguration(): array
+    public function withConfig(TaskConfigInterface $config): TaskInterface
     {
-        $configured = $this->grumPHP->getTaskConfiguration($this->getName());
+        $new = clone $this;
+        $new->config = $config;
 
-        return $this->getConfigurableOptions()->resolve($configured);
+        return $new;
+    }
+
+    public function getConfig(): TaskConfigInterface
+    {
+        return $this->config;
     }
 
     protected function runOnAllFiles(ContextInterface $context, ProcessArgumentsCollection $arguments): TaskResult

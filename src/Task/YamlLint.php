@@ -15,12 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class YamlLint extends AbstractLinterTask
 {
-    public function getName(): string
-    {
-        return 'yamllint';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = parent::getConfigurableOptions();
         $resolver->setDefaults([
@@ -48,7 +43,7 @@ class YamlLint extends AbstractLinterTask
     public function run(ContextInterface $context): TaskResultInterface
     {
         /** @var array $config */
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
         $whitelistPatterns = $config['whitelist_patterns'];
         $extensions = '/\.(yaml|yml)$/i';
 

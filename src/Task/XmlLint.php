@@ -17,12 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class XmlLint extends AbstractLinterTask
 {
-    public function getName(): string
-    {
-        return 'xmllint';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = parent::getConfigurableOptions();
         $resolver->setDefaults([
@@ -55,7 +50,7 @@ class XmlLint extends AbstractLinterTask
      */
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
         $files = $context->getFiles()->extensions($config['triggered_by']);
         if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);

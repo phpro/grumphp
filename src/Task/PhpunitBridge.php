@@ -13,12 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PhpunitBridge extends AbstractExternalTask
 {
-    public function getName(): string
-    {
-        return 'phpunitbridge';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -43,7 +38,7 @@ class PhpunitBridge extends AbstractExternalTask
 
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
 
         $files = $context->getFiles()->name('*.php');
         if (0 === count($files) && !$config['always_execute']) {

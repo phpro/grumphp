@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
+use GrumPHP\Task\Config\EmptyTaskConfig;
+use GrumPHP\Task\Config\TaskConfigInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -21,37 +22,35 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CloverCoverage implements TaskInterface
 {
     /**
-     * @var GrumPHP
-     */
-    protected $grumPHP;
-
-    /**
      * @var Filesystem
      */
-    protected $filesystem;
+    private $filesystem;
 
-    public function __construct(GrumPHP $grumPHP, Filesystem $filesystem)
+    /**
+     * @var TaskConfigInterface
+     */
+    private $config;
+
+    public function __construct(Filesystem $filesystem)
     {
-        $this->grumPHP = $grumPHP;
+        $this->config = new EmptyTaskConfig();
         $this->filesystem = $filesystem;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfiguration(): array
+    public function withConfig(TaskConfigInterface $config): TaskInterface
     {
-        $configured = $this->grumPHP->getTaskConfiguration($this->getName());
+        $new = clone $this;
+        $new->config = $config;
 
-        return $this->getConfigurableOptions()->resolve($configured);
+        return $new;
     }
 
-    public function getName(): string
+    public function getConfig(): TaskConfigInterface
     {
-        return 'clover_coverage';
+        return $this->config;
     }
 
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
 
@@ -83,7 +82,7 @@ class CloverCoverage implements TaskInterface
      */
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $configuration = $this->getConfiguration();
+        $configuration = $this->getConfig()->getOptions();
         $percentage = round(min(100, max(0, (float) $configuration['level'])), 2);
         $cloverFile = $configuration['clover_file'];
 

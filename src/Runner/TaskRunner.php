@@ -39,28 +39,11 @@ class TaskRunner
     /**
      * @constructor
      */
-    public function __construct(GrumPHP $grumPHP, EventDispatcherInterface $eventDispatcher)
+    public function __construct(TasksCollection $tasks, GrumPHP $grumPHP, EventDispatcherInterface $eventDispatcher)
     {
-        $this->tasks = new TasksCollection();
         $this->eventDispatcher = $eventDispatcher;
         $this->grumPHP = $grumPHP;
-    }
-
-    public function addTask(TaskInterface $task): void
-    {
-        if ($this->tasks->contains($task)) {
-            return;
-        }
-
-        $this->tasks->add($task);
-    }
-
-    /**
-     * @return TasksCollection|TaskInterface[]
-     */
-    public function getTasks()
-    {
-        return $this->tasks;
+        $this->tasks = $tasks;
     }
 
     public function run(TaskRunnerContext $runnerContext): TaskResultCollection
@@ -70,7 +53,7 @@ class TaskRunner
             ->filterByContext($runnerContext->getTaskContext())
             ->filterByTestSuite($runnerContext->getTestSuite())
             ->filterByTaskNames($runnerContext->getTasks())
-            ->sortByPriority($this->grumPHP);
+            ->sortByPriority();
         $taskResults = new TaskResultCollection();
 
         $this->eventDispatcher->dispatch(new RunnerEvent($tasks, $context, $taskResults), RunnerEvents::RUNNER_RUN);
@@ -124,7 +107,7 @@ class TaskRunner
             throw RuntimeException::invalidTaskReturnType($task);
         }
 
-        if (!$result->isPassed() && !$this->grumPHP->isBlockingTask($task->getName())) {
+        if (!$result->isPassed() && !$task->getConfig()->getMetadata()->isBlocking()) {
             $result = TaskResult::createNonBlockingFailed(
                 $result->getTask(),
                 $result->getContext(),

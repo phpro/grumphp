@@ -16,12 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PhpMnd extends AbstractExternalTask
 {
-    public function getName(): string
-    {
-        return 'phpmnd';
-    }
-
-    public function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -69,7 +64,7 @@ class PhpMnd extends AbstractExternalTask
     public function run(ContextInterface $context): TaskResultInterface
     {
         /** @var array $config */
-        $config = $this->getConfiguration();
+        $config = $this->getConfig()->getOptions();
         /** @var array $whitelistPatterns */
         $whitelistPatterns = $config['whitelist_patterns'];
         /** @var array $extensions */

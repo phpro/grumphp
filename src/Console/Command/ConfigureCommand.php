@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace GrumPHP\Console\Command;
 
 use Exception;
-use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Configuration\Resolver\TaskConfigResolver;
 use GrumPHP\Util\Filesystem;
 use GrumPHP\Util\Paths;
 use Symfony\Component\Console\Command\Command;
@@ -22,14 +22,15 @@ class ConfigureCommand extends Command
     const COMMAND_NAME = 'configure';
 
     /**
-     * @var GrumPHP
+     * @var TaskConfigResolver
      */
-    protected $config;
+    private $taskConfigResolver;
 
     /**
      * @var Filesystem
      */
     protected $filesystem;
+
     /**
      * @var Paths
      */
@@ -40,11 +41,11 @@ class ConfigureCommand extends Command
      */
     protected $input;
 
-    public function __construct(GrumPHP $config, Filesystem $filesystem, Paths $paths)
+    public function __construct(TaskConfigResolver $taskConfigResolver, Filesystem $filesystem, Paths $paths)
     {
         parent::__construct();
 
-        $this->config = $config;
+        $this->taskConfigResolver = $taskConfigResolver;
         $this->filesystem = $filesystem;
         $this->paths = $paths;
     }
@@ -135,7 +136,7 @@ class ConfigureCommand extends Command
         if ($input->isInteractive()) {
             $question = new ChoiceQuestion(
                 $this->createQuestionString('Which tasks do you want to run?', null, ''),
-                $this->config->getRegisteredTasks()
+                $this->taskConfigResolver->listAvailableTaskNames()
             );
             $question->setMultiselect(true);
             $tasks = (array) $helper->ask($input, $output, $question);
