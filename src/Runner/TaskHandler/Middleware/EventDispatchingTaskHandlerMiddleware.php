@@ -47,7 +47,10 @@ class EventDispatchingTaskHandlerMiddleware implements TaskHandlerMiddlewareInte
 
                 if ($result->hasFailed()) {
                     $e = new RuntimeException($result->getMessage());
-                    $this->eventDispatcher->dispatch(new TaskFailedEvent($task, $taskContext, $e), TaskEvents::TASK_FAILED);
+                    $this->eventDispatcher->dispatch(
+                        new TaskFailedEvent($task, $taskContext, $e),
+                        TaskEvents::TASK_FAILED
+                    );
 
                     return $result;
                 }

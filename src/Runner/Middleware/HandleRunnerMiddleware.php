@@ -62,7 +62,7 @@ class HandleRunnerMiddleware implements RunnerMiddlewareInterface
             /**
              * @return Promise<TaskResultInterface>
              */
-            function (TaskInterface $task) use ($context): Promise  {
+            function (TaskInterface $task) use ($context) : Promise {
                 return $this->taskHandler->handle($task, $context);
             },
             $context->getTasks()->toArray()

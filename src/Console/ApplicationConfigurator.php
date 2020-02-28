@@ -18,15 +18,9 @@ class ApplicationConfigurator
      */
     private $config;
 
-    /**
-     * @var iterable
-     */
-    private $helpers;
-
-    public function __construct(GrumPHP $config, iterable $helpers)
+    public function __construct(GrumPHP $config)
     {
         $this->config = $config;
-        $this->helpers = $helpers;
     }
 
     public function configure(Application $application): void
@@ -34,15 +28,6 @@ class ApplicationConfigurator
         $application->setVersion(self::APP_VERSION);
         $application->setName(self::APP_NAME);
         $this->registerInputDefinitions($application);
-        $this->registerHelpers($application);
-    }
-
-    private function registerHelpers(Application $application): void
-    {
-        $helperSet = $application->getHelperSet();
-        foreach ($this->helpers as $helper) {
-            $helperSet->set($helper);
-        }
     }
 
     private function registerInputDefinitions(Application $application): void

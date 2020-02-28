@@ -8,7 +8,7 @@ use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Runner\Reporting\TaskResultsReporter;
 use GrumPHP\Runner\TaskRunnerContext;
 
-class ReportingSectionRunnerMiddleware implements RunnerMiddlewareInterface
+class ReportingTasksSectionRunnerMiddleware implements RunnerMiddlewareInterface
 {
     /**
      * @var TaskResultsReporter

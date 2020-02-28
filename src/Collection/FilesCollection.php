@@ -215,7 +215,7 @@ class FilesCollection extends ArrayCollection implements \Serializable
      */
     public function serialize(): string
     {
-        return serialize($this->map(function(SplFileInfo $fileInfo): string {
+        return serialize($this->map(function (SplFileInfo $fileInfo): string {
             return (string) (
                 $fileInfo instanceof SymfonySplFileInfo
                     ? $fileInfo->getRelativePathname()

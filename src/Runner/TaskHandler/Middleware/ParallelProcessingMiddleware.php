@@ -9,7 +9,6 @@ use function Amp\ParallelFunctions\parallel;
 use Amp\Promise;
 use function Amp\Promise\wait;
 use GrumPHP\Runner\Parallel\PoolFactory;
-use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\TaskInterface;
@@ -31,7 +30,8 @@ class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
     {
         /**
          * This method creates a callable that can be used to enqueue to run the task in parallel.
-         * The result is wrapped in a serializable closure to make sure all information inside the task can be serialized.
+         * The result is wrapped in a serializable closure
+         * to make sure all information inside the task can be serialized.
          * This implies that the result of the parallel command is another callable that will return the task result.
          *
          * @var callable(): Promise<TaskResultInterface> $enqueueParallelTask

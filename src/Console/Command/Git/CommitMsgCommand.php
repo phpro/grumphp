@@ -9,6 +9,7 @@ use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Locator\ChangedFiles;
+use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use GrumPHP\Util\Filesystem;
@@ -26,16 +27,23 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CommitMsgCommand extends Command
 {
     const COMMAND_NAME = 'git:commit-msg';
+    const EXIT_CODE_OK = 0;
+    const EXIT_CODE_NOK = 1;
 
     /**
      * @var GrumPHP
      */
-    protected $grumPHP;
+    private $grumPHP;
 
     /**
      * @var ChangedFiles
      */
-    protected $changedFilesLocator;
+    private $changedFilesLocator;
+
+    /**
+     * @var TaskRunner
+     */
+    private $taskRunner;
 
     /**
      * @var Filesystem
@@ -50,6 +58,7 @@ class CommitMsgCommand extends Command
     public function __construct(
         GrumPHP $config,
         ChangedFiles $changedFilesLocator,
+        TaskRunner $taskRunner,
         Filesystem $filesystem,
         Paths $paths
     ) {
@@ -57,6 +66,7 @@ class CommitMsgCommand extends Command
 
         $this->grumPHP = $config;
         $this->changedFilesLocator = $changedFilesLocator;
+        $this->taskRunner = $taskRunner;
         $this->filesystem = $filesystem;
         $this->paths = $paths;
     }
@@ -102,7 +112,9 @@ class CommitMsgCommand extends Command
             $this->grumPHP->getTestSuites()->getOptional('git_commit_msg')
         );
 
-        return $this->taskRunner()->run($output, $context);
+        $results = $this->taskRunner->run($context);
+
+        return $results->isFailed() ? self::EXIT_CODE_NOK : self::EXIT_CODE_OK;
     }
 
     protected function getCommittedFiles(ConsoleIO $io): FilesCollection
@@ -112,10 +124,5 @@ class CommitMsgCommand extends Command
         }
 
         return $this->changedFilesLocator->locateFromGitRepository();
-    }
-
-    protected function taskRunner(): TaskRunnerHelper
-    {
-        return $this->getHelper(TaskRunnerHelper::HELPER_NAME);
     }
 }

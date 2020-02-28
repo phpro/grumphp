@@ -13,7 +13,6 @@ services:
     GrumPHP\Console\ApplicationConfigurator:
         arguments:
             - '@config'
-            - !tagged console.helper
 
     #
     # Commands
@@ -29,12 +28,14 @@ services:
         arguments:
             - '@config'
             - '@locator.registered_files'
+            - '@GrumPHP\Runner\TaskRunner'
         tags:
             - { name: 'console.command' }
     GrumPHP\Console\Command\Git\CommitMsgCommand:
         arguments:
             - '@config'
             - '@locator.changed_files'
+            - '@GrumPHP\Runner\TaskRunner'
             - '@grumphp.util.filesystem'
             - '@GrumPHP\Util\Paths'
         tags:
@@ -57,17 +58,6 @@ services:
         arguments:
             - '@config'
             - '@locator.changed_files'
+            - '@GrumPHP\Runner\TaskRunner'
         tags:
             - { name: 'console.command' }
-
-    #
-    # Helper
-    #
-    GrumPHP\Console\Helper\TaskRunnerHelper:
-        arguments:
-            - '@config'
-            - '@GrumPHP\Runner\TaskRunner'
-            - '@Symfony\Component\EventDispatcher\EventDispatcher'
-            - '@GrumPHP\Locator\AsciiLocator'
-        tags:
-            - { name: 'console.helper' }

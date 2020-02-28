@@ -14,7 +14,7 @@ class MiddlewareStack
      */
     private $stack;
 
-    public function __construct(RunnerMiddlewareInterface ... $middlewares)
+    public function __construct(RunnerMiddlewareInterface ...$middlewares)
     {
         $this->stack = $this->createStack($middlewares);
     }
@@ -46,7 +46,7 @@ class MiddlewareStack
     {
         $lastCallable = $this->fail();
 
-        while($middleware = array_pop($middlewares)) {
+        while ($middleware = array_pop($middlewares)) {
             $lastCallable = static function (TaskRunnerContext $context) use (
                 $middleware,
                 $lastCallable

@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace GrumPHP\Console\Command;
 
-use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
-use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\Locator\RegisteredFiles;
+use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Util\Str;
@@ -19,23 +18,34 @@ use Symfony\Component\Console\Output\OutputInterface;
 class RunCommand extends Command
 {
     const COMMAND_NAME = 'run';
+    const EXIT_CODE_OK = 0;
+    const EXIT_CODE_NOK = 1;
 
     /**
      * @var GrumPHP
      */
-    protected $grumPHP;
+    private $grumPHP;
 
     /**
      * @var RegisteredFiles
      */
-    protected $registeredFilesLocator;
+    private $registeredFilesLocator;
 
-    public function __construct(GrumPHP $config, RegisteredFiles $registeredFilesLocator)
-    {
+    /**
+     * @var TaskRunner
+     */
+    private $taskRunner;
+
+    public function __construct(
+        GrumPHP $config,
+        RegisteredFiles $registeredFilesLocator,
+        TaskRunner $taskRunner
+    ) {
         parent::__construct();
 
         $this->grumPHP = $config;
         $this->registeredFilesLocator = $registeredFilesLocator;
+        $this->taskRunner = $taskRunner;
     }
 
     public static function getDefaultName(): string
@@ -66,10 +76,10 @@ class RunCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $files = $this->getRegisteredFiles();
+        $files = $this->registeredFilesLocator->locate();
         $testSuites = $this->grumPHP->getTestSuites();
 
-        $tasks = Str::explodeWithCleanup(',', $input->getOption("tasks") ?? '');
+        $tasks = Str::explodeWithCleanup(',', $input->getOption('tasks') ?? '');
 
         $context = new TaskRunnerContext(
             new RunContext($files),
@@ -77,16 +87,8 @@ class RunCommand extends Command
             $tasks
         );
 
-        return $this->taskRunner()->run($output, $context);
-    }
+        $results = $this->taskRunner->run($context);
 
-    protected function getRegisteredFiles(): FilesCollection
-    {
-        return $this->registeredFilesLocator->locate();
-    }
-
-    protected function taskRunner(): TaskRunnerHelper
-    {
-        return $this->getHelper(TaskRunnerHelper::HELPER_NAME);
+        return $results->isFailed() ? self::EXIT_CODE_NOK : self::EXIT_CODE_OK;
     }
 }

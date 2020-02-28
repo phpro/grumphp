@@ -18,8 +18,13 @@ services:
     #
     # Runner middleware
     #
+    GrumPHP\Runner\Middleware\ReportingRunnerMiddleware:
+        arguments:
+            - '@GrumPHP\Runner\Reporting\RunnerReporter'
+        tags:
+            - { name: 'grumphp.runner_middleware', priority: 1500 }
     GrumPHP\Runner\Middleware\TasksFilteringRunnerMiddleware:
-        arguments: ~
+        arguments: []
         tags:
             - { name: 'grumphp.runner_middleware', priority: 1000 }
     GrumPHP\Runner\Middleware\EventDispatchingRunnerMiddleware:
@@ -32,7 +37,7 @@ services:
             - '@grumphp.io'
         tags:
             - { name: 'grumphp.runner_middleware', priority: 200 }
-    GrumPHP\Runner\Middleware\ReportingSectionRunnerMiddleware:
+    GrumPHP\Runner\Middleware\ReportingTasksSectionRunnerMiddleware:
         arguments:
             - '@GrumPHP\Runner\Reporting\TaskResultsReporter'
         tags:
@@ -91,6 +96,11 @@ services:
     #
     GrumPHP\Runner\MemoizedTaskResultMap:
         arguments: []
+    GrumPHP\Runner\Reporting\RunnerReporter:
+        arguments:
+            - '@grumphp.io'
+            - '@GrumPHP\Locator\AsciiLocator'
+            - '@config'
     GrumPHP\Runner\Reporting\TaskResultsReporter:
         arguments:
             - '@grumphp.io'

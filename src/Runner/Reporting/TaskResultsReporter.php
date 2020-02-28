@@ -61,7 +61,7 @@ final class TaskResultsReporter
     {
         return array_reduce(
             $context->getTasks()->toArray(),
-            static function(array $taskMap, TaskInterface $task): array{
+            static function (array $taskMap, TaskInterface $task) : array {
                 $config = $task->getConfig();
                 return array_merge(
                     $taskMap,
