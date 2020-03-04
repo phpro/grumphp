@@ -23,7 +23,14 @@ class GitWorkingDirLocator
 
     public function locate(): string
     {
-        $arguments = ProcessArgumentsCollection::forExecutable($this->executableFinder->find('git'));
+        $gitExecutable = $this->executableFinder->find('git');
+        if (null === $gitExecutable) {
+            throw new RuntimeException(
+                'The git executable could not be found. Did you installed git?'
+            );
+        }
+
+        $arguments = ProcessArgumentsCollection::forExecutable();
         $arguments->add('rev-parse');
         $arguments->add('--show-toplevel');
 
