@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GrumPHP\Locator;
 
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Util\Filesystem;
 use GrumPHP\Util\Paths;
 use SplFileInfo;
@@ -12,9 +11,9 @@ use SplFileInfo;
 class AsciiLocator
 {
     /**
-     * @var GrumPHP
+     * @var array|null
      */
-    private $config;
+    private $asciiConfig;
 
     /**
      * @var Filesystem
@@ -26,16 +25,16 @@ class AsciiLocator
      */
     private $paths;
 
-    public function __construct(GrumPHP $config, Filesystem $filesystem, Paths $paths)
+    public function __construct(?array $asciiConfig, Filesystem $filesystem, Paths $paths)
     {
-        $this->config = $config;
+        $this->asciiConfig = $asciiConfig;
         $this->filesystem = $filesystem;
         $this->paths = $paths;
     }
 
     public function locate(string $resource): string
     {
-        $file = $this->config->getAsciiContentPath($resource);
+        $file = $this->grabAsciiResourceFromConfig($resource);
 
         // Disabled:
         if (null === $file) {
@@ -55,5 +54,25 @@ class AsciiLocator
 
         // Error:
         return sprintf('ASCII file %s could not be found.', $file);
+    }
+
+    private function grabAsciiResourceFromConfig(string $resource): ?string
+    {
+        if (null === $this->asciiConfig) {
+            return null;
+        }
+
+        $paths = $this->asciiConfig;
+        if (!array_key_exists($resource, $paths)) {
+            return null;
+        }
+
+        // Deal with multiple ascii files by returning one at random.
+        if (\is_array($paths[$resource])) {
+            shuffle($paths[$resource]);
+            return reset($paths[$resource]);
+        }
+
+        return $paths[$resource];
     }
 }

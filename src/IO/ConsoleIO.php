@@ -116,4 +116,14 @@ class ConsoleIO implements IOInterface
     {
         return $this->output->section();
     }
+
+    public function colorize(array $messages, string $color): array
+    {
+        return array_map(
+            static function (string $message) use ($color) : string {
+                return '<fg='.$color.'>'.$message.'</fg='.$color.'>';
+            },
+            $messages
+        );
+    }
 }

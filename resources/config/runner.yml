@@ -18,11 +18,16 @@ services:
     #
     # Runner middleware
     #
+    GrumPHP\Runner\Middleware\FixCodeMiddleware:
+        arguments:
+            - '@GrumPHP\Fixer\FixerUpper'
+        tags:
+            - { name: 'grumphp.runner_middleware', priority: 1000 }
     GrumPHP\Runner\Middleware\ReportingRunnerMiddleware:
         arguments:
             - '@GrumPHP\Runner\Reporting\RunnerReporter'
         tags:
-            - { name: 'grumphp.runner_middleware', priority: 1000 }
+            - { name: 'grumphp.runner_middleware', priority: 900 }
     GrumPHP\Runner\Middleware\TasksFilteringRunnerMiddleware:
         arguments: []
         tags:
@@ -98,7 +103,8 @@ services:
         arguments:
             - '@grumphp.io'
             - '@GrumPHP\Locator\AsciiLocator'
-            - '@config'
+            - '%hide_circumvention_tip%'
+            - '%additional_info%'
     GrumPHP\Runner\Reporting\TaskResultsReporter:
         arguments:
             - '@grumphp.io'

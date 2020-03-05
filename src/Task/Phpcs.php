@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace GrumPHP\Task;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
+use GrumPHP\Fixer\Provider\FixableProcessProvider;
 use GrumPHP\Formatter\PhpcsFormatter;
-use GrumPHP\Formatter\ProcessFormatterInterface;
+use GrumPHP\Runner\FixableTaskResult;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
@@ -14,6 +15,7 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Process\Process;
 
 class Phpcs extends AbstractExternalTask
 {
@@ -94,11 +96,18 @@ class Phpcs extends AbstractExternalTask
         if (!$process->isSuccessful()) {
             $output = $this->formatter->format($process);
             try {
-                $arguments = $this->processBuilder->createArgumentsForCommand('phpcbf');
-                $arguments = $this->addArgumentsFromConfig($arguments, $config);
-                $output .= $this->formatter->formatErrorMessage($arguments, $this->processBuilder);
+                $fixProcess = $this->createFixerProcess($this->formatter->getSuggestedFiles());
             } catch (RuntimeException $exception) { // phpcbf could not get found.
                 $output .= PHP_EOL.'Info: phpcbf could not get found. Please consider to install it for suggestions.';
+                return TaskResult::createFailed($this, $context, $output);
+            }
+
+            if ($fixProcess) {
+                $output .= $this->formatter->formatManualFixingOutput($fixProcess);
+                return new FixableTaskResult(
+                    TaskResult::createFailed($this, $context, $output),
+                    FixableProcessProvider::provide($fixProcess->getCommandLine())
+                );
             }
 
             return TaskResult::createFailed($this, $context, $output);
@@ -107,7 +116,23 @@ class Phpcs extends AbstractExternalTask
         return TaskResult::createPassed($this, $context);
     }
 
-    protected function addArgumentsFromConfig(
+    /**
+     * @param array<int, string> $suggestedFiles
+     */
+    private function createFixerProcess(array $suggestedFiles): ?Process
+    {
+        if (!$suggestedFiles) {
+            return null;
+        }
+
+        $arguments = $this->processBuilder->createArgumentsForCommand('phpcbf');
+        $arguments = $this->addArgumentsFromConfig($arguments, $this->config->getOptions());
+        $arguments->addArgumentArray('%s', $suggestedFiles);
+
+        return $this->processBuilder->buildProcess($arguments);
+    }
+
+    private function addArgumentsFromConfig(
         ProcessArgumentsCollection $arguments,
         array $config
     ): ProcessArgumentsCollection {

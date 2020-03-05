@@ -92,7 +92,7 @@ final class TaskResultsReporter
         );
     }
 
-    public function displayTaskResult(string $taskName): string
+    private function displayTaskResult(string $taskName): string
     {
         if (!$result = $this->taskResultMap->get($taskName)) {
             return '';

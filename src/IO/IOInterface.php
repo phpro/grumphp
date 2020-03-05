@@ -26,4 +26,6 @@ interface IOInterface
     public function style(): StyleInterface;
 
     public function section(): ConsoleSectionOutput;
+
+    public function colorize(array $messages, string $color): array;
 }

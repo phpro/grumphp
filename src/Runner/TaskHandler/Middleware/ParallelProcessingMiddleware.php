@@ -9,6 +9,7 @@ use function Amp\ParallelFunctions\parallel;
 use Amp\Promise;
 use function Amp\Promise\wait;
 use GrumPHP\Runner\Parallel\PoolFactory;
+use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\TaskInterface;
@@ -58,10 +59,19 @@ class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
              * @return \Generator<mixed, Promise<TaskResultInterface>, mixed, TaskResultInterface>
              */
             static function () use ($enqueueParallelTask, $task, $runnerContext): \Generator {
-                /** @var callable(): TaskResultInterface $resultProvider */
-                $resultProvider = yield $enqueueParallelTask();
+                try {
+                    /** @var callable(): TaskResultInterface $resultProvider */
+                    $resultProvider = yield $enqueueParallelTask();
+                    $result = $resultProvider();
+                } catch (\Throwable $error) {
+                    // TODO : only log more in verbose mode ...
+                    $message = $error->getMessage() . PHP_EOL . $error->getTraceAsString() . PHP_EOL . $error->getPrevious();
 
-                return $resultProvider();
+                    return TaskResult::createFailed($task, $runnerContext->getTaskContext(), $message);
+                }
+
+
+                return $result;
             }
         );
     }

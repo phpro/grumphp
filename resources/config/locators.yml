@@ -1,7 +1,7 @@
 services:
     GrumPHP\Locator\AsciiLocator:
         arguments:
-            - '@config'
+            - '%ascii%'
             - '@filesystem'
             - '@GrumPHP\Util\Paths'
         public: true

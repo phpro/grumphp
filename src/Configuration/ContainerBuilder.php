@@ -32,6 +32,7 @@ final class ContainerBuilder
         $configDir = dirname(__DIR__, 2).$filesystem->ensureValidSlashes('/resources/config');
         $loader = new YamlFileLoader($container, new FileLocator($configDir));
         $loader->load('console.yml');
+        $loader->load('fixer.yml');
         $loader->load('formatter.yml');
         $loader->load('linters.yml');
         $loader->load('locators.yml');

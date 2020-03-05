@@ -62,41 +62,8 @@ class GrumPHP
         return (float) $timeout;
     }
 
-    public function getAdditionalInfo(): ?string
-    {
-        return $this->container->getParameter('additional_info');
-    }
-
-    /**
-     * Gets a value indicating whether the Git commit hook circumvention tip should be shown when a task fails.
-     */
-    public function hideCircumventionTip(): bool
-    {
-        return (bool) $this->container->getParameter('hide_circumvention_tip');
-    }
-
     public function getTestSuites(): TestSuiteCollection
     {
         return $this->container->getParameter('grumphp.testsuites');
-    }
-
-    public function getAsciiContentPath(string $resource): ?string
-    {
-        if (null === $this->container->getParameter('ascii')) {
-            return null;
-        }
-
-        $paths = $this->container->getParameter('ascii');
-        if (!array_key_exists($resource, $paths)) {
-            return null;
-        }
-
-        // Deal with multiple ascii files by returning one at random.
-        if (\is_array($paths[$resource])) {
-            shuffle($paths[$resource]);
-            return reset($paths[$resource]);
-        }
-
-        return $paths[$resource];
     }
 }

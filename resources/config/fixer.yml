@@ -1,0 +1,4 @@
+services:
+    GrumPHP\Fixer\FixerUpper:
+        arguments:
+            - '@grumphp.io'
