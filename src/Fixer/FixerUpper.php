@@ -36,7 +36,7 @@ class FixerUpper
 
         if (
             !$this->IO->isInteractive()
-            || !$this->IO->style()->confirm('We can fix stuff automatically, do you want us to?', false)
+            || !$this->IO->style()->confirm('I can fix  some stuff automatically, do you want me to?', false)
         ) {
             return;
         }
@@ -63,5 +63,7 @@ class FixerUpper
 
             $count++;
         }
+
+        $this->IO->style()->warning('Please review the code changes that I made!');
     }
 }
