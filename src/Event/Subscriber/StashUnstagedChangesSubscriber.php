@@ -6,7 +6,6 @@ namespace GrumPHP\Event\Subscriber;
 
 use Exception;
 use Gitonomy\Git\Exception\ProcessException;
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Event\RunnerEvents;
 use GrumPHP\Exception\RuntimeException;
@@ -20,9 +19,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class StashUnstagedChangesSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var GrumPHP
+     * @var bool
      */
-    private $grumPHP;
+    private $ignoreUnstagedChanges;
 
     /**
      * @var GitRepository
@@ -44,9 +43,9 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
      */
     private $shutdownFunctionRegistered = false;
 
-    public function __construct(GrumPHP $grumPHP, GitRepository $repository, IOInterface $io)
+    public function __construct(bool $ignoreUnstagedChanges, GitRepository $repository, IOInterface $io)
     {
-        $this->grumPHP = $grumPHP;
+        $this->ignoreUnstagedChanges = $ignoreUnstagedChanges;
         $this->repository = $repository;
         $this->io = $io;
     }
@@ -93,7 +92,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
 
     public function handleErrors(): void
     {
-        if (!$this->grumPHP->ignoreUnstagedChanges()) {
+        if (!$this->ignoreUnstagedChanges) {
             return;
         }
 
@@ -149,7 +148,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
 
     private function isStashEnabled(ContextInterface $context): bool
     {
-        return $this->grumPHP->ignoreUnstagedChanges() && $context instanceof GitPreCommitContext;
+        return $this->ignoreUnstagedChanges && $context instanceof GitPreCommitContext;
     }
 
     /**

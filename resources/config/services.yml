@@ -2,7 +2,8 @@ services:
     async_process_runner:
       class: GrumPHP\Process\AsyncProcessRunner
       arguments:
-        - '@config'
+        - '%process_async_wait%'
+        - '%process_async_limit%'
 
     config:
         class: GrumPHP\Configuration\GrumPHP
@@ -40,9 +41,9 @@ services:
     process_builder:
       class: GrumPHP\Process\ProcessBuilder
       arguments:
-        - '@config'
         - '@locator.external_command'
         - '@grumphp.io'
+        - '%process_timeout%'
       public: true
 
     GrumPHP\Git\GitRepository:

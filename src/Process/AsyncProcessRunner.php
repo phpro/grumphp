@@ -10,11 +10,6 @@ use Symfony\Component\Process\Process;
 class AsyncProcessRunner
 {
     /**
-     * @var GrumPHP
-     */
-    private $config;
-
-    /**
      * @var array
      */
     private $processes;
@@ -25,11 +20,22 @@ class AsyncProcessRunner
     private $running;
 
     /**
+     * @var int
+     */
+    private $asyncWaitTime;
+
+    /**
+     * @var int
+     */
+    private $asyncLimit;
+
+    /**
      * AsyncProcessRunner constructor.
      */
-    public function __construct(GrumPHP $config)
+    public function __construct(int $asyncWaitTime, int $asyncLimit)
     {
-        $this->config = $config;
+        $this->asyncWaitTime = $asyncWaitTime;
+        $this->asyncLimit = $asyncLimit;
     }
 
     /**
@@ -39,10 +45,9 @@ class AsyncProcessRunner
     {
         $this->processes = $processes;
         $this->running = 0;
-        $sleepDuration = $this->config->getProcessAsyncWaitTime();
 
         while ($this->watchProcesses()) {
-            usleep($sleepDuration);
+            usleep($this->asyncLimit);
         }
     }
 
@@ -72,7 +77,7 @@ class AsyncProcessRunner
         }
 
         // Only start a new process if we haven't reached the limit yet.
-        if ($this->running < $this->config->getProcessAsyncLimit()) {
+        if ($this->running < $this->asyncLimit) {
             $process->start();
             ++$this->running;
         }

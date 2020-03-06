@@ -2,7 +2,7 @@ services:
   subscriber.stash_unstaged_changes:
     class: GrumPHP\Event\Subscriber\StashUnstagedChangesSubscriber
     arguments:
-      - '@config'
+      - '%ignore_unstaged_changes%'
       - '@GrumPHP\Git\GitRepository'
       - '@grumphp.io'
     tags:

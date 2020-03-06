@@ -1,22 +1,5 @@
-parameters:
-  hooks_dir: ~
-  hooks_preset: local
-  git_hook_variables:
-    VAGRANT_HOST_DIR: .
-    VAGRANT_PROJECT_DIR: /var/www
-    EXEC_GRUMPHP_COMMAND: exec
-  additional_info: ~
-  tasks: []
-  testsuites: []
-  stop_on_failure: false
-  ignore_unstaged_changes: false
-  hide_circumvention_tip: false
-  process_async_limit: 10
-  process_async_wait: 1000
-  process_timeout: 60
-  extensions: []
-  ascii:
-    failed: grumphp-grumpy.txt
-    succeeded: grumphp-happy.txt
-  parallel:
-    max_size: 32
+#
+# This entry makes sure to trigger the grumphp container extension.
+# It can be removed in the future if everybody migrated `parameters:` to `grumphp:` in the configuration file.
+#
+grumphp: ~

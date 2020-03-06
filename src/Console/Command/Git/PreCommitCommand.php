@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Collection\FilesCollection;
-use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Collection\TestSuiteCollection;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Locator\ChangedFiles;
@@ -27,9 +27,9 @@ class PreCommitCommand extends Command
     const EXIT_CODE_NOK = 1;
 
     /**
-     * @var GrumPHP
+     * @var TestSuiteCollection
      */
-    private $grumPHP;
+    private $testSuites;
 
     /**
      * @var ChangedFiles
@@ -41,11 +41,14 @@ class PreCommitCommand extends Command
      */
     private $taskRunner;
 
-    public function __construct(GrumPHP $config, ChangedFiles $changedFilesLocator, TaskRunner $taskRunner)
-    {
+    public function __construct(
+        TestSuiteCollection $testSuites,
+        ChangedFiles $changedFilesLocator,
+        TaskRunner $taskRunner
+    ) {
         parent::__construct();
 
-        $this->grumPHP = $config;
+        $this->testSuites = $testSuites;
         $this->changedFilesLocator = $changedFilesLocator;
         $this->taskRunner = $taskRunner;
     }
@@ -77,7 +80,7 @@ class PreCommitCommand extends Command
         $context = (
             new TaskRunnerContext(
                 new GitPreCommitContext($files),
-                $this->grumPHP->getTestSuites()->getOptional('git_pre_commit')
+                $this->testSuites->getOptional('git_pre_commit')
             )
         )->withSkippedSuccessOutput((bool) $input->getOption('skip-success-output'));
 

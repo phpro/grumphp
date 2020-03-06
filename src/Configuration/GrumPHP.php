@@ -36,34 +36,4 @@ class GrumPHP
     {
         return $this->container->getParameter('git_hook_variables');
     }
-
-    public function ignoreUnstagedChanges(): bool
-    {
-        return (bool) $this->container->getParameter('ignore_unstaged_changes');
-    }
-
-    public function getProcessAsyncLimit(): int
-    {
-        return (int) $this->container->getParameter('process_async_limit');
-    }
-
-    public function getProcessAsyncWaitTime(): int
-    {
-        return (int) $this->container->getParameter('process_async_wait');
-    }
-
-    public function getProcessTimeout(): ?float
-    {
-        $timeout = $this->container->getParameter('process_timeout');
-        if (null === $timeout) {
-            return null;
-        }
-
-        return (float) $timeout;
-    }
-
-    public function getTestSuites(): TestSuiteCollection
-    {
-        return $this->container->getParameter('grumphp.testsuites');
-    }
 }

@@ -18,6 +18,9 @@ final class ContainerBuilder
         $filesystem = new Filesystem();
         $container = new SymfonyContainerBuilder();
 
+        // Register extensions
+        $container->registerExtension(new GrumPHPExtension());
+
         // Add compiler passes:
         $container->addCompilerPass(new Compiler\ExtensionCompilerPass());
         $container->addCompilerPass(new Compiler\PhpParserCompilerPass());

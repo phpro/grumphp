@@ -14,15 +14,25 @@ use Symfony\Component\Process\Process;
 
 class ProcessBuilder
 {
+    /**
+     * @var ExternalCommand
+     */
     private $externalCommandLocator;
-    private $config;
+    /**
+     * @var IOInterface
+     */
     private $io;
 
-    public function __construct(GrumPHP $config, ExternalCommand $externalCommandLocator, IOInterface $io)
+    /**
+     * @var float|null
+     */
+    private $processTimeout;
+
+    public function __construct(ExternalCommand $externalCommandLocator, IOInterface $io, ?float $processTimeout)
     {
         $this->externalCommandLocator = $externalCommandLocator;
-        $this->config = $config;
         $this->io = $io;
+        $this->processTimeout = $processTimeout;
     }
 
     /**
@@ -44,7 +54,7 @@ class ProcessBuilder
     public function buildProcess(ProcessArgumentsCollection $arguments): Process
     {
         $process = ProcessFactory::fromArguments($arguments);
-        $process->setTimeout($this->config->getProcessTimeout());
+        $process->setTimeout($this->processTimeout);
 
         $this->logProcessInVerboseMode($process);
         $this->guardWindowsCmdMaxInputStringLimitation($process);

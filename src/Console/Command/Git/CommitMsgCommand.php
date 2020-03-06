@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Collection\FilesCollection;
-use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Collection\TestSuiteCollection;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Locator\ChangedFiles;
@@ -31,9 +31,9 @@ class CommitMsgCommand extends Command
     const EXIT_CODE_NOK = 1;
 
     /**
-     * @var GrumPHP
+     * @var TestSuiteCollection
      */
-    private $grumPHP;
+    private $testSuites;
 
     /**
      * @var ChangedFiles
@@ -56,7 +56,7 @@ class CommitMsgCommand extends Command
     private $paths;
 
     public function __construct(
-        GrumPHP $config,
+        TestSuiteCollection $testSuites,
         ChangedFiles $changedFilesLocator,
         TaskRunner $taskRunner,
         Filesystem $filesystem,
@@ -64,7 +64,7 @@ class CommitMsgCommand extends Command
     ) {
         parent::__construct();
 
-        $this->grumPHP = $config;
+        $this->testSuites = $testSuites;
         $this->changedFilesLocator = $changedFilesLocator;
         $this->taskRunner = $taskRunner;
         $this->filesystem = $filesystem;
@@ -109,7 +109,7 @@ class CommitMsgCommand extends Command
 
         $context = new TaskRunnerContext(
             new GitCommitMsgContext($files, $commitMsg, $gitUser, $gitEmail),
-            $this->grumPHP->getTestSuites()->getOptional('git_commit_msg')
+            $this->testSuites->getOptional('git_commit_msg')
         );
 
         $results = $this->taskRunner->run($context);

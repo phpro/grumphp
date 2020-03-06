@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Console\Command;
 
-use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Collection\TestSuiteCollection;
 use GrumPHP\Locator\RegisteredFiles;
 use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Runner\TaskRunnerContext;
@@ -22,9 +22,9 @@ class RunCommand extends Command
     const EXIT_CODE_NOK = 1;
 
     /**
-     * @var GrumPHP
+     * @var TestSuiteCollection
      */
-    private $grumPHP;
+    private $testSuites;
 
     /**
      * @var RegisteredFiles
@@ -36,14 +36,15 @@ class RunCommand extends Command
      */
     private $taskRunner;
 
+
     public function __construct(
-        GrumPHP $config,
+        TestSuiteCollection $testSuites,
         RegisteredFiles $registeredFilesLocator,
         TaskRunner $taskRunner
     ) {
         parent::__construct();
 
-        $this->grumPHP = $config;
+        $this->testSuites = $testSuites;
         $this->registeredFilesLocator = $registeredFilesLocator;
         $this->taskRunner = $taskRunner;
     }
@@ -77,13 +78,13 @@ class RunCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $files = $this->registeredFilesLocator->locate();
-        $testSuites = $this->grumPHP->getTestSuites();
-
         $tasks = Str::explodeWithCleanup(',', $input->getOption('tasks') ?? '');
 
         $context = new TaskRunnerContext(
             new RunContext($files),
-            (bool) $input->getOption('testsuite') ? $testSuites->getRequired($input->getOption('testsuite')) : null,
+            (bool) $input->getOption('testsuite')
+                ? $this->testSuites->getRequired($input->getOption('testsuite'))
+                : null,
             $tasks
         );
 

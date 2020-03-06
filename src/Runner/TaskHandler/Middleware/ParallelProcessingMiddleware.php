@@ -29,6 +29,10 @@ class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
 
     public function handle(TaskInterface $task, TaskRunnerContext $runnerContext, callable $next): Promise
     {
+        if (!$this->poolFactory->enabled()) {
+            return $next($task, $runnerContext);
+        }
+
         /**
          * This method creates a callable that can be used to enqueue to run the task in parallel.
          * The result is wrapped in a serializable closure
