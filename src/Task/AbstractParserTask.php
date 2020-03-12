@@ -54,6 +54,11 @@ abstract class AbstractParserTask implements TaskInterface
     {
         return $this->configuration;
     }
+    
+    public function getName() : string
+    {
+        return get_class($this);
+    }
 
 
     public function withConfig(TaskConfigInterface $config): TaskInterface
