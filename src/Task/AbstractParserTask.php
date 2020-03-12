@@ -31,7 +31,10 @@ abstract class AbstractParserTask implements TaskInterface
 
         if (!$parser->isInstalled()) {
             throw new RuntimeException(
-                sprintf('The %s can\'t run on your system. Please install all dependencies.', $this->getName())
+                sprintf(
+                    'The %s can\'t run on your system. Please install all dependencies.',
+                    $this->getConfig()->getName()
+                )
             );
         }
     }
@@ -54,12 +57,6 @@ abstract class AbstractParserTask implements TaskInterface
     {
         return $this->configuration;
     }
-    
-    public function getName() : string
-    {
-        return get_class($this);
-    }
-
 
     public function withConfig(TaskConfigInterface $config): TaskInterface
     {
