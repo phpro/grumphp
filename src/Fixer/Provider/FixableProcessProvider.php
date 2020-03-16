@@ -13,17 +13,18 @@ class FixableProcessProvider
 {
     /**
      * @param Process $process
+     * @param int[] $allowedExitCodes
      *
      * @return callable(): FixResult
      */
-    public static function provide(string $command): callable
+    public static function provide(string $command, array $successExitCodes = [0]): callable
     {
         return new SerializableClosure(
-            static function () use ($command): FixResult {
+            static function () use ($command, $successExitCodes): FixResult {
                 $process = Process::fromShellCommandline($command);
                 $process->run();
 
-                if (!$process->isSuccessful()) {
+                if (!in_array($process->getExitCode(), $successExitCodes, true)) {
                     return FixResult::failed(FixerException::fromProcess($process));
                 }
 

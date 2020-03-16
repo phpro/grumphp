@@ -106,7 +106,7 @@ class Phpcs extends AbstractExternalTask
                 $output .= $this->formatter->formatManualFixingOutput($fixProcess);
                 return new FixableTaskResult(
                     TaskResult::createFailed($this, $context, $output),
-                    FixableProcessProvider::provide($fixProcess->getCommandLine())
+                    FixableProcessProvider::provide($fixProcess->getCommandLine(), [0, 1])
                 );
             }
 
