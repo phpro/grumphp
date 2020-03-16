@@ -8,3 +8,7 @@ services:
         factory: ['GrumPHP\Configuration\Model\ParallelConfig', 'fromArray']
         arguments:
             - '%parallel%'
+    GrumPHP\Configuration\Model\FixerConfig:
+        factory: ['GrumPHP\Configuration\Model\FixerConfig', 'fromArray']
+        arguments:
+            - '%fixer%'

@@ -73,7 +73,9 @@ class Configuration implements ConfigurationInterface
         $parallel->children()->integerNode('max_size')->min(1)->defaultValue(32);
 
         // Fixer:
-        // TODO :
+        $parallel = $rootNode->children()->arrayNode('fixer');
+        $parallel->canBeDisabled();
+        $parallel->children()->booleanNode('fix_by_default')->defaultFalse();
 
         return $treeBuilder;
     }

@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace GrumPHP\Fixer;
 
 use GrumPHP\Collection\TaskResultCollection;
+use GrumPHP\Configuration\Model\FixerConfig;
 use GrumPHP\IO\IOInterface;
 use GrumPHP\Runner\FixableTaskResult;
 use GrumPHP\Runner\TaskResultInterface;
+use Symfony\Component\Console\Exception\RuntimeException;
 
 class FixerUpper
 {
@@ -16,9 +18,15 @@ class FixerUpper
      */
     private $IO;
 
-    public function __construct(IOInterface $IO)
+    /**
+     * @var FixerConfig
+     */
+    private $config;
+
+    public function __construct(IOInterface $IO, FixerConfig $config)
     {
         $this->IO = $IO;
+        $this->config = $config;
     }
 
     public function fix(TaskResultCollection $results): void
@@ -30,14 +38,7 @@ class FixerUpper
             }
         );
 
-        if (!$fixable->count()) {
-            return;
-        }
-
-        if (
-            !$this->IO->isInteractive()
-            || !$this->IO->style()->confirm('I can fix  some stuff automatically, do you want me to?', false)
-        ) {
+        if (!$this->shouldRun($fixable)) {
             return;
         }
 
@@ -65,5 +66,30 @@ class FixerUpper
         }
 
         $this->IO->style()->warning('Please review the code changes that I made!');
+    }
+
+    /**
+     * @param TaskResultCollection<FixableTaskResult> $fixable
+     */
+    private function shouldRun(TaskResultCollection $fixable): bool
+    {
+        if (!$fixable->count()) {
+            return false;
+        }
+
+        if (!$this->config->isEnabled()) {
+            return false;
+        }
+
+        try {
+            $shouldFix = $this->IO->style()->confirm(
+                'I can fix  some stuff automatically, do you want me to?',
+                $this->config->fixByDefault()
+            );
+        } catch (RuntimeException $askException) {
+            return $this->config->fixByDefault();
+        }
+
+        return $shouldFix;
     }
 }
