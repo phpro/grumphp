@@ -79,6 +79,7 @@ services:
             - { name: 'grumphp.task_handler', priority: 250 }
     GrumPHP\Runner\TaskHandler\Middleware\ParallelProcessingMiddleware:
         arguments:
+            - '@GrumPHP\Configuration\Model\ParallelConfig'
             - '@GrumPHP\Runner\Parallel\PoolFactory'
         tags:
             - { name: 'grumphp.task_handler', priority: 150 }
@@ -92,7 +93,7 @@ services:
     #
     GrumPHP\Runner\Parallel\PoolFactory:
         arguments:
-            - '%parallel%'
+            - '@GrumPHP\Configuration\Model\ParallelConfig'
 
     #
     # Reporting

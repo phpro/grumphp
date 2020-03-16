@@ -34,6 +34,7 @@ final class ContainerBuilder
         // Load basic service file + custom user configuration
         $configDir = dirname(__DIR__, 2).$filesystem->ensureValidSlashes('/resources/config');
         $loader = new YamlFileLoader($container, new FileLocator($configDir));
+        $loader->load('config.yml');
         $loader->load('console.yml');
         $loader->load('fixer.yml');
         $loader->load('formatter.yml');

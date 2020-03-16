@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GrumPHP\Process;
 
-use GrumPHP\Configuration\GrumPHP;
 use Symfony\Component\Process\Process;
 
 class AsyncProcessRunner

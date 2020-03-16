@@ -8,6 +8,7 @@ use function Amp\call;
 use function Amp\ParallelFunctions\parallel;
 use Amp\Promise;
 use function Amp\Promise\wait;
+use GrumPHP\Configuration\Model\ParallelConfig;
 use GrumPHP\Runner\Parallel\PoolFactory;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
@@ -18,18 +19,24 @@ use Opis\Closure\SerializableClosure;
 class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
 {
     /**
+     * @var ParallelConfig
+     */
+    private $config;
+
+    /**
      * @var PoolFactory
      */
     private $poolFactory;
 
-    public function __construct(PoolFactory $poolFactory)
+    public function __construct(ParallelConfig $config, PoolFactory $poolFactory)
     {
         $this->poolFactory = $poolFactory;
+        $this->config = $config;
     }
 
     public function handle(TaskInterface $task, TaskRunnerContext $runnerContext, callable $next): Promise
     {
-        if (!$this->poolFactory->enabled()) {
+        if (!$this->config->isEnabled()) {
             return $next($task, $runnerContext);
         }
 
@@ -73,7 +80,6 @@ class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
 
                     return TaskResult::createFailed($task, $runnerContext->getTaskContext(), $message);
                 }
-
 
                 return $result;
             }

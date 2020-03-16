@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace GrumPHP\Process;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Exception\PlatformException;
 use GrumPHP\IO\IOInterface;
 use GrumPHP\Locator\ExternalCommand;

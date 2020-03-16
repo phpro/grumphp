@@ -6,35 +6,24 @@ namespace GrumPHP\Runner\Parallel;
 
 use Amp\Parallel\Worker\DefaultPool;
 use Amp\Parallel\Worker\Pool;
+use GrumPHP\Configuration\Model\ParallelConfig;
 
 class PoolFactory
 {
     /**
-     * @var array{max_size: int, enabled: bool}
+     * @var ParallelConfig
      */
     private $config;
 
-    /**
-     * @param array{max_size: int, enabled: bool} $config
-     */
-    public function __construct(array $config)
+    public function __construct(ParallelConfig $config)
     {
         $this->config = $config;
     }
 
-    public function enabled(): bool
+    public function create(): Pool
     {
-        return (bool) ($this->config['enabled'] ?? false);
-    }
-
-    public function create(): ?Pool
-    {
-        if (!$this->enabled()) {
-            return null;
-        }
-
         return new DefaultPool(
-            (int) ($this->config['max_size'] ?? DefaultPool::DEFAULT_MAX_SIZE)
+            $this->config->getMaxSize()
         );
     }
 }

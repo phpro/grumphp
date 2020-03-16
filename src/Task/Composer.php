@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;

@@ -10,9 +10,7 @@ services:
         configurator: ['@GrumPHP\Console\ApplicationConfigurator', 'configure']
         public: true
 
-    GrumPHP\Console\ApplicationConfigurator:
-        arguments:
-            - '@config'
+    GrumPHP\Console\ApplicationConfigurator: ~
 
     #
     # Commands
@@ -48,7 +46,7 @@ services:
             - { name: 'console.command' }
     GrumPHP\Console\Command\Git\InitCommand:
         arguments:
-            - '@config'
+            - '@GrumPHP\Configuration\Model\HooksConfig'
             - '@grumphp.util.filesystem'
             - '@process_builder'
             - '@GrumPHP\Util\Paths'
