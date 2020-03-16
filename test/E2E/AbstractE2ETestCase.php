@@ -397,7 +397,14 @@ abstract class AbstractE2ETestCase extends TestCase
 
     protected function runCommand(string $action, Process $process)
     {
-        $process->inheritEnvironmentVariables(true);
+        /*
+         * Method is removed in symfony/process:5.0
+         * Still required in older symfony versions though (3.4 -> 4.4)
+         */
+        if (method_exists($process, 'inheritEnvironmentVariables')) {
+            $process->inheritEnvironmentVariables(true);
+        }
+
         $process->run();
         if (!$process->isSuccessful()) {
             throw new \RuntimeException(
