@@ -120,7 +120,7 @@ class TwigCsTest extends AbstractExternalTaskTestCase
 
         yield 'exclude' => [
             [
-                'exclude' => ['src/', 'test/'],
+                'exclude' => ['src/', 'test/', null, '', false],
             ],
             $this->mockContext(RunContext::class, ['hello.twig', 'hello2.twig']),
             'twigcs',
