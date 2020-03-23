@@ -55,9 +55,6 @@ class ConfigureCommand extends Command
         return self::COMMAND_NAME;
     }
 
-    /**
-     * Configure command.
-     */
     protected function configure(): void
     {
         $this->addOption(
@@ -74,9 +71,6 @@ class ConfigureCommand extends Command
         );
     }
 
-    /**
-     * @return int|void
-     */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;

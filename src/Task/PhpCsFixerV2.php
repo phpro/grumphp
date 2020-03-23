@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Formatter\PhpCsFixerFormatter;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
@@ -11,11 +12,13 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Php-cs-fixer task v2.
- */
 class PhpCsFixerV2 extends AbstractExternalTask
 {
+    /**
+     * @var PhpCsFixerFormatter
+     */
+    protected $formatter;
+
     public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();

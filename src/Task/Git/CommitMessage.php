@@ -322,10 +322,9 @@ class CommitMessage implements TaskInterface
     /**
      * @param ContextInterface $context
      *
-     * @return void;
      * @throws RuntimeException
      */
-    private function checkTypeScopeConventions($context)
+    private function checkTypeScopeConventions($context): void
     {
         $config = $this->getConfig()->getOptions();
         $subjectLine = $this->getSubjectLine($context);

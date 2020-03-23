@@ -58,9 +58,6 @@ class PreCommitCommand extends Command
         return self::COMMAND_NAME;
     }
 
-    /**
-     * Configure command.
-     */
     protected function configure(): void
     {
         $this->setDescription('Executed by the pre-commit hook');

@@ -16,6 +16,11 @@ class PhpParser extends AbstractParserTask
     const KIND_PHP5 = 'php5';
     const KIND_PHP7 = 'php7';
 
+    /**
+     * @var \GrumPHP\Parser\Php\PhpParser
+     */
+    protected $parser;
+
     public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = parent::getConfigurableOptions();

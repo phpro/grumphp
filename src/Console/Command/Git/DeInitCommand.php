@@ -50,17 +50,11 @@ class DeInitCommand extends Command
         $this->paths = $paths;
     }
 
-    /**
-     * Configure command.
-     */
     protected function configure(): void
     {
         $this->setDescription('Removes the commit hooks');
     }
 
-    /**
-     * @return int|void
-     */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $gitHooksPath = $this->paths->getGitHooksDir();

@@ -76,9 +76,6 @@ class CommitMsgCommand extends Command
         return self::COMMAND_NAME;
     }
 
-    /**
-     * Configure command.
-     */
     protected function configure(): void
     {
         $this->setDescription('Executed by the commit-msg commit hook');
@@ -87,9 +84,6 @@ class CommitMsgCommand extends Command
         $this->addArgument('commit-msg-file', InputArgument::REQUIRED, 'The configured commit message file.');
     }
 
-    /**
-     * @return int|void
-     */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new ConsoleIO($input, $output);

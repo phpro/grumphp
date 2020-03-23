@@ -73,17 +73,11 @@ class InitCommand extends Command
         return self::COMMAND_NAME;
     }
 
-    /**
-     * Configure command.
-     */
     protected function configure(): void
     {
         $this->setDescription('Registers the Git hooks');
     }
 
-    /**
-     * @return int|void
-     */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;

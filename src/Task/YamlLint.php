@@ -6,6 +6,7 @@ namespace GrumPHP\Task;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Linter\Yaml\YamlLinter;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
@@ -15,6 +16,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class YamlLint extends AbstractLinterTask
 {
+
+    /**
+     * @var YamlLinter
+     */
+    protected $linter;
+
     public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = parent::getConfigurableOptions();
