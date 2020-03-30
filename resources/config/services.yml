@@ -30,7 +30,7 @@ services:
       arguments:
         - '@locator.external_command'
         - '@grumphp.io'
-        - '%process_timeout%'
+        - '@GrumPHP\Configuration\Model\ProcessConfig'
       public: true
 
     GrumPHP\Git\GitRepository:

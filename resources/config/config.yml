@@ -12,3 +12,9 @@ services:
         factory: ['GrumPHP\Configuration\Model\FixerConfig', 'fromArray']
         arguments:
             - '%fixer%'
+    GrumPHP\Configuration\Model\ProcessConfig:
+        arguments:
+            - '%process_timeout%'
+    GrumPHP\Configuration\Model\GitStashConfig:
+        arguments:
+            - '%ignore_unstaged_changes%'

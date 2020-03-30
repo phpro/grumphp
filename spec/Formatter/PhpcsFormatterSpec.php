@@ -2,10 +2,8 @@
 
 namespace spec\GrumPHP\Formatter;
 
-use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Formatter\PhpcsFormatter;
 use GrumPHP\Formatter\ProcessFormatterInterface;
-use GrumPHP\Process\ProcessBuilder;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Process\Process;
 
@@ -34,44 +32,21 @@ class PhpcsFormatterSpec extends ObjectBehavior
         $this->format($process)->shouldReturn('invalid');
     }
 
-    function it_formats_phpcs_json_output_for_single_file(Process $process, ProcessBuilder $processBuilder)
-    {
-        $json = $this->parseJson([
-            '/var/www/Classes/Command/CacheCommandController.php' => ['messages' => [['fixable' => true],],],
-        ]);
-
-        $arguments = new ProcessArgumentsCollection();
-        $process->getOutput()->willReturn($this->getExampleData() . $json);
-        $this->format($process)->shouldBe($this->getExampleData());
-
-        $this->getSuggestedFilesFromJson(json_decode($json, true))->shouldBe(['/var/www/Classes/Command/CacheCommandController.php']);
-
-        $processBuilder->buildProcess($arguments)->willReturn($process);
-        $process->getCommandLine()->willReturn("'phpcbf' '--standard=PSR2' '--ignore=spec/*Spec.php,test/*.php' '/var/www/Classes/Command/CacheCommandController.php'");
-        $this->formatErrorMessage($arguments, $processBuilder)
-            ->shouldBe(sprintf(
-                '%sYou can fix some errors by running following command:%s',
-                PHP_EOL . PHP_EOL,
-                PHP_EOL . "'phpcbf' '--standard=PSR2' '--ignore=spec/*Spec.php,test/*.php' '/var/www/Classes/Command/CacheCommandController.php'"
-            ));
-    }
-
-    function it_formats_phpcs_json_output_for_multiple_files(Process $process, ProcessBuilder $processBuilder)
-    {
+    function it_formats_phpcs_json_output_for_multiple_files(
+        Process $phpcsProcess,
+        Process $phpcbdProcess
+    ) {
         $json = $this->parseJson([
             '/var/www/Classes/Command/CacheCommandController.php' => ['messages' => [['fixable' => true],],],
             '/var/www/Classes/Command/DebugCommandController.php' => ['messages' => [['fixable' => false],],],
         ]);
 
-        $arguments = new ProcessArgumentsCollection(['phpcbf']);
-        $process->getOutput()->willReturn($this->getExampleData() . $json);
-        $this->format($process)->shouldBe($this->getExampleData());
+        $phpcsProcess->getOutput()->willReturn($this->getExampleData() . $json);
+        $this->format($phpcsProcess)->shouldBe($this->getExampleData());
+        $this->getSuggestedFiles()->shouldBe(['/var/www/Classes/Command/CacheCommandController.php']);
 
-        $this->getSuggestedFilesFromJson(json_decode($json, true))->shouldBe(['/var/www/Classes/Command/CacheCommandController.php']);
-
-        $processBuilder->buildProcess($arguments)->willReturn($process);
-        $process->getCommandLine()->willReturn("'phpcbf' '--standard=PSR2' '--ignore=spec/*Spec.php,test/*.php' '/var/www/Classes/Command/CacheCommandController.php'");
-        $this->formatErrorMessage($arguments, $processBuilder)
+        $phpcbdProcess->getCommandLine()->willReturn("'phpcbf' '--standard=PSR2' '--ignore=spec/*Spec.php,test/*.php' '/var/www/Classes/Command/CacheCommandController.php'");
+        $this->formatManualFixingOutput($phpcbdProcess)
             ->shouldBe(sprintf(
                 '%sYou can fix some errors by running following command:%s',
                 PHP_EOL . PHP_EOL,

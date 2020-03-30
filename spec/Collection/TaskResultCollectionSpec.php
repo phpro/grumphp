@@ -4,6 +4,8 @@ namespace spec\GrumPHP\Collection;
 
 use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Task\Config\Metadata;
+use GrumPHP\Task\Config\TaskConfig;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
@@ -81,18 +83,25 @@ class TaskResultCollectionSpec extends ObjectBehavior
         $this->filterByResultCode(TaskResult::NONBLOCKING_FAILED)->shouldHaveCount(0);
     }
 
-    function it_returns_all_task_result_messages(TaskInterface $task, ContextInterface $context)
-    {
-        $aTask = $task->getWrappedObject();
+    function it_returns_all_task_result_messages(
+        TaskInterface $task1,
+        TaskInterface $task2,
+        TaskInterface $task3,
+        ContextInterface $context
+    ) {
+        $task1->getConfig()->willReturn(new TaskConfig('task1', [], new Metadata(['label' => 'hello'])));
+        $task2->getConfig()->willReturn(new TaskConfig('task2', [], new Metadata([])));
+        $task3->getConfig()->willReturn(new TaskConfig('task3', [], new Metadata([])));
+
         $aContext = $context->getWrappedObject();
-        $this->add(TaskResult::createFailed($aTask, $aContext, 'failed message'));
-        $this->add(TaskResult::createPassed($aTask, $aContext));
-        $this->add(TaskResult::createFailed($aTask, $aContext, 'another failed message'));
+        $this->add(TaskResult::createFailed($task1->getWrappedObject(), $aContext, 'failed message'));
+        $this->add(TaskResult::createPassed($task2->getWrappedObject(), $aContext));
+        $this->add(TaskResult::createFailed($task3->getWrappedObject(), $aContext, 'another failed message'));
 
         $this->getAllMessages()->shouldReturn([
-            'failed message',
-            '',
-            'another failed message',
+            'hello' => 'failed message',
+            'task2' => '',
+            'task3' => 'another failed message',
         ]);
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GrumPHP\Process;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
+use GrumPHP\Configuration\Model\ProcessConfig;
 use GrumPHP\Exception\PlatformException;
 use GrumPHP\IO\IOInterface;
 use GrumPHP\Locator\ExternalCommand;
@@ -17,21 +18,22 @@ class ProcessBuilder
      * @var ExternalCommand
      */
     private $externalCommandLocator;
+
     /**
      * @var IOInterface
      */
     private $io;
 
     /**
-     * @var float|null
+     * @var ProcessConfig
      */
-    private $processTimeout;
+    private $config;
 
-    public function __construct(ExternalCommand $externalCommandLocator, IOInterface $io, ?float $processTimeout)
+    public function __construct(ExternalCommand $externalCommandLocator, IOInterface $io, ProcessConfig $config)
     {
         $this->externalCommandLocator = $externalCommandLocator;
         $this->io = $io;
-        $this->processTimeout = $processTimeout;
+        $this->config = $config;
     }
 
     /**
@@ -53,7 +55,7 @@ class ProcessBuilder
     public function buildProcess(ProcessArgumentsCollection $arguments): Process
     {
         $process = ProcessFactory::fromArguments($arguments);
-        $process->setTimeout($this->processTimeout);
+        $process->setTimeout($this->config->getTimeout());
 
         $this->logProcessInVerboseMode($process);
         $this->guardWindowsCmdMaxInputStringLimitation($process);
