@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Fixer\Provider\FixableProcessProvider;
 use GrumPHP\Formatter\PhpCsFixerFormatter;
+use GrumPHP\Runner\FixableTaskResult;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
@@ -100,10 +102,13 @@ class PhpCsFixer extends AbstractExternalTask
 
         if (!$process->isSuccessful()) {
             $messages = [$this->formatter->format($process)];
-            $suggestions = [$this->formatter->formatSuggestion($process)];
-            $errorMessage = $this->formatter->formatErrorMessage($messages, $suggestions);
+            $fixerCommand = $this->formatter->formatSuggestion($process);
+            $errorMessage = $this->formatter->formatErrorMessage($messages, [$fixerCommand]);
 
-            return TaskResult::createFailed($this, $context, $errorMessage);
+            return new FixableTaskResult(
+                TaskResult::createFailed($this, $context, $errorMessage),
+                FixableProcessProvider::provide($fixerCommand)
+            );
         }
 
         return TaskResult::createPassed($this, $context);

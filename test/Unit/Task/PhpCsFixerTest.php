@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GrumPHPTest\Uni\Task;
 
 use GrumPHP\Formatter\PhpCsFixerFormatter;
+use GrumPHP\Runner\FixableTaskResult;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\PhpCsFixer;
@@ -78,7 +79,8 @@ class PhpCsFixerTest extends AbstractExternalTaskTestCase
                 $this->formatter->formatSuggestion($process)->willReturn($suggestion = 'suggestion');
                 $this->formatter->formatErrorMessage([$message], [$suggestion])->willReturn('nope');
             },
-            'nope'
+            'nope',
+            FixableTaskResult::class
         ];
     }
 
