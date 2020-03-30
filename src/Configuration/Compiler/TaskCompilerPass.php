@@ -45,7 +45,7 @@ class TaskCompilerPass implements CompilerPassInterface
             // Determine Keys:
             $currentTaskService = $availableTasks[$currentTaskName];
             ['id' => $taskId, 'class' => $taskClass, 'info' => $taskInfo] = $currentTaskService;
-            $configuredTaskKey = $taskId.'.configured';
+            $configuredTaskKey = $taskId.'.'.$taskName.'.configured';
 
             // Setup metadata:
             $metadata = new Metadata(array_merge(

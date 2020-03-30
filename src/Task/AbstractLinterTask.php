@@ -64,7 +64,10 @@ abstract class AbstractLinterTask implements TaskInterface
     {
         if (!$this->linter->isInstalled()) {
             throw new RuntimeException(
-                sprintf('The %s can\'t run on your system. Please install all dependencies.', $this->getName())
+                sprintf(
+                    'The %s can\'t run on your system. Please install all dependencies.',
+                    $this->getConfig()->getName()
+                )
             );
         }
     }

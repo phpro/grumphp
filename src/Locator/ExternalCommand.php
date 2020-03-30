@@ -10,6 +10,8 @@ use Symfony\Component\Process\ExecutableFinder;
 
 class ExternalCommand
 {
+    private $suffixes = ['', '.phar'];
+
     /**
      * @var string
      */
@@ -36,14 +38,18 @@ class ExternalCommand
 
     public function locate(string $command): string
     {
-        // Search executable:
-        $executable = $this->executableFinder->find($command, null, [$this->binDir]);
-        if (!$executable) {
-            throw new RuntimeException(
-                sprintf('The executable for "%s" could not be found.', $command)
-            );
+        foreach ($this->suffixes as $suffix) {
+            $cmdName = $command . $suffix;
+            // Search executable:
+            $executable = $this->executableFinder->find($cmdName, null, [$this->binDir]);
+
+            if ($executable) {
+                return $executable;
+            }
         }
 
-        return $executable;
+        throw new RuntimeException(
+            sprintf('The executable for "%s" could not be found.', $command)
+        );
     }
 }
