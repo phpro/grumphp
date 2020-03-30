@@ -9,7 +9,7 @@ use GrumPHP\Parser\Php\Context\ParserContext;
 use GrumPHP\Parser\Php\Visitor\ConfigurableVisitorInterface;
 use GrumPHP\Parser\Php\Visitor\ContextAwareVisitorInterface;
 use PhpParser\NodeTraverserInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class TraverserConfigurator
 {

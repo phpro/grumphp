@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace GrumPHP\Configuration\Compiler;
 
-use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Parser\Php\Container\VisitorContainer;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 class PhpParserCompilerPass implements CompilerPassInterface
 {
@@ -20,46 +20,28 @@ class PhpParserCompilerPass implements CompilerPassInterface
      * All visitor Ids are registered in the traverser configurator.
      * The configurator will be used to apply the configured visitors to the traverser.
      *
-     *
      * @throws \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
      * @throws \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
      */
     public function process(ContainerBuilder $container): void
     {
         $traverserConfigurator = $container->findDefinition('grumphp.parser.php.configurator.traverser');
+        $visitorContainer = $container->findDefinition(VisitorContainer::class);
+        $instances = [];
         foreach ($container->findTaggedServiceIds(self::TAG) as $id => $tags) {
+            // Build a list of visitor instances that will be made available:
             $definition = $container->findDefinition($id);
-            $this->markServiceAsPrototype($definition);
+            $definition->setShared(false);
+            $instances[$id] = new Reference($id);
+
+            // Register all specified aliases to the traverser configurator:
             foreach ($tags as $tag) {
                 $alias = array_key_exists('alias', $tag) ? $tag['alias'] : $id;
                 $traverserConfigurator->addMethodCall('registerVisitorId', [$alias, $id]);
             }
         }
-    }
 
-    /**
-     * This method can be used to make the service shared cross-version.
-     * From Symfony 2.8 the setShared method was available.
-     * The 2.7 version is the LTS, so we still need to support it.
-     *
-     * @see http://symfony.com/blog/new-in-symfony-3-1-customizable-yaml-parsing-and-dumping
-     *
-     * @throws \GrumPHP\Exception\RuntimeException
-     */
-    public function markServiceAsPrototype(Definition $definition): void
-    {
-        if (method_exists($definition, 'setShared')) {
-            $definition->setShared(false);
-
-            return;
-        }
-
-        if (method_exists($definition, 'setScope')) {
-            $definition->setScope('prototype');
-
-            return;
-        }
-
-        throw new RuntimeException('The visitor could not be marked as unshared');
+        // Register instances to the visitor container:
+        $visitorContainer->replaceArgument('$instances', $instances);
     }
 }

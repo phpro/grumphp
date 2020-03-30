@@ -10,7 +10,7 @@ use GrumPHP\Parser\Php\Visitor\ContextAwareVisitorInterface;
 use PhpParser\NodeTraverserInterface;
 use PhpParser\NodeVisitor;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class TraverserConfiguratorSpec extends ObjectBehavior
 {

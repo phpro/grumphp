@@ -52,6 +52,7 @@ class PhpParserSpec extends ObjectBehavior
             return $context->getFile() === $file
                 && $context->getErrors() instanceof ParseErrorsCollection;
         }))->shouldBeCalled()->willReturn($traverser);
+        $traverser->traverse(Argument::any())->willReturn([]);
 
         $this->parse($file);
     }

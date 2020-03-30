@@ -15,7 +15,7 @@ class GitHookParametersTest extends AbstractE2ETestCase
 
         $php = $this->useUnixDirectorySeparator($this->executableFinder->find('php'));
         $this->mergeGrumphpConfig($grumphpFile, [
-            'parameters' => [
+            'grumphp' => [
                 'git_hook_variables' => [
                     'EXEC_GRUMPHP_COMMAND' => $php,
                 ],
@@ -39,7 +39,7 @@ class GitHookParametersTest extends AbstractE2ETestCase
 
         $php = $this->useUnixDirectorySeparator($this->executableFinder->find('php'));
         $this->mergeGrumphpConfig($grumphpFile, [
-            'parameters' => [
+            'grumphp' => [
                 'git_hook_variables' => [
                     'EXEC_GRUMPHP_COMMAND' => $php.' -d date.timezone=Europe/Brussels',
                 ],
