@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GrumPHP\Runner\Reporting;
 
 use GrumPHP\Collection\TaskResultCollection;
+use GrumPHP\Configuration\Model\RunnerConfig;
 use GrumPHP\IO\IOInterface;
 use GrumPHP\Locator\AsciiLocator;
 use GrumPHP\Runner\TaskResult;
@@ -23,25 +24,18 @@ final class RunnerReporter
     private $asciiLocator;
 
     /**
-     * @var bool
+     * @var RunnerConfig
      */
-    private $hideCircumventionTip;
-
-    /**
-     * @var string|null
-     */
-    private $additionalInfo;
+    private $config;
 
     public function __construct(
         IOInterface $IO,
         AsciiLocator $asciiLocator,
-        bool $hideCircumventionTip,
-        ?string $additionalInfo
+        RunnerConfig $config
     ) {
         $this->IO = $IO;
         $this->asciiLocator = $asciiLocator;
-        $this->hideCircumventionTip = $hideCircumventionTip;
-        $this->additionalInfo = $additionalInfo;
+        $this->config = $config;
     }
 
     public function start(TaskRunnerContext $context): void
@@ -99,7 +93,7 @@ final class RunnerReporter
         $this->reportWarningMessages($warnings);
         $this->reportFailedMessages($errorMessages, 'red');
 
-        if (!$this->hideCircumventionTip) {
+        if (!$this->config->hideCircumventionTip()) {
             $this->IO->writeError(
                 $this->IO->colorize(
                     ['To skip commit checks, add -n or --no-verify flag to commit command'],
@@ -137,8 +131,8 @@ final class RunnerReporter
 
     private function reportAdditionalInfo(): void
     {
-        if (null !== $this->additionalInfo) {
-            $this->IO->write([$this->additionalInfo]);
+        if (null !== $this->config->getAdditionalInfo()) {
+            $this->IO->write([$this->config->getAdditionalInfo()]);
         }
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Configuration;
 
+use GrumPHP\Configuration\Model\ProcessConfig;
 use GrumPHP\Util\Filesystem;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;
@@ -40,7 +41,6 @@ final class ContainerBuilder
         $loader->load('formatter.yml');
         $loader->load('linters.yml');
         $loader->load('locators.yml');
-        $loader->load('parameters.yml');
         $loader->load('parsers.yml');
         $loader->load('runner.yml');
         $loader->load('services.yml');

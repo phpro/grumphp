@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GrumPHP\Runner\Middleware;
 
 use GrumPHP\Collection\TaskResultCollection;
+use GrumPHP\Configuration\Model\RunnerConfig;
 use GrumPHP\IO\IOInterface;
 use GrumPHP\Runner\TaskRunnerContext;
 
@@ -16,14 +17,14 @@ class GroupByPriorityMiddleware implements RunnerMiddlewareInterface
     private $IO;
 
     /**
-     * @var bool
+     * @var RunnerConfig
      */
-    private $stopOnFailure;
+    private $config;
 
-    public function __construct(IOInterface $IO, bool $stopOnFailure)//, GrumPHP $config)
+    public function __construct(IOInterface $IO, RunnerConfig $config)
     {
         $this->IO = $IO;
-        $this->stopOnFailure = $stopOnFailure;
+        $this->config = $config;
     }
 
     public function handle(TaskRunnerContext $context, callable $next): TaskResultCollection
@@ -38,7 +39,7 @@ class GroupByPriorityMiddleware implements RunnerMiddlewareInterface
             ));
 
             // Stop on failure:
-            if ($this->stopOnFailure && $results->isFailed()) {
+            if ($this->config->stopOnFailure() && $results->isFailed()) {
                 return $results;
             }
         }

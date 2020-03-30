@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Runner\Middleware;
 
+use GrumPHP\Configuration\Model\RunnerConfig;
 use function Amp\call;
 use Amp\CancelledException;
 use Amp\LazyPromise;
@@ -24,14 +25,14 @@ class HandleRunnerMiddleware implements RunnerMiddlewareInterface
     private $taskHandler;
 
     /**
-     * @var bool
+     * @var RunnerConfig
      */
-    private $stopOnFailure;
+    private $config;
 
-    public function __construct(TaskHandler $taskHandler, bool $stopOnFailure)
+    public function __construct(TaskHandler $taskHandler, RunnerConfig $config)
     {
         $this->taskHandler = $taskHandler;
-        $this->stopOnFailure = $stopOnFailure;
+        $this->config = $config;
     }
 
     public function handle(TaskRunnerContext $context, callable $next): TaskResultCollection
@@ -50,7 +51,7 @@ class HandleRunnerMiddleware implements RunnerMiddlewareInterface
                     [$errors, $results] = yield MultiPromise::cancelable(
                         $this->handleTasks($context),
                         function (TaskResultInterface $result) {
-                            return $this->stopOnFailure && $result->hasFailed();
+                            return $this->config->stopOnFailure() && $result->hasFailed();
                         }
                     );
 

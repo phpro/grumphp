@@ -35,11 +35,10 @@ class GrumPHPExtension extends Extension
     private function loadInternal(array $config, ContainerBuilder $container): void
     {
         foreach ($config as $key => $value) {
+            // We require to use grumphp instead of parameters at this point:
             if ($container->hasParameter($key)) {
                 throw DeprecatedException::directParameterConfiguration($key);
             }
-
-            // TODO : instead of dynamic : set hardcoded! (Good for autocompletion)
 
             $container->setParameter($key, $value);
         }

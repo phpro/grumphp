@@ -1,4 +1,0 @@
-#
-# This entry makes sure to trigger the grumphp container extension.
-# It can be removed in the future if everybody migrated `parameters:` to `grumphp:` in the configuration file.
-grumphp: ~

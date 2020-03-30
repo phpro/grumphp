@@ -40,7 +40,7 @@ services:
     GrumPHP\Runner\Middleware\GroupByPriorityMiddleware:
         arguments:
             - '@grumphp.io'
-            - '%stop_on_failure%'
+            - '@GrumPHP\Configuration\Model\RunnerConfig'
         tags:
             - { name: 'grumphp.runner_middleware', priority: 250 }
     GrumPHP\Runner\Middleware\ReportingTasksSectionRunnerMiddleware:
@@ -51,7 +51,7 @@ services:
     GrumPHP\Runner\Middleware\HandleRunnerMiddleware:
         arguments:
             - '@GrumPHP\Runner\TaskHandler\TaskHandler'
-            - '%stop_on_failure%'
+            - '@GrumPHP\Configuration\Model\RunnerConfig'
         tags:
             - { name: 'grumphp.runner_middleware', priority: 0 }
 
@@ -104,8 +104,7 @@ services:
         arguments:
             - '@grumphp.io'
             - '@GrumPHP\Locator\AsciiLocator'
-            - '%hide_circumvention_tip%'
-            - '%additional_info%'
+            - '@GrumPHP\Configuration\Model\RunnerConfig'
     GrumPHP\Runner\Reporting\TaskResultsReporter:
         arguments:
             - '@grumphp.io'
