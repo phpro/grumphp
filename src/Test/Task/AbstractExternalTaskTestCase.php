@@ -75,6 +75,7 @@ abstract class AbstractExternalTaskTestCase extends AbstractTaskTestCase
         $process->isSuccessful()->willReturn($exitCode === 0);
         $process->getOutput()->willReturn($output);
         $process->getErrorOutput()->willReturn($errors);
+        $process->getCommandLine()->willReturn('mocked-cli');
 
         $process->setWorkingDirectory(Argument::any())->will(function ($arguments) {
             $this->getWorkingDirectory()->willReturn($arguments[0]);

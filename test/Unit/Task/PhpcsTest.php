@@ -7,6 +7,7 @@ namespace GrumPHPTest\Uni\Task;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Formatter\PhpcsFormatter;
+use GrumPHP\Runner\FixableTaskResult;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\Phpcs;
@@ -78,9 +79,25 @@ class PhpcsTest extends AbstractExternalTaskTestCase
             function () {
                 $this->mockProcessBuilder('phpcs', $process = $this->mockProcess(1));
                 $this->processBuilder->createArgumentsForCommand('phpcbf')->willThrow(RuntimeException::class);
-                $this->formatter->format($process)->willReturn('nope');
+                $this->formatter->format($process)->will(function () {
+                    $this->getSuggestedFiles()->willReturn(['hello.php']);
+                    return 'nope';
+                });
             },
             'nope'.PHP_EOL.'Info: phpcbf could not get found. Please consider to install it for suggestions.'
+        ];
+        yield 'exitCode1WithoutFixerBecauseOfNoFiles' => [
+            [],
+            $this->mockContext(RunContext::class, ['hello.php']),
+            function () {
+                $this->mockProcessBuilder('phpcs', $process = $this->mockProcess(1));
+                $this->processBuilder->createArgumentsForCommand('phpcbf')->shouldNotBeCalled();
+                $this->formatter->format($process)->will(function () {
+                    $this->getSuggestedFiles()->willReturn([]);
+                    return 'nope';
+                });
+            },
+            'nope'
         ];
         yield 'exitCode1WithFixer' => [
             [],
@@ -88,13 +105,18 @@ class PhpcsTest extends AbstractExternalTaskTestCase
             function () {
                 $this->mockProcessBuilder('phpcs', $process = $this->mockProcess(1));
                 $this->processBuilder->createArgumentsForCommand('phpcbf')->willReturn(
-                    $fixerArguments = new ProcessArgumentsCollection()
+                    $fixerArguments = new ProcessArgumentsCollection(['phpcbf'])
                 );
+                $this->processBuilder->buildProcess($fixerArguments)->willReturn($phpcbdProcess = $this->mockProcess(0));
 
-                $this->formatter->format($process)->willReturn('nope');
-                $this->formatter->formatErrorMessage($fixerArguments, $this->processBuilder)->willReturn('fixer');
+                $this->formatter->format($process)->will(function (): string {
+                    $this->getSuggestedFiles()->willReturn(['hello.php']);
+                    return 'nope';
+                });
+                $this->formatter->formatManualFixingOutput($phpcbdProcess)->willReturn('fixer-command');
             },
-            'nopefixer'
+            'nopefixer-command',
+            FixableTaskResult::class
         ];
     }
 
