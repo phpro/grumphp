@@ -1,10 +1,4 @@
 services:
-    async_process_runner:
-      class: GrumPHP\Process\AsyncProcessRunner
-      arguments:
-        - '%process_async_wait%'
-        - '%process_async_limit%'
-
     GrumPHP\Configuration\GuessedPaths:
         class: GrumPHP\Configuration\GuessedPaths
         synthetic: true

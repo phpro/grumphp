@@ -1,6 +1,4 @@
 grumphp:
-  bin_dir: "./vendor/bin"
-  git_dir: "."
   process_timeout: 300
   tasks:
     phpcs:
@@ -8,17 +6,11 @@ grumphp:
       ignore_patterns:
         - "spec/*Spec.php"
         - "test/*.php"
-      metadata:
-        priority: 300
     phpspec:
       format: progress
       verbose: true
-      metadata:
-        priority: 200
     phpunit:
       testsuite: Unit
-      metadata:
-        priority: 100
     composer:
       no_check_lock: true
     composer_normalize: ~
@@ -36,14 +28,10 @@ grumphp:
         never_use_else: ~
         forbidden_function_calls:
           blacklist: [var_dump]
-      metadata:
-        priority: 100000
     paratest:
       testsuite: E2E
       verbose: true
       functional: true
-      metadata:
-        priority: 50
   testsuites:
     git_pre_commit:
       tasks: [phpcs, phpspec, phpunit, composer, composer_normalize, yamllint, phplint, phpparser]

@@ -82,8 +82,6 @@ parameters:
     stop_on_failure: false
     ignore_unstaged_changes: false
     hide_circumvention_tip: false
-    process_async_limit: 10
-    process_async_wait: 1000
     process_timeout: 60
     ascii:
         failed: grumphp-grumpy.txt
@@ -120,7 +118,6 @@ parameters:
         phpcpd: ~
         phpcs: ~
         phpcsfixer: ~
-        phpcsfixer2: ~
         phplint: ~
         phpmd: ~
         phpmnd: ~

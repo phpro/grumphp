@@ -31,7 +31,7 @@ services:
         arguments:
             - '@filesystem'
         tags:
-            - {name: grumphp.task, task: clover_coverage}
+            - {name: grumphp.task, task: clover_coverage, priority: -100}
 
     GrumPHP\Task\Codeception:
         arguments:
@@ -212,17 +212,10 @@ services:
     GrumPHP\Task\PhpCsFixer:
         arguments:
           - '@process_builder'
-          - '@async_process_runner'
           - '@formatter.phpcsfixer'
         tags:
           - {name: grumphp.task, task: phpcsfixer}
-
-    GrumPHP\Task\PhpCsFixerV2:
-        arguments:
-          - '@process_builder'
-          - '@formatter.phpcsfixer'
-        tags:
-          - {name: grumphp.task, task: phpcsfixer2}
+          - {name: grumphp.task, task: phpcsfixer2, aliasFor: phpcsfixer} # for old times-sake
 
     GrumPHP\Task\PhpLint:
         arguments:

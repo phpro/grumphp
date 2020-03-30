@@ -7,12 +7,12 @@ namespace GrumPHPTest\Uni\Task;
 use GrumPHP\Formatter\PhpCsFixerFormatter;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
-use GrumPHP\Task\PhpCsFixerV2;
+use GrumPHP\Task\PhpCsFixer;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\Test\Task\AbstractExternalTaskTestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
-class PhpCsFixerV2Test extends AbstractExternalTaskTestCase
+class PhpCsFixerTest extends AbstractExternalTaskTestCase
 {
     /**
      * @var PhpCsFixerFormatter|ObjectProphecy
@@ -23,7 +23,7 @@ class PhpCsFixerV2Test extends AbstractExternalTaskTestCase
     {
         $this->formatter = $this->prophesize(PhpCsFixerFormatter::class);
 
-        return new PhpCsFixerV2(
+        return new PhpCsFixer(
             $this->processBuilder->reveal(),
             $this->formatter->reveal()
         );

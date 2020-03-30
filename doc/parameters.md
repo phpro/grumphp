@@ -12,8 +12,6 @@ parameters:
     stop_on_failure: false
     ignore_unstaged_changes: false
     hide_circumvention_tip: false
-    process_async_limit: 10
-    process_async_wait: 1000
     process_timeout: 60
     additonal_info: ~
     ascii:
@@ -81,19 +79,6 @@ This may mess with your working copy and result in unexpected merge conflicts.
 *Default: false*
 
 Hides the tip describing how to circumvent the Git commit hook and bypass GrumPHP when a task fails.
-
-**process_async_limit**
-
-*Default: 10*
-
-This parameter controls how many asynchronous processes GrumPHP will run simultaneously. Please note
-that not all external tasks uses asynchronous processes, nor would they necessarily benefit from using it.
-
-**process_async_wait**
-
-*Default: 1000*
-
-This parameter controls how long GrumPHP will wait (in microseconds) before checking the status of all asynchronous processes.
 
 **process_timeout**
 

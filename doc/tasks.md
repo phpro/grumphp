@@ -39,7 +39,6 @@ parameters:
         phpcpd: ~
         phpcs: ~
         phpcsfixer: ~
-        phpcsfixer2: ~
         phplint: ~
         phpmd: ~
         phpmnd: ~
@@ -95,7 +94,6 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [PhpCpd](tasks/phpcpd.md)
 - [Phpcs](tasks/phpcs.md)
 - [PHP-CS-Fixer](tasks/phpcsfixer.md)
-- [PHP-CS-Fixer 2](tasks/phpcsfixer2.md)
 - [PHPLint](tasks/phplint.md)
 - [PhpMd](tasks/phpmd.md)
 - [PhpMnd](tasks/phpmnd.md)

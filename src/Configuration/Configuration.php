@@ -46,8 +46,6 @@ class Configuration implements ConfigurationInterface
         $rootNode->children()->booleanNode('stop_on_failure')->defaultValue(false);
         $rootNode->children()->booleanNode('ignore_unstaged_changes')->defaultValue(false);
         $rootNode->children()->booleanNode('hide_circumvention_tip')->defaultValue(false);
-        $rootNode->children()->integerNode('process_async_limit')->min(1)->defaultValue(10);
-        $rootNode->children()->integerNode('process_async_wait')->min(1)->defaultValue(1000);
 
         // Process timeout (null or float)
         $processTimeout = $rootNode->children()->scalarNode('process_timeout')->defaultValue(60.0);
