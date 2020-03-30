@@ -54,48 +54,55 @@ class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
          * to make sure all information inside the task can be serialized.
          * This implies that the result of the parallel command is another callable that will return the task result.
          *
+         * The factory is wrapped in another close to make sure the error handling picks up the factory exceptions.
+         *
          * @var callable(): Promise<TaskResultInterface> $enqueueParallelTask
          */
-        $enqueueParallelTask = parallel(
-            static function () use ($task, $runnerContext, $next): SerializableClosure {
-                /** @var TaskResultInterface $result */
-                $result = wait($next($task, $runnerContext));
+        $enqueueParallelTask = function () use ($task, $runnerContext, $next): Promise {
+            return parallel(
+                static function () use ($task, $runnerContext, $next): SerializableClosure {
+                    /** @var TaskResultInterface $result */
+                    $result = wait($next($task, $runnerContext));
 
-                return new SerializableClosure(
-                    /**
-                     * @return TaskResultInterface
-                     */
-                    static function () use ($result) {
-                        return $result;
-                    }
-                );
-            },
-            $this->poolFactory->create()
-        );
+                    return new SerializableClosure(
+                        /**
+                         * @return TaskResultInterface
+                         */
+                        static function () use ($result) {
+                            return $result;
+                        }
+                    );
+                },
+                $this->poolFactory->create()
+            )();
+        };
 
         return call(
             /**
              * @return \Generator<mixed, Promise<TaskResultInterface>, mixed, TaskResultInterface>
              */
-            static function () use ($enqueueParallelTask, $task, $runnerContext): \Generator {
+            function () use ($enqueueParallelTask, $task, $runnerContext): \Generator {
                 try {
                     /** @var callable(): TaskResultInterface $resultProvider */
                     $resultProvider = yield $enqueueParallelTask();
                     $result = $resultProvider();
                 } catch (\Throwable $error) {
-                    $wrappedError = $this->IO->isVerbose()
-                        ? ParallelException::fromVerboseThrowable($error)
-                        : ParallelException::fromThrowable($error);
-
                     return TaskResult::createFailed(
                         $task,
                         $runnerContext->getTaskContext(),
-                        $wrappedError->getMessage()
+                        $this->wrapException($error)->getMessage()
                     );
                 }
 
                 return $result;
             }
         );
+    }
+
+    private function wrapException(\Throwable $error): ParallelException
+    {
+        return $this->IO->isVerbose()
+            ? ParallelException::fromVerboseThrowable($error)
+            : ParallelException::fromThrowable($error);
     }
 }
