@@ -69,7 +69,8 @@ class PhpcsFormatter implements ProcessFormatterInterface
         return $this->suggestedFiles;
     }
 
-    public function formatManualFixingOutput(Process $fixProcess): string {
+    public function formatManualFixingOutput(Process $fixProcess): string
+    {
         return sprintf(
             '%sYou can fix some errors by running following command:%s',
             PHP_EOL.PHP_EOL,

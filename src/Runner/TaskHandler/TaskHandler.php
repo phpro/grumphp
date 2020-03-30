@@ -20,7 +20,7 @@ class TaskHandler
      */
     private $stack;
 
-    public function __construct(TaskHandlerMiddlewareInterface ... $handlers)
+    public function __construct(TaskHandlerMiddlewareInterface ...$handlers)
     {
         $this->stack = $this->createStack($handlers);
     }
@@ -53,8 +53,11 @@ class TaskHandler
     {
         $lastCallable = $this->fail();
 
-        while($handler = array_pop($handlers)) {
-            $lastCallable = static function (TaskInterface $task, TaskRunnerContext $runnerContext) use (
+        while ($handler = array_pop($handlers)) {
+            $lastCallable = static function (
+                TaskInterface $task,
+                TaskRunnerContext $runnerContext
+            ) use (
                 $handler,
                 $lastCallable
             ) : Promise {

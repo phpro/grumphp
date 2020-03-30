@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace GrumPHP\Runner\TaskHandler\Middleware;
 
+use GrumPHP\Exception\ParallelException;
+use GrumPHP\IO\IOInterface;
 use function Amp\call;
 use function Amp\ParallelFunctions\parallel;
 use Amp\Promise;
@@ -28,10 +30,16 @@ class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
      */
     private $poolFactory;
 
-    public function __construct(ParallelConfig $config, PoolFactory $poolFactory)
+    /**
+     * @var IOInterface
+     */
+    private $IO;
+
+    public function __construct(ParallelConfig $config, PoolFactory $poolFactory, IOInterface $IO)
     {
         $this->poolFactory = $poolFactory;
         $this->config = $config;
+        $this->IO = $IO;
     }
 
     public function handle(TaskInterface $task, TaskRunnerContext $runnerContext, callable $next): Promise
@@ -75,10 +83,15 @@ class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
                     $resultProvider = yield $enqueueParallelTask();
                     $result = $resultProvider();
                 } catch (\Throwable $error) {
-                    // TODO : only log more in verbose mode ...
-                    $message = $error->getMessage() . PHP_EOL . $error->getTraceAsString() . PHP_EOL . $error->getPrevious();
+                    $wrappedError = $this->IO->isVerbose()
+                        ? ParallelException::fromVerboseThrowable($error)
+                        : ParallelException::fromThrowable($error);
 
-                    return TaskResult::createFailed($task, $runnerContext->getTaskContext(), $message);
+                    return TaskResult::createFailed(
+                        $task,
+                        $runnerContext->getTaskContext(),
+                        $wrappedError->getMessage()
+                    );
                 }
 
                 return $result;

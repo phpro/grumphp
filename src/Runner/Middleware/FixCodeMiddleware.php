@@ -15,7 +15,8 @@ class FixCodeMiddleware implements RunnerMiddlewareInterface
      */
     private $fixerUpper;
 
-    public function __construct(FixerUpper $fixerUpper) {
+    public function __construct(FixerUpper $fixerUpper)
+    {
         $this->fixerUpper = $fixerUpper;
     }
 

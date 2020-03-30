@@ -6,6 +6,7 @@ grumphp:
       ignore_patterns:
         - "spec/*Spec.php"
         - "test/*.php"
+        - "stubs/*.php"
     phpspec:
       format: progress
       verbose: true

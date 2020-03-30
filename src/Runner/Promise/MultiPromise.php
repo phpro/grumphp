@@ -50,7 +50,10 @@ class MultiPromise
                                 });
                             };
 
-                            $promise->onResolve(static function(?\Throwable $error, $result) use (
+                            $promise->onResolve(static function (
+                                ?\Throwable $error,
+                                $result
+                            ) use (
                                 $deferred,
                                 $cancel,
                                 $shouldCancel
