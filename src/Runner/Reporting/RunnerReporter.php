@@ -51,7 +51,7 @@ final class RunnerReporter
         $this->blockStreams();
 
         // Stop on failure message:
-        if ($context->getTasks()->filterByContext($context->getTaskContext())->count() !== $results->count()) {
+        if ($context->getTasks()->count() !== $results->count()) {
             $this->IO->writeError($this->IO->colorize(['Aborted ...'], 'red'));
         }
 

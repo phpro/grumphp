@@ -23,15 +23,15 @@ services:
             - '@GrumPHP\Fixer\FixerUpper'
         tags:
             - { name: 'grumphp.runner_middleware', priority: 1000 }
+    GrumPHP\Runner\Middleware\TasksFilteringRunnerMiddleware:
+        arguments: []
+        tags:
+            - { name: 'grumphp.runner_middleware', priority: 900 }
     GrumPHP\Runner\Middleware\ReportingRunnerMiddleware:
         arguments:
             - '@GrumPHP\Runner\Reporting\RunnerReporter'
         tags:
-            - { name: 'grumphp.runner_middleware', priority: 900 }
-    GrumPHP\Runner\Middleware\TasksFilteringRunnerMiddleware:
-        arguments: []
-        tags:
-            - { name: 'grumphp.runner_middleware', priority: 750 }
+            - { name: 'grumphp.runner_middleware', priority: 800 }
     GrumPHP\Runner\Middleware\EventDispatchingRunnerMiddleware:
         arguments:
             - '@GrumPHP\Event\Dispatcher\Bridge\SymfonyEventDispatcher'
