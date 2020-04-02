@@ -55,6 +55,7 @@ parameters:
     git_hook_variables:
         EXEC_GRUMPHP_COMMAND: '/usr/local/bin/php72'
         EXEC_GRUMPHP_COMMAND: 'lando php'
+        EXEC_GRUMPHP_COMMAND: 'fin exec php'
         EXEC_GRUMPHP_COMMAND: 'php -c /custom/config.ini'
         EXEC_GRUMPHP_COMMAND: 'docker-compose run --rm --no-deps php'
         EXEC_GRUMPHP_COMMAND: 'docker run --rm -it -v $(pwd):/grumphp -w /grumphp webdevops/php:alpine'
