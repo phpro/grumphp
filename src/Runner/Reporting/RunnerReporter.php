@@ -11,7 +11,7 @@ use GrumPHP\Locator\AsciiLocator;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskRunnerContext;
 
-final class RunnerReporter
+class RunnerReporter
 {
     /**
      * @var IOInterface

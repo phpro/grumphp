@@ -12,7 +12,7 @@ use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\TaskInterface;
 use Symfony\Component\Console\Output\ConsoleSectionOutput;
 
-final class TaskResultsReporter
+class TaskResultsReporter
 {
     /**
      * @var IOInterface

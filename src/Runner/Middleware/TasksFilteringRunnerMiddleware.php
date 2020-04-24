@@ -18,7 +18,6 @@ class TasksFilteringRunnerMiddleware implements RunnerMiddlewareInterface
                     ->filterByContext($context->getTaskContext())
                     ->filterByTestSuite($context->getTestSuite())
                     ->filterByTaskNames($context->getTaskNames())
-                    ->sortByPriority()
             )
         );
     }

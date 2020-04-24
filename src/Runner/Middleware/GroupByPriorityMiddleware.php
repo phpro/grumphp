@@ -30,8 +30,11 @@ class GroupByPriorityMiddleware implements RunnerMiddlewareInterface
     public function handle(TaskRunnerContext $context, callable $next): TaskResultCollection
     {
         $results = new TaskResultCollection();
+        $grouped = $context->getTasks()
+           ->sortByPriority()
+           ->groupByPriority();
 
-        foreach ($context->getTasks()->groupByPriority() as $priority => $tasks) {
+        foreach ($grouped as $priority => $tasks) {
             $this->IO->style()->title('Running tasks with priority '.$priority.'!');
             $results = new TaskResultCollection(array_merge(
                 $results->toArray(),
