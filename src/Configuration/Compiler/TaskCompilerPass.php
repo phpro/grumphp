@@ -36,6 +36,12 @@ class TaskCompilerPass implements CompilerPassInterface
         // Configure tasks
         foreach ($configuredTasks as $taskName => $config) {
             $taskConfig = $config ?? [];
+            $taskConfig = array_map(
+                function ($value) use ($container) {
+                    return $container->resolveEnvPlaceholders($value, true);
+                },
+                $taskConfig
+            );
             $metadata = new Metadata((array) ($taskConfig['metadata'] ?? []));
             $currentTaskName = $metadata->task() ?: $taskName;
             if (!array_key_exists($currentTaskName, $availableTasks)) {
