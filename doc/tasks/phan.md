@@ -20,6 +20,7 @@ parameters:
             config_file: .phan/config.php
             output_mode: text
             output: null
+            baseline: null
             triggered_by: [php]
 ```
 
@@ -45,6 +46,13 @@ This option is set to `text` by default.
 
 It's possible to save the output to a file, you can specify the file name with this option.
 This option is set to `null` by default.
+
+
+**baseline**
+
+*Default: ''*
+
+Path to file containing a baseline of pre-existing issues to suppress.
 
 **triggered_by**
 
