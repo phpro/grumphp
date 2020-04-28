@@ -27,6 +27,7 @@ class PhanTest extends AbstractExternalTaskTestCase
             [
                 'output_mode' => 'text',
                 'output' => null,
+                'baseline' => '',
                 'config_file' => '.phan/config.php',
                 'triggered_by' => ['php'],
             ]
