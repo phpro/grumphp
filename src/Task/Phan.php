@@ -23,6 +23,7 @@ class Phan extends AbstractExternalTask
             [
                 'output_mode' => 'text',
                 'output' => null,
+                'baseline' => '',
                 'config_file' => '.phan/config.php',
                 'triggered_by' => ['php'],
             ]
@@ -31,6 +32,7 @@ class Phan extends AbstractExternalTask
         $resolver->addAllowedTypes('output_mode', ['string']);
         $resolver->addAllowedTypes('output', ['null', 'string']);
         $resolver->addAllowedTypes('config_file', ['string']);
+        $resolver->addAllowedTypes('baseline', ['string']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
 
         return $resolver;
@@ -62,6 +64,7 @@ class Phan extends AbstractExternalTask
         $arguments->addOptionalArgumentWithSeparatedValue('--config-file', $config['config_file']);
         $arguments->addOptionalArgumentWithSeparatedValue('--output-mode', $config['output_mode']);
         $arguments->addOptionalArgumentWithSeparatedValue('--output', $config['output']);
+        $arguments->addOptionalArgumentWithSeparatedValue('--load-baseline', $config['baseline']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
