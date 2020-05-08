@@ -22,11 +22,12 @@ parameters:
             config: psalm.xml
             ignore_patterns: []
             no_cache: false
-            report: ~ 
+            report: ~
             output_format: null
             threads: 1
             triggered_by: ['php']
             show_info: false
+            phar: false
 ```
 
 
@@ -57,7 +58,7 @@ With this parameter you can run Psalm without using the cache file.
 
 *Default: null*
 
-With this path you can specify the path your psalm report file 
+With this path you can specify the path your psalm report file
 
 
 **output_format**
@@ -85,3 +86,10 @@ This is a list of extensions to be sniffed.
 *Default: false*
 
 Show non-exception parser findings
+
+**phar**
+
+*Default: false*
+
+Use "psalm.phar" instead of just "psalm" as the name of the Psalm command. Set to true
+if you wish to use the Phar package.
