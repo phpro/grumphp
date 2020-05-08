@@ -33,6 +33,7 @@ class PsalmTest extends AbstractExternalTaskTestCase
                 'threads' => null,
                 'triggered_by' => ['php'],
                 'show_info' => false,
+                'phar' => false,
             ]
         ];
     }
@@ -183,6 +184,16 @@ class PsalmTest extends AbstractExternalTaskTestCase
                 '--show-info=false',
                 'hello.php',
                 'hello2.php',
+            ]
+        ];
+        yield 'use-phar' => [
+            [
+                'phar' => true,
+            ],
+            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'psalm.phar',
+            [
+                '--show-info=false',
             ]
         ];
     }
