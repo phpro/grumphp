@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GrumPHPTest\Uni\Task;
+namespace GrumPHPTest\Unit\Task;
 
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
