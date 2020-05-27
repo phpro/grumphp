@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 class ApplicationConfigurator
 {
     const APP_NAME = 'GrumPHP';
-    const APP_VERSION = '0.18.0';
+    const APP_VERSION = '0.18.1';
 
     /**
      * @var GrumPHP
