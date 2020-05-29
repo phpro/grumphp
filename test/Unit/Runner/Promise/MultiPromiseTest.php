@@ -24,7 +24,7 @@ class MultiPromiseTest extends TestCase
         [$errors, $results] = wait(MultiPromise::cancelable(
             $this->wrapLazyPromises(
                 new Delayed(10, new Success(1)),
-                new Delayed(20, new Success(2)),
+                new Delayed(20, new Success(2))
             ),
             function () {
                 return false;
