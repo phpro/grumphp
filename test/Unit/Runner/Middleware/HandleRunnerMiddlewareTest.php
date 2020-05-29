@@ -114,7 +114,7 @@ class HandleRunnerMiddlewareTest extends AbstractRunnerMiddlewareTestCase
 
             $this->taskHandler->handle(Argument::type(TaskInterface::class), $context)->will(function (array $arguments) {
                 return new Delayed(
-                    (int)($arguments[0]->getConfig()->getName()) * 10,
+                    (int)($arguments[0]->getConfig()->getName()) * 100,
                     TaskResult::createFailed($arguments[0], $arguments[1]->getTaskContext(), 'error')
                 );
             });
