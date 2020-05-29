@@ -72,10 +72,11 @@ class EventDispatchingRunnerMiddlewareTest extends AbstractRunnerMiddlewareTestC
     public function it_should_dispatch_run_failed_events(): void
     {
         $context = $this->createRunnerContext();
-        $next = function (TaskRunnerContext $passedContext) {
+        $task = $this->mockTask('task');
+        $next = function (TaskRunnerContext $passedContext) use ($task) {
             return new TaskResultCollection([
                 TaskResult::createFailed(
-                    $this->mockTask('task'),
+                    $task,
                     $passedContext->getTaskContext(),
                     'failed'
                 )
