@@ -14,7 +14,7 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('grumphp');
         /** @var ArrayNodeDefinition $rootNode */
-        $rootNode = $treeBuilder->getRootNode();
+        $rootNode = $this->bcRootNode($treeBuilder);
 
         $rootNode->children()->scalarNode('hooks_dir')->defaultNull();
         $rootNode->children()->enumNode('hooks_preset')->cannotBeEmpty()->defaultValue('local')->values([
@@ -76,5 +76,18 @@ class Configuration implements ConfigurationInterface
         $parallel->children()->booleanNode('fix_by_default')->defaultFalse();
 
         return $treeBuilder;
+    }
+
+    private function bcRootNode(TreeBuilder $tree)
+    {
+        if (method_exists($tree, 'getRootNode')) {
+            return $tree->getRootNode();
+        }
+
+        if (method_exists($tree, 'root')) {
+            return $tree->root('grumphp');
+        }
+
+        throw new \RuntimeException('Could not fetch Root node...');
     }
 }
