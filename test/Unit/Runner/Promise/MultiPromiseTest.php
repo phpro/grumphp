@@ -23,8 +23,8 @@ class MultiPromiseTest extends TestCase
     {
         [$errors, $results] = wait(MultiPromise::cancelable(
             $this->wrapLazyPromises(
-                new Delayed(10, new Success(1)),
-                new Delayed(20, new Success(2))
+                new Delayed(100, new Success(1)),
+                new Delayed(200, new Success(2))
             ),
             function () {
                 return false;
@@ -41,9 +41,9 @@ class MultiPromiseTest extends TestCase
         $this->safelyRunAsync(function () {
             [$errors, $results] = wait(MultiPromise::cancelable(
                 $this->wrapLazyPromises(
-                    new Delayed(10, new Success(1)),
-                    new Delayed(20, new Success(2)),
-                    new Delayed(30, new Success(3))
+                    new Delayed(100, new Success(1)),
+                    new Delayed(200, new Success(2)),
+                    new Delayed(300, new Success(3))
                 ),
                 function () {
                     return true;
@@ -64,9 +64,9 @@ class MultiPromiseTest extends TestCase
         $this->safelyRunAsync(function () {
             [$errors, $results] = wait(MultiPromise::cancelable(
                 $this->wrapLazyPromises(
-                    new Delayed(10, new Success(1)),
-                    new Delayed(20, new Success(2)),
-                    new Delayed(30, new Success(3))
+                    new Delayed(100, new Success(1)),
+                    new Delayed(200, new Success(2)),
+                    new Delayed(300, new Success(3))
                 ),
                 function ($index): bool {
                     return $index == 2;
@@ -86,9 +86,9 @@ class MultiPromiseTest extends TestCase
         $this->safelyRunAsync(function () {
             [$errors, $results] = wait(MultiPromise::cancelable(
                 $this->wrapLazyPromises(
-                    new Delayed(10, new Failure(new \Exception('1'))),
-                    new Delayed(20, new Failure(new \Exception('2'))),
-                    new Delayed(30, new Failure(new \Exception('3')))
+                    new Delayed(100, new Failure(new \Exception('1'))),
+                    new Delayed(200, new Failure(new \Exception('2'))),
+                    new Delayed(300, new Failure(new \Exception('3')))
                 ),
                 function ($index): bool {
                     return false;
