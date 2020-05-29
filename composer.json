@@ -18,7 +18,7 @@
         "ext-json": "*",
         "amphp/amp": "^2.4",
         "amphp/parallel-functions": "^0.1.3",
-        "composer-plugin-api": "~1.0",
+        "composer-plugin-api": "~1.0 || ~2.0",
         "doctrine/collections": "~1.2",
         "gitonomy/gitlib": "^1.0.3",
         "monolog/monolog": "~1.16 || ^2.0",
@@ -36,10 +36,9 @@
         "symfony/yaml": "~3.4 || ~4.0 || ~5.0"
     },
     "require-dev": {
-        "brianium/paratest": "~3.1",
-        "composer/composer": "~1.9",
+        "brianium/paratest": "~3.1 || dev-master",
+        "composer/composer": "~1.9 || ^2.0@dev",
         "ergebnis/composer-normalize": "~2.1",
-        "friendsofphp/php-cs-fixer": "~2.16",
         "jakub-onderka/php-parallel-lint": "~1.0",
         "nikic/php-parser": "~4.0",
         "phpspec/phpspec": "~6.1",

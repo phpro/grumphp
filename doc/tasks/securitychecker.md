@@ -40,7 +40,7 @@ You can choose the format of the output. The available options are `text`, `json
 
 *Default: null*
 
-You can use a different end point for the security checks. Grumphp will use the default end point which is [https://security.sensiolabs.org/check_lock](https://security.sensiolabs.org/check_lock).
+You can use a different end point for the security checks. Grumphp will use the default end point which is [https://security.symfony.com/check_lock](https://security.symfony.com/check_lock).
 
 **timeout**
 

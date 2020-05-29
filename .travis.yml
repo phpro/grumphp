@@ -8,8 +8,9 @@ php:
 
 env:
   matrix:
-    -
-    - DEPENDENCIES=--prefer-lowest
+    - COMPOSER_VERSION=1
+    - COMPOSER_VERSION=2
+    - COMPOSER_VERSION=1 DEPENDENCIES=--prefer-lowest
 
 cache:
   directories:
@@ -22,8 +23,11 @@ matrix:
 
 before_install:
   - phpenv config-rm xdebug.ini
-  - alias composer=composer\ --no-interaction && composer selfupdate
-  - composer global require hirak/prestissimo
+  - alias composer=composer\ --no-interaction && composer selfupdate --$COMPOSER_VERSION
+  - |
+      if [ $COMPOSER_VERSION -eq 1 ]; then
+        composer global require hirak/prestissimo
+      fi;
 
 install:
   - travis_retry composer update --no-progress --profile --no-scripts --no-suggest $DEPENDENCIES

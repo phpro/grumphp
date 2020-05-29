@@ -103,8 +103,11 @@ Cache is supported only for tool downloaded as phar file or installed via compos
 
 Intersection mode can only be used when you have a configuration file which contains a Finder.
 This mode works best since only files that are being commit and are in your configuration will be checked.
-When there is no Finder in your configuration, you'll have set this parameter to false. 
+When there is no Finder in your configuration, you'll have set this parameter to false.
 Otherwise php-cs-fixer will crash the execution.
+
+Note that activating this option with a consequent target directory will be slow on certain envs such as
+osx+docker.
 
 **verbose**
 
@@ -123,5 +126,4 @@ Show the full diff that will be applied.
 
 *Default: [php]*
 
-This option will specify which file extensions will trigger the phpcsfixer task.
-
+This option will specify which file extensions will trigger the phpcsfixer2 task.

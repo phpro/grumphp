@@ -66,6 +66,20 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
+    }
+
+    /**
      * Attach package installation events:.
      *
      * {@inheritdoc}

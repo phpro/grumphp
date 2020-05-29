@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GrumPHPTest\Uni\Task\Git;
+namespace GrumPHPTest\Unit\Task\Git;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Task\Context\ContextInterface;
