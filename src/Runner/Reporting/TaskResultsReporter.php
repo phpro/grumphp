@@ -106,7 +106,6 @@ class TaskResultsReporter
             case TaskResultInterface::FAILED:
                 return '<fg=red>✘</fg=red>';
             case TaskEvents::TASK_SKIPPED:
-                // TODO : fix regular skipped once?
                 return implode(PHP_EOL, [
                     '<fg=yellow>Oh no, we hit the windows cmd input limit!</fg=yellow>',
                     '<fg=yellow>Skipping task...</fg=yellow>'

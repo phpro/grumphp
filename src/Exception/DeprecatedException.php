@@ -11,7 +11,7 @@ class DeprecatedException extends RuntimeException
         return new self(
             'Direct configuration of parameter '.$key.' is not allowed anymore.'.PHP_EOL.
             'Please rename the `parameters` section in your grumphp.yaml file to `grumphp`.'.PHP_EOL.
-            'More info: '.PHP_EOL.PHP_EOL // TODO : Add release notes link here!
+            'More info: https://github.com/phpro/grumphp/releases/tag/v0.19.0'.PHP_EOL.PHP_EOL
         );
     }
 }

@@ -18,6 +18,7 @@ class TaskResultSpec extends ObjectBehavior
         $this->getTask()->shouldBe($task);
         $this->getResultCode()->shouldBe(TaskResult::PASSED);
         $this->isPassed()->shouldBe(true);
+        $this->isSkipped()->shouldBe(false);
         $this->getMessage()->shouldBe('');
     }
 
@@ -28,6 +29,7 @@ class TaskResultSpec extends ObjectBehavior
         $this->getTask()->shouldBe($task);
         $this->getResultCode()->shouldBe(TaskResult::FAILED);
         $this->isPassed()->shouldBe(false);
+        $this->isSkipped()->shouldBe(false);
         $this->getMessage()->shouldBe(self::FAILED_TASK_MESSAGE);
     }
 
@@ -37,6 +39,7 @@ class TaskResultSpec extends ObjectBehavior
 
         $this->getTask()->shouldBe($task);
         $this->getResultCode()->shouldBe(TaskResult::SKIPPED);
+        $this->isSkipped()->shouldBe(true);
         $this->isPassed()->shouldBe(false);
         $this->getMessage()->shouldBe('');
     }

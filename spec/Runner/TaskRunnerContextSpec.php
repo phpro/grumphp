@@ -2,6 +2,7 @@
 
 namespace spec\GrumPHP\Runner;
 
+use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\TestSuite\TestSuiteInterface;
 use PhpSpec\ObjectBehavior;
@@ -57,5 +58,13 @@ class TaskRunnerContextSpec extends ObjectBehavior
         $new = $this->withSkippedSuccessOutput(true);
         $new->shouldNotBe($this);
         $new->skipSuccessOutput()->shouldBe(true);
+    }
+
+    public function it_can_add_tasks_to_run(): void
+    {
+        $new = $this->withTasks($tasks = new TasksCollection());
+        $this->shouldNotBe($new);
+        $new->getTasks()->shouldBe($tasks);
+        $new->getTaskContext()->shouldBe($this->getTaskContext());
     }
 }
