@@ -11,7 +11,7 @@ composer require --dev phpstan/phpstan
 ## Config
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpstan:
             autoload_file: ~

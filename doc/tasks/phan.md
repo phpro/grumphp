@@ -14,7 +14,7 @@ The task lives under the `phan` namespace and has following configurable paramet
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phan:
             config_file: .phan/config.php

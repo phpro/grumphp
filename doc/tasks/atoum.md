@@ -5,7 +5,7 @@ It lives under the `atoum` namespace and has the following configurable paramete
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         atoum:
             config_file: .atoum.php

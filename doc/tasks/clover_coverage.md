@@ -9,7 +9,7 @@ It lives under the `clover_coverage` namespace and has following configurable pa
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         clover_coverage:
             clover_file: /tmp/clover.xml

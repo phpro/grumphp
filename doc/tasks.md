@@ -5,7 +5,7 @@ To activate a task, it is sufficient to add an empty task configuration:
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         ant: ~
         atoum: ~
@@ -119,7 +119,7 @@ For example:
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         anytask:
             metadata:
@@ -185,7 +185,7 @@ interface TaskInterface
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         myConfigKey:
             config1: config-value
@@ -219,7 +219,7 @@ Configuration of the additional task will look like this:
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpcsfixer2:
             allow_risky: true

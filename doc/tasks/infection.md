@@ -14,7 +14,7 @@ It lives under the `infection` namespace and has following configurable paramete
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         infection:
             threads: ~

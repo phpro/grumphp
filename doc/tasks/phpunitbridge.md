@@ -14,7 +14,7 @@ The task lives under the `phpunitbridge` namespace and has following configurabl
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpunitbridge:
             config_file: ~

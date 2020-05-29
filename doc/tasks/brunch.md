@@ -5,7 +5,7 @@ It lives under the `brunch` namespace and has following configurable parameters:
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         brunch:
             task: build

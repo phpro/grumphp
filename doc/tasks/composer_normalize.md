@@ -17,7 +17,7 @@ The default configuration looks like:
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         composer_normalize:
             indent_size: ~

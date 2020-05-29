@@ -14,7 +14,7 @@ The task lives under the `phpcsfixer` namespace and has following configurable p
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpcsfixer:
             allow_risky: ~

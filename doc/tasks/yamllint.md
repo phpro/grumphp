@@ -5,7 +5,7 @@ It lives under the `yamllint` namespace and has following configurable parameter
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         yamllint:
             whitelist_patterns: []

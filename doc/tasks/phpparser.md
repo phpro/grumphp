@@ -15,7 +15,7 @@ The task lives under the `php_parser` namespace and has following configurable p
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpparser:
             ignore_patterns: []
@@ -72,7 +72,7 @@ This visitor can be used to enforce `declare(strict_types=1)` in every PHP file.
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpparser:
             visitors:
@@ -88,7 +88,7 @@ This visitor can be used to look for forbidden class method calls.
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpparser:
             visitors:
@@ -112,7 +112,7 @@ This visitor can be used to look for forbidden function calls.
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpparser:
             visitors:
@@ -137,7 +137,7 @@ This visitor can be used to look for forbidden static method calls.
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpparser:
             visitors:
@@ -177,7 +177,7 @@ and
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpparser:
             visitors:
@@ -194,7 +194,7 @@ An error will be added if an exit statement is found.
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpparser:
             visitors:
@@ -238,7 +238,7 @@ Tha alias `your_visitor` can now be set as a visitor in the phpparser task:
 
 ```yml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpparser:
             visitors:

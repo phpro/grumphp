@@ -5,7 +5,7 @@ It lives under the `doctrine_orm` namespace and has following configurable param
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         doctrine_orm:
             skip_mapping: false

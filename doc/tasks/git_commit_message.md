@@ -5,7 +5,7 @@ For example: if you are working with JIRA, it is possible to add a pattern for t
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         git_commit_message:
             allow_empty_message: false

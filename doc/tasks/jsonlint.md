@@ -5,7 +5,7 @@ It lives under the `jsonlint` namespace and has following configurable parameter
 
 ```json
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         jsonlint:
             ignore_patterns: []

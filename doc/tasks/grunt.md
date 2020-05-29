@@ -5,7 +5,7 @@ It lives under the `grunt` namespace and has following configurable parameters:
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         grunt:
             grunt_file: ~

@@ -5,7 +5,7 @@ It lives under the `make` namespace and has following configurable parameters:
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         make:
             make_file: ~

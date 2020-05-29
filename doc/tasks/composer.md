@@ -6,7 +6,7 @@ The configuration looks like:
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         composer:
             file: ./composer.json

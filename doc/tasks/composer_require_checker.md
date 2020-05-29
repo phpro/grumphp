@@ -12,7 +12,7 @@ composer require --dev maglnet/composer-require-checker
 ## Config
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         composer_require_checker:
             composer_file: 'composer.json'

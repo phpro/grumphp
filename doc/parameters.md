@@ -2,7 +2,7 @@
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     hooks_dir: ~
     hooks_preset: local
     git_hook_variables:
@@ -17,6 +17,12 @@ parameters:
     ascii:
         failed: resource/grumphp-grumpy.txt
         succeeded: resource/grumphp-happy.txt
+    parallel:
+        enabled: true
+        max_size: 32
+    fixer:
+        enabled: true
+        fix_by_default: false
 ```
 
 **hooks_dir**
@@ -49,7 +55,7 @@ This parameter will allow you to customize git hooks templates. For now, those p
 Examples: 
 
 ```yaml
-parameters:
+grumphp:
     git_hook_variables:
         EXEC_GRUMPHP_COMMAND: '/usr/local/bin/php72'
         EXEC_GRUMPHP_COMMAND: 'lando php'
@@ -99,7 +105,7 @@ This parameter will display additional information at the end of a `success` *or
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
   additional_info: "\nTo get full documentation for the project!\nVisit https://docs.example.com\n"
 ```
 
@@ -126,7 +132,7 @@ from the list.
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     ascii:
         failed:
             - resource/grumphp-grumpy.txt
@@ -142,7 +148,7 @@ To disable all banners set ascii to `~`:
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     ascii: ~
 ```
 
@@ -150,7 +156,62 @@ To disable a specific banner set ascii image path to `~`:
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     ascii:
         succeeded: ~
 ```
+
+
+**parallel**
+
+The parallel section can be used to configure how parallel execution works inside GrumPHP.
+You can specify following options:
+
+```
+grumphp:
+    parallel:
+        enabled: true
+        max_size: 32
+```
+
+**parallel.enabled**
+
+*Default: true*
+
+You can choose to enable or disable the parallel execution.
+If for some reason parallel tasks don't work for you, you can choose to run them in sequence.
+
+
+**parallel.max_size**
+
+*Default: 32*
+
+The maximum size of parallel threads.
+
+
+**fixer**
+
+GrumPHP provides a way of fixing your code. 
+However, we won't automatically commit the changes, so that you have the chance to review what has been fixed!
+You can configure how fixers work with following config:
+
+```
+grumphp:
+    fixer:
+        enabled: true
+        fix_by_default: false
+```
+
+**fixer.enabled**
+
+*Default: true*
+
+You can choose to enable or disable built-in fixers.
+
+
+**fixer.fix_by_default**
+
+*Default: false*
+
+In some contexts, like git commits, it is currently not possible to ask dynamic questions.
+Therefor, you can choose what the default answer will be.

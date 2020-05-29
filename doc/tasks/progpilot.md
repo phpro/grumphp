@@ -15,7 +15,7 @@ The task lives under the `progpilot` namespace and has following configurable pa
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         progpilot:
             config_file: .progpilot/configuration.yml

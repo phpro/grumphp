@@ -14,7 +14,7 @@ The task lives under the `phpmnd` namespace and has following configurable param
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpmnd:
             directory: .

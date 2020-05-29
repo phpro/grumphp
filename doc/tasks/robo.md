@@ -14,7 +14,7 @@ The task lives under the `robo` namespace and has following configurable paramet
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         robo:
             load_from: ~
