@@ -72,44 +72,10 @@ class YamlLinter implements LinterInterface
     }
 
     /**
-     * This method can be used to determine the Symfony Linter version.
-     * If this method returns true, you are using Symfony YAML > 3.1.
-     *
-     * @see http://symfony.com/blog/new-in-symfony-3-1-customizable-yaml-parsing-and-dumping
-     */
-    public static function supportsFlags(): bool
-    {
-        $rc = new ReflectionClass(Yaml::class);
-        $method = $rc->getMethod('parse');
-        $params = $method->getParameters();
-
-        return 'flags' === $params[1]->getName();
-    }
-
-    /**
-     * This method can be used to determine the Symfony Linter version.
-     * If this method returns true, you are using Symfony YAML >= 4.0.0.
-     *
-     * @see http://symfony.com/blog/new-in-symfony-3-1-yaml-deprecations#deprecated-the-dumper-setindentation-method
-     */
-    public static function supportsTagsWithoutColon(): bool
-    {
-        return !method_exists(Dumper::class, 'setIndentation');
-    }
-
-    /**
      * @throws ParseException
      */
     private function parseYaml(string $content): void
     {
-        // Lint on Symfony Yaml < 3.1
-        if (!self::supportsFlags()) {
-            Yaml::parse($content, $this->exceptionOnInvalidType, $this->objectSupport);
-
-            return;
-        }
-
-        // Lint on Symfony Yaml >= 3.1
         $flags = 0;
         $flags |= $this->objectSupport ? Yaml::PARSE_OBJECT : 0;
         $flags |= $this->exceptionOnInvalidType ? Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE : 0;
@@ -135,13 +101,11 @@ class YamlLinter implements LinterInterface
 
     public function setParseCustomTags(bool $parseCustomTags): void
     {
-        // Yaml::PARSE_CONSTANT is only available in Symfony Yaml >= 3.2
-        $this->parseCustomTags = $parseCustomTags && defined('Symfony\Component\Yaml\Yaml::PARSE_CONSTANT');
+        $this->parseCustomTags = $parseCustomTags;
     }
 
     public function setParseConstants(bool $parseConstants): void
     {
-        // Yaml::PARSE_CUSTOM_TAGS is only available in Symfony Yaml >= 3.3
-        $this->parseConstants = $parseConstants && defined('Symfony\Component\Yaml\Yaml::PARSE_CUSTOM_TAGS');
+        $this->parseConstants = $parseConstants;
     }
 }
