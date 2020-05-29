@@ -1,5 +1,5 @@
 grumphp:
-  process_timeout: 300
+  process_timeout: 480
   tasks:
     phpcs:
       standard: PSR2
