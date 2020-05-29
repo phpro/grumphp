@@ -88,7 +88,7 @@ grumphp:
         succeeded: grumphp-happy.txt
     parallel:
         enabled: true
-        max_size: 32
+        max_workers: 32
     fixer:
         enabled: true
         fix_by_default: false

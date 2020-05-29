@@ -68,7 +68,7 @@ class Configuration implements ConfigurationInterface
         // parallel
         $parallel = $rootNode->children()->arrayNode('parallel');
         $parallel->canBeDisabled();
-        $parallel->children()->integerNode('max_size')->min(1)->defaultValue(32);
+        $parallel->children()->integerNode('max_workers')->min(1)->defaultValue(32);
 
         // Fixer:
         $parallel = $rootNode->children()->arrayNode('fixer');

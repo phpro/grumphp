@@ -23,7 +23,7 @@ class PoolFactory
     public function create(): Pool
     {
         return new DefaultPool(
-            $this->config->getMaxSize()
+            $this->config->getMaxWorkers()
         );
     }
 }

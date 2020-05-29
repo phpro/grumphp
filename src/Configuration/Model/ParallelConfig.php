@@ -17,24 +17,24 @@ class ParallelConfig
     /**
      * @var int
      */
-    private $maxSize;
+    private $maxWorkers;
 
     public function __construct(
         bool $enabled,
-        int $maxSize
+        int $maxWorkers
     ) {
         $this->enabled = $enabled;
-        $this->maxSize = $maxSize;
+        $this->maxWorkers = $maxWorkers;
     }
 
     /**
-     * @param array{max_size: int, enabled: bool} $config
+     * @param array{max_workers: int, enabled: bool} $config
      */
     public static function fromArray(array $config): self
     {
         return new self(
             (bool) ($config['enabled'] ?? false),
-            (int) ($config['max_size'] ?? 1)
+            (int) ($config['max_workers'] ?? 1)
         );
     }
 
@@ -43,8 +43,8 @@ class ParallelConfig
         return $this->enabled;
     }
 
-    public function getMaxSize(): int
+    public function getMaxWorkers(): int
     {
-        return $this->maxSize;
+        return $this->maxWorkers;
     }
 }

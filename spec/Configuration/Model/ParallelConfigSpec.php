@@ -25,7 +25,7 @@ class ParallelConfigSpec extends ObjectBehavior
 
     public function it_contains_max_size(): void
     {
-        $this->getMaxSize()->shouldBe(10);
+        $this->getMaxWorkers()->shouldBe(10);
     }
 
     public function it_can_be_constructed_from_array(): void
@@ -33,11 +33,11 @@ class ParallelConfigSpec extends ObjectBehavior
         $this->beConstructedThrough('fromArray', [
             [
                 'enabled' => true,
-                'max_size' => 10,
+                'max_workers' => 10,
             ]
         ]);
 
         $this->isEnabled()->shouldBe(true);
-        $this->getMaxSize()->shouldBe(10);
+        $this->getMaxWorkers()->shouldBe(10);
     }
 }

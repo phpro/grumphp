@@ -19,7 +19,7 @@ grumphp:
         succeeded: resource/grumphp-happy.txt
     parallel:
         enabled: true
-        max_size: 32
+        max_workers: 32
     fixer:
         enabled: true
         fix_by_default: false
@@ -171,7 +171,7 @@ You can specify following options:
 grumphp:
     parallel:
         enabled: true
-        max_size: 32
+        max_workers: 32
 ```
 
 **parallel.enabled**
@@ -184,9 +184,9 @@ If for some reason parallel tasks don't work for you, you can choose to run them
 
 **parallel.max_size**
 
-*Default: 32*
+*max_workers: 32*
 
-The maximum size of parallel threads.
+The maximum amount of workers inside the parallel worker pool.
 
 
 **fixer**
