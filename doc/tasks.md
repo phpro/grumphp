@@ -150,6 +150,7 @@ By default the task name will be displayed.
 
 This option can be used to specify the order in which the tasks will be executed.
 The higher the priority, the sooner the task will be executed.
+All tasks with the same priority will run in parallel if parallel execution is enabled.
 
 **task**
 
@@ -195,10 +196,10 @@ services:
         arguments:
           - '@some.required.dependency'
         tags:
-          - {name: grumphp.task, task: defaultTaskName}
+          - {name: grumphp.task, task: defaultTaskName, priority: 0}
 ```
 
-You just registered your custom task! Pretty cool right?!
+You now registered your custom task! Pretty cool right?!
 
 
 ## Testing your custom task.
