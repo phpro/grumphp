@@ -191,7 +191,7 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->filesystem->dumpFile(
             $grumphpFile,
             Yaml::dump([
-                'parameters' => [
+                'grumphp' => [
                     'tasks' => []
                 ]
             ])
@@ -262,7 +262,7 @@ abstract class AbstractE2ETestCase extends TestCase
         $taskName = array_key_exists('task', $metadata) ? 'dummyTaskName' : 'validatePaths';
 
         $this->mergeGrumphpConfig($grumphpFile, [
-            'parameters' => [
+            'grumphp' => [
                 'tasks' => [
                     $taskName => [
                         'metadata' => $metadata

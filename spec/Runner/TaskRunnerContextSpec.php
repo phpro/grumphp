@@ -2,6 +2,7 @@
 
 namespace spec\GrumPHP\Runner;
 
+use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\TestSuite\TestSuiteInterface;
 use PhpSpec\ObjectBehavior;
@@ -39,22 +40,31 @@ class TaskRunnerContextSpec extends ObjectBehavior
 
     function it_has_no_tasks()
     {
-        $this->hasTasks()->shouldBe(false);
-        $this->getTasks()->shouldBe([]);
+        $this->hasTaskNames()->shouldBe(false);
+        $this->getTaskNames()->shouldBe([]);
     }
 
     function it_has_tasks(ContextInterface $context, TestSuiteInterface $testSuite)
     {
         $tasks = ["task_1"];
         $this->beConstructedWith($context, $testSuite, $tasks);
-        $this->hasTasks()->shouldBe(true);
-        $this->getTasks()->shouldBe($tasks);
+        $this->hasTaskNames()->shouldBe(true);
+        $this->getTaskNames()->shouldBe($tasks);
     }
 
     function it_knows_to_skip_the_success_message()
     {
         $this->skipSuccessOutput()->shouldBe(false);
-        $this->setSkipSuccessOutput(true);
-        $this->skipSuccessOutput()->shouldBe(true);
+        $new = $this->withSkippedSuccessOutput(true);
+        $new->shouldNotBe($this);
+        $new->skipSuccessOutput()->shouldBe(true);
+    }
+
+    public function it_can_add_tasks_to_run(): void
+    {
+        $new = $this->withTasks($tasks = new TasksCollection());
+        $this->shouldNotBe($new);
+        $new->getTasks()->shouldBe($tasks);
+        $new->getTaskContext()->shouldBe($this->getTaskContext());
     }
 }

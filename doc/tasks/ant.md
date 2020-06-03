@@ -5,7 +5,7 @@ It lives under the `ant` namespace and has following configurable parameters:
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         ant:
             build_file: ~

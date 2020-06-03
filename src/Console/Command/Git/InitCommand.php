@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Console\Command\Git;
 
-use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Configuration\Model\HooksConfig;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Process\ProcessUtils;
 use GrumPHP\Util\Filesystem;
@@ -30,19 +30,19 @@ class InitCommand extends Command
     ];
 
     /**
-     * @var GrumPHP
+     * @var HooksConfig
      */
-    protected $config;
+    private $hooksConfig;
 
     /**
      * @var Filesystem
      */
-    protected $filesystem;
+    private $filesystem;
 
     /**
      * @var InputInterface
      */
-    protected $input;
+    private $input;
 
     /**
      * @var ProcessBuilder
@@ -55,14 +55,14 @@ class InitCommand extends Command
     private $paths;
 
     public function __construct(
-        GrumPHP $config,
+        HooksConfig $hooksConfig,
         Filesystem $filesystem,
         ProcessBuilder $processBuilder,
         Paths $paths
     ) {
         parent::__construct();
 
-        $this->config = $config;
+        $this->hooksConfig = $hooksConfig;
         $this->filesystem = $filesystem;
         $this->processBuilder = $processBuilder;
         $this->paths = $paths;
@@ -73,26 +73,20 @@ class InitCommand extends Command
         return self::COMMAND_NAME;
     }
 
-    /**
-     * Configure command.
-     */
     protected function configure(): void
     {
         $this->setDescription('Registers the Git hooks');
     }
 
-    /**
-     * @return int|void
-     */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
         $gitHooksPath = $this->paths->getGitHooksDir();
         $resourceHooksPath = $this->filesystem->buildPath(
             $this->paths->getInternalGitHookTemplatesPath(),
-            $this->config->getHooksPreset()
+            $this->hooksConfig->getPreset()
         );
-        $customHooksPath = $this->config->getHooksDir();
+        $customHooksPath = $this->hooksConfig->getDir();
 
         // Some git clients do not automatically create a git hooks folder.
         if (!$this->filesystem->exists($gitHooksPath)) {
@@ -138,7 +132,7 @@ class InitCommand extends Command
             '$(HOOK_COMMAND)' => $this->generateHookCommand('git:'.$hook),
         ];
 
-        foreach ($this->config->getGitHookVariables() as $key => $value) {
+        foreach ($this->hooksConfig->getVariables() as $key => $value) {
             $replacements[sprintf('$(%s)', $key)] = ProcessUtils::escapeArgumentsFromString($value);
         }
 

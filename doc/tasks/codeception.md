@@ -13,7 +13,7 @@ The task lives under the `codeception` namespace and has the following configura
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         codeception:
             config_file: ~

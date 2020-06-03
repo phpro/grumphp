@@ -25,7 +25,7 @@ class TestSuiteCompilerPass implements CompilerPassInterface
             $collection->set($name, new TestSuite($name, $config['tasks']));
         }
 
-        $container->setParameter('grumphp.testsuites', $collection);
+        $container->set(TestSuiteCollection::class, $collection);
     }
 
     private function createOptionsResolver(array $registeredTasks): OptionsResolver

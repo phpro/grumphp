@@ -7,7 +7,7 @@ pattern for the JIRA issue number.
  
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         git_branch_name:
             whitelist:

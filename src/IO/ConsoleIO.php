@@ -5,11 +5,16 @@ declare(strict_types=1);
 namespace GrumPHP\IO;
 
 use GrumPHP\Exception\RuntimeException;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\StyleInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-class ConsoleIO implements IOInterface
+class ConsoleIO implements IOInterface, \Serializable
 {
     private $input;
     private $output;
@@ -102,5 +107,58 @@ class ConsoleIO implements IOInterface
         }
 
         $this->output->write($messages, $newline);
+    }
+
+    public function style(): StyleInterface
+    {
+        return new SymfonyStyle($this->input, $this->output);
+    }
+
+    public function section(): ConsoleSectionOutput
+    {
+        return $this->output->section();
+    }
+
+    public function colorize(array $messages, string $color): array
+    {
+        return array_map(
+            static function (string $message) use ($color) : string {
+                return '<fg='.$color.'>'.$message.'</fg='.$color.'>';
+            },
+            $messages
+        );
+    }
+
+    /**
+     * Serializing this IO will result in an unwritable resource stream.
+     * Therefor we serialize the data end build up a new stream instead.
+     */
+    public function serialize()
+    {
+        return serialize([
+            'input' => [
+                'arguments' => $this->input->getArguments(),
+            ],
+            'output' => [
+                'verbosity' => $this->output->getVerbosity(),
+            ],
+        ]);
+    }
+
+    /**
+     * Use the serialized data to rebuild new input + output streams.
+     * Note: When you run in parallel mode, the stream will be non-blocking.
+     * All tasks can write at the same time, which is not optimal.
+     */
+    public function unserialize($serialized)
+    {
+        $data = unserialize($serialized, ['allowed_classes' => false]);
+
+        $this->input = new ArrayInput(
+            (array) ($data['input']['arguments'] ?? [])
+        );
+        $this->output = new ConsoleOutput(
+            (int) ($data['output']['verbosity'] ?? ConsoleOutput::VERBOSITY_NORMAL)
+        );
     }
 }

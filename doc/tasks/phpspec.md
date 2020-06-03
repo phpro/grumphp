@@ -14,7 +14,7 @@ The task lives under the `phpspec` namespace and has following configurable para
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpspec:
             config_file: ~

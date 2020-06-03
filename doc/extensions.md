@@ -8,7 +8,7 @@ The configuration looks like this:
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     extensions:
         - My\Project\GrumPHPExtension
 ```

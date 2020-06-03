@@ -14,7 +14,7 @@ The task lives under the `phpcs` namespace and has following configurable parame
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpcs:
             standard: []
@@ -144,7 +144,7 @@ Following this, you can add the path to your phpcs task.
 
 ```yml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpcs:
             standard: "vendor/leaphub/phpcs-symfony2-standard/leaphub/phpcs/Symfony2/"
@@ -162,7 +162,7 @@ Following this, you can add the path to your phpcs task.
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpcs:
             standard: "vendor/magento-ecg/coding-standard/Ecg/"
@@ -185,7 +185,7 @@ Next, add the following to your `composer.json` file, and run `composer run-scri
 Following this, you can add the path to your phpcs task.
 ```yaml
 # gumphp.yml
-parameters:
+grumphp:
     tasks:
         phpcs:
             standard: "Magento2"
@@ -203,7 +203,7 @@ Following this, you can add the path to your phpcs task.
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpcs:
             standard: 

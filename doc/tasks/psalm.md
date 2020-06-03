@@ -16,7 +16,7 @@ composer require --dev psalm/phar
 ## Config
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         psalm:
             config: psalm.xml

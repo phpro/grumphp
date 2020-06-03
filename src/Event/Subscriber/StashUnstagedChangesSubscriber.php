@@ -6,7 +6,7 @@ namespace GrumPHP\Event\Subscriber;
 
 use Exception;
 use Gitonomy\Git\Exception\ProcessException;
-use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Configuration\Model\GitStashConfig;
 use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Event\RunnerEvents;
 use GrumPHP\Exception\RuntimeException;
@@ -20,9 +20,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class StashUnstagedChangesSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var GrumPHP
+     * @var GitStashConfig
      */
-    private $grumPHP;
+    private $config;
 
     /**
      * @var GitRepository
@@ -38,36 +38,26 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
      * @var bool
      */
     private $stashIsApplied = false;
-
     /**
      * @var bool
      */
     private $shutdownFunctionRegistered = false;
 
-    public function __construct(GrumPHP $grumPHP, GitRepository $repository, IOInterface $io)
+    public function __construct(GitStashConfig $config, GitRepository $repository, IOInterface $io)
     {
-        $this->grumPHP = $grumPHP;
+        $this->config = $config;
         $this->repository = $repository;
         $this->io = $io;
     }
 
     public static function getSubscribedEvents(): array
     {
-        $events = [
+        return [
             RunnerEvents::RUNNER_RUN => ['saveStash', 10000],
             RunnerEvents::RUNNER_COMPLETE => ['popStash', -10000],
             RunnerEvents::RUNNER_FAILED => ['popStash', -10000],
+            ConsoleEvents::ERROR => ['handleErrors', -10000],
         ];
-
-        // Backward compatibility layer for Symfony Console < 4.0.
-        // @todo Replace with ConsoleEvents::EXCEPTION when bumping symfony/console to ^3.3
-        //       (and maybe revert back to returning a simple array, as it was before?)
-        $consoleErrorEvent = defined(ConsoleEvents::class.'::ERROR')
-            ? ConsoleEvents::ERROR
-            : ConsoleEvents::EXCEPTION;
-        $events[$consoleErrorEvent] = ['handleErrors', -10000];
-
-        return $events;
     }
 
     public function saveStash(RunnerEvent $e): void
@@ -93,7 +83,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
 
     public function handleErrors(): void
     {
-        if (!$this->grumPHP->ignoreUnstagedChanges()) {
+        if (!$this->config->ignoreUnstagedChanges()) {
             return;
         }
 
@@ -149,7 +139,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
 
     private function isStashEnabled(ContextInterface $context): bool
     {
-        return $this->grumPHP->ignoreUnstagedChanges() && $context instanceof GitPreCommitContext;
+        return $this->config->ignoreUnstagedChanges() && $context instanceof GitPreCommitContext;
     }
 
     /**

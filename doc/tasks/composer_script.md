@@ -5,7 +5,7 @@ It lives under the `composer_script` namespace and has following configurable pa
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         composer_script:
             script: ~

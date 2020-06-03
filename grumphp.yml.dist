@@ -1,22 +1,17 @@
-parameters:
-  process_timeout: 300
+grumphp:
+  process_timeout: 480
   tasks:
     phpcs:
       standard: PSR2
       ignore_patterns:
         - "spec/*Spec.php"
         - "test/*.php"
-      metadata:
-        priority: 300
+        - "stubs/*.php"
     phpspec:
       format: progress
       verbose: true
-      metadata:
-        priority: 200
     phpunit:
       testsuite: Unit
-      metadata:
-        priority: 100
     composer:
       no_check_lock: true
     composer_normalize: ~
@@ -34,14 +29,10 @@ parameters:
         never_use_else: ~
         forbidden_function_calls:
           blacklist: [var_dump]
-      metadata:
-        priority: 100000
     paratest:
       testsuite: E2E
       verbose: true
       functional: true
-      metadata:
-        priority: 50
   testsuites:
     git_pre_commit:
       tasks: [phpcs, phpspec, phpunit, composer, composer_normalize, yamllint, phplint, phpparser]

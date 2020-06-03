@@ -5,7 +5,7 @@ It lives under the `gherkin` namespace and has following configurable parameters
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         gherkin:
             directory: 'features'

@@ -72,7 +72,7 @@ You can specify a custom config filename and location in `composer.json` or in t
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     hooks_dir: ~
     hooks_preset: local
     git_hook_variables:
@@ -82,12 +82,16 @@ parameters:
     stop_on_failure: false
     ignore_unstaged_changes: false
     hide_circumvention_tip: false
-    process_async_limit: 10
-    process_async_wait: 1000
     process_timeout: 60
     ascii:
         failed: grumphp-grumpy.txt
         succeeded: grumphp-happy.txt
+    parallel:
+        enabled: true
+        max_workers: 32
+    fixer:
+        enabled: true
+        fix_by_default: false
     tasks: {}
     testsuites: []
     extensions: []
@@ -99,7 +103,7 @@ Details of the configuration are broken down into the following sections.
 - [Tasks](doc/tasks.md) &ndash; External tasks performing code validation and their respective configurations.
 - [TestSuites](doc/testsuites.md)
 - [Extensions](doc/extensions.md)
-- [Events](doc/events.md)
+- [Extending the TaskRunner](doc/runner.md)
 - [Conventions checker](doc/conventions.md)
 
 ## Commands

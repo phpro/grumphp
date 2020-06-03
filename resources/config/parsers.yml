@@ -1,8 +1,11 @@
 services:
+    GrumPHP\Parser\Php\Container\VisitorContainer:
+      arguments:
+        $instances: []
     grumphp.parser.php.configurator.traverser:
       class: 'GrumPHP\Parser\Php\Configurator\TraverserConfigurator'
       arguments:
-        - '@service_container'
+        $container: '@GrumPHP\Parser\Php\Container\VisitorContainer'
       calls:
         - ['registerStandardEnabledVisitor', ['nameresolver', ~]]
 

@@ -1,0 +1,36 @@
+#
+# This entry makes sure to trigger the grumphp container extension.
+# It can be removed in the future if everybody migrated `parameters:` to `grumphp:` in the configuration file.
+grumphp: ~
+
+#
+# Load config based on configured parameters
+#
+services:
+    GrumPHP\Configuration\Model\AsciiConfig:
+        arguments:
+            - '%ascii%'
+    GrumPHP\Configuration\Model\HooksConfig:
+        arguments:
+            - '%hooks_dir%'
+            - '%hooks_preset%'
+            - '%git_hook_variables%'
+    GrumPHP\Configuration\Model\ParallelConfig:
+        factory: ['GrumPHP\Configuration\Model\ParallelConfig', 'fromArray']
+        arguments:
+            - '%parallel%'
+    GrumPHP\Configuration\Model\FixerConfig:
+        factory: ['GrumPHP\Configuration\Model\FixerConfig', 'fromArray']
+        arguments:
+            - '%fixer%'
+    GrumPHP\Configuration\Model\ProcessConfig:
+        arguments:
+            - '%process_timeout%'
+    GrumPHP\Configuration\Model\GitStashConfig:
+        arguments:
+            - '%ignore_unstaged_changes%'
+    GrumPHP\Configuration\Model\RunnerConfig:
+        arguments:
+            - '%stop_on_failure%'
+            - '%hide_circumvention_tip%'
+            - '%additional_info%'

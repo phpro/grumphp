@@ -5,7 +5,7 @@ It lives under the `git_blacklist` namespace and has following configurable para
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         git_blacklist:
             keywords:

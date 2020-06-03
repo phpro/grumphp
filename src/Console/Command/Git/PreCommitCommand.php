@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Collection\FilesCollection;
-use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Collection\TestSuiteCollection;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Locator\ChangedFiles;
+use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use Symfony\Component\Console\Command\Command;
@@ -22,23 +23,34 @@ use Symfony\Component\Console\Output\OutputInterface;
 class PreCommitCommand extends Command
 {
     const COMMAND_NAME = 'git:pre-commit';
+    const EXIT_CODE_OK = 0;
+    const EXIT_CODE_NOK = 1;
 
     /**
-     * @var GrumPHP
+     * @var TestSuiteCollection
      */
-    protected $grumPHP;
+    private $testSuites;
 
     /**
      * @var ChangedFiles
      */
-    protected $changedFilesLocator;
+    private $changedFilesLocator;
 
-    public function __construct(GrumPHP $config, ChangedFiles $changedFilesLocator)
-    {
+    /**
+     * @var TaskRunner
+     */
+    private $taskRunner;
+
+    public function __construct(
+        TestSuiteCollection $testSuites,
+        ChangedFiles $changedFilesLocator,
+        TaskRunner $taskRunner
+    ) {
         parent::__construct();
 
-        $this->grumPHP = $config;
+        $this->testSuites = $testSuites;
         $this->changedFilesLocator = $changedFilesLocator;
+        $this->taskRunner = $taskRunner;
     }
 
     public static function getDefaultName(): string
@@ -46,9 +58,6 @@ class PreCommitCommand extends Command
         return self::COMMAND_NAME;
     }
 
-    /**
-     * Configure command.
-     */
     protected function configure(): void
     {
         $this->setDescription('Executed by the pre-commit hook');
@@ -65,15 +74,18 @@ class PreCommitCommand extends Command
         $io = new ConsoleIO($input, $output);
         $files = $this->getCommittedFiles($io);
 
-        $context = new TaskRunnerContext(
-            new GitPreCommitContext($files),
-            $this->grumPHP->getTestSuites()->getOptional('git_pre_commit')
-        );
-        $context->setSkipSuccessOutput((bool) $input->getOption('skip-success-output'));
+        $context = (
+            new TaskRunnerContext(
+                new GitPreCommitContext($files),
+                $this->testSuites->getOptional('git_pre_commit')
+            )
+        )->withSkippedSuccessOutput((bool) $input->getOption('skip-success-output'));
 
         $output->writeln('<fg=yellow>GrumPHP detected a pre-commit command.</fg=yellow>');
 
-        return $this->taskRunner()->run($output, $context);
+        $results = $this->taskRunner->run($context);
+
+        return $results->isFailed() ? self::EXIT_CODE_NOK : self::EXIT_CODE_OK;
     }
 
     protected function getCommittedFiles(ConsoleIO $io): FilesCollection
@@ -83,10 +95,5 @@ class PreCommitCommand extends Command
         }
 
         return $this->changedFilesLocator->locateFromGitRepository();
-    }
-
-    protected function taskRunner(): TaskRunnerHelper
-    {
-        return $this->getHelper(TaskRunnerHelper::HELPER_NAME);
     }
 }

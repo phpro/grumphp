@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace GrumPHP\Runner;
 
+use GrumPHP\Collection\TasksCollection;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\TestSuite\TestSuiteInterface;
 
+/**
+ * @psalm-immutable
+ */
 class TaskRunnerContext
 {
     /**
@@ -27,16 +31,25 @@ class TaskRunnerContext
     /**
      * @var string[]
      */
+    private $taskNames;
+
+    /**
+     * @var TasksCollection
+     */
     private $tasks;
 
+    /**
+     * @param string[] $taskNames
+     */
     public function __construct(
         ContextInterface $taskContext,
         TestSuiteInterface $testSuite = null,
-        array $tasks = []
+        array $taskNames = []
     ) {
         $this->taskContext = $taskContext;
         $this->testSuite = $testSuite;
-        $this->tasks = $tasks;
+        $this->taskNames = $taskNames;
+        $this->tasks = new TasksCollection();
     }
 
     public function getTaskContext(): ContextInterface
@@ -49,9 +62,12 @@ class TaskRunnerContext
         return $this->skipSuccessOutput;
     }
 
-    public function setSkipSuccessOutput(bool $skipSuccessOutput): void
+    public function withSkippedSuccessOutput(bool $skipSuccessOutput): self
     {
-        $this->skipSuccessOutput = $skipSuccessOutput;
+        $new = clone $this;
+        $new->skipSuccessOutput = $skipSuccessOutput;
+
+        return $new;
     }
 
     public function hasTestSuite(): bool
@@ -64,21 +80,29 @@ class TaskRunnerContext
         return $this->testSuite;
     }
 
-    public function setTestSuite(?TestSuiteInterface $testSuite): void
-    {
-        $this->testSuite = $testSuite;
-    }
-
     /**
      * @return string[]
      */
-    public function getTasks(): array
+    public function getTaskNames(): array
+    {
+        return $this->taskNames;
+    }
+
+    public function hasTaskNames(): bool
+    {
+        return !empty($this->taskNames);
+    }
+
+    public function getTasks(): TasksCollection
     {
         return $this->tasks;
     }
 
-    public function hasTasks(): bool
+    public function withTasks(TasksCollection $tasks): self
     {
-        return !empty($this->tasks);
+        $new = clone $this;
+        $new->tasks = $tasks;
+
+        return $new;
     }
 }

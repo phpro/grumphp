@@ -7,7 +7,7 @@ use Gitonomy\Git\WorkingCopy;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Collection\TasksCollection;
-use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Configuration\Model\GitStashConfig;
 use GrumPHP\Event\RunnerEvent;
 use GrumPHP\Event\Subscriber\StashUnstagedChangesSubscriber;
 use GrumPHP\Exception\RuntimeException;
@@ -21,14 +21,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
 {
-    function let(GrumPHP $grumPHP, GitRepository $repository, IOInterface $io, WorkingCopy $workingCopy, Diff $unstaged)
+    function let(GitStashConfig $config, GitRepository $repository, IOInterface $io, WorkingCopy $workingCopy, Diff $unstaged)
     {
-        $grumPHP->ignoreUnstagedChanges()->willReturn(true);
+        $config->ignoreUnstagedChanges()->willReturn(true);
         $repository->getWorkingCopy()->willReturn($workingCopy);
         $workingCopy->getDiffPending()->willReturn($unstaged);
         $unstaged->getFiles()->willReturn(['file1.php']);
 
-        $this->beConstructedWith($grumPHP, $repository, $io);
+        $this->beConstructedWith($config, $repository, $io);
     }
 
     function it_is_initializable()
@@ -46,10 +46,10 @@ class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldBeArray();
     }
 
-    function it_should_not_run_when_disabled(GrumPHP $grumPHP, GitRepository $repository)
+    function it_should_not_run_when_disabled(GitStashConfig $config, GitRepository $repository)
     {
         $event = new RunnerEvent(new TasksCollection(), new GitPreCommitContext(new FilesCollection()), new TaskResultCollection());
-        $grumPHP->ignoreUnstagedChanges()->willReturn(false);
+        $config->ignoreUnstagedChanges()->willReturn(false);
 
         $this->saveStash($event);
         $this->popStash($event);

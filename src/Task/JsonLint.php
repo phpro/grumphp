@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GrumPHP\Task;
 
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Linter\Json\JsonLinter;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
@@ -12,11 +13,13 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @property \GrumPHP\Linter\Json\JsonLinter $linter
- */
 class JsonLint extends AbstractLinterTask
 {
+    /**
+     * @var JsonLinter
+     */
+    protected $linter;
+
     public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = parent::getConfigurableOptions();

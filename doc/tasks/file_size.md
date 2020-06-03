@@ -4,7 +4,7 @@ The file size task ensures a maximum size for a file to be added to git.
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         file_size:
             max_size: 10M

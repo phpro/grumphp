@@ -1,16 +1,4 @@
 services:
-    async_process_runner:
-      class: GrumPHP\Process\AsyncProcessRunner
-      arguments:
-        - '@config'
-
-    config:
-        class: GrumPHP\Configuration\GrumPHP
-        arguments:
-          - '@service_container'
-          - '@GrumPHP\Configuration\GuessedPaths'
-        public: true
-
     GrumPHP\Configuration\GuessedPaths:
         class: GrumPHP\Configuration\GuessedPaths
         synthetic: true
@@ -40,9 +28,9 @@ services:
     process_builder:
       class: GrumPHP\Process\ProcessBuilder
       arguments:
-        - '@config'
         - '@locator.external_command'
         - '@grumphp.io'
+        - '@GrumPHP\Configuration\Model\ProcessConfig'
       public: true
 
     GrumPHP\Git\GitRepository:
@@ -50,20 +38,8 @@ services:
             - '@GrumPHP\Locator\GitRepositoryLocator'
             - { logger: '@grumphp.logger' }
 
-    task_runner:
-        class: GrumPHP\Runner\TaskRunner
-        arguments:
-          - '@GrumPHP\Collection\TasksCollection'
-          - '@config'
-          - '@GrumPHP\Event\Dispatcher\EventDispatcherInterface'
-        public: true
-
     grumphp.io:
         alias: grumphp.io.console
-
-    grumphp.io.null:
-        class: GrumPHP\IO\NullIO
-        public: false
 
     grumphp.io.console:
         class: GrumPHP\IO\ConsoleIO
@@ -97,4 +73,3 @@ services:
         class: Seld\JsonLint\JsonParser
 
     GrumPHP\Configuration\Configurator\TaskConfigurator: ~
-    GrumPHP\Collection\TasksCollection: ~

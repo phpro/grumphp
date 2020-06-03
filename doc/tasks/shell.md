@@ -5,7 +5,7 @@ It lives under the `shell` namespace and has following configurable parameters:
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         shell:
             scripts: []
@@ -25,7 +25,7 @@ Configuration example:
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         shell:
             scripts:

@@ -59,4 +59,27 @@ class TasksCollection extends ArrayCollection
 
         return new self(array_values(iterator_to_array($priorityQueue)));
     }
+
+    /**
+     * @return array<int, TasksCollection>
+     */
+    public function groupByPriority(): array
+    {
+        return array_reduce(
+            $this->toArray(),
+            /**
+             * @param array<int, TasksCollection> $grouped
+             * @return array<int, TasksCollection>
+             */
+            static function (array $grouped, TaskInterface $task): array {
+                $priority = $task->getConfig()->getMetadata()->priority();
+                $groupTasks = $grouped[$priority] ?? new TasksCollection();
+                $groupTasks->add($task);
+                $grouped[$priority] = $groupTasks;
+
+                return $grouped;
+            },
+            []
+        );
+    }
 }

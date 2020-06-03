@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Collection\FilesCollection;
-use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Collection\TestSuiteCollection;
 use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Locator\ChangedFiles;
+use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use GrumPHP\Util\Filesystem;
@@ -26,16 +27,23 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CommitMsgCommand extends Command
 {
     const COMMAND_NAME = 'git:commit-msg';
+    const EXIT_CODE_OK = 0;
+    const EXIT_CODE_NOK = 1;
 
     /**
-     * @var GrumPHP
+     * @var TestSuiteCollection
      */
-    protected $grumPHP;
+    private $testSuites;
 
     /**
      * @var ChangedFiles
      */
-    protected $changedFilesLocator;
+    private $changedFilesLocator;
+
+    /**
+     * @var TaskRunner
+     */
+    private $taskRunner;
 
     /**
      * @var Filesystem
@@ -48,15 +56,17 @@ class CommitMsgCommand extends Command
     private $paths;
 
     public function __construct(
-        GrumPHP $config,
+        TestSuiteCollection $testSuites,
         ChangedFiles $changedFilesLocator,
+        TaskRunner $taskRunner,
         Filesystem $filesystem,
         Paths $paths
     ) {
         parent::__construct();
 
-        $this->grumPHP = $config;
+        $this->testSuites = $testSuites;
         $this->changedFilesLocator = $changedFilesLocator;
+        $this->taskRunner = $taskRunner;
         $this->filesystem = $filesystem;
         $this->paths = $paths;
     }
@@ -66,9 +76,6 @@ class CommitMsgCommand extends Command
         return self::COMMAND_NAME;
     }
 
-    /**
-     * Configure command.
-     */
     protected function configure(): void
     {
         $this->setDescription('Executed by the commit-msg commit hook');
@@ -77,9 +84,6 @@ class CommitMsgCommand extends Command
         $this->addArgument('commit-msg-file', InputArgument::REQUIRED, 'The configured commit message file.');
     }
 
-    /**
-     * @return int|void
-     */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new ConsoleIO($input, $output);
@@ -99,10 +103,12 @@ class CommitMsgCommand extends Command
 
         $context = new TaskRunnerContext(
             new GitCommitMsgContext($files, $commitMsg, $gitUser, $gitEmail),
-            $this->grumPHP->getTestSuites()->getOptional('git_commit_msg')
+            $this->testSuites->getOptional('git_commit_msg')
         );
 
-        return $this->taskRunner()->run($output, $context);
+        $results = $this->taskRunner->run($context);
+
+        return $results->isFailed() ? self::EXIT_CODE_NOK : self::EXIT_CODE_OK;
     }
 
     protected function getCommittedFiles(ConsoleIO $io): FilesCollection
@@ -112,10 +118,5 @@ class CommitMsgCommand extends Command
         }
 
         return $this->changedFilesLocator->locateFromGitRepository();
-    }
-
-    protected function taskRunner(): TaskRunnerHelper
-    {
-        return $this->getHelper(TaskRunnerHelper::HELPER_NAME);
     }
 }

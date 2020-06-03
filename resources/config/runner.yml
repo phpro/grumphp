@@ -1,0 +1,113 @@
+services:
+    GrumPHP\Collection\TasksCollection: ~
+    GrumPHP\Runner\TaskRunner:
+        class:
+        arguments:
+            - '@GrumPHP\Collection\TasksCollection'
+            - '@GrumPHP\Runner\MiddlewareStack'
+    GrumPHP\Runner\MiddlewareStack:
+        factory: ['GrumPHP\Runner\MiddlewareStack', 'fromIterable']
+        arguments:
+            - !tagged 'grumphp.runner_middleware'
+
+    GrumPHP\Runner\TaskHandler\TaskHandler:
+        factory: ['GrumPHP\Runner\TaskHandler\TaskHandler', 'fromIterable']
+        arguments:
+            - !tagged 'grumphp.task_handler'
+
+    #
+    # Runner middleware
+    #
+    GrumPHP\Runner\Middleware\FixCodeMiddleware:
+        arguments:
+            - '@GrumPHP\Fixer\FixerUpper'
+        tags:
+            - { name: 'grumphp.runner_middleware', priority: 1000 }
+    GrumPHP\Runner\Middleware\TasksFilteringRunnerMiddleware:
+        arguments: []
+        tags:
+            - { name: 'grumphp.runner_middleware', priority: 900 }
+    GrumPHP\Runner\Middleware\ReportingRunnerMiddleware:
+        arguments:
+            - '@GrumPHP\Runner\Reporting\RunnerReporter'
+        tags:
+            - { name: 'grumphp.runner_middleware', priority: 800 }
+    GrumPHP\Runner\Middleware\EventDispatchingRunnerMiddleware:
+        arguments:
+            - '@GrumPHP\Event\Dispatcher\Bridge\SymfonyEventDispatcher'
+        tags:
+            - { name: 'grumphp.runner_middleware', priority: 500 }
+    GrumPHP\Runner\Middleware\GroupByPriorityMiddleware:
+        arguments:
+            - '@grumphp.io'
+            - '@GrumPHP\Configuration\Model\RunnerConfig'
+        tags:
+            - { name: 'grumphp.runner_middleware', priority: 250 }
+    GrumPHP\Runner\Middleware\ReportingTasksSectionRunnerMiddleware:
+        arguments:
+            - '@GrumPHP\Runner\Reporting\TaskResultsReporter'
+        tags:
+            - { name: 'grumphp.runner_middleware', priority: 150 }
+    GrumPHP\Runner\Middleware\HandleRunnerMiddleware:
+        arguments:
+            - '@GrumPHP\Runner\TaskHandler\TaskHandler'
+            - '@GrumPHP\Configuration\Model\RunnerConfig'
+        tags:
+            - { name: 'grumphp.runner_middleware', priority: 0 }
+
+    #
+    # Task handler middleware
+    #
+    GrumPHP\Runner\TaskHandler\Middleware\EventDispatchingTaskHandlerMiddleware:
+        arguments:
+            - '@GrumPHP\Event\Dispatcher\Bridge\SymfonyEventDispatcher'
+        tags:
+            - { name: 'grumphp.task_handler', priority: 1000 }
+    GrumPHP\Runner\TaskHandler\Middleware\ReportingTaskHandlerMiddleware:
+        arguments:
+            - '@GrumPHP\Runner\Reporting\TaskResultsReporter'
+        tags:
+            - { name: 'grumphp.task_handler', priority: 750}
+    GrumPHP\Runner\TaskHandler\Middleware\MemoizedResultsTaskHandlerMiddleware:
+        arguments:
+            - '@GrumPHP\Runner\MemoizedTaskResultMap'
+        tags:
+            - { name: 'grumphp.task_handler', priority: 500 }
+    GrumPHP\Runner\TaskHandler\Middleware\NonBlockingTaskHandlerMiddleware:
+        arguments: ~
+        tags:
+            - { name: 'grumphp.task_handler', priority: 250 }
+    GrumPHP\Runner\TaskHandler\Middleware\ParallelProcessingMiddleware:
+        arguments:
+            - '@GrumPHP\Configuration\Model\ParallelConfig'
+            - '@GrumPHP\Runner\Parallel\PoolFactory'
+            - '@grumphp.io'
+        tags:
+            - { name: 'grumphp.task_handler', priority: 150 }
+    GrumPHP\Runner\TaskHandler\Middleware\ErrorHandlingTaskHandlerMiddleware:
+        arguments: ~
+        tags:
+            - { name: 'grumphp.task_handler', priority: 0 }
+
+    #
+    # Configurable Parallel Pool
+    #
+    GrumPHP\Runner\Parallel\PoolFactory:
+        arguments:
+            - '@GrumPHP\Configuration\Model\ParallelConfig'
+
+    #
+    # Reporting
+    #
+    GrumPHP\Runner\MemoizedTaskResultMap:
+        arguments: []
+    GrumPHP\Runner\Reporting\RunnerReporter:
+        arguments:
+            - '@grumphp.io'
+            - '@GrumPHP\Locator\AsciiLocator'
+            - '@GrumPHP\Configuration\Model\RunnerConfig'
+    GrumPHP\Runner\Reporting\TaskResultsReporter:
+        arguments:
+            - '@grumphp.io'
+            - '@GrumPHP\Runner\MemoizedTaskResultMap'
+

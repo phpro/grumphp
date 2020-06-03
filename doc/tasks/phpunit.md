@@ -14,7 +14,7 @@ The task lives under the `phpunit` namespace and has following configurable para
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpunit:
             config_file: ~

@@ -14,7 +14,7 @@ The task lives under the `twigcs` namespace and has following configurable param
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         twigcs:
             path: '.'

@@ -14,7 +14,7 @@ The task lives under the `securitychecker` namespace and has the following confi
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         securitychecker:
             lockfile: ./composer.lock

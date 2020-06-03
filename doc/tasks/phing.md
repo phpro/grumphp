@@ -14,7 +14,7 @@ The task lives under the `phing` namespace and has following configurable parame
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phing:
             build_file: ~

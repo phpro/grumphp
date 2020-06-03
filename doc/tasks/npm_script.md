@@ -5,7 +5,7 @@ It lives under the `npm_script` namespace and has following configurable paramet
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         npm_script:
             script: ~

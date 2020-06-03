@@ -12,7 +12,7 @@ composer require --dev php-parallel-lint/php-parallel-lint
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phplint:
             exclude: []

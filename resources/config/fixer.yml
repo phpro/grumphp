@@ -1,0 +1,5 @@
+services:
+    GrumPHP\Fixer\FixerUpper:
+        arguments:
+            - '@grumphp.io'
+            - '@GrumPHP\Configuration\Model\FixerConfig'

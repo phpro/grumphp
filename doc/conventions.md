@@ -45,6 +45,7 @@ Sample conventions grumphp file:
 # Convention grumphp.yml
 parameters:
   convention.git_commit_message_matchers: ['/.*/']
+grumphp:
   tasks:
     phpunit: ~
     git_commit_message:

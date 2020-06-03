@@ -14,7 +14,7 @@ The task lives under the `php7cc` namespace and has following configurable param
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         php7cc:
             exclude: []

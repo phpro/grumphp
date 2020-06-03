@@ -5,7 +5,7 @@ It lives under the `xmllint` namespace and has following configurable parameters
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         xmllint:
             ignore_patterns: []

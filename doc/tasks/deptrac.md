@@ -9,7 +9,7 @@ namespace and has following configurable parameters:
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         deptrac:
             depfile: ~

@@ -36,16 +36,22 @@ class TaskCompilerPass implements CompilerPassInterface
         // Configure tasks
         foreach ($configuredTasks as $taskName => $config) {
             $taskConfig = $config ?? [];
-            $metadata = new Metadata((array) ($taskConfig['metadata'] ?? []));
-            $currentTaskName = $metadata->task() ?: $taskName;
+            $metadataConfig = (array) ($taskConfig['metadata'] ?? []);
+            $currentTaskName = ((string) ($metadataConfig['task'] ?? '')) ?: $taskName;
             if (!array_key_exists($currentTaskName, $availableTasks)) {
                 throw TaskConfigResolverException::unknownTask($currentTaskName);
             }
 
             // Determine Keys:
             $currentTaskService = $availableTasks[$currentTaskName];
-            ['id' => $taskId, 'class' => $taskClass,] = $currentTaskService;
+            ['id' => $taskId, 'class' => $taskClass, 'info' => $taskInfo] = $currentTaskService;
             $configuredTaskKey = $taskId.'.'.$taskName.'.configured';
+
+            // Setup metadata:
+            $metadata = new Metadata(array_merge(
+                ['priority' => $taskInfo['priority']],
+                $metadataConfig
+            ));
 
             // Configure task:
             $taskBuilder = new Definition($taskClass, [
@@ -73,16 +79,19 @@ class TaskCompilerPass implements CompilerPassInterface
         $container->setParameter('grumphp.tasks.configured', array_keys($configuredTasks));
     }
 
-    private function getTaskTag(array $tags): array
+    private function getTaskTag(array $tag): array
     {
         static $taskTagResolver;
         if (null === $taskTagResolver) {
             $taskTagResolver = new OptionsResolver();
 
             // Instead of required task param : use this to enable the fallback for the deprecated tasks.
-            $taskTagResolver->setDefined(['task']);
+            $taskTagResolver->setDefined(['task', 'aliasFor', 'priority']);
             $taskTagResolver->setAllowedTypes('task', ['string']);
+            $taskTagResolver->setAllowedTypes('aliasFor', ['string', 'null']);
+            $taskTagResolver->setAllowedTypes('priority', ['int']);
             $taskTagResolver->setDefault('task', '');
+            $taskTagResolver->setDefault('priority', 0);
             $taskTagResolver->setNormalizer('task', static function (Options $options, $value) {
                 if (!$value && !$options->offsetExists('config')) {
                     throw new MissingOptionsException('The required option "task" is missing.');
@@ -101,7 +110,7 @@ class TaskCompilerPass implements CompilerPassInterface
             );
         }
 
-        return $taskTagResolver->resolve(current($tags));
+        return $taskTagResolver->resolve($tag);
     }
 
     private function fetchAvailableTasksInfo(ContainerBuilder $container): array
@@ -114,15 +123,18 @@ class TaskCompilerPass implements CompilerPassInterface
             // Make sure to set shared to false so that a new instance is always returned
             $definition->setShared(false);
 
-            $taskInfo = $this->getTaskTag($tags);
-            $name = $taskInfo['task'];
-            $class = $definition->getClass();
+            foreach ($tags as $tag) {
+                $taskInfo = $this->getTaskTag($tag);
+                $name = $taskInfo['task'];
+                $class = $definition->getClass();
 
-            $map[$name] = [
-                'id' => $serviceId,
-                'class' => $class,
-                'task' => $name,
-            ];
+                $map[$name] = [
+                    'id' => $serviceId,
+                    'class' => $class,
+                    'task' => $name,
+                    'info' => $taskInfo,
+                ];
+            }
         }
 
         return $map;

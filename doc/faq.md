@@ -3,7 +3,6 @@
 ## Table of content
 - [How can I bypass GrumPHP](#how-can-i-bypass-grumphp)
 - [Which parts of the code does GrumPHP scan?](#which-parts-of-the-code-does-grumphp-scan)
-- [Does GrumPHP support automatic fixing](#does-grumphp-support-automatic-fixing)
 - [Does GrumPHP support Windows](#does-grumphp-support-windows)
 - [How can I fix Composer require conflicts?](#how-can-i-fix-composer-require-conflicts)
 - [Why is the unstaged file state being used?](#why-is-the-unstaged-file-state-being-used)
@@ -30,14 +29,6 @@ will be scanned.
 Most tasks work directly with these files, 
 but there are some commands like `git_blacklist` 
 that are able to check only the committed lines.
-
-[up](#table-of-content)
-
-
-## Does GrumPHP support automatic fixing
-
-No, he doesn't fix things for you. He wants you to have full
-control of the code you commit and not manipulate it in any way.
 
 [up](#table-of-content)
 

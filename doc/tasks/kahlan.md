@@ -14,7 +14,7 @@ The task lives under the `kahlan` namespace and has following configurable param
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         kahlan:
           config: ~

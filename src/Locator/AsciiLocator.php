@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Locator;
 
-use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Configuration\Model\AsciiConfig;
 use GrumPHP\Util\Filesystem;
 use GrumPHP\Util\Paths;
 use SplFileInfo;
@@ -12,7 +12,7 @@ use SplFileInfo;
 class AsciiLocator
 {
     /**
-     * @var GrumPHP
+     * @var AsciiConfig
      */
     private $config;
 
@@ -26,7 +26,7 @@ class AsciiLocator
      */
     private $paths;
 
-    public function __construct(GrumPHP $config, Filesystem $filesystem, Paths $paths)
+    public function __construct(AsciiConfig $config, Filesystem $filesystem, Paths $paths)
     {
         $this->config = $config;
         $this->filesystem = $filesystem;
@@ -35,7 +35,7 @@ class AsciiLocator
 
     public function locate(string $resource): string
     {
-        $file = $this->config->getAsciiContentPath($resource);
+        $file = $this->config->fetchResource($resource);
 
         // Disabled:
         if (null === $file) {

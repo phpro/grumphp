@@ -5,7 +5,7 @@ To activate a task, it is sufficient to add an empty task configuration:
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         ant: ~
         atoum: ~
@@ -39,7 +39,6 @@ parameters:
         phpcpd: ~
         phpcs: ~
         phpcsfixer: ~
-        phpcsfixer2: ~
         phplint: ~
         phpmd: ~
         phpmnd: ~
@@ -95,7 +94,6 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [PhpCpd](tasks/phpcpd.md)
 - [Phpcs](tasks/phpcs.md)
 - [PHP-CS-Fixer](tasks/phpcsfixer.md)
-- [PHP-CS-Fixer 2](tasks/phpcsfixer2.md)
 - [PHPLint](tasks/phplint.md)
 - [PhpMd](tasks/phpmd.md)
 - [PhpMnd](tasks/phpmnd.md)
@@ -121,7 +119,7 @@ For example:
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         anytask:
             metadata:
@@ -152,6 +150,7 @@ By default the task name will be displayed.
 
 This option can be used to specify the order in which the tasks will be executed.
 The higher the priority, the sooner the task will be executed.
+All tasks with the same priority will run in parallel if parallel execution is enabled.
 
 **task**
 
@@ -187,7 +186,7 @@ interface TaskInterface
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         myConfigKey:
             config1: config-value
@@ -197,10 +196,10 @@ services:
         arguments:
           - '@some.required.dependency'
         tags:
-          - {name: grumphp.task, task: defaultTaskName}
+          - {name: grumphp.task, task: defaultTaskName, priority: 0}
 ```
 
-You just registered your custom task! Pretty cool right?!
+You now registered your custom task! Pretty cool right?!
 
 
 ## Testing your custom task.
@@ -221,7 +220,7 @@ Configuration of the additional task will look like this:
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         phpcsfixer2:
             allow_risky: true

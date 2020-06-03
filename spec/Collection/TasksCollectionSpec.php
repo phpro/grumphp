@@ -104,7 +104,7 @@ class TasksCollectionSpec extends ObjectBehavior
         $tasks[1]->shouldBe($task2);
     }
 
-    function it_should_sort_on_priority(TaskInterface $task1, TaskInterface $task2, TaskInterface $task3, GrumPHP $grumPHP)
+    function it_should_sort_on_priority(TaskInterface $task1, TaskInterface $task2, TaskInterface $task3)
     {
         $this->beConstructedWith([$task1, $task2, $task3]);
 
@@ -112,7 +112,7 @@ class TasksCollectionSpec extends ObjectBehavior
         $task2->getConfig()->willReturn(new TaskConfig('task2', [], new Metadata(['priority' => 200])));
         $task3->getConfig()->willReturn(new TaskConfig('task3', [], new Metadata(['priority' => 100])));
 
-        $result = $this->sortByPriority($grumPHP);
+        $result = $this->sortByPriority();
         $result->shouldBeAnInstanceOf(TasksCollection::class);
         $result->count()->shouldBe(3);
         $tasks = $result->toArray();
@@ -120,5 +120,22 @@ class TasksCollectionSpec extends ObjectBehavior
         $tasks[0]->shouldBe($task2);
         $tasks[1]->shouldBe($task1);
         $tasks[2]->shouldBe($task3);
+    }
+
+    function it_should_group_by_priority(TaskInterface $task1, TaskInterface $task2, TaskInterface $task3)
+    {
+        $this->beConstructedWith([$task1, $task2, $task3]);
+
+        $task1->getConfig()->willReturn(new TaskConfig('task1', [], new Metadata(['priority' => 100])));
+        $task2->getConfig()->willReturn(new TaskConfig('task2', [], new Metadata(['priority' => 200])));
+        $task3->getConfig()->willReturn(new TaskConfig('task3', [], new Metadata(['priority' => 100])));
+
+        $result = $this->groupByPriority();
+        $result[100]->shouldBeAnInstanceOf(TasksCollection::class);
+        $result[100]->count()->shouldBe(2);
+        $result[100]->toArray()->shouldBe([$task1, $task3]);
+        $result[200]->shouldBeAnInstanceOf(TasksCollection::class);
+        $result[200]->count()->shouldBe(1);
+        $result[200]->toArray()->shouldBe([$task2]);
     }
 }

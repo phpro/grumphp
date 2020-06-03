@@ -14,7 +14,7 @@ The task lives under the `paratest` namespace and has following configurable par
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         paratest:
             processes: ~
