@@ -231,6 +231,7 @@ class FilesCollection extends ArrayCollection implements \Serializable
     public function unserialize($serialized): void
     {
         $files = unserialize($serialized, ['allowed_classes' => false]);
+        $this->clear();
         foreach ($files as $file) {
             $this->add(new SymfonySplFileInfo($file, dirname($file), $file));
         }
