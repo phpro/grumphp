@@ -1,0 +1,121 @@
+<?php
+
+declare(strict_types=1);
+
+namespace GrumPHP\Test\Unit\Task;
+
+use GrumPHP\Task\Context\GitPreCommitContext;
+use GrumPHP\Task\Context\RunContext;
+use GrumPHP\Task\ESLint;
+use GrumPHP\Task\TaskInterface;
+use GrumPHP\Test\Task\AbstractExternalTaskTestCase;
+
+class ESLintTest extends AbstractExternalTaskTestCase
+{
+    protected function provideTask(): TaskInterface
+    {
+        return new ESLint(
+            $this->processBuilder->reveal(),
+            $this->formatter->reveal()
+        );
+    }
+
+    public function provideConfigurableOptions(): iterable
+    {
+        yield 'defaults' => [
+            [],
+            [
+                // Task config options
+                'bin' => null,
+                'triggered_by' => ['js', 'jsx', 'ts', 'tsx', 'vue'],
+                'whitelist_patterns' => null,
+
+                // ESLint native config options
+                'config' => null,
+                'debug' => false,
+                'format' => null,
+                'max_warnings' => null,
+                'no_eslintrc' => false,
+            ]
+        ];
+    }
+
+    public function provideRunContexts(): iterable
+    {
+        yield 'run-context' => [
+            true,
+            $this->mockContext(RunContext::class)
+        ];
+
+        yield 'pre-commit-context' => [
+            true,
+            $this->mockContext(GitPreCommitContext::class)
+        ];
+
+        yield 'other' => [
+            false,
+            $this->mockContext()
+        ];
+    }
+
+    public function provideFailsOnStuff(): iterable
+    {
+        yield 'exitCode1' => [
+            [],
+            $this->mockContext(RunContext::class, ['hello.js']),
+            function () {
+                $this->mockProcessBuilder('eslint', $process = $this->mockProcess(1));
+                $this->formatter->format($process)->willReturn('nope');
+            },
+            'nope'
+        ];
+    }
+
+    public function providePassesOnStuff(): iterable
+    {
+        yield 'exitCode0' => [
+            [],
+            $this->mockContext(RunContext::class, ['hello.js']),
+            function () {
+                $this->mockProcessBuilder('eslint', $this->mockProcess(0));
+            }
+        ];
+    }
+
+    public function provideSkipsOnStuff(): iterable
+    {
+        yield 'no-files' => [
+            [],
+            $this->mockContext(RunContext::class),
+            function () {}
+        ];
+        yield 'no-files-after-triggered-by' => [
+            [],
+            $this->mockContext(RunContext::class, ['notajsfile.txt']),
+            function () {}
+        ];
+        yield 'no-files-after-whitelist-patterns' => [
+            [
+                'whitelist_patterns' => ['/^resources\/js\/(.*)/'],
+            ],
+            $this->mockContext(RunContext::class, ['resources/dont/find/this/file.js']),
+            function () {}
+        ];
+    }
+
+    public function provideExternalTaskRuns(): iterable
+    {
+        yield 'config' => [
+            [
+                'config' => '.eslintrc.json',
+            ],
+            $this->mockContext(RunContext::class, ['hello.js', 'hello2.js']),
+            'eslint',
+            [
+                '--config=.eslintrc.json',
+                'hello.js',
+                'hello2.js',
+            ]
+        ];
+    }
+}

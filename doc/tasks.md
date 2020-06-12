@@ -20,6 +20,7 @@ grumphp:
         deptrac: ~
         doctrine_orm: ~
         ecs: ~
+        eslint: ~
         file_size: ~
         gherkin: ~
         git_blacklist: ~
@@ -74,6 +75,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Composer Script](tasks/composer_script.md)
 - [Doctrine ORM](tasks/doctrine_orm.md)
 - [Ecs EasyCodingStandard](tasks/ecs.md)
+- [ESLint](tasks/eslint.md)
 - [File size](tasks/file_size.md)
 - [Deptrac](tasks/deptrac.md)
 - [Gherkin](tasks/gherkin.md)
