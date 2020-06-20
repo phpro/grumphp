@@ -83,7 +83,7 @@ class FixerUpper
 
         try {
             $shouldFix = $this->IO->style()->confirm(
-                'I can fix  some stuff automatically, do you want me to?',
+                'I can fix some stuff automatically, do you want me to?',
                 $this->config->fixByDefault()
             );
         } catch (RuntimeException $askException) {
