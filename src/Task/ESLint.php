@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace GrumPHP\Task;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
+use GrumPHP\Fixer\Provider\FixableProcessProvider;
+use GrumPHP\Formatter\ESLintFormatter;
+use GrumPHP\Runner\FixableTaskResult;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
@@ -14,6 +17,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ESLint extends AbstractExternalTask
 {
+    /**
+     * @var ESLintFormatter
+     */
+    protected $formatter;
+
     public static function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
@@ -82,7 +90,18 @@ class ESLint extends AbstractExternalTask
         $process->run();
 
         if (!$process->isSuccessful()) {
-            return TaskResult::createFailed($this, $context, $this->formatter->format($process));
+            $messages = [$this->formatter->format($process)];
+
+            $arguments->add('--fix');
+            $process = $this->processBuilder->buildProcess($arguments);
+            $fixerCommand = $process->getCommandLine();
+
+            $errorMessage = $this->formatter->formatErrorMessage($messages, [$fixerCommand]);
+
+            return new FixableTaskResult(
+                TaskResult::createFailed($this, $context, $errorMessage),
+                FixableProcessProvider::provide($fixerCommand)
+            );
         }
 
         return TaskResult::createPassed($this, $context);
