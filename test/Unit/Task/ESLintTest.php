@@ -106,6 +106,18 @@ class ESLintTest extends AbstractExternalTaskTestCase
 
     public function provideExternalTaskRuns(): iterable
     {
+        yield 'bin' => [
+            [
+                'bin' => 'node_modules/.bin/eslint',
+            ],
+            $this->mockContext(RunContext::class, ['hello.js', 'hello2.js']),
+            'eslint',
+            [
+                'node_modules/.bin/eslint',
+                'hello.js',
+                'hello2.js',
+            ]
+        ];
         yield 'config' => [
             [
                 'config' => '.eslintrc.json',
@@ -114,6 +126,70 @@ class ESLintTest extends AbstractExternalTaskTestCase
             'eslint',
             [
                 '--config=.eslintrc.json',
+                'hello.js',
+                'hello2.js',
+            ]
+        ];
+        yield 'config' => [
+            [
+                'debug' => true,
+                'format' => 'table',
+                'no_eslintrc' => true,
+                'quiet' => true,
+                'max_warnings' => 10,
+            ],
+            $this->mockContext(RunContext::class, ['hello.js', 'hello2.js']),
+            'eslint',
+            [
+                '--debug',
+                'hello.js',
+                'hello2.js',
+            ]
+        ];
+        yield 'config' => [
+            [
+                'format' => 'table',
+            ],
+            $this->mockContext(RunContext::class, ['hello.js', 'hello2.js']),
+            'eslint',
+            [
+                '--format=table',
+                'hello.js',
+                'hello2.js',
+            ]
+        ];
+        yield 'config' => [
+            [
+                'no_eslintrc' => true,
+            ],
+            $this->mockContext(RunContext::class, ['hello.js', 'hello2.js']),
+            'eslint',
+            [
+                '--no-eslintrc',
+                'hello.js',
+                'hello2.js',
+            ]
+        ];
+        yield 'config' => [
+            [
+                'quiet' => true,
+            ],
+            $this->mockContext(RunContext::class, ['hello.js', 'hello2.js']),
+            'eslint',
+            [
+                '--quiet',
+                'hello.js',
+                'hello2.js',
+            ]
+        ];
+        yield 'config' => [
+            [
+                'max_warnings' => 10,
+            ],
+            $this->mockContext(RunContext::class, ['hello.js', 'hello2.js']),
+            'eslint',
+            [
+             '--max-warnings=10',
                 'hello.js',
                 'hello2.js',
             ]
