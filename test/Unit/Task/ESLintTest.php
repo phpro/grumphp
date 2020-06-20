@@ -36,6 +36,7 @@ class ESLintTest extends AbstractExternalTaskTestCase
                 'format' => null,
                 'max_warnings' => null,
                 'no_eslintrc' => false,
+                'quiet' => false,
             ]
         ];
     }

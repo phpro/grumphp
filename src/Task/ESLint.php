@@ -29,6 +29,7 @@ class ESLint extends AbstractExternalTask
             'format' => null,
             'max_warnings' => null,
             'no_eslintrc' => false,
+            'quiet' => false,
         ]);
 
         // Task config options
@@ -42,6 +43,7 @@ class ESLint extends AbstractExternalTask
         $resolver->addAllowedTypes('format', ['null', 'string']);
         $resolver->addAllowedTypes('max_warnings', ['null', 'integer']);
         $resolver->addAllowedTypes('no_eslintrc', ['bool']);
+        $resolver->addAllowedTypes('quiet', ['bool']);
 
         return $resolver;
     }
@@ -72,6 +74,7 @@ class ESLint extends AbstractExternalTask
         $arguments->addOptionalArgument('--debug', $config['debug']);
         $arguments->addOptionalArgument('--format=%s', $config['format']);
         $arguments->addOptionalArgument('--no-eslintrc', $config['no_eslintrc']);
+        $arguments->addOptionalArgument('--quiet', $config['quiet']);
         $arguments->addOptionalIntegerArgument('--max-warnings=%d', $config['max_warnings']);
         $arguments->addFiles($files);
 

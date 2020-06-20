@@ -37,6 +37,7 @@ grumphp:
             format: stylish
             max_warnings: ~
             no_eslintrc: false
+            quiet: false
 ```
 
 **bin**
@@ -94,6 +95,12 @@ Number of warnings (not errors) that are allowed before eslint exits with error 
 *Default: false*
 
 Set to true to ignore local .eslint config file ([eslint.org](https://eslint.org/docs/user-guide/command-line-interface#max-warnings)).
+
+**quiet**
+
+*Default: null*
+
+Report errors only (no warnings). [eslint.org](https://eslint.org/docs/user-guide/command-line-interface#quiet)
 
 **other settings**
 
