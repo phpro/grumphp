@@ -25,8 +25,10 @@ grumphp:
             configuration: null
             runner: null
             debugger: null
-            coverage-xml: null
+            coverage-clover: null
             coverage-html: null
+            coverage-php: null
+            coverage-xml: null
             log-junit: null
             testsuite: null
             verbose: false
@@ -81,7 +83,7 @@ The PHPUnit configuration file to use.
 
 Runner, WrapperRunner or SqliteRunner. (Default: Runner)
 
-**coverage-xml**
+**coverage-clover**
 
 *Default: null*
 
@@ -92,6 +94,18 @@ Generate code coverage report in Clover XML format.
 *Default: null*
 
 Generate code coverage report in HTML format.
+
+**coverage-php**
+
+*Default: null*
+
+Serialize PHP_CodeCoverage object to file.
+
+**coverage-xml**
+
+*Default: null*
+
+Generate code coverage report in PHPUnit XML format.
 
 **log-junit**
 

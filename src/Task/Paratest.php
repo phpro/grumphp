@@ -25,8 +25,10 @@ class Paratest extends AbstractExternalTask
                 'always_execute' => false,
                 'group'          => [],
                 'runner'         => null,
-                'coverage-xml'   => null,
+                'coverage-clover'  => null,
                 'coverage-html'  => null,
+                'coverage-php'  => null,
+                'coverage-xml'   => null,
                 'log-junit'      => null,
                 'testsuite'      => null,
                 'config'         => null,
@@ -40,8 +42,10 @@ class Paratest extends AbstractExternalTask
         $resolver->addAllowedTypes('configuration', ['null', 'string']);
         $resolver->addAllowedTypes('always_execute', ['bool']);
         $resolver->addAllowedTypes('runner', ['null', 'string']);
-        $resolver->addAllowedTypes('coverage-xml', ['null', 'string']);
+        $resolver->addAllowedTypes('coverage-clover', ['null', 'string']);
         $resolver->addAllowedTypes('coverage-html', ['null', 'string']);
+        $resolver->addAllowedTypes('coverage-php', ['null', 'string']);
+        $resolver->addAllowedTypes('coverage-xml', ['null', 'string']);
         $resolver->addAllowedTypes('log-junit', ['null', 'string']);
         $resolver->addAllowedTypes('testsuite', ['null', 'string']);
         $resolver->addAllowedTypes('verbose', ['bool']);
@@ -69,8 +73,10 @@ class Paratest extends AbstractExternalTask
         $arguments->addOptionalArgument('-c=%s', $config['configuration']);
         $arguments->addOptionalArgument('--phpunit=%s', $config['phpunit']);
         $arguments->addOptionalArgument('--runner=%s', $config['runner']);
-        $arguments->addOptionalArgument('--coverage-xml=%s', $config['coverage-xml']);
+        $arguments->addOptionalArgument('--coverage-clover=%s', $config['coverage-clover']);
         $arguments->addOptionalArgument('--coverage-html=%s', $config['coverage-html']);
+        $arguments->addOptionalArgument('--coverage-php=%s', $config['coverage-php']);
+        $arguments->addOptionalArgument('--coverage-xml=%s', $config['coverage-xml']);
         $arguments->addOptionalArgument('--log-junit=%s', $config['log-junit']);
         $arguments->addOptionalArgument('--testsuite=%s', $config['testsuite']);
         $arguments->addOptionalArgument('--verbose=1', $config['verbose']);
