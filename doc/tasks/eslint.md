@@ -34,7 +34,7 @@ grumphp:
                 - /^resources\/js\/(.*)/
             config: .eslintrc.json
             debug: false
-            format: stylish
+            format: ~
             max_warnings: ~
             no_eslintrc: false
             quiet: false
@@ -80,9 +80,9 @@ Turn on debug mode ([eslint.org](https://eslint.org/docs/user-guide/command-line
 
 **format**
 
-*Default: stylish*
+*Default: null*
 
-Output format, other handy ones on cli are `compact`, `codeframe` and `table` (see full list on [eslint.org](https://eslint.org/docs/user-guide/formatters/)).
+Output format, eslint will use `stylish` by default. Other handy ones on cli are `compact`, `codeframe` and `table` (see full list on [eslint.org](https://eslint.org/docs/user-guide/formatters/)).
 
 **max_warnings**
 
