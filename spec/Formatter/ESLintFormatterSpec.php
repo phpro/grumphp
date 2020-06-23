@@ -29,6 +29,11 @@ class ESLintFormatterSpec extends ObjectBehavior
 
     function it_formats_the_error_message()
     {
-        $this->formatErrorMessage(['message1'], ['message2'])->shouldBeString();
+        $this->formatErrorMessage('message1', 'message2')
+            ->shouldBe(sprintf(
+                '%sYou can fix all errors by running the following commands:%s',
+                'message1' . PHP_EOL . PHP_EOL,
+                PHP_EOL . 'message2'
+            ));
     }
 }

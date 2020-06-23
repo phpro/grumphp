@@ -16,12 +16,12 @@ class ESLintFormatter implements ProcessFormatterInterface
         return trim($stdout . PHP_EOL . $stderr);
     }
 
-    public function formatErrorMessage(array $messages, array $suggestions): string
+    public function formatErrorMessage(string $message, string $suggestion): string
     {
         return sprintf(
-            '%sYou can fix all errors by running following commands:%s',
-            implode(PHP_EOL, $messages) . PHP_EOL . PHP_EOL,
-            PHP_EOL . implode(PHP_EOL, $suggestions)
+            '%sYou can fix all errors by running the following commands:%s',
+            $message . PHP_EOL . PHP_EOL,
+            PHP_EOL . $suggestion
         );
     }
 }

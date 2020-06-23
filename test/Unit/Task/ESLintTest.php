@@ -78,7 +78,7 @@ class ESLintTest extends AbstractExternalTaskTestCase
                 $this->mockProcessBuilder('eslint', $process = $this->mockProcess(1));
 
                 $this->formatter->format($process)->willReturn($message = 'message');
-                $this->formatter->formatErrorMessage([$message], Argument::any())->willReturn('nope');
+                $this->formatter->formatErrorMessage($message, Argument::any())->willReturn('nope');
             },
             'nope',
             FixableTaskResult::class

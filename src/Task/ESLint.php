@@ -90,13 +90,13 @@ class ESLint extends AbstractExternalTask
         $process->run();
 
         if (!$process->isSuccessful()) {
-            $messages = [$this->formatter->format($process)];
+            $message = $this->formatter->format($process);
 
             $arguments->add('--fix');
             $process = $this->processBuilder->buildProcess($arguments);
             $fixerCommand = $process->getCommandLine();
 
-            $errorMessage = $this->formatter->formatErrorMessage($messages, [$fixerCommand]);
+            $errorMessage = $this->formatter->formatErrorMessage($message, $fixerCommand);
 
             return new FixableTaskResult(
                 TaskResult::createFailed($this, $context, $errorMessage),
