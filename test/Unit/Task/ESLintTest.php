@@ -143,13 +143,9 @@ class ESLintTest extends AbstractExternalTaskTestCase
                 'hello2.js',
             ]
         ];
-        yield 'config' => [
+        yield 'debug' => [
             [
                 'debug' => true,
-                'format' => 'table',
-                'no_eslintrc' => true,
-                'quiet' => true,
-                'max_warnings' => 10,
             ],
             $this->mockContext(RunContext::class, ['hello.js', 'hello2.js']),
             'eslint',
@@ -159,7 +155,7 @@ class ESLintTest extends AbstractExternalTaskTestCase
                 'hello2.js',
             ]
         ];
-        yield 'config' => [
+        yield 'format' => [
             [
                 'format' => 'table',
             ],
@@ -171,7 +167,7 @@ class ESLintTest extends AbstractExternalTaskTestCase
                 'hello2.js',
             ]
         ];
-        yield 'config' => [
+        yield 'no_eslintrc' => [
             [
                 'no_eslintrc' => true,
             ],
@@ -183,7 +179,7 @@ class ESLintTest extends AbstractExternalTaskTestCase
                 'hello2.js',
             ]
         ];
-        yield 'config' => [
+        yield 'quiet' => [
             [
                 'quiet' => true,
             ],
@@ -195,7 +191,7 @@ class ESLintTest extends AbstractExternalTaskTestCase
                 'hello2.js',
             ]
         ];
-        yield 'config' => [
+        yield 'max_warnings' => [
             [
                 'max_warnings' => 10,
             ],
