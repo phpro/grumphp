@@ -115,6 +115,13 @@ services:
         tags:
             - {name: grumphp.task, task: git_branch_name}
 
+    GrumPHP\Task\ESLint:
+        arguments:
+            - '@process_builder'
+            - '@formatter.eslint'
+        tags:
+            - {name: grumphp.task, task: eslint}
+
     GrumPHP\Task\FileSize:
         tags:
             - {name: grumphp.task, task: file_size}

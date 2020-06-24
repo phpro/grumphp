@@ -9,3 +9,5 @@ services:
         class: GrumPHP\Formatter\GitBlacklistFormatter
         arguments:
             - '@grumphp.io'
+    formatter.eslint:
+        class: GrumPHP\Formatter\ESLintFormatter
