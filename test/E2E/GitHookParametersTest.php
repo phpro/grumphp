@@ -41,14 +41,14 @@ class GitHookParametersTest extends AbstractE2ETestCase
         $this->mergeGrumphpConfig($grumphpFile, [
             'grumphp' => [
                 'git_hook_variables' => [
-                    'EXEC_GRUMPHP_COMMAND' => $php.' -d date.timezone=Europe/Brussels',
+                    'EXEC_GRUMPHP_COMMAND' => [$php, '-d date.timezone=Europe/Brussels'],
                 ],
             ],
         ]);
 
         $this->installComposer($this->rootDir);
 
-        $hookPattern = '{[\'"]?'.preg_quote($php, '{').'[\'"]? [\'"]?-d[\'"]? [\'"]?date\.timezone=Europe/Brussels[\'"]?}';
+        $hookPattern = sprintf('{[\'"]%s[\'"] [\'"]-d date\.timezone=Europe/Brussels[\'"]}', $php);
         $this->ensureHooksExist($this->rootDir, $hookPattern);
 
         $this->enableValidatePathsTask($grumphpFile, $this->rootDir);

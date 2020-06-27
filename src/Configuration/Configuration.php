@@ -28,7 +28,7 @@ class Configuration implements ConfigurationInterface
         $gitHookVariables->addDefaultsIfNotSet();
         $gitHookVariables->children()->scalarNode('VAGRANT_HOST_DIR')->defaultValue('.');
         $gitHookVariables->children()->scalarNode('VAGRANT_PROJECT_DIR')->defaultValue('/var/www');
-        $gitHookVariables->children()->scalarNode('EXEC_GRUMPHP_COMMAND')->defaultValue('exec');
+        $gitHookVariables->children()->variableNode('EXEC_GRUMPHP_COMMAND')->defaultValue('exec');
 
         $rootNode->children()->scalarNode('additional_info')->defaultNull();
 

@@ -6,13 +6,13 @@ namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Configuration\Model\HooksConfig;
 use GrumPHP\Process\ProcessBuilder;
-use GrumPHP\Process\ProcessUtils;
 use GrumPHP\Util\Filesystem;
 use GrumPHP\Util\Paths;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 
 /**
  * This command is responsible for enabling all the configured hooks.
@@ -133,7 +133,8 @@ class InitCommand extends Command
         ];
 
         foreach ($this->hooksConfig->getVariables() as $key => $value) {
-            $replacements[sprintf('$(%s)', $key)] = ProcessUtils::escapeArgumentsFromString($value);
+            $process = is_array($value) ? new Process($value) : Process::fromShellCommandline($value);
+            $replacements[sprintf('$(%s)', $key)] = $process->getCommandLine();
         }
 
         return str_replace(array_keys($replacements), array_values($replacements), $content);

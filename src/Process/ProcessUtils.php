@@ -50,9 +50,4 @@ final class ProcessUtils
             array_filter($arguments)
         ));
     }
-
-    public static function escapeArgumentsFromString(string $arguments): string
-    {
-        return self::escapeArguments(explode(' ', $arguments));
-    }
 }

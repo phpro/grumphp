@@ -57,14 +57,4 @@ class ProcessUtilsSpec extends ObjectBehavior
                 .ProcessUtils::escapeArgument('script.php')
             );
     }
-
-    function it_escapes_multiple_arguments_from_string()
-    {
-        self::escapeArgumentsFromString('php    script.php')
-            ->shouldBe(
-                ProcessUtils::escapeArgument('php')
-                .' '
-                .ProcessUtils::escapeArgument('script.php')
-            );
-    }
 }
