@@ -6,7 +6,6 @@ use GrumPHP\Formatter\ESLintFormatter;
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Process\Process;
-use GrumPHP\Process\ProcessUtils;
 
 class ESLintFormatterSpec extends ObjectBehavior
 {

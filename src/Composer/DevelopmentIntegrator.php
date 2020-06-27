@@ -7,7 +7,6 @@ namespace GrumPHP\Composer;
 use Composer\Script\Event;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Process\ProcessFactory;
-use GrumPHP\Process\ProcessUtils;
 use GrumPHP\Util\Filesystem;
 use Symfony\Component\Process\Process;
 
@@ -60,6 +59,6 @@ class DevelopmentIntegrator
             return $process;
         }
 
-        return new Process(ProcessUtils::escapeArguments($commandlineArgs->getValues()));
+        return new Process($commandlineArgs->getValues());
     }
 }

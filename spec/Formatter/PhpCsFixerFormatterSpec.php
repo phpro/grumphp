@@ -6,7 +6,6 @@ use GrumPHP\Formatter\PhpCsFixerFormatter;
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Process\Process;
-use GrumPHP\Process\ProcessUtils;
 
 class PhpCsFixerFormatterSpec extends ObjectBehavior
 {
@@ -76,17 +75,6 @@ class PhpCsFixerFormatterSpec extends ObjectBehavior
         $this->format($process)->shouldBe('1) name1');
         $this->resetCounter();
         $this->format($process)->shouldBe('1) name1');
-    }
-
-    function it_formats_suggestions(Process $process)
-    {
-        $dryRun = ProcessUtils::escapeArgument('--dry-run');
-        $formatJson = ProcessUtils::escapeArgument('--format=json');
-
-        $command = sprintf('phpcsfixer %s %s .', $dryRun, $formatJson);
-
-        $process->getCommandLine()->willReturn($command);
-        $this->formatSuggestion($process)->shouldReturn('phpcsfixer .');
     }
 
     function it_formats_the_error_message()

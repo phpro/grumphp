@@ -102,7 +102,7 @@ class PhpCsFixer extends AbstractExternalTask
 
         if (!$process->isSuccessful()) {
             $messages = [$this->formatter->format($process)];
-            $fixerCommand = $this->formatter->formatSuggestion($process);
+            $fixerCommand = $process->getCommandLine();
             $errorMessage = $this->formatter->formatErrorMessage($messages, [$fixerCommand]);
 
             return new FixableTaskResult(
