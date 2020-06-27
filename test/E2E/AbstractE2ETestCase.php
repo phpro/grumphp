@@ -95,7 +95,7 @@ abstract class AbstractE2ETestCase extends TestCase
     {
         $process = new Process(
             [
-                $this->executableFinder->find('composer'),
+                realpath($this->executableFinder->find('composer', 'composer')),
                 'init',
                 '--name=grumphp/testsuite'.$this->hash,
                 '--type=library',
@@ -290,7 +290,7 @@ abstract class AbstractE2ETestCase extends TestCase
         $process = new Process(
             array_merge(
                 [
-                    $this->executableFinder->find('composer'),
+                    realpath($this->executableFinder->find('composer', 'composer')),
                     'install',
                     '--optimize-autoloader',
                     '--no-interaction',
