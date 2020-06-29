@@ -22,7 +22,7 @@ matrix:
     - php: nightly
 
 before_install:
-  - phpenv config-rm xdebug.ini
+  - phpenv config-rm xdebug.ini || true
   - alias composer=composer\ --no-interaction && composer selfupdate --$COMPOSER_VERSION
   - |
       if [ $COMPOSER_VERSION -eq 1 ]; then
