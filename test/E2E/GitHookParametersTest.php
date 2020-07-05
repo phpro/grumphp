@@ -48,7 +48,7 @@ class GitHookParametersTest extends AbstractE2ETestCase
 
         $this->installComposer($this->rootDir);
 
-        $hookPattern = sprintf('{[\'"]%s[\'"] [\'"]-d date\.timezone=Europe/Brussels[\'"]}', $php);
+        $hookPattern = sprintf('{[\'"]%s[\'"] [\'"]-d date\.timezone=Europe/Brussels[\'"]}', preg_quote($php));
         $this->ensureHooksExist($this->rootDir, $hookPattern);
 
         $this->enableValidatePathsTask($grumphpFile, $this->rootDir);
