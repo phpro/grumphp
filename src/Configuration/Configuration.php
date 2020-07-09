@@ -75,6 +75,12 @@ class Configuration implements ConfigurationInterface
         $parallel->canBeDisabled();
         $parallel->children()->booleanNode('fix_by_default')->defaultFalse();
 
+        // Dotenv
+        $env = $rootNode->children()->arrayNode('environment');
+        $env->children()->arrayNode('files')->scalarPrototype();
+        $env->children()->arrayNode('variables')->scalarPrototype();
+        $env->children()->arrayNode('paths')->scalarPrototype();
+
         return $treeBuilder;
     }
 }

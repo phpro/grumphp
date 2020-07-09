@@ -5,6 +5,7 @@ services:
         public: true
 
     Symfony\Component\EventDispatcher\EventDispatcher: ~
+    event_dispatcher: '@Symfony\Component\EventDispatcher\EventDispatcher'
     GrumPHP\Event\Dispatcher\Bridge\SymfonyEventDispatcher:
         arguments:
             - '@Symfony\Component\EventDispatcher\EventDispatcher'
@@ -16,12 +17,8 @@ services:
     filesystem:
         alias: grumphp.util.filesystem
 
-    GrumPHP\Configuration\Configurator\ExecutableFinderConfigurator:
-        arguments:
-            - '@GrumPHP\Util\Paths'
     executable_finder:
         class: Symfony\Component\Process\ExecutableFinder
-        configurator: ['@GrumPHP\Configuration\Configurator\ExecutableFinderConfigurator', 'configure']
         calls:
             - { method: 'setSuffixes', arguments: [['.phar', '.exe', '.bat', '.cmd', '.com']] }
 

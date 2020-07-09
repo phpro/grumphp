@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GrumPHP\Configuration;
 
-use GrumPHP\Configuration\Model\ProcessConfig;
 use GrumPHP\Util\Filesystem;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;

@@ -38,3 +38,6 @@ services:
     GrumPHP\Locator\GitRepositoryLocator:
         arguments:
             - '@GrumPHP\Util\Paths'
+    GrumPHP\Locator\EnrichedGuessedPathsFromDotEnvLocator:
+        public: true
+        arguments: []
