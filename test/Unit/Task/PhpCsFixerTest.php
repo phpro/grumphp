@@ -76,8 +76,7 @@ class PhpCsFixerTest extends AbstractExternalTaskTestCase
 
                 $this->formatter->resetCounter()->shouldBeCalled();
                 $this->formatter->format($process)->willReturn($message = 'message');
-                $this->formatter->formatSuggestion($process)->willReturn($suggestion = 'suggestion');
-                $this->formatter->formatErrorMessage([$message], [$suggestion])->willReturn('nope');
+                $this->formatter->formatErrorMessage([$message], ['mocked-cli'])->willReturn('nope');
             },
             'nope',
             FixableTaskResult::class

@@ -50,20 +50,24 @@ This parameter will allow you to customize git hooks templates. For now, those p
 
 -  `VAGRANT_HOST_DIR` : specifies the vagrant location on your host machine relative to the git working folder (_default_ `.`)
 -  `VAGRANT_PROJECT_DIR` : specifies the project dir location **inside** the vagrant box (_default_ `/var/www`)
--  `EXEC_GRUMPHP_COMMAND` : specifies the name of the command that will execute the grumphp script (_default_ `exec`)
+-  `EXEC_GRUMPHP_COMMAND` : specifies the command that will execute the grumphp script (_default_ `exec`)
 
-Examples: 
+    It can be a string or an array. If you provide an array, its every element will be escaped by symfony/process.
+    If you provide a string, it will be used as-is, without escaping and if it contains special characters you may
+    need to escape them.   
 
-```yaml
-grumphp:
-    git_hook_variables:
-        EXEC_GRUMPHP_COMMAND: '/usr/local/bin/php72'
-        EXEC_GRUMPHP_COMMAND: 'lando php'
-        EXEC_GRUMPHP_COMMAND: 'fin exec php'
-        EXEC_GRUMPHP_COMMAND: 'php -c /custom/config.ini'
-        EXEC_GRUMPHP_COMMAND: 'docker-compose run --rm --no-deps php'
-        EXEC_GRUMPHP_COMMAND: 'docker run --rm -it -v $(pwd):/grumphp -w /grumphp webdevops/php:alpine'
-```
+    Examples: 
+    
+    ```yaml
+    grumphp:
+        git_hook_variables:
+            EXEC_GRUMPHP_COMMAND: '/usr/local/bin/php72'
+            EXEC_GRUMPHP_COMMAND: 'lando php'
+            EXEC_GRUMPHP_COMMAND: 'fin exec php'
+            EXEC_GRUMPHP_COMMAND: ['php', '-c /custom/config.ini']
+            EXEC_GRUMPHP_COMMAND: ['docker-compose', 'run', '--rm', '--no-deps', 'php']
+            EXEC_GRUMPHP_COMMAND: 'docker run --rm -it -v $(pwd):/grumphp -w /grumphp webdevops/php:alpine'
+    ```
 
 **stop_on_failure**
 

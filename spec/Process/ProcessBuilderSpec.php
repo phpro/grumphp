@@ -9,8 +9,8 @@ use GrumPHP\Locator\ExternalCommand;
 use GrumPHP\Process\ProcessBuilder;
 use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Process\Process;
-use GrumPHP\Process\ProcessUtils;
 
 class ProcessBuilderSpec extends ObjectBehavior
 {
@@ -74,7 +74,7 @@ class ProcessBuilderSpec extends ObjectBehavior
         $io->isVeryVerbose()->willReturn(true);
 
         $command = '/usr/bin/grumphp';
-        $io->write([PHP_EOL . 'Command: ' . ProcessUtils::escapeArgument($command)], true)->shouldBeCalled();
+        $io->write(Argument::withEveryEntry(Argument::containingString($command)), true)->shouldBeCalled();
 
         $arguments = new ProcessArgumentsCollection([$command]);
         $this->buildProcess($arguments);

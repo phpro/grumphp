@@ -7,9 +7,9 @@ namespace GrumPHP\Composer;
 use Composer\Script\Event;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Process\ProcessFactory;
-use GrumPHP\Process\ProcessUtils;
 use GrumPHP\Util\Filesystem;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Process\ProcessBuilder;
 
 class DevelopmentIntegrator
 {
@@ -55,11 +55,10 @@ class DevelopmentIntegrator
     private static function fixInternalComposerProcessVersion(
         ProcessArgumentsCollection $commandlineArgs
     ): Process {
-        $process = ProcessFactory::fromArguments($commandlineArgs);
-        if (\is_string($process->getCommandLine())) {
-            return $process;
+        if (class_exists(ProcessBuilder::class, true)) {
+            return ProcessBuilder::create($commandlineArgs->getValues())->getProcess();
         }
 
-        return new Process(ProcessUtils::escapeArguments($commandlineArgs->getValues()));
+        return ProcessFactory::fromArguments($commandlineArgs);
     }
 }
