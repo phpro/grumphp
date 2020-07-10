@@ -16,4 +16,12 @@ final class ProcessFactory
     {
         return new Process($arguments->getValues());
     }
+
+    /**
+     * @param array|string $arguments
+     */
+    public static function fromScalar($arguments): Process
+    {
+        return is_array($arguments) ? new Process($arguments) : Process::fromShellCommandline((string) $arguments);
+    }
 }

@@ -33,7 +33,9 @@ services:
     GrumPHP\Git\GitRepository:
         arguments:
             - '@GrumPHP\Locator\GitRepositoryLocator'
-            - { logger: '@grumphp.logger' }
+            -
+                logger: '@grumphp.logger'
+                inherit_environment_variables: true
 
     grumphp.io:
         alias: grumphp.io.console

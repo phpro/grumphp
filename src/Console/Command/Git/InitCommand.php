@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace GrumPHP\Console\Command\Git;
 
+use GrumPHP\Configuration\Environment\DotEnvSerializer;
 use GrumPHP\Configuration\Model\HooksConfig;
 use GrumPHP\Process\ProcessBuilder;
+use GrumPHP\Process\ProcessFactory;
 use GrumPHP\Util\Filesystem;
 use GrumPHP\Util\Paths;
 use RuntimeException;
@@ -133,11 +135,22 @@ class InitCommand extends Command
         ];
 
         foreach ($this->hooksConfig->getVariables() as $key => $value) {
-            $process = is_array($value) ? new Process($value) : Process::fromShellCommandline($value);
-            $replacements[sprintf('$(%s)', $key)] = $process->getCommandLine();
+            $replacements[sprintf('$(%s)', $key)] = $this->parseHookVariable($key, $value);
         }
 
         return str_replace(array_keys($replacements), array_values($replacements), $content);
+    }
+
+    private function parseHookVariable(string $key, $value): string
+    {
+        switch ($key) {
+            case 'EXEC_GRUMPHP_COMMAND':
+                return ProcessFactory::fromScalar($value)->getCommandLine();
+            case 'ENV':
+                return DotEnvSerializer::serialize($value);
+            default:
+                return (string) $value;
+        }
     }
 
     /**

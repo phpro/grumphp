@@ -40,4 +40,5 @@ services:
             - '@GrumPHP\Util\Paths'
     GrumPHP\Locator\EnrichedGuessedPathsFromDotEnvLocator:
         public: true
-        arguments: []
+        arguments:
+            - '@grumphp.util.filesystem'

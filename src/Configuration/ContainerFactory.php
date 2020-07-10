@@ -27,9 +27,16 @@ class ContainerFactory
         // Build the service container:
         $container = ContainerBuilder::buildFromConfiguration($guessedPaths->getConfigFile());
 
-        // Try parsing env info from inside the grumphp.yaml file and second-guess paths based on new information.
-        self::setupEnvironment($container, $guessedPaths);
+        // Load environment config:
+        $config = $container->get(EnvConfig::class);
+        assert($config instanceof EnvConfig);
+
+        // Setup the environment and overwrite guessed paths if needed:
+        DotEnvRegistrar::register($config);
         $guessedPaths = self::enrichGuessedPathsWithDotEnv($container, $guessedPaths);
+
+        //  Make sure that important paths are loaded first:
+        PathsRegistrar::prepend($guessedPaths->getBinDir(), ...$config->getPaths());
 
         // Set instances:
         $container->set('console.input', $input);
@@ -48,15 +55,6 @@ class ContainerFactory
             new GitWorkingDirLocator(new ExecutableFinder()),
             new GitRepositoryDirLocator($fileSystem)
         ))->locate($cliConfigFile);
-    }
-
-    private static function setupEnvironment(Container $container, GuessedPaths $guessedPaths): void
-    {
-        $config = $container->get(EnvConfig::class);
-        assert($config instanceof EnvConfig);
-
-        DotEnvRegistrar::register($config);
-        PathsRegistrar::prepend($guessedPaths->getBinDir(), ...$config->getPaths());
     }
 
     private static function enrichGuessedPathsWithDotEnv(Container $container, GuessedPaths $guessedPaths): GuessedPaths

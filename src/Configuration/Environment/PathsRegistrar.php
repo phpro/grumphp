@@ -13,12 +13,13 @@ namespace GrumPHP\Configuration\Environment;
  */
 class PathsRegistrar
 {
-    public static function prepend(string ... $paths): void
+    public static function prepend(string ...$paths): void
     {
         if (!array_key_exists(self::pathVarName(), $_SERVER)) {
             return;
         }
 
+        // Reverse the paths so that the one added first in also loaded as first.
         foreach (array_reverse($paths) as $path) {
             self::prependOne($path);
         }
@@ -35,6 +36,9 @@ class PathsRegistrar
         putenv($pathStr.'='.$_SERVER[$pathStr]);
     }
 
+    /**
+     * Detect which path variable name is being used
+     */
     private static function pathVarName(): string
     {
         static $pathStr;
