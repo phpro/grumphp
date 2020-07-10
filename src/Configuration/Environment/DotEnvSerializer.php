@@ -15,7 +15,7 @@ class DotEnvSerializer
     {
         return implode("\n", array_map(
             static function (string $key, string $value): string {
-                return $key.'='.$value;
+                return 'export '.$key.'='.$value;
             },
             array_keys($env),
             $env
