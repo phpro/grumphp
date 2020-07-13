@@ -70,7 +70,7 @@ class ComposerNormalizeTest extends AbstractExternalTaskTestCase
             function () {
                 $this->mockProcessBuilder('composer', $process = $this->mockProcess(1));
                 $this->formatter->format($process)->willReturn('nope');
-                $this->formatter->formatErrorMessage(Argument::any(), Argument::any())->willReturn('nope');
+                $this->formatter->formatErrorMessage(Argument::any())->willReturn('nope');
             },
             'nope',
             FixableTaskResult::class
