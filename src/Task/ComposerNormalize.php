@@ -48,43 +48,27 @@ class ComposerNormalize extends AbstractExternalTask
         }
 
         $arguments = $this->processBuilder->createArgumentsForCommand('composer');
-        $arguments = $this->addArgumentsFromConfig($arguments, $config);
+        $arguments->add('normalize');
         $arguments->add('--dry-run');
+
+        if ($config['indent_size'] !== null && $config['indent_style'] !== null) {
+            $arguments->addOptionalArgument('--indent-style=%s', $config['indent_style']);
+            $arguments->addOptionalArgument('--indent-size=%s', $config['indent_size']);
+        }
+
+        $arguments->addOptionalArgument('--no-update-lock', $config['no_update_lock']);
+        $arguments->addOptionalArgument('-q', $config['verbose']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
 
         if (!$process->isSuccessful()) {
             $output = $this->formatter->format($process);
-            $arguments = $this->processBuilder->createArgumentsForCommand('composer');
-            $arguments = $this->addArgumentsFromConfig($arguments, $config);
+            $arguments->removeElement('--dry-run');
             $output .= $this->formatter->formatErrorMessage($arguments, $this->processBuilder);
             return TaskResult::createFailed($this, $context, $output);
         }
 
         return TaskResult::createPassed($this, $context);
-    }
-
-    /**
-     * @param \GrumPHP\Collection\ProcessArgumentsCollection $arguments
-     * @param array $config
-     *
-     * @return \GrumPHP\Collection\ProcessArgumentsCollection
-     */
-    protected function addArgumentsFromConfig(
-        ProcessArgumentsCollection $arguments,
-        array $config
-    ): ProcessArgumentsCollection {
-        $arguments->add('normalize');
-
-        if ($config['indent_size'] !== null && $config['indent_style'] !== null) {
-          $arguments->addOptionalArgument('--indent-style=%s', $config['indent_style']);
-          $arguments->addOptionalArgument('--indent-size=%s', $config['indent_size']);
-        }
-
-        $arguments->addOptionalArgument('--no-update-lock', $config['no_update_lock']);
-        $arguments->addOptionalArgument('-q', $config['verbose']);
-
-        return $arguments;
     }
 }

@@ -6,7 +6,6 @@ namespace GrumPHP\Formatter;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Process\ProcessBuilder;
-use Symfony\Component\Process\Process;
 
 class ComposerNormalizeFormatter extends RawProcessFormatter
 {
