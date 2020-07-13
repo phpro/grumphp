@@ -51,7 +51,7 @@ services:
     GrumPHP\Task\ComposerNormalize:
         arguments:
             - '@process_builder'
-            - '@formatter.raw_process'
+            - '@formatter.composer_normalize'
         tags:
             - {name: grumphp.task, task: composer_normalize}
 
