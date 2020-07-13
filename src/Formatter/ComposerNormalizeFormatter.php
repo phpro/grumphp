@@ -10,20 +10,18 @@ use GrumPHP\Process\ProcessBuilder;
 class ComposerNormalizeFormatter extends RawProcessFormatter
 {
 
-    /**
-     * @param \GrumPHP\Collection\ProcessArgumentsCollection $defaultArguments
-     * @param \GrumPHP\Process\ProcessBuilder $processBuilder
-     *
-     * @return string
-     */
+  /**
+   * @param string $fixerCommand
+   *
+   * @return string
+   */
     public function formatErrorMessage(
-        ProcessArgumentsCollection $defaultArguments,
-        ProcessBuilder $processBuilder
+        string $fixerCommand
     ): string {
         return sprintf(
             '%sYou can fix some errors by running following command:%s',
             PHP_EOL.PHP_EOL,
-            PHP_EOL.$processBuilder->buildProcess($defaultArguments)->getCommandLine()
+            PHP_EOL.$fixerCommand
         );
     }
 }
