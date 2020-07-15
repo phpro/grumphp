@@ -76,7 +76,7 @@ class ConsoleIO implements IOInterface, \Serializable
     }
 
     /**
-     * @param resource $handle
+     * @param mixed $handle
      */
     public function readCommandInput($handle): string
     {

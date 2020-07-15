@@ -9,6 +9,9 @@ use Symfony\Component\Yaml\Exception\ParseException;
 
 class YamlLintError extends LintError
 {
+    /**
+     * @var string
+     */
     private $snippet;
 
     public function __construct(string $type, string $error, string $file, int $line = -1, string $snippet = '')

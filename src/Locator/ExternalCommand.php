@@ -10,6 +10,9 @@ use Symfony\Component\Process\ExecutableFinder;
 
 class ExternalCommand
 {
+    /**
+     * @var list<string>
+     */
     private $suffixes = ['', '.phar'];
 
     /**

@@ -13,8 +13,19 @@ use SplFileInfo;
 
 class JsonLinter implements LinterInterface
 {
+    /**
+     * @var bool
+     */
     private $detectKeyConflicts = false;
+
+    /**
+     * @var Filesystem
+     */
     private $filesystem;
+
+    /**
+     * @var JsonParser
+     */
     private $jsonParser;
 
     public function __construct(Filesystem $filesystem, JsonParser $jsonParser)

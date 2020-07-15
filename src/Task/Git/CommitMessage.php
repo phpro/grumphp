@@ -264,7 +264,7 @@ class CommitMessage implements TaskInterface
         }
 
         $lines = $this->getCommitMessageLinesWithoutComments($commitMessage);
-        $subject = array_reduce($lines, function ($subject, $line) {
+        $subject = array_reduce($lines, function (?string $subject, string $line) {
             if (null !== $subject) {
                 return $subject;
             }
@@ -312,7 +312,7 @@ class CommitMessage implements TaskInterface
         }));
     }
 
-    private function enforceTypeScopeConventions()
+    private function enforceTypeScopeConventions(): bool
     {
         $config = $this->getConfig()->getOptions();
 

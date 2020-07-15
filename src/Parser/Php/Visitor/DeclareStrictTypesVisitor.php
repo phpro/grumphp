@@ -8,6 +8,9 @@ use PhpParser\Node;
 
 class DeclareStrictTypesVisitor extends AbstractVisitor
 {
+    /**
+     * @var bool
+     */
     private $hasStrictType = false;
 
     public function leaveNode(Node $node): void

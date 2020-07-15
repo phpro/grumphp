@@ -35,8 +35,6 @@ grumphp:
       functional: true
     psalm:
       show_info: true
-      metadata:
-        blocking: false
   testsuites:
     git_pre_commit:
       tasks: [phpcs, phpspec, phpunit, composer, composer_normalize, yamllint, phplint, phpparser, psalm]

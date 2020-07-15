@@ -63,7 +63,7 @@ class PhpCpd extends AbstractExternalTask
         }
 
         $arguments = $this->processBuilder->createArgumentsForCommand('phpcpd');
-        $extensions = array_map(function ($extension) {
+        $extensions = array_map(function (string $extension) {
             return sprintf('*.%s', $extension);
         }, $config['triggered_by']);
 

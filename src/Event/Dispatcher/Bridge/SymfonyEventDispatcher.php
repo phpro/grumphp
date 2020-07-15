@@ -16,6 +16,9 @@ class SymfonyEventDispatcher implements EventDispatcherInterface
      */
     private $dispatcher;
 
+    /**
+     * @param SymfonyLegacyEventDispatcher|SymfonyEventDispatcherContract $eventDispatcher
+     */
     public function __construct($eventDispatcher)
     {
         $this->dispatcher = $eventDispatcher;

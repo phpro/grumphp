@@ -12,5 +12,5 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 interface ExtensionInterface
 {
-    public function load(ContainerBuilder $container);
+    public function load(ContainerBuilder $container): void;
 }

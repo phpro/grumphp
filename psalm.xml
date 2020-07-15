@@ -12,6 +12,9 @@
         <ignoreFiles>
             <directory name="src/Test" />
             <directory name="vendor" />
+            <directory name="test" />
+            <directory name="spec" />
+            <file name="src/Parser/Php/Visitor/AbstractVisitor.php" />
         </ignoreFiles>
     </projectFiles>
 

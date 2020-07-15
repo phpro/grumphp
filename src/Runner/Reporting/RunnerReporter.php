@@ -121,7 +121,7 @@ class RunnerReporter
         $this->reportFailedMessages($warningMessages, 'yellow');
     }
 
-    private function reportFailedMessages(array $messages, string $color)
+    private function reportFailedMessages(array $messages, string $color): void
     {
         foreach ($messages as $label => $message) {
             $this->IO->style()->title($label);

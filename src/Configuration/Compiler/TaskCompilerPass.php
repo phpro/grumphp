@@ -92,7 +92,7 @@ class TaskCompilerPass implements CompilerPassInterface
             $taskTagResolver->setAllowedTypes('priority', ['int']);
             $taskTagResolver->setDefault('task', '');
             $taskTagResolver->setDefault('priority', 0);
-            $taskTagResolver->setNormalizer('task', static function (Options $options, $value) {
+            $taskTagResolver->setNormalizer('task', static function (Options $options, ?string $value) {
                 if (!$value && !$options->offsetExists('config')) {
                     throw new MissingOptionsException('The required option "task" is missing.');
                 }
@@ -104,7 +104,7 @@ class TaskCompilerPass implements CompilerPassInterface
             $taskTagResolver->setDefined('config');
             $taskTagResolver->setNormalizer(
                 'config',
-                static function (Options $options, $value) {
+                static function (Options $options, string $value) {
                     throw TaskConfigResolverException::deprectatedTask($value);
                 }
             );

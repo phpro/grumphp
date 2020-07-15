@@ -8,5 +8,5 @@ use PhpParser\NodeVisitor;
 
 interface ConfigurableVisitorInterface extends NodeVisitor
 {
-    public function configure(array $options);
+    public function configure(array $options): void;
 }

@@ -10,6 +10,9 @@ use Symfony\Component\Process\Process;
 
 class PhpcsFormatter implements ProcessFormatterInterface
 {
+    /**
+     * @var string
+     */
     protected $output = '';
 
     /**

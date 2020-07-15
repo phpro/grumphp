@@ -118,7 +118,7 @@ class PhpLintTest extends AbstractExternalTaskTestCase
             [
                 '--no-colors',
                 '-j',
-                10,
+                '10',
                 '--stdin',
             ],
             $this->mockProcessWithStdIn(0)

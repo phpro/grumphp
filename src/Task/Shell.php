@@ -25,10 +25,16 @@ class Shell extends AbstractExternalTask
 
         $resolver->addAllowedTypes('scripts', ['array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
-        $resolver->setNormalizer('scripts', function (Options $options, $scripts) {
-            return array_map(function ($script) {
-                return is_string($script) ? (array) $script : $script;
-            }, $scripts);
+        $resolver->setNormalizer('scripts', function (Options $options, array $scripts) {
+            return array_map(
+                /**
+                 * @param string|array $script
+                 */
+                function ($script) {
+                    return is_string($script) ? (array) $script : $script;
+                },
+                $scripts
+            );
         });
 
         return $resolver;

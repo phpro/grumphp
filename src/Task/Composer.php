@@ -17,6 +17,9 @@ use SplFileInfo;
 
 class Composer extends AbstractExternalTask
 {
+    /**
+     * @var Filesystem
+     */
     private $filesystem;
 
     public function __construct(

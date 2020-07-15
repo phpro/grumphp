@@ -19,8 +19,14 @@ interface IOInterface
 
     public function isDecorated(): bool;
 
+    /**
+     * @return void
+     */
     public function write(array $messages, bool $newline = true);
 
+    /**
+     * @return void
+     */
     public function writeError(array $messages, bool $newline = true);
 
     public function style(): StyleInterface;

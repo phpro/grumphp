@@ -42,6 +42,7 @@ class InitCommand extends Command
 
     /**
      * @var InputInterface
+     * @psalm-suppress PropertyNotSetInConstructor
      */
     private $input;
 
@@ -140,6 +141,9 @@ class InitCommand extends Command
         return str_replace(array_keys($replacements), array_values($replacements), $content);
     }
 
+    /**
+     * @param string|array $value
+     */
     private function parseHookVariable(string $key, $value): string
     {
         switch ($key) {
@@ -148,6 +152,7 @@ class InitCommand extends Command
             case 'ENV':
                 return DotEnvSerializer::serialize($value);
             default:
+                /** @var string $value */
                 return (string) $value;
         }
     }
