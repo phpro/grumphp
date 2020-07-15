@@ -46,6 +46,7 @@ class HandleRunnerMiddleware implements RunnerMiddlewareInterface
                     /**
                      * @var \Throwable[] $errors
                      * @var TaskResultInterface[] $results
+                     * @psalm-suppress InvalidArrayAccess
                      * @psalm-suppress InvalidArrayOffset
                      */
                     [$errors, $results] = yield MultiPromise::cancelable(

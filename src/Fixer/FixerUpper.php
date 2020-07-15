@@ -31,7 +31,6 @@ class FixerUpper
 
     public function fix(TaskResultCollection $results): void
     {
-        /** @var TaskResultCollection<FixableTaskResult> $fixable */
         $fixable = $results->filter(
             static function (TaskResultInterface $result): bool {
                 return $result instanceof FixableTaskResult;
@@ -69,7 +68,7 @@ class FixerUpper
     }
 
     /**
-     * @param TaskResultCollection<FixableTaskResult> $fixable
+     * @param TaskResultCollection $fixable
      */
     private function shouldRun(TaskResultCollection $fixable): bool
     {

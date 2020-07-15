@@ -64,7 +64,7 @@ class PhpParser implements ParserInterface
         try {
             $code = $this->filesystem->readFromFileInfo($file);
             $stmts = $parser->parse($code);
-            $traverser->traverse($stmts);
+            $traverser->traverse((array) $stmts);
         } catch (Error $e) {
             $errors->add(PhpParserError::fromParseException($e, $file->getRealPath()));
         }

@@ -119,6 +119,7 @@ class ConsoleIO implements IOInterface, \Serializable
 
     public function section(): ConsoleSectionOutput
     {
+        assert($this->output instanceof ConsoleOutputInterface);
         return $this->output->section();
     }
 

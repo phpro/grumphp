@@ -26,6 +26,7 @@ class DeclareStrictTypesVisitor extends AbstractVisitor
                 continue;
             }
 
+            /** @psalm-suppress UndefinedPropertyFetch */
             $this->hasStrictType = $declare->value->value === 1;
         }
     }

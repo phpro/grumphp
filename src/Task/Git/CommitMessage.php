@@ -186,7 +186,7 @@ class CommitMessage implements TaskInterface
                 if (mb_strlen(rtrim($line)) > $config['max_body_width']) {
                     $errors[] = sprintf(
                         'Line %u of commit message has > %u characters.',
-                        $index + 3,
+                        (int)($index) + 3,
                         $config['max_body_width']
                     );
                 }
@@ -280,7 +280,7 @@ class CommitMessage implements TaskInterface
             return false;
         }
 
-        $firstLetter = $match[1];
+        $firstLetter = (string) ($match[1] ?? '');
 
         return !(1 !== preg_match('/^(fixup|squash)!/u', $subject) && 1 !== preg_match('/[[:upper:]]/u', $firstLetter));
     }

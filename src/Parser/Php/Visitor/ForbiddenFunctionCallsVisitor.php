@@ -28,13 +28,19 @@ class ForbiddenFunctionCallsVisitor extends AbstractVisitor implements Configura
         $this->blacklist = $config['blacklist'];
     }
 
+    /**
+     * @psalm-suppress UndefinedPropertyFetch
+     * @psalm-suppress PossiblyInvalidCast
+     */
     public function leaveNode(Node $node): void
     {
-        if (!$node instanceof Node\Expr\FuncCall) {
+
+        if (!$node instanceof Node\Expr\FuncCall || !$node->name instanceof Node\Name) {
             return;
         }
 
-        $function = $node->name;
+
+        $function = (string) $node->name;
         if (!\in_array($function, $this->blacklist, false)) {
             return;
         }
