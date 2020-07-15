@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.3",
         "ext-json": "*",
         "amphp/amp": "^2.4",
         "amphp/parallel": "^1.4",
