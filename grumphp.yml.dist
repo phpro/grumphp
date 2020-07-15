@@ -39,7 +39,7 @@ grumphp:
         blocking: false
   testsuites:
     git_pre_commit:
-      tasks: [phpcs, phpspec, phpunit, composer, composer_normalize, yamllint, phplint, phpparser]
+      tasks: [phpcs, phpspec, phpunit, composer, composer_normalize, yamllint, phplint, phpparser, psalm]
   environment:
     paths:
       - tools
