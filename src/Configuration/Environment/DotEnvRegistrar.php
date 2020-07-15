@@ -11,7 +11,7 @@ class DotEnvRegistrar
 {
     public static function register(EnvConfig $config): void
     {
-        $env = new Dotenv('GRUMPHP_ENV', 'GRUMPHP_DEBUG');
+        $env = new Dotenv();
 
         if ($config->hasFiles()) {
             $env->overload(...$config->getFiles());
