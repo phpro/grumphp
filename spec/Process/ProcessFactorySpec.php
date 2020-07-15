@@ -24,6 +24,20 @@ class ProcessFactorySpec extends ObjectBehavior
         $process->getCommandLine()->shouldBeQuoted('/usr/bin/grumphp');
     }
 
+    public function it_can_create_unquoted_from_string_arguments(): void
+    {
+        $process = self::fromScalar('/usr/bin/grumphp');
+        $process->shouldHaveType(Process::class);
+        $process->getCommandLine()->shouldBe('/usr/bin/grumphp');
+    }
+
+    public function it_can_create_from_array_arguments(): void
+    {
+        $process = self::fromScalar(['/usr/bin/grumphp']);
+        $process->shouldHaveType(Process::class);
+        $process->getCommandLine()->shouldBeQuoted('/usr/bin/grumphp');
+    }
+
     public function getMatchers(): array
     {
         return [

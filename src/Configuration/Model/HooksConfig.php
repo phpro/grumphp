@@ -29,8 +29,8 @@ class HooksConfig
         string $preset,
         array $variables
     ) {
-        $this->dir       = $dir;
-        $this->preset    = $preset;
+        $this->dir = $dir;
+        $this->preset = $preset;
         $this->variables = $variables;
     }
 

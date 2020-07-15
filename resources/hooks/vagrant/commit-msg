@@ -20,6 +20,9 @@ cd $(VAGRANT_HOST_DIR) && vagrant ssh --command '$(which sh)' << COMMANDS
 
   cd $(VAGRANT_PROJECT_DIR)
 
+  # Add grumphp envs:
+  $(ENV)
+
   # Transfer the DIFF
   DIFF=\$(cat <<- '__GRUMPHP_DIFF_HEREDOC__'
 	${DIFF}
