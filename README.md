@@ -79,6 +79,7 @@ grumphp:
          VAGRANT_HOST_DIR: .
          VAGRANT_PROJECT_DIR: /var/www
          EXEC_GRUMPHP_COMMAND: exec
+         ENV: {}
     stop_on_failure: false
     ignore_unstaged_changes: false
     hide_circumvention_tip: false
@@ -92,6 +93,10 @@ grumphp:
     fixer:
         enabled: true
         fix_by_default: false
+    environment:
+        files: []
+        variables: {}
+        paths: []
     tasks: {}
     testsuites: []
     extensions: []
