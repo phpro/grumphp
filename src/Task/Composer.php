@@ -84,7 +84,8 @@ class Composer extends AbstractExternalTask
             return TaskResult::createFailed($this, $context, $this->formatter->format($process));
         }
 
-        if ($config['no_local_repository'] && $this->hasLocalRepository($files->first())) {
+        $composerFile = $files->first();
+        if ($config['no_local_repository'] && $composerFile && $this->hasLocalRepository($composerFile)) {
             return TaskResult::createFailed($this, $context, 'You have at least one local repository declared.');
         }
 

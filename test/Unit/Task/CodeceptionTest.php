@@ -132,7 +132,7 @@ class CodeceptionTest extends AbstractExternalTaskTestCase
                 'suite'
             ]
         ];
-        yield 'suite' => [
+        yield 'test' => [
             [
                 'test' => 'test',
             ],

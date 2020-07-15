@@ -13,12 +13,15 @@ use GrumPHP\Task\Config\TaskConfig;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\Exception\ExceptionInterface;
 
 abstract class AbstractTaskTestCase extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var TaskInterface
      */
@@ -31,7 +34,7 @@ abstract class AbstractTaskTestCase extends TestCase
     abstract public function providePassesOnStuff(): iterable;
     abstract public function provideSkipsOnStuff(): iterable;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->task = $this->provideTask();

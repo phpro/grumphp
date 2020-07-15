@@ -14,10 +14,13 @@ use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\Context\RunContext;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class TaskRunnerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @test */
     public function it_can_run_the_specified_tasks(): void
     {

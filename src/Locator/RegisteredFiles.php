@@ -30,7 +30,7 @@ class RegisteredFiles
     public function locate(): FilesCollection
     {
         // Make sure to only return the files that are registered to GIT inside current project directory:
-        $allFiles = trim($this->repository->run('ls-files', [$this->paths->getProjectDir()]));
+        $allFiles = trim((string) $this->repository->run('ls-files', [$this->paths->getProjectDir()]));
         $filePaths = preg_split("/\r\n|\n|\r/", $allFiles);
 
         $files = [];

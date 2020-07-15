@@ -123,7 +123,7 @@ class PhpLintTest extends AbstractExternalTaskTestCase
             ],
             $this->mockProcessWithStdIn(0)
         ];
-        yield 'jobs' => [
+        yield 'short_open_tag' => [
             [
                 'short_open_tag' => true
             ],
@@ -136,7 +136,7 @@ class PhpLintTest extends AbstractExternalTaskTestCase
             ],
             $this->mockProcessWithStdIn(0)
         ];
-        yield 'jobs' => [
+        yield 'exlude' => [
             [
                 'exclude' => ['exclude1', 'exclude2'],
             ],

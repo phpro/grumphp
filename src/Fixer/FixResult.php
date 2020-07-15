@@ -6,7 +6,7 @@ namespace GrumPHP\Fixer;
 
 /**
  * @template TResult
- * @psalm-immutable
+ * @psalm-readonly
  */
 class FixResult
 {
@@ -34,6 +34,9 @@ class FixResult
         return new self(null, $error);
     }
 
+    /**
+     * @param mixed $result
+     */
     public static function success($result): self
     {
         return new self($result, null);

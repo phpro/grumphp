@@ -10,6 +10,9 @@ use GrumPHP\Task\TaskInterface;
 use GrumPHP\TestSuite\TestSuiteInterface;
 use SplPriorityQueue;
 
+/**
+ * @extends ArrayCollection<int, TaskInterface>
+ */
 class TasksCollection extends ArrayCollection
 {
     public function filterByContext(ContextInterface $context): self

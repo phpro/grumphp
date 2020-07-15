@@ -8,15 +8,18 @@ use GrumPHP\Exception\PlatformException;
 use GrumPHP\Runner\TaskHandler\Middleware\ErrorHandlingTaskHandlerMiddleware;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Test\Runner\AbstractTaskHandlerMiddlewareTestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class ErrorHandlingTaskHandlerMiddlewareTest extends AbstractTaskHandlerMiddlewareTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ErrorHandlingTaskHandlerMiddleware
      */
     private $middleware;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->middleware = new ErrorHandlingTaskHandlerMiddleware();
     }

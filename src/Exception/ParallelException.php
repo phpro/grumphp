@@ -8,14 +8,14 @@ class ParallelException extends RuntimeException
 {
     public static function fromThrowable(\Throwable $error)
     {
-        return new self($error->getMessage(), $error->getCode(), $error);
+        return new self($error->getMessage(), (int)$error->getCode(), $error);
     }
 
     public static function fromVerboseThrowable(\Throwable $error)
     {
         return new self(
             $error->getMessage() . PHP_EOL . $error->getTraceAsString() . PHP_EOL . $error->getPrevious(),
-            $error->getCode(),
+            (int)$error->getCode(),
             $error
         );
     }

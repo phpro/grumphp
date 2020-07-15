@@ -74,7 +74,7 @@ class SecurityCheckerTest extends AbstractExternalTaskTestCase
                 $this->mockProcessBuilder('security-checker', $this->mockProcess(0));
             }
         ];
-        yield 'exitCode0' => [
+        yield 'exitCode0WhenRunAlways' => [
             [
                 'run_always' => true
             ],

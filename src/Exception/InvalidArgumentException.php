@@ -6,7 +6,7 @@ namespace GrumPHP\Exception;
 
 class InvalidArgumentException extends RuntimeException
 {
-    public static function unknownTestSuite($testSuiteName): self
+    public static function unknownTestSuite(string $testSuiteName): self
     {
         return new self(sprintf('Unknown testsuite specified: %s', $testSuiteName));
     }

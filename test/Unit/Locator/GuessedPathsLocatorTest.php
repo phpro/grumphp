@@ -18,11 +18,14 @@ namespace GrumPHPTest\Unit\Locator {
     use GrumPHP\Util\ComposerFile;
     use GrumPHP\Util\Filesystem;
     use Prophecy\Argument;
+    use Prophecy\PhpUnit\ProphecyTrait;
     use Prophecy\Prophecy\ObjectProphecy;
     use GrumPHPTest\Symfony\FilesystemTestCase;
 
     class GuessedPathsLocatorTest extends FilesystemTestCase
     {
+        use ProphecyTrait;
+
         /**
          * @var Filesystem
          */

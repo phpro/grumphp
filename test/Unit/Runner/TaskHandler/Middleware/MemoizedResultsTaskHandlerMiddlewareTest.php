@@ -8,9 +8,12 @@ use GrumPHP\Runner\MemoizedTaskResultMap;
 use GrumPHP\Runner\TaskHandler\Middleware\MemoizedResultsTaskHandlerMiddleware;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Test\Runner\AbstractTaskHandlerMiddlewareTestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class MemoizedResultsTaskHandlerMiddlewareTest extends AbstractTaskHandlerMiddlewareTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var MemoizedTaskResultMap
      */
@@ -21,7 +24,7 @@ class MemoizedResultsTaskHandlerMiddlewareTest extends AbstractTaskHandlerMiddle
      */
     private $middleware;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->map = new MemoizedTaskResultMap();
         $this->middleware = new MemoizedResultsTaskHandlerMiddleware(

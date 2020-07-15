@@ -198,7 +198,7 @@ class ParatestTest extends AbstractExternalTaskTestCase
                 '--testsuite=testsuite',
             ]
         ];
-        yield 'testsuite' => [
+        yield 'verbose' => [
             [
                 'verbose' => true,
             ],

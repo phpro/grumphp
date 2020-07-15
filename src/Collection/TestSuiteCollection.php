@@ -8,15 +8,18 @@ use Doctrine\Common\Collections\ArrayCollection;
 use GrumPHP\Exception\InvalidArgumentException;
 use GrumPHP\TestSuite\TestSuiteInterface;
 
+/**
+ * @extends ArrayCollection<string, TestSuiteInterface>
+ */
 class TestSuiteCollection extends ArrayCollection
 {
     public function getRequired(string $name): TestSuiteInterface
     {
-        if (!$this->containsKey($name)) {
+        if (!$result = $this->get($name)) {
             throw InvalidArgumentException::unknownTestSuite($name);
         }
 
-        return $this->get($name);
+        return $result;
     }
 
     public function getOptional(string $name): ?TestSuiteInterface

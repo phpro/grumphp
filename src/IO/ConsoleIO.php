@@ -75,6 +75,9 @@ class ConsoleIO implements IOInterface, \Serializable
         return $this->output;
     }
 
+    /**
+     * @param resource $handle
+     */
     public function readCommandInput($handle): string
     {
         if (!is_resource($handle)) {

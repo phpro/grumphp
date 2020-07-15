@@ -101,7 +101,7 @@ class ProgpilotTest extends AbstractExternalTaskTestCase
             ]
         ];
 
-        yield 'defaults' => [
+        yield 'config_file' => [
             [
                 'config_file' => 'config.yml'
             ],

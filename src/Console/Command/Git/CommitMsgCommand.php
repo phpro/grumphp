@@ -88,8 +88,14 @@ class CommitMsgCommand extends Command
     {
         $io = new ConsoleIO($input, $output);
         $files = $this->getCommittedFiles($io);
+
+        /** @var string $gitUser */
         $gitUser = $input->getOption('git-user');
+
+        /** @var string $gitEmail */
         $gitEmail = $input->getOption('git-email');
+
+        /** @var string $commitMsgPath */
         $commitMsgPath = $input->getArgument('commit-msg-file');
 
         if (!$this->filesystem->isAbsolutePath($commitMsgPath)) {

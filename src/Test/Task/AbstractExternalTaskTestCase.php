@@ -29,7 +29,7 @@ abstract class AbstractExternalTaskTestCase extends AbstractTaskTestCase
 
     abstract public function provideExternalTaskRuns(): iterable;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->processBuilder = $this->prophesize(ProcessBuilder::class);
         $this->formatter = $this->prophesize(ProcessFormatterInterface::class);

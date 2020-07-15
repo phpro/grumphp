@@ -12,10 +12,13 @@ use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\Context\RunContext;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class MiddlewareStackTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @test */
     public function it_has_a_default_fallback_middleware(): void
     {

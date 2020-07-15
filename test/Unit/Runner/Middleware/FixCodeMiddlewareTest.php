@@ -9,10 +9,13 @@ use GrumPHP\Fixer\FixerUpper;
 use GrumPHP\Runner\Middleware\FixCodeMiddleware;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Test\Runner\AbstractRunnerMiddlewareTestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class FixCodeMiddlewareTest extends AbstractRunnerMiddlewareTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var FixCodeMiddleware
      */
@@ -23,7 +26,7 @@ class FixCodeMiddlewareTest extends AbstractRunnerMiddlewareTestCase
      */
     private $fixerUpper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixerUpper = $this->prophesize(FixerUpper::class);
         $this->middleware = new FixCodeMiddleware(

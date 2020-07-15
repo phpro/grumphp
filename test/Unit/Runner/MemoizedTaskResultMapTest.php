@@ -12,10 +12,13 @@ use GrumPHP\Task\Config\TaskConfig;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class MemoizedTaskResultMapTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @test */
     public function it_does_not_contain_a_task_result(): void
     {

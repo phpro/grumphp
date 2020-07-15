@@ -6,6 +6,9 @@ namespace GrumPHP\Collection;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+/**
+ * @extends ArrayCollection<int, \GrumPHP\Linter\LintError>
+ */
 class LintErrorsCollection extends ArrayCollection
 {
     public function __toString(): string

@@ -14,7 +14,6 @@ use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Process;
 
 /**
  * This command is responsible for enabling all the configured hooks.
@@ -179,9 +178,12 @@ class InitCommand extends Command
      *
      * @return null|string
      */
-    protected function useExoticConfigFile()
+    protected function useExoticConfigFile(): ?string
     {
-        if (!$configPath = $this->input->getOption('config')) {
+        /** @var ?string $configPath */
+        $configPath = $this->input->getOption('config');
+
+        if (!$configPath) {
             // Auto discovereable ...
             return null;
         }

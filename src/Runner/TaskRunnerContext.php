@@ -9,7 +9,7 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\TestSuite\TestSuiteInterface;
 
 /**
- * @psalm-immutable
+ * @psalm-readonly
  */
 class TaskRunnerContext
 {

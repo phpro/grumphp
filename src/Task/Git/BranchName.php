@@ -77,7 +77,7 @@ class BranchName implements TaskInterface
         $errors = [];
 
         try {
-            $name = trim($this->repository->run('symbolic-ref', ['HEAD', '--short']));
+            $name = trim((string) $this->repository->run('symbolic-ref', ['HEAD', '--short']));
         } catch (ProcessException $e) {
             if ($config['allow_detached_head']) {
                 return TaskResult::createPassed($this, $context);

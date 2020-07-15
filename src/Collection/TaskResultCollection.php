@@ -9,8 +9,8 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 
 /**
- * @template TResult
- * @extends ArrayCollection<int, TResult|TaskResultInterface>
+ * @template TResult as TaskResultInterface
+ * @extends ArrayCollection<int, TResult>
  */
 class TaskResultCollection extends ArrayCollection
 {
