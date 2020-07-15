@@ -9,6 +9,7 @@ grumphp:
         VAGRANT_HOST_DIR: .
         VAGRANT_PROJECT_DIR: /var/www
         EXEC_GRUMPHP_COMMAND: exec
+        ENV: {}
     stop_on_failure: false
     ignore_unstaged_changes: false
     hide_circumvention_tip: false
@@ -23,6 +24,10 @@ grumphp:
     fixer:
         enabled: true
         fix_by_default: false
+    environment:
+        files: []
+        variables: {}
+        paths: []
 ```
 
 **hooks_dir**
@@ -46,7 +51,9 @@ GrumPHP comes with following presets:
 
 **git_hook_variables**
 
-This parameter will allow you to customize git hooks templates. For now, those parameters are used in the templates : 
+This parameter will allow you to customize git hooks templates.
+After changing any of these variables, you need to run the `git:init` command in order to persist the changes inside your git hooks.
+A list of the supported variables: 
 
 -  `VAGRANT_HOST_DIR` : specifies the vagrant location on your host machine relative to the git working folder (_default_ `.`)
 -  `VAGRANT_PROJECT_DIR` : specifies the project dir location **inside** the vagrant box (_default_ `/var/www`)
@@ -68,6 +75,20 @@ This parameter will allow you to customize git hooks templates. For now, those p
             EXEC_GRUMPHP_COMMAND: ['docker-compose', 'run', '--rm', '--no-deps', 'php']
             EXEC_GRUMPHP_COMMAND: 'docker run --rm -it -v $(pwd):/grumphp -w /grumphp webdevops/php:alpine'
     ```
+-  `ENV` : Specify environment variables that will be placed in the git hook file. (_default_ `{}`)
+
+    Examples: 
+    
+    ```yaml
+    grumphp:
+        git_hook_variables:
+            ENV:
+               VAR1: STRING
+               VAR2: "'escaped'"
+               VAR3: "$(pwd)"
+    ```
+   
+   These environment variables can be overwritten by the `environment` settings inside your `grumphp.yml`.
 
 **stop_on_failure**
 
@@ -219,3 +240,64 @@ You can choose to enable or disable built-in fixers.
 
 In some contexts, like git commits, it is currently not possible to ask dynamic questions.
 Therefor, you can choose what the default answer will be.
+
+**environment**
+
+GrumPHP makes it possible to configure your environment from inside your config file. 
+It can load ini files, export bash variables and prepend paths to your `$PATH` variable.
+
+```
+grumphp:
+    environment
+        files: []
+        variables: {}
+        paths: []
+```
+
+**environment.files**
+
+*Default: []*
+
+This parameter can be used to specify a list of ini or .env files that need to be loaded.
+
+Example:
+
+```yaml
+grumphp:
+  environment:
+    files:
+        - .env
+        - .env.local
+```
+
+**environment.variables**
+
+*Default: {}*
+
+Besides loading variables from .env files, you can also specify them directly in your config file.
+
+Example:
+
+```yaml
+grumphp:
+  environment:
+    variables:
+        VAR1: "content"
+        VAR2: "content"
+```
+
+**environment.paths**
+
+*Default: []*
+
+These paths will be prepended in your systems `PATH` variable whilst running GrumPHP.
+This makes it possible to e.g. add the project's `phive` tools instead of adding them as dev dependencies in composer.
+
+Example:
+
+```yaml
+grumphp:
+  environment:
+    paths:
+        - tools
+```

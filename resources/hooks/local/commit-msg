@@ -13,6 +13,7 @@ COMMIT_MSG_FILE=$1
 DIFF=$(git -c diff.mnemonicprefix=false --no-pager diff -r -p -m -M --full-index --no-color --staged | cat)
 
 # Grumphp env vars
+$(ENV)
 export GRUMPHP_GIT_WORKING_DIR=$(git rev-parse --show-toplevel)
 
 # Run GrumPHP

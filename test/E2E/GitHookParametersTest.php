@@ -55,4 +55,32 @@ class GitHookParametersTest extends AbstractE2ETestCase
 
         $this->commitAll();
     }
+
+    /** @test */
+    function it_can_add_hook_variables()
+    {
+        $this->initializeGitInRootDir();
+        $this->initializeComposer($this->rootDir);
+        $grumphpFile = $this->initializeGrumphpConfig($this->rootDir);
+
+        $this->mergeGrumphpConfig($grumphpFile, [
+            'grumphp' => [
+                'git_hook_variables' => [
+                    'ENV' => [
+                        'VAR1' => 'CONTENT1',
+                        'VAR2' => 'CONTENT2',
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->installComposer($this->rootDir);
+
+        $this->ensureHooksExist($this->rootDir, '{export VAR1=CONTENT1}');
+        $this->ensureHooksExist($this->rootDir, '{export VAR2=CONTENT2}');
+
+        $this->enableValidatePathsTask($grumphpFile, $this->rootDir);
+
+        $this->commitAll();
+    }
 }

@@ -29,6 +29,7 @@ class Configuration implements ConfigurationInterface
         $gitHookVariables->children()->scalarNode('VAGRANT_HOST_DIR')->defaultValue('.');
         $gitHookVariables->children()->scalarNode('VAGRANT_PROJECT_DIR')->defaultValue('/var/www');
         $gitHookVariables->children()->variableNode('EXEC_GRUMPHP_COMMAND')->defaultValue('exec');
+        $gitHookVariables->children()->arrayNode('ENV')->scalarPrototype();
 
         $rootNode->children()->scalarNode('additional_info')->defaultNull();
 
@@ -74,6 +75,13 @@ class Configuration implements ConfigurationInterface
         $parallel = $rootNode->children()->arrayNode('fixer');
         $parallel->canBeDisabled();
         $parallel->children()->booleanNode('fix_by_default')->defaultFalse();
+
+        // Dotenv
+        $env = $rootNode->children()->arrayNode('environment');
+        $env->addDefaultsIfNotSet();
+        $env->children()->arrayNode('files')->scalarPrototype();
+        $env->children()->arrayNode('variables')->scalarPrototype();
+        $env->children()->arrayNode('paths')->scalarPrototype();
 
         return $treeBuilder;
     }

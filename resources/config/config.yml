@@ -10,6 +10,11 @@ services:
     GrumPHP\Configuration\Model\AsciiConfig:
         arguments:
             - '%ascii%'
+    GrumPHP\Configuration\Model\EnvConfig:
+        public: true
+        factory: ['GrumPHP\Configuration\Model\EnvConfig', 'fromArray']
+        arguments:
+            - '%environment%'
     GrumPHP\Configuration\Model\HooksConfig:
         arguments:
             - '%hooks_dir%'
