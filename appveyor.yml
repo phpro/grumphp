@@ -69,4 +69,5 @@ install:
 
 test_script:
   - ps: cd $Env:project_directory
-  - php ./bin/grumphp run
+  - php ./tools/psalm --show-info=true
+  #- php ./bin/grumphp run
