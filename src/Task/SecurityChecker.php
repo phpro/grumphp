@@ -43,8 +43,8 @@ class SecurityChecker extends AbstractExternalTask
         $config = $this->getConfig()->getOptions();
 
         $files = $context->getFiles()
-            ->path(pathinfo($config['lockfile'], PATHINFO_DIRNAME))
-            ->name(pathinfo($config['lockfile'], PATHINFO_BASENAME));
+            ->path((string) pathinfo($config['lockfile'], PATHINFO_DIRNAME))
+            ->name((string) pathinfo($config['lockfile'], PATHINFO_BASENAME));
         if (0 === \count($files) && !$config['run_always']) {
             return TaskResult::createSkipped($this, $context);
         }

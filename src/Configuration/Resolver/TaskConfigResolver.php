@@ -26,7 +26,7 @@ class TaskConfigResolver
     }
 
     /**
-     * @return array<string>
+     * @return list<string>
      */
     public function listAvailableTaskNames(): array
     {

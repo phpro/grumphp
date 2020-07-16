@@ -39,8 +39,8 @@ class ComposerNormalize extends AbstractExternalTask
     {
         $config = $this->getConfig()->getOptions();
         $files = $context->getFiles()
-            ->path(pathinfo('composer.json', PATHINFO_DIRNAME))
-            ->name(pathinfo('composer.json', PATHINFO_BASENAME));
+            ->path((string) pathinfo('composer.json', PATHINFO_DIRNAME))
+            ->name((string) pathinfo('composer.json', PATHINFO_BASENAME));
 
         if (0 === count($files)) {
             return TaskResult::createSkipped($this, $context);

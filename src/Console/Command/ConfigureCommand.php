@@ -140,9 +140,12 @@ class ConfigureCommand extends Command
         // Build configuration
         return [
             'grumphp' => [
-                'tasks' => array_map(function ($task) {
-                    return null;
-                }, array_flip($tasks)),
+                'tasks' => array_map(
+                    function ($task) {
+                        return null;
+                    },
+                    array_flip($tasks)
+                ),
             ],
         ];
     }

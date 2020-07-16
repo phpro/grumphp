@@ -245,7 +245,7 @@ class FilesCollection extends ArrayCollection implements \Serializable
     /**
      * Help Psalm out a bit:
      *
-     * @return \ArrayIterator<int, SplFileInfo>
+     * @return \ArrayIterator&\Iterator
      */
     public function getIterator(): \ArrayIterator
     {

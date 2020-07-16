@@ -28,12 +28,18 @@ class SymfonyEventDispatcher implements EventDispatcherInterface
     {
         $interfacesImplemented = class_implements($this->dispatcher);
         if (in_array(SymfonyEventDispatcherContract::class, $interfacesImplemented, true)) {
-            /** @psalm-suppress InvalidArgument */
+            /**
+             * @psalm-suppress InvalidArgument
+             * @psalm-suppress TooManyArguments
+             */
             $this->dispatcher->dispatch($event, $eventName);
             return;
         }
 
-        /** @psalm-suppress InvalidArgument */
+        /**
+         * @psalm-suppress InvalidArgument
+         * @psalm-suppress TooManyArguments
+         */
         $this->dispatcher->dispatch($eventName, $event);
     }
 }
