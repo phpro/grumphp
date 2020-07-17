@@ -25,6 +25,7 @@ class ComposerNormalizeTest extends AbstractExternalTaskTestCase
         yield 'defaults' => [
             [],
             [
+                'use_standalone' => false,
                 'indent_size' => null,
                 'indent_style' => null,
                 'no_update_lock' => true,

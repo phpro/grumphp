@@ -23,6 +23,7 @@ class ComposerNormalize extends AbstractExternalTask
             'indent_size' => null,
             'indent_style' => null,
             'no_update_lock' => true,
+            'use_standalone' => false,
             'verbose' => false,
         ]);
 
@@ -48,6 +49,11 @@ class ComposerNormalize extends AbstractExternalTask
 
         $arguments = $this->processBuilder->createArgumentsForCommand('composer');
         $arguments->add('normalize');
+
+        if ($config['use_standalone']) {
+            $arguments = $this->processBuilder->createArgumentsForCommand('composer-normalize');
+        }
+
         $arguments->add('--dry-run');
 
         if ($config['indent_size'] !== null && $config['indent_style'] !== null) {
