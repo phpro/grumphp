@@ -36,6 +36,7 @@ class ComposerNormalizeTest extends AbstractExternalTaskTestCase
         yield 'defaults' => [
             [],
             [
+                'use_standalone' => false,
                 'indent_size' => null,
                 'indent_style' => null,
                 'no_update_lock' => true,
@@ -175,6 +176,17 @@ class ComposerNormalizeTest extends AbstractExternalTaskTestCase
                 '--dry-run',
                 '--no-update-lock',
                 '-q'
+            ]
+        ];
+        yield 'use_standalone' => [
+            [
+                'use_standalone' => true,
+            ],
+            $this->mockContext(RunContext::class, ['composer.json', 'hello2.php']),
+            'composer-normalize',
+            [
+                '--dry-run',
+                '--no-update-lock',
             ]
         ];
     }

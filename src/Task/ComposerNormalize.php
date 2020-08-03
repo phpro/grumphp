@@ -30,6 +30,7 @@ class ComposerNormalize extends AbstractExternalTask
             'indent_size' => null,
             'indent_style' => null,
             'no_update_lock' => true,
+            'use_standalone' => false,
             'verbose' => false,
         ]);
 
@@ -53,8 +54,9 @@ class ComposerNormalize extends AbstractExternalTask
             return TaskResult::createSkipped($this, $context);
         }
 
-        $arguments = $this->processBuilder->createArgumentsForCommand('composer');
-        $arguments->add('normalize');
+        $executable = $config['use_standalone'] ? 'composer-normalize' : 'composer';
+        $arguments = $this->processBuilder->createArgumentsForCommand($executable);
+        $arguments->addOptionalArgument('normalize', !$config['use_standalone']);
         $arguments->add('--dry-run');
 
         if ($config['indent_size'] !== null && $config['indent_style'] !== null) {

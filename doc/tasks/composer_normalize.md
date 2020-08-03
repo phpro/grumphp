@@ -44,6 +44,12 @@ Indent style (one of "space", "tab"); must be used with the `indent_size` option
 
 If `false`, do not update lock file if it exists.
 
+**use_standalone**
+
+*Default: false*
+
+If `true`, use the standalone `composer-normalize` command instead of the Composer plugin.
+
 **verbose**
 
 *Default: false*
