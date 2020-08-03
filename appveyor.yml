@@ -69,4 +69,4 @@ install:
 
 test_script:
   - ps: cd $Env:project_directory
-  - php ./bin/grumphp run --testsuite=windows
+  - php ./bin/grumphp run --testsuite=windows --no-interaction

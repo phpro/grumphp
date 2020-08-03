@@ -36,7 +36,7 @@ install:
   - travis_retry composer update --no-progress --profile --no-scripts --no-suggest $DEPENDENCIES
 
 script:
-   - bin/grumphp run
+   - bin/grumphp run --no-interaction
 
 notifications:
   irc:
