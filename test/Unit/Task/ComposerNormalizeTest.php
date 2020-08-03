@@ -4,16 +4,27 @@ declare(strict_types=1);
 
 namespace GrumPHPTest\Unit\Task;
 
+use GrumPHP\Formatter\ComposerNormalizeFormatter;
+use GrumPHP\Runner\FixableTaskResult;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\ComposerNormalize;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\Test\Task\AbstractExternalTaskTestCase;
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 
 class ComposerNormalizeTest extends AbstractExternalTaskTestCase
 {
+
+    /**
+     * @var ComposerNormalizeFormatter|ObjectProphecy
+     */
+    protected $formatter;
+
     protected function provideTask(): TaskInterface
     {
+        $this->formatter = $this->prophesize(ComposerNormalizeFormatter::class);
         return new ComposerNormalize(
             $this->processBuilder->reveal(),
             $this->formatter->reveal()
@@ -59,8 +70,10 @@ class ComposerNormalizeTest extends AbstractExternalTaskTestCase
             function () {
                 $this->mockProcessBuilder('composer', $process = $this->mockProcess(1));
                 $this->formatter->format($process)->willReturn('nope');
+                $this->formatter->formatErrorMessage(Argument::any())->willReturn('nope');
             },
-            'nope'
+            'nope',
+            FixableTaskResult::class
         ];
     }
 

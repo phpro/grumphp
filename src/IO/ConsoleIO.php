@@ -86,7 +86,8 @@ class ConsoleIO implements IOInterface, \Serializable
             );
         }
 
-        if (0 !== ftell($handle)) {
+        // Validate if the stdin was already read (possibly by another part of the code)
+        if ($this->stdin !== '' || ftell($handle) > 0) {
             return $this->stdin;
         }
 

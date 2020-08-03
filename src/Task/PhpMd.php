@@ -22,12 +22,15 @@ class PhpMd extends AbstractExternalTask
         $resolver->setDefaults([
             'whitelist_patterns' => [],
             'exclude' => [],
+            'report_format' => 'text',
             'ruleset' => ['cleancode', 'codesize', 'naming'],
             'triggered_by' => ['php'],
         ]);
 
         $resolver->addAllowedTypes('whitelist_patterns', ['array']);
         $resolver->addAllowedTypes('exclude', ['array']);
+        $resolver->addAllowedTypes('report_format', ['string']);
+        $resolver->addAllowedValues('report_format', ['text', 'ansi']);
         $resolver->addAllowedTypes('ruleset', ['array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
 
@@ -64,7 +67,7 @@ class PhpMd extends AbstractExternalTask
 
         $arguments = $this->processBuilder->createArgumentsForCommand('phpmd');
         $arguments->addCommaSeparatedFiles($files);
-        $arguments->add('text');
+        $arguments->add($config['report_format']);
         $arguments->addOptionalCommaSeparatedArgument('%s', $config['ruleset']);
         $arguments->addOptionalArgument('--exclude', !empty($config['exclude']));
         $arguments->addOptionalCommaSeparatedArgument('%s', $config['exclude']);
