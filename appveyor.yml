@@ -69,5 +69,4 @@ install:
 
 test_script:
   - ps: cd $Env:project_directory
-  - php ./tools/psalm --show-info=true
-  #- php ./bin/grumphp run
+  - php ./bin/grumphp run --testsuite=windows
