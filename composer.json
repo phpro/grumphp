@@ -40,7 +40,6 @@
     "require-dev": {
         "brianium/paratest": "^4.1",
         "composer/composer": "~1.9 || ^2.0@dev",
-        "ergebnis/composer-normalize": "^2.6",
         "jakub-onderka/php-parallel-lint": "~1.0",
         "nikic/php-parser": "~4.0",
         "phpspec/phpspec": "^6.2",

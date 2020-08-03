@@ -14,7 +14,8 @@ grumphp:
       testsuite: Unit
     composer:
       no_check_lock: true
-    composer_normalize: ~
+    composer_normalize:
+      use_standalone: true
     yamllint:
       parse_custom_tags: true
       ignore_patterns:
