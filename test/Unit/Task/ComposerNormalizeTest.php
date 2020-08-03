@@ -165,5 +165,16 @@ class ComposerNormalizeTest extends AbstractExternalTaskTestCase
                 '-q'
             ]
         ];
+        yield 'use_standalone' => [
+            [
+                'use_standalone' => true,
+            ],
+            $this->mockContext(RunContext::class, ['composer.json', 'hello2.php']),
+            'composer-normalize',
+            [
+                '--dry-run',
+                '--no-update-lock',
+            ]
+        ];
     }
 }
