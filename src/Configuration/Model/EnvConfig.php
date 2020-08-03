@@ -27,7 +27,7 @@ class EnvConfig
     /**
      * @param list<string> $files
      * @param array<string, string> $variables
-     * @param list<string> $files
+     * @param list<string> $paths
      */
     public function __construct(
         array $files,

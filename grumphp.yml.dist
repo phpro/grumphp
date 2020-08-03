@@ -14,7 +14,8 @@ grumphp:
       testsuite: Unit
     composer:
       no_check_lock: true
-    composer_normalize: ~
+    composer_normalize:
+      use_standalone: true
     yamllint:
       parse_custom_tags: true
       ignore_patterns:
@@ -35,11 +36,13 @@ grumphp:
       functional: true
     psalm:
       show_info: true
-      metadata:
-        blocking: false
   testsuites:
     git_pre_commit:
-      tasks: [phpcs, phpspec, phpunit, composer, composer_normalize, yamllint, phplint, phpparser]
+      tasks: [phpcs, phpspec, phpunit, composer, composer_normalize, yamllint, phplint, phpparser, psalm]
+    # Dont run psalm on windows for now. There is a known issue with the windows phar:
+    # https://github.com/vimeo/psalm/issues/2858
+    windows:
+      tasks: [phpcs, phpspec, phpunit, composer, composer_normalize, yamllint, phplint, phpparser, paratest]
   environment:
     paths:
       - tools

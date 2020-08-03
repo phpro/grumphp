@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <psalm
-    totallyTyped="false"
+    totallyTyped="true"
     errorLevel="3"
     resolveFromConfigFile="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -12,6 +12,9 @@
         <ignoreFiles>
             <directory name="src/Test" />
             <directory name="vendor" />
+            <directory name="test" />
+            <directory name="spec" />
+            <file name="src/Parser/Php/Visitor/AbstractVisitor.php" />
         </ignoreFiles>
     </projectFiles>
 

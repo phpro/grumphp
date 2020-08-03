@@ -12,7 +12,7 @@ class RuntimeException extends BaseRuntimeException implements ExceptionInterfac
 {
     public static function fromAnyException(Exception $e): self
     {
-        return new self($e->getMessage(), $e->getCode(), $e);
+        return new self($e->getMessage(), (int)$e->getCode(), $e);
     }
 
     public static function invalidTaskReturnType(TaskInterface $task): self

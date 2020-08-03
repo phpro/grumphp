@@ -6,6 +6,9 @@ namespace GrumPHP\Collection;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+/**
+ * @extends ArrayCollection<int, \GrumPHP\Parser\ParseError>
+ */
 class ParseErrorsCollection extends ArrayCollection
 {
     public function __toString(): string

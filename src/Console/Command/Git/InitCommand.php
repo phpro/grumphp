@@ -14,7 +14,6 @@ use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Process;
 
 /**
  * This command is responsible for enabling all the configured hooks.
@@ -43,6 +42,7 @@ class InitCommand extends Command
 
     /**
      * @var InputInterface
+     * @psalm-suppress PropertyNotSetInConstructor
      */
     private $input;
 
@@ -141,6 +141,9 @@ class InitCommand extends Command
         return str_replace(array_keys($replacements), array_values($replacements), $content);
     }
 
+    /**
+     * @param string|array $value
+     */
     private function parseHookVariable(string $key, $value): string
     {
         switch ($key) {
@@ -149,6 +152,7 @@ class InitCommand extends Command
             case 'ENV':
                 return DotEnvSerializer::serialize($value);
             default:
+                /** @var string $value */
                 return (string) $value;
         }
     }
@@ -179,9 +183,12 @@ class InitCommand extends Command
      *
      * @return null|string
      */
-    protected function useExoticConfigFile()
+    protected function useExoticConfigFile(): ?string
     {
-        if (!$configPath = $this->input->getOption('config')) {
+        /** @var ?string $configPath */
+        $configPath = $this->input->getOption('config');
+
+        if (!$configPath) {
             // Auto discovereable ...
             return null;
         }

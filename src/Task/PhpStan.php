@@ -32,12 +32,18 @@ class PhpStan extends AbstractExternalTask
         $resolver->addAllowedTypes('autoload_file', ['null', 'string']);
         $resolver->addAllowedTypes('configuration', ['null', 'string']);
         $resolver->addAllowedTypes('memory_limit', ['null', 'string']);
-        $resolver->setAllowedValues('level', function ($value) {
-            if ($value === null || $value === 'max') {
-                return true;
+        $resolver->setAllowedValues(
+            'level',
+            /**
+             * @param null|string|int $value
+             */
+            function ($value) {
+                if ($value === null || $value === 'max') {
+                    return true;
+                }
+                return false !== filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
             }
-            return false !== filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
-        });
+        );
         $resolver->addAllowedTypes('ignore_patterns', ['array']);
         $resolver->addAllowedTypes('force_patterns', ['array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);

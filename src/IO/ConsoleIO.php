@@ -75,6 +75,9 @@ class ConsoleIO implements IOInterface, \Serializable
         return $this->output;
     }
 
+    /**
+     * @param mixed $handle
+     */
     public function readCommandInput($handle): string
     {
         if (!is_resource($handle)) {
@@ -117,6 +120,7 @@ class ConsoleIO implements IOInterface, \Serializable
 
     public function section(): ConsoleSectionOutput
     {
+        assert($this->output instanceof ConsoleOutputInterface);
         return $this->output->section();
     }
 

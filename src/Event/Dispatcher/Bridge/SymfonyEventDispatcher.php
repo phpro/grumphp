@@ -16,6 +16,9 @@ class SymfonyEventDispatcher implements EventDispatcherInterface
      */
     private $dispatcher;
 
+    /**
+     * @param SymfonyLegacyEventDispatcher|SymfonyEventDispatcherContract $eventDispatcher
+     */
     public function __construct($eventDispatcher)
     {
         $this->dispatcher = $eventDispatcher;
@@ -25,10 +28,18 @@ class SymfonyEventDispatcher implements EventDispatcherInterface
     {
         $interfacesImplemented = class_implements($this->dispatcher);
         if (in_array(SymfonyEventDispatcherContract::class, $interfacesImplemented, true)) {
+            /**
+             * @psalm-suppress InvalidArgument
+             * @psalm-suppress TooManyArguments
+             */
             $this->dispatcher->dispatch($event, $eventName);
             return;
         }
 
+        /**
+         * @psalm-suppress InvalidArgument
+         * @psalm-suppress TooManyArguments
+         */
         $this->dispatcher->dispatch($eventName, $event);
     }
 }

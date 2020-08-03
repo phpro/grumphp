@@ -10,10 +10,13 @@ use GrumPHP\Runner\Reporting\TaskResultsReporter;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Test\Runner\AbstractRunnerMiddlewareTestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class ReportingTasksSectionRunnerMiddlewareTest extends AbstractRunnerMiddlewareTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ReportingTasksSectionRunnerMiddleware
      */
@@ -24,7 +27,7 @@ class ReportingTasksSectionRunnerMiddlewareTest extends AbstractRunnerMiddleware
      */
     private $taskResultsReporter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->taskResultsReporter = $this->prophesize(TaskResultsReporter::class);
         $this->middleware = new ReportingTasksSectionRunnerMiddleware(

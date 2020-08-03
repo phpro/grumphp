@@ -9,6 +9,9 @@ use GrumPHP\Parser\Php\Context\ParserContext;
 use GrumPHP\Parser\Php\PhpParserError;
 use PhpParser\NodeVisitorAbstract;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class AbstractVisitor extends NodeVisitorAbstract implements ContextAwareVisitorInterface
 {
     /**

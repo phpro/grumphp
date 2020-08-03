@@ -82,6 +82,8 @@ class CommitMessage implements TaskInterface
 
     public function run(ContextInterface $context): TaskResultInterface
     {
+        assert($context instanceof GitCommitMsgContext);
+
         $config = $this->getConfig()->getOptions();
         $commitMessage = $context->getCommitMessage();
         $exceptions = [];
@@ -158,7 +160,7 @@ class CommitMessage implements TaskInterface
         return $this->enforceTextWidth($context);
     }
 
-    private function enforceTextWidth(ContextInterface $context): TaskResult
+    private function enforceTextWidth(GitCommitMsgContext $context): TaskResult
     {
         $commitMessage = $context->getCommitMessage();
         $config = $this->getConfig()->getOptions();
@@ -184,7 +186,7 @@ class CommitMessage implements TaskInterface
                 if (mb_strlen(rtrim($line)) > $config['max_body_width']) {
                     $errors[] = sprintf(
                         'Line %u of commit message has > %u characters.',
-                        $index + 3,
+                        (int)($index) + 3,
                         $config['max_body_width']
                     );
                 }
@@ -227,7 +229,7 @@ class CommitMessage implements TaskInterface
         return mb_strlen($match[0]);
     }
 
-    private function subjectHasPunctuations(ContextInterface $context): bool
+    private function subjectHasPunctuations(GitCommitMsgContext $context): bool
     {
         $subjectLine = $this->getSubjectLine($context);
 
@@ -238,7 +240,7 @@ class CommitMessage implements TaskInterface
         return Str::containsOneOf($subjectLine, ['.', '!', '?', ',']);
     }
 
-    private function subjectHasTrailingPeriod(ContextInterface $context): bool
+    private function subjectHasTrailingPeriod(GitCommitMsgContext $context): bool
     {
         $subjectLine = $this->getSubjectLine($context);
 
@@ -253,7 +255,7 @@ class CommitMessage implements TaskInterface
         return true;
     }
 
-    private function subjectIsCapitalized(ContextInterface $context): bool
+    private function subjectIsCapitalized(GitCommitMsgContext $context): bool
     {
         $commitMessage = $context->getCommitMessage();
 
@@ -262,7 +264,7 @@ class CommitMessage implements TaskInterface
         }
 
         $lines = $this->getCommitMessageLinesWithoutComments($commitMessage);
-        $subject = array_reduce($lines, function ($subject, $line) {
+        $subject = array_reduce($lines, function (?string $subject, string $line) {
             if (null !== $subject) {
                 return $subject;
             }
@@ -278,12 +280,12 @@ class CommitMessage implements TaskInterface
             return false;
         }
 
-        $firstLetter = $match[1];
+        $firstLetter = (string) ($match[1] ?? '');
 
         return !(1 !== preg_match('/^(fixup|squash)!/u', $subject) && 1 !== preg_match('/[[:upper:]]/u', $firstLetter));
     }
 
-    private function subjectIsSingleLined(ContextInterface $context): bool
+    private function subjectIsSingleLined(GitCommitMsgContext $context): bool
     {
         $commitMessage = $context->getCommitMessage();
 
@@ -310,7 +312,7 @@ class CommitMessage implements TaskInterface
         }));
     }
 
-    private function enforceTypeScopeConventions()
+    private function enforceTypeScopeConventions(): bool
     {
         $config = $this->getConfig()->getOptions();
 
@@ -320,11 +322,9 @@ class CommitMessage implements TaskInterface
     }
 
     /**
-     * @param ContextInterface $context
-     *
      * @throws RuntimeException
      */
-    private function checkTypeScopeConventions($context): void
+    private function checkTypeScopeConventions(GitCommitMsgContext $context): void
     {
         $config = $this->getConfig()->getOptions();
         $subjectLine = $this->getSubjectLine($context);
@@ -368,7 +368,7 @@ class CommitMessage implements TaskInterface
      * @param $context
      * @return string
      */
-    private function getSubjectLine($context)
+    private function getSubjectLine(GitCommitMsgContext $context)
     {
         $commitMessage = $context->getCommitMessage();
         $lines = $this->getCommitMessageLinesWithoutComments($commitMessage);

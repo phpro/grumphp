@@ -14,10 +14,13 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Test\Runner\AbstractTaskHandlerMiddlewareTestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class EventDispatchingTaskHandlerMiddlewareTest extends AbstractTaskHandlerMiddlewareTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ObjectProphecy|EventDispatcherInterface
      */
@@ -28,7 +31,7 @@ class EventDispatchingTaskHandlerMiddlewareTest extends AbstractTaskHandlerMiddl
      */
     private $middleware;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $this->middleware = new EventDispatchingTaskHandlerMiddleware(

@@ -101,7 +101,7 @@ class BrunchTest extends AbstractExternalTaskTestCase
                 '--env',
                 'production',
                 '--jobs',
-                4,
+                '4',
             ]
         ];
         yield 'task' => [
@@ -115,7 +115,7 @@ class BrunchTest extends AbstractExternalTaskTestCase
                 '--env',
                 'production',
                 '--jobs',
-                4,
+                '4',
             ]
         ];
         yield 'env' => [
@@ -129,7 +129,7 @@ class BrunchTest extends AbstractExternalTaskTestCase
                 '--env',
                 'acceptation',
                 '--jobs',
-                4,
+                '4',
             ]
         ];
         yield 'jobs' => [
@@ -143,7 +143,7 @@ class BrunchTest extends AbstractExternalTaskTestCase
                 '--env',
                 'production',
                 '--jobs',
-                10,
+                '10',
             ]
         ];
         yield 'debug' => [
@@ -157,7 +157,7 @@ class BrunchTest extends AbstractExternalTaskTestCase
                 '--env',
                 'production',
                 '--jobs',
-                4,
+                '4',
                 '--debug',
             ]
         ];

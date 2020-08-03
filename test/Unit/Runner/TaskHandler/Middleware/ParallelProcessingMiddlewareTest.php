@@ -10,10 +10,13 @@ use GrumPHP\Runner\Reporting\TaskResultsReporter;
 use GrumPHP\Runner\TaskHandler\Middleware\ParallelProcessingMiddleware;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Test\Runner\AbstractTaskHandlerMiddlewareTestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class ParallelProcessingMiddlewareTest extends AbstractTaskHandlerMiddlewareTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ObjectProphecy|TaskResultsReporter
      */
@@ -24,7 +27,7 @@ class ParallelProcessingMiddlewareTest extends AbstractTaskHandlerMiddlewareTest
      */
     private $middleware;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->taskReporter = $this->prophesize(TaskResultsReporter::class);
         $this->middleware = new ParallelProcessingMiddleware(

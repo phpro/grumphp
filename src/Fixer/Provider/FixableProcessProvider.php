@@ -13,7 +13,7 @@ class FixableProcessProvider
 {
     /**
      * @param Process $process
-     * @param int[] $allowedExitCodes
+     * @param int[] $successExitCodes
      *
      * @return callable(): FixResult
      */

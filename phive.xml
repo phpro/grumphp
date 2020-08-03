@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phive xmlns="https://phar.io/phive">
   <phar name="psalm" version="^3.12.2" installed="3.12.2" location="./tools/psalm" copy="true"/>
+  <phar name="phpcs" version="^3.5.5" installed="3.5.5" location="./tools/phpcs" copy="true"/>
+  <phar name="phpcbf" version="^3.5.5" installed="3.5.5" location="./tools/phpcbf" copy="true"/>
+  <phar name="composer-normalize" version="^2.6.1" installed="2.6.1" location="./tools/composer-normalize" copy="true"/>
 </phive>

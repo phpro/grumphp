@@ -50,7 +50,7 @@ class Configuration implements ConfigurationInterface
 
         // Process timeout (null or float)
         $processTimeout = $rootNode->children()->scalarNode('process_timeout')->defaultValue(60.0);
-        $processTimeout->beforeNormalization()->always(static function ($value): ?float {
+        $processTimeout->beforeNormalization()->always(static function (?float $value): ?float {
             if (null === $value) {
                 return null;
             }

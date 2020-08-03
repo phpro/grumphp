@@ -9,8 +9,7 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 
 /**
- * @template TResult
- * @extends ArrayCollection<int, TResult|TaskResultInterface>
+ * @extends ArrayCollection<int, TaskResultInterface>
  */
 class TaskResultCollection extends ArrayCollection
 {
@@ -44,7 +43,7 @@ class TaskResultCollection extends ArrayCollection
 
     public function filterByResultCode(int $resultCode): self
     {
-        return $this->filter(function (TaskResultInterface $taskResult) use ($resultCode) {
+        return $this->filter(function (TaskResultInterface $taskResult) use ($resultCode): bool {
             return $resultCode === $taskResult->getResultCode();
         });
     }

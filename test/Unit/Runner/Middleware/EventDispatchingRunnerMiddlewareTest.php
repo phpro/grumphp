@@ -15,10 +15,13 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Test\Runner\AbstractRunnerMiddlewareTestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class EventDispatchingRunnerMiddlewareTest extends AbstractRunnerMiddlewareTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var EventDispatchingRunnerMiddleware
      */
@@ -29,7 +32,7 @@ class EventDispatchingRunnerMiddlewareTest extends AbstractRunnerMiddlewareTestC
      */
     private $eventDispatcher;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $this->middleware = new EventDispatchingRunnerMiddleware(

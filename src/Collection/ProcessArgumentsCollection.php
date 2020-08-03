@@ -7,6 +7,9 @@ namespace GrumPHP\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use GrumPHP\Exception\InvalidArgumentException;
 
+/**
+ * @extends ArrayCollection<int, string>
+ */
 class ProcessArgumentsCollection extends ArrayCollection
 {
     public static function forExecutable(string $executable): self
@@ -14,6 +17,9 @@ class ProcessArgumentsCollection extends ArrayCollection
         return new self([$executable]);
     }
 
+    /**
+     * @param mixed $value
+     */
     public function addOptionalArgument(string $argument, $value = null): void
     {
         if (!$value) {
@@ -23,6 +29,9 @@ class ProcessArgumentsCollection extends ArrayCollection
         $this->add(sprintf($argument, $value));
     }
 
+    /**
+     * @param string|null|int $value
+     */
     public function addOptionalArgumentWithSeparatedValue(string $argument, $value = null): void
     {
         if (!$value) {
@@ -30,7 +39,7 @@ class ProcessArgumentsCollection extends ArrayCollection
         }
 
         $this->add($argument);
-        $this->add($value);
+        $this->add((string) $value);
     }
 
     public function addOptionalCommaSeparatedArgument(string $argument, array $values, string $delimiter = ','): void
@@ -137,7 +146,7 @@ class ProcessArgumentsCollection extends ArrayCollection
      * @param string $argument
      * @param mixed $value
      */
-    public function addOptionalMixedArgument(string $argument, $value)
+    public function addOptionalMixedArgument(string $argument, $value): void
     {
         if (null === $value) {
             return;

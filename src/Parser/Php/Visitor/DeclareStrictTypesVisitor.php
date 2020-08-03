@@ -8,6 +8,9 @@ use PhpParser\Node;
 
 class DeclareStrictTypesVisitor extends AbstractVisitor
 {
+    /**
+     * @var bool
+     */
     private $hasStrictType = false;
 
     public function leaveNode(Node $node): void
@@ -26,6 +29,7 @@ class DeclareStrictTypesVisitor extends AbstractVisitor
                 continue;
             }
 
+            /** @psalm-suppress UndefinedPropertyFetch */
             $this->hasStrictType = $declare->value->value === 1;
         }
     }

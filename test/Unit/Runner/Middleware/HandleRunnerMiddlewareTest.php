@@ -19,10 +19,12 @@ use GrumPHP\Task\TaskInterface;
 use GrumPHP\Test\Runner\AbstractRunnerMiddlewareTestCase;
 use GrumPHPTest\Unit\Runner\Promise\LoopResettingTrait;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class HandleRunnerMiddlewareTest extends AbstractRunnerMiddlewareTestCase
 {
+    use ProphecyTrait;
     use LoopResettingTrait;
 
     /**
@@ -35,7 +37,7 @@ class HandleRunnerMiddlewareTest extends AbstractRunnerMiddlewareTestCase
      */
     private $middleware;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->taskHandler = $this->prophesize(TaskHandler::class);
         $this->middleware = new HandleRunnerMiddleware(

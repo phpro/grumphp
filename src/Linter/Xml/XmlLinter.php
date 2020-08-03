@@ -142,6 +142,7 @@ class XmlLinter implements LinterInterface
 
     private function validateDTD(DOMDocument $document): bool
     {
+        /** @psalm-suppress TypeDoesNotContainNull */
         if (null === $document->doctype) {
             return true;
         }

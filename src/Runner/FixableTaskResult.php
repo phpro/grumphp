@@ -9,7 +9,7 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 
 /**
- * @psalm-immutable
+ * @psalm-readonly
  */
 class FixableTaskResult implements TaskResultInterface
 {

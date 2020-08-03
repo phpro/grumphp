@@ -13,6 +13,9 @@ use SplFileInfo;
 use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo;
 use Traversable;
 
+/**
+ * @extends ArrayCollection<int, \SplFileInfo>
+ */
 class FilesCollection extends ArrayCollection implements \Serializable
 {
     /**
@@ -170,6 +173,8 @@ class FilesCollection extends ArrayCollection implements \Serializable
      *
      *
      * @see CustomFilterIterator
+     *
+     * @psalm-suppress LessSpecificImplementedReturnType
      */
     public function filter(Closure $closure): self
     {
@@ -178,7 +183,7 @@ class FilesCollection extends ArrayCollection implements \Serializable
         return new self(iterator_to_array($filter));
     }
 
-    public function filterByFileList(Traversable $fileList): self
+    public function filterByFileList(Traversable $fileList): FilesCollection
     {
         $allowedFiles = array_map(function (SplFileInfo $file) {
             return $file->getPathname();
@@ -189,7 +194,7 @@ class FilesCollection extends ArrayCollection implements \Serializable
         });
     }
 
-    public function ensureFiles(self $files): self
+    public function ensureFiles(self $files): FilesCollection
     {
         $newFiles = new self($this->toArray());
 
@@ -202,7 +207,7 @@ class FilesCollection extends ArrayCollection implements \Serializable
         return $newFiles;
     }
 
-    public function ignoreSymlinks(): self
+    public function ignoreSymlinks(): FilesCollection
     {
         return $this->filter(function (SplFileInfo $file) {
             return !$file->isLink();
@@ -235,5 +240,15 @@ class FilesCollection extends ArrayCollection implements \Serializable
         foreach ($files as $file) {
             $this->add(new SymfonySplFileInfo($file, dirname($file), $file));
         }
+    }
+
+    /**
+     * Help Psalm out a bit:
+     *
+     * @return \ArrayIterator<int, SplFileInfo>
+     */
+    public function getIterator(): \ArrayIterator
+    {
+        return new \ArrayIterator($this->toArray());
     }
 }

@@ -16,12 +16,16 @@ use GrumPHP\Task\Config\TaskConfig;
 use GrumPHP\Task\TaskInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Style\StyleInterface;
 
 class FixerUpperTest extends TestCase
 {
+
+    use ProphecyTrait;
+
     /**
      * @var ObjectProphecy|IOInterface
      */
@@ -42,7 +46,7 @@ class FixerUpperTest extends TestCase
      */
     private $fixerUpper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->IO = $this->prophesize(IOInterface::class);
         $this->style = $this->prophesize(StyleInterface::class);

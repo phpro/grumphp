@@ -74,13 +74,19 @@ class RunCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
+        /** @var string $taskNames */
+        $taskNames = $input->getOption('tasks') ?? '';
+
+        /** @var string $testsSuite */
+        $testsSuite = $input->getOption('testsuite') ?? '';
+
         $files = $this->registeredFilesLocator->locate();
-        $tasks = Str::explodeWithCleanup(',', $input->getOption('tasks') ?? '');
+        $tasks = Str::explodeWithCleanup(',', $taskNames);
 
         $context = new TaskRunnerContext(
             new RunContext($files),
-            (bool) $input->getOption('testsuite')
-                ? $this->testSuites->getRequired($input->getOption('testsuite'))
+            $testsSuite
+                ? $this->testSuites->getRequired($testsSuite)
                 : null,
             $tasks
         );

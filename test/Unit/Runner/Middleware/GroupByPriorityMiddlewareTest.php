@@ -12,15 +12,18 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\Test\Runner\AbstractRunnerMiddlewareTestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class GroupByPriorityMiddlewareTest extends AbstractRunnerMiddlewareTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var GroupByPriorityMiddleware
      */
     private $middleware;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->middleware = new GroupByPriorityMiddleware(
             $this->mockIO(),

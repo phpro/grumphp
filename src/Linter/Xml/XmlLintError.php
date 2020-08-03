@@ -9,7 +9,14 @@ use LibXMLError;
 
 class XmlLintError extends LintError
 {
+    /**
+     * @var int
+     */
     private $code;
+
+    /**
+     * @var int
+     */
     private $column;
 
     public function __construct(

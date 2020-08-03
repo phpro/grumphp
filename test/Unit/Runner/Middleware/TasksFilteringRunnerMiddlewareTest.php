@@ -17,16 +17,19 @@ use GrumPHP\Task\TaskInterface;
 use GrumPHP\Test\Runner\AbstractRunnerMiddlewareTestCase;
 use GrumPHP\TestSuite\TestSuite;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class TasksFilteringRunnerMiddlewareTest extends AbstractRunnerMiddlewareTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var TasksFilteringRunnerMiddleware
      */
     private $middleware;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->middleware = new TasksFilteringRunnerMiddleware();
     }

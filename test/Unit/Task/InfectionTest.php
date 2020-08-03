@@ -196,7 +196,7 @@ class InfectionTest extends AbstractExternalTaskTestCase
                 '--mutators=A,B,C'
             ]
         ];
-        yield 'mutators' => [
+        yield 'with_filtered_files' => [
             [
             ],
             $this->mockContext(GitPreCommitContext::class, ['hello.php', 'hello2.php']),

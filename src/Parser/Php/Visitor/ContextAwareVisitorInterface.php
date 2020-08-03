@@ -9,5 +9,5 @@ use PhpParser\NodeVisitor;
 
 interface ContextAwareVisitorInterface extends NodeVisitor
 {
-    public function setContext(ParserContext $context);
+    public function setContext(ParserContext $context): void;
 }

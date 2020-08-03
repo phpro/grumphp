@@ -16,11 +16,14 @@ use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\TaskInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use function Amp\Promise\wait;
 
 class TaskHandlerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @test */
     public function it_has_a_default_fallback_middleware(): void
     {

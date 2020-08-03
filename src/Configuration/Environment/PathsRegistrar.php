@@ -32,7 +32,7 @@ class PathsRegistrar
         }
 
         $pathStr = self::pathVarName();
-        $_SERVER[$pathStr] = realpath($path).PATH_SEPARATOR.getenv($pathStr);
+        $_SERVER[$pathStr] = realpath($path).PATH_SEPARATOR.(string)getenv($pathStr);
         putenv($pathStr.'='.$_SERVER[$pathStr]);
     }
 
@@ -58,7 +58,7 @@ class PathsRegistrar
     {
         return (bool) preg_match(
             '{(^|'.PATH_SEPARATOR.')'.preg_quote($dir).'($|'.PATH_SEPARATOR.')}',
-            $_SERVER[self::pathVarName()] ?? []
+            (string) ($_SERVER[self::pathVarName()] ?? '')
         );
     }
 }

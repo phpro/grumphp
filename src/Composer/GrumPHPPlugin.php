@@ -18,6 +18,9 @@ use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 {
     private const PACKAGE_NAME = 'phpro/grumphp';
@@ -68,14 +71,14 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function deactivate(Composer $composer, IOInterface $io)
+    public function deactivate(Composer $composer, IOInterface $io): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function uninstall(Composer $composer, IOInterface $io)
+    public function uninstall(Composer $composer, IOInterface $io): void
     {
     }
 
@@ -218,7 +221,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
 
         // Windows requires double double quotes
         // https://bugs.php.net/bug.php?id=49139
-        $windowsIsInsane = function (string $command) {
+        $windowsIsInsane = function (string $command): string {
             return $this->runsOnWindows() ? '"'.$command.'"' : $command;
         };
 
@@ -292,7 +295,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         return str_replace('/', DIRECTORY_SEPARATOR, $path);
     }
 
-    private function pluginErrored(string $reason)
+    private function pluginErrored(string $reason): void
     {
         $this->io->writeError('<fg=red>GrumPHP can not sniff your commits! ('.$reason.')</fg=red>');
     }

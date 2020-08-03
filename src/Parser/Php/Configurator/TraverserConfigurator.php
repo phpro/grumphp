@@ -34,7 +34,7 @@ class TraverserConfigurator
     private $container;
 
     /**
-     * @var ParserContext
+     * @var ParserContext|null
      */
     private $context;
 
@@ -101,6 +101,12 @@ class TraverserConfigurator
         if (\count($unknownConfiguredVisitorIds)) {
             throw new RuntimeException(
                 sprintf('Found unknown php_parser visitors: %s', implode(',', $unknownConfiguredVisitorIds))
+            );
+        }
+
+        if (!$this->context) {
+            throw new RuntimeException(
+                'Trying to register node viitors without a context. Please register a context first!'
             );
         }
 

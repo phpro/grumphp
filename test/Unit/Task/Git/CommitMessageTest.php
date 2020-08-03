@@ -54,7 +54,7 @@ class CommitMessageTest extends AbstractTaskTestCase
             $this->mockContext(GitPreCommitContext::class)
         ];
 
-        yield 'pre-commit-context' => [
+        yield 'commit-msg-context' => [
             true,
             $this->mockContext(GitCommitMsgContext::class)
         ];
@@ -352,6 +352,15 @@ class CommitMessageTest extends AbstractTaskTestCase
             },
             'Rule not matched: "0" /^hello((.|[\n])*)bye$/'
         ];
+        yield 'dont-enforce_capitalized_subject_fixup_without_subject' => [
+            [
+                'enforce_capitalized_subject' => true,
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('', 'only body')),
+            function () {
+            },
+            'Subject should start with a capital letter.'
+        ];
     }
 
     public function providePassesOnStuff(): iterable
@@ -388,14 +397,6 @@ class CommitMessageTest extends AbstractTaskTestCase
                 'enforce_capitalized_subject' => false,
             ],
             $this->mockCommitMsgContext($this->buildMessage('no capital subject')),
-            function () {
-            }
-        ];
-        yield 'dont-enforce_capitalized_subject_fixup' => [
-            [
-                'enforce_capitalized_subject' => true,
-            ],
-            $this->mockCommitMsgContext($this->buildMessage('', 'only body')),
             function () {
             }
         ];

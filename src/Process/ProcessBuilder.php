@@ -37,7 +37,7 @@ class ProcessBuilder
     }
 
     /**
-     * @param callable<string, string>|null $pathManipulator
+     * @param callable(string); string>|null $pathManipulator
      */
     public function createArgumentsForCommand(
         string $command,

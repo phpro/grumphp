@@ -8,8 +8,6 @@ platform:
 environment:
   matrix:
     - dependencies: highest
-      php_version: 7.2
-    - dependencies: highest
       php_version: 7.3
     - dependencies: highest
       php_version: 7.4.3  # OpenSSL issue will be resolved in 7.4.6
@@ -71,4 +69,4 @@ install:
 
 test_script:
   - ps: cd $Env:project_directory
-  - php ./bin/grumphp run
+  - php ./bin/grumphp run --testsuite=windows --no-interaction
