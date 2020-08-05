@@ -97,7 +97,7 @@ abstract class AbstractExternalTaskTestCase extends AbstractTaskTestCase
         $process = $this->prophesize(Process::class);
         $process->setInput(Argument::type(InputStream::class))->shouldBeCalled();
         $process->start()->shouldBeCalled();
-        $process->wait()->shouldBeCalled();
+        $process->wait()->willReturn($exitCode);
         $process->isSuccessful()->willReturn($exitCode === 0);
         $process->getOutput()->willReturn($output);
         $process->getErrorOutput()->willReturn($errors);
