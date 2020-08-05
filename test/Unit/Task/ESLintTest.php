@@ -70,7 +70,7 @@ class ESLintTest extends AbstractExternalTaskTestCase
 
                 $this->formatter->format($process)->willReturn($message = 'message');
             },
-            'nope',
+            'message',
             FixableTaskResult::class
         ];
     }

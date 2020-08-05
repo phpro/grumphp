@@ -77,7 +77,7 @@ class PhpCsFixerTest extends AbstractExternalTaskTestCase
                 $this->formatter->resetCounter()->shouldBeCalled();
                 $this->formatter->format($process)->willReturn($message = 'message');
             },
-            'nope',
+            'message',
             FixableTaskResult::class
         ];
     }
