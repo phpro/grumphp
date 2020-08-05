@@ -116,6 +116,7 @@ class InitCommand extends Command
             }
 
             $content = $this->parseHookBody($hook, $hookTemplate);
+            $this->filesystem->backupFile($gitHook, md5($content));
             $this->filesystem->dumpFile($gitHook, $content);
             $this->filesystem->chmod($gitHook, 0775);
         }

@@ -8,6 +8,8 @@ use GrumPHP\Util\Filesystem;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 use GrumPHPTest\Symfony\FilesystemTestCase;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class FilesystemTest extends FilesystemTestCase
 {
@@ -197,6 +199,34 @@ class FilesystemTest extends FilesystemTestCase
         $this->assertFalse($this->filesystem->isPathInFolder($this->workspace, $projectDir));
         $this->assertFalse($this->filesystem->isPathInFolder($this->workspace, $composerDir));
         $this->assertFalse($this->filesystem->isPathInFolder($this->workspace, $composerSubDir));
+    }
+
+    /** @test */
+    public function it_can_backup_files(): void
+    {
+        $this->filesystem->dumpFile($file1 = $this->buildPath('file1.txt'), $originalContent = 'originalContent');
+        $this->filesystem->dumpFile($file2 = $this->buildPath('file2.txt'), $originalContent = 'originalContent');
+        $this->filesystem->mkdir($dir = $this->buildPath('dir'));
+        $originalContentHash = md5($originalContent);
+
+        // These should do nothing:
+        $this->filesystem->backupFile($this->buildPath('unknown.txt'));
+        $this->filesystem->backupFile($dir);
+        $this->filesystem->backupFile($file1, $originalContentHash);
+
+        // Check if only the original file is in the work dit:
+        $detected = Finder::create()->in($this->workspace)->files()->sortByName();
+        self::assertSame(
+            array_keys(iterator_to_array($detected)),
+            [$file1, $file2]
+        );
+
+        // Now try actual backup:
+        $this->filesystem->backupFile($file1, md5('newcontent'));
+        self::assertTrue($this->filesystem->isFile($this->buildPath('file1.txt.'.md5($originalContent).'.backup')));
+
+        $this->filesystem->backupFile($file2);
+        self::assertTrue($this->filesystem->isFile($this->buildPath('file2.txt.'.md5($originalContent).'.backup')));
     }
 
     public function provideGuessedFiles()

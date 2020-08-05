@@ -136,4 +136,27 @@ class Filesystem extends SymfonyFilesystem
 
         return $path;
     }
+
+    /**
+     * This method can be used to create a backup of current file.
+     * It used md5 to hash the content.
+     * So multiple backups of a file can exist (depending on the content)
+     */
+    public function backupFile(string $fileName, ?string $hashOfNewContent = null): void
+    {
+        if (!$this->isFile($fileName)) {
+            return;
+        }
+
+        if (!$hash = md5_file($fileName)) {
+            return;
+        }
+
+        // Skip backup if the new file has the same content as the old one.
+        if ($hashOfNewContent && $hashOfNewContent === $hash) {
+            return;
+        }
+
+        $this->copy($fileName, sprintf('%s.%s.backup', $fileName, $hash));
+    }
 }
