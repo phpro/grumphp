@@ -2,22 +2,17 @@
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Fixer\Provider\FixableProcessProvider;
-use GrumPHP\Runner\FixableTaskResult;
+use GrumPHP\Fixer\Provider\FixableProcessResultProvider;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Process\Process;
 
 class ComposerNormalize extends AbstractExternalTask
 {
-  /**
-   * @var \GrumPHP\Formatter\ComposerNormalizeFormatter
-   */
-    protected $formatter;
-
     public function canRunInContext(ContextInterface $context): bool
     {
         return $context instanceof GitPreCommitContext || $context instanceof RunContext;
@@ -71,14 +66,12 @@ class ComposerNormalize extends AbstractExternalTask
         $process->run();
 
         if (!$process->isSuccessful()) {
-            $output = $this->formatter->format($process);
-            $arguments->removeElement('--dry-run');
-            $process = $this->processBuilder->buildProcess($arguments);
-            $fixerCommand = $process->getCommandLine();
-            $output .= $this->formatter->formatErrorMessage($fixerCommand);
-            return new FixableTaskResult(
-                TaskResult::createFailed($this, $context, $output),
-                FixableProcessProvider::provide($fixerCommand)
+            return FixableProcessResultProvider::provide(
+                TaskResult::createFailed($this, $context, $this->formatter->format($process)),
+                function () use ($arguments): Process {
+                    $arguments->removeElement('--dry-run');
+                    return $this->processBuilder->buildProcess($arguments);
+                }
             );
         }
 

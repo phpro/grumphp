@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace GrumPHP\Task;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
-use GrumPHP\Fixer\Provider\FixableProcessProvider;
+use GrumPHP\Fixer\Provider\FixableProcessResultProvider;
 use GrumPHP\Formatter\PhpcsFormatter;
-use GrumPHP\Runner\FixableTaskResult;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
-use RuntimeException;
+use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
@@ -94,23 +93,27 @@ class Phpcs extends AbstractExternalTask
         $process->run();
 
         if (!$process->isSuccessful()) {
-            $output = $this->formatter->format($process);
-            try {
-                $fixProcess = $this->createFixerProcess($this->formatter->getSuggestedFiles());
-            } catch (RuntimeException $exception) { // phpcbf could not get found.
-                $output .= PHP_EOL.'Info: phpcbf could not get found. Please consider to install it for suggestions.';
-                return TaskResult::createFailed($this, $context, $output);
-            }
+            $failedResult = TaskResult::createFailed($this, $context, $this->formatter->format($process));
 
-            if ($fixProcess) {
-                $output .= $this->formatter->formatManualFixingOutput($fixProcess);
-                return new FixableTaskResult(
-                    TaskResult::createFailed($this, $context, $output),
-                    FixableProcessProvider::provide($fixProcess->getCommandLine(), [0, 1])
+            try {
+                $fixerProcess = $this->createFixerProcess($this->formatter->getSuggestedFiles());
+            } catch (CommandNotFoundException $e) {
+                return $failedResult->withAppendedMessage(
+                    PHP_EOL.'Info: phpcbf could not be found. Please consider to install it for auto-fixing.'
                 );
             }
 
-            return TaskResult::createFailed($this, $context, $output);
+            if ($fixerProcess) {
+                return FixableProcessResultProvider::provide(
+                    $failedResult,
+                    function () use ($fixerProcess): Process {
+                        return $fixerProcess;
+                    },
+                    [0, 1]
+                );
+            }
+
+            return $failedResult;
         }
 
         return TaskResult::createPassed($this, $context);

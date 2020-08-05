@@ -1,4 +1,4 @@
-# ESLint
+# ESLint ![fixer](https://img.shields.io/badge/-fixer-informational)
 
 [ESLint](https://eslint.org/) is a static analysis tool for Javascript code. ESLint covers both code quality and coding style issues.
 

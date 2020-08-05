@@ -44,14 +44,6 @@ class PhpcsFormatterSpec extends ObjectBehavior
         $phpcsProcess->getOutput()->willReturn($this->getExampleData() . $json);
         $this->format($phpcsProcess)->shouldBe($this->getExampleData());
         $this->getSuggestedFiles()->shouldBe(['/var/www/Classes/Command/CacheCommandController.php']);
-
-        $phpcbdProcess->getCommandLine()->willReturn("'phpcbf' '--standard=PSR2' '--ignore=spec/*Spec.php,test/*.php' '/var/www/Classes/Command/CacheCommandController.php'");
-        $this->formatManualFixingOutput($phpcbdProcess)
-            ->shouldBe(sprintf(
-                '%sYou can fix some errors by running following command:%s',
-                PHP_EOL . PHP_EOL,
-                PHP_EOL . "'phpcbf' '--standard=PSR2' '--ignore=spec/*Spec.php,test/*.php' '/var/www/Classes/Command/CacheCommandController.php'"
-            ));
     }
 
     /**

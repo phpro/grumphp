@@ -4,26 +4,17 @@ declare(strict_types=1);
 
 namespace GrumPHP\Test\Unit\Task;
 
-use GrumPHP\Formatter\ESLintFormatter;
 use GrumPHP\Runner\FixableTaskResult;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\ESLint;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\Test\Task\AbstractExternalTaskTestCase;
-use Prophecy\Prophecy\ObjectProphecy;
-use Prophecy\Argument;
 
 class ESLintTest extends AbstractExternalTaskTestCase
 {
-    /**
-     * @var ESLintFormatter|ObjectProphecy
-     */
-    protected $formatter;
-
     protected function provideTask(): TaskInterface
     {
-        $this->formatter = $this->prophesize(ESLintFormatter::class);
         return new ESLint(
             $this->processBuilder->reveal(),
             $this->formatter->reveal()
@@ -78,7 +69,6 @@ class ESLintTest extends AbstractExternalTaskTestCase
                 $this->mockProcessBuilder('eslint', $process = $this->mockProcess(1));
 
                 $this->formatter->format($process)->willReturn($message = 'message');
-                $this->formatter->formatErrorMessage($message, Argument::any())->willReturn('nope');
             },
             'nope',
             FixableTaskResult::class

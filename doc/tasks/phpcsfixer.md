@@ -1,4 +1,4 @@
-# PHP-CS-Fixer
+# PHP-CS-Fixer ![fixer](https://img.shields.io/badge/-fixer-informational)
 
 The PHP-CS-Fixer task will run codestyle checks.
 
