@@ -3,6 +3,7 @@
 namespace spec\GrumPHP\Runner;
 
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use PhpSpec\ObjectBehavior;
@@ -60,5 +61,17 @@ class TaskResultSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createNonBlockingFailed', [$task, $context, self::FAILED_TASK_MESSAGE]);
         $this->isBlocking()->shouldBe(false);
+    }
+
+    function it_can_add_additional_message(TaskInterface $task, ContextInterface $context)
+    {
+        $this->beConstructedThrough('createFailed', [$task, $context, self::FAILED_TASK_MESSAGE]);
+        $new = $this->withAppendedMessage($appended = 'appendedinfo');
+
+        $new->shouldNotBe($this);
+        $new->getMessage()->shouldBe(self::FAILED_TASK_MESSAGE.$appended);
+        $new->getContext()->shouldBe($context);
+        $new->getTask()->shouldBe($task);
+        $new->getResultCode()->shouldBe(TaskResultInterface::FAILED);
     }
 }
