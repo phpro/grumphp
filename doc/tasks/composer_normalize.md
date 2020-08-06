@@ -1,4 +1,4 @@
-# Composer Normalize
+# Composer Normalize ![fixer](https://img.shields.io/badge/-fixer-informational)
 
 If you are using `composer`, you have probably modified the file `composer.json` at least once to keep things nice
 and tidy.

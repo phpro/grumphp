@@ -51,7 +51,7 @@ services:
     GrumPHP\Task\ComposerNormalize:
         arguments:
             - '@process_builder'
-            - '@formatter.composer_normalize'
+            - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, task: composer_normalize}
 
@@ -118,7 +118,7 @@ services:
     GrumPHP\Task\ESLint:
         arguments:
             - '@process_builder'
-            - '@formatter.eslint'
+            - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, task: eslint}
 

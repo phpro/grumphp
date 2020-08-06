@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace GrumPHP\Formatter;
 
-use GrumPHP\Collection\ProcessArgumentsCollection;
-use GrumPHP\Process\ProcessBuilder;
 use Symfony\Component\Process\Process;
 
 class PhpcsFormatter implements ProcessFormatterInterface
@@ -65,19 +63,10 @@ class PhpcsFormatter implements ProcessFormatterInterface
     }
 
     /**
-     * @return array<int, string>
+     * @return list<string>
      */
     public function getSuggestedFiles(): array
     {
         return $this->suggestedFiles;
-    }
-
-    public function formatManualFixingOutput(Process $fixProcess): string
-    {
-        return sprintf(
-            '%sYou can fix some errors by running following command:%s',
-            PHP_EOL.PHP_EOL,
-            PHP_EOL.$fixProcess->getCommandLine()
-        );
     }
 }

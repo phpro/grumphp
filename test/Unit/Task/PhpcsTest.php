@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace GrumPHPTest\Unit\Task;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
-use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Formatter\PhpcsFormatter;
 use GrumPHP\Runner\FixableTaskResult;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -14,6 +13,7 @@ use GrumPHP\Task\Phpcs;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\Test\Task\AbstractExternalTaskTestCase;
 use Prophecy\Prophecy\ObjectProphecy;
+use Symfony\Component\Console\Exception\CommandNotFoundException;
 
 class PhpcsTest extends AbstractExternalTaskTestCase
 {
@@ -78,13 +78,13 @@ class PhpcsTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php']),
             function () {
                 $this->mockProcessBuilder('phpcs', $process = $this->mockProcess(1));
-                $this->processBuilder->createArgumentsForCommand('phpcbf')->willThrow(RuntimeException::class);
+                $this->processBuilder->createArgumentsForCommand('phpcbf')->willThrow(CommandNotFoundException::class);
                 $this->formatter->format($process)->will(function () {
                     $this->getSuggestedFiles()->willReturn(['hello.php']);
                     return 'nope';
                 });
             },
-            'nope'.PHP_EOL.'Info: phpcbf could not get found. Please consider to install it for suggestions.'
+            'nope'.PHP_EOL.'Info: phpcbf could not be found. Please consider to install it for auto-fixing'
         ];
         yield 'exitCode1WithoutFixerBecauseOfNoFiles' => [
             [],
@@ -113,9 +113,8 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                     $this->getSuggestedFiles()->willReturn(['hello.php']);
                     return 'nope';
                 });
-                $this->formatter->formatManualFixingOutput($phpcbdProcess)->willReturn('fixer-command');
             },
-            'nopefixer-command',
+            'nope',
             FixableTaskResult::class
         ];
     }

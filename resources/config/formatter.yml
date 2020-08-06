@@ -5,11 +5,7 @@ services:
         class: GrumPHP\Formatter\PhpCsFixerFormatter
     formatter.phpcs:
         class: GrumPHP\Formatter\PhpcsFormatter
-    formatter.composer_normalize:
-        class: GrumPHP\Formatter\ComposerNormalizeFormatter
     formatter.git_blacklist:
         class: GrumPHP\Formatter\GitBlacklistFormatter
         arguments:
             - '@grumphp.io'
-    formatter.eslint:
-        class: GrumPHP\Formatter\ESLintFormatter

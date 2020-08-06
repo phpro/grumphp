@@ -77,11 +77,6 @@ class PhpCsFixerFormatterSpec extends ObjectBehavior
         $this->format($process)->shouldBe('1) name1');
     }
 
-    function it_formats_the_error_message()
-    {
-        $this->formatErrorMessage(['message1'], ['message2'])->shouldBeString();
-    }
-
     /**
      * @param $files
      *

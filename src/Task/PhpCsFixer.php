@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
-use GrumPHP\Fixer\Provider\FixableProcessProvider;
+use GrumPHP\Fixer\Provider\FixableProcessResultProvider;
 use GrumPHP\Formatter\PhpCsFixerFormatter;
-use GrumPHP\Runner\FixableTaskResult;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Process\Process;
 
 class PhpCsFixer extends AbstractExternalTask
 {
@@ -101,18 +101,13 @@ class PhpCsFixer extends AbstractExternalTask
         $process->run();
 
         if (!$process->isSuccessful()) {
-            $messages = [$this->formatter->format($process)];
-
-            $arguments->removeElement('--format=json');
-            $arguments->removeElement('--dry-run');
-
-            $process = $this->processBuilder->buildProcess($arguments);
-            $fixerCommand = $process->getCommandLine();
-            $errorMessage = $this->formatter->formatErrorMessage($messages, [$fixerCommand]);
-
-            return new FixableTaskResult(
-                TaskResult::createFailed($this, $context, $errorMessage),
-                FixableProcessProvider::provide($fixerCommand)
+            return FixableProcessResultProvider::provide(
+                TaskResult::createFailed($this, $context, $this->formatter->format($process)),
+                function () use ($arguments): Process {
+                    $arguments->removeElement('--format=json');
+                    $arguments->removeElement('--dry-run');
+                    return $this->processBuilder->buildProcess($arguments);
+                }
             );
         }
 

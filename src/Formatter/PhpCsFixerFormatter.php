@@ -35,15 +35,6 @@ class PhpCsFixerFormatter implements ProcessFormatterInterface
         return $this->formatJsonResponse($json);
     }
 
-    public function formatErrorMessage(array $messages, array $suggestions): string
-    {
-        return sprintf(
-            '%sYou can fix all errors by running following commands:%s',
-            implode(PHP_EOL, $messages).PHP_EOL.PHP_EOL,
-            PHP_EOL.implode(PHP_EOL, $suggestions)
-        );
-    }
-
     private function formatJsonResponse(array $json): string
     {
         $formatted = [];

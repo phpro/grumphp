@@ -83,4 +83,18 @@ class FixableTaskResultSpec extends ObjectBehavior
         $result->ok()->shouldBe(true);
         $result->result()->shouldBe('output');
     }
+
+    function it_can_add_additional_message(TaskResultInterface $taskResult)
+    {
+        $taskResult->withAppendedMessage(Argument::type('string'))->will(function ($arguments) use ($taskResult) {
+            $taskResult->getMessage()->willReturn($arguments[0]);
+
+            return $taskResult;
+        });
+
+        $new = $this->withAppendedMessage($appended = 'appendedinfo');
+
+        $new->shouldNotBe($this);
+        $new->getMessage()->shouldBe($appended);
+    }
 }

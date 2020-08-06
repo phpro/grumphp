@@ -1,4 +1,4 @@
-# Phpcs
+# Phpcs ![fixer](https://img.shields.io/badge/-fixer-informational)
 
 The Phpcs task will sniff your code for bad coding standards.
 
