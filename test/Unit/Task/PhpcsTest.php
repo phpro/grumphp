@@ -161,8 +161,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--extensions=php',
                 '--report=full',
                 '--report-json',
-                '--file-list=/tmp/randomshit',
-                'hello2.php',
+                $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
         ];
         yield 'standard' => [
@@ -176,8 +175,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--extensions=php',
                 '--report=full',
                 '--report-json',
-                'hello.php',
-                'hello2.php',
+                $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
         ];
         yield 'extensions' => [
@@ -190,8 +188,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--extensions=php,phtml',
                 '--report=full',
                 '--report-json',
-                'hello.php',
-                'hello2.php',
+                $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
         ];
         yield 'tab-width' => [
@@ -205,8 +202,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--tab-width=4',
                 '--report=full',
                 '--report-json',
-                'hello.php',
-                'hello2.php',
+                $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
         ];
         yield 'encoding' => [
@@ -220,8 +216,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--encoding=UTF-8',
                 '--report=full',
                 '--report-json',
-                'hello.php',
-                'hello2.php',
+                $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
         ];
         yield 'report' => [
@@ -234,8 +229,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--extensions=php',
                 '--report=small',
                 '--report-json',
-                'hello.php',
-                'hello2.php',
+                $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
         ];
         yield 'report-width' => [
@@ -249,8 +243,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--report=full',
                 '--report-width=20',
                 '--report-json',
-                'hello.php',
-                'hello2.php',
+                $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
         ];
         yield 'severity' => [
@@ -264,8 +257,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--report=full',
                 '--severity=5',
                 '--report-json',
-                'hello.php',
-                'hello2.php',
+                $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
         ];
         yield 'error-severity' => [
@@ -279,8 +271,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--report=full',
                 '--error-severity=5',
                 '--report-json',
-                'hello.php',
-                'hello2.php',
+                $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
         ];
         yield 'warning-severity' => [
@@ -294,8 +285,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--report=full',
                 '--warning-severity=5',
                 '--report-json',
-                'hello.php',
-                'hello2.php',
+                $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
         ];
         yield 'sniffs' => [
@@ -309,8 +299,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--report=full',
                 '--sniffs=sniff1,sniff2',
                 '--report-json',
-                'hello.php',
-                'hello2.php',
+                $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
         ];
         yield 'ignore-patternes' => [
@@ -324,8 +313,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--report=full',
                 '--ignore=ignore1,ignore2',
                 '--report-json',
-                'hello.php',
-                'hello2.php',
+                $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
         ];
         yield 'exclude' => [
@@ -339,9 +327,21 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--report=full',
                 '--exclude=exclude1,exclude2',
                 '--report-json',
-                'hello.php',
-                'hello2.php',
+                $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
         ];
+    }
+
+    private function expectFileList(string $expectedContents): callable
+    {
+        return static function (string $argument) use ($expectedContents) {
+            self::assertStringStartsWith('--file-list=', $argument);
+            list($arg, $tmpFile) = explode('=', $argument, 2);
+
+            self::assertFileExists($tmpFile);
+            self::assertStringEqualsFile($tmpFile, 'hello.php'.PHP_EOL.'hello2.php');
+
+            return $argument;
+        };
     }
 }
