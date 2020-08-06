@@ -69,17 +69,15 @@ class Phpcs extends AbstractExternalTask
     {
         /** @var array $config */
         $config = $this->getConfig()->getOptions();
-        /** @var array $whitelistPatterns */
-        $whitelistPatterns = $config['whitelist_patterns'];
-        /** @var array $extensions */
-        $extensions = $config['triggered_by'];
 
-        /** @var \GrumPHP\Collection\FilesCollection $files */
         $files = $context->getFiles();
-        if (\count($whitelistPatterns)) {
-            $files = $files->paths($whitelistPatterns);
+        if (\count($config['whitelist_patterns'])) {
+            $files = $files->paths($config['whitelist_patterns']);
         }
-        $files = $files->extensions($extensions);
+        if (\count($config['ignore_patterns'])) {
+            $files = $files->notPaths($config['ignore_patterns']);
+        }
+        $files = $files->extensions($config['triggered_by']);
 
         if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);

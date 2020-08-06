@@ -250,4 +250,14 @@ class FilesCollectionSpec extends ObjectBehavior
         $result->contains($file1)->shouldBe(false);
         $result->contains($file2)->shouldBe(true);
     }
+
+    public function it_can_convert_to_file_list(): void
+    {
+        $file1 = new \SplFileInfo('path1/file1.php');
+        $file2 = new \SplFileInfo('path1/file2.php');
+        $file3 = new \SplFileInfo('path1/file3.php');
+        $this->beConstructedWith([$file1, $file2, $file3]);
+
+        $this->toFileList()->shouldBe($file1 . PHP_EOL . $file2 . PHP_EOL . $file3);
+    }
 }
