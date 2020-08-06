@@ -161,7 +161,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--extensions=php',
                 '--report=full',
                 '--report-json',
-                'hello.php',
+                '--file-list=/tmp/randomshit',
                 'hello2.php',
             ]
         ];

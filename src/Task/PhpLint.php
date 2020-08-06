@@ -11,6 +11,7 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Process\Process;
 
 class PhpLint extends AbstractExternalTask
 {
@@ -59,11 +60,12 @@ class PhpLint extends AbstractExternalTask
         $arguments->addArgumentArrayWithSeparatedValue('--exclude', $config['exclude']);
         $arguments->add('--stdin');
 
-        $process = $this->processBuilder->buildProcess($arguments);
-        InputWritingProcessRunner::run(
-            $process,
+        $process = InputWritingProcessRunner::run(
+            function () use ($arguments): Process {
+                return $this->processBuilder->buildProcess($arguments);
+            },
             static function () use ($files) {
-                yield \implode(PHP_EOL, $files->toArray());
+                yield $files->toFileList();
             }
         );
 

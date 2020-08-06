@@ -251,4 +251,9 @@ class FilesCollection extends ArrayCollection implements \Serializable
     {
         return new \ArrayIterator($this->toArray());
     }
+
+    public function toFileList(): string
+    {
+        return \implode(PHP_EOL, $this->toArray());
+    }
 }

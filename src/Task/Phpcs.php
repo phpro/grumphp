@@ -7,6 +7,7 @@ namespace GrumPHP\Task;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Fixer\Provider\FixableProcessResultProvider;
 use GrumPHP\Formatter\PhpcsFormatter;
+use GrumPHP\Process\TmpFileUsingProcessRunner;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
@@ -84,13 +85,19 @@ class Phpcs extends AbstractExternalTask
             return TaskResult::createSkipped($this, $context);
         }
 
-        $arguments = $this->processBuilder->createArgumentsForCommand('phpcs');
-        $arguments = $this->addArgumentsFromConfig($arguments, $config);
-        $arguments->add('--report-json');
-        $arguments->addFiles($files);
+        $process = TmpFileUsingProcessRunner::run(
+            function (string $tmpFile) use ($config): Process {
+                $arguments = $this->processBuilder->createArgumentsForCommand('phpcs');
+                $arguments = $this->addArgumentsFromConfig($arguments, $config);
+                $arguments->add('--report-json');
+                $arguments->add('--file-list='.$tmpFile);
 
-        $process = $this->processBuilder->buildProcess($arguments);
-        $process->run();
+                return $this->processBuilder->buildProcess($arguments);
+            },
+            static function () use ($files): \Generator {
+                yield $files->toFileList();
+            }
+        );
 
         if (!$process->isSuccessful()) {
             $failedResult = TaskResult::createFailed($this, $context, $this->formatter->format($process));
