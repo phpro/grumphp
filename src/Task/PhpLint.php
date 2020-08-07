@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Process\InputWritingProcessRunner;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Process\InputStream;
+use Symfony\Component\Process\Process;
 
 class PhpLint extends AbstractExternalTask
 {
@@ -59,13 +60,14 @@ class PhpLint extends AbstractExternalTask
         $arguments->addArgumentArrayWithSeparatedValue('--exclude', $config['exclude']);
         $arguments->add('--stdin');
 
-        $inputStream = new InputStream();
-        $process = $this->processBuilder->buildProcess($arguments);
-        $process->setInput($inputStream);
-        $process->start();
-        $inputStream->write(\implode(PHP_EOL, $files->toArray()));
-        $inputStream->close();
-        $process->wait();
+        $process = InputWritingProcessRunner::run(
+            function () use ($arguments): Process {
+                return $this->processBuilder->buildProcess($arguments);
+            },
+            static function () use ($files) {
+                yield $files->toFileList();
+            }
+        );
 
         if (!$process->isSuccessful()) {
             return TaskResult::createFailed($this, $context, $this->formatter->format($process));

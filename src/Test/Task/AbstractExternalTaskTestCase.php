@@ -54,16 +54,45 @@ abstract class AbstractExternalTaskTestCase extends AbstractTaskTestCase
             $arguments = new ProcessArgumentsCollection()
         );
 
+        // Added extra boilerplate since ->will() overwrites the bound $this context.
+        $cliArgumentResolver = function (array $cliArguments, array $processArguments): array {
+            return $this->resolveExpectedCliArgumentFromCallable($cliArguments, $processArguments);
+        };
+
         $process = $process ?? $this->mockProcess(0);
         $this->processBuilder->buildProcess(Argument::any())
             ->shouldBeCalled()
-            ->will(function ($parameters) use ($cliArguments, $process) {
-                Assert::assertSame($cliArguments, $parameters[0]->getValues());
+            ->will(function ($parameters) use ($cliArguments, $process, $cliArgumentResolver) {
+                $processArguments = $parameters[0]->getValues();
+                $resolvedCliArguments = $cliArgumentResolver($cliArguments, $processArguments);
+
+                Assert::assertSame($resolvedCliArguments, $processArguments);
                 return $process;
             });
 
         $result = $task->run($context);
         self::assertInstanceOf(TaskResultInterface::class, $result);
+    }
+
+    /**
+     * This function makes it possible to create a expected argument callback that takes the actual argument as input.
+     * This can be handy for validating a part of the argument.
+     */
+    private function resolveExpectedCliArgumentFromCallable(array $expectedArguments, array $actualArguments): array
+    {
+        self::assertSameSize($expectedArguments, $actualArguments);
+
+        return array_map(
+            function ($expected, $actual) {
+                if ($expected instanceof \Closure) {
+                    return $expected($actual);
+                }
+
+                return $expected;
+            },
+            $expectedArguments,
+            $actualArguments
+        );
     }
 
     protected function mockProcess(int $exitCode = 0, string $output = '', string $errors = ''): Process
@@ -97,7 +126,7 @@ abstract class AbstractExternalTaskTestCase extends AbstractTaskTestCase
         $process = $this->prophesize(Process::class);
         $process->setInput(Argument::type(InputStream::class))->shouldBeCalled();
         $process->start()->shouldBeCalled();
-        $process->wait()->shouldBeCalled();
+        $process->wait()->shouldBeCalled()->willReturn($exitCode);
         $process->isSuccessful()->willReturn($exitCode === 0);
         $process->getOutput()->willReturn($output);
         $process->getErrorOutput()->willReturn($errors);

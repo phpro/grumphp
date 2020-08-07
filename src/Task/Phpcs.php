@@ -7,6 +7,7 @@ namespace GrumPHP\Task;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Fixer\Provider\FixableProcessResultProvider;
 use GrumPHP\Formatter\PhpcsFormatter;
+use GrumPHP\Process\TmpFileUsingProcessRunner;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
@@ -68,29 +69,29 @@ class Phpcs extends AbstractExternalTask
     {
         /** @var array $config */
         $config = $this->getConfig()->getOptions();
-        /** @var array $whitelistPatterns */
-        $whitelistPatterns = $config['whitelist_patterns'];
-        /** @var array $extensions */
-        $extensions = $config['triggered_by'];
 
-        /** @var \GrumPHP\Collection\FilesCollection $files */
-        $files = $context->getFiles();
-        if (\count($whitelistPatterns)) {
-            $files = $files->paths($whitelistPatterns);
-        }
-        $files = $files->extensions($extensions);
+        $files = $context->getFiles()
+            ->extensions($config['triggered_by'])
+            ->paths($config['whitelist_patterns'] ?? [])
+            ->notPaths($config['ignore_patterns'] ?? []);
 
         if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 
-        $arguments = $this->processBuilder->createArgumentsForCommand('phpcs');
-        $arguments = $this->addArgumentsFromConfig($arguments, $config);
-        $arguments->add('--report-json');
-        $arguments->addFiles($files);
+        $process = TmpFileUsingProcessRunner::run(
+            function (string $tmpFile) use ($config): Process {
+                $arguments = $this->processBuilder->createArgumentsForCommand('phpcs');
+                $arguments = $this->addArgumentsFromConfig($arguments, $config);
+                $arguments->add('--report-json');
+                $arguments->add('--file-list='.$tmpFile);
 
-        $process = $this->processBuilder->buildProcess($arguments);
-        $process->run();
+                return $this->processBuilder->buildProcess($arguments);
+            },
+            static function () use ($files): \Generator {
+                yield $files->toFileList();
+            }
+        );
 
         if (!$process->isSuccessful()) {
             $failedResult = TaskResult::createFailed($this, $context, $this->formatter->format($process));
