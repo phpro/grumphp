@@ -68,7 +68,7 @@ class PhpCpd extends AbstractExternalTask
         }, $config['triggered_by']);
 
         $arguments->addArgumentArray('--exclude=%s', $config['exclude']);
-        $arguments->addArgumentArray('--names-exclude=%s', $config['names_exclude']);
+        $arguments->addOptionalCommaSeparatedArgument('--names-exclude=%s', $config['names_exclude']);
         $arguments->addOptionalCommaSeparatedArgument('--regexps-exclude=%s', $config['regexps_exclude']);
         $arguments->addRequiredArgument('--min-lines=%u', (string) $config['min_lines']);
         $arguments->addRequiredArgument('--min-tokens=%u', (string) $config['min_tokens']);
