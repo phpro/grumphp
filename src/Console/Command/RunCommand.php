@@ -110,7 +110,7 @@ class RunCommand extends Command
     private function detectFiles(ConsoleIO $io): FilesCollection
     {
         if ($stdin = $io->readCommandInput(STDIN)) {
-            $this->stdInFileLocator->locate($stdin);
+            return $this->stdInFileLocator->locate($stdin);
         }
 
         return $this->registeredFilesLocator->locate();

@@ -91,9 +91,11 @@ class ConsoleIO implements IOInterface, \Serializable
             return $this->stdin;
         }
 
+        $read = [$handle];
+        $write = $except = null;
         $input = '';
-        while (!feof($handle)) {
-            $input .= fread($handle, 1024);
+        if (\stream_select($read, $write, $except, 0)) {
+            $input = \stream_get_contents($handle) ?: '';
         }
 
         // When the input only consist of white space characters, we assume that there is no input.
