@@ -94,7 +94,12 @@ class ConsoleIO implements IOInterface, \Serializable
         $read = [$handle];
         $write = $except = null;
         $input = '';
+
+        // By using stream-select, the stdin will not be read if there is no content on the stream.
+        // This will still make it available for interactive questions from the cli.
         if (\stream_select($read, $write, $except, 0)) {
+            // Once the stream is read, it is marked as EOF.
+            // From that point on, you sadly cannot use interactive cli questions anymore.
             $input = \stream_get_contents($handle) ?: '';
         }
 
