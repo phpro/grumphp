@@ -28,8 +28,19 @@ php ./vendor/bin/grumphp git:pre-commit
 php ./vendor/bin/grumphp git:commit-msg
 ```
 
-Both commands support raw git diffs as STDIN input. 
+Both commands support raw git diffs and file lists as STDIN input. 
 This way it is possible to pass changes triggered by `git commit -a` from the GIT hook to the GrumPHP commands.
+If no stdin is provided, it will load the currently staged git diff.
+
+Example stdin usages:
+
+```sh
+git diff | php ./vendor/bin/grumphp git:pre-commit
+git diff --staged | php ./vendor/bin/grumphp git:pre-commit
+git ls-files src | php ./vendor/bin/grumphp git:pre-commit
+```
+
+:exclamation: *If you use the stdin, we won't be able to answer questions interactively.*
 
 ## Run
 
@@ -51,3 +62,18 @@ php ./vendor/bin/grumphp run --tasks=task1,task2
 
 The `--tasks` value has to be a comma-separated string of task names that match the keys in the `tasks` section 
 of the `grumphp.yml` file. See [#580](https://github.com/phpro/grumphp/issues/580) for a more exhaustive explanation.
+
+The run command support raw git diffs and file lists as STDIN input. 
+This way it is possible to select which files you want grumphp to check.
+If no stdin is provided, it will load all files known to git.
+
+Example stdin usages:
+
+```sh
+git diff | php ./vendor/bin/grumphp run
+git diff --staged | php ./vendor/bin/grumphp run
+git ls-files src | php ./vendor/bin/grumphp run
+```
+
+:exclamation: *If you use the stdin, we won't be able to answer questions interactively.*
+ 
