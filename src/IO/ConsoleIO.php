@@ -91,13 +91,11 @@ class ConsoleIO implements IOInterface, \Serializable
             return $this->stdin;
         }
 
-        $read = [$handle];
-        $write = $except = null;
         $input = '';
 
-        // By using stream-select, the stdin will not be read if there is no content on the stream.
-        // This will still make it available for interactive questions from the cli.
-        if (\stream_select($read, $write, $except, 0)) {
+        // Validate if the resource is being piped to.
+        // If it is not a tty, it can be read in a non blocking way.
+        if (!\stream_isatty($handle)) {
             // Once the stream is read, it is marked as EOF.
             // From that point on, you sadly cannot use interactive cli questions anymore.
             $input = \stream_get_contents($handle) ?: '';
