@@ -25,14 +25,16 @@ services:
     GrumPHP\Console\Command\RunCommand:
         arguments:
             - '@GrumPHP\Collection\TestSuiteCollection'
-            - '@locator.registered_files'
+            - '@GrumPHP\Locator\StdInFiles'
+            - '@GrumPHP\Locator\RegisteredFiles'
             - '@GrumPHP\Runner\TaskRunner'
         tags:
             - { name: 'console.command' }
     GrumPHP\Console\Command\Git\CommitMsgCommand:
         arguments:
             - '@GrumPHP\Collection\TestSuiteCollection'
-            - '@locator.changed_files'
+            - '@GrumPHP\Locator\StdInFiles'
+            - '@GrumPHP\Locator\ChangedFiles'
             - '@GrumPHP\Runner\TaskRunner'
             - '@grumphp.util.filesystem'
             - '@GrumPHP\Util\Paths'
@@ -55,7 +57,8 @@ services:
     GrumPHP\Console\Command\Git\PreCommitCommand:
         arguments:
             - '@GrumPHP\Collection\TestSuiteCollection'
-            - '@locator.changed_files'
+            - '@GrumPHP\Locator\StdInFiles'
+            - '@GrumPHP\Locator\ChangedFiles'
             - '@GrumPHP\Runner\TaskRunner'
         tags:
             - { name: 'console.command' }

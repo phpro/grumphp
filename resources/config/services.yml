@@ -25,7 +25,7 @@ services:
     process_builder:
       class: GrumPHP\Process\ProcessBuilder
       arguments:
-        - '@locator.external_command'
+        - '@GrumPHP\Locator\ExternalCommand'
         - '@grumphp.io'
         - '@GrumPHP\Configuration\Model\ProcessConfig'
       public: true

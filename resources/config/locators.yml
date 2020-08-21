@@ -4,30 +4,34 @@ services:
             - '@GrumPHP\Configuration\Model\AsciiConfig'
             - '@filesystem'
             - '@GrumPHP\Util\Paths'
-        public: true
 
-    locator.external_command:
-        class: GrumPHP\Locator\ExternalCommand
+    GrumPHP\Locator\ExternalCommand:
+        class:
         factory: ['GrumPHP\Locator\ExternalCommand', 'loadWithPaths']
         arguments:
             - '@GrumPHP\Util\Paths'
             - '@executable_finder'
-        public: true
 
-    locator.changed_files:
-        class: GrumPHP\Locator\ChangedFiles
+    GrumPHP\Locator\ChangedFiles:
         arguments:
             - '@GrumPHP\Git\GitRepository'
             - '@filesystem'
             - '@GrumPHP\Util\Paths'
-        public: true
 
-    locator.registered_files:
-        class: GrumPHP\Locator\RegisteredFiles
+    GrumPHP\Locator\ListedFiles:
+        arguments:
+            - '@GrumPHP\Util\Paths'
+
+    GrumPHP\Locator\RegisteredFiles:
         arguments:
             - '@GrumPHP\Git\GitRepository'
             - '@GrumPHP\Util\Paths'
-        public: true
+            - '@GrumPHP\Locator\ListedFiles'
+
+    GrumPHP\Locator\StdInFiles:
+        arguments:
+            - '@GrumPHP\Locator\ChangedFiles'
+            - '@GrumPHP\Locator\ListedFiles'
 
     GrumPHP\Locator\GitWorkingDirLocator:
         arguments:

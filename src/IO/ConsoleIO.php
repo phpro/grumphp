@@ -92,8 +92,13 @@ class ConsoleIO implements IOInterface, \Serializable
         }
 
         $input = '';
-        while (!feof($handle)) {
-            $input .= fread($handle, 1024);
+
+        // Validate if the resource is being piped to.
+        // If it is not a tty, it can be read in a non blocking way.
+        if (!\stream_isatty($handle)) {
+            // Once the stream is read, it is marked as EOF.
+            // From that point on, you sadly cannot use interactive cli questions anymore.
+            $input = \stream_get_contents($handle) ?: '';
         }
 
         // When the input only consist of white space characters, we assume that there is no input.

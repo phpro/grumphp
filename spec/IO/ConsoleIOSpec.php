@@ -81,6 +81,12 @@ class ConsoleIOSpec extends ObjectBehavior
         $this->writeError(['test']);
     }
 
+    function it_doesnt_read_empty_input()
+    {
+        $handle = $this->mockHandle('');
+        $this->readCommandInput($handle)->shouldBe('');
+    }
+
     function it_reads_command_input()
     {
         $handle = $this->mockHandle('input');
@@ -139,7 +145,7 @@ EOD;
 
     private function mockHandle($content)
     {
-        $handle = fopen('php://memory', 'a');
+        $handle = tmpfile();
         fwrite($handle, $content);
         rewind($handle);
 

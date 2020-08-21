@@ -6,9 +6,9 @@ namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\TestSuiteCollection;
-use GrumPHP\Console\Helper\TaskRunnerHelper;
 use GrumPHP\IO\ConsoleIO;
 use GrumPHP\Locator\ChangedFiles;
+use GrumPHP\Locator\StdInFiles;
 use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -32,6 +32,11 @@ class PreCommitCommand extends Command
     private $testSuites;
 
     /**
+     * @var StdInFiles
+     */
+    private $stdInFilesLocator;
+
+    /**
      * @var ChangedFiles
      */
     private $changedFilesLocator;
@@ -43,12 +48,14 @@ class PreCommitCommand extends Command
 
     public function __construct(
         TestSuiteCollection $testSuites,
+        StdInFiles $stdInFilesLocator,
         ChangedFiles $changedFilesLocator,
         TaskRunner $taskRunner
     ) {
         parent::__construct();
 
         $this->testSuites = $testSuites;
+        $this->stdInFilesLocator = $stdInFilesLocator;
         $this->changedFilesLocator = $changedFilesLocator;
         $this->taskRunner = $taskRunner;
     }
@@ -91,7 +98,7 @@ class PreCommitCommand extends Command
     protected function getCommittedFiles(ConsoleIO $io): FilesCollection
     {
         if ($stdin = $io->readCommandInput(STDIN)) {
-            return $this->changedFilesLocator->locateFromRawDiffInput($stdin);
+            return $this->stdInFilesLocator->locate($stdin);
         }
 
         return $this->changedFilesLocator->locateFromGitRepository();
