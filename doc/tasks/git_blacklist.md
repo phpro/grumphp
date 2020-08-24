@@ -15,7 +15,7 @@ grumphp:
             whitelist_patterns: []
             triggered_by: ['php']
             regexp_type: G
-            match_word: true
+            match_word: false
 ```
 
 **keywords**
