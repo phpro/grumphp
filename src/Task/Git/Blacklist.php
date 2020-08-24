@@ -41,6 +41,7 @@ class Blacklist extends AbstractExternalTask
             'whitelist_patterns' => [],
             'triggered_by' => ['php'],
             'regexp_type' => 'G',
+            'match_word' => false
         ]);
 
         $resolver->addAllowedTypes('keywords', ['array']);
@@ -49,6 +50,7 @@ class Blacklist extends AbstractExternalTask
         $resolver->addAllowedTypes('regexp_type', ['string']);
 
         $resolver->setAllowedValues('regexp_type', ['G', 'E', 'P']);
+        $resolver->addAllowedTypes('match_word', ['bool']);
 
         return $resolver;
     }
@@ -81,6 +83,7 @@ class Blacklist extends AbstractExternalTask
         $arguments->add('-n');
         $arguments->add('--break');
         $arguments->add('--heading');
+        $arguments->addOptionalArgument('--word-regexp', $config['match_word']);
         $arguments->addOptionalArgument('--color', $this->IO->isDecorated());
         $arguments->addOptionalArgument('-%s', $config['regexp_type']);
         $arguments->addArgumentArrayWithSeparatedValue('-e', $config['keywords']);

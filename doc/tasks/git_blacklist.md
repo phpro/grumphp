@@ -15,6 +15,7 @@ grumphp:
             whitelist_patterns: []
             triggered_by: ['php']
             regexp_type: G
+            match_word: false
 ```
 
 **keywords**
@@ -49,3 +50,13 @@ You can overwrite this option to whatever filetype you want to validate!
 *Default: G*
 
 This option allows you to choose the type of regexp you want to use for patterns (can be G for POSIX basic, E for POSIX extended or P for Perl Compatible).
+
+**match_word**
+
+*Default: false*
+
+This option allows you to choose how the keywords is found.
+
+For instance let's say you have a keyword looking like `"dd("` by default this task would also find any
+text before or after the keyword meaning this: `function add($someTask)` would still be considered invalid.
+This configuration option allows you to get around that issue.

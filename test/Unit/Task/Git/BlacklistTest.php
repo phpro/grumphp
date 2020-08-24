@@ -40,6 +40,7 @@ class BlacklistTest extends AbstractExternalTaskTestCase
                 'whitelist_patterns' => [],
                 'triggered_by' => ['php'],
                 'regexp_type' => 'G',
+                'match_word' => false
             ]
         ];
     }
@@ -173,6 +174,30 @@ class BlacklistTest extends AbstractExternalTaskTestCase
                 '--heading',
                 '--color',
                 '-P',
+                '-e',
+                'keyword',
+                'hello.php',
+                'hello2.php',
+            ],
+            $this->mockProcess(1)
+        ];
+
+        yield 'match_word' => [
+            [
+                'keywords' => ['keyword'],
+                'match_word' => true,
+            ],
+            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'git',
+            [
+                'grep',
+                '--cached',
+                '-n',
+                '--break',
+                '--heading',
+                '--word-regexp',
+                '--color',
+                '-G',
                 '-e',
                 'keyword',
                 'hello.php',
