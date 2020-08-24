@@ -66,7 +66,6 @@ class Blacklist extends AbstractExternalTask
 
         $whitelistPatterns = $config['whitelist_patterns'];
         $extensions = $config['triggered_by'];
-        $matchWord = $config['match_word'];
 
         $files = $context->getFiles();
         if (0 !== \count($whitelistPatterns)) {
@@ -84,11 +83,7 @@ class Blacklist extends AbstractExternalTask
         $arguments->add('-n');
         $arguments->add('--break');
         $arguments->add('--heading');
-
-        if (true === $matchWord) {
-            $arguments->add('--word-regexp');
-        }
-
+        $arguments->addOptionalArgument('--word-regexp', $config['match_word']);
         $arguments->addOptionalArgument('--color', $this->IO->isDecorated());
         $arguments->addOptionalArgument('-%s', $config['regexp_type']);
         $arguments->addArgumentArrayWithSeparatedValue('-e', $config['keywords']);
