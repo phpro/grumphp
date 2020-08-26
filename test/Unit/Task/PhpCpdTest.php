@@ -29,7 +29,7 @@ class PhpCpdTest extends AbstractExternalTaskTestCase
                 '--exclude=vendor',
                 '--min-lines=5',
                 '--min-tokens=70',
-                '--names=*.php',
+                '--suffix=*.php',
                 '.',
             ],
         ];
@@ -44,7 +44,7 @@ class PhpCpdTest extends AbstractExternalTaskTestCase
                 '--exclude=vendor',
                 '--min-lines=5',
                 '--min-tokens=70',
-                '--names=*.php',
+                '--suffix=*.php',
                 'folder-1',
                 'folder-2',
             ],
@@ -61,39 +61,7 @@ class PhpCpdTest extends AbstractExternalTaskTestCase
                 '--exclude=folder-2',
                 '--min-lines=5',
                 '--min-tokens=70',
-                '--names=*.php',
-                '.',
-            ],
-        ];
-
-        yield 'names_exclude' => [
-            [
-                'names_exclude' => ['hello.php', 'exclude.exe']
-            ],
-            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
-            'phpcpd',
-            [
-                '--exclude=vendor',
-                '--names-exclude=hello.php,exclude.exe',
-                '--min-lines=5',
-                '--min-tokens=70',
-                '--names=*.php',
-                '.',
-            ],
-        ];
-
-        yield 'regexps_exclude' => [
-            [
-                'regexps_exclude' => ['hello.*', '*.exe']
-            ],
-            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
-            'phpcpd',
-            [
-                '--exclude=vendor',
-                '--regexps-exclude=hello.*,*.exe',
-                '--min-lines=5',
-                '--min-tokens=70',
-                '--names=*.php',
+                '--suffix=*.php',
                 '.',
             ],
         ];
@@ -108,7 +76,7 @@ class PhpCpdTest extends AbstractExternalTaskTestCase
                 '--exclude=vendor',
                 '--min-lines=5',
                 '--min-tokens=70',
-                '--names=*.php',
+                '--suffix=*.php',
                 '--fuzzy',
                 '.',
             ],
@@ -124,7 +92,7 @@ class PhpCpdTest extends AbstractExternalTaskTestCase
                 '--exclude=vendor',
                 '--min-lines=10',
                 '--min-tokens=70',
-                '--names=*.php',
+                '--suffix=*.php',
                 '.',
             ],
         ];
@@ -139,7 +107,7 @@ class PhpCpdTest extends AbstractExternalTaskTestCase
                 '--exclude=vendor',
                 '--min-lines=5',
                 '--min-tokens=10',
-                '--names=*.php',
+                '--suffix=*.php',
                 '.',
             ],
         ];
@@ -154,7 +122,7 @@ class PhpCpdTest extends AbstractExternalTaskTestCase
                 '--exclude=vendor',
                 '--min-lines=5',
                 '--min-tokens=70',
-                '--names=*.php,*.html',
+                '--suffix=*.php,*.html',
                 '.',
             ],
         ];
@@ -167,8 +135,6 @@ class PhpCpdTest extends AbstractExternalTaskTestCase
             [
                 'directory' => ['.'],
                 'exclude' => ['vendor'],
-                'names_exclude' => [],
-                'regexps_exclude' => [],
                 'fuzzy' => false,
                 'min_lines' => 5,
                 'min_tokens' => 70,
