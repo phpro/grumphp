@@ -39,23 +39,6 @@ With this parameter you can define which directories you want to run `phpcpd` in
 
 With this parameter you will be able to exclude one or multiple directories from code analysis (must be relative to `directory`).
 
-**names_exclude**
-
-*Default: []*
-
-With this parameter you will be able to exclude one or multiple files from code analysis.
-The values of this option refer to the file names, not to the paths.
-
-You can use a regexp, a glob, or a string.
-
-**regexps_exclude**
-
-*Default: []*
-
-With this parameter you will be able to exclude one or multiple files from code analysis.
-
-You can use patterns (delimited with / sign) or simple strings.
-
 **fuzzy**
 
 *Default: false*

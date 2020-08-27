@@ -22,8 +22,6 @@ class PhpCpd extends AbstractExternalTask
         $resolver->setDefaults([
             'directory' => ['.'],
             'exclude' => ['vendor'],
-            'names_exclude' => [],
-            'regexps_exclude' => [],
             'fuzzy' => false,
             'min_lines' => 5,
             'min_tokens' => 70,
@@ -32,8 +30,6 @@ class PhpCpd extends AbstractExternalTask
 
         $resolver->addAllowedTypes('directory', ['array']);
         $resolver->addAllowedTypes('exclude', ['array']);
-        $resolver->addAllowedTypes('names_exclude', ['array']);
-        $resolver->addAllowedTypes('regexps_exclude', ['array']);
         $resolver->addAllowedTypes('fuzzy', ['bool']);
         $resolver->addAllowedTypes('min_lines', ['int']);
         $resolver->addAllowedTypes('min_tokens', ['int']);
@@ -68,11 +64,9 @@ class PhpCpd extends AbstractExternalTask
         }, $config['triggered_by']);
 
         $arguments->addArgumentArray('--exclude=%s', $config['exclude']);
-        $arguments->addOptionalCommaSeparatedArgument('--names-exclude=%s', $config['names_exclude']);
-        $arguments->addOptionalCommaSeparatedArgument('--regexps-exclude=%s', $config['regexps_exclude']);
         $arguments->addRequiredArgument('--min-lines=%u', (string) $config['min_lines']);
         $arguments->addRequiredArgument('--min-tokens=%u', (string) $config['min_tokens']);
-        $arguments->addOptionalCommaSeparatedArgument('--names=%s', $extensions);
+        $arguments->addOptionalCommaSeparatedArgument('--suffix=%s', $extensions);
         $arguments->addOptionalArgument('--fuzzy', $config['fuzzy']);
         $arguments->addArgumentArray('%s', $config['directory']);
 
