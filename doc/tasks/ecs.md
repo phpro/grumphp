@@ -20,6 +20,7 @@ grumphp:
             config: ~
             level: ~
             paths: []
+            files_on_pre_commit: false
             triggered_by: ['php']
             clear-cache: false
             no-progress-bar: true
@@ -47,6 +48,13 @@ If you want to use a different level than the default one, specify it with this 
 Specify which folders you want to run ecs on.
 If you don't set any paths, ECS falls back to [the paths configuration inside your config file](https://github.com/symplify/easy-coding-standard#set-paths).
 Be aware: If both the CLI and the config file don't contain any paths, the task will always return true.
+
+**files_on_pre_commit**
+
+*Default: false*
+
+This option makes it possible to use the changed files as paths during pre-commits.
+It will use the paths option to make sure only committed files that match the path are validated.
 
 **triggered_by**
 
