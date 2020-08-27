@@ -20,7 +20,7 @@ class Ecs extends AbstractExternalTask
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'whitelist_patterns' => [],
+            'paths' => [],
             'clear-cache' => false,
             'no-progress-bar' => true,
             'config' => null,
@@ -28,7 +28,7 @@ class Ecs extends AbstractExternalTask
             'triggered_by' => ['php'],
         ]);
 
-        $resolver->addAllowedTypes('whitelist_patterns', ['array']);
+        $resolver->addAllowedTypes('paths', ['array']);
         $resolver->addAllowedTypes('clear-cache', ['bool']);
         $resolver->addAllowedTypes('no-progress-bar', ['bool']);
         $resolver->addAllowedTypes('config', ['null', 'string']);
@@ -55,16 +55,13 @@ class Ecs extends AbstractExternalTask
         $arguments = $this->processBuilder->createArgumentsForCommand('ecs');
         $arguments->add('check');
 
-        foreach ($config['whitelist_patterns'] as $whitelistPattern) {
-            $arguments->add($whitelistPattern);
-        }
-
         $arguments->addOptionalArgument('--config=%s', $config['config']);
         $arguments->addOptionalArgument('--level=%s', $config['level']);
         $arguments->addOptionalArgument('--clear-cache', $config['clear-cache']);
         $arguments->addOptionalArgument('--no-progress-bar', $config['no-progress-bar']);
         $arguments->addOptionalArgument('--ansi', true);
         $arguments->addOptionalArgument('--no-interaction', true);
+        $arguments->addArgumentArray('%s', $config['paths']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();

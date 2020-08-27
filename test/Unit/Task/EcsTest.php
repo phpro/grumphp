@@ -25,7 +25,7 @@ class EcsTest extends AbstractExternalTaskTestCase
         yield 'defaults' => [
             [],
             [
-                'whitelist_patterns' => [],
+                'paths' => [],
                 'clear-cache' => false,
                 'no-progress-bar' => true,
                 'config' => null,
@@ -105,19 +105,19 @@ class EcsTest extends AbstractExternalTaskTestCase
             ]
         ];
 
-        yield 'whitelist' => [
+        yield 'paths' => [
             [
-                'whitelist_patterns' => ['src/', 'test/'],
+                'paths' => ['src/', 'test/'],
             ],
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'ecs',
             [
                 'check',
-                'src/',
-                'test/',
                 '--no-progress-bar',
                 '--ansi',
                 '--no-interaction',
+                'src/',
+                'test/',
             ]
         ];
         yield 'clear-cache' => [
