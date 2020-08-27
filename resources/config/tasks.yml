@@ -322,6 +322,14 @@ services:
         tags:
             - {name: grumphp.task, task: shell}
 
+    GrumPHP\Task\Tester:
+        class:
+        arguments:
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, task: tester}
+
     GrumPHP\Task\TwigCs:
         arguments:
             - '@process_builder'

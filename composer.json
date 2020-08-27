@@ -61,6 +61,7 @@
         "jakub-onderka/php-parallel-lint": "Lets GrumPHP quickly lint your entire code base.",
         "maglnet/composer-require-checker": "Lets GrumPHP analyze composer dependencies.",
         "malukenho/kawaii-gherkin": "Lets GrumPHP lint your Gherkin files.",
+        "nette/tester": "Lets GrumPHP run your unit tests with nette tester.",
         "nikic/php-parser": "Lets GrumPHP run static analyses through your PHP files.",
         "phan/phan": "Lets GrumPHP unleash a static analyzer on your code",
         "phing/phing": "Lets GrumPHP run your automated PHP tasks.",
