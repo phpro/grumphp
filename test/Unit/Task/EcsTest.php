@@ -25,12 +25,13 @@ class EcsTest extends AbstractExternalTaskTestCase
         yield 'defaults' => [
             [],
             [
-                'whitelist_patterns' => [],
+                'paths' => [],
                 'clear-cache' => false,
                 'no-progress-bar' => true,
                 'config' => null,
                 'level' => null,
                 'triggered_by' => ['php'],
+                'files_on_pre_commit' => false,
             ]
         ];
     }
@@ -89,6 +90,13 @@ class EcsTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['notaphpfile.txt']),
             function () {}
         ];
+        yield 'no-files-after-path' => [
+            [
+                'paths' => ['src']
+            ],
+            $this->mockContext(RunContext::class, ['test/notinsource.php']),
+            function () {}
+        ];
     }
 
     public function provideExternalTaskRuns(): iterable
@@ -105,21 +113,54 @@ class EcsTest extends AbstractExternalTaskTestCase
             ]
         ];
 
-        yield 'whitelist' => [
+        yield 'paths' => [
             [
-                'whitelist_patterns' => ['src/', 'test/'],
+                'paths' => ['src/', 'test/'],
             ],
-            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            $this->mockContext(RunContext::class, ['src/hello.php', 'test/hello2.php']),
             'ecs',
             [
                 'check',
-                'src/',
-                'test/',
                 '--no-progress-bar',
                 '--ansi',
                 '--no-interaction',
+                'src/',
+                'test/',
             ]
         ];
+
+        yield 'files_on_pre_commit_in_run_context' => [
+            [
+                'paths' => ['src/'],
+                'files_on_pre_commit' => true,
+            ],
+            $this->mockContext(RunContext::class, ['src/hello.php', 'test/hello2.php']),
+            'ecs',
+            [
+                'check',
+                '--no-progress-bar',
+                '--ansi',
+                '--no-interaction',
+                'src/',
+            ]
+        ];
+
+        yield 'files_on_pre_commit' => [
+            [
+                'paths' => ['src/'],
+                'files_on_pre_commit' => true,
+            ],
+            $this->mockContext(GitPreCommitContext::class, ['src/hello.php', 'test/hello2.php']),
+            'ecs',
+            [
+                'check',
+                '--no-progress-bar',
+                '--ansi',
+                '--no-interaction',
+                'src/hello.php',
+            ]
+        ];
+
         yield 'clear-cache' => [
             [
                 'clear-cache' => true,
