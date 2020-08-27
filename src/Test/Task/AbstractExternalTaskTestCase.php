@@ -80,7 +80,11 @@ abstract class AbstractExternalTaskTestCase extends AbstractTaskTestCase
      */
     private function resolveExpectedCliArgumentFromCallable(array $expectedArguments, array $actualArguments): array
     {
-        self::assertSameSize($expectedArguments, $actualArguments);
+        self::assertSameSize(
+            $expectedArguments,
+            $actualArguments,
+            'Received following arguments on CLI:'.implode(',', $actualArguments)
+        );
 
         return array_map(
             function ($expected, $actual) {

@@ -31,8 +31,9 @@ class PhpStanTest extends AbstractExternalTaskTestCase
                 'ignore_patterns' => [],
                 'force_patterns' => [],
                 'triggered_by' => ['php'],
-                'memory_limit' => null
-            ]
+                'memory_limit' => null,
+                'use_grumphp_paths' => true,
+            ],
         ];
     }
 
@@ -192,12 +193,19 @@ class PhpStanTest extends AbstractExternalTaskTestCase
                 'hello2.php',
             ]
         ];
-
-        /*
-         *         $arguments->addOptionalArgument('--autoload-file=%s', $config['autoload_file']);
-        $arguments->addOptionalArgument('--configuration=%s', $config['configuration']);
-        $arguments->addOptionalArgument('--memory-limit=%s', $config['memory_limit']);
-        $arguments->addOptionalMixedArgument('--level=%s', $config['level']);
-         */
+        yield 'no_files' => [
+            [
+                'use_grumphp_paths' => false,
+            ],
+            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'phpstan',
+            [
+                'analyse',
+                '--level=0',
+                '--no-ansi',
+                '--no-interaction',
+                '--no-progress',
+            ]
+        ];
     }
 }

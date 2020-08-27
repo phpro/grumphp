@@ -26,7 +26,8 @@ class PhpStan extends AbstractExternalTask
             'ignore_patterns' => [],
             'force_patterns' => [],
             'triggered_by' => ['php'],
-            'memory_limit' => null
+            'memory_limit' => null,
+            'use_grumphp_paths' => true,
         ]);
 
         $resolver->addAllowedTypes('autoload_file', ['null', 'string']);
@@ -47,6 +48,7 @@ class PhpStan extends AbstractExternalTask
         $resolver->addAllowedTypes('ignore_patterns', ['array']);
         $resolver->addAllowedTypes('force_patterns', ['array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
+        $resolver->addAllowedTypes('use_grumphp_paths', ['bool']);
 
         return $resolver;
     }
@@ -90,7 +92,10 @@ class PhpStan extends AbstractExternalTask
         $arguments->add('--no-ansi');
         $arguments->add('--no-interaction');
         $arguments->add('--no-progress');
-        $arguments->addFiles($files);
+
+        if ($config['use_grumphp_paths']) {
+            $arguments->addFiles($files);
+        }
 
         $process = $this->processBuilder->buildProcess($arguments);
 
