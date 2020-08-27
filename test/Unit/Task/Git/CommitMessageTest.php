@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GrumPHPTest\Unit\Task\Git;
 
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Git\GitRepository;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitCommitMsgContext;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -16,9 +17,19 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class CommitMessageTest extends AbstractTaskTestCase
 {
+    /**
+     * @var ObjectProphecy & GitRepository
+     */
+    protected $repository;
+
     protected function provideTask(): TaskInterface
     {
-        return new CommitMessage();
+        $this->repository = $this->prophesize(GitRepository::class);
+        $this->repository->run('config', ['--get', 'core.commentChar'])->willReturn('#');
+
+        return new CommitMessage(
+            $this->repository->reveal()
+        );
     }
 
     public function provideConfigurableOptions(): iterable
@@ -390,6 +401,18 @@ class CommitMessageTest extends AbstractTaskTestCase
             ],
             $this->mockCommitMsgContext($this->buildMessage('# Some content', 'The body!')),
             function () {
+            }
+        ];
+        yield 'allow_starts_with_custom_comment_char' => [
+            [
+                'allow_empty_message' => false,
+                'enforce_capitalized_subject' => true,
+                'enforce_no_subject_trailing_period' => false,
+                'enforce_single_lined_subject' => false,
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('; some content', 'The body!')),
+            function () {
+                $this->repository->run('config', ['--get', 'core.commentChar'])->willReturn('; ');
             }
         ];
         yield 'dont-enforce_capitalized_subject' => [

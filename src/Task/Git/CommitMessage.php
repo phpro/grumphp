@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GrumPHP\Task\Git;
 
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Git\GitRepository;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Config\EmptyTaskConfig;
@@ -22,6 +23,11 @@ class CommitMessage implements TaskInterface
      * @var TaskConfigInterface
      */
     private $config;
+
+    /**
+     * @var GitRepository
+     */
+    private $repository;
 
     public static function getConfigurableOptions(): OptionsResolver
     {
@@ -57,8 +63,9 @@ class CommitMessage implements TaskInterface
         return $resolver;
     }
 
-    public function __construct()
+    public function __construct(GitRepository $repository)
     {
+        $this->repository = $repository;
         $this->config = new EmptyTaskConfig();
     }
 
@@ -300,15 +307,16 @@ class CommitMessage implements TaskInterface
 
     private function getCommitMessageLinesWithoutComments(string $commitMessage): array
     {
+        $commentChar = trim($this->repository->run('config', ['--get', 'core.commentChar']) ?: '#');
         $lines = preg_split('/\R/u', $commitMessage);
         $everythingBelowWillBeIgnored = false;
 
-        return array_values(array_filter($lines, function ($line) use (&$everythingBelowWillBeIgnored) {
-            if (mb_stripos($line, '# Everything below it will be ignored.') !== false) {
+        return array_values(array_filter($lines, function ($line) use (&$everythingBelowWillBeIgnored, $commentChar) {
+            if (mb_stripos($line, $commentChar.' Everything below it will be ignored.') !== false) {
                 $everythingBelowWillBeIgnored = true;
                 return false;
             }
-            return 0 !== strpos($line, '#') && !$everythingBelowWillBeIgnored;
+            return 0 !== strpos($line, $commentChar) && !$everythingBelowWillBeIgnored;
         }));
     }
 
@@ -350,7 +358,7 @@ class CommitMessage implements TaskInterface
 
         if (count($scopes) > 0) {
             $scopes = implode('|', $scopes);
-            $scopesPattern = '(:\s|(\(' . $scopes . '\)?:\s))';
+            $scopesPattern = '(:\s|(\((?:' . $scopes . ')\)?:\s))';
         }
 
         $rule = '/^' . $specialPrefix . $typesPattern . $scopesPattern . $subjectPattern . '|' . $mergePattern . '/';

@@ -106,6 +106,8 @@ services:
             - {name: grumphp.task, task: git_blacklist}
 
     GrumPHP\Task\Git\CommitMessage:
+        arguments:
+            - '@GrumPHP\Git\GitRepository'
         tags:
             - {name: grumphp.task, task: git_commit_message}
 
