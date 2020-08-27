@@ -21,6 +21,7 @@ grumphp:
             ignore_patterns: []
             triggered_by: ['php']
             memory_limit: "-1"
+            use_grumphp_paths: true
 ```
 
 **autoload_file**
@@ -64,3 +65,12 @@ This is a list of extensions to be sniffed.
 *Default: null*
 
 With this parameter you can specify the memory limit.
+
+
+**use_grumphp_paths**
+
+*Default: true*
+
+Since there is no `--changed-files` flag [in PhpStan yet](https://github.com/phpstan/phpstan/issues/934#issuecomment-383002766),
+this flags allows you to change what files will be validated.
+You can choose to use the paths detected by GrumPHP, or you can choose to fall back on the PhpStan configuration.
