@@ -63,6 +63,7 @@
         "malukenho/kawaii-gherkin": "Lets GrumPHP lint your Gherkin files.",
         "nette/tester": "Lets GrumPHP run your unit tests with nette tester.",
         "nikic/php-parser": "Lets GrumPHP run static analyses through your PHP files.",
+        "pestphp/pest": "Lets GrumPHP run your unit test with Pest PHP",
         "phan/phan": "Lets GrumPHP unleash a static analyzer on your code",
         "phing/phing": "Lets GrumPHP run your automated PHP tasks.",
         "phpmd/phpmd": "Lets GrumPHP sort out the mess in your code",

@@ -34,6 +34,7 @@ grumphp:
         make: ~
         npm_script: ~
         paratest: ~
+        pest: ~
         phan: ~        
         phing: ~
         php7cc: ~
@@ -91,6 +92,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Make](tasks/make.md)
 - [NPM script](tasks/npm_script.md)
 - [Paratest](tasks/paratest.md)
+- [Pest](tasks/pest.md)
 - [Phan](tasks/phan.md)
 - [Phing](tasks/phing.md)
 - [Php7cc](tasks/php7cc.md)
