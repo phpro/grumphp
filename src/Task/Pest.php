@@ -18,10 +18,14 @@ class Pest extends AbstractExternalTask
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'config_file' => null,
+            'testsuite' => null,
+            'group' => [],
             'always_execute' => false,
         ]);
 
         $resolver->addAllowedTypes('config_file', ['null', 'string']);
+        $resolver->addAllowedTypes('testsuite', ['null', 'string']);
+        $resolver->addAllowedTypes('group', ['array']);
         $resolver->addAllowedTypes('always_execute', ['bool']);
 
         return $resolver;
@@ -43,6 +47,8 @@ class Pest extends AbstractExternalTask
 
         $arguments = $this->processBuilder->createArgumentsForCommand('pest');
         $arguments->addOptionalArgument('--configuration=%s', $config['config_file']);
+        $arguments->addOptionalArgument('--testsuite=%s', $config['testsuite']);
+        $arguments->addOptionalCommaSeparatedArgument('--group=%s', $config['group']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();

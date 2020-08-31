@@ -26,6 +26,8 @@ class PestTest extends AbstractExternalTaskTestCase
             [],
             [
                 'config_file' => null,
+                'testsuite' => null,
+                'group' => [],
                 'always_execute' => false,
             ]
         ];
@@ -107,6 +109,26 @@ class PestTest extends AbstractExternalTaskTestCase
             'pest',
             [
                 '--configuration=config.xml',
+            ]
+        ];
+        yield 'testsuite' => [
+            [
+                'testsuite' => 'suite',
+            ],
+            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'pest',
+            [
+                '--testsuite=suite',
+            ]
+        ];
+        yield 'group' => [
+            [
+                'group' => ['group1','group2',],
+            ],
+            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'pest',
+            [
+                '--group=group1,group2',
             ]
         ];
     }
