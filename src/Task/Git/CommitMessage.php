@@ -307,7 +307,13 @@ class CommitMessage implements TaskInterface
 
     private function getCommitMessageLinesWithoutComments(string $commitMessage): array
     {
-        $commentChar = trim($this->repository->run('config', ['--get', 'core.commentChar']) ?: '#');
+        $commentChar = trim($this->repository->tryToRunWithFallback(
+            function (): ?string {
+                return $this->repository->run('config', ['--get', 'core.commentChar']);
+            },
+            '#'
+        ));
+
         $lines = preg_split('/\R/u', $commitMessage);
         $everythingBelowWillBeIgnored = false;
 

@@ -13,6 +13,7 @@ use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\Git\CommitMessage;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\Test\Task\AbstractTaskTestCase;
+use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class CommitMessageTest extends AbstractTaskTestCase
@@ -26,6 +27,9 @@ class CommitMessageTest extends AbstractTaskTestCase
     {
         $this->repository = $this->prophesize(GitRepository::class);
         $this->repository->run('config', ['--get', 'core.commentChar'])->willReturn('#');
+        $this->repository->tryToRunWithFallback(Argument::cetera())->will(function (array $arguments) {
+            return $arguments[0]();
+        });
 
         return new CommitMessage(
             $this->repository->reveal()

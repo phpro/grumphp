@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GrumPHP\Git;
 
 use Gitonomy\Git\Diff\Diff;
+use Gitonomy\Git\Exception\ProcessException;
 use Gitonomy\Git\Repository;
 use Gitonomy\Git\WorkingCopy;
 use GrumPHP\Locator\GitRepositoryLocator;
@@ -45,6 +46,22 @@ class GitRepository
     public function run(string $command, array $args): ?string
     {
         return $this->getRepository()->run($command, $args);
+    }
+
+    /**
+     * The gitonomy run method handles errors differently based on debug (throw) or non-debug (return null) mode.
+     * This method makes it possible to run a git command but fallback to a default string if the command fails.
+     * It can be used to e.g. fetch git configurations.
+     */
+    public function tryToRunWithFallback(callable $run, string $fallback): string
+    {
+        try {
+            $result = $run();
+        } catch (ProcessException $exception) {
+            return $fallback;
+        }
+
+        return $result ?? $fallback;
     }
 
     public function createRawDiff(string $rawDiff): Diff
