@@ -183,6 +183,13 @@ services:
         tags:
             - {name: grumphp.task, task: paratest}
 
+    GrumPHP\Task\Pest:
+        arguments:
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, task: pest}
+
     GrumPHP\Task\Phan:
         arguments:
             - '@process_builder'
