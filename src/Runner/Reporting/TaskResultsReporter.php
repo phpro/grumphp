@@ -56,8 +56,7 @@ class TaskResultsReporter
 
     public function report(TaskRunnerContext $context): void
     {
-        // Only log when there is an output section available!
-        if (!$this->outputSection) {
+        if (!$this->outputSection || !$this->shouldRenderReport($context)) {
             return;
         }
 
@@ -113,5 +112,26 @@ class TaskResultsReporter
         }
 
         return '';
+    }
+
+    /**
+     * When the input is decorated (ansi), we can always overwrite the rendered content.
+     * Otherwise (no-ansi), we only render on start and when all task results are reported.
+     */
+    private function shouldRenderReport(TaskRunnerContext $context): bool
+    {
+        if ($this->IO->isDecorated()) {
+            return true;
+        }
+
+        $reportedCount = array_reduce(
+            $context->getTaskNames(),
+            function (int $count, string $taskName): int {
+                return $this->taskResultMap->contains($taskName) ? $count+1 : $count;
+            },
+            0
+        );
+
+        return $reportedCount === 0 || $reportedCount === count($context->getTaskNames());
     }
 }
