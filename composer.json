@@ -51,7 +51,7 @@
         "behat/behat": "Lets GrumPHP validate your project features.",
         "brianium/paratest": "Lets GrumPHP run PHPUnit in parallel.",
         "codeception/codeception": "Lets GrumPHP run your project's full stack tests",
-        "codegyre/robo": "Lets GrumPHP run your automated PHP tasks.",
+        "consolidation/robo": "Lets GrumPHP run your automated PHP tasks.",
         "designsecurity/progpilot": "Lets GrumPHP be sure that there are no vulnerabilities in your code.",
         "doctrine/orm": "Lets GrumPHP validate your Doctrine mapping files.",
         "ergebnis/composer-normalize": "Lets GrumPHP tidy and normalize your composer.json file.",
