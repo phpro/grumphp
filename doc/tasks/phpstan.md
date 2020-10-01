@@ -35,6 +35,7 @@ With this parameter you can specify the path your project's additional autoload 
 *Default: null*
 
 With this parameter you can specify the path your project's configuration file.
+By leaving null, GrumPHP will look if you have a phpstan.neon or phpstan.neon.dist config file ([default values](https://phpstan.org/config-reference#config-file)).
 
 **level**
 

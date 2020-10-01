@@ -73,6 +73,14 @@ class PhpStan extends AbstractExternalTask
             ->notPaths($config['ignore_patterns'])
             ->extensions($config['triggered_by']);
 
+        if (!($config['configuration'])) {
+            if (file_exists('phpstan.neon')) {
+                $config['configuration'] = 'phpstan.neon';
+            } elseif(file_exists('phpstan.neon.dist')) {
+                $config['configuration'] = 'phpstan.neon.dist';
+            }
+        }
+
         if (!empty($config['force_patterns'])) {
             $forcedFiles = $context->getFiles()->paths($config['force_patterns']);
             $files = $files->ensureFiles($forcedFiles);
