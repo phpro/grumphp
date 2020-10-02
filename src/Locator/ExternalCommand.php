@@ -51,8 +51,6 @@ class ExternalCommand
             }
         }
 
-        throw ExecutableNotFoundException::forCommand(
-            sprintf('The executable for "%s" could not be found.', $command)
-        );
+        throw ExecutableNotFoundException::forCommand($command);
     }
 }
