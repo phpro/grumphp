@@ -5,7 +5,7 @@ Check Twig coding standard based on [FriendsOfTwig/TwigCs](https://github.com/Fr
 ***Composer***
 
 ```
-composer require --dev friendsoftwig/twigcs
+composer require --dev friendsoftwig/twigcs:^4.0
 ```
 
 ***Config***
