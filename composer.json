@@ -40,8 +40,8 @@
     "require-dev": {
         "brianium/paratest": "^4.1",
         "composer/composer": "~1.9 || ^2.0@dev",
-        "jakub-onderka/php-parallel-lint": "~1.0",
         "nikic/php-parser": "~4.0",
+        "php-parallel-lint/php-parallel-lint": "^1.2",
         "phpspec/phpspec": "^6.2",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.2"
@@ -58,7 +58,6 @@
         "friendsofphp/php-cs-fixer": "Lets GrumPHP automatically fix your codestyle.",
         "friendsoftwig/twigcs": "Lets GrumPHP check Twig coding standard.",
         "infection/infection": "Lets GrumPHP evaluate the quality your unit tests",
-        "jakub-onderka/php-parallel-lint": "Lets GrumPHP quickly lint your entire code base.",
         "maglnet/composer-require-checker": "Lets GrumPHP analyze composer dependencies.",
         "malukenho/kawaii-gherkin": "Lets GrumPHP lint your Gherkin files.",
         "nette/tester": "Lets GrumPHP run your unit tests with nette tester.",
@@ -66,6 +65,7 @@
         "pestphp/pest": "Lets GrumPHP run your unit test with Pest PHP",
         "phan/phan": "Lets GrumPHP unleash a static analyzer on your code",
         "phing/phing": "Lets GrumPHP run your automated PHP tasks.",
+        "php-parallel-lint/php-parallel-lint": "Lets GrumPHP quickly lint your entire code base.",
         "phpmd/phpmd": "Lets GrumPHP sort out the mess in your code",
         "phpspec/phpspec": "Lets GrumPHP spec your code.",
         "phpstan/phpstan": "Lets GrumPHP discover bugs in your code without running it.",
