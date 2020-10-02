@@ -169,7 +169,7 @@ This way you can configure the same task twice by using an alias with different 
 ## Creating a custom task
 
 Creating a custom task is a matter of implementing the provided `GrumPHP\Task\TaskInterface`.
-When your task is written, you have to register it to the service manager and add your task configuration to `grumphp.yaml`:
+When your task is written, you have to register it to the service manager and add your task configuration to `grumphp.yml`:
 
 ```php
 <?php

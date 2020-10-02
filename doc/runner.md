@@ -63,7 +63,7 @@ class PassThroughMiddleware implements RunnerMiddlewareInterface
 Configuration:
 
 ```yaml
-# grumphp.yaml
+# grumphp.yml
 
 services:
     PassThroughMiddleware:
@@ -103,7 +103,7 @@ class PassThroughTaskHandlerMiddleware implements TaskHandlerMiddlewareInterface
 Configuration:
 
 ```yaml
-# grumphp.yaml
+# grumphp.yml
 
 services:
     PassThroughTaskHandlerMiddleware:
