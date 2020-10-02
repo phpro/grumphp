@@ -19,8 +19,6 @@ grumphp:
         phpcpd:
             directory: ['.']
             exclude: ['vendor']
-            names_exclude: []
-            regexps_exclude: []
             fuzzy: false
             min_lines: 5
             min_tokens: 70
