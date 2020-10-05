@@ -37,6 +37,7 @@ class Configuration implements ConfigurationInterface
         $tasks = $rootNode->children()->arrayNode('tasks');
         $tasks->normalizeKeys(false);
         $tasks->variablePrototype();
+        $tasks->useAttributeAsKey('name');
 
         // Testsuites
         $testSuites = $rootNode->children()->arrayNode('testsuites');
