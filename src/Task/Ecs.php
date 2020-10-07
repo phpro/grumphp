@@ -6,12 +6,14 @@ namespace GrumPHP\Task;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
+use GrumPHP\Fixer\Provider\FixableProcessResultProvider;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Process\Process;
 
 /**
  * Ecs task.
@@ -74,7 +76,14 @@ class Ecs extends AbstractExternalTask
         $process->run();
 
         if (!$process->isSuccessful()) {
-            return TaskResult::createFailed($this, $context, $this->formatter->format($process));
+            return FixableProcessResultProvider::provide(
+                TaskResult::createFailed($this, $context, $this->formatter->format($process)),
+                function () use ($arguments): Process {
+                    $arguments->add('--fix');
+
+                    return $this->processBuilder->buildProcess($arguments);
+                }
+            );
         }
 
         return TaskResult::createPassed($this, $context);

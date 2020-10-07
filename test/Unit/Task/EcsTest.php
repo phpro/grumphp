@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHPTest\Unit\Task;
 
+use GrumPHP\Runner\FixableTaskResult;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\Ecs;
@@ -63,7 +64,8 @@ class EcsTest extends AbstractExternalTaskTestCase
                 $this->mockProcessBuilder('ecs', $process = $this->mockProcess(1));
                 $this->formatter->format($process)->willReturn('nope');
             },
-            'nope'
+            'nope',
+            FixableTaskResult::class
         ];
     }
 
