@@ -355,7 +355,8 @@ class CommitMessage implements TaskInterface
         $typesPattern = '([a-zA-Z0-9]+)';
         $scopesPattern = '(:\s|(\(.+\)?:\s))';
         $subjectPattern = '([a-zA-Z0-9-_ #@\'\/\\"]+)';
-        $mergePattern = '(Merge branch \'.+\'\s.+|Merge remote-tracking branch \'.+\'|Merge pull request #\d+\s.+)';
+        $mergePattern =
+            '(Merge branch|tag \'.+\'(?:\s.+)?|Merge remote-tracking branch \'.+\'|Merge pull request #\d+\s.+)';
 
         if (count($types) > 0) {
             $types = implode('|', $types);
