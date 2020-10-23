@@ -656,6 +656,32 @@ class CommitMessageTest extends AbstractTaskTestCase
             function () {
             },
         ];
+        yield 'skip_type_scope_conventions_on_merge_branch_gitflow' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'types' => [
+                        'fix'
+                    ],
+                ],
+            ],
+            $this->mockCommitMsgContext($this->buildMessage("Merge branch 'release/x.y.z'")),
+            function () {
+            },
+        ];
+        yield 'skip_type_scope_conventions_on_merge_tag_gitflow' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'types' => [
+                        'fix'
+                    ],
+                ],
+            ],
+            $this->mockCommitMsgContext($this->buildMessage("Merge tag 'x.y.z' into")),
+            function () {
+            },
+        ];
         yield 'skip_type_scope_conventions_on_merge_remote' => [
             [
                 'enforce_capitalized_subject' => false,
