@@ -6,6 +6,7 @@ namespace GrumPHP\Runner\Reporting;
 
 use GrumPHP\Event\TaskEvents;
 use GrumPHP\IO\IOInterface;
+use GrumPHP\Runner\Ci\CiDetector;
 use GrumPHP\Runner\MemoizedTaskResultMap;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Runner\TaskRunnerContext;
@@ -29,10 +30,16 @@ class TaskResultsReporter
      */
     private $taskResultMap;
 
-    public function __construct(IOInterface $IO, MemoizedTaskResultMap $taskResultMap)
+    /**
+     * @var CiDetector
+     */
+    private $ciDetector;
+
+    public function __construct(IOInterface $IO, MemoizedTaskResultMap $taskResultMap, CiDetector $ciDetector)
     {
         $this->IO = $IO;
         $this->taskResultMap = $taskResultMap;
+        $this->ciDetector = $ciDetector;
     }
 
     /**
@@ -120,18 +127,18 @@ class TaskResultsReporter
      */
     private function shouldRenderReport(TaskRunnerContext $context): bool
     {
-        if ($this->IO->isDecorated()) {
+        if ($this->IO->isDecorated() && !$this->ciDetector->isCiDetected()) {
             return true;
         }
 
         $reportedCount = array_reduce(
-            $context->getTaskNames(),
-            function (int $count, string $taskName): int {
-                return $this->taskResultMap->contains($taskName) ? $count+1 : $count;
+            $context->getTasks()->toArray(),
+            function (int $count, TaskInterface $task): int {
+                return $this->taskResultMap->contains($task->getConfig()->getName()) ? $count+1 : $count;
             },
             0
         );
 
-        return $reportedCount === 0 || $reportedCount === count($context->getTaskNames());
+        return $reportedCount === 0 || $reportedCount === count($context->getTasks());
     }
 }
