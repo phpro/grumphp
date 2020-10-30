@@ -78,6 +78,11 @@ class TaskResultsReporter
             $i++;
         }
 
+        // Add a newline if overwrite is not possible in order to split both sections
+        if (!$this->isOverwritePossible()) {
+            $this->IO->write(['']);
+        }
+
         $this->outputSection->overwrite(implode(PHP_EOL, $message));
     }
 
@@ -127,7 +132,7 @@ class TaskResultsReporter
      */
     private function shouldRenderReport(TaskRunnerContext $context): bool
     {
-        if ($this->IO->isDecorated() && !$this->ciDetector->isCiDetected()) {
+        if ($this->isOverwritePossible()) {
             return true;
         }
 
@@ -140,5 +145,10 @@ class TaskResultsReporter
         );
 
         return $reportedCount === 0 || $reportedCount === count($context->getTasks());
+    }
+
+    private function isOverwritePossible(): bool
+    {
+        return $this->IO->isDecorated() && !$this->ciDetector->isCiDetected();
     }
 }
