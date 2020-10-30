@@ -78,9 +78,10 @@ class TaskResultsReporter
             $i++;
         }
 
-        // Add a newline if overwrite is not possible in order to split both sections
+        // Always add content if we decided that an overwrite is not possible!
         if (!$this->isOverwritePossible()) {
-            $this->IO->write(['']);
+            $this->outputSection->writeln(array_merge($message, ['']));
+            return;
         }
 
         $this->outputSection->overwrite(implode(PHP_EOL, $message));
