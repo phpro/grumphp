@@ -22,7 +22,7 @@ class PhpStan extends AbstractExternalTask
         $resolver->setDefaults([
             'autoload_file' => null,
             'configuration' => null,
-            'level' => 0,
+            'level' => null,
             'ignore_patterns' => [],
             'force_patterns' => [],
             'triggered_by' => ['php'],

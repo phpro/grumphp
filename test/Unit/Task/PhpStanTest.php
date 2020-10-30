@@ -27,7 +27,7 @@ class PhpStanTest extends AbstractExternalTaskTestCase
             [
                 'autoload_file' => null,
                 'configuration' => null,
-                'level' => 0,
+                'level' => null,
                 'ignore_patterns' => [],
                 'force_patterns' => [],
                 'triggered_by' => ['php'],
@@ -118,7 +118,6 @@ class PhpStanTest extends AbstractExternalTaskTestCase
             'phpstan',
             [
                 'analyse',
-                '--level=0',
                 '--no-ansi',
                 '--no-interaction',
                 '--no-progress',
@@ -135,7 +134,6 @@ class PhpStanTest extends AbstractExternalTaskTestCase
             [
                 'analyse',
                 '--autoload-file=autoload.php',
-                '--level=0',
                 '--no-ansi',
                 '--no-interaction',
                 '--no-progress',
@@ -152,7 +150,6 @@ class PhpStanTest extends AbstractExternalTaskTestCase
             [
                 'analyse',
                 '--configuration=configurationfile',
-                '--level=0',
                 '--no-ansi',
                 '--no-interaction',
                 '--no-progress',
@@ -169,7 +166,6 @@ class PhpStanTest extends AbstractExternalTaskTestCase
             [
                 'analyse',
                 '--memory-limit=250MB',
-                '--level=0',
                 '--no-ansi',
                 '--no-interaction',
                 '--no-progress',
@@ -201,7 +197,6 @@ class PhpStanTest extends AbstractExternalTaskTestCase
             'phpstan',
             [
                 'analyse',
-                '--level=0',
                 '--no-ansi',
                 '--no-interaction',
                 '--no-progress',

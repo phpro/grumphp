@@ -16,7 +16,7 @@ grumphp:
         phpstan:
             autoload_file: ~
             configuration: ~
-            level: 0
+            level: null
             force_patterns: []
             ignore_patterns: []
             triggered_by: ['php']
@@ -38,9 +38,10 @@ With this parameter you can specify the path your project's configuration file.
 
 **level**
 
-*Default: 0*
+*Default: null*
 
 With this parameter you can set the level of rule options - the higher the stricter.
+You must either specify a level in GrumPHP or inside the `phpstan.neon` file.
 
 **force_patterns**
 
