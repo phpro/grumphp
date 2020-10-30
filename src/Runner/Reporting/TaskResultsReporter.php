@@ -6,6 +6,7 @@ namespace GrumPHP\Runner\Reporting;
 
 use GrumPHP\Event\TaskEvents;
 use GrumPHP\IO\IOInterface;
+use GrumPHP\Runner\Ci\CiDetector;
 use GrumPHP\Runner\MemoizedTaskResultMap;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Runner\TaskRunnerContext;
@@ -29,10 +30,16 @@ class TaskResultsReporter
      */
     private $taskResultMap;
 
-    public function __construct(IOInterface $IO, MemoizedTaskResultMap $taskResultMap)
+    /**
+     * @var CiDetector
+     */
+    private $ciDetector;
+
+    public function __construct(IOInterface $IO, MemoizedTaskResultMap $taskResultMap, CiDetector $ciDetector)
     {
         $this->IO = $IO;
         $this->taskResultMap = $taskResultMap;
+        $this->ciDetector = $ciDetector;
     }
 
     /**
@@ -56,8 +63,7 @@ class TaskResultsReporter
 
     public function report(TaskRunnerContext $context): void
     {
-        // Only log when there is an output section available!
-        if (!$this->outputSection) {
+        if (!$this->outputSection || !$this->shouldRenderReport($context)) {
             return;
         }
 
@@ -70,6 +76,12 @@ class TaskResultsReporter
         foreach ($tasks as $name => $label) {
             $message[] = sprintf($info, $i, $total, $label, $this->displayTaskResult($name));
             $i++;
+        }
+
+        // Always add content if we decided that an overwrite is not possible!
+        if (!$this->isOverwritePossible()) {
+            $this->outputSection->writeln(array_merge($message, ['']));
+            return;
         }
 
         $this->outputSection->overwrite(implode(PHP_EOL, $message));
@@ -113,5 +125,31 @@ class TaskResultsReporter
         }
 
         return '';
+    }
+
+    /**
+     * When the input is decorated (ansi), we can always overwrite the rendered content.
+     * Otherwise (no-ansi), we only render on start and when all task results are reported.
+     */
+    private function shouldRenderReport(TaskRunnerContext $context): bool
+    {
+        if ($this->isOverwritePossible()) {
+            return true;
+        }
+
+        $reportedCount = array_reduce(
+            $context->getTasks()->toArray(),
+            function (int $count, TaskInterface $task): int {
+                return $this->taskResultMap->contains($task->getConfig()->getName()) ? $count+1 : $count;
+            },
+            0
+        );
+
+        return $reportedCount === 0 || $reportedCount === count($context->getTasks());
+    }
+
+    private function isOverwritePossible(): bool
+    {
+        return $this->IO->isDecorated() && !$this->ciDetector->isCiDetected();
     }
 }

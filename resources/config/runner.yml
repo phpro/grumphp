@@ -110,4 +110,12 @@ services:
         arguments:
             - '@grumphp.io'
             - '@GrumPHP\Runner\MemoizedTaskResultMap'
+            - '@GrumPHP\Runner\Ci\CiDetector'
 
+    #
+    # CI Detection
+    #
+    GrumPHP\Runner\Ci\CiDetector:
+        arguments:
+            - '@OndraM\CiDetector\CiDetector'
+    OndraM\CiDetector\CiDetector: ~
