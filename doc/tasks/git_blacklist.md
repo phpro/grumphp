@@ -9,8 +9,8 @@ grumphp:
     tasks:
         git_blacklist:
             keywords:
-                - "die("
-                - "var_dump("
+                - "die\\("
+                - "var_dump\\("
                 - "exit;"
             whitelist_patterns: []
             triggered_by: ['php']
