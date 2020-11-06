@@ -10,7 +10,7 @@ GIT_EMAIL=$(git config user.email)
 COMMIT_MSG_FILE=$1
 
 # Fetch the GIT diff and format it as command input:
-DIFF=$(git -c diff.mnemonicprefix=false --no-pager diff -r -p -m -M --full-index --no-color --staged | cat)
+DIFF=$(git -c diff.mnemonicprefix=false -c diff.noprefix=false --no-pager diff -r -p -m -M --full-index --no-color --staged | cat)
 
 # Grumphp env vars
 $(ENV)
