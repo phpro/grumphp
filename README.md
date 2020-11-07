@@ -5,6 +5,7 @@
 
 [![Twitter](https://img.shields.io/badge/Twitter-%40grumphp-blue.svg)](https://twitter.com/intent/user?screen_name=grumphp)
 [![Join the chat at https://gitter.im/phpro/grumphp](https://badges.gitter.im/phpro/grumphp.svg)](https://gitter.im/phpro/grumphp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fphpro%2Fgrumphp&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=PAGE+VIEWS&edge_flat=false)](https://hits.seeyoufarm.com)
 
 # GrumPHP
 
