@@ -226,6 +226,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         };
 
         // Run command
+        $pipes = [];
         $process = @proc_open(
             $run = $windowsIsInsane(implode(' ', array_map(
                 function (string $argument): string {
@@ -239,7 +240,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
                 1 => array('file', 'php://stdout', 'w'),
                 2 => array('file', 'php://stderr', 'w'),
             ),
-            $pipes = []
+            $pipes
         );
 
         // Check executable which is running:
