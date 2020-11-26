@@ -13,7 +13,7 @@ COMMIT_MSG_FILE=$1
 COMMIT_MSG=$(cat "${COMMIT_MSG_FILE}")
 
 # Fetch the GIT diff and format it as command input:
-DIFF=$(git -c diff.mnemonicprefix=false --no-pager diff -r -p -m -M --full-index --no-color --staged | cat)
+DIFF=$(git -c diff.mnemonicprefix=false -c diff.noprefix=false --no-pager diff -r -p -m -M --full-index --no-color --staged | cat)
 
 # Copy the commit message and run GrumPHP
 cd $(VAGRANT_HOST_DIR) && vagrant ssh --command '$(which sh)' << COMMANDS
