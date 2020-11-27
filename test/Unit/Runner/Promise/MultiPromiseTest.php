@@ -75,7 +75,8 @@ class MultiPromiseTest extends TestCase
             self::assertLessThanOrEqual(1, count($errors));
             self::assertTrue(!($errors[2] ?? null) || $errors[2] instanceof CancelledException);
 
-            self::assertSame([1, 2], $results);
+            self::assertContains(1, $results);
+            self::assertContains(2, $results);
         });
     }
 
