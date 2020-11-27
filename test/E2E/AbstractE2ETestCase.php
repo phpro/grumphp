@@ -404,6 +404,7 @@ abstract class AbstractE2ETestCase extends TestCase
         if (method_exists($process, 'inheritEnvironmentVariables')) {
             $process->inheritEnvironmentVariables(true);
         }
+        $process->setTimeout(300);
 
         $process->run();
         if (!$process->isSuccessful()) {
