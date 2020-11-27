@@ -2,3 +2,4 @@ vendor
 composer.lock
 grumphp.yml
 .phpunit.result.cache
+!/.github/workflows/grumphp.yml

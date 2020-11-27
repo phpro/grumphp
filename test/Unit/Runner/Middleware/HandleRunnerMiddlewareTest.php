@@ -6,8 +6,6 @@ namespace GrumPHPTest\Unit\Runner\Middleware;
 
 use Amp\Delayed;
 use Amp\Failure;
-use Amp\Loop;
-use Amp\Loop\DriverFactory;
 use Amp\MultiReasonException;
 use Amp\Success;
 use GrumPHP\Collection\TasksCollection;
@@ -15,6 +13,7 @@ use GrumPHP\Configuration\Model\RunnerConfig;
 use GrumPHP\Runner\Middleware\HandleRunnerMiddleware;
 use GrumPHP\Runner\TaskHandler\TaskHandler;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\Test\Runner\AbstractRunnerMiddlewareTestCase;
 use GrumPHPTest\Unit\Runner\Promise\LoopResettingTrait;
@@ -122,8 +121,11 @@ class HandleRunnerMiddlewareTest extends AbstractRunnerMiddlewareTestCase
             });
 
             $result = $this->middleware->handle($context, $next);
-            self::assertCount(1, $result);
-            self::assertSame($result->get(0)->getTask(), $task1);
+            self::assertGreaterThanOrEqual(1, count($result));
+            self::assertNotSame(3, count($result));
+            self::assertTrue($result->exists(static function ($key, TaskResultInterface $result) use ($task1) : bool {
+                return $result->getTask() === $task1;
+            }));
             self::assertTrue($result->isFailed());
         });
     }
