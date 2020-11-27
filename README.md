@@ -1,4 +1,4 @@
-[![Travis](https://img.shields.io/travis/phpro/grumphp/master.svg)](http://travis-ci.org/phpro/grumphp)
+![Github Actions](https://github.com/phpro/grumphp/workflows/GrumPHP/badge.svg?branch=master)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/ttlbau2sjg36ep01/branch/master?svg=true)](https://ci.appveyor.com/project/veewee/grumphp/branch/master)
 [![Installs](https://img.shields.io/packagist/dt/phpro/grumphp.svg)](https://packagist.org/packages/phpro/grumphp/stats)
 [![Packagist](https://img.shields.io/packagist/v/phpro/grumphp.svg)](https://packagist.org/packages/phpro/grumphp)
