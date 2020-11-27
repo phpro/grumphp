@@ -5,6 +5,10 @@ shallow_clone: false
 platform:
   - x64
 
+matrix:
+  allow_failures:
+    - php_version: 8.0
+
 environment:
   matrix:
     - dependencies: highest
