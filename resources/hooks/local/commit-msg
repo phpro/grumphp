@@ -14,7 +14,7 @@ DIFF=$(git -c diff.mnemonicprefix=false -c diff.noprefix=false --no-pager diff -
 
 # Grumphp env vars
 $(ENV)
-export GRUMPHP_GIT_WORKING_DIR=$(git rev-parse --show-toplevel)
+export GRUMPHP_GIT_WORKING_DIR="$(git rev-parse --show-toplevel)"
 
 # Run GrumPHP
 (cd "${HOOK_EXEC_PATH}" && printf "%s\n" "${DIFF}" | $(EXEC_GRUMPHP_COMMAND) $(HOOK_COMMAND) "--git-user='$GIT_USER'" "--git-email='$GIT_EMAIL'" "$COMMIT_MSG_FILE")
