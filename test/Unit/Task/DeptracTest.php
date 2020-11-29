@@ -26,11 +26,11 @@ class DeptracTest extends AbstractExternalTaskTestCase
             [],
             [
                 'depfile' => null,
-                'formatter_graphviz' => false,
-                'formatter_graphviz_display' => true,
-                'formatter_graphviz_dump_image' => null,
-                'formatter_graphviz_dump_dot' => null,
-                'formatter_graphviz_dump_html' => null,
+                'formatter' => [],
+                'graphviz_display' => true,
+                'graphviz_dump_image' => null,
+                'graphviz_dump_dot' => null,
+                'graphviz_dump_html' => null,
             ]
         ];
     }
@@ -99,71 +99,74 @@ class DeptracTest extends AbstractExternalTaskTestCase
             'deptrac',
             [
                 'analyze',
-                '--formatter-graphviz=0',
-                '--formatter-graphviz-display=1',
+                '--graphviz-display=1',
             ]
         ];
         yield 'formatter-graphviz' => [
             [
-                'formatter_graphviz' => true,
+                'formatter' => ['graphviz'],
             ],
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'deptrac',
             [
                 'analyze',
-                '--formatter-graphviz=1',
-                '--formatter-graphviz-display=1',
+                '--formatter=graphviz',
+                '--graphviz-display=1',
             ]
         ];
         yield 'formatter-graphviz-no-display' => [
             [
-                'formatter_graphviz_display' => false,
+                'formatter' => ['graphviz'],
+                'graphviz_display' => false,
             ],
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'deptrac',
             [
                 'analyze',
-                '--formatter-graphviz=0',
-                '--formatter-graphviz-display=0',
+                '--formatter=graphviz',
+                '--graphviz-display=0',
             ]
         ];
         yield 'formatter-graphviz-dump-image' => [
             [
-                'formatter_graphviz_dump_image' => 'file.jpg',
+                'formatter' => ['graphviz'],
+                'graphviz_dump_image' => 'file.jpg',
             ],
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'deptrac',
             [
                 'analyze',
-                '--formatter-graphviz=0',
-                '--formatter-graphviz-display=1',
-                '--formatter-graphviz-dump-image=file.jpg',
+                '--formatter=graphviz',
+                '--graphviz-display=1',
+                '--graphviz-dump-image=file.jpg',
             ]
         ];
         yield 'formatter-graphviz-dump-dot' => [
             [
-                'formatter_graphviz_dump_dot' => 'file.dot',
+                'formatter' => ['graphviz'],
+                'graphviz_dump_dot' => 'file.dot',
             ],
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'deptrac',
             [
                 'analyze',
-                '--formatter-graphviz=0',
-                '--formatter-graphviz-display=1',
-                '--formatter-graphviz-dump-dot=file.dot',
+                '--formatter=graphviz',
+                '--graphviz-display=1',
+                '--graphviz-dump-dot=file.dot',
             ]
         ];
         yield 'formatter-graphviz-dump-html' => [
             [
-                'formatter_graphviz_dump_html' => 'file.html',
+                'formatter' => ['graphviz'],
+                'graphviz_dump_html' => 'file.html',
             ],
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'deptrac',
             [
                 'analyze',
-                '--formatter-graphviz=0',
-                '--formatter-graphviz-display=1',
-                '--formatter-graphviz-dump-html=file.html',
+                '--formatter=graphviz',
+                '--graphviz-display=1',
+                '--graphviz-dump-html=file.html',
             ]
         ];
         yield 'depfile' => [
@@ -174,8 +177,7 @@ class DeptracTest extends AbstractExternalTaskTestCase
             'deptrac',
             [
                 'analyze',
-                '--formatter-graphviz=0',
-                '--formatter-graphviz-display=1',
+                '--graphviz-display=1',
                 'depfile',
             ]
         ];
