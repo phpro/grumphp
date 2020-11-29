@@ -27,6 +27,7 @@ class Deptrac extends AbstractExternalTask
             'graphviz_dump_dot' => null,
             'graphviz_dump_html' => null,
             'junit_dump_xml' => null,
+            'xml_dump' => null,
         ]);
 
         $resolver->addAllowedTypes('depfile', ['null', 'string']);
@@ -36,6 +37,7 @@ class Deptrac extends AbstractExternalTask
         $resolver->addAllowedTypes('graphviz_dump_dot', ['null', 'string']);
         $resolver->addAllowedTypes('graphviz_dump_html', ['null', 'string']);
         $resolver->addAllowedTypes('junit_dump_xml', ['null', 'string']);
+        $resolver->addAllowedTypes('xml_dump', ['null', 'string']);
 
         return $resolver;
     }
@@ -62,6 +64,7 @@ class Deptrac extends AbstractExternalTask
         $arguments->addOptionalArgument('--graphviz-dump-dot=%s', $config['graphviz_dump_dot']);
         $arguments->addOptionalArgument('--graphviz-dump-html=%s', $config['graphviz_dump_html']);
         $arguments->addOptionalArgument('--junit-dump-xml=%s', $config['junit_dump_xml']);
+        $arguments->addOptionalArgument('--xml-dump=%s', $config['xml_dump']);
         $arguments->addOptionalArgument('%s', $config['depfile']);
 
         $process = $this->processBuilder->buildProcess($arguments);

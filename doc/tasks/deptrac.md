@@ -19,6 +19,7 @@ grumphp:
             graphviz_dump_dot: ~
             graphviz_dump_html: ~
             junit_dump_xml: ~
+            xml_dump: ~
 ```
 
 **depfile**
@@ -62,3 +63,9 @@ Set path to a dumped html file.
 *Default: null*
 
 Set path to a dumped JUnit xml file.
+
+**xml_dump**
+
+*Default: null*
+
+Set path to a dumped xml file.

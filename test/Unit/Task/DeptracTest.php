@@ -32,6 +32,7 @@ class DeptracTest extends AbstractExternalTaskTestCase
                 'graphviz_dump_dot' => null,
                 'graphviz_dump_html' => null,
                 'junit_dump_xml' => null,
+                'xml_dump' => null,
             ]
         ];
     }
@@ -194,6 +195,20 @@ class DeptracTest extends AbstractExternalTaskTestCase
                 '--formatter=junit',
                 '--graphviz-display=1',
                 '--junit-dump-xml=junit.xml',
+            ]
+        ];
+        yield 'formatter-xml' => [
+            [
+                'formatter' => ['xml'],
+                'xml_dump' => 'file.xml',
+            ],
+            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'deptrac',
+            [
+                'analyze',
+                '--formatter=xml',
+                '--graphviz-display=1',
+                '--xml-dump=file.xml',
             ]
         ];
     }
