@@ -79,7 +79,7 @@ class Paratest extends AbstractExternalTask
         $arguments->addOptionalArgument('--coverage-xml=%s', $config['coverage-xml']);
         $arguments->addOptionalArgument('--log-junit=%s', $config['log-junit']);
         $arguments->addOptionalArgument('--testsuite=%s', $config['testsuite']);
-        $arguments->addOptionalArgument('--verbose=1', $config['verbose']);
+        $arguments->addOptionalArgument('--verbose', $config['verbose']);
         $arguments->addOptionalCommaSeparatedArgument('--group=%s', $config['group']);
 
         $process = $this->processBuilder->buildProcess($arguments);
