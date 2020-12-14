@@ -52,7 +52,7 @@ GrumPHP comes with following presets:
 **git_hook_variables**
 
 This parameter will allow you to customize git hooks templates.
-After changing any of these variables, you need to run the `git init` command in order to persist the changes inside your git hooks.
+After changing any of these variables, you need to run the `grumphp git:init` command in order to persist the changes inside your git hooks.
 A list of the supported variables: 
 
 -  `VAGRANT_HOST_DIR` : specifies the vagrant location on your host machine relative to the git working folder (_default_ `.`)
