@@ -205,7 +205,7 @@ class ParatestTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'paratest',
             [
-                '--verbose=1',
+                '--verbose',
             ]
         ];
         yield 'group' => [
