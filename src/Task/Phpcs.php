@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GrumPHP\Task;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
+use GrumPHP\Exception\ExecutableNotFoundException;
 use GrumPHP\Fixer\Provider\FixableProcessResultProvider;
 use GrumPHP\Formatter\PhpcsFormatter;
 use GrumPHP\Process\TmpFileUsingProcessRunner;
@@ -98,7 +99,7 @@ class Phpcs extends AbstractExternalTask
 
             try {
                 $fixerProcess = $this->createFixerProcess($this->formatter->getSuggestedFiles());
-            } catch (CommandNotFoundException $e) {
+            } catch (CommandNotFoundException|ExecutableNotFoundException $e) {
                 return $failedResult->withAppendedMessage(
                     PHP_EOL.'Info: phpcbf could not be found. Please consider to install it for auto-fixing.'
                 );
