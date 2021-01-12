@@ -131,6 +131,36 @@ class HandleRunnerMiddlewareTest extends AbstractRunnerMiddlewareTestCase
     }
 
     /** @test */
+    public function it_does_not_skip_on_non_blocking_failed_result(): void
+    {
+        $this->safelyRunAsync(function () {
+            $this->middleware = new HandleRunnerMiddleware(
+                $this->taskHandler->reveal(),
+                new RunnerConfig($stopOnFailure = true, $hideCircumventionTip = false, $additionalInfo = '')
+            );
+
+            $context = $this->createRunnerContext()->withTasks(new TasksCollection([
+                $task1 = $this->mockTask('1'),
+                $task2 = $this->mockTask('2'),
+                $task3 = $this->mockTask('3'),
+            ]));
+            $next = $this->createNextShouldNotBeCalledCallback();
+
+            $this->taskHandler->handle(Argument::type(TaskInterface::class), $context)->will(function (array $arguments) {
+                return new Delayed(
+                    (int)($arguments[0]->getConfig()->getName()) * 100,
+                    TaskResult::createNonBlockingFailed($arguments[0], $arguments[1]->getTaskContext(), 'error')
+                );
+            });
+
+            $result = $this->middleware->handle($context, $next);
+            self::assertSame(3, count($result));
+            self::assertSame(3, $result->filterByResultCode(TaskResultInterface::NONBLOCKING_FAILED)->count());
+            self::assertFalse($result->isFailed());
+        });
+    }
+
+    /** @test */
     public function it_throws_multi_exception_on_unkown_exception(): void
     {
         $this->safelyRunAsync(function () {
