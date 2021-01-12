@@ -90,6 +90,17 @@ A list of the supported variables:
    
    These environment variables can be overwritten by the `environment` settings inside your `grumphp.yml`.
 
+The added environment variables will also be presented to the tasks that GrumPHP executes.
+Note that `symfony/process` only passes string values.
+If you want to use integers, you need do wrap the value in quotes:
+
+```yaml
+grumphp:
+    environment:
+      variables:
+        PHP_CS_FIXER_IGNORE_ENV: "1"
+```
+
 **stop_on_failure**
 
 *Default: false*
