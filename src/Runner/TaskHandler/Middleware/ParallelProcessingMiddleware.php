@@ -48,6 +48,8 @@ class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
             return $next($task, $runnerContext);
         }
 
+        $currentEnv = $_ENV;
+
         /**
          * This method creates a callable that can be used to enqueue to run the task in parallel.
          * The result is wrapped in a serializable closure
@@ -58,9 +60,10 @@ class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
          *
          * @var callable(): Promise<TaskResultInterface> $enqueueParallelTask
          */
-        $enqueueParallelTask = function () use ($task, $runnerContext, $next): Promise {
+        $enqueueParallelTask = function () use ($task, $runnerContext, $next, $currentEnv): Promise {
             return parallel(
-                static function () use ($task, $runnerContext, $next): SerializableClosure {
+                static function (array $parentEnv) use ($task, $runnerContext, $next): SerializableClosure {
+                    $_ENV = array_merge($parentEnv, $_ENV);
                     /** @var TaskResultInterface $result */
                     $result = wait($next($task, $runnerContext));
 
@@ -74,7 +77,7 @@ class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
                     );
                 },
                 $this->poolFactory->create()
-            )();
+            )($currentEnv);
         };
 
         return call(
