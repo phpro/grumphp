@@ -104,7 +104,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
 
         try {
             $this->io->write(['<fg=yellow>Detected unstaged changes... Stashing them!</fg=yellow>']);
-            $this->repository->run('stash', ['save', '--quiet', '--keep-index', uniqid('grumphp')]);
+            $this->repository->run('stash', ['save', '--keep-index', uniqid('grumphp')]);
         } catch (Exception $e) {
             // No worries ...
             $this->io->write([sprintf('<fg=red>Failed stashing changes: %s</fg=red>', $e->getMessage())]);
@@ -124,7 +124,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
 
         try {
             $this->io->write(['<fg=yellow>Reapplying unstaged changes from stash.</fg=yellow>']);
-            $this->repository->run('stash', ['pop', '--quiet']);
+            $this->repository->run('stash', ['pop']);
         } catch (Exception $e) {
             throw new RuntimeException(
                 'The stashed changes could not be applied. Please run `git stash pop` manually!'
