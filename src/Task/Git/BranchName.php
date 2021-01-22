@@ -107,7 +107,7 @@ class BranchName implements TaskInterface
             
             if (preg_match((string) $regex, $name)) {
                 if ($isBlacklisted) {
-                    continue;   
+                    continue;
                 }
                 
                 return TaskResult::createPassed($this, $context);
