@@ -93,6 +93,16 @@ class BranchNameTest extends AbstractTaskTestCase
             },
             'Whitelist rule not matched: develop'
         ];
+        yield 'multi-whitelist' => [	
+            [	
+                'whitelist' => ['master', 'develop'],	
+            ],	
+            $this->mockContext(RunContext::class, ['hello.php']),	
+            function () {	
+                $this->repository->run('symbolic-ref', ['HEAD', '--short'])->willReturn('feature/other');	
+            },	
+            'Whitelist rule not matched: master'.PHP_EOL.'Whitelist rule not matched: develop'	
+        ];
         yield 'mixed' => [
             [
                 'whitelist' => ['JIRA-2'],
