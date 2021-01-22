@@ -105,7 +105,7 @@ class BranchName implements TaskInterface
             $additionalModifiersArray = array_filter(str_split($config['additional_modifiers']));
             array_map([$regex, 'addPatternModifier'], $additionalModifiersArray);
             
-            if (preg_match((string) $regex, $name) {
+            if (preg_match((string) $regex, $name)) {
                 if ($isBlacklisted) {
                     continue;   
                 }
