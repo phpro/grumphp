@@ -41,5 +41,6 @@ This page lists third party extensions implementing useful GrumPHP tasks.
 - [pluswerk/grumphp-xliff-task](https://github.com/pluswerk/grumphp-xliff-task) Validates XLIFF files.
 - [wearejust/grumphp-extra-tasks](https://github.com/wearejust/grumphp-extra-tasks) Extra GrumPHP tasks like a PhpCsAutoFixer.
 - [nlubisch/grumphp-easycodingstandard](https://github.com/nlubisch/grumphp-easycodingstandard) GrumPHP task for running EasyCodingStandard.
+- [jonmldr/grumphp-doctrine-task](https://github.com/jonmldr/grumphp-doctrine-task) GrumPHP task for Doctrine's schema validation in Symfony projects.
 
 Did you write your own extension? Feel free to add it to this list!
