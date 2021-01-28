@@ -2,11 +2,9 @@
 
 The Security Checker will check your `composer.lock` file for known security vulnerabilities.
 
-***Composer***
+***Binary***
 
-```
-composer require --dev sensiolabs/security-checker
-```
+Download the latest binary from https://github.com/fabpot/local-php-security-checker/releases and make sure it is parth of your PATH or place it in one of the directories defined by environment.paths in your grumphp.yml file.
 
 ***Config***
 
@@ -19,8 +17,6 @@ grumphp:
         securitychecker:
             lockfile: ./composer.lock
             format: ~
-            end_point: ~
-            timeout: ~
             run_always: false
 ```
 
@@ -34,19 +30,7 @@ If your `composer.lock` file is located in an exotic location, you can specify t
 
 *Default: null*
 
-You can choose the format of the output. The available options are `text`, `json` and `simple`. By default, grumphp will use the format `text`.
-
-**end_point**
-
-*Default: null*
-
-You can use a different end point for the security checks. Grumphp will use the default end point which is [https://security.symfony.com/check_lock](https://security.symfony.com/check_lock).
-
-**timeout**
-
-*Default: null*
-
-You can change the timeout value for the command. By default this value is `20`.
+You can choose the format of the output. The available options are `ansi`, `json`, `markdown` and `yaml`. By default, grumphp will use the format `ansi`.
 
 **run_always**
 

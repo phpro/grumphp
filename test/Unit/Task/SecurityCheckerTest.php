@@ -27,8 +27,6 @@ class SecurityCheckerTest extends AbstractExternalTaskTestCase
             [
                 'lockfile' => './composer.lock',
                 'format' => null,
-                'end_point' => null,
-                'timeout' => null,
                 'run_always' => false,
             ]
         ];
@@ -58,7 +56,7 @@ class SecurityCheckerTest extends AbstractExternalTaskTestCase
             [],
             $this->mockContext(RunContext::class, ['composer.lock']),
             function () {
-                $this->mockProcessBuilder('security-checker', $process = $this->mockProcess(1));
+                $this->mockProcessBuilder('local-php-security-checker', $process = $this->mockProcess(1));
                 $this->formatter->format($process)->willReturn('nope');
             },
             'nope'
@@ -71,7 +69,7 @@ class SecurityCheckerTest extends AbstractExternalTaskTestCase
             [],
             $this->mockContext(RunContext::class, ['composer.lock']),
             function () {
-                $this->mockProcessBuilder('security-checker', $this->mockProcess(0));
+                $this->mockProcessBuilder('local-php-security-checker', $this->mockProcess(0));
             }
         ];
         yield 'exitCode0WhenRunAlways' => [
@@ -80,7 +78,7 @@ class SecurityCheckerTest extends AbstractExternalTaskTestCase
             ],
             $this->mockContext(RunContext::class, ['notrelated.php']),
             function () {
-                $this->mockProcessBuilder('security-checker', $this->mockProcess(0));
+                $this->mockProcessBuilder('local-php-security-checker', $this->mockProcess(0));
             }
         ];
     }
@@ -104,36 +102,21 @@ class SecurityCheckerTest extends AbstractExternalTaskTestCase
         yield 'defaults' => [
             [],
             $this->mockContext(RunContext::class, ['composer.lock']),
-            'security-checker',
+            'local-php-security-checker',
             [
-                'security:check',
-                './composer.lock',
+                '--path=./composer.lock',
             ]
         ];
 
-        yield 'endpoint' => [
+        yield 'format' => [
             [
-                'end_point' => $endpoint = 'http://myserver.com',
+                'format' => 'json',
             ],
             $this->mockContext(RunContext::class, ['composer.lock']),
-            'security-checker',
+            'local-php-security-checker',
             [
-                'security:check',
-                './composer.lock',
-                '--end-point='.$endpoint
-            ]
-        ];
-
-        yield 'timeout' => [
-            [
-                'timeout' => 2,
-            ],
-            $this->mockContext(RunContext::class, ['composer.lock']),
-            'security-checker',
-            [
-                'security:check',
-                './composer.lock',
-                '--timeout=2'
+                '--path=./composer.lock',
+                '--format=json'
             ]
         ];
     }
