@@ -5,7 +5,7 @@ The Security Checker will check your `composer.lock` file for known security vul
 ***Composer***
 
 ```
-composer require --dev sensiolabs/security-checker
+composer require --dev enlightn/security-checker
 ```
 
 ***Config***
@@ -18,9 +18,6 @@ grumphp:
     tasks:
         securitychecker:
             lockfile: ./composer.lock
-            format: ~
-            end_point: ~
-            timeout: ~
             run_always: false
 ```
 
@@ -29,24 +26,6 @@ grumphp:
 *Default: ./composer.lock*
 
 If your `composer.lock` file is located in an exotic location, you can specify the location with this option. By default, the task will try to load a `composer.lock` file in the current directory.
-
-**format**
-
-*Default: null*
-
-You can choose the format of the output. The available options are `text`, `json` and `simple`. By default, grumphp will use the format `text`.
-
-**end_point**
-
-*Default: null*
-
-You can use a different end point for the security checks. Grumphp will use the default end point which is [https://security.symfony.com/check_lock](https://security.symfony.com/check_lock).
-
-**timeout**
-
-*Default: null*
-
-You can change the timeout value for the command. By default this value is `20`.
 
 **run_always**
 
