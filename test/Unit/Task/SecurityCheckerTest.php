@@ -26,9 +26,6 @@ class SecurityCheckerTest extends AbstractExternalTaskTestCase
             [],
             [
                 'lockfile' => './composer.lock',
-                'format' => null,
-                'end_point' => null,
-                'timeout' => null,
                 'run_always' => false,
             ]
         ];
@@ -108,32 +105,6 @@ class SecurityCheckerTest extends AbstractExternalTaskTestCase
             [
                 'security:check',
                 './composer.lock',
-            ]
-        ];
-
-        yield 'endpoint' => [
-            [
-                'end_point' => $endpoint = 'http://myserver.com',
-            ],
-            $this->mockContext(RunContext::class, ['composer.lock']),
-            'security-checker',
-            [
-                'security:check',
-                './composer.lock',
-                '--end-point='.$endpoint
-            ]
-        ];
-
-        yield 'timeout' => [
-            [
-                'timeout' => 2,
-            ],
-            $this->mockContext(RunContext::class, ['composer.lock']),
-            'security-checker',
-            [
-                'security:check',
-                './composer.lock',
-                '--timeout=2'
             ]
         ];
     }

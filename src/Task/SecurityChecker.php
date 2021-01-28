@@ -18,16 +18,10 @@ class SecurityChecker extends AbstractExternalTask
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'lockfile' => './composer.lock',
-            'format' => null,
-            'end_point' => null,
-            'timeout' => null,
             'run_always' => false,
         ]);
 
         $resolver->addAllowedTypes('lockfile', ['string']);
-        $resolver->addAllowedTypes('format', ['null', 'string']);
-        $resolver->addAllowedTypes('end_point', ['null', 'string']);
-        $resolver->addAllowedTypes('timeout', ['null', 'int']);
         $resolver->addAllowedTypes('run_always', ['bool']);
 
         return $resolver;
@@ -52,9 +46,6 @@ class SecurityChecker extends AbstractExternalTask
         $arguments = $this->processBuilder->createArgumentsForCommand('security-checker');
         $arguments->add('security:check');
         $arguments->addOptionalArgument('%s', $config['lockfile']);
-        $arguments->addOptionalArgument('--format=%s', $config['format']);
-        $arguments->addOptionalArgument('--end-point=%s', $config['end_point']);
-        $arguments->addOptionalArgument('--timeout=%s', $config['timeout']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
