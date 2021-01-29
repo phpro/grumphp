@@ -1,8 +1,8 @@
 # Git branch name
 
 The Git branch name task ensures that the current branch name matches the specified patterns.
-For this task to succeed, **all** whitelist patterns and **none** of the blacklist patterns have to
-match the commit message. For example: if you are working with JIRA, it is possible to add a
+For this task to succeed, **any** whitelist patterns and **none** of the blacklist patterns have to
+match the branch name. For example: if you are working with JIRA, it is possible to add a
 pattern for the JIRA issue number.
  
 ```yaml

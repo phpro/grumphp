@@ -74,6 +74,7 @@ class BranchName implements TaskInterface
     public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfig()->getOptions();
+        $isBlacklisted = false;
         $errors = [];
 
         try {
@@ -95,6 +96,7 @@ class BranchName implements TaskInterface
 
             if (preg_match((string)$regex, $name)) {
                 $errors[] = sprintf('Matched blacklist rule: %s', $rule);
+                $isBlacklisted = true;
             }
         }
         foreach ($config['whitelist'] as $rule) {
@@ -102,10 +104,18 @@ class BranchName implements TaskInterface
 
             $additionalModifiersArray = array_filter(str_split($config['additional_modifiers']));
             array_map([$regex, 'addPatternModifier'], $additionalModifiersArray);
-
-            if (!preg_match((string) $regex, $name)) {
-                $errors[] = sprintf('Whitelist rule not matched: %s', $rule);
+            
+            if (preg_match((string) $regex, $name)) {
+                if ($isBlacklisted) {
+                    $errors[] = sprintf('Matched whitelist rule: %s (IGNORED due to presence in blacklist)', $rule);
+                    
+                    continue;
+                }
+                
+                return TaskResult::createPassed($this, $context);
             }
+
+            $errors[] = sprintf('Whitelist rule not matched: %s', $rule);
         }
 
         if (\count($errors)) {

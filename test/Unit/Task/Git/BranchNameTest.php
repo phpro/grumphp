@@ -93,15 +93,26 @@ class BranchNameTest extends AbstractTaskTestCase
             },
             'Whitelist rule not matched: develop'
         ];
-        yield 'multi-whitelist' => [
-            [
-                'whitelist' => ['master', 'develop'],
-            ],
-            $this->mockContext(RunContext::class, ['hello.php']),
-            function () {
-                $this->repository->run('symbolic-ref', ['HEAD', '--short'])->willReturn('master');
-            },
-            'Whitelist rule not matched: develop'
+        yield 'multi-whitelist' => [	
+            [	
+                'whitelist' => ['master', 'develop'],	
+            ],	
+            $this->mockContext(RunContext::class, ['hello.php']),	
+            function () {	
+                $this->repository->run('symbolic-ref', ['HEAD', '--short'])->willReturn('feature/other');	
+            },	
+            'Whitelist rule not matched: master'.PHP_EOL.'Whitelist rule not matched: develop'	
+        ];
+        yield 'blacklist-and-whitelist' => [	
+            [	
+                'blacklist' => ['feature/other'],
+                'whitelist' => ['master', 'feature/*'],	
+            ],	
+            $this->mockContext(RunContext::class, ['hello.php']),	
+            function () {	
+                $this->repository->run('symbolic-ref', ['HEAD', '--short'])->willReturn('feature/other');	
+            },	
+            'Matched blacklist rule: feature/other'.PHP_EOL.'Whitelist rule not matched: master'.PHP_EOL.'Matched whitelist rule: feature/* (IGNORED due to presence in blacklist)'	
         ];
         yield 'mixed' => [
             [
@@ -147,7 +158,7 @@ class BranchNameTest extends AbstractTaskTestCase
         ];
         yield 'multi-whitelist' => [
             [
-                'whitelist' => ['JIRA-1', '/JIRA-\d+/'],
+                'whitelist' => ['feature/*', 'JIRA-1', '/JIRA-\d+/'],
             ],
             $this->mockContext(RunContext::class, ['hello.php']),
             function () {
