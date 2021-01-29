@@ -16,7 +16,9 @@ class TestSuiteCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         $testSuites = $container->getParameter('testsuites');
-        $registeredTasks = (array) $container->getParameter('grumphp.tasks.configured');
+        $testSuites = is_array($testSuites) ? $testSuites : [];
+        $registeredTasks = $container->getParameter('grumphp.tasks.configured');
+        $registeredTasks = is_array($registeredTasks) ? $registeredTasks : [];
         $optionsResolver = $this->createOptionsResolver($registeredTasks);
 
         $collection = new TestSuiteCollection();
