@@ -108,6 +108,13 @@ class PhpStanTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['test/file.php']),
             function () {}
         ];
+        yield 'no-files-with-use-grumphp-paths' => [
+            [
+                'use_grumphp_paths' => true,
+            ],
+            $this->mockContext(RunContext::class),
+            function () {}
+        ];
     }
 
     public function provideExternalTaskRuns(): iterable
@@ -193,7 +200,7 @@ class PhpStanTest extends AbstractExternalTaskTestCase
             [
                 'use_grumphp_paths' => false,
             ],
-            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            $this->mockContext(RunContext::class, []),
             'phpstan',
             [
                 'analyse',
