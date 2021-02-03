@@ -6,15 +6,15 @@ namespace GrumPHPTest\Unit\Task;
 
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
-use GrumPHP\Task\SecurityChecker;
+use GrumPHP\Task\SecurityCheckerEnlightn;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\Test\Task\AbstractExternalTaskTestCase;
 
-class SecurityCheckerTest extends AbstractExternalTaskTestCase
+class SecurityCheckerEnlightnTest extends AbstractExternalTaskTestCase
 {
     protected function provideTask(): TaskInterface
     {
-        return new SecurityChecker(
+        return new SecurityCheckerEnlightn(
             $this->processBuilder->reveal(),
             $this->formatter->reveal()
         );
