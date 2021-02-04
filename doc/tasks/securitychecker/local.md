@@ -4,7 +4,7 @@ The Security Checker will check your `composer.lock` file for known security vul
 
 ***Binary***
 
-Download the latest binary from https://github.com/fabpot/local-php-security-checker/releases and make sure it is part of your PATH or place it in one of the directories defined by environment.paths in your grumphp.yml file.
+Download the latest binary from [fabpot/local-php-security-checker ](https://github.com/fabpot/local-php-security-checker/releases) and make sure it is part of your PATH or place it in one of the directories defined by environment.paths in your grumphp.yml file.
 
 ***Config***
 

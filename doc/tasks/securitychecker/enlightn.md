@@ -10,7 +10,7 @@ composer require --dev enlightn/security-checker
 
 ***Config***
 
-The task lives under the `securitychecker` namespace and has the following configurable parameters:
+The task lives under the `securitychecker_enlightn` namespace and has the following configurable parameters:
 
 ```yaml
 # grumphp.yml

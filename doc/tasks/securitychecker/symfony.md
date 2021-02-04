@@ -14,7 +14,7 @@ The task lives under the `securitychecker_symfony` namespace and has the followi
 # grumphp.yml
 grumphp:
     tasks:
-        securitychecker_local:
+        securitychecker_symfony:
             lockfile: ./composer.lock
             format: ~
             run_always: false

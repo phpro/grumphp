@@ -44,9 +44,9 @@ class SecurityChecker extends AbstractExternalTask
             $this,
             $context,
             'The securitychecker task is discontinued by SensioLabs.'.PHP_EOL
-            . 'Please consider switching to of the following tasks instead:'.PHP_EOL.PHP_EOL
+            . 'Please consider switching to one of the following tasks instead:'.PHP_EOL.PHP_EOL
             . '- securitychecker_enlightn '
-            . '(https://github.com/phpro/grumphp/blob/master/doc/tasks/securitychecker/enligthn.md)'.PHP_EOL
+            . '(https://github.com/phpro/grumphp/blob/master/doc/tasks/securitychecker/enlightn.md)'.PHP_EOL
             . '- securitychecker_local '
             . '(https://github.com/phpro/grumphp/blob/master/doc/tasks/securitychecker/local.md)'.PHP_EOL
             . '- securitychecker_symfony '
