@@ -322,6 +322,27 @@ services:
         tags:
             - {name: grumphp.task, task: securitychecker}
 
+    GrumPHP\Task\SecurityCheckerEnlightn:
+        arguments:
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, task: securitychecker_enlightn}
+
+    GrumPHP\Task\SecurityCheckerLocal:
+        arguments:
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, task: securitychecker_local}
+
+    GrumPHP\Task\SecurityCheckerSymfony:
+        arguments:
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, task: securitychecker_symfony}
+
     GrumPHP\Task\Shell:
         arguments:
             - '@process_builder'

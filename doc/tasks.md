@@ -53,7 +53,9 @@ grumphp:
         progpilot: ~
         psalm: ~    
         robo: ~
-        securitychecker: ~
+        securitychecker_enligthn: ~
+        securitychecker_local: ~
+        securitychecker_symfony: ~
         shell: ~
         tester: ~
         twigcs: ~
@@ -112,6 +114,9 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Psalm](tasks/psalm.md)
 - [Robo](tasks/robo.md)
 - [Security Checker](tasks/securitychecker.md)
+  - [Enlightn](tasks/securitychecker/enlightn.md)
+  - [Local](tasks/securitychecker/local.md)
+  - [Symfony](tasks/securitychecker/symfony.md)
 - [Shell](tasks/shell.md)
 - [Tester](tasks/tester.md)
 - [TwigCs](tasks/twigcs.md)
