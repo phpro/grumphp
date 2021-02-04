@@ -53,7 +53,7 @@ grumphp:
         progpilot: ~
         psalm: ~    
         robo: ~
-        securitychecker_enligthn: ~
+        securitychecker_enlightn: ~
         securitychecker_local: ~
         securitychecker_symfony: ~
         shell: ~
