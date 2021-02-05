@@ -29,7 +29,7 @@ grumphp:
 *Default: null*
 
 By default `.` (current folder) will be used.
-You can specify an alternate location by changing this option.
+You can specify an alternate location by changing this option. If the path doesn't exist or is not accessible an exception will be thrown.
 
 **severity**
 
