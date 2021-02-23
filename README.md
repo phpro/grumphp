@@ -1,4 +1,4 @@
-![Github Actions](https://github.com/phpro/grumphp/workflows/GrumPHP/badge.svg?branch=master)
+[![Github Actions](https://github.com/phpro/grumphp/workflows/GrumPHP/badge.svg?branch=master)](https://github.com/phpro/grumphp/actions/workflows/grumphp.yml)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/ttlbau2sjg36ep01/branch/master?svg=true)](https://ci.appveyor.com/project/veewee/grumphp/branch/master)
 [![Installs](https://img.shields.io/packagist/dt/phpro/grumphp.svg)](https://packagist.org/packages/phpro/grumphp/stats)
 [![Packagist](https://img.shields.io/packagist/v/phpro/grumphp.svg)](https://packagist.org/packages/phpro/grumphp)
