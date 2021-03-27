@@ -152,6 +152,22 @@ class ComposerTest extends AbstractExternalTaskTestCase
                 );
             }
         ];
+        yield 'packagistDotOrgDisabled' => [
+            [
+                'no_local_repository' => true,
+            ],
+            $this->mockContext(RunContext::class, ['composer.json']),
+            function () {
+                $this->mockProcessBuilder('composer', $this->mockProcess(0));
+                $this->filesystem->readFromFileInfo(Argument::which('getBasename', 'composer.json'))->willReturn(
+                    json_encode([
+                        'repositories' => [
+                            ['packagist.org' => false],
+                        ],
+                    ])
+                );
+            }
+        ];
     }
 
     public function provideSkipsOnStuff(): iterable

@@ -105,7 +105,7 @@ class Composer extends AbstractExternalTask
         }
 
         foreach ($package['repositories'] as $repository) {
-            if ('path' === $repository['type']) {
+            if ('path' === ($repository['type'] ?? null)) {
                 return true;
             }
         }
