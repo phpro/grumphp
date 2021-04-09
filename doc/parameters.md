@@ -14,7 +14,7 @@ grumphp:
     ignore_unstaged_changes: false
     hide_circumvention_tip: false
     process_timeout: 60
-    additonal_info: ~
+    additional_info: ~
     ascii:
         failed: resource/grumphp-grumpy.txt
         succeeded: resource/grumphp-happy.txt
