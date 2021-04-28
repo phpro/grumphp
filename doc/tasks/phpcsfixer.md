@@ -28,7 +28,6 @@ grumphp:
             triggered_by: ['php']
 ```
 
-
 **allow_risky**
 
 *Default: null*
@@ -44,14 +43,12 @@ If not set, the default value is taken from config file (if it exists). By defau
 You can change the location of the cache file by changing this property.
 When no cache_file is set, the default file `.php_cs.cache` will be used.
 
-
 **config**
 
 *Default: null*
 
 By default the `.php_cs` wil be used.
 You can specify an alternate location for this file by changing this option.
-
 
 **rules**
 
@@ -96,7 +93,6 @@ This will speed up further runs by fixing only files that were modified since th
 The tool will fix all files if the tool version has changed or the list of fixers has changed.
 Cache is supported only for tool downloaded as phar file or installed via composer.
 
-
 **config_contains_finder**
 
 *Default: true*
@@ -121,9 +117,8 @@ Show applied fixers.
 
 Show the full diff that will be applied.
 
-
 **triggered_by**
 
 *Default: [php]*
 
-This option will specify which file extensions will trigger the phpcsfixer2 task.
+This option will specify which file extensions will trigger the phpcsfixer task.
