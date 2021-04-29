@@ -19,6 +19,7 @@ grumphp:
         twigcs:
             path: '.'
             severity: 'warning'
+            display: 'all'
             ruleset: 'FriendsOfTwig\Twigcs\Ruleset\Official'
             triggered_by: ['twig']
             exclude: []
@@ -36,6 +37,12 @@ You can specify an alternate location by changing this option. If the path doesn
 *Default: 'warning'*
 
 Severity level of sniffing (possibles values are : 'IGNORE', 'INFO', 'WARNING', 'ERROR').
+
+**display**
+
+*Default: 'all'*
+
+The violations to display (possibles values are : 'all', 'blocking').
 
 **ruleset**
 
