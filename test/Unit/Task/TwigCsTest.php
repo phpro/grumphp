@@ -121,6 +121,21 @@ class TwigCsTest extends AbstractExternalTaskTestCase
             ]
         ];
 
+        yield 'severity' => [
+            [
+                'severity' => 'error',
+            ],
+            $this->mockContext(RunContext::class, ['hello.twig', 'hello2.twig']),
+            'twigcs',
+            [
+                '.',
+                '--severity=error',
+                '--display=all',
+                '--ruleset=FriendsOfTwig\Twigcs\Ruleset\Official',
+                '--ansi',
+            ]
+        ];
+
         yield 'display' => [
             [
                 'display' => 'blocking',
