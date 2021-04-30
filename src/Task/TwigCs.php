@@ -19,6 +19,7 @@ class TwigCs extends AbstractExternalTask
         $resolver->setDefaults([
             'path' => '.',
             'severity' => 'warning',
+            'display' => 'all',
             'ruleset' => 'FriendsOfTwig\Twigcs\Ruleset\Official',
             'triggered_by' => ['twig'],
             'exclude' => [],
@@ -27,6 +28,7 @@ class TwigCs extends AbstractExternalTask
         $resolver->addAllowedTypes('path', ['string']);
         $resolver->addAllowedTypes('exclude', ['array']);
         $resolver->addAllowedTypes('severity', ['string']);
+        $resolver->addAllowedTypes('display', ['string']);
         $resolver->addAllowedTypes('ruleset', ['string']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
 
@@ -51,6 +53,7 @@ class TwigCs extends AbstractExternalTask
         $arguments->add($config['path']);
 
         $arguments->addOptionalArgument('--severity=%s', $config['severity']);
+        $arguments->addOptionalArgument('--display=%s', $config['display']);
         $arguments->addOptionalArgument('--ruleset=%s', $config['ruleset']);
         $arguments->addOptionalArgument('--ansi', true);
 

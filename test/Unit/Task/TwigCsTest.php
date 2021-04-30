@@ -27,6 +27,7 @@ class TwigCsTest extends AbstractExternalTaskTestCase
             [
                 'path' => '.',
                 'severity' => 'warning',
+                'display' => 'all',
                 'ruleset' => 'FriendsOfTwig\Twigcs\Ruleset\Official',
                 'triggered_by' => ['twig'],
                 'exclude' => [],
@@ -99,6 +100,7 @@ class TwigCsTest extends AbstractExternalTaskTestCase
             [
                 '.',
                 '--severity=warning',
+                '--display=all',
                 '--ruleset=FriendsOfTwig\Twigcs\Ruleset\Official',
                 '--ansi',
             ]
@@ -113,6 +115,37 @@ class TwigCsTest extends AbstractExternalTaskTestCase
             [
                 'src',
                 '--severity=warning',
+                '--display=all',
+                '--ruleset=FriendsOfTwig\Twigcs\Ruleset\Official',
+                '--ansi',
+            ]
+        ];
+
+        yield 'severity' => [
+            [
+                'severity' => 'error',
+            ],
+            $this->mockContext(RunContext::class, ['hello.twig', 'hello2.twig']),
+            'twigcs',
+            [
+                '.',
+                '--severity=error',
+                '--display=all',
+                '--ruleset=FriendsOfTwig\Twigcs\Ruleset\Official',
+                '--ansi',
+            ]
+        ];
+
+        yield 'display' => [
+            [
+                'display' => 'blocking',
+            ],
+            $this->mockContext(RunContext::class, ['hello.twig', 'hello2.twig']),
+            'twigcs',
+            [
+                '.',
+                '--severity=warning',
+                '--display=blocking',
                 '--ruleset=FriendsOfTwig\Twigcs\Ruleset\Official',
                 '--ansi',
             ]
@@ -127,6 +160,7 @@ class TwigCsTest extends AbstractExternalTaskTestCase
             [
                 '.',
                 '--severity=warning',
+                '--display=all',
                 '--ruleset=FriendsOfTwig\Twigcs\Ruleset\Official',
                 '--ansi',
                 '--exclude=src/',
