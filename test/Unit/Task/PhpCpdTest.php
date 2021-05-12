@@ -29,7 +29,7 @@ class PhpCpdTest extends AbstractExternalTaskTestCase
                 '--exclude=vendor',
                 '--min-lines=5',
                 '--min-tokens=70',
-                '--suffix=*.php',
+                '--suffix=.php',
                 '.',
             ],
         ];
@@ -44,7 +44,7 @@ class PhpCpdTest extends AbstractExternalTaskTestCase
                 '--exclude=vendor',
                 '--min-lines=5',
                 '--min-tokens=70',
-                '--suffix=*.php',
+                '--suffix=.php',
                 'folder-1',
                 'folder-2',
             ],
@@ -61,7 +61,7 @@ class PhpCpdTest extends AbstractExternalTaskTestCase
                 '--exclude=folder-2',
                 '--min-lines=5',
                 '--min-tokens=70',
-                '--suffix=*.php',
+                '--suffix=.php',
                 '.',
             ],
         ];
@@ -76,7 +76,7 @@ class PhpCpdTest extends AbstractExternalTaskTestCase
                 '--exclude=vendor',
                 '--min-lines=5',
                 '--min-tokens=70',
-                '--suffix=*.php',
+                '--suffix=.php',
                 '--fuzzy',
                 '.',
             ],
@@ -92,7 +92,7 @@ class PhpCpdTest extends AbstractExternalTaskTestCase
                 '--exclude=vendor',
                 '--min-lines=10',
                 '--min-tokens=70',
-                '--suffix=*.php',
+                '--suffix=.php',
                 '.',
             ],
         ];
@@ -107,7 +107,7 @@ class PhpCpdTest extends AbstractExternalTaskTestCase
                 '--exclude=vendor',
                 '--min-lines=5',
                 '--min-tokens=10',
-                '--suffix=*.php',
+                '--suffix=.php',
                 '.',
             ],
         ];
@@ -122,7 +122,8 @@ class PhpCpdTest extends AbstractExternalTaskTestCase
                 '--exclude=vendor',
                 '--min-lines=5',
                 '--min-tokens=70',
-                '--suffix=*.php,*.html',
+                '--suffix=.php',
+                '--suffix=.html',
                 '.',
             ],
         ];
