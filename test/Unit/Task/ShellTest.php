@@ -27,6 +27,7 @@ class ShellTest extends AbstractExternalTaskTestCase
             [
                 'scripts' => [],
                 'triggered_by' => ['php'],
+                'append_files' => false,
             ]
         ];
         yield 'string_script' => [
@@ -38,6 +39,7 @@ class ShellTest extends AbstractExternalTaskTestCase
                     ['phpunit']
                 ],
                 'triggered_by' => ['php'],
+                'append_files' => false,
             ]
         ];
         yield 'array_script' => [
@@ -51,6 +53,17 @@ class ShellTest extends AbstractExternalTaskTestCase
                     ['phpunit', 'tests']
                 ],
                 'triggered_by' => ['php'],
+                'append_files' => false,
+            ]
+        ];
+        yield 'append_files' => [
+            [
+                'append_files' => true,
+            ],
+            [
+                'scripts' => [],
+                'triggered_by' => ['php'],
+                'append_files' => true,
             ]
         ];
     }
@@ -158,6 +171,20 @@ class ShellTest extends AbstractExternalTaskTestCase
             [
                 'phpunit',
                 'tests'
+            ]
+        ];
+
+        yield 'append-files' => [
+            [
+                'scripts' => ['phpunit'],
+                'append_files' => true,
+            ],
+            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'sh',
+            [
+                'phpunit',
+                'hello.php',
+                'hello2.php',
             ]
         ];
     }

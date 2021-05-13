@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
@@ -21,10 +22,12 @@ class Shell extends AbstractExternalTask
         $resolver->setDefaults([
             'scripts' => [],
             'triggered_by' => ['php'],
+            'append_files' => false,
         ]);
 
         $resolver->addAllowedTypes('scripts', ['array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
+        $resolver->addAllowedTypes('append_files', ['bool']);
         $resolver->setNormalizer('scripts', function (Options $options, array $scripts) {
             return array_map(
                 /**
@@ -62,7 +65,7 @@ class Shell extends AbstractExternalTask
         $exceptions = [];
         foreach ($config['scripts'] as $script) {
             try {
-                $this->runShell($script);
+                $this->runShell($script, $config['append_files'] ? $files : null);
             } catch (RuntimeException $e) {
                 $exceptions[] = $e->getMessage();
             }
@@ -75,10 +78,14 @@ class Shell extends AbstractExternalTask
         return TaskResult::createPassed($this, $context);
     }
 
-    private function runShell(array $scriptArguments): void
+    private function runShell(array $scriptArguments, ?FilesCollection $files): void
     {
         $arguments = $this->processBuilder->createArgumentsForCommand('sh');
         $arguments->addArgumentArray('%s', $scriptArguments);
+
+        if ($files !== null) {
+            $arguments->addFiles($files);
+        }
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();

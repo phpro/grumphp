@@ -10,6 +10,7 @@ grumphp:
         shell:
             scripts: []
             triggered_by: [php]
+            append_files: false
 ```
 
 **scripts**
@@ -43,3 +44,11 @@ grumphp:
 This option will specify which file extensions will trigger the shell tasks.
 By default Shell will be triggered by altering a PHP file. 
 You can overwrite this option to whatever file you want to use!
+
+
+**append_files**
+
+*Default: false*
+
+When set to true, this option will append the list of files to the executed command.  
+Mostly useful when you have a command, using `-c`, that takes the files as arguments.
