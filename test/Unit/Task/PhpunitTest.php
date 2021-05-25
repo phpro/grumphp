@@ -29,6 +29,7 @@ class PhpunitTest extends AbstractExternalTaskTestCase
                 'testsuite' => null,
                 'group' => [],
                 'always_execute' => false,
+                'order' => 'default',
             ]
         ];
     }
@@ -99,7 +100,9 @@ class PhpunitTest extends AbstractExternalTaskTestCase
             [],
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'phpunit',
-            []
+            [
+                'order' => '--order-by=default',
+            ]
         ];
         yield 'config-file' => [
             [
@@ -108,7 +111,7 @@ class PhpunitTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'phpunit',
             [
-                '--configuration=config.xml',
+                '--configuration=config.xml', '--order-by=default',
             ]
         ];
         yield 'testsuite' => [
@@ -118,7 +121,7 @@ class PhpunitTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'phpunit',
             [
-                '--testsuite=suite',
+                '--testsuite=suite', '--order-by=default',
             ]
         ];
         yield 'group' => [
@@ -128,7 +131,17 @@ class PhpunitTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'phpunit',
             [
-                '--group=group1,group2',
+                '--group=group1,group2', '--order-by=default',
+            ]
+        ];
+        yield 'order random' => [
+            [
+                'order' => 'random',
+            ],
+            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'phpunit',
+            [
+                'order' => '--order-by=random',
             ]
         ];
     }

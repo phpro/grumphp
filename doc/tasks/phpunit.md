@@ -21,6 +21,7 @@ grumphp:
             testsuite: ~
             group: []
             always_execute: false
+            order: default
 ```
 
 **config_file**
@@ -54,3 +55,8 @@ If you wish to only run tests from a certain Group.
 
 Always run the whole test suite, even if no PHP files were changed.
 
+**order**
+
+*Default: default*
+
+If you wish to execute order by a specific order. `order: [default,defects,duration,no-depends,random,reverse,size]`

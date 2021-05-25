@@ -21,12 +21,22 @@ class Phpunit extends AbstractExternalTask
             'testsuite' => null,
             'group' => [],
             'always_execute' => false,
+            'order' => 'default',
         ]);
 
         $resolver->addAllowedTypes('config_file', ['null', 'string']);
         $resolver->addAllowedTypes('testsuite', ['null', 'string']);
         $resolver->addAllowedTypes('group', ['array']);
         $resolver->addAllowedTypes('always_execute', ['bool']);
+        $resolver->addAllowedValues('order', [
+            'default',
+            'defects',
+            'duration',
+            'no-depends',
+            'random',
+            'reverse',
+            'size',
+        ]);
 
         return $resolver;
     }
@@ -49,6 +59,7 @@ class Phpunit extends AbstractExternalTask
         $arguments->addOptionalArgument('--configuration=%s', $config['config_file']);
         $arguments->addOptionalArgument('--testsuite=%s', $config['testsuite']);
         $arguments->addOptionalCommaSeparatedArgument('--group=%s', $config['group']);
+        $arguments->addOptionalArgument('--order-by=%s', $config['order']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
