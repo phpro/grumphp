@@ -21,22 +21,14 @@ class PhpunitBridge extends AbstractExternalTask
             'testsuite' => null,
             'group' => [],
             'always_execute' => false,
-            'order' => 'default',
+            'order' => null,
         ]);
 
         $resolver->addAllowedTypes('config_file', ['null', 'string']);
         $resolver->addAllowedTypes('testsuite', ['null', 'string']);
         $resolver->addAllowedTypes('group', ['array']);
         $resolver->addAllowedTypes('always_execute', ['bool']);
-        $resolver->addAllowedValues('order', [
-            'default',
-            'defects',
-            'duration',
-            'no-depends',
-            'random',
-            'reverse',
-            'size',
-        ]);
+        $resolver->addAllowedTypes('order', ['null', 'string']);
 
         return $resolver;
     }

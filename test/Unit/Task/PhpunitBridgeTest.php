@@ -29,7 +29,7 @@ class PhpunitBridgeTest extends AbstractExternalTaskTestCase
                 'testsuite' => null,
                 'group' => [],
                 'always_execute' => false,
-                'order' => 'default',
+                'order' => null,
             ]
         ];
     }
@@ -100,9 +100,7 @@ class PhpunitBridgeTest extends AbstractExternalTaskTestCase
             [],
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'simple-phpunit',
-            [
-                'order' => '--order-by=default',
-            ]
+            []
         ];
         yield 'config-file' => [
             [
@@ -111,7 +109,7 @@ class PhpunitBridgeTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'simple-phpunit',
             [
-                '--configuration=config.xml', '--order-by=default',
+                '--configuration=config.xml',
             ]
         ];
         yield 'testsuite' => [
@@ -121,7 +119,7 @@ class PhpunitBridgeTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'simple-phpunit',
             [
-                '--testsuite=suite', '--order-by=default',
+                '--testsuite=suite',
             ]
         ];
         yield 'group' => [
@@ -131,10 +129,10 @@ class PhpunitBridgeTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'simple-phpunit',
             [
-                '--group=group1,group2', '--order-by=default',
+                '--group=group1,group2',
             ]
         ];
-        yield 'order random' => [
+        yield 'random order' => [
             [
                 'order' => 'random',
             ],
