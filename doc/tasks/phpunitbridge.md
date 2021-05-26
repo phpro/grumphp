@@ -59,4 +59,4 @@ Always run the whole test suite, even if no PHP files were changed.
 
 *Default: default*
 
-If you wish to execute order by a specific order. `order: [default,defects,duration,no-depends,random,reverse,size]`
+If you wish to run tests in a specific order. `order: [default,defects,duration,no-depends,random,reverse,size]`
