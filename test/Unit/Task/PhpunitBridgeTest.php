@@ -29,6 +29,7 @@ class PhpunitBridgeTest extends AbstractExternalTaskTestCase
                 'testsuite' => null,
                 'group' => [],
                 'always_execute' => false,
+                'order' => null,
             ]
         ];
     }
@@ -129,6 +130,16 @@ class PhpunitBridgeTest extends AbstractExternalTaskTestCase
             'simple-phpunit',
             [
                 '--group=group1,group2',
+            ]
+        ];
+        yield 'random order' => [
+            [
+                'order' => 'random',
+            ],
+            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'simple-phpunit',
+            [
+                'order' => '--order-by=random',
             ]
         ];
     }
