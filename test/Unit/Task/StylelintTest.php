@@ -122,6 +122,15 @@ class StylelintTest extends AbstractExternalTaskTestCase
 
     public function provideExternalTaskRuns(): iterable
     {
+        yield 'precommit' => [
+            [],
+            $this->mockContext(GitPreCommitContext::class, ['hello.css', 'hello2.css']),
+            'stylelint',
+            [
+                'hello.css',
+                'hello2.css',
+            ]
+        ];
         yield 'bin' => [
             [
                 'bin' => 'node_modules/.bin/stylelint',
@@ -130,8 +139,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 'node_modules/.bin/stylelint',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'config' => [
@@ -142,8 +149,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--config=.stylelintrc.json',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'config_basedir' => [
@@ -154,8 +159,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--config-basedir=path/to/base/dir',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'ignore_path' => [
@@ -166,8 +169,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--ignore-path=path/to/.ignorefile',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'ignore_pattern' => [
@@ -178,8 +179,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--ignore-pattern=pattern',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'syntax' => [
@@ -190,8 +189,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--syntax=css',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'custom_syntax' => [
@@ -202,8 +199,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--custom-syntax=mysyntax',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'ignore_disables' => [
@@ -214,8 +209,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--ignore-disables',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'disable_default_ignores' => [
@@ -226,8 +219,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--disable-default-ignores',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'cache' => [
@@ -238,8 +229,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--cache',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'cache_location' => [
@@ -250,8 +239,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--cache-location=path/to/cache',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'formatter' => [
@@ -262,8 +249,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--formatter=string',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'custom_formatter' => [
@@ -274,8 +259,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--custom-formatter=myformatter',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'quiet' => [
@@ -286,8 +269,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--quiet',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'color' => [
@@ -298,8 +279,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--color',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'no_color' => [
@@ -310,8 +289,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--no-color',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'report_needless_disables' => [
@@ -322,8 +299,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--report-needless-disables',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'report_invalid_scope_disables' => [
@@ -334,8 +309,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--report-invalid-scope-disables',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'report_descriptionless_disables' => [
@@ -346,8 +319,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--report-descriptionless-disables',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'max_warnings' => [
@@ -358,8 +329,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--max-warnings=10',
-                'hello.css',
-                'hello2.css',
             ]
         ];
         yield 'output_file' => [
@@ -370,8 +339,6 @@ class StylelintTest extends AbstractExternalTaskTestCase
             'stylelint',
             [
                 '--output-file=path/to/outputfile',
-                'hello.css',
-                'hello2.css',
             ]
         ];
     }
