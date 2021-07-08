@@ -169,3 +169,19 @@ type_scope_conventions:
       - environment
 ```
 
+**subject_pattern**
+
+*Default: ([a-zA-Z0-9-_ #@'\/\"]+)*
+
+*To be used with `type_scope_conventions`*
+
+Specify a subject pattern. Default allows [a-zA-Z0-9-_ #@'\/\"]+ pattern.
+
+Add pattern like:
+```yaml
+type_scope_conventions:
+  - types: []
+  - scopes: ~
+  - subject_pattern: >-
+      ([a-zA-Zа-яА-Я0-9-_ #@'\/\"]+)
+```
