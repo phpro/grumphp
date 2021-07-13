@@ -16,6 +16,7 @@
     "require": {
         "php": "^7.3 || ^8.0",
         "ext-json": "*",
+        "ext-intl": "*",
         "amphp/amp": "^2.4",
         "amphp/parallel": "^1.4",
         "amphp/parallel-functions": "^1.0",
