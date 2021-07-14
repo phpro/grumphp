@@ -115,7 +115,7 @@ class ParatestTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'paratest',
             [
-                '-p=10',
+                '--processes=10',
             ]
         ];
         yield 'functional' => [
@@ -135,7 +135,7 @@ class ParatestTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'paratest',
             [
-                '-c=phpunit.xml',
+                '--configuration=phpunit.xml',
             ]
         ];
         yield 'runner' => [
