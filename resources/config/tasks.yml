@@ -350,6 +350,13 @@ services:
         tags:
             - {name: grumphp.task, task: shell}
 
+    GrumPHP\Task\Stylelint:
+        arguments:
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, task: stylelint}
+
     GrumPHP\Task\Tester:
         class:
         arguments:

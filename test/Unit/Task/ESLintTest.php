@@ -188,7 +188,7 @@ class ESLintTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.js', 'hello2.js']),
             'eslint',
             [
-             '--max-warnings=10',
+                '--max-warnings=10',
                 'hello.js',
                 'hello2.js',
             ]

@@ -57,6 +57,7 @@ grumphp:
         securitychecker_local: ~
         securitychecker_symfony: ~
         shell: ~
+        stylelint: ~
         tester: ~
         twigcs: ~
         xmllint: ~
@@ -118,6 +119,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
   - [Local](tasks/securitychecker/local.md)
   - [Symfony](tasks/securitychecker/symfony.md)
 - [Shell](tasks/shell.md)
+- [Stylelint](tasks/stylelint.md)
 - [Tester](tasks/tester.md)
 - [TwigCs](tasks/twigcs.md)
 - [XmlLint](tasks/xmllint.md)
