@@ -376,6 +376,30 @@ class CommitMessageTest extends AbstractTaskTestCase
             },
             'Subject should start with a capital letter.'
         ];
+        yield 'it_fails_on_subject_pattern_default' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'scopes' => null,
+                ],
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('feat(feature): Это не сработает')),
+            function () {
+            },
+            'Rule not matched: "Invalid Type/Scope Format"'
+        ];
+        yield 'it_fails_on_subject_pattern' => [
+            [
+                'type_scope_conventions' => [
+                    'scopes' => null,
+                    'subject_pattern' => '([0-9]+)'
+                ],
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('It fails')),
+            function () {
+            },
+            'Rule not matched: "Invalid Type/Scope Format"'
+        ];
     }
 
     public function providePassesOnStuff(): iterable
@@ -777,6 +801,29 @@ class CommitMessageTest extends AbstractTaskTestCase
                 'multiline' => false,
             ],
             $this->mockCommitMsgContext($this->buildMessage('hello there', 'good bye')),
+            function () {
+            },
+        ];
+        yield 'it_applies_on_subject_pattern_default' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'scopes' => null,
+                ],
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('feat(feature): It works')),
+            function () {
+            },
+        ];
+        yield 'it_applies_on_subject_pattern' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'scopes' => null,
+                    'subject_pattern' => '([a-zA-Zа-яА-Я0-9-_ #@\'\/\\"]+)'
+                ],
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('feat(feature): Это сработает')),
             function () {
             },
         ];

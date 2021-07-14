@@ -354,7 +354,11 @@ class CommitMessage implements TaskInterface
         $specialPrefix = '(?:(?:fixup|squash)! )?';
         $typesPattern = '([a-zA-Z0-9]+)';
         $scopesPattern = '(:\s|(\(.+\)?:\s))';
-        $subjectPattern = '([a-zA-Z0-9-_ #@\'\/\\"]+)';
+
+        $subjectPattern = isset($config['type_scope_conventions']['subject_pattern'])
+            ? $config['type_scope_conventions']['subject_pattern']
+            : '([a-zA-Z0-9-_ #@\'\/\\"]+)';
+
         $mergePattern =
             '(Merge branch|tag \'.+\'(?:\s.+)?|Merge remote-tracking branch \'.+\'|Merge pull request #\d+\s.+)';
 
@@ -369,7 +373,6 @@ class CommitMessage implements TaskInterface
         }
 
         $rule = '/^' . $specialPrefix . $typesPattern . $scopesPattern . $subjectPattern . '|' . $mergePattern . '/';
-
         try {
             $this->runMatcher($config, $subjectLine, $rule, 'Invalid Type/Scope Format');
         } catch (RuntimeException $e) {
