@@ -336,6 +336,14 @@ services:
         tags:
             - {name: grumphp.task, task: securitychecker_local}
 
+    GrumPHP\Task\SecurityCheckerRoave:
+        arguments:
+            - '@process_builder'
+            - '@formatter.raw_process'
+            - '@grumphp.util.filesystem'
+        tags:
+            - {name: grumphp.task, task: securitychecker_roave}
+
     GrumPHP\Task\SecurityCheckerSymfony:
         arguments:
             - '@process_builder'

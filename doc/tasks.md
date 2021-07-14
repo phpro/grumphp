@@ -55,6 +55,7 @@ grumphp:
         robo: ~
         securitychecker_enlightn: ~
         securitychecker_local: ~
+        securitychecker_roave: ~
         securitychecker_symfony: ~
         shell: ~
         stylelint: ~
@@ -117,6 +118,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Security Checker](tasks/securitychecker.md)
   - [Enlightn](tasks/securitychecker/enlightn.md)
   - [Local](tasks/securitychecker/local.md)
+  - [Roave](tasks/securitychecker/roave.md)
   - [Symfony](tasks/securitychecker/symfony.md)
 - [Shell](tasks/shell.md)
 - [Stylelint](tasks/stylelint.md)
