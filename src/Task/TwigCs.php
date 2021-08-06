@@ -57,6 +57,33 @@ class TwigCs extends AbstractExternalTask
         $arguments->addOptionalArgument('--ruleset=%s', $config['ruleset']);
         $arguments->addOptionalArgument('--ansi', true);
 
+        // Get a list of all changed files, and prepare them for comparison.
+        $changedFiles = array_map(function($item) {
+            return preg_quote($item->getPathName(), '/');
+        }, $files->toArray());
+
+        // Regexp for exclude config.
+        $excludePattern = '/('. implode('|', $config['exclude']) .')/';
+        // Regexp for triggered_by config.
+        $extensionPattern = '/^(.*?)\.('. implode('|', $config['triggered_by']) .')$/';
+        // Regexp for all changed files.
+        $changedFilesPattern = '/('. implode('|', $changedFiles) .')$/';
+
+        // Scans entire current directory.
+        $projectFiles = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator('.'));
+        foreach($projectFiles as $projectFile) {
+            // Cleanup the pathName string.
+            $pathName = str_replace('./', '', $projectFile->getPathName());
+            // Skip files that are meant to be excluded.
+            if(preg_match($excludePattern, $pathName) === 1) continue;
+            // Skip files that do not match the triggered_by config.
+            if(preg_match($extensionPattern, $pathName) === 0) continue;
+            // Add files that have not been changed to the exclude config.
+            if(preg_match($changedFilesPattern, $pathName) === 0) {
+                $config['exclude'][] = $pathName;
+            }
+        }
+
         // removes all NULL, FALSE and Empty Strings
         $exclude = array_filter($config['exclude'], 'strlen');
         $arguments->addArgumentArray('--exclude=%s', $exclude);
