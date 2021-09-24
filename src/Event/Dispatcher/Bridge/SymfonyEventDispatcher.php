@@ -24,7 +24,7 @@ class SymfonyEventDispatcher implements EventDispatcherInterface
         $this->dispatcher = $eventDispatcher;
     }
 
-    public function dispatch(Event $event, string $eventName = null): void
+    public function dispatch(Event $event, string $name = null): void
     {
         $interfacesImplemented = class_implements($this->dispatcher);
         if (in_array(SymfonyEventDispatcherContract::class, $interfacesImplemented, true)) {
@@ -32,7 +32,7 @@ class SymfonyEventDispatcher implements EventDispatcherInterface
              * @psalm-suppress InvalidArgument
              * @psalm-suppress TooManyArguments
              */
-            $this->dispatcher->dispatch($event, $eventName);
+            $this->dispatcher->dispatch($event, $name);
             return;
         }
 
@@ -40,6 +40,6 @@ class SymfonyEventDispatcher implements EventDispatcherInterface
          * @psalm-suppress InvalidArgument
          * @psalm-suppress TooManyArguments
          */
-        $this->dispatcher->dispatch($eventName, $event);
+        $this->dispatcher->dispatch($name, $event);
     }
 }

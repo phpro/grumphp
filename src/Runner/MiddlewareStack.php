@@ -7,6 +7,9 @@ namespace GrumPHP\Runner;
 use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Runner\Middleware\RunnerMiddlewareInterface;
 
+/**
+ * @psalm-immutable
+ */
 class MiddlewareStack
 {
     /**
@@ -30,9 +33,6 @@ class MiddlewareStack
         );
     }
 
-    /**
-     * @psalm-pure
-     */
     public function handle(TaskRunnerContext $context): TaskResultCollection
     {
         return ($this->stack)($context);

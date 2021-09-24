@@ -19,6 +19,7 @@ class FixableProcessResultProvider
         array $successExitCodes = [0]
     ): FixableTaskResult {
         $fixerProcess = $fixerProcessBuilder();
+        /** @psalm-suppress RedundantConditionGivenDocblockType */
         assert($fixerProcess instanceof Process);
 
         $fixerCommand = $fixerProcess->getCommandLine();

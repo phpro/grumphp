@@ -20,7 +20,7 @@ class MultiPromise
      * @param array<int, LazyPromise<TValue>> $promises
      * @param callable(TValue):bool $shouldCancel
      *
-     * @return Promise<TValue>
+     * @return Promise<array{0: \Throwable[], 1: TValue[]}>
      */
     public static function cancelable(array $promises, callable $shouldCancel): Promise
     {
@@ -50,26 +50,31 @@ class MultiPromise
                                 });
                             };
 
-                            $promise->onResolve(static function (
-                                ?\Throwable $error,
-                                $result
-                            ) use (
-                                $deferred,
-                                $cancel,
-                                $shouldCancel
-                            ): void {
-                                if ($error instanceof \Throwable) {
-                                    $cancel($error);
-                                    $deferred->fail($error);
-                                    return;
-                                }
+                            $promise->onResolve(
+                                /**
+                                 * @param TValue $result
+                                 */
+                                static function (
+                                    ?\Throwable $error,
+                                    $result
+                                ) use (
+                                    $deferred,
+                                    $cancel,
+                                    $shouldCancel
+                                ): void {
+                                    if ($error instanceof \Throwable) {
+                                        $cancel($error);
+                                        $deferred->fail($error);
+                                        return;
+                                    }
 
-                                if ($result && $shouldCancel($result)) {
-                                    $cancel();
-                                }
+                                    if ($result && $shouldCancel($result)) {
+                                        $cancel();
+                                    }
 
-                                $deferred->resolve($result);
-                            });
+                                    $deferred->resolve($result);
+                                }
+                            );
                         }
                     );
 

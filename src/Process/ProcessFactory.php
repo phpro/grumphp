@@ -22,6 +22,6 @@ final class ProcessFactory
      */
     public static function fromScalar($arguments): Process
     {
-        return is_array($arguments) ? new Process($arguments) : Process::fromShellCommandline((string) $arguments);
+        return is_array($arguments) ? new Process($arguments) : Process::fromShellCommandline($arguments);
     }
 }

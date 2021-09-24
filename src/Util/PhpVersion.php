@@ -21,7 +21,7 @@ class PhpVersion
         $now = new \DateTime();
         foreach ($this->versions as $number => $eol) {
             $eol = new \DateTime($eol);
-            if ($now < $eol && (int) version_compare($currentVersion, $number) >= 0) {
+            if ($now < $eol && version_compare($currentVersion, $number) >= 0) {
                 return true;
             }
         }
@@ -31,6 +31,6 @@ class PhpVersion
 
     public function isSupportedProjectVersion(string $currentVersion, string $projectVersion): bool
     {
-        return (int) version_compare($currentVersion, $projectVersion) >= 0;
+        return version_compare($currentVersion, $projectVersion) >= 0;
     }
 }

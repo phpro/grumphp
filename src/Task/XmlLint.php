@@ -14,7 +14,7 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @property \GrumPHP\Linter\Xml\XmlLinter $linter
+ * @extends AbstractLinterTask<XmlLinter>
  */
 class XmlLint extends AbstractLinterTask
 {

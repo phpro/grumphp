@@ -41,8 +41,8 @@ class RunnerReporter
     public function start(TaskRunnerContext $context): void
     {
         $this->IO->write($this->IO->colorize(['GrumPHP is sniffing your code!'], 'yellow'));
-        if ($context->getTestSuite()) {
-            $this->IO->style()->note('Running testsuite: '.$context->getTestSuite()->getName());
+        if ($testSuite = $context->getTestSuite()) {
+            $this->IO->style()->note('Running testsuite: '.$testSuite->getName());
         }
     }
 

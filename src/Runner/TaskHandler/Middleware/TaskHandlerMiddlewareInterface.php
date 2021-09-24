@@ -17,7 +17,7 @@ interface TaskHandlerMiddlewareInterface
      */
     public function handle(
         TaskInterface $task,
-        TaskRunnerContext $runnercontext,
+        TaskRunnerContext $runnerContext,
         callable $next
     ): Promise;
 }

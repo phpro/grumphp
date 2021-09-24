@@ -175,10 +175,12 @@ class FilesCollection extends ArrayCollection implements \Serializable
      * @see CustomFilterIterator
      *
      * @psalm-suppress LessSpecificImplementedReturnType
+     * @psalm-suppress LessSpecificReturnStatement
+     * @psalm-suppress MoreSpecificReturnType
      */
-    public function filter(Closure $closure): self
+    public function filter(Closure $p): self
     {
-        $filter = new Iterator\CustomFilterIterator($this->getIterator(), [$closure]);
+        $filter = new Iterator\CustomFilterIterator($this->getIterator(), [$p]);
 
         return new self(iterator_to_array($filter));
     }
@@ -221,11 +223,9 @@ class FilesCollection extends ArrayCollection implements \Serializable
     public function serialize(): string
     {
         return serialize($this->map(function (SplFileInfo $fileInfo): string {
-            return (string) (
-                $fileInfo instanceof SymfonySplFileInfo
-                    ? $fileInfo->getRelativePathname()
-                    : $fileInfo->getPathname()
-            );
+            return $fileInfo instanceof SymfonySplFileInfo
+                ? $fileInfo->getRelativePathname()
+                : $fileInfo->getPathname();
         })->toArray());
     }
 
