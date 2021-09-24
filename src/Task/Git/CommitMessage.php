@@ -136,7 +136,7 @@ class CommitMessage implements TaskInterface
         }
 
 
-        if ((bool) $this->enforceTypeScopeConventions()) {
+        if ($this->enforceTypeScopeConventions()) {
             try {
                 $this->checkTypeScopeConventions($context);
             } catch (RuntimeException $e) {
@@ -287,7 +287,7 @@ class CommitMessage implements TaskInterface
             return false;
         }
 
-        $firstLetter = (string) ($match[1] ?? '');
+        $firstLetter = $match[1] ?? '';
 
         return !(1 !== preg_match('/^(fixup|squash)!/u', $subject) && 1 !== preg_match('/[[:upper:]]/u', $firstLetter));
     }
@@ -317,13 +317,16 @@ class CommitMessage implements TaskInterface
         $lines = preg_split('/\R/u', $commitMessage);
         $everythingBelowWillBeIgnored = false;
 
-        return array_values(array_filter($lines, function ($line) use (&$everythingBelowWillBeIgnored, $commentChar) {
-            if (mb_stripos($line, $commentChar.' Everything below it will be ignored.') !== false) {
-                $everythingBelowWillBeIgnored = true;
-                return false;
+        return array_values(array_filter(
+            $lines,
+            function (string $line) use (&$everythingBelowWillBeIgnored, $commentChar) {
+                if (mb_stripos($line, $commentChar.' Everything below it will be ignored.') !== false) {
+                    $everythingBelowWillBeIgnored = true;
+                    return false;
+                }
+                return 0 !== strpos($line, $commentChar) && !$everythingBelowWillBeIgnored;
             }
-            return 0 !== strpos($line, $commentChar) && !$everythingBelowWillBeIgnored;
-        }));
+        ));
     }
 
     private function enforceTypeScopeConventions(): bool

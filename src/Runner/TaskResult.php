@@ -95,10 +95,10 @@ class TaskResult implements TaskResultInterface
         return $this->context;
     }
 
-    public function withAppendedMessage(string $additionalMessage): TaskResultInterface
+    public function withAppendedMessage(string $message): TaskResultInterface
     {
         $new = clone $this;
-        $new->message = $this->message . $additionalMessage;
+        $new->message = $this->message . $message;
 
         return $new;
     }

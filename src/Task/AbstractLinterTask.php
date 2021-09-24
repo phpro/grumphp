@@ -12,6 +12,9 @@ use GrumPHP\Task\Config\EmptyTaskConfig;
 use GrumPHP\Task\Config\TaskConfigInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @template-covariant Linter extends LinterInterface
+ */
 abstract class AbstractLinterTask implements TaskInterface
 {
     /**
@@ -20,10 +23,13 @@ abstract class AbstractLinterTask implements TaskInterface
     protected $config;
 
     /**
-     * @var LinterInterface
+     * @var Linter
      */
     protected $linter;
 
+    /**
+     * @param Linter $linter
+     */
     public function __construct(LinterInterface $linter)
     {
         $this->linter = $linter;

@@ -33,8 +33,8 @@ class FixerConfig
     public static function fromArray(array $config): self
     {
         return new self(
-            (bool) ($config['enabled'] ?? false),
-            (bool) ($config['fix_by_default'] ?? false)
+            ($config['enabled'] ?? false),
+            ($config['fix_by_default'] ?? false)
         );
     }
 

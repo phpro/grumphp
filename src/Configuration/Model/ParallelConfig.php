@@ -33,8 +33,8 @@ class ParallelConfig
     public static function fromArray(array $config): self
     {
         return new self(
-            (bool) ($config['enabled'] ?? false),
-            (int) ($config['max_workers'] ?? 1)
+            ($config['enabled'] ?? false),
+            ($config['max_workers'] ?? 1)
         );
     }
 

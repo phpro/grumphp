@@ -11,6 +11,9 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractParserTask<PhpParser>
+ */
 class PhpParser extends AbstractParserTask
 {
     const KIND_PHP5 = 'php5';

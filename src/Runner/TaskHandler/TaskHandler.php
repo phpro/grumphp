@@ -12,6 +12,9 @@ use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\TaskInterface;
 
+/**
+ * @psalm-immutable
+ */
 class TaskHandler
 {
     /**
@@ -37,7 +40,6 @@ class TaskHandler
     }
 
     /**
-     * @psalm-pure
      * @return Promise<TaskResultInterface>
      */
     public function handle(TaskInterface $task, TaskRunnerContext $runnerContext): Promise

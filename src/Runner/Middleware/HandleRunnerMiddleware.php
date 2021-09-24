@@ -38,7 +38,7 @@ class HandleRunnerMiddleware implements RunnerMiddlewareInterface
     public function handle(TaskRunnerContext $context, callable $next): TaskResultCollection
     {
         return new TaskResultCollection(
-            (array) wait(
+            wait(
                 /**
                  * @return \Generator<mixed, mixed, mixed, TaskResultInterface[]>
                  */

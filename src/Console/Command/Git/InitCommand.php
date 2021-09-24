@@ -153,7 +153,10 @@ class InitCommand extends Command
             case 'ENV':
                 return DotEnvSerializer::serialize($value);
             default:
-                /** @var string $value */
+                /**
+                 * @var string $value
+                 * @psalm-suppress PossiblyInvalidCast, RedundantCastGivenDocblockType
+                 */
                 return (string) $value;
         }
     }

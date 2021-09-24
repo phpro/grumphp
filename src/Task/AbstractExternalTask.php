@@ -9,6 +9,9 @@ use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Task\Config\EmptyTaskConfig;
 use GrumPHP\Task\Config\TaskConfigInterface;
 
+/**
+ * @template-covariant Formatter extends ProcessFormatterInterface
+ */
 abstract class AbstractExternalTask implements TaskInterface
 {
     /**
@@ -22,10 +25,13 @@ abstract class AbstractExternalTask implements TaskInterface
     protected $processBuilder;
 
     /**
-     * @var ProcessFormatterInterface
+     * @var Formatter
      */
     protected $formatter;
 
+    /**
+     * @param Formatter $formatter
+     */
     public function __construct(ProcessBuilder $processBuilder, ProcessFormatterInterface $formatter)
     {
         $this->config = new EmptyTaskConfig();

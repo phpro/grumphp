@@ -57,8 +57,8 @@ class FixerUpper
                 $result->ok() ? $this->IO->colorize(['✔'], 'green') : $this->IO->colorize(['✘'], 'red')
             );
 
-            if ($this->IO->isVerbose() && $result->error()) {
-                $this->IO->writeError($this->IO->colorize([$result->error()->getMessage()], 'red'));
+            if ($this->IO->isVerbose() && $error = $result->error()) {
+                $this->IO->writeError($this->IO->colorize([$error->getMessage()], 'red'));
             }
 
             $count++;

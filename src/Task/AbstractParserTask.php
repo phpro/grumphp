@@ -12,6 +12,9 @@ use GrumPHP\Task\Config\EmptyTaskConfig;
 use GrumPHP\Task\Config\TaskConfigInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @template-covariant Parser extends ParserInterface
+ */
 abstract class AbstractParserTask implements TaskInterface
 {
     /**
@@ -20,10 +23,13 @@ abstract class AbstractParserTask implements TaskInterface
     protected $configuration;
 
     /**
-     * @var ParserInterface
+     * @var Parser
      */
     protected $parser;
 
+    /**
+     * @param Parser $parser
+     */
     public function __construct(ParserInterface $parser)
     {
         $this->configuration = new EmptyTaskConfig();

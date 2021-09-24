@@ -29,7 +29,7 @@ class TmpFileUsingProcessRunner
         }
 
         foreach ($writer() as $entry) {
-            fwrite($tmp, (string) $entry);
+            fwrite($tmp, $entry);
         }
         fseek($tmp, 0);
 
