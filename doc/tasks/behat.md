@@ -20,6 +20,7 @@ grumphp:
             config: ~
             format: ~
             suite: ~
+            profile: ~
             stop_on_failure: false
 ```
 
@@ -42,6 +43,13 @@ If you want to use a different formatter than the default one, specify it with t
 *Default: null*
 
 If you want to run a particular suite only, specify it with this option.
+
+
+**profile**
+
+*Default: null*
+
+If you want to use a specific configuration profile other than the default one, specify it with this option. 
 
 
 **stop_on_failure**

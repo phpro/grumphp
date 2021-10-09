@@ -23,12 +23,14 @@ class Behat extends AbstractExternalTask
             'config' => null,
             'format' => null,
             'suite' => null,
+            'profile' => null,
             'stop_on_failure' => false,
         ]);
 
         $resolver->addAllowedTypes('config', ['null', 'string']);
         $resolver->addAllowedTypes('format', ['null', 'string']);
         $resolver->addAllowedTypes('suite', ['null', 'string']);
+        $resolver->addAllowedTypes('profile', ['null', 'string']);
         $resolver->addAllowedTypes('stop_on_failure', ['bool']);
 
         return $resolver;
@@ -58,6 +60,7 @@ class Behat extends AbstractExternalTask
         $arguments->addOptionalArgument('--config=%s', $config['config']);
         $arguments->addOptionalArgument('--format=%s', $config['format']);
         $arguments->addOptionalArgument('--suite=%s', $config['suite']);
+        $arguments->addOptionalArgument('--profile=%s', $config['profile']);
         $arguments->addOptionalArgument('--stop-on-failure', $config['stop_on_failure']);
 
         $process = $this->processBuilder->buildProcess($arguments);
