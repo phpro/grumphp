@@ -65,7 +65,7 @@ grumphp:
         yamllint: ~
 ```
 
-Every task has it's own default configuration. It is possible to overwrite the parameters per task.
+Every task has its own default configuration. It is possible to overwrite the parameters per task.
 
 ## Tasks
 
