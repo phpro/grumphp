@@ -19,6 +19,7 @@ grumphp:
         behat:
             config: ~
             format: ~
+            suite: ~
             stop_on_failure: false
 ```
 
