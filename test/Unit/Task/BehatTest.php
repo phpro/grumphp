@@ -28,6 +28,7 @@ class BehatTest extends AbstractExternalTaskTestCase
                 'config' => null,
                 'format' => null,
                 'suite' => null,
+                'profile' => null,
                 'stop_on_failure' => false,
             ]
         ];
@@ -125,6 +126,16 @@ class BehatTest extends AbstractExternalTaskTestCase
             'behat',
             [
                 '--suite=suite'
+            ]
+        ];
+        yield 'profile' => [
+            [
+                'profile' => 'profile',
+            ],
+            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'behat',
+            [
+                '--profile=profile'
             ]
         ];
         yield 'stop-on-failure' => [
