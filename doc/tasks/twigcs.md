@@ -20,7 +20,7 @@ grumphp:
             path: '.'
             severity: 'warning'
             display: 'all'
-            ruleset: 'FriendsOfTwig\Twigcs\Ruleset\Official'
+            ruleset: 'Allocine\Twigcs\Ruleset\Official'
             triggered_by: ['twig']
             exclude: []
 ```
@@ -46,7 +46,7 @@ The violations to display (possibles values are : 'all', 'blocking').
 
 **ruleset**
 
-*Default: 'FriendsOfTwig\Twigcs\Ruleset\Official'*
+*Default: 'Allocine\Twigcs\Ruleset\Official'*
 
 Ruleset used, default ruleset is based on [official one from twig](https://twig.symfony.com/doc/2.x/coding_standards.html)
 
