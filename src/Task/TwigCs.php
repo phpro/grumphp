@@ -20,7 +20,7 @@ class TwigCs extends AbstractExternalTask
             'path' => '.',
             'severity' => 'warning',
             'display' => 'all',
-            'ruleset' => 'FriendsOfTwig\Twigcs\Ruleset\Official',
+            'ruleset' => 'Allocine\Twigcs\Ruleset\Official',
             'triggered_by' => ['twig'],
             'exclude' => [],
         ]);
