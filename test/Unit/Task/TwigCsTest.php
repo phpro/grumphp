@@ -28,7 +28,7 @@ class TwigCsTest extends AbstractExternalTaskTestCase
                 'path' => '.',
                 'severity' => 'warning',
                 'display' => 'all',
-                'ruleset' => 'FriendsOfTwig\Twigcs\Ruleset\Official',
+                'ruleset' => 'Allocine\Twigcs\Ruleset\Official',
                 'triggered_by' => ['twig'],
                 'exclude' => [],
             ]
@@ -101,7 +101,7 @@ class TwigCsTest extends AbstractExternalTaskTestCase
                 '.',
                 '--severity=warning',
                 '--display=all',
-                '--ruleset=FriendsOfTwig\Twigcs\Ruleset\Official',
+                '--ruleset=Allocine\Twigcs\Ruleset\Official',
                 '--ansi',
             ]
         ];
@@ -116,7 +116,7 @@ class TwigCsTest extends AbstractExternalTaskTestCase
                 'src',
                 '--severity=warning',
                 '--display=all',
-                '--ruleset=FriendsOfTwig\Twigcs\Ruleset\Official',
+                '--ruleset=Allocine\Twigcs\Ruleset\Official',
                 '--ansi',
             ]
         ];
@@ -131,7 +131,7 @@ class TwigCsTest extends AbstractExternalTaskTestCase
                 '.',
                 '--severity=error',
                 '--display=all',
-                '--ruleset=FriendsOfTwig\Twigcs\Ruleset\Official',
+                '--ruleset=Allocine\Twigcs\Ruleset\Official',
                 '--ansi',
             ]
         ];
@@ -146,7 +146,7 @@ class TwigCsTest extends AbstractExternalTaskTestCase
                 '.',
                 '--severity=warning',
                 '--display=blocking',
-                '--ruleset=FriendsOfTwig\Twigcs\Ruleset\Official',
+                '--ruleset=Allocine\Twigcs\Ruleset\Official',
                 '--ansi',
             ]
         ];
@@ -161,7 +161,7 @@ class TwigCsTest extends AbstractExternalTaskTestCase
                 '.',
                 '--severity=warning',
                 '--display=all',
-                '--ruleset=FriendsOfTwig\Twigcs\Ruleset\Official',
+                '--ruleset=Allocine\Twigcs\Ruleset\Official',
                 '--ansi',
                 '--exclude=src/',
                 '--exclude=test/',
