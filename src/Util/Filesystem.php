@@ -60,7 +60,7 @@ class Filesystem extends SymfonyFilesystem
 
     public function buildPath(string $baseDir, string $path): string
     {
-        return $baseDir.DIRECTORY_SEPARATOR.$path;
+        return substr($path, 0, 1) === DIRECTORY_SEPARATOR ? $path : $baseDir.DIRECTORY_SEPARATOR.$path;
     }
 
     public function guessPath(array $paths): string
