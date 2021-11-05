@@ -24,6 +24,7 @@ class ComposerNormalize extends AbstractExternalTask
         $resolver->setDefaults([
             'indent_size' => null,
             'indent_style' => null,
+            'no_check_lock' => false,
             'no_update_lock' => true,
             'use_standalone' => false,
             'verbose' => false,
@@ -32,6 +33,7 @@ class ComposerNormalize extends AbstractExternalTask
         $resolver->addAllowedTypes('indent_size', ['int', 'null']);
         $resolver->addAllowedTypes('indent_style', ['string', 'null']);
         $resolver->addAllowedValues('indent_style', ['tab', 'space', null]);
+        $resolver->addAllowedTypes('no_check_lock', ['bool']);
         $resolver->addAllowedTypes('no_update_lock', ['bool']);
         $resolver->addAllowedTypes('verbose', ['bool']);
 
@@ -59,6 +61,7 @@ class ComposerNormalize extends AbstractExternalTask
             $arguments->addOptionalArgument('--indent-size=%s', $config['indent_size']);
         }
 
+        $arguments->addOptionalArgument('--no-check-lock', $config['no_check_lock']);
         $arguments->addOptionalArgument('--no-update-lock', $config['no_update_lock']);
         $arguments->addOptionalArgument('-q', $config['verbose']);
 
