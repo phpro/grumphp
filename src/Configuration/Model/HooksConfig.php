@@ -41,7 +41,8 @@ class HooksConfig
 
     public function getPreset(): string
     {
-        return $this->preset;
+      exec('vagrant -v > /dev/null 2>&1', $output, $novagrant);
+      return $novagrant ? 'local' : $this->preset;
     }
 
     public function getVariables(): array
