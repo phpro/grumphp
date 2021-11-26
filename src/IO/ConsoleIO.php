@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class ConsoleIO implements IOInterface, \Serializable
+class ConsoleIO implements IOInterface
 {
     private $input;
     private $output;
@@ -143,16 +143,16 @@ class ConsoleIO implements IOInterface, \Serializable
      * Serializing this IO will result in an unwritable resource stream.
      * Therefor we serialize the data end build up a new stream instead.
      */
-    public function serialize()
+    public function __serialize(): array
     {
-        return serialize([
+        return [
             'input' => [
                 'arguments' => $this->input->getArguments(),
             ],
             'output' => [
                 'verbosity' => $this->output->getVerbosity(),
             ],
-        ]);
+        ];
     }
 
     /**
@@ -160,10 +160,8 @@ class ConsoleIO implements IOInterface, \Serializable
      * Note: When you run in parallel mode, the stream will be non-blocking.
      * All tasks can write at the same time, which is not optimal.
      */
-    public function unserialize($serialized)
+    public function __unserialize(array $data): void
     {
-        $data = unserialize($serialized, ['allowed_classes' => false]);
-
         $this->input = new ArrayInput(
             (array) ($data['input']['arguments'] ?? [])
         );

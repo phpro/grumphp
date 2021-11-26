@@ -14,9 +14,9 @@ use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo;
 use Traversable;
 
 /**
- * @extends ArrayCollection<int, \SplFileInfo>
+ * @extends ArrayCollection<array-key, \SplFileInfo>
  */
-class FilesCollection extends ArrayCollection implements \Serializable
+class FilesCollection extends ArrayCollection
 {
     /**
      * Adds a rule that files must match.
@@ -47,7 +47,7 @@ class FilesCollection extends ArrayCollection implements \Serializable
     {
         $filter = new Iterator\FilenameFilterIterator($this->getIterator(), $patterns, []);
 
-        return new self(iterator_to_array($filter));
+        return new self([...$filter]);
     }
 
     /**
@@ -63,7 +63,7 @@ class FilesCollection extends ArrayCollection implements \Serializable
     {
         $filter = new Iterator\FilenameFilterIterator($this->getIterator(), [], [$pattern]);
 
-        return new self(iterator_to_array($filter));
+        return new self([...$filter]);
     }
 
     /**
@@ -85,7 +85,7 @@ class FilesCollection extends ArrayCollection implements \Serializable
     {
         $filter = new Iterator\PathFilterIterator($this->getIterator(), $patterns, []);
 
-        return new self(iterator_to_array($filter));
+        return new self([...$filter]);
     }
 
     /**
@@ -111,7 +111,7 @@ class FilesCollection extends ArrayCollection implements \Serializable
     {
         $filter = new Iterator\PathFilterIterator($this->getIterator(), [], $pattern);
 
-        return new self(iterator_to_array($filter));
+        return new self([...$filter]);
     }
 
     public function extensions(array $extensions): self
@@ -139,7 +139,7 @@ class FilesCollection extends ArrayCollection implements \Serializable
         $comparator = new Comparator\NumberComparator($size);
         $filter = new Iterator\SizeRangeFilterIterator($this->getIterator(), [$comparator]);
 
-        return new self(iterator_to_array($filter));
+        return new self([...$filter]);
     }
 
     /**
@@ -161,7 +161,7 @@ class FilesCollection extends ArrayCollection implements \Serializable
         $comparator = new Comparator\DateComparator($date);
         $filter = new Iterator\DateRangeFilterIterator($this->getIterator(), [$comparator]);
 
-        return new self(iterator_to_array($filter));
+        return new self([...$filter]);
     }
 
     /**
@@ -182,14 +182,14 @@ class FilesCollection extends ArrayCollection implements \Serializable
     {
         $filter = new Iterator\CustomFilterIterator($this->getIterator(), [$p]);
 
-        return new self(iterator_to_array($filter));
+        return new self([...$filter]);
     }
 
     public function filterByFileList(Traversable $fileList): FilesCollection
     {
         $allowedFiles = array_map(function (SplFileInfo $file) {
             return $file->getPathname();
-        }, iterator_to_array($fileList));
+        }, [...$fileList]);
 
         return $this->filter(function (SplFileInfo $file) use ($allowedFiles) {
             return \in_array($file->getPathname(), $allowedFiles, true);
@@ -216,26 +216,26 @@ class FilesCollection extends ArrayCollection implements \Serializable
         });
     }
 
-    /*
+    /**
      * SplFileInfo cannot be serialized. Therefor, we help PHP a bit.
      * This stuff is used for running tasks in parallel.
      */
-    public function serialize(): string
+    public function __serialize(): array
     {
-        return serialize($this->map(function (SplFileInfo $fileInfo): string {
+        return $this->map(function (SplFileInfo $fileInfo): string {
             return $fileInfo instanceof SymfonySplFileInfo
                 ? $fileInfo->getRelativePathname()
                 : $fileInfo->getPathname();
-        })->toArray());
+        })->toArray();
     }
 
-    /*
+    /**
      * SplFileInfo cannot be serialized. Therefor, we help PHP a bit.
      * This stuff is used for running tasks in parallel.
      */
-    public function unserialize($serialized): void
+    public function __unserialize(array $data): void
     {
-        $files = unserialize($serialized, ['allowed_classes' => false]);
+        $files = $data;
         $this->clear();
         foreach ($files as $file) {
             $this->add(new SymfonySplFileInfo($file, dirname($file), $file));
@@ -245,7 +245,7 @@ class FilesCollection extends ArrayCollection implements \Serializable
     /**
      * Help Psalm out a bit:
      *
-     * @return \ArrayIterator<int, SplFileInfo>
+     * @return \ArrayIterator<array-key, SplFileInfo>
      */
     public function getIterator(): \ArrayIterator
     {

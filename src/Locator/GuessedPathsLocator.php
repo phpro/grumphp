@@ -38,7 +38,7 @@ class GuessedPathsLocator
 
     public function locate(?string $cliConfigFile): GuessedPaths
     {
-        $workingDir = getcwd();
+        $workingDir = (string) getcwd();
         $cliConfigFile = $this->makeOptionalPathAbsolute($workingDir, $cliConfigFile);
         $cliConfigPath = $cliConfigFile ? dirname($cliConfigFile) : null;
         $projectDirEnv = $this->makeOptionalPathAbsolute($workingDir, (string) ($_SERVER['GRUMPHP_PROJECT_DIR'] ?? ''));
@@ -55,13 +55,13 @@ class GuessedPathsLocator
         );
 
         $composerFilePathname = $this->filesystem->guessFile(
-            array_filter([
+            [
                 $this->makeOptionalPathAbsolute($workingDir, (string) ($_SERVER['GRUMPHP_COMPOSER_DIR'] ?? '')),
                 $cliConfigPath,
                 $projectDirEnv,
                 $workingDir,
                 $gitWorkingDir
-            ]),
+            ],
             [
                 'composer.json'
             ]
@@ -74,13 +74,13 @@ class GuessedPathsLocator
                 : []
         );
 
-        $binDir = $this->filesystem->guessPath(array_filter([
+        $binDir = $this->filesystem->guessPath([
             $this->makeOptionalPathAbsolute($workingDir, (string) ($_SERVER['GRUMPHP_BIN_DIR'] ?? '')),
             $this->makeOptionalPathAbsolute(
                 $composerFilePath,
                 $this->ensureOptionalArgumentWithValidSlashes($composerFile->getBinDir())
             )
-        ]));
+        ]);
 
         $composerConfigDefaultPath = $this->makeOptionalPathAbsolute(
             $composerFilePath,
@@ -97,14 +97,14 @@ class GuessedPathsLocator
         ]);
 
         $defaultConfigFile = $this->filesystem->guessFile(
-            array_filter([
+            [
                 $cliConfigFile,
                 $cliConfigPath,
                 $composerConfigDefaultPath,
                 $projectDir,
                 $workingDir,
                 $gitWorkingDir,
-            ]),
+            ],
             [
                 'grumphp.yml',
                 'grumphp.yaml',

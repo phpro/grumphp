@@ -72,6 +72,7 @@ class PhpParserSpec extends ObjectBehavior
 
     function it_catches_parse_exceptions(Parser $parser, Filesystem $filesystem, SplFileInfo $file)
     {
+        $file->beConstructedWith(['somefile']);
         $file->getRealPath()->willReturn('a real path');
 
         $filesystem->readFromFileInfo($file)->willReturn('file content');

@@ -5,16 +5,14 @@ shallow_clone: false
 platform:
   - x64
 
-matrix:
-  allow_failures:
-    - php_version: 8.0
+#matrix:
+#  allow_failures:
+#    - php_version: 8.1
 
 environment:
   matrix:
     - dependencies: highest
-      php_version: 7.3
-    - dependencies: highest
-      php_version: 7.4.3  # OpenSSL issue will be resolved in 7.4.6
+      php_version: 8.1
     - dependencies: highest
       php_version: 8.0
 
@@ -33,13 +31,12 @@ cache:
 
 init:
   - ps: $Env:php_directory = $Env:php_root_directory + '\' + $Env:php_version
-  # TODO: This is a workaround for https://github.com/chocolatey/choco/issues/1843. Once this is fixed we
-  #       should go back to latest version in appveyor saving ourselves test time
   - ps: choco install chocolatey -y --version 0.10.13 --allow-downgrade
   - ps: $Env:exact_php_version = (((choco search php --exact --all --limit-output | Select-String -pattern $Env:php_version) -replace '[php|]', '') | %{ New-Object System.Version $_ } | Sort-Object | Select-Object -Last 1).ToString()
   - ps: $Env:PATH = $Env:php_directory + ';' + $Env:composer_directory + ';' + $Env:PATH
   - ps: $Env:COMPOSER_NO_INTERACTION = 1
   - ps: $Env:ANSICON = '121x90 (121x90)'
+  - ps: $Env:AMP_DEBUG = '1'
 
 install:
   # Install PHP
@@ -68,8 +65,8 @@ install:
 
   # Install dependencies
   - ps: cd $Env:project_directory
-  - IF %dependencies%==lowest composer update --prefer-dist --prefer-lowest --prefer-stable --no-progress --no-scripts --no-suggest --profile
-  - IF %dependencies%==highest composer update --prefer-dist --no-progress --no-scripts --no-suggest --profile
+  - IF %dependencies%==lowest composer update --prefer-dist --prefer-lowest --prefer-stable --no-progress --no-scripts --no-suggest --profile --ignore-platform-req=php
+  - IF %dependencies%==highest composer update --prefer-dist --no-progress --no-scripts --no-suggest --profile --ignore-platform-req=php
   - git config --global user.email "doesntmatter@dispostable.com"
   - git config --global user.name "GrumPHP"
 

@@ -222,7 +222,10 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         // Windows requires double double quotes
         // https://bugs.php.net/bug.php?id=49139
         $windowsIsInsane = function (string $command): string {
-            return $this->runsOnWindows() ? '"'.$command.'"' : $command;
+            return $command;
+            // Looks like this is not needed anymore since PHP8 - even though the bug is still open.
+            // Leaving this here for reference if the bug pops up again for some poeple!
+            // return $this->runsOnWindows() ? '"'.$command.'"' : $command;
         };
 
         // Run command

@@ -407,6 +407,7 @@ abstract class AbstractE2ETestCase extends TestCase
         $process->setTimeout(300);
 
         $process->run();
+
         if (!$process->isSuccessful()) {
             throw new \RuntimeException(
                 'Could not '.$action.'! '.$process->getOutput().PHP_EOL.$process->getErrorOutput()
@@ -472,8 +473,9 @@ abstract class AbstractE2ETestCase extends TestCase
             ->in($this->rootDir)
             ->path('.git');
 
+        /** @var \SplFileInfo $gitDir */
         foreach ($gitDirs as $gitDir) {
-            $this->filesystem->chmod($gitDir, 0777, 0000, true);
+            $this->filesystem->chmod($gitDir->getPathname(), 0777, 0000, true);
         }
     }
 

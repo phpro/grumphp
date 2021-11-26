@@ -84,7 +84,7 @@ class CloverCoverage implements TaskInterface
     {
         $configuration = $this->getConfig()->getOptions();
         $percentage = round(min(100, max(0, (float) $configuration['level'])), 2);
-        $cloverFile = $configuration['clover_file'];
+        $cloverFile = (string) $configuration['clover_file'];
 
         if (!$this->filesystem->exists($cloverFile)) {
             return TaskResult::createFailed($this, $context, 'Invalid input file provided');
