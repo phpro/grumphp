@@ -102,10 +102,10 @@ class InitCommand extends Command
         foreach (self::$hooks as $hook) {
             $gitHook = $this->filesystem->buildPath($gitHooksPath, $hook);
             $hookTemplate = $this->filesystem->guessFile(
-                array_filter([
+                [
                     $customHooksPath,
                     $resourceHooksPath,
-                ]),
+                ],
                 [$hook]
             );
 

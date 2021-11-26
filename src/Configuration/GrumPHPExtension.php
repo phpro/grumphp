@@ -27,7 +27,7 @@ class GrumPHPExtension extends Extension
         return new Configuration();
     }
 
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'grumphp';
     }

@@ -58,7 +58,7 @@ class TwigCs extends AbstractExternalTask
         $arguments->addOptionalArgument('--ansi', true);
 
         // removes all NULL, FALSE and Empty Strings
-        $exclude = array_filter($config['exclude'], 'strlen');
+        $exclude = array_filter($config['exclude'], static fn (mixed $exclude): bool => $exclude && $exclude !== '');
         $arguments->addArgumentArray('--exclude=%s', $exclude);
 
         $process = $this->processBuilder->buildProcess($arguments);

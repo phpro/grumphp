@@ -7,9 +7,9 @@ jobs:
         strategy:
             matrix:
                 operating-system: [ubuntu-latest, macos-latest] #windows-latest currently not working
-                php-versions: ['7.3', '7.4', '8.0']
+                php-versions: ['8.0', '8.1']
                 composer-options: ['', '--prefer-lowest']
-                composer-versions: ['composer:v1', 'composer:v2']
+                composer-versions: ['composer:v2']
             fail-fast: false
         name: PHP ${{ matrix.php-versions }} @ ${{ matrix.operating-system }} with ${{ matrix.composer-versions }} ${{ matrix.composer-options }}
         steps:
@@ -36,7 +36,11 @@ jobs:
                   key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
                   restore-keys: ${{ runner.os }}-composer-
             - name: Install dependencies
+              if: matrix.php-versions != '8.1'
               run: composer update --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }}
+            - name: Install dependencies (Ignore platform)
+              if: matrix.php-versions == '8.1'
+              run: composer update --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }} --ignore-platform-req=php
             - name: Set git variables
               run: |
                 git config --global user.email "you@example.com"
@@ -47,3 +51,4 @@ jobs:
             - name: Run the tests on unix
               if: runner.os != 'Windows'
               run: php vendor/bin/grumphp run --no-interaction
+              continue-on-error: ${{ matrix.php-versions == '8.1' && matrix.composer-options == '--prefer-lowest' }}
