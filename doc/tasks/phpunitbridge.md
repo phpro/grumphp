@@ -47,7 +47,7 @@ If you wish to only run tests from a certain Suite.
 *Default: array()*
 
 If you wish to only run tests from a certain Group.
-`group: [fast,quick,small]`
+`group: ['fast','quick','small']`
 
 
 **exclude_group**
