@@ -38,7 +38,10 @@ class Psalm extends AbstractExternalTask
 
         $resolver->setAllowedValues(
             'output_format',
-            [null, 'compact', 'console', 'emacs', 'json', 'pylint', 'xml', 'checkstyle', 'junit', 'sonarqube']
+            [
+                null, 'compact', 'console', 'emacs', 'json', 'pylint', 'xml', 'checkstyle',
+                'junit', 'sonarqube', 'text', 'github', 'phpstorm', 'codeclimate'
+            ]
         );
 
         return $resolver;
