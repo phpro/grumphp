@@ -28,6 +28,7 @@ class PhpunitBridgeTest extends AbstractExternalTaskTestCase
                 'config_file' => null,
                 'testsuite' => null,
                 'group' => [],
+                'exclude_group' => [],
                 'always_execute' => false,
                 'order' => null,
             ]
@@ -130,6 +131,16 @@ class PhpunitBridgeTest extends AbstractExternalTaskTestCase
             'simple-phpunit',
             [
                 '--group=group1,group2',
+            ]
+        ];
+        yield 'exclude-group' => [
+            [
+                'exclude_group' => ['group1','group2',],
+            ],
+            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'simple-phpunit',
+            [
+                '--exclude-group=group1,group2',
             ]
         ];
         yield 'random order' => [
