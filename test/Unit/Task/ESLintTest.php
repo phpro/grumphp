@@ -33,6 +33,7 @@ class ESLintTest extends AbstractExternalTaskTestCase
 
                 // ESLint native config options
                 'config' => null,
+                'ignore_path' => null,
                 'debug' => false,
                 'format' => null,
                 'max_warnings' => null,
@@ -129,6 +130,18 @@ class ESLintTest extends AbstractExternalTaskTestCase
             'eslint',
             [
                 '--config=.eslintrc.json',
+                'hello.js',
+                'hello2.js',
+            ]
+        ];
+        yield 'ignore_path' => [
+            [
+                'ignore_path' => '.eslintignore',
+            ],
+            $this->mockContext(RunContext::class, ['hello.js', 'hello2.js']),
+            'eslint',
+            [
+                '--ignore-path=.eslintignore',
                 'hello.js',
                 'hello2.js',
             ]

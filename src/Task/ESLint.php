@@ -27,6 +27,7 @@ class ESLint extends AbstractExternalTask
             
             // ESLint native config options
             'config' => null,
+            'ignore_path' => null,
             'debug' => false,
             'format' => null,
             'max_warnings' => null,
@@ -41,6 +42,7 @@ class ESLint extends AbstractExternalTask
         
         // ESLint native config options
         $resolver->addAllowedTypes('config', ['null', 'string']);
+        $resolver->addAllowedTypes('ignore_path', ['null', 'string']);
         $resolver->addAllowedTypes('debug', ['bool']);
         $resolver->addAllowedTypes('format', ['null', 'string']);
         $resolver->addAllowedTypes('max_warnings', ['null', 'integer']);
@@ -73,6 +75,7 @@ class ESLint extends AbstractExternalTask
             : $this->processBuilder->createArgumentsForCommand('eslint');
 
         $arguments->addOptionalArgument('--config=%s', $config['config']);
+        $arguments->addOptionalArgument('--ignore-path=%s', $config['ignore_path']);
         $arguments->addOptionalArgument('--debug', $config['debug']);
         $arguments->addOptionalArgument('--format=%s', $config['format']);
         $arguments->addOptionalArgument('--no-eslintrc', $config['no_eslintrc']);
