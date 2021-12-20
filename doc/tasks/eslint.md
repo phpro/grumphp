@@ -33,6 +33,7 @@ grumphp:
             whitelist_patterns:
                 - /^resources\/js\/(.*)/
             config: .eslintrc.json
+            ignore_path: .eslintignore
             debug: false
             format: ~
             max_warnings: ~
@@ -71,6 +72,12 @@ whitelist_patterns:
 *Default: null*
 
 The path to your eslint's configuration file. Not necessary if using a standard eslintrc name, eg. .eslintrc.json, .eslint.js, or .eslint.yml
+
+**ignore_path**
+
+*Default: null*
+
+The path to your eslint's ignore file ([eslint.org](https://eslint.org/docs/user-guide/configuring/ignoring-code#using-an-alternate-file)). Not necessary if using standard .eslintignore name.
 
 **debug**
 
