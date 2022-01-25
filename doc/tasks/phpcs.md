@@ -97,7 +97,7 @@ PHP_CodeSniffer will print all screen-based reports 80 characters wide. You may 
 *Default: []*
 
 This is a list of regex patterns that will filter files to validate. With this option you can skip files like tests. This option is used in relation with the parameter `triggered_by`.
-For exemple to validate only files in your `src/App/` and `src/AppBundle/` directories in a Symfony you can use 
+For example to validate only files in your `src/App/` and `src/AppBundle/` directories in a Symfony you can use 
 ```yml
 whitelist_patterns:
   - /^src\/App\/(.*)/
@@ -134,7 +134,7 @@ A list of rules that should not be checked. Leave this option blank to run all c
 
 ### Symfony 2
 
-If you want to use Phpcs for your Symfony2 projects, you can require the leanpub phpcs repo.
+If you want to use Phpcs for your Symfony2 projects, you can require the leaphub phpcs repo.
 
 ```sh
 composer require --dev leaphub/phpcs-symfony2-standard

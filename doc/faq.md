@@ -85,7 +85,7 @@ For example:
 - Warning: Unsupported declare 'strict_types' in vendor/ocramius/proxy-manager/src/ProxyManager/Configuration.php on line 19
 - Parse error: parse error, expecting ';'' or'{'' in vendor/ocramius/proxy-manager/src/ProxyManager/Configuration.php on line 87
 
-SourceTree probably doesn't import your local $PATH variable before running the scripts. This causes a lot of issues like a different PHP version than the one installed locally or exectuables that can't be found.
+SourceTree probably doesn't import your local $PATH variable before running the scripts. This causes a lot of issues like a different PHP version than the one installed locally or executables that can't be found.
 
 You can fix this by adding following line to the top of the git hooks:
 

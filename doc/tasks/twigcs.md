@@ -60,4 +60,4 @@ This option will specify which file extensions will trigger this task.
 
 *Default: []*
 
-This option will specify which relative subfolders or files will be exclude to this task.
+This option will specify which relative subfolders or files will be excluded from this task.

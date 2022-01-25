@@ -52,4 +52,4 @@ This option will append 'run' to the npm command to make it possible to run cust
 
 *Default: false*
 
-This option will append '--silent' to the npm script to supress `npm ERR!` messages from showing.
+This option will append '--silent' to the npm script to suppress `npm ERR!` messages from showing.

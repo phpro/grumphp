@@ -17,7 +17,7 @@ grumphp:
 *Default: 'features'*
 
 This option will specify the location of your Gherkin feature files.
-By default the Behat prefered `features` folder is chosen.
+By default the Behat preferred `features` folder is chosen.
 
 **align**
 

@@ -48,7 +48,7 @@ This option can allow PHP short open tags.
 
 This is a list of patterns that will be ignored by PHPLint. Leave this option blank to run PHPLint for every php file.
 
-**trigered_by**
+**triggered_by**
 
 *Default: ['php', 'phtml', 'php3', 'php4', 'php5']*
 
