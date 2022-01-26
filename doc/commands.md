@@ -51,7 +51,7 @@ php ./vendor/bin/grumphp run
 php ./vendor/bin/grumphp run --testsuite=mytestsuite
 ```
 
-This command can also be used for continious integration.
+This command can also be used for continuous integration.
 More information about the testsuites can be found in the [testsuites documentation](testsuites.md).
 
 If you want to run only a subset of the configured tasks, you can run the command with the `--tasks` option:

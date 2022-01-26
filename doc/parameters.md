@@ -129,7 +129,7 @@ Hides the tip describing how to circumvent the Git commit hook and bypass GrumPH
 
 GrumPHP uses the Symfony Process component to run external tasks.
 The component will trigger a timeout after 60 seconds by default.
-If you've got tools that run more then 60 seconds, you can increase this parameter.
+If you've got tools that run more than 60 seconds, you can increase this parameter.
 It is also possible to disable the timeout by setting the value to `null`.
 When receiving a `Symfony\Component\Process\Exception\ProcessTimedOutException` during the execution of GrumPHP, you probably need to increment this setting.
 

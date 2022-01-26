@@ -79,7 +79,7 @@ grumphp:
                 declare_strict_types: ~
 ```
 
-This visitore is not configurable!
+This visitor is not configurable!
 
 
 ### forbidden_class_method_calls
@@ -103,7 +103,7 @@ grumphp:
 
 This is a list of blacklisted class method calls. The syntax is `$variableName->methodName`.
 When one of the functions inside this list is being called by your code, 
-the parser will markt this method as an error.
+the parser will mark this method as an error.
 
 
 ### forbidden_function_calls
@@ -127,7 +127,7 @@ grumphp:
 
 This is a list of blacklisted function calls.
 When one of the functions inside this list is being called by your code, 
-the parser will markt this method as an error.
+the parser will mark this method as an error.
 
 *Note* that statements like `die()` and `exit` are not functions but exit nodes. You can validate these statements by adding the [`no_exit_statements`](https://github.com/phpro/grumphp/blob/master/doc/tasks/phpparser.md#no_exit_statements) visitor to your configuration.
 
@@ -152,7 +152,7 @@ grumphp:
 
 This is a list of blacklisted static method calls. The syntax is `Fully\Qualified\ClassName::staticMethodName`.
 When one of the functions inside this list is being called by your code, 
-the parser will markt this method as an error.
+the parser will mark this method as an error.
 
 
 ### nameresolver
@@ -258,7 +258,7 @@ This will result in easy and understandable visitors!
 
 ### Optional interfaces and classes
 
-We also added some optional interfaces and to make it easier to interct with the GrumPHP context:
+We also added some optional interfaces and to make it easier to interact with the GrumPHP context:
 
 
 **ConfigurableVisitorInterface**
@@ -295,7 +295,7 @@ interface ContextAwareVisitorInterface extends NodeVisitor
 In the built-in visitors, we use the `AbstractVisitor` that extends the `PhpParser\NodeVisitorAbstract`.
 This means that you only have to implement the methods from the `NodeVisitor` that you need.
 It also implements the `ContextAwareVisitorInterface` and provides an easy method for logging errors in your custom visitor.
-The bleuprint of this abstract visitor looks like this:
+The blueprint of this abstract visitor looks like this:
 
 
 ```php

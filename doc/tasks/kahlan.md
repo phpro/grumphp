@@ -133,7 +133,7 @@ To turn off header.
 Paths to include for patching. 
 
 
-**exlude**
+**exclude**
 
 *Default: `[]`*
 

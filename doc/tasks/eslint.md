@@ -111,4 +111,4 @@ Report errors only (no warnings). [eslint.org](https://eslint.org/docs/user-guid
 
 **other settings**
 
-Any other eslint settings (such as rules, env, ignore patterns, etc) should be able to be set through an [eslint config file](https://eslint.org/docs/user-guide/configuring) (instructions to generate a config file at top of document).
+Any other eslint settings (such as rules, env, ignore patterns, etc.) should be able to be set through an [eslint config file](https://eslint.org/docs/user-guide/configuring) (instructions to generate a config file at top of document).

@@ -47,7 +47,7 @@ Always run the whole test suite, even if no PHP files were changed.
 
 *Default: null*
 
-You can wite the testing progress to a file.
+You can write the testing progress to a file.
 
 **show_information_about_skipped_tests**
 
