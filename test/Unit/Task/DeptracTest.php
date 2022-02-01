@@ -26,14 +26,8 @@ class DeptracTest extends AbstractExternalTaskTestCase
             [],
             [
                 'depfile' => null,
-                'formatter' => [],
-                'graphviz_display' => true,
-                'graphviz_dump_image' => null,
-                'graphviz_dump_dot' => null,
-                'graphviz_dump_html' => null,
-                'junit_dump_xml' => null,
-                'xml_dump' => null,
-                'baseline_dump' => null,
+                'formatter' => null,
+                'output' => null,
             ]
         ];
     }
@@ -101,75 +95,57 @@ class DeptracTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'deptrac',
             [
-                'analyze',
-                '--graphviz-display=1',
+                'analyse',
             ]
         ];
         yield 'formatter-graphviz' => [
             [
-                'formatter' => ['graphviz'],
+                'formatter' => 'graphviz-display',
             ],
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'deptrac',
             [
-                'analyze',
-                '--formatter=graphviz',
-                '--graphviz-display=1',
-            ]
-        ];
-        yield 'formatter-graphviz-no-display' => [
-            [
-                'formatter' => ['graphviz'],
-                'graphviz_display' => false,
-            ],
-            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
-            'deptrac',
-            [
-                'analyze',
-                '--formatter=graphviz',
-                '--graphviz-display=0',
+                'analyse',
+                '--formatter=graphviz-display',
             ]
         ];
         yield 'formatter-graphviz-dump-image' => [
             [
-                'formatter' => ['graphviz'],
-                'graphviz_dump_image' => 'file.jpg',
+                'formatter' => 'graphviz-image',
+                'output' => 'file.jpg',
             ],
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'deptrac',
             [
-                'analyze',
-                '--formatter=graphviz',
-                '--graphviz-display=1',
-                '--graphviz-dump-image=file.jpg',
+                'analyse',
+                '--formatter=graphviz-image',
+                '--output=file.jpg',
             ]
         ];
         yield 'formatter-graphviz-dump-dot' => [
             [
-                'formatter' => ['graphviz'],
-                'graphviz_dump_dot' => 'file.dot',
+                'formatter' => 'graphviz-dot',
+                'output' => 'file.dot',
             ],
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'deptrac',
             [
-                'analyze',
-                '--formatter=graphviz',
-                '--graphviz-display=1',
-                '--graphviz-dump-dot=file.dot',
+                'analyse',
+                '--formatter=graphviz-dot',
+                '--output=file.dot',
             ]
         ];
         yield 'formatter-graphviz-dump-html' => [
             [
-                'formatter' => ['graphviz'],
-                'graphviz_dump_html' => 'file.html',
+                'formatter' => 'graphviz-html',
+                'output' => 'file.html',
             ],
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'deptrac',
             [
-                'analyze',
-                '--formatter=graphviz',
-                '--graphviz-display=1',
-                '--graphviz-dump-html=file.html',
+                'analyse',
+                '--formatter=graphviz-html',
+                '--output=file.html',
             ]
         ];
         yield 'depfile' => [
@@ -179,51 +155,47 @@ class DeptracTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'deptrac',
             [
-                'analyze',
-                '--graphviz-display=1',
-                'depfile',
+                'analyse',
+                '--config-file=depfile',
             ]
         ];
         yield 'formatter-junit' => [
             [
-                'formatter' => ['junit'],
-                'junit_dump_xml' => 'junit.xml',
+                'formatter' => 'junit',
+                'output' => 'junit.xml',
             ],
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'deptrac',
             [
-                'analyze',
+                'analyse',
                 '--formatter=junit',
-                '--graphviz-display=1',
-                '--junit-dump-xml=junit.xml',
+                '--output=junit.xml',
             ]
         ];
         yield 'formatter-xml' => [
             [
-                'formatter' => ['xml'],
-                'xml_dump' => 'file.xml',
+                'formatter' => 'xml',
+                'output' => 'file.xml',
             ],
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'deptrac',
             [
-                'analyze',
+                'analyse',
                 '--formatter=xml',
-                '--graphviz-display=1',
-                '--xml-dump=file.xml',
+                '--output=file.xml',
             ]
         ];
         yield 'formatter-baseline' => [
             [
-                'formatter' => ['baseline'],
-                'baseline_dump' => 'baseline.yml',
+                'formatter' => 'baseline',
+                'output' => 'baseline.yaml',
             ],
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'deptrac',
             [
-                'analyze',
+                'analyse',
                 '--formatter=baseline',
-                '--graphviz-display=1',
-                '--baseline-dump=baseline.yml',
+                '--output=baseline.yaml',
             ]
         ];
     }

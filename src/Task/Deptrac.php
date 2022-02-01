@@ -21,25 +21,13 @@ class Deptrac extends AbstractExternalTask
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'depfile' => null,
-            'formatter' => [],
-            'graphviz_display' => true,
-            'graphviz_dump_image' => null,
-            'graphviz_dump_dot' => null,
-            'graphviz_dump_html' => null,
-            'junit_dump_xml' => null,
-            'xml_dump' => null,
-            'baseline_dump' => null,
+            'formatter' => null,
+            'output' => null,
         ]);
 
         $resolver->addAllowedTypes('depfile', ['null', 'string']);
-        $resolver->addAllowedTypes('formatter', ['string[]']);
-        $resolver->addAllowedTypes('graphviz_display', ['bool']);
-        $resolver->addAllowedTypes('graphviz_dump_image', ['null', 'string']);
-        $resolver->addAllowedTypes('graphviz_dump_dot', ['null', 'string']);
-        $resolver->addAllowedTypes('graphviz_dump_html', ['null', 'string']);
-        $resolver->addAllowedTypes('junit_dump_xml', ['null', 'string']);
-        $resolver->addAllowedTypes('xml_dump', ['null', 'string']);
-        $resolver->addAllowedTypes('baseline_dump', ['null', 'string']);
+        $resolver->addAllowedTypes('formatter', ['null', 'string']);
+        $resolver->addAllowedTypes('output', ['null', 'string']);
 
         return $resolver;
     }
@@ -59,16 +47,10 @@ class Deptrac extends AbstractExternalTask
         }
 
         $arguments = $this->processBuilder->createArgumentsForCommand('deptrac');
-        $arguments->add('analyze');
-        $arguments->addArgumentArray('--formatter=%s', $config['formatter']);
-        $arguments->add('--graphviz-display='.(int) $config['graphviz_display']);
-        $arguments->addOptionalArgument('--graphviz-dump-image=%s', $config['graphviz_dump_image']);
-        $arguments->addOptionalArgument('--graphviz-dump-dot=%s', $config['graphviz_dump_dot']);
-        $arguments->addOptionalArgument('--graphviz-dump-html=%s', $config['graphviz_dump_html']);
-        $arguments->addOptionalArgument('--junit-dump-xml=%s', $config['junit_dump_xml']);
-        $arguments->addOptionalArgument('--xml-dump=%s', $config['xml_dump']);
-        $arguments->addOptionalArgument('--baseline-dump=%s', $config['baseline_dump']);
-        $arguments->addOptionalArgument('%s', $config['depfile']);
+        $arguments->add('analyse');
+        $arguments->addOptionalArgument('--formatter=%s', $config['formatter']);
+        $arguments->addOptionalArgument('--output=%s', $config['output']);
+        $arguments->addOptionalArgument('--config-file=%s', $config['depfile']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();
