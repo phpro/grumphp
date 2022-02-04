@@ -16,7 +16,7 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\TaskInterface;
-use Opis\Closure\SerializableClosure;
+use Laravel\SerializableClosure\SerializableClosure;
 
 class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
 {
