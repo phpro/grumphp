@@ -6,6 +6,7 @@ namespace GrumPHP\Runner\TaskHandler\Middleware;
 
 use GrumPHP\Exception\ParallelException;
 use GrumPHP\IO\IOInterface;
+use Laravel\SerializableClosure\SerializableClosure;
 use function Amp\call;
 use function Amp\ParallelFunctions\parallel;
 use Amp\Promise;
@@ -16,7 +17,6 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\TaskInterface;
-use Opis\Closure\SerializableClosure;
 
 class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
 {
