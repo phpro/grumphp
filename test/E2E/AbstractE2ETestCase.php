@@ -192,6 +192,11 @@ abstract class AbstractE2ETestCase extends TestCase
             $grumphpFile,
             Yaml::dump([
                 'grumphp' => [
+                    // Don't run E2E tests in parallel.
+                    // This causes a deep nesting of parallel running tasks - which is causing some CI issues.
+                    'parallel' => [
+                        'enabled' => false,
+                    ],
                     'tasks' => []
                 ]
             ])
