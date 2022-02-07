@@ -12,7 +12,6 @@ use Symfony\Component\Process\Process;
 class FixableProcessProvider
 {
     /**
-     * @param Process $process
      * @param int[] $successExitCodes
      *
      * @return callable(): FixResult

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Runner\TaskHandler\Middleware;
 
+use Amp\Parallel\Worker\TaskFailureException;
 use function Amp\call;
 use Amp\Promise;
 use GrumPHP\Exception\PlatformException;

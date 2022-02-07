@@ -1,8 +1,8 @@
 {
     "name": "phpro/grumphp",
-    "type": "composer-plugin",
     "description": "A composer plugin that enables source code quality checks.",
     "license": "MIT",
+    "type": "composer-plugin",
     "authors": [
         {
             "name": "Toon Verwerft",
@@ -81,12 +81,6 @@
         "symplify/easy-coding-standard": "Lets GrumPHP check coding standard.",
         "vimeo/psalm": "Lets GrumPHP discover errors in your code without running it."
     },
-    "config": {
-        "sort-packages": true
-    },
-    "extra": {
-        "class": "GrumPHP\\Composer\\GrumPHPPlugin"
-    },
     "autoload": {
         "psr-4": {
             "GrumPHP\\": "src"
@@ -100,6 +94,12 @@
     "bin": [
         "bin/grumphp"
     ],
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "class": "GrumPHP\\Composer\\GrumPHPPlugin"
+    },
     "scripts": {
         "post-install-cmd": [
             "GrumPHP\\Composer\\DevelopmentIntegrator::integrate"
