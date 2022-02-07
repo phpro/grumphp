@@ -39,6 +39,7 @@
         "symfony/yaml": "~5.3 || ~6.0"
     },
     "require-dev": {
+        "amphp/sync": "^v1.4",
         "brianium/paratest": "^6.4",
         "composer/composer": "^2.2.6",
         "nikic/php-parser": "~4.13",
