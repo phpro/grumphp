@@ -123,6 +123,11 @@ abstract class AbstractE2ETestCase extends TestCase
                     '' => 'src/',
                 ],
             ],
+            'config' => [
+                'allow-plugins' => [
+                    'phpro/grumphp' => true,
+                ],
+            ],
         ]);
 
         return $composerFile;
