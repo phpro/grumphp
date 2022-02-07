@@ -12,9 +12,6 @@ use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\TaskInterface;
 
-/**
- * @psalm-immutable
- */
 class TaskHandler
 {
     /**

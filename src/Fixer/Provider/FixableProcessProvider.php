@@ -6,13 +6,12 @@ namespace GrumPHP\Fixer\Provider;
 
 use GrumPHP\Exception\FixerException;
 use GrumPHP\Fixer\FixResult;
-use Opis\Closure\SerializableClosure;
+use Laravel\SerializableClosure\SerializableClosure;
 use Symfony\Component\Process\Process;
 
 class FixableProcessProvider
 {
     /**
-     * @param Process $process
      * @param int[] $successExitCodes
      *
      * @return callable(): FixResult

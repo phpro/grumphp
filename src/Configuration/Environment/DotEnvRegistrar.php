@@ -14,6 +14,7 @@ class DotEnvRegistrar
         $env = new Dotenv();
 
         if ($config->hasFiles()) {
+            /** @psalm-suppress InvalidArgument - Psalm types in Dotenv class are not valid currently  */
             $env->overload(...$config->getFiles());
         }
 

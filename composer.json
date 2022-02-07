@@ -1,8 +1,8 @@
 {
     "name": "phpro/grumphp",
-    "type": "composer-plugin",
     "description": "A composer plugin that enables source code quality checks.",
     "license": "MIT",
+    "type": "composer-plugin",
     "authors": [
         {
             "name": "Toon Verwerft",
@@ -19,12 +19,12 @@
         "composer-plugin-api": "~2.0",
         "amphp/amp": "^2.6",
         "amphp/parallel": "^1.4",
-        "amphp/parallel-functions": "1.0",
+        "amphp/parallel-functions": "^1.1",
         "doctrine/collections": "^1.6.8",
         "gitonomy/gitlib": "^1.3",
+        "laravel/serializable-closure": "^1.1",
         "monolog/monolog": "^2.0",
         "ondram/ci-detector": "^4.0",
-        "opis/closure": "^3.6",
         "psr/container": "^1.1 || ^2.0",
         "seld/jsonlint": "~1.8",
         "symfony/config": "~5.3 || ~6.0",
@@ -39,13 +39,14 @@
         "symfony/yaml": "~5.3 || ~6.0"
     },
     "require-dev": {
-        "brianium/paratest": "^6.3",
-        "composer/composer": "^2.1.8",
+        "amphp/sync": "^v1.4",
+        "brianium/paratest": "^6.4",
+        "composer/composer": "^2.2.6",
         "nikic/php-parser": "~4.13",
         "php-parallel-lint/php-parallel-lint": "^1.3",
         "phpspec/phpspec": "^7.1",
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^9.5.10"
+        "phpunit/phpunit": "^9.5.13"
     },
     "suggest": {
         "atoum/atoum": "Lets GrumPHP run your unit tests.",
@@ -81,12 +82,6 @@
         "symplify/easy-coding-standard": "Lets GrumPHP check coding standard.",
         "vimeo/psalm": "Lets GrumPHP discover errors in your code without running it."
     },
-    "config": {
-        "sort-packages": true
-    },
-    "extra": {
-        "class": "GrumPHP\\Composer\\GrumPHPPlugin"
-    },
     "autoload": {
         "psr-4": {
             "GrumPHP\\": "src"
@@ -100,6 +95,12 @@
     "bin": [
         "bin/grumphp"
     ],
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "class": "GrumPHP\\Composer\\GrumPHPPlugin"
+    },
     "scripts": {
         "post-install-cmd": [
             "GrumPHP\\Composer\\DevelopmentIntegrator::integrate"
