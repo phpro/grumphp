@@ -73,3 +73,4 @@ install:
 test_script:
   - ps: cd $Env:project_directory
   - php ./bin/grumphp run --testsuite=windows --no-interaction
+  - php ./vendor/bin/paratest --testsuite=E2E -f --verbose
