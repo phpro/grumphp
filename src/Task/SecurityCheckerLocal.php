@@ -20,11 +20,13 @@ class SecurityCheckerLocal extends AbstractExternalTask
             'lockfile' => './composer.lock',
             'format' => null,
             'run_always' => false,
+            'no_dev' => false,
         ]);
 
         $resolver->addAllowedTypes('lockfile', ['string']);
         $resolver->addAllowedTypes('format', ['null', 'string']);
         $resolver->addAllowedTypes('run_always', ['bool']);
+        $resolver->addAllowedTypes('no_dev', ['bool']);
 
         return $resolver;
     }
@@ -48,6 +50,7 @@ class SecurityCheckerLocal extends AbstractExternalTask
         $arguments = $this->processBuilder->createArgumentsForCommand('local-php-security-checker');
         $arguments->addOptionalArgument('--path=%s', $config['lockfile']);
         $arguments->addOptionalArgument('--format=%s', $config['format']);
+        $arguments->addOptionalArgument('--no-dev', $config['no_dev']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();

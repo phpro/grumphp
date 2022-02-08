@@ -28,6 +28,7 @@ class SecurityCheckerLocalTest extends AbstractExternalTaskTestCase
                 'lockfile' => './composer.lock',
                 'format' => null,
                 'run_always' => false,
+                'no_dev' => false,
             ]
         ];
     }
@@ -117,6 +118,18 @@ class SecurityCheckerLocalTest extends AbstractExternalTaskTestCase
             [
                 '--path=./composer.lock',
                 '--format=json'
+            ]
+        ];
+
+        yield 'no-dev' => [
+            [
+                'no_dev' => true,
+            ],
+            $this->mockContext(RunContext::class, ['composer.lock']),
+            'local-php-security-checker',
+            [
+                '--path=./composer.lock',
+                '--no-dev'
             ]
         ];
     }
