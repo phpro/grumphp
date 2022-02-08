@@ -98,11 +98,11 @@ class TwigCsTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.twig', 'hello2.twig']),
             'twigcs',
             [
-                '.',
                 '--severity=warning',
                 '--display=all',
                 '--ruleset=FriendsOfTwig\Twigcs\Ruleset\Official',
                 '--ansi',
+                '.',
             ]
         ];
 
@@ -113,11 +113,11 @@ class TwigCsTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.twig', 'hello2.twig']),
             'twigcs',
             [
-                'src',
                 '--severity=warning',
                 '--display=all',
                 '--ruleset=FriendsOfTwig\Twigcs\Ruleset\Official',
                 '--ansi',
+                'src',
             ]
         ];
 
@@ -128,11 +128,11 @@ class TwigCsTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.twig', 'hello2.twig']),
             'twigcs',
             [
-                '.',
                 '--severity=error',
                 '--display=all',
                 '--ruleset=FriendsOfTwig\Twigcs\Ruleset\Official',
                 '--ansi',
+                '.',
             ]
         ];
 
@@ -143,11 +143,11 @@ class TwigCsTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.twig', 'hello2.twig']),
             'twigcs',
             [
-                '.',
                 '--severity=warning',
                 '--display=blocking',
                 '--ruleset=FriendsOfTwig\Twigcs\Ruleset\Official',
                 '--ansi',
+                '.',
             ]
         ];
 
@@ -158,13 +158,29 @@ class TwigCsTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.twig', 'hello2.twig']),
             'twigcs',
             [
-                '.',
                 '--severity=warning',
                 '--display=all',
                 '--ruleset=FriendsOfTwig\Twigcs\Ruleset\Official',
                 '--ansi',
                 '--exclude=src/',
                 '--exclude=test/',
+                '.',
+            ]
+        ];
+
+        yield 'precommi' => [
+            [
+                'path' => 'src',
+            ],
+            $this->mockContext(GitPreCommitContext::class, ['hello.twig', 'hello2.twig']),
+            'twigcs',
+            [
+                '--severity=warning',
+                '--display=all',
+                '--ruleset=FriendsOfTwig\Twigcs\Ruleset\Official',
+                '--ansi',
+                'hello.twig',
+                'hello2.twig',
             ]
         ];
     }
