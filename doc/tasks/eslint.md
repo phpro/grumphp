@@ -5,7 +5,7 @@
 ## NPM
 If you'd like to install it globally:
 ```bash
-npm -g eslint
+npm install -g eslint
 ```
 
 If you'd like install it as a dev dependency of your project:
