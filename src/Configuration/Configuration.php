@@ -19,7 +19,8 @@ class Configuration implements ConfigurationInterface
         $rootNode->children()->scalarNode('hooks_dir')->defaultNull();
         $rootNode->children()->enumNode('hooks_preset')->cannotBeEmpty()->defaultValue('local')->values([
             'local',
-            'vagrant'
+            'vagrant',
+            'ddev'
          ]);
 
         // Git hook variables
@@ -28,6 +29,8 @@ class Configuration implements ConfigurationInterface
         $gitHookVariables->addDefaultsIfNotSet();
         $gitHookVariables->children()->scalarNode('VAGRANT_HOST_DIR')->defaultValue('.');
         $gitHookVariables->children()->scalarNode('VAGRANT_PROJECT_DIR')->defaultValue('/var/www');
+        $gitHookVariables->children()->scalarNode('DDEV_HOST_DIR')->defaultValue('.');
+        $gitHookVariables->children()->scalarNode('DDEV_PROJECT_DIR')->defaultValue('/var/www/html');
         $gitHookVariables->children()->variableNode('EXEC_GRUMPHP_COMMAND')->defaultValue('exec');
         $gitHookVariables->children()->arrayNode('ENV')->scalarPrototype();
 

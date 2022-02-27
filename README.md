@@ -77,6 +77,8 @@ grumphp:
     git_hook_variables:
          VAGRANT_HOST_DIR: .
          VAGRANT_PROJECT_DIR: /var/www
+         DDEV_HOST_DIR: .
+         DDEV_PROJECT_DIR: /var/www/html
          EXEC_GRUMPHP_COMMAND: exec
          ENV: {}
     stop_on_failure: false

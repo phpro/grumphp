@@ -8,6 +8,8 @@ grumphp:
     git_hook_variables:
         VAGRANT_HOST_DIR: .
         VAGRANT_PROJECT_DIR: /var/www
+        DDEV_HOST_DIR: .
+        DDEV_PROJECT_DIR: /var/www/html
         EXEC_GRUMPHP_COMMAND: exec
         ENV: {}
     stop_on_failure: false
@@ -48,6 +50,7 @@ GrumPHP comes with following presets:
 
 - `local`: All checks will run on your local computer.
 - `vagrant`: All checks will run in your vagrant box (your certainly want to customize `git_hook_variables` default values in this case).
+- `ddev`: All checks will run in your ddev environment.
 
 **git_hook_variables**
 
