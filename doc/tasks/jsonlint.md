@@ -3,7 +3,7 @@
 The JsonLint task will lint all your json files.
 It lives under the `jsonlint` namespace and has following configurable parameters:
 
-```json
+```yaml
 # grumphp.yml
 grumphp:
     tasks:
