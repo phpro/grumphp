@@ -139,6 +139,7 @@ grumphp:
         anytask:
             metadata:
                 blocking: true
+                enabled: true
                 label: null
                 priority: 0
                 task: null
@@ -151,6 +152,14 @@ grumphp:
 This option can be used to make a failing task non-blocking.
 By default all tasks will be marked as blocking.
 When a task is non-blocking, the errors will be displayed but the tests will pass.
+
+**enabled**
+
+*Default: true*
+
+This option can be used to disable task execution.
+By default all tasks will be enabled.
+This makes it possible to conditionally run a task by setting parameters or changing the value through an extension.
 
 **label**
 

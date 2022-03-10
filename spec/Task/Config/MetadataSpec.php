@@ -25,6 +25,7 @@ class MetadataSpec extends ObjectBehavior
         $result->shouldBe([
             'priority' => 0,
             'blocking' => true,
+            'enabled' => true,
             'task' => '',
             'label' => '',
         ]);
@@ -34,6 +35,7 @@ class MetadataSpec extends ObjectBehavior
     {
         $this->beConstructedWith([]);
         $this->priority()->shouldBe(0);
+        $this->isEnabled()->shouldBe(true);
         $this->isBlocking()->shouldBe(true);
         $this->task()->shouldBe('');
         $this->label()->shouldBe('');
@@ -49,6 +51,12 @@ class MetadataSpec extends ObjectBehavior
     {
         $this->beConstructedWith(['blocking' => true]);
         $this->isBlocking()->shouldBe(true);
+    }
+
+    public function it_knows_if_enabled(): void
+    {
+        $this->beConstructedWith(['enabled' => true]);
+        $this->isEnabled()->shouldBe(true);
     }
 
     public function it_knows_if_not_blocking(): void
