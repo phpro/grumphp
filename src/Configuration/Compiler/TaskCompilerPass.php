@@ -54,6 +54,12 @@ class TaskCompilerPass implements CompilerPassInterface
                 $metadataConfig
             ));
 
+            // Disabled tasks can be skipped
+            // This allows to conditionally disable tasks through parameters or by an extension.
+            if (!$metadata->isEnabled()) {
+                continue;
+            }
+
             // Configure task:
             $taskBuilder = new Definition($taskClass, [
                 new Reference($taskId),
