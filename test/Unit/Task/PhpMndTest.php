@@ -112,7 +112,6 @@ class PhpMndTest extends AbstractExternalTaskTestCase
             'phpmnd',
             [
                 '--suffixes=php',
-                '--non-zero-exit-on-violation',
                 '.',
             ]
         ];
@@ -124,7 +123,6 @@ class PhpMndTest extends AbstractExternalTaskTestCase
             'phpmnd',
             [
                 '--suffixes=php',
-                '--non-zero-exit-on-violation',
                 'directory',
             ]
         ];
@@ -138,7 +136,6 @@ class PhpMndTest extends AbstractExternalTaskTestCase
                 '--exclude=exclude1',
                 '--exclude=exclude2',
                 '--suffixes=php',
-                '--non-zero-exit-on-violation',
                 '.',
             ]
         ];
@@ -152,7 +149,6 @@ class PhpMndTest extends AbstractExternalTaskTestCase
                 '--exclude-file=exclude1',
                 '--exclude-file=exclude2',
                 '--suffixes=php',
-                '--non-zero-exit-on-violation',
                 '.',
             ]
         ];
@@ -166,7 +162,6 @@ class PhpMndTest extends AbstractExternalTaskTestCase
                 '--exclude-path=exclude1',
                 '--exclude-path=exclude2',
                 '--suffixes=php',
-                '--non-zero-exit-on-violation',
                 '.',
             ]
         ];
@@ -179,7 +174,6 @@ class PhpMndTest extends AbstractExternalTaskTestCase
             [
                 '--extensions=php,phtml',
                 '--suffixes=php',
-                '--non-zero-exit-on-violation',
                 '.',
             ]
         ];
@@ -192,7 +186,6 @@ class PhpMndTest extends AbstractExternalTaskTestCase
             [
                 '--hint',
                 '--suffixes=php',
-                '--non-zero-exit-on-violation',
                 '.',
             ]
         ];
@@ -205,7 +198,6 @@ class PhpMndTest extends AbstractExternalTaskTestCase
             [
                 '--ignore-funcs=intval,floatval,strval',
                 '--suffixes=php',
-                '--non-zero-exit-on-violation',
                 '.',
             ]
         ];
@@ -218,7 +210,6 @@ class PhpMndTest extends AbstractExternalTaskTestCase
             [
                 '--ignore-numbers=0,1',
                 '--suffixes=php',
-                '--non-zero-exit-on-violation',
                 '.',
             ]
         ];
@@ -231,7 +222,6 @@ class PhpMndTest extends AbstractExternalTaskTestCase
             [
                 '--ignore-strings=0,1',
                 '--suffixes=php',
-                '--non-zero-exit-on-violation',
                 '.',
             ]
         ];
@@ -244,7 +234,6 @@ class PhpMndTest extends AbstractExternalTaskTestCase
             [
                 '--strings',
                 '--suffixes=php',
-                '--non-zero-exit-on-violation',
                 '.',
             ]
         ];
@@ -256,7 +245,6 @@ class PhpMndTest extends AbstractExternalTaskTestCase
             'phpmnd',
             [
                 '--suffixes=php,phtml',
-                '--non-zero-exit-on-violation',
                 '.',
             ]
         ];
