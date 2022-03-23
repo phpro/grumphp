@@ -21,4 +21,12 @@
     <stubs>
         <file name="stubs/Amp.php"/>
     </stubs>
+
+    <issueHandlers>
+        <UndefinedDocblockClass>
+            <errorLevel type="suppress">
+                <referencedClass name="UnitEnum" />
+            </errorLevel>
+        </UndefinedDocblockClass>
+    </issueHandlers>
 </psalm>
