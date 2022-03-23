@@ -57,7 +57,13 @@ class TwigCs extends AbstractExternalTask
         $arguments->addOptionalArgument('--ansi', true);
 
         // removes all NULL, FALSE and Empty Strings
-        $exclude = array_filter($config['exclude'], static fn (mixed $exclude): bool => $exclude && $exclude !== '');
+        $exclude = array_filter(
+            $config['exclude'],
+            /**
+             * @param mixed $exclude
+             */
+            static fn ($exclude): bool => $exclude && $exclude !== ''
+        );
         $arguments->addArgumentArray('--exclude=%s', $exclude);
 
         if ($context instanceof GitPreCommitContext) {
