@@ -36,11 +36,10 @@ jobs:
                   key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
                   restore-keys: ${{ runner.os }}-composer-
             - name: Install dependencies
-              if: matrix.php-versions != '8.1'
               run: composer update --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }}
-            - name: Install dependencies (Ignore platform)
-              if: matrix.php-versions == '8.1'
-              run: composer update --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }} --ignore-platform-req=php
+#            - name: Install dependencies (Ignore platform)
+#              if: matrix.php-versions == '8.1'
+#              run: composer update --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }} --ignore-platform-req=php
             - name: Set git variables
               run: |
                 git config --global user.email "you@example.com"

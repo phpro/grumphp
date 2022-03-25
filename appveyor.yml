@@ -65,8 +65,8 @@ install:
 
   # Install dependencies
   - ps: cd $Env:project_directory
-  - IF %dependencies%==lowest composer update --prefer-dist --prefer-lowest --prefer-stable --no-progress --no-scripts --no-suggest --profile --ignore-platform-req=php
-  - IF %dependencies%==highest composer update --prefer-dist --no-progress --no-scripts --no-suggest --profile --ignore-platform-req=php
+  - IF %dependencies%==lowest composer update --prefer-dist --prefer-lowest --prefer-stable --no-progress --no-scripts --no-suggest --profile
+  - IF %dependencies%==highest composer update --prefer-dist --no-progress --no-scripts --no-suggest --profile
   - git config --global user.email "doesntmatter@dispostable.com"
   - git config --global user.name "GrumPHP"
 
