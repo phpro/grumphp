@@ -28,6 +28,7 @@ class InfectionTest extends AbstractExternalTaskTestCase
                 'threads' => null,
                 'test_framework' => null,
                 'only_covered' => false,
+                'show_mutations' => false,
                 'configuration' => null,
                 'min_msi' => null,
                 'min_covered_msi' => null,
@@ -146,6 +147,18 @@ class InfectionTest extends AbstractExternalTaskTestCase
                 '--no-interaction',
                 '--ignore-msi-with-no-mutations',
                 '--only-covered'
+            ]
+        ];
+        yield 'show-mutations' => [
+            [
+                'show_mutations' => true,
+            ],
+            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'infection',
+            [
+                '--no-interaction',
+                '--ignore-msi-with-no-mutations',
+                '--show-mutations'
             ]
         ];
         yield 'configuration' => [
