@@ -25,6 +25,7 @@ class Infection extends AbstractExternalTask
             'test_framework' => null,
             'only_covered' => false,
             'show_mutations' => false,
+            'verbose' => false,
             'configuration' => null,
             'min_msi' => null,
             'min_covered_msi' => null,
@@ -37,6 +38,7 @@ class Infection extends AbstractExternalTask
         $resolver->addAllowedTypes('test_framework', ['null', 'string']);
         $resolver->addAllowedTypes('only_covered', ['bool']);
         $resolver->addAllowedTypes('show_mutations', ['bool']);
+        $resolver->addAllowedTypes('verbose', ['bool']);
         $resolver->addAllowedTypes('configuration', ['null', 'string']);
         $resolver->addAllowedTypes('min_msi', ['null', 'integer']);
         $resolver->addAllowedTypes('min_covered_msi', ['null', 'integer']);
@@ -76,6 +78,7 @@ class Infection extends AbstractExternalTask
         $arguments->addOptionalArgument('--test-framework=%s', $config['test_framework']);
         $arguments->addOptionalArgument('--only-covered', $config['only_covered']);
         $arguments->addOptionalArgument('--show-mutations', $config['show_mutations']);
+        $arguments->addOptionalArgument('-v', $config['verbose']);
         $arguments->addOptionalArgument('--configuration=%s', $config['configuration']);
         $arguments->addOptionalArgument('--min-msi=%s', $config['min_msi']);
         $arguments->addOptionalArgument('--min-covered-msi=%s', $config['min_covered_msi']);

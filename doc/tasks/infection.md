@@ -21,6 +21,7 @@ grumphp:
             test_framework: ~
             only_covered: false
             show_mutations: false
+            verbose: false
             configuration: ~
             min_msi: ~
             min_covered_msi: ~
@@ -58,6 +59,13 @@ Run the mutation testing only for covered by tests files.
 *Default: false*
 
 Show escaped (and non-covered in verbose mode) mutations to the console.
+
+
+**verbose**
+
+*Default: false*
+
+In verbose mode, non-covered escaped mutations will be shown in the console as well.
 
 
 **configuration**

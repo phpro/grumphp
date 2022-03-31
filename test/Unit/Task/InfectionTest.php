@@ -29,6 +29,7 @@ class InfectionTest extends AbstractExternalTaskTestCase
                 'test_framework' => null,
                 'only_covered' => false,
                 'show_mutations' => false,
+                'verbose' => false,
                 'configuration' => null,
                 'min_msi' => null,
                 'min_covered_msi' => null,
@@ -159,6 +160,18 @@ class InfectionTest extends AbstractExternalTaskTestCase
                 '--no-interaction',
                 '--ignore-msi-with-no-mutations',
                 '--show-mutations'
+            ]
+        ];
+        yield 'verbose' => [
+            [
+                'verbose' => true,
+            ],
+            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'infection',
+            [
+                '--no-interaction',
+                '--ignore-msi-with-no-mutations',
+                '-v'
             ]
         ];
         yield 'configuration' => [
