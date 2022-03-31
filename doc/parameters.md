@@ -72,8 +72,9 @@ A list of the supported variables:
             EXEC_GRUMPHP_COMMAND: 'lando php'
             EXEC_GRUMPHP_COMMAND: 'fin exec php'
             EXEC_GRUMPHP_COMMAND: ['php', '-c /custom/config.ini']
-            EXEC_GRUMPHP_COMMAND: ['docker-compose', 'run', '--rm', '--no-deps', 'php']
+            EXEC_GRUMPHP_COMMAND: ['docker-compose', 'run', '-T', '--rm', '--no-deps', 'php']
             EXEC_GRUMPHP_COMMAND: 'docker run --rm -it -v $(pwd):/grumphp -w /grumphp webdevops/php:alpine'
+            EXEC_GRUMPHP_COMMAND: 'ddev exec php'
     ```
 -  `ENV` : Specify environment variables that will be placed in the git hook file. (_default_ `{}`)
 
