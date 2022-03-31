@@ -223,7 +223,10 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         // https://bugs.php.net/bug.php?id=49139
         $windowsIsInsane = function (string $command): string {
             // Looks like this is not needed anymore since PHP8 - even though the bug is still open.
-            return $this->runsOnWindows() ? '"'.$command.'"' : $command;
+            if (PHP_MAJOR_VERSION === 7) {
+                return $this->runsOnWindows() ? '"'.$command.'"' : $command;
+            }
+            return $command;
         };
 
         // Run command
