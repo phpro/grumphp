@@ -20,6 +20,8 @@ grumphp:
             threads: ~
             test_framework: ~
             only_covered: false
+            show_mutations: false
+            verbose: false
             configuration: ~
             min_msi: ~
             min_covered_msi: ~
@@ -50,6 +52,20 @@ This is the name of a test framework to use. Currently Infection supports `PhpUn
 *Default: false*
 
 Run the mutation testing only for covered by tests files.
+
+
+**show_mutations**
+
+*Default: false*
+
+Show escaped (and non-covered in verbose mode) mutations to the console.
+
+
+**verbose**
+
+*Default: false*
+
+In verbose mode, non-covered escaped mutations will be shown in the console as well.
 
 
 **configuration**
