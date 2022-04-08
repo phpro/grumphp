@@ -1,6 +1,6 @@
 # Kahlan
 
-Kahlan is a full-featured Unit & BDD test framework a la RSpec/JSpec which uses a describe-it syntax and moves testing in PHP one step forward.
+Kahlan is a full-featured Unit & BDD test framework à la RSpec/JSpec which uses a describe-it syntax and moves testing in PHP one step forward.
 
 ***Composer***
 

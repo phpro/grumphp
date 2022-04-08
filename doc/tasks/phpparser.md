@@ -37,7 +37,7 @@ With this option you can skip files like tests. Leave this option blank to run a
 
 Can be one of: php5, php7.
 This option determines which Lexer the PHP_Parser uses to tokenize the PHP code.
-By default the PREFER_PHP7 is loaded.
+By default, the PREFER_PHP7 is loaded.
 
 **visitors**
 
@@ -53,7 +53,7 @@ It's also possible to write your own visitor!
 *Default: [php]*
 
 This option will specify which file extensions will trigger the php blacklist task.
-By default php blacklist will be triggered by altering a php file.
+By default, php blacklist will be triggered by altering a php file.
 You can overwrite this option to whatever filetype you want to validate!
 
 ## Built-in visitors

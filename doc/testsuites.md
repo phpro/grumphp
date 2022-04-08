@@ -17,7 +17,7 @@ grumphp:
 
 It is possible to define multiple testsuites in the `grumphp.yml` file.
 Every test-suite has a unique name that can be used in the run command.
-A test-suite has following parameters:
+A test-suite has the following parameters:
 
 
 **tasks**

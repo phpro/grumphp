@@ -38,5 +38,5 @@ It is also possible to alter code during commit, but this is surely **NOT** reco
 *Default: [php]*
 
 This option will specify which file extensions will trigger the make task.
-By default Make will be triggered by altering a PHP file. 
+By default, Make will be triggered by altering a PHP file. 
 You can overwrite this option to whatever file you want to use!

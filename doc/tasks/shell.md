@@ -41,5 +41,5 @@ grumphp:
 *Default: [php]*
 
 This option will specify which file extensions will trigger the shell tasks.
-By default Shell will be triggered by altering a PHP file. 
+By default, Shell will be triggered by altering a PHP file. 
 You can overwrite this option to whatever file you want to use!

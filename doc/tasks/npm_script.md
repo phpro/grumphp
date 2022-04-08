@@ -32,7 +32,7 @@ but this is surely NOT recommended!
 *Default: [js, jsx, coffee, ts, less, sass, scss]*
 
 This option will specify which file extensions will trigger the NPM script.
-By default NPM script will be triggered by altering any file.
+By default, NPM script will be triggered by altering any file.
 You can overwrite this option to whatever file you want to use!
 
 

@@ -49,5 +49,5 @@ It enables verbose debug output.
 *Default: [js, jsx, coffee, ts, less, sass, scss]*
 
 This option will specify which file extensions will trigger the brunch task.
-By default Brunch will be triggered by altering a front-end file. 
+By default, Brunch will be triggered by altering a front-end file. 
 You can overwrite this option to whatever file you want to use!

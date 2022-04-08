@@ -94,7 +94,7 @@ class ConsoleIO implements IOInterface
         $input = '';
 
         // Validate if the resource is being piped to.
-        // If it is not a tty, it can be read in a non blocking way.
+        // If it is not a tty, it can be read in a non-blocking way.
         if (!\stream_isatty($handle)) {
             // Once the stream is read, it is marked as EOF.
             // From that point on, you sadly cannot use interactive cli questions anymore.

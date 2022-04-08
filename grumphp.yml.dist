@@ -43,7 +43,7 @@ grumphp:
     # On CI, we run paratest separetely. For some reason this currently fails in github actions.
     ci:
       tasks: [phpcs, phpspec, phpunit, composer, composer_normalize, yamllint, phplint, phpparser]
-    # Dont run psalm on windows for now. There is a known issue with the windows phar:
+    # Don't run psalm on Windows for now. There is a known issue with the W indows phar:
     # https://github.com/vimeo/psalm/issues/2858
     windows:
       tasks: [phpcs, phpspec, phpunit, composer, composer_normalize, yamllint, phplint, phpparser]

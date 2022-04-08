@@ -150,7 +150,7 @@ grumphp:
 *Default: true*
 
 This option can be used to make a failing task non-blocking.
-By default all tasks will be marked as blocking.
+By default, all tasks will be marked as blocking.
 When a task is non-blocking, the errors will be displayed but the tests will pass.
 
 **enabled**
@@ -166,7 +166,7 @@ This makes it possible to conditionally run a task by setting parameters or chan
 *Default: null*
 
 This option can be used to display a label instead of the task name whilst running GrumPHP.
-By default the task name will be displayed.
+By default, the task name will be displayed.
 
 **priority**
 

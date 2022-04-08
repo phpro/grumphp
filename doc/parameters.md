@@ -93,7 +93,7 @@ A list of the supported variables:
 
 The added environment variables will also be presented to the tasks that GrumPHP executes.
 Note that `symfony/process` only passes string values.
-If you want to use integers, you need do wrap the value in quotes:
+If you want to use integers, you need to wrap the value in quotes:
 
 ```yaml
 grumphp:
@@ -107,7 +107,7 @@ grumphp:
 *Default: false*
 
 This parameter will tell GrumPHP to stop running tasks when one of the tasks results in an error.
-By default GrumPHP will continue running the configured tasks.
+By default, GrumPHP will continue running the configured tasks.
 
 **ignore_unstaged_changes**
 
@@ -161,7 +161,7 @@ Visit https://docs.example.com
 *Default: {failed: grumphp-grumpy.txt, succeeded: grumphp-happy.txt}*
 
 This parameter will tell GrumPHP where it can locate ascii images used in pre-commit hook.
-Currently there are only three images `failed` and `succeeded`. If path is not specified default image from
+Currently, there are only three images `failed` and `succeeded`. If path is not specified default image from
 `resources/ascii/` folder are used.
 
 You may also specify lists of ascii images, and GrumPHP will choose a random one
@@ -286,7 +286,7 @@ grumphp:
 
 *Default: {}*
 
-Besides loading variables from .env files, you can also specify them directly in your config file.
+Beside loading variables from .env files, you can also specify them directly in your config file.
 
 Example:
 

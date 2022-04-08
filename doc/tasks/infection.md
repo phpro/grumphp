@@ -42,7 +42,7 @@ to failing tests which give many false-positives results.
 
 *Default: null*
 
-This is the name of a test framework to use. Currently Infection supports `PhpUnit` and `PhpSpec`.
+This is the name of a test framework to use. Currently, Infection supports `PhpUnit` and `PhpSpec`.
 
 
 **only_covered**
@@ -94,5 +94,5 @@ With this option you can skip files like tests. Leave this option blank to run a
 *Default: [php]*
 
 This option will specify which file extensions will trigger the infection task.
-By default infection will be triggered by altering a php file. 
+By default, infection will be triggered by altering a php file. 
 You can overwrite this option to whatever file you want to use!

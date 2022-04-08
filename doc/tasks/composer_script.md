@@ -30,7 +30,7 @@ but this is surely NOT recommended!
 *Default: [php, phtml]*
 
 This option will specify which file extensions will trigger the Composer script.
-By default Composer script will be triggered by altering any file.
+By default, Composer script will be triggered by altering any file.
 You can overwrite this option to whatever file you want to use!
 
 

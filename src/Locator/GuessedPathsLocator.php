@@ -145,7 +145,7 @@ class GuessedPathsLocator
     /**
      * The git locator fails when no git dir can be found.
      * However : that might degrade the user experience when just running the info commands on the cli tool.
-     * Gitonomy will detect invalid git dirs anyways. So it is ok to fall back to e.g. the current working dir.
+     * Gitonomy will detect invalid git dirs anyway. So it is ok to fall back to e.g. the current working dir.
      */
     private function safelyLocateGitWorkingDir(string $fallbackDir): string
     {
