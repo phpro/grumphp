@@ -71,7 +71,7 @@ This parameter will allow you to exclude paths from the code analysis (must be r
 
 *Default: []*
 
-By default PHP Magic Number Detector analyses conditions, return statements and switch cases. This parameter lets you extend the code analysis.
+By default, PHP Magic Number Detector analyses conditions, return statements and switch cases. This parameter lets you extend the code analysis.
 
 * **argument**
 ```php
@@ -128,7 +128,7 @@ This parameter will exclude a list of comma separated functions from the code an
 
 *Default: []*
 
-This parameter will exclude numbers from the code analysis. By default PHP Magic Number Detector does not consider `0` and `1` to be magic numbers.
+This parameter will exclude numbers from the code analysis. By default, PHP Magic Number Detector does not consider `0` and `1` to be magic numbers.
 
 **ignore_strings**
 

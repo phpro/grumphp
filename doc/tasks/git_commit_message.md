@@ -81,7 +81,7 @@ Here are some example matchers:
 
 *Default: true*
 
-Mark the matchers as case sensitive.
+Mark the matchers as case-sensitive.
 
 **multiline**
 

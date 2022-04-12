@@ -34,7 +34,7 @@ grumphp:
 
 The allow_risky option allows you to set whether risky rules may run.
 Risky rule is a rule, which could change code behaviour.
-If not set, the default value is taken from config file (if it exists). By default no risky rules are run.
+If not set, the default value is taken from config file (if it exists). By default, no risky rules are run.
 
 **cache_file**
 
@@ -47,7 +47,7 @@ When no cache_file is set, the default file `.php_cs.cache` will be used.
 
 *Default: null*
 
-By default the `.php_cs` wil be used.
+By default, the `.php_cs` wil be used.
 You can specify an alternate location for this file by changing this option.
 
 **rules**
@@ -100,7 +100,7 @@ Cache is supported only for tool downloaded as phar file or installed via compos
 Intersection mode can only be used when you have a configuration file which contains a Finder.
 This mode works best since only files that are being commit and are in your configuration will be checked.
 When there is no Finder in your configuration, you'll have set this parameter to false.
-Otherwise php-cs-fixer will crash the execution.
+Otherwise, php-cs-fixer will crash the execution.
 
 Note that activating this option with a consequent target directory will be slow on certain envs such as
 osx+docker.

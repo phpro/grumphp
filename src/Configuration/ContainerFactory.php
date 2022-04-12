@@ -31,7 +31,7 @@ class ContainerFactory
         $config = $container->get(EnvConfig::class);
         assert($config instanceof EnvConfig);
 
-        // Setup the environment and overwrite guessed paths if needed:
+        // Set up the environment and overwrite guessed paths if needed:
         DotEnvRegistrar::register($config);
         $guessedPaths = self::enrichGuessedPathsWithDotEnv($container, $guessedPaths);
 

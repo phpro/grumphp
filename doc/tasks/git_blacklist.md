@@ -42,7 +42,7 @@ whitelist_patterns:
 *Default: [php]*
 
 This option will specify which file extensions will trigger the git blacklist task.
-By default git blacklist will be triggered by altering a php file. 
+By default, git blacklist will be triggered by altering a php file. 
 You can overwrite this option to whatever filetype you want to validate!
 
 **regexp_type**

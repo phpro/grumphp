@@ -75,7 +75,7 @@ abstract class AbstractExternalTaskTestCase extends AbstractTaskTestCase
     }
 
     /**
-     * This function makes it possible to create a expected argument callback that takes the actual argument as input.
+     * This function makes it possible to create an expected argument callback that takes the actual argument as input.
      * This can be handy for validating a part of the argument.
      */
     private function resolveExpectedCliArgumentFromCallable(array $expectedArguments, array $actualArguments): array

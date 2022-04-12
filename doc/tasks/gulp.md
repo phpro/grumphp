@@ -38,5 +38,5 @@ It is also possible to alter code during commit, but this is surely **NOT** reco
 *Default: [js, jsx, coffee, ts, less, sass, scss]*
 
 This option will specify which file extensions will trigger the gulp task.
-By default Gulp will be triggered by altering a front-end file. 
+By default, Gulp will be triggered by altering a front-end file. 
 You can overwrite this option to whatever file you want to use!

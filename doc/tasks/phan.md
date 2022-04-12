@@ -51,5 +51,5 @@ This option is set to `null` by default.
 *Default: [php]*
 
 This option will specify which file extensions will trigger the phan task.
-By default Phan will be triggered by altering a PHP file.
+By default, Phan will be triggered by altering a PHP file.
 You can overwrite this option to whatever file you want to use!

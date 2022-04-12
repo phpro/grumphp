@@ -64,7 +64,7 @@ When this option is set to `true`, the task will stop after the first failing te
 **parallel_processes**
 
 *Default: null*
-The tests run in parallel processes. By default this value is `8`. If you wish to run tests in series, use `1`.
+The tests run in parallel processes. By default, this value is `8`. If you wish to run tests in series, use `1`.
 
 **output**
 
