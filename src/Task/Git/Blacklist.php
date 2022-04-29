@@ -41,7 +41,8 @@ class Blacklist extends AbstractExternalTask
             'whitelist_patterns' => [],
             'triggered_by' => ['php'],
             'regexp_type' => 'G',
-            'match_word' => false
+            'match_word' => false,
+            'ignore_patterns' => []
         ]);
 
         $resolver->addAllowedTypes('keywords', ['array']);
@@ -51,6 +52,7 @@ class Blacklist extends AbstractExternalTask
 
         $resolver->setAllowedValues('regexp_type', ['G', 'E', 'P']);
         $resolver->addAllowedTypes('match_word', ['bool']);
+        $resolver->addAllowedTypes('ignore_patterns', ['array']);
 
         return $resolver;
     }
@@ -65,13 +67,12 @@ class Blacklist extends AbstractExternalTask
         $config = $this->getConfig()->getOptions();
 
         $whitelistPatterns = $config['whitelist_patterns'];
-        $extensions = $config['triggered_by'];
 
         $files = $context->getFiles();
         if (0 !== \count($whitelistPatterns)) {
             $files = $files->paths($whitelistPatterns);
         }
-        $files = $files->extensions($extensions);
+        $files = $files->extensions($config['triggered_by'])->notPaths($config['ignore_patterns']);
 
         if (0 === \count($files) || empty($config['keywords'])) {
             return TaskResult::createSkipped($this, $context);
