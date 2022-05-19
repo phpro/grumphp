@@ -39,10 +39,16 @@ class GitRepositoryDirLocator
         $gitRepositoryDir = $matches[1];
 
         if ($this->filesystem->isAbsolutePath($gitRepositoryDir)) {
-            if (!$this->filesystem->isFile($gitRepositoryDir . DIRECTORY_SEPARATOR . 'commondir')) {
+            if (!$this->filesystem->isFile($gitRepositoryDir.DIRECTORY_SEPARATOR.'commondir')) {
                 throw new RuntimeException('The git directory for worktree could not be found.');
             }
-            $worktreeRelativeRoot = trim($this->filesystem->readPath($gitRepositoryDir . '/commondir'));
+
+            $worktreeRelativeRoot = trim(
+                $this->filesystem->readPath(
+                    $gitRepositoryDir.DIRECTORY_SEPARATOR.'commondir'
+                )
+            );
+
             return $this->filesystem->realpath(
                 $this->filesystem->makePathAbsolute(
                     $worktreeRelativeRoot,
