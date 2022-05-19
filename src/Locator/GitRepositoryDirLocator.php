@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace GrumPHP\Locator;
 
+use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Util\Filesystem;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class GitRepositoryDirLocator
 {
@@ -36,7 +39,16 @@ class GitRepositoryDirLocator
         $gitRepositoryDir = $matches[1];
 
         if ($this->filesystem->isAbsolutePath($gitRepositoryDir)) {
-            return $gitRepositoryDir;
+            if (!$this->filesystem->isFile($gitRepositoryDir . DIRECTORY_SEPARATOR . 'commondir')) {
+                throw new RuntimeException('The git directory for worktree could not be found.');
+            }
+            $worktreeRelativeRoot = trim($this->filesystem->readPath($gitRepositoryDir . '/commondir'));
+            return $this->filesystem->realpath(
+                $this->filesystem->makePathAbsolute(
+                    $worktreeRelativeRoot,
+                    $gitRepositoryDir
+                )
+            );
         }
 
         return $this->filesystem->buildPath(
