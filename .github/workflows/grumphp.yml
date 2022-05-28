@@ -1,6 +1,9 @@
 name: GrumPHP
 
 on: [push, pull_request]
+permissions:
+  contents: read
+
 jobs:
     run:
         runs-on: ${{ matrix.operating-system }}
