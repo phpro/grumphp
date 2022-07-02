@@ -181,20 +181,13 @@ grumphp:
             - resource/succeeded.txt
 ```
 
-To disable all banners set ascii to `~`:
-
-```yaml
-# grumphp.yml
-grumphp:
-    ascii: ~
-```
-
 To disable a specific banner set ascii image path to `~`:
 
 ```yaml
 # grumphp.yml
 grumphp:
     ascii:
+        failed: ~
         succeeded: ~
 ```
 
