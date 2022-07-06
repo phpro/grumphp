@@ -12,10 +12,17 @@ namespace and has following configurable parameters:
 grumphp:
     tasks:
         deptrac:
+            cache_file: ~
             depfile: ~
             formatter: ~
             output: ~
 ```
+
+**cache_file**
+
+*Default: null*
+
+Set location where cache file will be stored. Example: `/var/www/src/.deptrac.cache`
 
 **depfile**
 

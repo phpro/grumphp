@@ -25,6 +25,7 @@ class DeptracTest extends AbstractExternalTaskTestCase
         yield 'defaults' => [
             [],
             [
+                'cache_file' => null,
                 'depfile' => null,
                 'formatter' => null,
                 'output' => null,
