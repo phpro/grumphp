@@ -1,5 +1,11 @@
 #!/bin/sh
 
+if ! command -v $(EXEC_GRUMPHP_COMMAND) &> /dev/null
+then
+    echo "PHP could not be found... Skipping commit-msg hook."
+    exit
+fi
+
 #
 # Run the hook command.
 # Note: this will be replaced by the real command during copy.
