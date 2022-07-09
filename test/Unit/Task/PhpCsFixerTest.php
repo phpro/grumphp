@@ -38,6 +38,7 @@ class PhpCsFixerTest extends AbstractExternalTaskTestCase
                 'allow_risky' => null,
                 'cache_file' => null,
                 'config' => null,
+                'format' => 'txt',
                 'rules' => [],
                 'using_cache' => null,
                 'config_contains_finder' => true,
@@ -115,8 +116,9 @@ class PhpCsFixerTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'php-cs-fixer',
             [
-                '--format=json',
                 '--dry-run',
+                '--format=txt',
+                '--ansi',
                 '--verbose',
                 'fix',
             ]
@@ -128,9 +130,10 @@ class PhpCsFixerTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'php-cs-fixer',
             [
-                '--format=json',
                 '--dry-run',
+                '--format=txt',
                 '--allow-risky=yes',
+                '--ansi',
                 '--verbose',
                 'fix',
             ]
@@ -142,9 +145,10 @@ class PhpCsFixerTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'php-cs-fixer',
             [
-                '--format=json',
                 '--dry-run',
+                '--format=txt',
                 '--cache-file=cachefile',
+                '--ansi',
                 '--verbose',
                 'fix',
             ]
@@ -156,9 +160,24 @@ class PhpCsFixerTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'php-cs-fixer',
             [
-                '--format=json',
                 '--dry-run',
+                '--format=txt',
                 '--config=config.php',
+                '--ansi',
+                '--verbose',
+                'fix',
+            ]
+        ];
+        yield 'format' => [
+            [
+                'format' => 'json'
+            ],
+            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'php-cs-fixer',
+            [
+                '--dry-run',
+                '--format=json',
+                '--ansi',
                 '--verbose',
                 'fix',
             ]
@@ -170,8 +189,9 @@ class PhpCsFixerTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'php-cs-fixer',
             [
-                '--format=json',
                 '--dry-run',
+                '--format=txt',
+                '--ansi',
                 '--rules=foo,bar',
                 '--verbose',
                 'fix',
@@ -188,8 +208,9 @@ class PhpCsFixerTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'php-cs-fixer',
             [
-                '--format=json',
                 '--dry-run',
+                '--format=txt',
+                '--ansi',
                 '--rules='.json_encode($rules),
                 '--verbose',
                 'fix',
@@ -202,8 +223,9 @@ class PhpCsFixerTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'php-cs-fixer',
             [
-                '--format=json',
                 '--dry-run',
+                '--format=txt',
+                '--ansi',
                 '--using-cache=yes',
                 '--verbose',
                 'fix',
@@ -216,8 +238,9 @@ class PhpCsFixerTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'php-cs-fixer',
             [
-                '--format=json',
                 '--dry-run',
+                '--format=txt',
+                '--ansi',
                 'fix',
             ]
         ];
@@ -228,8 +251,9 @@ class PhpCsFixerTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'php-cs-fixer',
             [
-                '--format=json',
                 '--dry-run',
+                '--format=txt',
+                '--ansi',
                 '--verbose',
                 '--diff',
                 'fix',
@@ -242,8 +266,9 @@ class PhpCsFixerTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'php-cs-fixer',
             [
-                '--format=json',
                 '--dry-run',
+                '--format=txt',
+                '--ansi',
                 '--verbose',
                 'fix',
             ]
@@ -255,8 +280,9 @@ class PhpCsFixerTest extends AbstractExternalTaskTestCase
             $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'php-cs-fixer',
             [
-                '--format=json',
                 '--dry-run',
+                '--format=txt',
+                '--ansi',
                 '--verbose',
                 'fix',
                 'hello.php',
@@ -270,8 +296,9 @@ class PhpCsFixerTest extends AbstractExternalTaskTestCase
             $this->mockContext(GitPreCommitContext::class, ['hello.php', 'hello2.php']),
             'php-cs-fixer',
             [
-                '--format=json',
                 '--dry-run',
+                '--format=txt',
+                '--ansi',
                 '--verbose',
                 'fix',
                 'hello.php',
@@ -285,8 +312,9 @@ class PhpCsFixerTest extends AbstractExternalTaskTestCase
             $this->mockContext(GitPreCommitContext::class, ['hello.php', 'hello2.php']),
             'php-cs-fixer',
             [
-                '--format=json',
                 '--dry-run',
+                '--format=txt',
+                '--ansi',
                 '--path-mode=intersection',
                 '--verbose',
                 'fix',

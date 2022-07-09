@@ -28,6 +28,7 @@ class PhpCsFixer extends AbstractExternalTask
             'allow_risky' => null,
             'cache_file' => null,
             'config' => null,
+            'format' => 'txt',
             'rules' => [],
             'using_cache' => null,
             'config_contains_finder' => true,
@@ -39,6 +40,7 @@ class PhpCsFixer extends AbstractExternalTask
         $resolver->addAllowedTypes('allow_risky', ['null', 'bool']);
         $resolver->addAllowedTypes('cache_file', ['null', 'string']);
         $resolver->addAllowedTypes('config', ['null', 'string']);
+        $resolver->addAllowedTypes('format', ['null', 'string']);
         $resolver->addAllowedTypes('rules', ['array']);
         $resolver->addAllowedTypes('using_cache', ['null', 'bool']);
         $resolver->addAllowedTypes('config_contains_finder', ['bool']);
@@ -71,11 +73,12 @@ class PhpCsFixer extends AbstractExternalTask
         $this->formatter->resetCounter();
 
         $arguments = $this->processBuilder->createArgumentsForCommand('php-cs-fixer');
-        $arguments->add('--format=json');
         $arguments->add('--dry-run');
+        $arguments->addOptionalArgument('--format=%s', $config['format']);
         $arguments->addOptionalBooleanArgument('--allow-risky=%s', $config['allow_risky'], 'yes', 'no');
         $arguments->addOptionalArgument('--cache-file=%s', $config['cache_file']);
         $arguments->addOptionalArgument('--config=%s', $config['config']);
+        $arguments->addOptionalArgument('--ansi', true);
 
         if ($rules = $config['rules']) {
             $arguments->add(sprintf(
@@ -104,7 +107,6 @@ class PhpCsFixer extends AbstractExternalTask
             return FixableProcessResultProvider::provide(
                 TaskResult::createFailed($this, $context, $this->formatter->format($process)),
                 function () use ($arguments): Process {
-                    $arguments->removeElement('--format=json');
                     $arguments->removeElement('--dry-run');
                     return $this->processBuilder->buildProcess($arguments);
                 }
