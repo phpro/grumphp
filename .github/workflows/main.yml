@@ -1,0 +1,11 @@
+- name: Snyk
+  # You may pin to the exact commit or the version.
+  # uses: snyk/actions@7fad562681122205233d1242c3bb39598c5393da
+  uses: snyk/actions@0.3.0
+  with:
+    # Which Snyk command to run, defaults to test
+    command: # optional, default is test
+    # Additional arguments to pass to Snyk
+    args: # optional
+    # Output a snyk.json file with results if running the test command
+    json: # optional
