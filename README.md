@@ -6,7 +6,7 @@
 [![Twitter](https://img.shields.io/badge/Twitter-%40grumphp-blue.svg)](https://twitter.com/intent/user?screen_name=grumphp)
 [![Join the chat at https://gitter.im/phpro/grumphp](https://badges.gitter.im/phpro/grumphp.svg)](https://gitter.im/phpro/grumphp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-# GrumPHP # SOME CHANGE
+# GrumPHP #
 
 <img src="https://raw.githubusercontent.com/phpro/grumphp/master/resources/logo/grumphp-grumpy.png" align="right" width="250"/>
 
