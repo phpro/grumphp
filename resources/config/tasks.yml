@@ -211,6 +211,13 @@ services:
         tags:
             - {name: grumphp.task, task: php7cc}
 
+    GrumPHP\Task\PhpArkitect:
+        arguments:
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, task: phparkitect}
+
     GrumPHP\Task\PhpCpd:
         arguments:
           - '@process_builder'
