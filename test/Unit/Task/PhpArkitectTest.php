@@ -27,7 +27,7 @@ class PhpArkitectTest extends AbstractExternalTaskTestCase
             [
                 'config' => null,
                 'target_php_version' => null,
-                'stop_on_failure' => null,
+                'stop_on_failure' => false,
             ],
         ];
     }
@@ -87,7 +87,6 @@ class PhpArkitectTest extends AbstractExternalTaskTestCase
             'phparkitect',
             [
                 'check',
-                '--no-ansi',
                 '--no-interaction'
             ]
         ];
@@ -100,7 +99,6 @@ class PhpArkitectTest extends AbstractExternalTaskTestCase
             [
                 'check',
                 '--config=phparkitect.php',
-                '--no-ansi',
                 '--no-interaction'
             ]
         ];
@@ -113,7 +111,6 @@ class PhpArkitectTest extends AbstractExternalTaskTestCase
             [
                 'check',
                 '--target-php-version=8.1',
-                '--no-ansi',
                 '--no-interaction'
             ]
         ];
@@ -126,7 +123,6 @@ class PhpArkitectTest extends AbstractExternalTaskTestCase
             [
                 'check',
                 '--stop-on-failure',
-                '--no-ansi',
                 '--no-interaction'
             ]
         ];
