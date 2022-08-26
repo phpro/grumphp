@@ -22,12 +22,12 @@ class PhpArkitect extends AbstractExternalTask
         $resolver->setDefaults([
             'config' => null,
             "target_php_version" => null,
-            'stop_on_failure' => null,
+            'stop_on_failure' => false,
         ]);
 
         $resolver->addAllowedTypes('config', ['null', 'string']);
         $resolver->addAllowedTypes('target_php_version', ['null', 'string']);
-        $resolver->addAllowedTypes('stop_on_failure', ['null', 'boolean']);
+        $resolver->addAllowedTypes('stop_on_failure', ['boolean']);
 
         return $resolver;
     }
@@ -52,7 +52,6 @@ class PhpArkitect extends AbstractExternalTask
         $arguments->addOptionalArgument('--config=%s', $config['config']);
         $arguments->addOptionalArgument('--target-php-version=%s', $config['target_php_version']);
         $arguments->addOptionalArgument('--stop-on-failure', $config['stop_on_failure']);
-        $arguments->add('--no-ansi');
         $arguments->add('--no-interaction');
 
         $process = $this->processBuilder->buildProcess($arguments);

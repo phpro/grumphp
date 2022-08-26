@@ -7,7 +7,6 @@ namespace GrumPHPTest\Unit\Task;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\PhpArkitect;
-use GrumPHP\Task\PhpStan;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\Test\Task\AbstractExternalTaskTestCase;
 
