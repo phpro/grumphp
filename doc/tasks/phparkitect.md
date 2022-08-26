@@ -3,8 +3,8 @@
 PHPArkitect helps you to keep your PHP codebase coherent and solid, by permitting to add some architectural constraint check to your workflow.
 It lives under the `phparkitect` namespace and has following configurable parameters:
 
-PhpArkitect doesn't support specifying the directory or files.
-It will always run on the directories specified in your config file.
+PhpArkitect doesn't support checking only the changed files.
+It will always run on the directory specified in your config file.
 
 ## Composer
 ```bash
