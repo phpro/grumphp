@@ -100,6 +100,7 @@ Every task has its own default configuration. It is possible to overwrite the pa
 - [Phan](tasks/phan.md)
 - [Phing](tasks/phing.md)
 - [Php7cc](tasks/php7cc.md)
+- [PhpArkitect](tasks/phparkitect.md)
 - [PhpCpd](tasks/phpcpd.md)
 - [Phpcs](tasks/phpcs.md)
 - [PHP-CS-Fixer](tasks/phpcsfixer.md)

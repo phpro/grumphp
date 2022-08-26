@@ -69,6 +69,7 @@
         "phan/phan": "Lets GrumPHP unleash a static analyzer on your code",
         "phing/phing": "Lets GrumPHP run your automated PHP tasks.",
         "php-parallel-lint/php-parallel-lint": "Lets GrumPHP quickly lint your entire code base.",
+        "phparkitect/phparkitect": "Let GrumPHP keep your codebase coherent and solid, by permitting to add some architectural constraint check to your workflow.",
         "phpmd/phpmd": "Lets GrumPHP sort out the mess in your code",
         "phpspec/phpspec": "Lets GrumPHP spec your code.",
         "phpstan/phpstan": "Lets GrumPHP discover bugs in your code without running it.",
