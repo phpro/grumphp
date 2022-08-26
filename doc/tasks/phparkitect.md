@@ -3,6 +3,9 @@
 PHPArkitect helps you to keep your PHP codebase coherent and solid, by permitting to add some architectural constraint check to your workflow.
 It lives under the `phparkitect` namespace and has following configurable parameters:
 
+PhpArkitect doesn't support specifying the directory or files.
+It will always run on the directories specified in your config file.
+
 ## Composer
 ```bash
 composer require --dev phparkitect/phparkitect
@@ -14,17 +17,17 @@ composer require --dev phparkitect/phparkitect
 grumphp:
     tasks:
       phparkitect:
-            configuration: ~
+            config: ~
             target_php_version: ~
             stop_on_failure: ~ 
 ```
 
-**configuration**
+**config**
 
 *Default: null*
 
 With this parameter you can specify the path your project's configuration file.
-By defaykt PHPArkitect will search all rules in phparkitect.php located in the root of your project.
+By default PHPArkitect will search all rules in phparkitect.php located in the root of your project.
 
 **target_php_version**
 
