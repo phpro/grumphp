@@ -38,6 +38,6 @@ This can be useful to debug problems and to understand if there are problems wit
 
 **stop_on_failure**
 
-*Default: null*
+*Default: false*
 
 With this option the process will end immediately after the first violation.
