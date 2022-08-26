@@ -20,11 +20,13 @@ class Deptrac extends AbstractExternalTask
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
+            'cache_file' => null,
             'depfile' => null,
             'formatter' => null,
             'output' => null,
         ]);
 
+        $resolver->addAllowedTypes('cache_file', ['null', 'string']);
         $resolver->addAllowedTypes('depfile', ['null', 'string']);
         $resolver->addAllowedTypes('formatter', ['null', 'string']);
         $resolver->addAllowedTypes('output', ['null', 'string']);
@@ -50,6 +52,7 @@ class Deptrac extends AbstractExternalTask
         $arguments->add('analyse');
         $arguments->addOptionalArgument('--formatter=%s', $config['formatter']);
         $arguments->addOptionalArgument('--output=%s', $config['output']);
+        $arguments->addOptionalArgument('--cache-file=%s', $config['cache_file']);
         $arguments->addOptionalArgument('--config-file=%s', $config['depfile']);
 
         $process = $this->processBuilder->buildProcess($arguments);
