@@ -24,7 +24,6 @@ grumphp:
             phpunit: null
             configuration: null
             runner: null
-            debugger: null
             coverage-clover: null
             coverage-html: null
             coverage-php: null
