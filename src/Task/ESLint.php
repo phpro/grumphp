@@ -53,7 +53,7 @@ class ESLint extends AbstractExternalTask
         $resolver->setDeprecated(
             'whitelist_patterns',
             'phpro/grumphp',
-            '1.13',
+            '1.14',
             function (Options $options, $value): string {
                 if (null === $value) {
                     return 'Parsing "null" to option "whitelist_patterns" is deprecated, pass an array instead.';
