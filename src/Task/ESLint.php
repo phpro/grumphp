@@ -11,6 +11,7 @@ use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
@@ -49,13 +50,18 @@ class ESLint extends AbstractExternalTask
         $resolver->addAllowedTypes('no_eslintrc', ['bool']);
         $resolver->addAllowedTypes('quiet', ['bool']);
 
-        $resolver->setDeprecated('whitelist_patterns', 'phpro/grumphp', '1.13', function (Options $options, $value): string {
-            if (null === $value) {
-                return 'Parsing "null" to option "whitelist_patterns" is deprecated, pass an array instead.';
-            }
+        $resolver->setDeprecated(
+            'whitelist_patterns',
+            'phpro/grumphp',
+            '1.13',
+            function (Options $options, $value): string {
+                if (null === $value) {
+                    return 'Parsing "null" to option "whitelist_patterns" is deprecated, pass an array instead.';
+                }
 
-            return '';
-        });
+                return '';
+            }
+        );
 
         return $resolver;
     }
