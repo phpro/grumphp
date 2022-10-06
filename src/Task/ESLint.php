@@ -23,8 +23,8 @@ class ESLint extends AbstractExternalTask
             // Task config options
             'bin' => null,
             'triggered_by' => ['js', 'jsx', 'ts', 'tsx', 'vue'],
-            'whitelist_patterns' => null,
-            
+            'whitelist_patterns' => [],
+
             // ESLint native config options
             'config' => null,
             'ignore_path' => null,
@@ -39,7 +39,7 @@ class ESLint extends AbstractExternalTask
         $resolver->addAllowedTypes('bin', ['null', 'string']);
         $resolver->addAllowedTypes('whitelist_patterns', ['null', 'array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
-        
+
         // ESLint native config options
         $resolver->addAllowedTypes('config', ['null', 'string']);
         $resolver->addAllowedTypes('ignore_path', ['null', 'string']);
@@ -48,6 +48,14 @@ class ESLint extends AbstractExternalTask
         $resolver->addAllowedTypes('max_warnings', ['null', 'integer']);
         $resolver->addAllowedTypes('no_eslintrc', ['bool']);
         $resolver->addAllowedTypes('quiet', ['bool']);
+
+        $resolver->setDeprecated('whitelist_patterns', 'phpro/grumphp', '1.13', function (Options $options, $value): string {
+            if (null === $value) {
+                return 'Parsing "null" to option "whitelist_patterns" is deprecated, pass an array instead.';
+            }
+
+            return '';
+        });
 
         return $resolver;
     }

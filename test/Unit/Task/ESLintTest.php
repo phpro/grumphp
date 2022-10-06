@@ -29,7 +29,7 @@ class ESLintTest extends AbstractExternalTaskTestCase
                 // Task config options
                 'bin' => null,
                 'triggered_by' => ['js', 'jsx', 'ts', 'tsx', 'vue'],
-                'whitelist_patterns' => null,
+                'whitelist_patterns' => [],
 
                 // ESLint native config options
                 'config' => null,
@@ -206,5 +206,12 @@ class ESLintTest extends AbstractExternalTaskTestCase
                 'hello2.js',
             ]
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_triggers_deprecation_on_null() {
+        self::assertTrue(ESLint::getConfigurableOptions()->isDeprecated('whitelist_patterns'));
     }
 }
