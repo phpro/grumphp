@@ -315,6 +315,13 @@ services:
         tags:
             - {name: grumphp.task, task: psalm}
 
+    GrumPHP\Task\Rector:
+        arguments:
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - { name: grumphp.task, task: rector }
+
     GrumPHP\Task\Robo:
         arguments:
             - '@process_builder'
