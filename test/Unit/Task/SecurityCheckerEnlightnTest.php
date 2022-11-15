@@ -27,6 +27,7 @@ class SecurityCheckerEnlightnTest extends AbstractExternalTaskTestCase
             [
                 'lockfile' => './composer.lock',
                 'run_always' => false,
+                'allow-list' => [],
             ]
         ];
     }
