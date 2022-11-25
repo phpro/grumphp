@@ -23,7 +23,6 @@ class Rector extends AbstractExternalTask
             'triggered_by' => ['php'],
             'ignore_patterns' => [],
             'clear_cache' => true,
-            'no_progress_bar' => true,
             'no_diffs' => false,
         ]);
 
@@ -31,7 +30,6 @@ class Rector extends AbstractExternalTask
         $resolver->addAllowedTypes('triggered_by', ['array']);
         $resolver->addAllowedTypes('ignore_patterns', ['array']);
         $resolver->addAllowedTypes('clear_cache', ['bool']);
-        $resolver->addAllowedTypes('no_progress_bar', ['bool']);
         $resolver->addAllowedTypes('no_diffs', ['bool']);
 
         return $resolver;
@@ -58,10 +56,10 @@ class Rector extends AbstractExternalTask
         $arguments = $this->processBuilder->createArgumentsForCommand('rector');
         $arguments->add('process');
         $arguments->add('--dry-run');
+        $arguments->add('--no-progress-bar');
 
         $arguments->addOptionalArgument('--config=%s', $config['config']);
         $arguments->addOptionalArgument('--clear-cache', $config['clear_cache']);
-        $arguments->addOptionalArgument('--no-progress-bar', $config['no_progress_bar']);
         $arguments->addOptionalArgument('--no-diffs', $config['no_diffs']);
 
         if ($context instanceof GitPreCommitContext) {

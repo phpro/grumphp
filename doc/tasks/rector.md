@@ -18,7 +18,6 @@ grumphp:
             triggered_by: ['php']
             ignore_patterns: []
             clear_cache: true
-            no_progress_bar: true
             no_diffs: false
 ```
 
@@ -49,12 +48,6 @@ configuration.
 *Default: true*
 
 With this parameter you can run Rector without using the cache.
-
-**no_progress_bar**
-
-*Default: true*
-
-With this parameter you can run Rector without showing the progress bar.
 
 **no_diffs**
 

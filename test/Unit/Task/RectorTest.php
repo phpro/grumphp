@@ -40,7 +40,6 @@ class RectorTest extends AbstractExternalTaskTestCase
                 'triggered_by' => ['php'],
                 'ignore_patterns' => [],
                 'clear_cache' => true,
-                'no_progress_bar' => true,
                 'no_diffs' => false,
             ]
         ];
@@ -120,8 +119,8 @@ class RectorTest extends AbstractExternalTaskTestCase
             [
                 'process',
                 '--dry-run',
-                '--clear-cache',
                 '--no-progress-bar',
+                '--clear-cache',
             ]
         ];
         yield 'config' => [
@@ -133,9 +132,9 @@ class RectorTest extends AbstractExternalTaskTestCase
             [
                 'process',
                 '--dry-run',
+                '--no-progress-bar',
                 '--config=rector-config.php',
                 '--clear-cache',
-                '--no-progress-bar',
             ]
         ];
         yield 'no-clear-cache' => [
@@ -150,18 +149,6 @@ class RectorTest extends AbstractExternalTaskTestCase
                 '--no-progress-bar',
             ]
         ];
-        yield 'progress-bar' => [
-            [
-                'no_progress_bar' => false,
-            ],
-            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
-            'rector',
-            [
-                'process',
-                '--dry-run',
-                '--clear-cache',
-            ]
-        ];
         yield 'no-diffs' => [
             [
                 'no_diffs' => true,
@@ -171,8 +158,8 @@ class RectorTest extends AbstractExternalTaskTestCase
             [
                 'process',
                 '--dry-run',
-                '--clear-cache',
                 '--no-progress-bar',
+                '--clear-cache',
                 '--no-diffs'
             ]
         ];
