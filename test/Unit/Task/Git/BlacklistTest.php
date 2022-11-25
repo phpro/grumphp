@@ -40,7 +40,8 @@ class BlacklistTest extends AbstractExternalTaskTestCase
                 'whitelist_patterns' => [],
                 'triggered_by' => ['php'],
                 'regexp_type' => 'G',
-                'match_word' => false
+                'match_word' => false,
+                'ignore_patterns' => []
             ]
         ];
     }
@@ -130,6 +131,13 @@ class BlacklistTest extends AbstractExternalTaskTestCase
                 'keywords' => [],
             ],
             $this->mockContext(RunContext::class, ['file.php']),
+            function () {}
+        ];
+        yield 'no-files-after-ignore-patterns' => [
+            [
+                'ignore_patterns' => ['test/'],
+            ],
+            $this->mockContext(RunContext::class, ['test/file.php']),
             function () {}
         ];
     }

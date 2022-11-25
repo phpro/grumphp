@@ -120,10 +120,7 @@ class Stylelint extends AbstractExternalTask
         );
         $arguments->addOptionalIntegerArgument('--max-warnings=%d', $config['max_warnings']);
         $arguments->addOptionalArgument('--output-file=%s', $config['output_file']);
-
-        if ($context instanceof GitPreCommitContext) {
-            $arguments->addFiles($files);
-        }
+        $arguments->addFiles($files);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();

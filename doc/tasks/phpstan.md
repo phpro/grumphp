@@ -40,7 +40,7 @@ With this parameter you can specify the path your project's configuration file.
 
 *Default: null*
 
-With this parameter you can set the level of rule options - the higher the stricter.
+With this parameter you can set the level of rule options - the higher, the stricter.
 You must either specify a level in GrumPHP or inside the `phpstan.neon` file.
 
 **force_patterns**

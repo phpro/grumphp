@@ -32,7 +32,7 @@ but this is surely NOT recommended!
 *Default: [js, jsx, coffee, ts, less, sass, scss]*
 
 This option will specify which file extensions will trigger the NPM script.
-By default NPM script will be triggered by altering any file.
+By default, NPM script will be triggered by altering any file.
 You can overwrite this option to whatever file you want to use!
 
 
@@ -52,4 +52,4 @@ This option will append 'run' to the npm command to make it possible to run cust
 
 *Default: false*
 
-This option will append '--silent' to the npm script to supress `npm ERR!` messages from showing.
+This option will append '--silent' to the npm script to suppress `npm ERR!` messages from showing.

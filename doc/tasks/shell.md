@@ -33,7 +33,7 @@ grumphp:
                - ["-c", "./bin/command arg1 arg2"]
 ```
 
-*Note:* When using the `-c` option, the next argument should contain the full executable with all parameters. Be carefull: quotes will be escaped!
+*Note:* When using the `-c` option, the next argument should contain the full executable with all parameters. Be careful: quotes will be escaped!
 
 
 **triggered_by**
@@ -41,5 +41,5 @@ grumphp:
 *Default: [php]*
 
 This option will specify which file extensions will trigger the shell tasks.
-By default Shell will be triggered by altering a PHP file. 
+By default, Shell will be triggered by altering a PHP file. 
 You can overwrite this option to whatever file you want to use!

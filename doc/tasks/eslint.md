@@ -5,7 +5,7 @@
 ## NPM
 If you'd like to install it globally:
 ```bash
-npm -g eslint
+npm install -g eslint
 ```
 
 If you'd like install it as a dev dependency of your project:
@@ -33,6 +33,7 @@ grumphp:
             whitelist_patterns:
                 - /^resources\/js\/(.*)/
             config: .eslintrc.json
+            ignore_path: .eslintignore
             debug: false
             format: ~
             max_warnings: ~
@@ -72,6 +73,12 @@ whitelist_patterns:
 
 The path to your eslint's configuration file. Not necessary if using a standard eslintrc name, eg. .eslintrc.json, .eslint.js, or .eslint.yml
 
+**ignore_path**
+
+*Default: null*
+
+The path to your eslint's ignore file ([eslint.org](https://eslint.org/docs/user-guide/configuring/ignoring-code#using-an-alternate-file)). Not necessary if using standard .eslintignore name.
+
 **debug**
 
 *Default: false*
@@ -104,4 +111,4 @@ Report errors only (no warnings). [eslint.org](https://eslint.org/docs/user-guid
 
 **other settings**
 
-Any other eslint settings (such as rules, env, ignore patterns, etc) should be able to be set through an [eslint config file](https://eslint.org/docs/user-guide/configuring) (instructions to generate a config file at top of document).
+Any other eslint settings (such as rules, env, ignore patterns, etc.) should be able to be set through an [eslint config file](https://eslint.org/docs/user-guide/configuring) (instructions to generate a config file at top of document).

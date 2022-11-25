@@ -54,7 +54,7 @@ You will see following message in the composer logs:
 *Watch out! GrumPHP is sniffing your commits!*
 
 GrumPHP will never push you into using a specific task. You can choose the tasks that fit your needs, and activate or
-deactivate any task in no time! See the `suggest` section in [composer.json](https://github.com/phpro/grumphp/blob/master/composer.json#L37).
+deactivate any task in no time! See the `suggest` section in [composer.json](https://github.com/phpro/grumphp/blob/master/composer.json#L50).
 
 Note: GrumPHP will overwrite existing hooks unless you run `composer install` with `--no-plugins` or `--no-scripts`.
 We do create a backup of your git hook, but it's best to make sure you also have a backup of your custom hooks before you try to install GrumPHP.

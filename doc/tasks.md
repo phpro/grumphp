@@ -51,7 +51,8 @@ grumphp:
         phpunitbridge: ~
         phpversion: ~
         progpilot: ~
-        psalm: ~    
+        psalm: ~   
+        rector: ~
         robo: ~
         securitychecker_enlightn: ~
         securitychecker_local: ~
@@ -65,7 +66,7 @@ grumphp:
         yamllint: ~
 ```
 
-Every task has it's own default configuration. It is possible to overwrite the parameters per task.
+Every task has its own default configuration. It is possible to overwrite the parameters per task.
 
 ## Tasks
 
@@ -100,6 +101,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Phan](tasks/phan.md)
 - [Phing](tasks/phing.md)
 - [Php7cc](tasks/php7cc.md)
+- [PhpArkitect](tasks/phparkitect.md)
 - [PhpCpd](tasks/phpcpd.md)
 - [Phpcs](tasks/phpcs.md)
 - [PHP-CS-Fixer](tasks/phpcsfixer.md)
@@ -114,6 +116,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [PhpVersion](tasks/phpversion.md)
 - [Progpilot](tasks/progpilot.md)
 - [Psalm](tasks/psalm.md)
+- [Rector](tasks/rector.md)
 - [Robo](tasks/robo.md)
 - [Security Checker](tasks/securitychecker.md)
   - [Enlightn](tasks/securitychecker/enlightn.md)
@@ -139,6 +142,7 @@ grumphp:
         anytask:
             metadata:
                 blocking: true
+                enabled: true
                 label: null
                 priority: 0
                 task: null
@@ -149,15 +153,23 @@ grumphp:
 *Default: true*
 
 This option can be used to make a failing task non-blocking.
-By default all tasks will be marked as blocking.
+By default, all tasks will be marked as blocking.
 When a task is non-blocking, the errors will be displayed but the tests will pass.
+
+**enabled**
+
+*Default: true*
+
+This option can be used to disable task execution.
+By default all tasks will be enabled.
+This makes it possible to conditionally run a task by setting parameters or changing the value through an extension.
 
 **label**
 
 *Default: null*
 
 This option can be used to display a label instead of the task name whilst running GrumPHP.
-By default the task name will be displayed.
+By default, the task name will be displayed.
 
 **priority**
 

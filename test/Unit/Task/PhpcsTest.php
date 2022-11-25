@@ -84,7 +84,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                     return 'nope';
                 });
             },
-            'nope'.PHP_EOL.'Info: phpcbf could not be found. Please consider to install it for auto-fixing'
+            'nope'.PHP_EOL.'Info: phpcbf could not be found. Please consider installing it for auto-fixing'
         ];
         yield 'exitCode1WithoutFixerBecauseOfNoFiles' => [
             [],

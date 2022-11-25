@@ -5,7 +5,7 @@
 ## NPM
 If you'd like to install it globally:
 ```bash
-npm -g stylelint
+npm install -g stylelint
 ```
 
 If you'd like install it as a dev dependency of your project:

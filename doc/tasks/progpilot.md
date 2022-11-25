@@ -36,5 +36,5 @@ If not or yml file format is invalid default configuration of progpilot will be 
 *Default: [php]*
 
 This option will specify which file extensions will trigger the Progpilot task.
-By default Progpilot will be triggered by altering a PHP file.
+By default, Progpilot will be triggered by altering a PHP file.
  

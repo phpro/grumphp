@@ -9,7 +9,6 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 
 final class ContainerBuilder
 {
@@ -26,9 +25,7 @@ final class ContainerBuilder
         $container->addCompilerPass(new Compiler\PhpParserCompilerPass());
         $container->addCompilerPass(new Compiler\TaskCompilerPass());
         $container->addCompilerPass(new Compiler\TestSuiteCompilerPass());
-        $container->addCompilerPass(
-            new RegisterListenersPass('event_dispatcher', 'grumphp.event_listener', 'grumphp.event_subscriber')
-        );
+        $container->addCompilerPass(Compiler\RegisterListenersPass::create());
         $container->addCompilerPass(new AddConsoleCommandPass());
 
         // Load basic service file + custom user configuration

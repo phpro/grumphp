@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 namespace GrumPHP\Locator {
-    function getcwd() {
+    function getcwd(): string {
         return $GLOBALS['__current_workspace'] ?? \getcwd();
     }
 }

@@ -43,6 +43,10 @@ class GitRepositorySpec extends ObjectBehavior
 
     public function it_can_deal_with_errornous_throwing_runs(Process $process): void
     {
+        $process->getCommandLine()->willReturn('');
+        $process->getErrorOutput()->willReturn('');
+        $process->getOutput()->willReturn('');
+
         $this->tryToRunWithFallback(
             function () use ($process) {
                 throw new ProcessException($process->getWrappedObject());

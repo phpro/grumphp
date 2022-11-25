@@ -18,6 +18,7 @@ grumphp:
             lockfile: ./composer.lock
             format: ~
             run_always: false
+            no_dev: false
 ```
 
 **lockfile**
@@ -37,3 +38,9 @@ You can choose the format of the output. The available options are `ansi`, `json
 *Default: false*
 
 When this option is set to `false`, the task will only run when the `composer.lock` file has changed. If it is set to `true`, the `composer.lock` file will be checked on every commit.
+
+**no_dev**
+
+*Default: false*
+
+When this option is set to `true`, the task will skip packages under `require-dev`.

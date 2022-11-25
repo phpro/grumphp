@@ -30,6 +30,7 @@ grumphp:
 *Default: null*
 
 By default `.` (current folder) will be used.
+On precommit the path will not be used, changed files will be passed as arguments instead.
 You can specify an alternate location by changing this option. If the path doesn't exist or is not accessible an exception will be thrown.
 
 **severity**
@@ -60,4 +61,4 @@ This option will specify which file extensions will trigger this task.
 
 *Default: []*
 
-This option will specify which relative subfolders or files will be exclude to this task.
+This option will specify which relative subfolders or files will be excluded from this task.

@@ -42,7 +42,7 @@ With this parameter you can define which directory you want to run `phpmnd` in (
 *Default: []*
 
 This is a list of regex patterns that will filter files to validate. With this option you can skip files like tests. This option is used in relation with the parameter `triggered_by`.
-For exemple to validate only files in your `src/App/` and `src/AppBundle/` directories in a Symfony you can use 
+For example to validate only files in your `src/App/` and `src/AppBundle/` directories in a Symfony you can use 
 ```yml
 whitelist_patterns:
   - /^src\/App\/(.*)/
@@ -71,7 +71,7 @@ This parameter will allow you to exclude paths from the code analysis (must be r
 
 *Default: []*
 
-By default PHP Magic Number Detector analyses conditions, return statements and switch cases. This parameter lets you extend the code analysis.
+By default, PHP Magic Number Detector analyses conditions, return statements and switch cases. This parameter lets you extend the code analysis.
 
 * **argument**
 ```php
@@ -128,7 +128,7 @@ This parameter will exclude a list of comma separated functions from the code an
 
 *Default: []*
 
-This parameter will exclude numbers from the code analysis. By default PHP Magic Number Detector does not consider `0` and `1` to be magic numbers.
+This parameter will exclude numbers from the code analysis. By default, PHP Magic Number Detector does not consider `0` and `1` to be magic numbers.
 
 **ignore_strings**
 

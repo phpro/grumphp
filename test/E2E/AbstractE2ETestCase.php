@@ -123,6 +123,11 @@ abstract class AbstractE2ETestCase extends TestCase
                     '' => 'src/',
                 ],
             ],
+            'config' => [
+                'allow-plugins' => [
+                    'phpro/grumphp' => true,
+                ],
+            ],
         ]);
 
         return $composerFile;
@@ -192,6 +197,11 @@ abstract class AbstractE2ETestCase extends TestCase
             $grumphpFile,
             Yaml::dump([
                 'grumphp' => [
+                    // Don't run E2E tests in parallel.
+                    // This causes a deep nesting of parallel running tasks - which is causing some CI issues.
+                    'parallel' => [
+                        'enabled' => false,
+                    ],
                     'tasks' => []
                 ]
             ])
@@ -407,6 +417,7 @@ abstract class AbstractE2ETestCase extends TestCase
         $process->setTimeout(300);
 
         $process->run();
+
         if (!$process->isSuccessful()) {
             throw new \RuntimeException(
                 'Could not '.$action.'! '.$process->getOutput().PHP_EOL.$process->getErrorOutput()
@@ -472,8 +483,9 @@ abstract class AbstractE2ETestCase extends TestCase
             ->in($this->rootDir)
             ->path('.git');
 
+        /** @var \SplFileInfo $gitDir */
         foreach ($gitDirs as $gitDir) {
-            $this->filesystem->chmod($gitDir, 0777, 0000, true);
+            $this->filesystem->chmod($gitDir->getPathname(), 0777, 0000, true);
         }
     }
 

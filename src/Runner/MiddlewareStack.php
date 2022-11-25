@@ -7,9 +7,6 @@ namespace GrumPHP\Runner;
 use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Runner\Middleware\RunnerMiddlewareInterface;
 
-/**
- * @psalm-immutable
- */
 class MiddlewareStack
 {
     /**

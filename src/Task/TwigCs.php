@@ -50,7 +50,6 @@ class TwigCs extends AbstractExternalTask
         }
 
         $arguments = $this->processBuilder->createArgumentsForCommand('twigcs');
-        $arguments->add($config['path']);
 
         $arguments->addOptionalArgument('--severity=%s', $config['severity']);
         $arguments->addOptionalArgument('--display=%s', $config['display']);
@@ -58,8 +57,22 @@ class TwigCs extends AbstractExternalTask
         $arguments->addOptionalArgument('--ansi', true);
 
         // removes all NULL, FALSE and Empty Strings
-        $exclude = array_filter($config['exclude'], 'strlen');
+        $exclude = array_filter(
+            $config['exclude'],
+            /**
+             * @param mixed $exclude
+             */
+            static fn ($exclude): bool => $exclude && $exclude !== ''
+        );
         $arguments->addArgumentArray('--exclude=%s', $exclude);
+
+        if ($context instanceof GitPreCommitContext) {
+            $arguments->addFiles($files);
+        }
+
+        if ($context instanceof RunContext) {
+            $arguments->add($config['path']);
+        }
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();

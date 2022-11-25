@@ -27,7 +27,7 @@ class AbstractVisitor extends NodeVisitorAbstract implements ContextAwareVisitor
     protected function addError(string $message, int $line = -1, string $type = ParseError::TYPE_ERROR): void
     {
         $errors = $this->context->getErrors();
-        $fileName = $this->context->getFile()->getPath();
+        $fileName = $this->context->getFile()->getPathname();
         $errors->add(new PhpParserError($type, $message, $fileName, $line));
     }
 }

@@ -16,6 +16,7 @@ grumphp:
             triggered_by: ['php']
             regexp_type: G
             match_word: false
+            ignore_patterns: []
 ```
 
 **keywords**
@@ -42,7 +43,7 @@ whitelist_patterns:
 *Default: [php]*
 
 This option will specify which file extensions will trigger the git blacklist task.
-By default git blacklist will be triggered by altering a php file. 
+By default, git blacklist will be triggered by altering a php file. 
 You can overwrite this option to whatever filetype you want to validate!
 
 **regexp_type**
@@ -60,3 +61,9 @@ This option allows you to choose how the keywords is found.
 For instance let's say you have a keyword looking like `"dd("` by default this task would also find any
 text before or after the keyword meaning this: `function add($someTask)` would still be considered invalid.
 This configuration option allows you to get around that issue.
+
+**ignore_patterns**
+
+*Default: []*
+
+This is a list of patterns that will be ignored by the blacklist finder. With this option you can skip files like test fixtures. Leave this option blank to run the finder for all files defined in the whitelist_patterns and or triggered_by extensions.

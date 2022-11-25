@@ -38,7 +38,7 @@ class GuessedPathsLocator
 
     public function locate(?string $cliConfigFile): GuessedPaths
     {
-        $workingDir = getcwd();
+        $workingDir = (string) getcwd();
         $cliConfigFile = $this->makeOptionalPathAbsolute($workingDir, $cliConfigFile);
         $cliConfigPath = $cliConfigFile ? dirname($cliConfigFile) : null;
         $projectDirEnv = $this->makeOptionalPathAbsolute($workingDir, (string) ($_SERVER['GRUMPHP_PROJECT_DIR'] ?? ''));
@@ -55,13 +55,13 @@ class GuessedPathsLocator
         );
 
         $composerFilePathname = $this->filesystem->guessFile(
-            array_filter([
+            [
                 $this->makeOptionalPathAbsolute($workingDir, (string) ($_SERVER['GRUMPHP_COMPOSER_DIR'] ?? '')),
                 $cliConfigPath,
                 $projectDirEnv,
                 $workingDir,
                 $gitWorkingDir
-            ]),
+            ],
             [
                 'composer.json'
             ]
@@ -74,13 +74,13 @@ class GuessedPathsLocator
                 : []
         );
 
-        $binDir = $this->filesystem->guessPath(array_filter([
+        $binDir = $this->filesystem->guessPath([
             $this->makeOptionalPathAbsolute($workingDir, (string) ($_SERVER['GRUMPHP_BIN_DIR'] ?? '')),
             $this->makeOptionalPathAbsolute(
                 $composerFilePath,
                 $this->ensureOptionalArgumentWithValidSlashes($composerFile->getBinDir())
             )
-        ]));
+        ]);
 
         $composerConfigDefaultPath = $this->makeOptionalPathAbsolute(
             $composerFilePath,
@@ -97,14 +97,14 @@ class GuessedPathsLocator
         ]);
 
         $defaultConfigFile = $this->filesystem->guessFile(
-            array_filter([
+            [
                 $cliConfigFile,
                 $cliConfigPath,
                 $composerConfigDefaultPath,
                 $projectDir,
                 $workingDir,
                 $gitWorkingDir,
-            ]),
+            ],
             [
                 'grumphp.yml',
                 'grumphp.yaml',
@@ -145,7 +145,7 @@ class GuessedPathsLocator
     /**
      * The git locator fails when no git dir can be found.
      * However : that might degrade the user experience when just running the info commands on the cli tool.
-     * Gitonomy will detect invalid git dirs anyways. So it is ok to fall back to e.g. the current working dir.
+     * Gitonomy will detect invalid git dirs anyway. So it is ok to fall back to e.g. the current working dir.
      */
     private function safelyLocateGitWorkingDir(string $fallbackDir): string
     {

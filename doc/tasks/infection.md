@@ -20,6 +20,8 @@ grumphp:
             threads: ~
             test_framework: ~
             only_covered: false
+            show_mutations: false
+            verbose: false
             configuration: ~
             min_msi: ~
             min_covered_msi: ~
@@ -42,7 +44,7 @@ to failing tests which give many false-positives results.
 
 *Default: null*
 
-This is the name of a test framework to use. Currently Infection supports `PhpUnit` and `PhpSpec`.
+This is the name of a test framework to use. Currently, Infection supports `PhpUnit` and `PhpSpec`.
 
 
 **only_covered**
@@ -50,6 +52,20 @@ This is the name of a test framework to use. Currently Infection supports `PhpUn
 *Default: false*
 
 Run the mutation testing only for covered by tests files.
+
+
+**show_mutations**
+
+*Default: false*
+
+Show escaped (and non-covered in verbose mode) mutations to the console.
+
+
+**verbose**
+
+*Default: false*
+
+In verbose mode, non-covered escaped mutations will be shown in the console as well.
 
 
 **configuration**
@@ -94,5 +110,5 @@ With this option you can skip files like tests. Leave this option blank to run a
 *Default: [php]*
 
 This option will specify which file extensions will trigger the infection task.
-By default infection will be triggered by altering a php file. 
+By default, infection will be triggered by altering a php file. 
 You can overwrite this option to whatever file you want to use!

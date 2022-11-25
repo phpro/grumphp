@@ -11,6 +11,7 @@ class ParserContextSpec extends ObjectBehavior
 {
     function let(SplFileInfo $file, ParseErrorsCollection $errors)
     {
+        $file->beConstructedWith(['somefile']);
         $this->beConstructedWith($file, $errors);
     }
 

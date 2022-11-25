@@ -29,10 +29,11 @@ class ESLintTest extends AbstractExternalTaskTestCase
                 // Task config options
                 'bin' => null,
                 'triggered_by' => ['js', 'jsx', 'ts', 'tsx', 'vue'],
-                'whitelist_patterns' => null,
+                'whitelist_patterns' => [],
 
                 // ESLint native config options
                 'config' => null,
+                'ignore_path' => null,
                 'debug' => false,
                 'format' => null,
                 'max_warnings' => null,
@@ -133,6 +134,18 @@ class ESLintTest extends AbstractExternalTaskTestCase
                 'hello2.js',
             ]
         ];
+        yield 'ignore_path' => [
+            [
+                'ignore_path' => '.eslintignore',
+            ],
+            $this->mockContext(RunContext::class, ['hello.js', 'hello2.js']),
+            'eslint',
+            [
+                '--ignore-path=.eslintignore',
+                'hello.js',
+                'hello2.js',
+            ]
+        ];
         yield 'debug' => [
             [
                 'debug' => true,
@@ -193,5 +206,12 @@ class ESLintTest extends AbstractExternalTaskTestCase
                 'hello2.js',
             ]
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_triggers_deprecation_on_null() {
+        self::assertTrue(ESLint::getConfigurableOptions()->isDeprecated('whitelist_patterns'));
     }
 }

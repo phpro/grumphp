@@ -211,6 +211,13 @@ services:
         tags:
             - {name: grumphp.task, task: php7cc}
 
+    GrumPHP\Task\PhpArkitect:
+        arguments:
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, task: phparkitect}
+
     GrumPHP\Task\PhpCpd:
         arguments:
           - '@process_builder'
@@ -307,6 +314,13 @@ services:
             - '@formatter.raw_process'
         tags:
             - {name: grumphp.task, task: psalm}
+
+    GrumPHP\Task\Rector:
+        arguments:
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - { name: grumphp.task, task: rector }
 
     GrumPHP\Task\Robo:
         arguments:

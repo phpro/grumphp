@@ -92,7 +92,6 @@ class PhpMnd extends AbstractExternalTask
         $arguments->addOptionalCommaSeparatedArgument('--ignore-strings=%s', $config['ignore_strings']);
         $arguments->addOptionalArgument('--strings', $config['strings']);
         $arguments->addOptionalCommaSeparatedArgument('--suffixes=%s', $config['triggered_by']);
-        $arguments->add('--non-zero-exit-on-violation');
         $arguments->add($config['directory']);
 
         $process = $this->processBuilder->buildProcess($arguments);

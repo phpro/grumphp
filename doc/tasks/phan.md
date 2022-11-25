@@ -36,7 +36,7 @@ This means that `.phan/config.php` is automatically loaded if the file exists in
 
 *Default: text*
 
-This option sets the output mode. Valid outpot modes are 'text', 'json', 'csv', 'codeclimate', 'checkstyle', or 'pylint'.
+This option sets the output mode. Valid output modes are 'text', 'json', 'csv', 'codeclimate', 'checkstyle', or 'pylint'.
 This option is set to `text` by default.
 
 **output**
@@ -51,5 +51,5 @@ This option is set to `null` by default.
 *Default: [php]*
 
 This option will specify which file extensions will trigger the phan task.
-By default Phan will be triggered by altering a PHP file.
+By default, Phan will be triggered by altering a PHP file.
 You can overwrite this option to whatever file you want to use!

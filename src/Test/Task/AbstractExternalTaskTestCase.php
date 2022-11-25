@@ -75,7 +75,7 @@ abstract class AbstractExternalTaskTestCase extends AbstractTaskTestCase
     }
 
     /**
-     * This function makes it possible to create a expected argument callback that takes the actual argument as input.
+     * This function makes it possible to create an expected argument callback that takes the actual argument as input.
      * This can be handy for validating a part of the argument.
      */
     private function resolveExpectedCliArgumentFromCallable(array $expectedArguments, array $actualArguments): array
@@ -112,7 +112,10 @@ abstract class AbstractExternalTaskTestCase extends AbstractTaskTestCase
 
         $process->setWorkingDirectory(Argument::any())->will(function ($arguments) {
             $this->getWorkingDirectory()->willReturn($arguments[0]);
+
+            return $this->reveal();
         });
+
 
         return $process->reveal();
     }
@@ -128,7 +131,7 @@ abstract class AbstractExternalTaskTestCase extends AbstractTaskTestCase
     protected function mockProcessWithStdIn(int $exitCode = 0, string $output = '', string $errors = '') {
         /** @var Process|ObjectProphecy $process */
         $process = $this->prophesize(Process::class);
-        $process->setInput(Argument::type(InputStream::class))->shouldBeCalled();
+        $process->setInput(Argument::type(InputStream::class))->shouldBeCalled()->willReturn($process->reveal());
         $process->start()->shouldBeCalled();
         $process->wait()->shouldBeCalled()->willReturn($exitCode);
         $process->isSuccessful()->willReturn($exitCode === 0);

@@ -72,8 +72,9 @@ A list of the supported variables:
             EXEC_GRUMPHP_COMMAND: 'lando php'
             EXEC_GRUMPHP_COMMAND: 'fin exec php'
             EXEC_GRUMPHP_COMMAND: ['php', '-c /custom/config.ini']
-            EXEC_GRUMPHP_COMMAND: ['docker-compose', 'run', '--rm', '--no-deps', 'php']
+            EXEC_GRUMPHP_COMMAND: ['docker-compose', 'run', '-T', '--rm', '--no-deps', 'php']
             EXEC_GRUMPHP_COMMAND: 'docker run --rm -it -v $(pwd):/grumphp -w /grumphp webdevops/php:alpine'
+            EXEC_GRUMPHP_COMMAND: 'ddev exec php'
     ```
 -  `ENV` : Specify environment variables that will be placed in the git hook file. (_default_ `{}`)
 
@@ -92,7 +93,7 @@ A list of the supported variables:
 
 The added environment variables will also be presented to the tasks that GrumPHP executes.
 Note that `symfony/process` only passes string values.
-If you want to use integers, you need do wrap the value in quotes:
+If you want to use integers, you need to wrap the value in quotes:
 
 ```yaml
 grumphp:
@@ -106,7 +107,7 @@ grumphp:
 *Default: false*
 
 This parameter will tell GrumPHP to stop running tasks when one of the tasks results in an error.
-By default GrumPHP will continue running the configured tasks.
+By default, GrumPHP will continue running the configured tasks.
 
 **ignore_unstaged_changes**
 
@@ -129,7 +130,7 @@ Hides the tip describing how to circumvent the Git commit hook and bypass GrumPH
 
 GrumPHP uses the Symfony Process component to run external tasks.
 The component will trigger a timeout after 60 seconds by default.
-If you've got tools that run more then 60 seconds, you can increase this parameter.
+If you've got tools that run more than 60 seconds, you can increase this parameter.
 It is also possible to disable the timeout by setting the value to `null`.
 When receiving a `Symfony\Component\Process\Exception\ProcessTimedOutException` during the execution of GrumPHP, you probably need to increment this setting.
 
@@ -160,7 +161,7 @@ Visit https://docs.example.com
 *Default: {failed: grumphp-grumpy.txt, succeeded: grumphp-happy.txt}*
 
 This parameter will tell GrumPHP where it can locate ascii images used in pre-commit hook.
-Currently there are only three images `failed` and `succeeded`. If path is not specified default image from
+Currently, there are only three images `failed` and `succeeded`. If path is not specified default image from
 `resources/ascii/` folder are used.
 
 You may also specify lists of ascii images, and GrumPHP will choose a random one
@@ -285,7 +286,7 @@ grumphp:
 
 *Default: {}*
 
-Besides loading variables from .env files, you can also specify them directly in your config file.
+Beside loading variables from .env files, you can also specify them directly in your config file.
 
 Example:
 

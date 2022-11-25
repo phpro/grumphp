@@ -26,6 +26,7 @@ class Metadata
             $resolver->setDefaults([
                 'priority' => 0,
                 'blocking' => true,
+                'enabled' => true,
                 'task' => '',
                 'label' => '',
             ]);
@@ -42,6 +43,11 @@ class Metadata
     public function isBlocking(): bool
     {
         return (bool) $this->metadata['blocking'];
+    }
+
+    public function isEnabled(): bool
+    {
+        return (bool) $this->metadata['enabled'];
     }
 
     public function task(): string

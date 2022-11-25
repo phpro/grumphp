@@ -35,6 +35,10 @@ class GitRepositoryDirLocator
 
         $gitRepositoryDir = $matches[1];
 
+        if ($this->filesystem->isAbsolutePath($gitRepositoryDir)) {
+            return $gitRepositoryDir;
+        }
+
         return $this->filesystem->buildPath(
             dirname($gitDir),
             $gitRepositoryDir
