@@ -120,7 +120,6 @@ class RectorTest extends AbstractExternalTaskTestCase
             [
                 'process',
                 '--dry-run',
-                '--ansi',
                 '--config=rector.php',
                 '--clear-cache',
                 '--no-progress-bar',
@@ -135,7 +134,6 @@ class RectorTest extends AbstractExternalTaskTestCase
             [
                 'process',
                 '--dry-run',
-                '--ansi',
                 '--config=rector-config.php',
                 '--clear-cache',
                 '--no-progress-bar',
@@ -150,7 +148,6 @@ class RectorTest extends AbstractExternalTaskTestCase
             [
                 'process',
                 '--dry-run',
-                '--ansi',
                 '--config=rector.php',
                 '--no-progress-bar',
             ]
@@ -164,7 +161,6 @@ class RectorTest extends AbstractExternalTaskTestCase
             [
                 'process',
                 '--dry-run',
-                '--ansi',
                 '--config=rector.php',
                 '--clear-cache',
             ]
@@ -178,7 +174,6 @@ class RectorTest extends AbstractExternalTaskTestCase
             [
                 'process',
                 '--dry-run',
-                '--ansi',
                 '--config=rector.php',
                 '--clear-cache',
                 '--no-progress-bar',

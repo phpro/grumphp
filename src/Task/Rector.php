@@ -58,7 +58,6 @@ class Rector extends AbstractExternalTask
         $arguments = $this->processBuilder->createArgumentsForCommand('rector');
         $arguments->add('process');
         $arguments->add('--dry-run');
-        $arguments->add('--ansi');
 
         $arguments->addOptionalArgument('--config=%s', $config['config']);
         $arguments->addOptionalArgument('--clear-cache', $config['clear_cache']);
