@@ -74,7 +74,6 @@ class Rector extends AbstractExternalTask
             return FixableProcessResultProvider::provide(
                 TaskResult::createFailed($this, $context, $this->formatter->format($process)),
                 function () use ($arguments): Process {
-                    $arguments->add('--clear-cache');
                     $arguments->removeElement('--dry-run');
 
                     return $this->processBuilder->buildProcess($arguments);
