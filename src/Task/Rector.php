@@ -22,17 +22,17 @@ class Rector extends AbstractExternalTask
             'config' => 'rector.php',
             'triggered_by' => ['php'],
             'ignore_patterns' => [],
-            'clear-cache' => true,
-            'no-progress-bar' => true,
-            'no-diffs' => false,
+            'clear_cache' => true,
+            'no_progress_bar' => true,
+            'no_diffs' => false,
         ]);
 
         $resolver->addAllowedTypes('config', ['null', 'string']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
         $resolver->addAllowedTypes('ignore_patterns', ['array']);
-        $resolver->addAllowedTypes('clear-cache', ['bool']);
-        $resolver->addAllowedTypes('no-progress-bar', ['bool']);
-        $resolver->addAllowedTypes('no-diffs', ['bool']);
+        $resolver->addAllowedTypes('clear_cache', ['bool']);
+        $resolver->addAllowedTypes('no_progress_bar', ['bool']);
+        $resolver->addAllowedTypes('no_diffs', ['bool']);
 
         return $resolver;
     }
@@ -61,9 +61,9 @@ class Rector extends AbstractExternalTask
         $arguments->add('--ansi');
 
         $arguments->addOptionalArgument('--config=%s', $config['config']);
-        $arguments->addOptionalArgument('--clear-cache', $config['clear-cache']);
-        $arguments->addOptionalArgument('--no-progress-bar', $config['no-progress-bar']);
-        $arguments->addOptionalArgument('--no-diffs', $config['no-diffs']);
+        $arguments->addOptionalArgument('--clear-cache', $config['clear_cache']);
+        $arguments->addOptionalArgument('--no-progress-bar', $config['no_progress_bar']);
+        $arguments->addOptionalArgument('--no-diffs', $config['no_diffs']);
 
         if ($context instanceof GitPreCommitContext) {
             $arguments->addFiles($files);

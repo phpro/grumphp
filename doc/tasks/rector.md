@@ -17,9 +17,9 @@ grumphp:
             config: rector.php
             triggered_by: ['php']
             ignore_patterns: []
-            clear-cache: true
-            no-progress-bar: true
-            no-diffs: false
+            clear_cache: true
+            no_progress_bar: true
+            no_diffs: false
 ```
 
 **config**
@@ -44,19 +44,19 @@ tests. Leave this option blank to run Rector for every php file/directory specif
 configuration.
 
 
-**clear-cache**
+**clear_cache**
 
 *Default: true*
 
 With this parameter you can run Rector without using the cache.
 
-**no-progress-bar**
+**no_progress_bar**
 
 *Default: true*
 
 With this parameter you can run Rector without showing the progress bar.
 
-**no-diffs**
+**no_diffs**
 
 *Default: false*
 
