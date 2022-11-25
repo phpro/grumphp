@@ -51,7 +51,8 @@ grumphp:
         phpunitbridge: ~
         phpversion: ~
         progpilot: ~
-        psalm: ~    
+        psalm: ~   
+        rector: ~
         robo: ~
         securitychecker_enlightn: ~
         securitychecker_local: ~
@@ -115,6 +116,7 @@ Every task has its own default configuration. It is possible to overwrite the pa
 - [PhpVersion](tasks/phpversion.md)
 - [Progpilot](tasks/progpilot.md)
 - [Psalm](tasks/psalm.md)
+- [Rector](tasks/rector.md)
 - [Robo](tasks/robo.md)
 - [Security Checker](tasks/securitychecker.md)
   - [Enlightn](tasks/securitychecker/enlightn.md)

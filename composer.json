@@ -75,6 +75,7 @@
         "phpstan/phpstan": "Lets GrumPHP discover bugs in your code without running it.",
         "phpunit/phpunit": "Lets GrumPHP run your unit tests.",
         "povils/phpmnd": "Lets GrumPHP help you detect magic numbers in PHP code.",
+        "rectorphp/rector ": "Lets GrumPHP instantly upgrade and automatically refactor your PHP code.",
         "roave/security-advisories": "Lets GrumPHP be sure that there are no known security issues.",
         "sebastian/phpcpd": "Lets GrumPHP find duplicated code.",
         "squizlabs/php_codesniffer": "Lets GrumPHP sniff on your code.",
