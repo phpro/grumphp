@@ -68,6 +68,7 @@ class FileSize implements TaskInterface
         $maxSize = $config['max_size'];
         $files = $context->getFiles()
             ->ignoreSymlinks()
+            ->ignoreDeleted()
             ->notPaths($config['ignore_patterns'])
             ->size(sprintf('>%s', $maxSize));
 
