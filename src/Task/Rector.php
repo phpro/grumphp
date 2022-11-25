@@ -56,6 +56,7 @@ class Rector extends AbstractExternalTask
         $arguments = $this->processBuilder->createArgumentsForCommand('rector');
         $arguments->add('process');
         $arguments->add('--dry-run');
+        $arguments->add('--ansi');
         $arguments->add('--no-progress-bar');
 
         $arguments->addOptionalArgument('--config=%s', $config['config']);
