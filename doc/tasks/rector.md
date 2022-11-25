@@ -14,7 +14,7 @@ composer require --dev rectorphp/rector
 grumphp:
     tasks:
         rector:
-            config: rector.php
+            config: null
             triggered_by: ['php']
             ignore_patterns: []
             clear_cache: true
@@ -24,9 +24,9 @@ grumphp:
 
 **config**
 
-*Default: rector.php*
+*Default: null*
 
-With this parameter you can specify the path your project's configuration file.
+With this parameter you can specify the path your project's configuration file. When 'null' rector will run with the default file: rector.php
 
 **triggered_by**
 

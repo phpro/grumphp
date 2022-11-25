@@ -19,7 +19,7 @@ class Rector extends AbstractExternalTask
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'config' => 'rector.php',
+            'config' => null,
             'triggered_by' => ['php'],
             'ignore_patterns' => [],
             'clear_cache' => true,
