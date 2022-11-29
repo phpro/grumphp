@@ -5,7 +5,7 @@ It lives under the `rector` namespace and has following configurable parameters:
 
 ## Composer
 ```bash
-composer require --dev rectorphp/rector
+composer require --dev rector/rector
 ```
 
 ## Config
