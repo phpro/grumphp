@@ -42,6 +42,7 @@ class Phpcs extends AbstractExternalTask
             'report' => 'full',
             'report_width' => null,
             'exclude' => [],
+            'show_sniffs_error_path' => true
         ]);
 
         $resolver->addAllowedTypes('standard', ['array', 'null', 'string']);
@@ -57,6 +58,7 @@ class Phpcs extends AbstractExternalTask
         $resolver->addAllowedTypes('report', ['null', 'string']);
         $resolver->addAllowedTypes('report_width', ['null', 'int']);
         $resolver->addAllowedTypes('exclude', ['array']);
+        $resolver->addAllowedTypes('show_sniffs_error_path', ['bool']);
 
         return $resolver;
     }
@@ -153,6 +155,7 @@ class Phpcs extends AbstractExternalTask
         $arguments->addOptionalCommaSeparatedArgument('--sniffs=%s', $config['sniffs']);
         $arguments->addOptionalCommaSeparatedArgument('--ignore=%s', $config['ignore_patterns']);
         $arguments->addOptionalCommaSeparatedArgument('--exclude=%s', $config['exclude']);
+        $arguments->addOptionalArgument('-s', $config['show_sniffs_error_path']);
 
         return $arguments;
     }
