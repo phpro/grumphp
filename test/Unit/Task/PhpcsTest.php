@@ -49,6 +49,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 'report' => 'full',
                 'report_width' => null,
                 'exclude' => [],
+                'show_sniffs_error_path' => true
             ]
         ];
     }
@@ -160,6 +161,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
             [
                 '--extensions=php',
                 '--report=full',
+                '-s',
                 '--report-json',
                 $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
@@ -174,6 +176,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--standard=PSR1,PSR2',
                 '--extensions=php',
                 '--report=full',
+                '-s',
                 '--report-json',
                 $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
@@ -187,6 +190,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
             [
                 '--extensions=php,phtml',
                 '--report=full',
+                '-s',
                 '--report-json',
                 $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
@@ -201,6 +205,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--extensions=php',
                 '--tab-width=4',
                 '--report=full',
+                '-s',
                 '--report-json',
                 $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
@@ -215,6 +220,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--extensions=php',
                 '--encoding=UTF-8',
                 '--report=full',
+                '-s',
                 '--report-json',
                 $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
@@ -228,6 +234,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
             [
                 '--extensions=php',
                 '--report=small',
+                '-s',
                 '--report-json',
                 $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
@@ -242,6 +249,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--extensions=php',
                 '--report=full',
                 '--report-width=20',
+                '-s',
                 '--report-json',
                 $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
@@ -256,6 +264,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--extensions=php',
                 '--report=full',
                 '--severity=5',
+                '-s',
                 '--report-json',
                 $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
@@ -270,6 +279,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--extensions=php',
                 '--report=full',
                 '--error-severity=5',
+                '-s',
                 '--report-json',
                 $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
@@ -284,6 +294,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--extensions=php',
                 '--report=full',
                 '--warning-severity=5',
+                '-s',
                 '--report-json',
                 $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
@@ -298,6 +309,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--extensions=php',
                 '--report=full',
                 '--sniffs=sniff1,sniff2',
+                '-s',
                 '--report-json',
                 $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
@@ -312,6 +324,7 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--extensions=php',
                 '--report=full',
                 '--ignore=ignore1,ignore2',
+                '-s',
                 '--report-json',
                 $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
@@ -326,6 +339,20 @@ class PhpcsTest extends AbstractExternalTaskTestCase
                 '--extensions=php',
                 '--report=full',
                 '--exclude=exclude1,exclude2',
+                '-s',
+                '--report-json',
+                $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
+            ]
+        ];
+        yield 's' => [
+            [
+                'show_sniffs_error_path' => false
+            ],
+            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'phpcs',
+            [
+                '--extensions=php',
+                '--report=full',
                 '--report-json',
                 $this->expectFileList('hello.php'.PHP_EOL.'hello2.php'),
             ]
