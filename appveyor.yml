@@ -7,16 +7,17 @@ platform:
 
 #matrix:
 #  allow_failures:
-#    - php_version: 8.1
+#    - php_version: 8.2
 
 environment:
   matrix:
+# TODO : NOT AVAILABLE YET !
+#    - dependencies: highest
+#      php_version: 8.2
     - dependencies: highest
       php_version: 8.1
     - dependencies: highest
       php_version: 8.0
-    - dependencies: highest
-      php_version: 7.4
 
   project_directory: c:\projects\grumphp
   composer_directory: c:\tools\composer
@@ -71,6 +72,7 @@ install:
   - IF %dependencies%==highest composer update --prefer-dist --no-progress --no-scripts --no-suggest --profile
   - git config --global user.email "doesntmatter@dispostable.com"
   - git config --global user.name "GrumPHP"
+  - git config --global protocol.file.allow always
 
 test_script:
   - ps: cd $Env:project_directory

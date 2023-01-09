@@ -30,7 +30,7 @@ grumphp:
             sniffs: []
             triggered_by: [php]
             exclude: []
-            
+            show_sniffs_error_path: true
 ```
 
 **standard**
@@ -129,6 +129,12 @@ This is a list of extensions to be sniffed. This list is also passed to phpcs us
 *Default: []*
 
 A list of rules that should not be checked. Leave this option blank to run all configured rules for the selected standard.
+
+**show_sniffs_error_path**
+
+*Default: true*
+
+Displays the sniff that triggered the error, allowing you to more easily find the specific rules with their namespaces.
 
 ## Framework presets
 

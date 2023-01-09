@@ -63,7 +63,10 @@ class Configuration implements ConfigurationInterface
         $rootNode->children()->arrayNode('extensions')->scalarPrototype();
 
         // ascii
-        $ascii = $rootNode->children()->arrayNode('ascii')->addDefaultsIfNotSet();
+        $ascii = $rootNode->children()->arrayNode('ascii')->addDefaultsIfNotSet()->treatNullLike([
+            'failed' => null,
+            'succeeded' => null,
+        ]);
         $ascii->children()->variableNode('failed')->defaultValue('grumphp-grumpy.txt');
         $ascii->children()->variableNode('succeeded')->defaultValue('grumphp-happy.txt');
 

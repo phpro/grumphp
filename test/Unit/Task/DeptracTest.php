@@ -25,6 +25,7 @@ class DeptracTest extends AbstractExternalTaskTestCase
         yield 'defaults' => [
             [],
             [
+                'cache_file' => null,
                 'depfile' => null,
                 'formatter' => null,
                 'output' => null,
@@ -96,6 +97,17 @@ class DeptracTest extends AbstractExternalTaskTestCase
             'deptrac',
             [
                 'analyse',
+            ]
+        ];
+        yield 'cache-file' => [
+            [
+                'cache_file' => 'example.cache',
+            ],
+            $this->mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'deptrac',
+            [
+                'analyse',
+                '--cache-file=example.cache',
             ]
         ];
         yield 'formatter-graphviz' => [

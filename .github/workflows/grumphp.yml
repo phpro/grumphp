@@ -1,13 +1,16 @@
 name: GrumPHP
 
 on: [push, pull_request]
+permissions:
+  contents: read
+
 jobs:
     run:
         runs-on: ${{ matrix.operating-system }}
         strategy:
             matrix:
                 operating-system: [ubuntu-latest, macos-latest] #windows-latest currently not working
-                php-versions: ['7.4', '8.0', '8.1']
+                php-versions: ['8.0', '8.1', '8.2']
                 composer-options: ['', '--prefer-lowest']
                 composer-versions: ['composer:v2']
             fail-fast: false
@@ -30,20 +33,22 @@ jobs:
               id: composercache
               run: echo "::set-output name=dir::$(composer config cache-files-dir)"
             - name: Cache dependencies
-              uses: actions/cache@v2
+              uses: actions/cache@v3
               with:
                   path: ${{ steps.composercache.outputs.dir }}
                   key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
                   restore-keys: ${{ runner.os }}-composer-
             - name: Install dependencies
+              if: matrix.php-versions != '8.2'
               run: composer update --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }}
-#            - name: Install dependencies (Ignore platform)
-#              if: matrix.php-versions == '8.1'
-#              run: composer update --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }} --ignore-platform-req=php
+            - name: Install dependencies (Ignore platform)
+              if: matrix.php-versions == '8.2'
+              run: composer update --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }} --ignore-platform-req=php+
             - name: Set git variables
               run: |
                 git config --global user.email "you@example.com"
                 git config --global user.name "Your Name"
+                git config --global protocol.file.allow always
             - name: Run the tests on Windows
               if: runner.os == 'Windows'
               run: php vendor/bin/grumphp run --no-interaction --testsuite=windows
