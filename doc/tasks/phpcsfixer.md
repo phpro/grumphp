@@ -41,13 +41,13 @@ If not set, the default value is taken from config file (if it exists). By defau
 *Default: null*
 
 You can change the location of the cache file by changing this property.
-When no cache_file is set, the default file `.php_cs.cache` will be used.
+When no cache_file is set, the default file `.php-cs-fixer.cache` will be used.
 
 **config**
 
 *Default: null*
 
-By default, the `.php_cs` wil be used.
+By default, the `.php-cs-fixer.php` (local) or `.php-cs-fixer.dist.php` (to be distributed) will be used.
 You can specify an alternate location for this file by changing this option.
 
 **rules**
