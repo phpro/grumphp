@@ -15,22 +15,22 @@ The task lives under the `paratest` namespace and has following configurable par
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        paratest:
-            processes: ~
-            functional: ~
-            group: []
-            always_execute: false
-            phpunit: null
-            configuration: null
-            runner: null
-            coverage-clover: null
-            coverage-html: null
-            coverage-php: null
-            coverage-xml: null
-            log-junit: null
-            testsuite: null
-            verbose: false
+  tasks:
+    paratest:
+      processes: ~
+      functional: ~
+      group: []
+      always_execute: false
+      phpunit: null
+      configuration: null
+      runner: null
+      coverage-clover: null
+      coverage-html: null
+      coverage-php: null
+      coverage-xml: null
+      log-junit: null
+      testsuite: null
+      verbose: false
 ```
 
 **processes**
@@ -124,5 +124,3 @@ Filter which testsuite to run. Run multiple suits by separating them with ",". E
 *Default: false*
 
 Adds additional debugging information to the screen when running paratest.
-
-

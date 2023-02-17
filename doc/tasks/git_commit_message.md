@@ -6,21 +6,21 @@ For example: if you are working with JIRA, it is possible to add a pattern for t
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        git_commit_message:
-            allow_empty_message: false
-            enforce_capitalized_subject: true
-            enforce_no_subject_punctuations: false
-            enforce_no_subject_trailing_period: true
-            enforce_single_lined_subject: true
-            type_scope_conventions: []
-            max_body_width: 72
-            max_subject_width: 60
-            matchers:
-                Must contain JIRA issue number: /JIRA-\d+/
-            case_insensitive: true
-            multiline: true
-            additional_modifiers: ''
+  tasks:
+    git_commit_message:
+      allow_empty_message: false
+      enforce_capitalized_subject: true
+      enforce_no_subject_punctuations: false
+      enforce_no_subject_trailing_period: true
+      enforce_single_lined_subject: true
+      type_scope_conventions: []
+      max_body_width: 72
+      max_subject_width: 60
+      matchers:
+        Must contain JIRA issue number: /JIRA-\d+/
+      case_insensitive: true
+      multiline: true
+      additional_modifiers: ''
 ```
 
 **allow_empty_message**
@@ -183,5 +183,5 @@ type_scope_conventions:
   types: []
   scopes: ~
   subject_pattern: >-
-      ([a-zA-Zа-яА-Я0-9-_ #@'\/\"]+)
+    ([a-zA-Zа-яА-Я0-9-_ #@'\/\"]+)
 ```

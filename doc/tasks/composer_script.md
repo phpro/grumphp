@@ -6,11 +6,11 @@ It lives under the `composer_script` namespace and has following configurable pa
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        composer_script:
-            script: ~
-            triggered_by: [php, phtml]
-            working_directory: ~
+  tasks:
+    composer_script:
+      script: ~
+      triggered_by: [php, phtml]
+      working_directory: ~
 ```
 
 **script**

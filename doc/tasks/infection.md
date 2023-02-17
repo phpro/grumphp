@@ -15,19 +15,19 @@ It lives under the `infection` namespace and has following configurable paramete
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        infection:
-            threads: ~
-            test_framework: ~
-            only_covered: false
-            show_mutations: false
-            verbose: false
-            configuration: ~
-            min_msi: ~
-            min_covered_msi: ~
-            mutators: []
-            ignore_patterns: []
-            triggered_by: [php]
+  tasks:
+    infection:
+      threads: ~
+      test_framework: ~
+      only_covered: false
+      show_mutations: false
+      verbose: false
+      configuration: ~
+      min_msi: ~
+      min_covered_msi: ~
+      mutators: []
+      ignore_patterns: []
+      triggered_by: [php]
 ```
 
 **threads**

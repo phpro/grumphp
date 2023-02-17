@@ -12,16 +12,16 @@ composer require --dev phpstan/phpstan
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        phpstan:
-            autoload_file: ~
-            configuration: ~
-            level: null
-            force_patterns: []
-            ignore_patterns: []
-            triggered_by: ['php']
-            memory_limit: "-1"
-            use_grumphp_paths: true
+  tasks:
+    phpstan:
+      autoload_file: ~
+      configuration: ~
+      level: null
+      force_patterns: []
+      ignore_patterns: []
+      triggered_by: ['php']
+      memory_limit: "-1"
+      use_grumphp_paths: true
 ```
 
 **autoload_file**

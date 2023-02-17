@@ -15,12 +15,12 @@ The task lives under the `phpspec` namespace and has following configurable para
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        phpspec:
-            config_file: ~
-            format: ~
-            stop_on_failure: false
-            verbose: false
+  tasks:
+    phpspec:
+      config_file: ~
+      format: ~
+      stop_on_failure: false
+      verbose: false
 ```
 
 **config_file**

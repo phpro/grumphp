@@ -13,11 +13,11 @@ The task lives under the `securitychecker_symfony` namespace and has the followi
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        securitychecker_symfony:
-            lockfile: ./composer.lock
-            format: ~
-            run_always: false
+  tasks:
+    securitychecker_symfony:
+      lockfile: ./composer.lock
+      format: ~
+      run_always: false
 ```
 
 **lockfile**

@@ -72,33 +72,33 @@ You can specify a custom config filename and location in `composer.json` or in t
 ```yaml
 # grumphp.yml
 grumphp:
-    hooks_dir: ~
-    hooks_preset: local
-    git_hook_variables:
-         VAGRANT_HOST_DIR: .
-         VAGRANT_PROJECT_DIR: /var/www
-         EXEC_GRUMPHP_COMMAND: exec
-         ENV: {}
-    stop_on_failure: false
-    ignore_unstaged_changes: false
-    hide_circumvention_tip: false
-    process_timeout: 60
-    ascii:
-        failed: grumphp-grumpy.txt
-        succeeded: grumphp-happy.txt
-    parallel:
-        enabled: true
-        max_workers: 32
-    fixer:
-        enabled: true
-        fix_by_default: false
-    environment:
-        files: []
-        variables: {}
-        paths: []
-    tasks: {}
-    testsuites: []
-    extensions: []
+  hooks_dir: ~
+  hooks_preset: local
+  git_hook_variables:
+    VAGRANT_HOST_DIR: .
+    VAGRANT_PROJECT_DIR: /var/www
+    EXEC_GRUMPHP_COMMAND: exec
+    ENV: {}
+  stop_on_failure: false
+  ignore_unstaged_changes: false
+  hide_circumvention_tip: false
+  process_timeout: 60
+  ascii:
+    failed: grumphp-grumpy.txt
+    succeeded: grumphp-happy.txt
+  parallel:
+    enabled: true
+    max_workers: 32
+  fixer:
+    enabled: true
+    fix_by_default: false
+  environment:
+    files: []
+    variables: {}
+    paths: []
+  tasks: {}
+  testsuites: []
+  extensions: []
 ```
 
 Details of the configuration are broken down into the following sections.

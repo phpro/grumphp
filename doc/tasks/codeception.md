@@ -14,12 +14,12 @@ The task lives under the `codeception` namespace and has the following configura
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        codeception:
-            config_file: ~
-            fail_fast: false
-            suite: ~
-            test: ~
+  tasks:
+    codeception:
+      config_file: ~
+      fail_fast: false
+      suite: ~
+      test: ~
 ```
 
 

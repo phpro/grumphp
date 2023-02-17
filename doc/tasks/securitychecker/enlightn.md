@@ -15,10 +15,10 @@ The task lives under the `securitychecker_enlightn` namespace and has the follow
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        securitychecker_enlightn:
-            lockfile: ./composer.lock
-            run_always: false
+  tasks:
+    securitychecker_enlightn:
+      lockfile: ./composer.lock
+      run_always: false
 ```
 
 **lockfile**

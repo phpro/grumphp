@@ -15,13 +15,13 @@ The task lives under the `phpmd` namespace and has following configurable parame
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        phpmd:
-            whitelist_patterns: []
-            exclude: []
-            report_format: text
-            ruleset: ['cleancode', 'codesize', 'naming']
-            triggered_by: ['php']
+  tasks:
+    phpmd:
+      whitelist_patterns: []
+      exclude: []
+      report_format: text
+      ruleset: ['cleancode', 'codesize', 'naming']
+      triggered_by: ['php']
 ```
 
 **whitelist_patterns**
@@ -30,7 +30,7 @@ grumphp:
 
 This is a list of regex patterns that will filter files to validate. With this option you can skip files like tests. This option is used in relation with the parameter `triggered_by`.
 For example: whitelist files in `src/FolderA/` and `src/FolderB/` you can use 
-```yml
+```yaml
 whitelist_patterns:
   - /^src\/FolderA\/(.*)/
   - /^src\/FolderB\/(.*)/

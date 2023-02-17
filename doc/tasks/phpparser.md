@@ -16,12 +16,12 @@ The task lives under the `php_parser` namespace and has following configurable p
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        phpparser:
-            ignore_patterns: []
-            kind: php7
-            visitors: {}
-            triggered_by: [php]
+  tasks:
+    phpparser:
+      ignore_patterns: []
+      kind: php7
+      visitors: {}
+      triggered_by: [php]
 ```
 
 **ignore_patterns**
@@ -73,10 +73,10 @@ This visitor can be used to enforce `declare(strict_types=1)` in every PHP file.
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        phpparser:
-            visitors:
-                declare_strict_types: ~
+  tasks:
+    phpparser:
+      visitors:
+        declare_strict_types: ~
 ```
 
 This visitor is not configurable!
@@ -89,12 +89,12 @@ This visitor can be used to look for forbidden class method calls.
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        phpparser:
-            visitors:
-                forbidden_class_method_calls: 
-                    blacklist:
-                        - '$dumper->dump'
+  tasks:
+    phpparser:
+      visitors:
+        forbidden_class_method_calls:
+          blacklist:
+            - '$dumper->dump'
 ```
 
 **blacklist**
@@ -113,12 +113,12 @@ This visitor can be used to look for forbidden function calls.
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        phpparser:
-            visitors:
-                forbidden_function_calls: 
-                    blacklist: 
-                        - 'var_dump'
+  tasks:
+    phpparser:
+      visitors:
+        forbidden_function_calls:
+          blacklist:
+            - 'var_dump'
 ```
 
 **blacklist**
@@ -138,12 +138,12 @@ This visitor can be used to look for forbidden static method calls.
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        phpparser:
-            visitors:
-                forbidden_static_method_calls: 
-                    blacklist:
-                        - 'Dumper::dump'
+  tasks:
+    phpparser:
+      visitors:
+        forbidden_static_method_calls:
+          blacklist:
+            - 'Dumper::dump'
 ```
 
 **blacklist**
@@ -178,10 +178,10 @@ and
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        phpparser:
-            visitors:
-                never_use_else: ~ 
+  tasks:
+    phpparser:
+      visitors:
+        never_use_else: ~
 ```
 
 This visitor is not configurable!
@@ -195,10 +195,10 @@ An error will be added if an exit statement is found.
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        phpparser:
-            visitors:
-                no_exit_statements: ~ 
+  tasks:
+    phpparser:
+      visitors:
+        no_exit_statements: ~
 ```
 
 This visitor is not configurable!
@@ -224,11 +224,11 @@ Once you've written your visitor, you'll have to register it to the service cont
 
 ```yaml
 services:
-    grumphp.parser.php.visitor.your_visitor:
-      class: 'Your\Visitor\Class'
-      arguments: []
-      tags:
-        - {name: 'php_parser.visitor', alias: 'your_visitor'}
+  grumphp.parser.php.visitor.your_visitor:
+    class: 'Your\Visitor\Class'
+    arguments: []
+    tags:
+      - {name: 'php_parser.visitor', alias: 'your_visitor'}
 
 ```
 
@@ -236,13 +236,13 @@ Since we use the service container, you are able to inject the dependencies you 
 The `php_parser.visitor` tag will make your class available in GrumPHP.
 Tha alias `your_visitor` can now be set as a visitor in the phpparser task:
 
-```yml
+```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        phpparser:
-            visitors:
-                your_visitor: ~ 
+  tasks:
+    phpparser:
+      visitors:
+        your_visitor: ~
 ```
 
 ### Stateless visitors

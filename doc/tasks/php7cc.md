@@ -15,11 +15,11 @@ The task lives under the `php7cc` namespace and has following configurable param
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        php7cc:
-            exclude: []
-            level: ~
-            triggered_by: ['php']
+  tasks:
+    php7cc:
+      exclude: []
+      level: ~
+      triggered_by: ['php']
 ```
 
 **exclude**

@@ -6,10 +6,10 @@ It lives under the `gherkin` namespace and has following configurable parameters
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        gherkin:
-            directory: 'features'
-            align: ~
+  tasks:
+    gherkin:
+      directory: 'features'
+      align: ~
 ```
 
 **directory**

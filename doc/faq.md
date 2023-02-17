@@ -57,7 +57,7 @@ In some cases, you might get require conflicts between your project and GrumPHP 
 For example, Magento 2 has the following requirement for `symfony/console`
 
     "symfony/console": "~2.3, !=2.7.0"
-    
+
 On the other hand, grumPHP has this requirement
 
     "symfony/console": "~2.7|~3.0"

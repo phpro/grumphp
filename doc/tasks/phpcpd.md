@@ -15,14 +15,14 @@ The task lives under the `phpcpd` namespace and has following configurable param
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        phpcpd:
-            directory: ['.']
-            exclude: ['vendor']
-            fuzzy: false
-            min_lines: 5
-            min_tokens: 70
-            triggered_by: ['php']
+  tasks:
+    phpcpd:
+      directory: ['.']
+      exclude: ['vendor']
+      fuzzy: false
+      min_lines: 5
+      min_tokens: 70
+      triggered_by: ['php']
 ```
 
 **directory**

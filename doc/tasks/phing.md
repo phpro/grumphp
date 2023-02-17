@@ -15,11 +15,11 @@ The task lives under the `phing` namespace and has following configurable parame
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        phing:
-            build_file: ~
-            task: ~
-            triggered_by: [php]
+  tasks:
+    phing:
+      build_file: ~
+      task: ~
+      triggered_by: [php]
 ```
 
 **build_file**

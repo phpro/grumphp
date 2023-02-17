@@ -15,13 +15,13 @@ The task lives under the `behat` namespace and has following configurable parame
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        behat:
-            config: ~
-            format: ~
-            suite: ~
-            profile: ~
-            stop_on_failure: false
+  tasks:
+    behat:
+      config: ~
+      format: ~
+      suite: ~
+      profile: ~
+      stop_on_failure: false
 ```
 
 **config**

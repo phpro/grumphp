@@ -15,20 +15,20 @@ The task lives under the `phpmnd` namespace and has following configurable param
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        phpmnd:
-            directory: .
-            whitelist_patterns: []
-            exclude: []
-            exclude_name: []
-            exclude_path: []
-            extensions: []
-            hint: false
-            ignore_funcs: []
-            ignore_numbers: []
-            ignore_strings: []
-            strings: false
-            triggered_by: ['php']
+  tasks:
+    phpmnd:
+      directory: .
+      whitelist_patterns: []
+      exclude: []
+      exclude_name: []
+      exclude_path: []
+      extensions: []
+      hint: false
+      ignore_funcs: []
+      ignore_numbers: []
+      ignore_strings: []
+      strings: false
+      triggered_by: ['php']
 ```
 
 **directory**
@@ -43,7 +43,7 @@ With this parameter you can define which directory you want to run `phpmnd` in (
 
 This is a list of regex patterns that will filter files to validate. With this option you can skip files like tests. This option is used in relation with the parameter `triggered_by`.
 For example to validate only files in your `src/App/` and `src/AppBundle/` directories in a Symfony you can use 
-```yml
+```yaml
 whitelist_patterns:
   - /^src\/App\/(.*)/
   - /^src\/AppBundle\/(.*)/

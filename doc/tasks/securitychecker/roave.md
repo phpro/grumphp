@@ -16,11 +16,11 @@ The task lives under the `securitychecker_roave` namespace and has the following
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        securitychecker_roave:
-            jsonfile: ./composer.json
-            lockfile: ./composer.lock
-            run_always: false
+  tasks:
+    securitychecker_roave:
+      jsonfile: ./composer.json
+      lockfile: ./composer.lock
+      run_always: false
 ```
 
 **jsonfile**

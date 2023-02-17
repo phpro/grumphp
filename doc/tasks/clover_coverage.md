@@ -10,10 +10,10 @@ It lives under the `clover_coverage` namespace and has following configurable pa
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        clover_coverage:
-            clover_file: /tmp/clover.xml
-            level: 100
+  tasks:
+    clover_coverage:
+      clover_file: /tmp/clover.xml
+      level: 100
 ```
 
 **clover_file**

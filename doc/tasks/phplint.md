@@ -13,13 +13,13 @@ composer require --dev php-parallel-lint/php-parallel-lint
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        phplint:
-            exclude: []
-            jobs: ~
-            short_open_tag: false
-            ignore_patterns: []
-            triggered_by: ['php', 'phtml', 'php3', 'php4', 'php5']
+  tasks:
+    phplint:
+      exclude: []
+      jobs: ~
+      short_open_tag: false
+      ignore_patterns: []
+      triggered_by: ['php', 'phtml', 'php3', 'php4', 'php5']
 ```
 **exclude**
 

@@ -15,17 +15,17 @@ The task lives under the `phpcsfixer` namespace and has following configurable p
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        phpcsfixer:
-            allow_risky: ~
-            cache_file: ~
-            config: ~
-            rules: []
-            using_cache: ~
-            config_contains_finder: true
-            verbose: true
-            diff: false
-            triggered_by: ['php']
+  tasks:
+    phpcsfixer:
+      allow_risky: ~
+      cache_file: ~
+      config: ~
+      rules: []
+      using_cache: ~
+      config_contains_finder: true
+      verbose: true
+      diff: false
+      triggered_by: ['php']
 ```
 
 **allow_risky**

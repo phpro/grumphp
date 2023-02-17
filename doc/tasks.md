@@ -6,64 +6,64 @@ To activate a task, it is sufficient to add an empty task configuration:
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        ant: ~
-        atoum: ~
-        behat: ~
-        brunch: ~
-        clover_coverage: ~
-        codeception: ~
-        composer: ~
-        composer_normalize: ~
-        composer_require_checker: ~
-        composer_script: ~
-        deptrac: ~
-        doctrine_orm: ~
-        ecs: ~
-        eslint: ~
-        file_size: ~
-        gherkin: ~
-        git_blacklist: ~
-        git_branch_name: ~
-        git_commit_message: ~
-        grunt: ~
-        gulp: ~
-        infection: ~
-        jsonlint: ~
-        kahlan: ~
-        make: ~
-        npm_script: ~
-        paratest: ~
-        pest: ~
-        phan: ~        
-        phing: ~
-        php7cc: ~
-        phpcpd: ~
-        phpcs: ~
-        phpcsfixer: ~
-        phplint: ~
-        phpmd: ~
-        phpmnd: ~
-        phpparser: ~
-        phpspec: ~
-        phpstan: ~
-        phpunit: ~
-        phpunitbridge: ~
-        phpversion: ~
-        progpilot: ~
-        psalm: ~   
-        rector: ~
-        robo: ~
-        securitychecker_enlightn: ~
-        securitychecker_local: ~
-        securitychecker_roave: ~
-        securitychecker_symfony: ~
-        shell: ~
-        stylelint: ~
-        tester: ~
-        twigcs: ~
-        xmllint: ~
-        yamllint: ~
+  tasks:
+    ant: ~
+    atoum: ~
+    behat: ~
+    brunch: ~
+    clover_coverage: ~
+    codeception: ~
+    composer: ~
+    composer_normalize: ~
+    composer_require_checker: ~
+    composer_script: ~
+    deptrac: ~
+    doctrine_orm: ~
+    ecs: ~
+    eslint: ~
+    file_size: ~
+    gherkin: ~
+    git_blacklist: ~
+    git_branch_name: ~
+    git_commit_message: ~
+    grunt: ~
+    gulp: ~
+    infection: ~
+    jsonlint: ~
+    kahlan: ~
+    make: ~
+    npm_script: ~
+    paratest: ~
+    pest: ~
+    phan: ~
+    phing: ~
+    php7cc: ~
+    phpcpd: ~
+    phpcs: ~
+    phpcsfixer: ~
+    phplint: ~
+    phpmd: ~
+    phpmnd: ~
+    phpparser: ~
+    phpspec: ~
+    phpstan: ~
+    phpunit: ~
+    phpunitbridge: ~
+    phpversion: ~
+    progpilot: ~
+    psalm: ~
+    rector: ~
+    robo: ~
+    securitychecker_enlightn: ~
+    securitychecker_local: ~
+    securitychecker_roave: ~
+    securitychecker_symfony: ~
+    shell: ~
+    stylelint: ~
+    tester: ~
+    twigcs: ~
+    xmllint: ~
+    yamllint: ~
 ```
 
 Every task has its own default configuration. It is possible to overwrite the parameters per task.
@@ -138,14 +138,14 @@ For example:
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        anytask:
-            metadata:
-                blocking: true
-                enabled: true
-                label: null
-                priority: 0
-                task: null
+  tasks:
+    anytask:
+      metadata:
+        blocking: true
+        enabled: true
+        label: null
+        priority: 0
+        task: null
 ```
 
 **blocking**
@@ -214,16 +214,16 @@ interface TaskInterface
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        myConfigKey:
-            config1: config-value
+  tasks:
+    myConfigKey:
+      config1: config-value
 
 services:
-    My\Custom\Task:
-        arguments:
-          - '@some.required.dependency'
-        tags:
-          - {name: grumphp.task, task: defaultTaskName, priority: 0}
+  My\Custom\Task:
+    arguments:
+      - '@some.required.dependency'
+    tags:
+      - {name: grumphp.task, task: defaultTaskName, priority: 0}
 ```
 
 You now registered your custom task! Pretty cool right?!
@@ -248,14 +248,14 @@ Configuration of the additional task will look like this:
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        phpcsfixer2:
-            allow_risky: true
-            path_mode: intersection
-        phpcsfixer2_typo3:
-            allow_risky: true
-            config: .typo3.php_cs
-            path_mode: intersection       
-            metadata:
-                task: phpcsfixer2
+  tasks:
+    phpcsfixer:
+      allow_risky: true
+      path_mode: intersection
+    phpcsfixer_typo3:
+      allow_risky: true
+      config: .typo3.php-cs-fixer.php
+      path_mode: intersection
+      metadata:
+        task: phpcsfixer2
 ```

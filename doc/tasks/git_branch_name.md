@@ -8,15 +8,15 @@ pattern for the JIRA issue number.
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        git_branch_name:
-            whitelist:
-                - "/JIRA-\d+/"
-            blacklist:
-                - "develop"
-                - "master"
-            additional_modifiers: ''
-            allow_detached_head: true
+  tasks:
+    git_branch_name:
+      whitelist:
+        - "/JIRA-\d+/"
+      blacklist:
+        - "develop"
+        - "master"
+      additional_modifiers: ''
+      allow_detached_head: true
 ```
 
 

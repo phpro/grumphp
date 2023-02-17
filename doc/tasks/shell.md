@@ -6,10 +6,10 @@ It lives under the `shell` namespace and has following configurable parameters:
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        shell:
-            scripts: []
-            triggered_by: [php]
+  tasks:
+    shell:
+      scripts: []
+      triggered_by: [php]
 ```
 
 **scripts**
@@ -26,11 +26,11 @@ Configuration example:
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        shell:
-            scripts:
-               - script.sh
-               - ["-c", "./bin/command arg1 arg2"]
+  tasks:
+    shell:
+      scripts:
+        - script.sh
+        - ["-c", "./bin/command arg1 arg2"]
 ```
 
 *Note:* When using the `-c` option, the next argument should contain the full executable with all parameters. Be careful: quotes will be escaped!

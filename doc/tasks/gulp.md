@@ -6,11 +6,11 @@ It lives under the `gulp` namespace and has following configurable parameters:
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        gulp:
-            gulp_file: ~
-            task: ~
-            triggered_by: [js, jsx, coffee, ts, less, sass, scss]
+  tasks:
+    gulp:
+      gulp_file: ~
+      task: ~
+      triggered_by: [js, jsx, coffee, ts, less, sass, scss]
 ```
 
 **gulp_file**

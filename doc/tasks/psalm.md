@@ -17,16 +17,16 @@ composer require --dev psalm/phar
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        psalm:
-            config: psalm.xml
-            ignore_patterns: []
-            no_cache: false
-            report: ~ 
-            output_format: null
-            threads: 1
-            triggered_by: ['php']
-            show_info: false
+  tasks:
+    psalm:
+      config: psalm.xml
+      ignore_patterns: []
+      no_cache: false
+      report: ~
+      output_format: null
+      threads: 1
+      triggered_by: ['php']
+      show_info: false
 ```
 
 

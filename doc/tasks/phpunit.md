@@ -15,14 +15,14 @@ The task lives under the `phpunit` namespace and has following configurable para
 ```yaml
 # grumphp.yml
 grumphp:
-    tasks:
-        phpunit:
-            config_file: ~
-            testsuite: ~
-            group: []
-            exclude_group: []
-            always_execute: false
-            order: null
+  tasks:
+    phpunit:
+      config_file: ~
+      testsuite: ~
+      group: []
+      exclude_group: []
+      always_execute: false
+      order: null
 ```
 
 **config_file**

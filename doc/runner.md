@@ -21,18 +21,18 @@ The following events are triggered during execution:
 
 Configure events just like you would in Symfony:
 
-```yml
+```yaml
 # grumphp.yml
-services:   
-    listener.some_listener:
-        class: MyNamespace\EventListener\MyListener
-        tags:
-            - { name: grumphp.event_listener, event: grumphp.runner.run }
-            - { name: grumphp.event_listener, event: grumphp.runner.run, method: customMethod, priority: 10 }
-    listener.some_subscriber:
-        class: MyNamespace\EventSubscriber\MySubscriber
-        tags:
-            - { name: grumphp.event_subscriber }
+services:
+  listener.some_listener:
+    class: MyNamespace\EventListener\MyListener
+    tags:
+      - { name: grumphp.event_listener, event: grumphp.runner.run }
+      - { name: grumphp.event_listener, event: grumphp.runner.run, method: customMethod, priority: 10 }
+  listener.some_subscriber:
+    class: MyNamespace\EventSubscriber\MySubscriber
+    tags:
+      - { name: grumphp.event_subscriber }
 ```
 
 ## Register a RunnerMiddleware
@@ -55,7 +55,7 @@ class PassThroughMiddleware implements RunnerMiddlewareInterface
      */
     public function handle(TaskRunnerContext $context, callable $next): TaskResultCollection
     {
-        return $next($context);    
+        return $next($context);
     }
 }
 ```
@@ -64,11 +64,10 @@ Configuration:
 
 ```yaml
 # grumphp.yml
-
 services:
-    PassThroughMiddleware:
-        tags:
-            - { name: 'grumphp.runner_middleware', priority: 500 }
+  PassThroughMiddleware:
+    tags:
+      - { name: 'grumphp.runner_middleware', priority: 500 }
 ```
 
 
@@ -95,7 +94,7 @@ class PassThroughTaskHandlerMiddleware implements TaskHandlerMiddlewareInterface
      */
     public function handle(TaskInterface $task, TaskRunnerContext $runnercontext,callable $next): Promise
     {
-        return $next($task, $runnercontext);    
+        return $next($task, $runnercontext);
     }
 }
 ```
@@ -104,9 +103,8 @@ Configuration:
 
 ```yaml
 # grumphp.yml
-
 services:
-    PassThroughTaskHandlerMiddleware:
-        tags:
-            - { name: 'grumphp.task_handler', priority: 500 }
+  PassThroughTaskHandlerMiddleware:
+    tags:
+      - { name: 'grumphp.task_handler', priority: 500 }
 ```
