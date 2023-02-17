@@ -110,6 +110,8 @@ class GuessedPathsLocator
                 'grumphp.yaml',
                 'grumphp.yml.dist',
                 'grumphp.yaml.dist',
+                'grumphp.dist.yml',
+                'grumphp.dist.yaml',
             ]
         );
 
