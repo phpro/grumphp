@@ -257,5 +257,5 @@ grumphp:
       config: .typo3.php-cs-fixer.php
       path_mode: intersection
       metadata:
-        task: phpcsfixer2
+        task: phpcsfixer
 ```
