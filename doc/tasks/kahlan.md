@@ -15,25 +15,25 @@ The task lives under the `kahlan` namespace and has following configurable param
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    kahlan:
-      config: ~
-      src: ~
-      spec: ~
-      pattern: ~
-      reporter: ~
-      coverage: ~
-      clover: ~
-      istanbul: ~
-      lcov: ~
-      ff: ~
-      no_colors: ~
-      no_header: ~
-      include: ~
-      exclude: ~
-      persistent: ~
-      cc: ~
-      autoclear: ~
+    tasks:
+        kahlan:
+            config: ~
+            src: ~
+            spec: ~
+            pattern: ~
+            reporter: ~
+            coverage: ~
+            clover: ~
+            istanbul: ~
+            lcov: ~
+            ff: ~
+            no_colors: ~
+            no_header: ~
+            include: ~
+            exclude: ~
+            persistent: ~
+            cc: ~
+            autoclear: ~
 ```
 
 **config**

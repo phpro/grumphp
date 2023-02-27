@@ -6,11 +6,11 @@ It lives under the `ant` namespace and has following configurable parameters:
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    ant:
-      build_file: ~
-      task: ~
-      triggered_by: [php]
+    tasks:
+        ant:
+            build_file: ~
+            task: ~
+            triggered_by: [php]
 ```
 
 **build_file**

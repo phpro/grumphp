@@ -18,13 +18,13 @@ The default configuration looks like:
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    composer_normalize:
-      indent_size: ~
-      indent_style: ~
-      no_check_lock: false
-      no_update_lock: true
-      verbose: false
+    tasks:
+        composer_normalize:
+            indent_size: ~
+            indent_style: ~
+            no_check_lock: false
+            no_update_lock: true
+            verbose: false
 ```
 
 **indent_size**

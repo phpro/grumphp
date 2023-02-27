@@ -6,14 +6,14 @@ It lives under the `xmllint` namespace and has following configurable parameters
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    xmllint:
-      ignore_patterns: []
-      load_from_net: false
-      x_include: false
-      dtd_validation: false
-      scheme_validation: false
-      triggered_by: ['xml']
+    tasks:
+        xmllint:
+            ignore_patterns: []
+            load_from_net: false
+            x_include: false
+            dtd_validation: false
+            scheme_validation: false
+            triggered_by: ['xml']
 ```
 
 **ignore_patterns**

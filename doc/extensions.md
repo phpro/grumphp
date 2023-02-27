@@ -9,8 +9,8 @@ The configuration looks like this:
 ```yaml
 # grumphp.yml
 grumphp:
-  extensions:
-    - My\Project\GrumPHPExtension
+    extensions:
+        - My\Project\GrumPHPExtension
 ```
 
 The configured extension class needs to implement `ExtensionInterface`. 

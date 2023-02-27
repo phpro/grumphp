@@ -6,22 +6,22 @@ It lives under the `atoum` namespace and has the following configurable paramete
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    atoum:
-      config_file: .atoum.php
-      bootstrap_file: tests/units/bootstrap.php
-      directories:
-        - tests/units
-      files:
-        - tests/units/MyTest.php
-      namespaces:
-        - mageekguy\\atoum\\tests\\units\\asserters
-      methods:
-        - mageekguy\\atoum\\tests\\units\\asserters\\string::testContains
-        - mageekguy\\atoum\\tests\\units\\asserters\\string::*
-      tags:
-        - thisIsOneTag
-        - thisIsThreeTag
+    tasks:
+        atoum:
+            config_file: .atoum.php
+            bootstrap_file: tests/units/bootstrap.php
+            directories:
+                - tests/units
+            files:
+                - tests/units/MyTest.php
+            namespaces:
+                - mageekguy\\atoum\\tests\\units\\asserters
+            methods:
+                - mageekguy\\atoum\\tests\\units\\asserters\\string::testContains
+                - mageekguy\\atoum\\tests\\units\\asserters\\string::*
+            tags:
+                - thisIsOneTag
+                - thisIsThreeTag
 ```
 
 **config_file**

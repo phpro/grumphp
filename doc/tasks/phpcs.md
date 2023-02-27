@@ -15,22 +15,22 @@ The task lives under the `phpcs` namespace and has following configurable parame
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    phpcs:
-      standard: []
-      severity: ~
-      error_severity: ~
-      warning_severity: ~
-      tab_width: ~
-      report: full
-      report_width: ~
-      whitelist_patterns: []
-      encoding: ~
-      ignore_patterns: []
-      sniffs: []
-      triggered_by: [php]
-      exclude: []
-      show_sniffs_error_path: true
+    tasks:
+        phpcs:
+            standard: []
+            severity: ~
+            error_severity: ~
+            warning_severity: ~
+            tab_width: ~
+            report: full
+            report_width: ~
+            whitelist_patterns: []
+            encoding: ~
+            ignore_patterns: []
+            sniffs: []
+            triggered_by: [php]
+            exclude: []
+            show_sniffs_error_path: true
 ```
 
 **standard**
@@ -100,8 +100,8 @@ This is a list of regex patterns that will filter files to validate. With this o
 For example to validate only files in your `src/App/` and `src/AppBundle/` directories in a Symfony you can use 
 ```yaml
 whitelist_patterns:
-  - /^src\/App\/(.*)/
-  - /^src\/AppBundle\/(.*)/
+    - /^src\/App\/(.*)/
+    - /^src\/AppBundle\/(.*)/
 ```
 
 
@@ -151,9 +151,9 @@ Following this, you can add the path to your phpcs task.
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    phpcs:
-      standard: "vendor/leaphub/phpcs-symfony2-standard/leaphub/phpcs/Symfony2/"
+    tasks:
+        phpcs:
+            standard: "vendor/leaphub/phpcs-symfony2-standard/leaphub/phpcs/Symfony2/"
 ```
 
 ### Magento 
@@ -169,10 +169,10 @@ Following this, you can add the path to your phpcs task.
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    phpcs:
-      standard: "vendor/magento-ecg/coding-standard/Ecg/"
-      warning_severity: 0
+    tasks:
+        phpcs:
+            standard: "vendor/magento-ecg/coding-standard/Ecg/"
+            warning_severity: 0
 ```
 
 For Magento 2 projects, you can require the Magento Coding Standard repo.
@@ -192,9 +192,9 @@ Following this, you can add the path to your phpcs task.
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    phpcs:
-      standard: "Magento2"
+    tasks:
+        phpcs:
+            standard: "Magento2"
 ```
 
 ### Drupal
@@ -210,16 +210,16 @@ Following this, you can add the path to your phpcs task.
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    phpcs:
-      standard:
-        - vendor/drupal/coder/coder_sniffer/Drupal
-        - vendor/drupal/coder/coder_sniffer/DrupalPractice
-      ignore_patterns:
-        - cfg/
-        - libraries/
-      triggered_by:
-        - php
-        - module
-        - inc
+    tasks:
+        phpcs:
+            standard:
+                - vendor/drupal/coder/coder_sniffer/Drupal
+                - vendor/drupal/coder/coder_sniffer/DrupalPractice
+            ignore_patterns:
+                - cfg/
+                - libraries/
+            triggered_by:
+                - php
+                - module
+                - inc
 ```

@@ -6,11 +6,11 @@ It lives under the `grunt` namespace and has following configurable parameters:
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    grunt:
-      grunt_file: ~
-      task: ~
-      triggered_by: [js, jsx, coffee, ts, less, sass, scss]
+    tasks:
+        grunt:
+            grunt_file: ~
+            task: ~
+            triggered_by: [js, jsx, coffee, ts, less, sass, scss]
 ```
 
 **grunt_file**

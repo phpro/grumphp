@@ -13,12 +13,12 @@ composer require --dev maglnet/composer-require-checker
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    composer_require_checker:
-      composer_file: 'composer.json'
-      config_file: ~
-      ignore_parse_errors: false
-      triggered_by: ['composer.json', 'composer.lock', '*.php']
+    tasks:
+        composer_require_checker:
+            composer_file: 'composer.json'
+            config_file: ~
+            ignore_parse_errors: false
+            triggered_by: ['composer.json', 'composer.lock', '*.php']
 ```
 
 **composer_file**

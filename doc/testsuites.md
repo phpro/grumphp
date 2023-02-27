@@ -8,11 +8,11 @@ Test suites live under their own namespace in the parameters part.
 ```yaml
 # grumphp.yml
 grumphp:
-  testsuites:
-    suitename:
-      tasks:
-        - phpcs
-        - phpspec
+    testsuites:
+        suitename:
+            tasks:
+                - phpcs
+                - phpspec
 ```
 
 It is possible to define multiple testsuites in the `grumphp.yml` file.
@@ -37,11 +37,11 @@ we made it possible to use one of following pre-defined test suites:
 ```yaml
 # grumphp.yml
 grumphp:
-  testsuites:
-    # Specify the test-suite for the git:commit-msg command:
-    git_commit_msg:
-      tasks: []
-    # Specify the test-suite for the git:pre-commit command:
-    git_pre_commit:
-      tasks: []
+    testsuites:
+        # Specify the test-suite for the git:commit-msg command:
+        git_commit_msg:
+            tasks: []
+        # Specify the test-suite for the git:pre-commit command:
+        git_pre_commit:
+            tasks: []
 ```

@@ -21,31 +21,31 @@ It lives under the `stylelint` namespace and has the following configurable para
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    stylelint:
-      bin: node_modules/.bin/stylelint
-      triggered_by: [css, scss, sass, less, sss]
-      whitelist_patterns:
-        - /^resources\/css\/(.*)/
-      config: ~
-      config_basedir: ~
-      ignore_path: ~
-      ignore_pattern: ~
-      syntax: ~
-      custom_syntax: ~
-      ignore_disables: ~
-      disable_default_ignores: ~
-      cache: ~
-      cache_location: ~
-      formatter: ~
-      custom_formatter: ~
-      quiet: ~
-      color: ~
-      report_needless_disables: ~
-      report_invalid_scope_disables: ~
-      report_descriptionless_disables: ~
-      max_warnings: ~
-      output_file: ~
+    tasks:
+        stylelint:
+            bin: node_modules/.bin/stylelint
+            triggered_by: [css, scss, sass, less, sss]
+            whitelist_patterns:
+                - /^resources\/css\/(.*)/
+            config: ~
+            config_basedir: ~
+            ignore_path: ~
+            ignore_pattern: ~
+            syntax: ~
+            custom_syntax: ~
+            ignore_disables: ~
+            disable_default_ignores: ~
+            cache: ~
+            cache_location: ~
+            formatter: ~
+            custom_formatter: ~
+            quiet: ~
+            color: ~
+            report_needless_disables: ~
+            report_invalid_scope_disables: ~
+            report_descriptionless_disables: ~
+            max_warnings: ~
+            output_file: ~
 ```
 
 **bin**
@@ -79,8 +79,8 @@ This is a list of regex patterns that will filter files to validate. With this o
 For example: to whitelist files in `resources/css/` (Laravel's CSS directory) and `assets/css/` (Symfony's CSS directory) you can use:
 ```yaml
 whitelist_patterns:
-  - /^resources\/css\/(.*)/
-  - /^assets\/css\/(.*)/
+    - /^resources\/css\/(.*)/
+    - /^assets\/css\/(.*)/
 ```
 
 **config**

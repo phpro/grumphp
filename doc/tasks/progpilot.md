@@ -16,10 +16,10 @@ The task lives under the `progpilot` namespace and has following configurable pa
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    progpilot:
-      config_file: .progpilot/configuration.yml
-      triggered_by: [php]
+    tasks:
+        progpilot:
+            config_file: .progpilot/configuration.yml
+            triggered_by: [php]
 ```
 
 **config_file**

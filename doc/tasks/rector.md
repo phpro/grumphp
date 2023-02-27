@@ -12,13 +12,13 @@ composer require --dev rector/rector
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    rector:
-      config: null
-      triggered_by: ['php']
-      ignore_patterns: []
-      clear_cache: true
-      no_diffs: false
+    tasks:
+        rector:
+            config: null
+            triggered_by: ['php']
+            ignore_patterns: []
+            clear_cache: true
+            no_diffs: false
 ```
 
 **config**

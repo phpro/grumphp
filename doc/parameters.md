@@ -3,31 +3,31 @@
 ```yaml
 # grumphp.yml
 grumphp:
-  hooks_dir: ~
-  hooks_preset: local
-  git_hook_variables:
-    VAGRANT_HOST_DIR: .
-    VAGRANT_PROJECT_DIR: /var/www
-    EXEC_GRUMPHP_COMMAND: exec
-    ENV: {}
-  stop_on_failure: false
-  ignore_unstaged_changes: false
-  hide_circumvention_tip: false
-  process_timeout: 60
-  additional_info: ~
-  ascii:
-    failed: resource/grumphp-grumpy.txt
-    succeeded: resource/grumphp-happy.txt
-  parallel:
-    enabled: true
-    max_workers: 32
-  fixer:
-    enabled: true
-    fix_by_default: false
-  environment:
-    files: []
-    variables: {}
-    paths: []
+    hooks_dir: ~
+    hooks_preset: local
+    git_hook_variables:
+        VAGRANT_HOST_DIR: .
+        VAGRANT_PROJECT_DIR: /var/www
+        EXEC_GRUMPHP_COMMAND: exec
+        ENV: {}
+    stop_on_failure: false
+    ignore_unstaged_changes: false
+    hide_circumvention_tip: false
+    process_timeout: 60
+    additional_info: ~
+    ascii:
+        failed: resource/grumphp-grumpy.txt
+        succeeded: resource/grumphp-happy.txt
+    parallel:
+        enabled: true
+        max_workers: 32
+    fixer:
+        enabled: true
+        fix_by_default: false
+    environment:
+        files: []
+        variables: {}
+        paths: []
 ```
 
 **hooks_dir**
@@ -100,9 +100,9 @@ If you want to use integers, you need to wrap the value in quotes:
 ```yaml
 # grumphp.yml
 grumphp:
-  environment:
-    variables:
-      PHP_CS_FIXER_IGNORE_ENV: "1"
+    environment:
+        variables:
+            PHP_CS_FIXER_IGNORE_ENV: "1"
 ```
 
 **stop_on_failure**
@@ -146,7 +146,7 @@ This parameter will display additional information at the end of a `success` *or
 ```yaml
 # grumphp.yml
 grumphp:
-  additional_info: "\nTo get full documentation for the project!\nVisit https://docs.example.com\n"
+    additional_info: "\nTo get full documentation for the project!\nVisit https://docs.example.com\n"
 ```
 
 *Example Result:*
@@ -173,15 +173,15 @@ from the list.
 ```yaml
 # grumphp.yml
 grumphp:
-  ascii:
-    failed:
-      - resource/grumphp-grumpy.txt
-      - resource/nopecat.txt
-      - resource/failed.txt
-    succeeded:
-      - resource/grumphp-happy.txt
-      - resource/me-gusta.txt
-      - resource/succeeded.txt
+    ascii:
+        failed:
+            - resource/grumphp-grumpy.txt
+            - resource/nopecat.txt
+            - resource/failed.txt
+        succeeded:
+            - resource/grumphp-happy.txt
+            - resource/me-gusta.txt
+            - resource/succeeded.txt
 ```
 
 To disable all banners set ascii to `~`:
@@ -189,7 +189,7 @@ To disable all banners set ascii to `~`:
 ```yaml
 # grumphp.yml
 grumphp:
-  ascii: ~
+    ascii: ~
 ```
 
 To disable a specific banner set ascii image path to `~`:
@@ -197,8 +197,8 @@ To disable a specific banner set ascii image path to `~`:
 ```yaml
 # grumphp.yml
 grumphp:
-  ascii:
-    succeeded: ~
+    ascii:
+        succeeded: ~
 ```
 
 
@@ -210,9 +210,9 @@ You can specify following options:
 ```yaml
 # grumphp.yml
 grumphp:
-  parallel:
-    enabled: true
-    max_workers: 32
+    parallel:
+        enabled: true
+        max_workers: 32
 ```
 
 **parallel.enabled**
@@ -239,9 +239,9 @@ You can configure how fixers work with following config:
 ```yaml
 # grumphp.yml
 grumphp:
-  fixer:
-    enabled: true
-    fix_by_default: false
+    fixer:
+        enabled: true
+        fix_by_default: false
 ```
 
 **fixer.enabled**
@@ -266,10 +266,10 @@ It can load ini files, export bash variables and prepend paths to your `$PATH` v
 ```yaml
 # grumphp.yml
 grumphp:
-  environment:
-    files: []
-    variables: {}
-    paths: []
+    environment:
+        files: []
+        variables: {}
+        paths: []
 ```
 
 **environment.files**
@@ -283,10 +283,10 @@ Example:
 ```yaml
 # grumphp.yml
 grumphp:
-  environment:
-    files:
-      - .env
-      - .env.local
+    environment:
+        files:
+            - .env
+            - .env.local
 ```
 
 **environment.variables**
@@ -300,10 +300,10 @@ Example:
 ```yaml
 # grumphp.yml
 grumphp:
-  environment:
-    variables:
-      VAR1: "content"
-      VAR2: "content"
+    environment:
+        variables:
+            VAR1: "content"
+            VAR2: "content"
 ```
 
 **environment.paths**
@@ -318,7 +318,7 @@ Example:
 ```yaml
 # grumphp.yml
 grumphp:
-  environment:
-    paths:
-      - tools
+    environment:
+        paths:
+            - tools
 ```

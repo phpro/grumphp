@@ -6,13 +6,13 @@ It lives under the `npm_script` namespace and has following configurable paramet
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    npm_script:
-      script: ~
-      triggered_by: [js, jsx, coffee, ts, less, sass, scss]
-      working_directory: "./"
-      is_run_task: false
-      silent: false
+    tasks:
+        npm_script:
+            script: ~
+            triggered_by: [js, jsx, coffee, ts, less, sass, scss]
+            working_directory: "./"
+            is_run_task: false
+            silent: false
 ```
 
 **script**

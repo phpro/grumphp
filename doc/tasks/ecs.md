@@ -15,15 +15,15 @@ The task lives under the `ecs` namespace and has following configurable paramete
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    ecs:
-      config: ~
-      level: ~
-      paths: []
-      files_on_pre_commit: false
-      triggered_by: ['php']
-      clear-cache: false
-      no-progress-bar: true
+    tasks:
+        ecs:
+            config: ~
+            level: ~
+            paths: []
+            files_on_pre_commit: false
+            triggered_by: ['php']
+            clear-cache: false
+            no-progress-bar: true
 
 ```
 

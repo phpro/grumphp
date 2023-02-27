@@ -7,15 +7,15 @@ The configuration looks like:
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    composer:
-      file: ./composer.json
-      no_check_all: false
-      no_check_lock: false
-      no_check_publish: false
-      no_local_repository: false
-      with_dependencies: false
-      strict: false
+    tasks:
+        composer:
+            file: ./composer.json
+            no_check_all: false
+            no_check_lock: false
+            no_check_publish: false
+            no_local_repository: false
+            with_dependencies: false
+            strict: false
 ```
 
 **file**

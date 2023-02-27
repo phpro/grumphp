@@ -26,19 +26,19 @@ It lives under the `eslint` namespace and has the following configurable paramet
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    eslint:
-      bin: node_modules/.bin/eslint
-      triggered_by: [js, jsx, ts, tsx, vue]
-      whitelist_patterns:
-        - /^resources\/js\/(.*)/
-      config: .eslintrc.json
-      ignore_path: .eslintignore
-      debug: false
-      format: ~
-      max_warnings: ~
-      no_eslintrc: false
-      quiet: false
+    tasks:
+        eslint:
+            bin: node_modules/.bin/eslint
+            triggered_by: [js, jsx, ts, tsx, vue]
+            whitelist_patterns:
+                - /^resources\/js\/(.*)/
+            config: .eslintrc.json
+            ignore_path: .eslintignore
+            debug: false
+            format: ~
+            max_warnings: ~
+            no_eslintrc: false
+            quiet: false
 ```
 
 **bin**
@@ -63,8 +63,8 @@ This is a list of regex patterns that will filter files to validate. With this o
 For example: to whitelist files in `resources/js/` (Laravel's JS directory) and `assets/js/` (Symfony's JS directory) you can use:
 ```yaml
 whitelist_patterns:
-  - /^resources\/js\/(.*)/
-  - /^assets\/js\/(.*)/
+    - /^resources\/js\/(.*)/
+    - /^assets\/js\/(.*)/
 ```
 
 **config**

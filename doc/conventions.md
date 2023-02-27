@@ -44,14 +44,14 @@ Sample conventions grumphp file:
 ```yaml
 # Convention grumphp.yml
 parameters:
-  convention.git_commit_message_matchers: ['/.*/']
+    convention.git_commit_message_matchers: ['/.*/']
 grumphp:
-  tasks:
-    phpunit: ~
-    git_commit_message:
-      matchers: "%convention.git_commit_message_matchers%"
-      case_insensitive: false
-      multiline: false
+    tasks:
+        phpunit: ~
+        git_commit_message:
+            matchers: "%convention.git_commit_message_matchers%"
+            case_insensitive: false
+            multiline: false
 ```
 
 Sample project grumphp file:
@@ -59,9 +59,9 @@ Sample project grumphp file:
 ```yaml
 # Project grumphp.yml
 imports:
-  - { resource: vendor/[your-project]/[your-convention-package]/grumphp.yml }
+    - { resource: vendor/[your-project]/[your-convention-package]/grumphp.yml }
 parameters:
-  convention.git_commit_message_matchers: ['/^JIRA-\d+: [A-Z].+\./']
+    convention.git_commit_message_matchers: ['/^JIRA-\d+: [A-Z].+\./']
 ```
 
 This way, you can define some common rules, but make it possible to customize some project specific settings.

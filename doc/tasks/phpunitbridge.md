@@ -15,14 +15,14 @@ The task lives under the `phpunitbridge` namespace and has following configurabl
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    phpunitbridge:
-      config_file: ~
-      testsuite: ~
-      group: []
-      exclude_group: []
-      always_execute: false
-      order: null
+    tasks:
+        phpunitbridge:
+            config_file: ~
+            testsuite: ~
+            group: []
+            exclude_group: []
+            always_execute: false
+            order: null
 ```
 
 **config_file**

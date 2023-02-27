@@ -6,13 +6,13 @@ It lives under the `brunch` namespace and has following configurable parameters:
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    brunch:
-      task: build
-      env: production
-      jobs: 4
-      debug: false
-      triggered_by: [js, jsx, coffee, ts, less, sass, scss]
+    tasks:
+        brunch:
+            task: build
+            env: production
+            jobs: 4
+            debug: false
+            triggered_by: [js, jsx, coffee, ts, less, sass, scss]
 ```
 
 **task**

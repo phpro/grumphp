@@ -7,9 +7,9 @@ It lives under the `phpversion` namespace and has following configurable paramet
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    phpversion:
-      project: '7.2'
+    tasks:
+        phpversion:
+            project: '7.2'
 ```
 
 **project**

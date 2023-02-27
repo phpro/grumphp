@@ -15,12 +15,12 @@ The task lives under the `pest` namespace and has following configurable paramet
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    pest:
-      config_file: ~
-      testsuite: ~
-      group: []
-      always_execute: false
+    tasks:
+        pest:
+            config_file: ~
+            testsuite: ~
+            group: []
+            always_execute: false
 ```
 
 **config_file**

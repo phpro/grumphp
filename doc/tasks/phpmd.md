@@ -15,13 +15,13 @@ The task lives under the `phpmd` namespace and has following configurable parame
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    phpmd:
-      whitelist_patterns: []
-      exclude: []
-      report_format: text
-      ruleset: ['cleancode', 'codesize', 'naming']
-      triggered_by: ['php']
+    tasks:
+        phpmd:
+            whitelist_patterns: []
+            exclude: []
+            report_format: text
+            ruleset: ['cleancode', 'codesize', 'naming']
+            triggered_by: ['php']
 ```
 
 **whitelist_patterns**
@@ -32,8 +32,8 @@ This is a list of regex patterns that will filter files to validate. With this o
 For example: whitelist files in `src/FolderA/` and `src/FolderB/` you can use 
 ```yaml
 whitelist_patterns:
-  - /^src\/FolderA\/(.*)/
-  - /^src\/FolderB\/(.*)/
+    - /^src\/FolderA\/(.*)/
+    - /^src\/FolderB\/(.*)/
 ```
 
 **exclude**

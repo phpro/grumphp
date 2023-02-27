@@ -15,11 +15,11 @@ The task lives under the `robo` namespace and has following configurable paramet
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    robo:
-      load_from: ~
-      task: ~
-      triggered_by: [php]
+    tasks:
+        robo:
+            load_from: ~
+            task: ~
+            triggered_by: [php]
 ```
 
 **load_from**

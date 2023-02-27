@@ -6,11 +6,11 @@ It lives under the `make` namespace and has following configurable parameters:
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    make:
-      make_file: ~
-      task: ~
-      triggered_by: [php]
+    tasks:
+        make:
+            make_file: ~
+            task: ~
+            triggered_by: [php]
 ```
 
 **make_file**

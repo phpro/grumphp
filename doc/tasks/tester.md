@@ -15,20 +15,20 @@ The task lives under the `tester` namespace and has following configurable param
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    tester:
-      path: "."
-      always_execute: false
-      log: ~
-      show_information_about_skipped_tests: false
-      stop_on_fail: false
-      parallel_processes: ~
-      output: ~
-      temp: ~
-      setup: ~
-      colors: ~
-      coverage: ~
-      coverage_src: ~
+    tasks:
+        tester:
+            path: "."
+            always_execute: false
+            log: ~
+            show_information_about_skipped_tests: false
+            stop_on_fail: false
+            parallel_processes: ~
+            output: ~
+            temp: ~
+            setup: ~
+            colors: ~
+            coverage: ~
+            coverage_src: ~
 ```
 
 **path**

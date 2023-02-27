@@ -121,14 +121,14 @@ It is also possible to set some of the environment variables above inside the `g
 ```yaml
 # grumphp.yml
 grumphp:
-  environment:
-  variables:
-    GRUMPHP_PROJECT_DIR: "..."
-    GRUMPHP_GIT_WORKING_DIR: "..."
-    GRUMPHP_GIT_REPOSITORY_DIR: "..."
-    GRUMPHP_BIN_DIR: "..."
-  paths:
-    - 'tools'
+    environment:
+    variables:
+        GRUMPHP_PROJECT_DIR: "..."
+        GRUMPHP_GIT_WORKING_DIR: "..."
+        GRUMPHP_GIT_REPOSITORY_DIR: "..."
+        GRUMPHP_BIN_DIR: "..."
+    paths:
+        - 'tools'
 ```
 
 The configuration from inside the `grumphp.yml` file will be loaded if the guessing system was able to determine an initial version of the guessed paths.

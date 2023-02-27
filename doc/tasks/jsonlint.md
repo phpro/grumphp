@@ -6,10 +6,10 @@ It lives under the `jsonlint` namespace and has following configurable parameter
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    jsonlint:
-      ignore_patterns: []
-      detect_key_conflicts: false
+    tasks:
+        jsonlint:
+            ignore_patterns: []
+            detect_key_conflicts: false
 ```
 
 **ignore_patterns**

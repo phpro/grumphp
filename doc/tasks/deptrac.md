@@ -10,12 +10,12 @@ namespace and has following configurable parameters:
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    deptrac:
-      cache_file: ~
-      depfile: ~
-      formatter: ~
-      output: ~
+    tasks:
+        deptrac:
+            cache_file: ~
+            depfile: ~
+            formatter: ~
+            output: ~
 ```
 
 **cache_file**

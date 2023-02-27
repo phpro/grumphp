@@ -24,15 +24,15 @@ Configure events just like you would in Symfony:
 ```yaml
 # grumphp.yml
 services:
-  listener.some_listener:
-    class: MyNamespace\EventListener\MyListener
-    tags:
-      - { name: grumphp.event_listener, event: grumphp.runner.run }
-      - { name: grumphp.event_listener, event: grumphp.runner.run, method: customMethod, priority: 10 }
-  listener.some_subscriber:
-    class: MyNamespace\EventSubscriber\MySubscriber
-    tags:
-      - { name: grumphp.event_subscriber }
+    listener.some_listener:
+        class: MyNamespace\EventListener\MyListener
+        tags:
+            - { name: grumphp.event_listener, event: grumphp.runner.run }
+            - { name: grumphp.event_listener, event: grumphp.runner.run, method: customMethod, priority: 10 }
+    listener.some_subscriber:
+        class: MyNamespace\EventSubscriber\MySubscriber
+        tags:
+            - { name: grumphp.event_subscriber }
 ```
 
 ## Register a RunnerMiddleware
@@ -65,9 +65,9 @@ Configuration:
 ```yaml
 # grumphp.yml
 services:
-  PassThroughMiddleware:
-    tags:
-      - { name: 'grumphp.runner_middleware', priority: 500 }
+    PassThroughMiddleware:
+        tags:
+            - { name: 'grumphp.runner_middleware', priority: 500 }
 ```
 
 
@@ -104,7 +104,7 @@ Configuration:
 ```yaml
 # grumphp.yml
 services:
-  PassThroughTaskHandlerMiddleware:
-    tags:
-      - { name: 'grumphp.task_handler', priority: 500 }
+    PassThroughTaskHandlerMiddleware:
+        tags:
+            - { name: 'grumphp.task_handler', priority: 500 }
 ```

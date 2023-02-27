@@ -15,11 +15,11 @@ composer require --dev phparkitect/phparkitect
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    phparkitect:
-      config: ~
-      target_php_version: ~
-      stop_on_failure: ~
+    tasks:
+        phparkitect:
+            config: ~
+            target_php_version: ~
+            stop_on_failure: ~
 ```
 
 **config**

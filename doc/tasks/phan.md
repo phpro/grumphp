@@ -15,12 +15,12 @@ The task lives under the `phan` namespace and has following configurable paramet
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    phan:
-      config_file: .phan/config.php
-      output_mode: text
-      output: null
-      triggered_by: [php]
+    tasks:
+        phan:
+            config_file: .phan/config.php
+            output_mode: text
+            output: null
+            triggered_by: [php]
 ```
 
 **config_file**

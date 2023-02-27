@@ -15,14 +15,14 @@ The task lives under the `twigcs` namespace and has following configurable param
 ```yaml
 # grumphp.yml
 grumphp:
-  tasks:
-    twigcs:
-      path: '.'
-      severity: 'warning'
-      display: 'all'
-      ruleset: 'FriendsOfTwig\Twigcs\Ruleset\Official'
-      triggered_by: ['twig']
-      exclude: []
+    tasks:
+        twigcs:
+            path: '.'
+            severity: 'warning'
+            display: 'all'
+            ruleset: 'FriendsOfTwig\Twigcs\Ruleset\Official'
+            triggered_by: ['twig']
+            exclude: []
 ```
 
 **path**
