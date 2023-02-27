@@ -68,14 +68,14 @@ A list of the supported variables:
     ```yaml
     # grumphp.yml
     grumphp:
-      git_hook_variables:
-        EXEC_GRUMPHP_COMMAND: '/usr/local/bin/php72'
-        EXEC_GRUMPHP_COMMAND: 'lando php'
-        EXEC_GRUMPHP_COMMAND: 'fin exec php'
-        EXEC_GRUMPHP_COMMAND: ['php', '-c /custom/config.ini']
-        EXEC_GRUMPHP_COMMAND: ['docker-compose', 'run', '-T', '--rm', '--no-deps', 'php']
-        EXEC_GRUMPHP_COMMAND: 'docker run --rm -it -v $(pwd):/grumphp -w /grumphp webdevops/php:alpine'
-        EXEC_GRUMPHP_COMMAND: 'ddev exec php'
+        git_hook_variables:
+            EXEC_GRUMPHP_COMMAND: '/usr/local/bin/php72'
+            EXEC_GRUMPHP_COMMAND: 'lando php'
+            EXEC_GRUMPHP_COMMAND: 'fin exec php'
+            EXEC_GRUMPHP_COMMAND: ['php', '-c /custom/config.ini']
+            EXEC_GRUMPHP_COMMAND: ['docker-compose', 'run', '-T', '--rm', '--no-deps', 'php']
+            EXEC_GRUMPHP_COMMAND: 'docker run --rm -it -v $(pwd):/grumphp -w /grumphp webdevops/php:alpine'
+            EXEC_GRUMPHP_COMMAND: 'ddev exec php'
     ```
 -  `ENV` : Specify environment variables that will be placed in the git hook file. (_default_ `{}`)
 
@@ -84,11 +84,11 @@ A list of the supported variables:
     ```yaml
     # grumphp.yml
     grumphp:
-      git_hook_variables:
-        ENV:
-          VAR1: STRING
-          VAR2: "'escaped'"
-          VAR3: "$(pwd)"
+        git_hook_variables:
+            ENV:
+                VAR1: STRING
+                VAR2: "'escaped'"
+                VAR3: "$(pwd)"
     ```
    
    These environment variables can be overwritten by the `environment` settings inside your `grumphp.yml`.
