@@ -41,22 +41,22 @@ composer require --dev [your-project]/[your-convention-package]
 
 Sample conventions grumphp file:
 
-```yml
+```yaml
 # Convention grumphp.yml
 parameters:
-  convention.git_commit_message_matchers: ['/.*/']
+    convention.git_commit_message_matchers: ['/.*/']
 grumphp:
-  tasks:
-    phpunit: ~
-    git_commit_message:
-      matchers: "%convention.git_commit_message_matchers%"
-      case_insensitive: false
-      multiline: false
+    tasks:
+        phpunit: ~
+        git_commit_message:
+            matchers: "%convention.git_commit_message_matchers%"
+            case_insensitive: false
+            multiline: false
 ```
 
 Sample project grumphp file:
 
-```yml
+```yaml
 # Project grumphp.yml
 imports:
     - { resource: vendor/[your-project]/[your-convention-package]/grumphp.yml }

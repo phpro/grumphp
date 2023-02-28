@@ -62,9 +62,9 @@ set, while the `array_syntax` rule is added.
 
 ```yaml
 rules:
-  - '@@PSR2'
-  - -line_ending
-  - array_syntax
+    - '@@PSR2'
+    - -line_ending
+    - array_syntax
 ```
 
 The following map-style example is the same as the previous, except we take advantage of rule configuration
@@ -73,10 +73,10 @@ to change the `array_syntax` validation mode to short array syntax (`[]`) instea
 
 ```yaml
 rules:
-  '@PSR2': true
-  line_ending: false
-  array_syntax:
-    syntax: short
+    '@PSR2': true
+    line_ending: false
+    array_syntax:
+        syntax: short
 ```
 
 Note that rule sets, beginning with the *at* symbol (`@`), must be escaped by being quoted and doubled due to

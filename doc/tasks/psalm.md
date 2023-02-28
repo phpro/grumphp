@@ -22,7 +22,7 @@ grumphp:
             config: psalm.xml
             ignore_patterns: []
             no_cache: false
-            report: ~ 
+            report: ~
             output_format: null
             threads: 1
             triggered_by: ['php']

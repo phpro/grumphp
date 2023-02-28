@@ -43,10 +43,10 @@ With this parameter you can define which directory you want to run `phpmnd` in (
 
 This is a list of regex patterns that will filter files to validate. With this option you can skip files like tests. This option is used in relation with the parameter `triggered_by`.
 For example to validate only files in your `src/App/` and `src/AppBundle/` directories in a Symfony you can use 
-```yml
+```yaml
 whitelist_patterns:
-  - /^src\/App\/(.*)/
-  - /^src\/AppBundle\/(.*)/
+    - /^src\/App\/(.*)/
+    - /^src\/AppBundle\/(.*)/
 ```
 
 **exclude**

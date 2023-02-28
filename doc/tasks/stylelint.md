@@ -57,6 +57,7 @@ The path to your stylelint bin executable. Not necessary if stylelint is in your
 > **Note:** It is possible to add `node_modules/.bin` to the grumphp paths in order for it to be automatically discovered as well:
 > 
 > ```yaml
+> # grumphp.yml
 > grumphp:
 >     environment:
 >         paths:
@@ -76,10 +77,10 @@ This is a list of extensions which will trigger the Sylelint task.
 
 This is a list of regex patterns that will filter files to validate. With this option you can specify the folders containing javascript files and thus skip folders like /tests/ or the /vendor/ directory. This option is used in conjunction with the parameter `triggered_by`.
 For example: to whitelist files in `resources/css/` (Laravel's CSS directory) and `assets/css/` (Symfony's CSS directory) you can use:
-```yml
+```yaml
 whitelist_patterns:
-  - /^resources\/css\/(.*)/
-  - /^assets\/css\/(.*)/
+    - /^resources\/css\/(.*)/
+    - /^assets\/css\/(.*)/
 ```
 
 **config**

@@ -61,10 +61,10 @@ This is a list of extensions which will trigger the ESLint task.
 
 This is a list of regex patterns that will filter files to validate. With this option you can specify the folders containing javascript files and thus skip folders like /tests/ or the /vendor/ directory. This option is used in conjunction with the parameter `triggered_by`.
 For example: to whitelist files in `resources/js/` (Laravel's JS directory) and `assets/js/` (Symfony's JS directory) you can use:
-```yml
+```yaml
 whitelist_patterns:
-  - /^resources\/js\/(.*)/
-  - /^assets\/js\/(.*)/
+    - /^resources\/js\/(.*)/
+    - /^assets\/js\/(.*)/
 ```
 
 **config**

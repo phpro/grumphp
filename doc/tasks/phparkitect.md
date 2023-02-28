@@ -16,10 +16,10 @@ composer require --dev phparkitect/phparkitect
 # grumphp.yml
 grumphp:
     tasks:
-      phparkitect:
+        phparkitect:
             config: ~
             target_php_version: ~
-            stop_on_failure: ~ 
+            stop_on_failure: ~
 ```
 
 **config**

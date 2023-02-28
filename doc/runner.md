@@ -21,9 +21,9 @@ The following events are triggered during execution:
 
 Configure events just like you would in Symfony:
 
-```yml
+```yaml
 # grumphp.yml
-services:   
+services:
     listener.some_listener:
         class: MyNamespace\EventListener\MyListener
         tags:
@@ -55,7 +55,7 @@ class PassThroughMiddleware implements RunnerMiddlewareInterface
      */
     public function handle(TaskRunnerContext $context, callable $next): TaskResultCollection
     {
-        return $next($context);    
+        return $next($context);
     }
 }
 ```
@@ -64,7 +64,6 @@ Configuration:
 
 ```yaml
 # grumphp.yml
-
 services:
     PassThroughMiddleware:
         tags:
@@ -95,7 +94,7 @@ class PassThroughTaskHandlerMiddleware implements TaskHandlerMiddlewareInterface
      */
     public function handle(TaskInterface $task, TaskRunnerContext $runnercontext,callable $next): Promise
     {
-        return $next($task, $runnercontext);    
+        return $next($task, $runnercontext);
     }
 }
 ```
@@ -104,7 +103,6 @@ Configuration:
 
 ```yaml
 # grumphp.yml
-
 services:
     PassThroughTaskHandlerMiddleware:
         tags:

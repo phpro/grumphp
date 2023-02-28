@@ -124,5 +124,3 @@ Filter which testsuite to run. Run multiple suits by separating them with ",". E
 *Default: false*
 
 Adds additional debugging information to the screen when running paratest.
-
-

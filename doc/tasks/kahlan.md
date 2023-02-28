@@ -17,23 +17,23 @@ The task lives under the `kahlan` namespace and has following configurable param
 grumphp:
     tasks:
         kahlan:
-          config: ~
-          src: ~
-          spec: ~
-          pattern: ~
-          reporter: ~
-          coverage: ~
-          clover: ~
-          istanbul: ~
-          lcov: ~
-          ff: ~
-          no_colors: ~
-          no_header: ~
-          include: ~
-          exclude: ~
-          persistent: ~
-          cc: ~
-          autoclear: ~
+            config: ~
+            src: ~
+            spec: ~
+            pattern: ~
+            reporter: ~
+            coverage: ~
+            clover: ~
+            istanbul: ~
+            lcov: ~
+            ff: ~
+            no_colors: ~
+            no_header: ~
+            include: ~
+            exclude: ~
+            persistent: ~
+            cc: ~
+            autoclear: ~
 ```
 
 **config**
@@ -159,4 +159,3 @@ Clear cache before spec run.
 *Default: `['Kahlan\Plugin\Monkey','Kahlan\Plugin\Call','Kahlan\Plugin\Stub','Kahlan\Plugin\Quit']`*
 
 Classes to autoclear after each spec 
-

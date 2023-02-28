@@ -75,4 +75,3 @@ Clear cache for already checked files.
 *Default: false*
 
 Hide progress bar. Useful e.g. for nicer CI output.
-

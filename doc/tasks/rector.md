@@ -54,4 +54,3 @@ With this parameter you can run Rector without using the cache.
 *Default: false*
 
 With this parameter you can run Rector without showing file diffs.
-

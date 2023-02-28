@@ -98,10 +98,10 @@ PHP_CodeSniffer will print all screen-based reports 80 characters wide. You may 
 
 This is a list of regex patterns that will filter files to validate. With this option you can skip files like tests. This option is used in relation with the parameter `triggered_by`.
 For example to validate only files in your `src/App/` and `src/AppBundle/` directories in a Symfony you can use 
-```yml
+```yaml
 whitelist_patterns:
-  - /^src\/App\/(.*)/
-  - /^src\/AppBundle\/(.*)/
+    - /^src\/App\/(.*)/
+    - /^src\/AppBundle\/(.*)/
 ```
 
 
@@ -148,7 +148,7 @@ composer require --dev leaphub/phpcs-symfony2-standard
 
 Following this, you can add the path to your phpcs task.
 
-```yml
+```yaml
 # grumphp.yml
 grumphp:
     tasks:
@@ -190,7 +190,7 @@ Next, add the following to your `composer.json` file, and run `composer run-scri
 
 Following this, you can add the path to your phpcs task.
 ```yaml
-# gumphp.yml
+# grumphp.yml
 grumphp:
     tasks:
         phpcs:
@@ -212,14 +212,14 @@ Following this, you can add the path to your phpcs task.
 grumphp:
     tasks:
         phpcs:
-            standard: 
-              - vendor/drupal/coder/coder_sniffer/Drupal
-              - vendor/drupal/coder/coder_sniffer/DrupalPractice
+            standard:
+                - vendor/drupal/coder/coder_sniffer/Drupal
+                - vendor/drupal/coder/coder_sniffer/DrupalPractice
             ignore_patterns:
-              - cfg/
-              - libraries/
+                - cfg/
+                - libraries/
             triggered_by:
-              - php
-              - module
-              - inc
+                - php
+                - module
+                - inc
 ```

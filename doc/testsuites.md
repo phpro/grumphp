@@ -11,8 +11,8 @@ grumphp:
     testsuites:
         suitename:
             tasks:
-              - phpcs
-              - phpspec
+                - phpcs
+                - phpspec
 ```
 
 It is possible to define multiple testsuites in the `grumphp.yml` file.

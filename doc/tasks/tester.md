@@ -14,7 +14,7 @@ The task lives under the `tester` namespace and has following configurable param
 
 ```yaml
 # grumphp.yml
-parameters:
+grumphp:
     tasks:
         tester:
             path: "."
@@ -77,26 +77,26 @@ You can choose the format of the output. The available options are `console`, `t
 *Default: null*
 
 Sets a path to directory for temporary files of Tester. The Default value is `sys_get_temp_dir()`.
-            
+
 **setup**
 
 *Default: null*
 
 The Tester loads the given PHP script on start.
-            
+
 **colors**
 
 *Default: null*
 
 You can disable color in terminal by setting the value to `0`, the default is `1`.
-            
+
 **coverage**
 
 *Default: null*
 
 Generate a report. The file extension determines the contents format. Only HTML or Clover reports are supported.
 Example: `coverage.html` or `coverage.xml`
-            
+
 **coverage_src**
 
 *Default: null*

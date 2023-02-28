@@ -66,6 +66,7 @@ A list of the supported variables:
     Examples: 
     
     ```yaml
+    # grumphp.yml
     grumphp:
         git_hook_variables:
             EXEC_GRUMPHP_COMMAND: '/usr/local/bin/php72'
@@ -81,12 +82,13 @@ A list of the supported variables:
     Examples: 
     
     ```yaml
+    # grumphp.yml
     grumphp:
         git_hook_variables:
             ENV:
-               VAR1: STRING
-               VAR2: "'escaped'"
-               VAR3: "$(pwd)"
+                VAR1: STRING
+                VAR2: "'escaped'"
+                VAR3: "$(pwd)"
     ```
    
    These environment variables can be overwritten by the `environment` settings inside your `grumphp.yml`.
@@ -96,10 +98,11 @@ Note that `symfony/process` only passes string values.
 If you want to use integers, you need to wrap the value in quotes:
 
 ```yaml
+# grumphp.yml
 grumphp:
     environment:
-      variables:
-        PHP_CS_FIXER_IGNORE_ENV: "1"
+        variables:
+            PHP_CS_FIXER_IGNORE_ENV: "1"
 ```
 
 **stop_on_failure**
@@ -143,7 +146,7 @@ This parameter will display additional information at the end of a `success` *or
 ```yaml
 # grumphp.yml
 grumphp:
-  additional_info: "\nTo get full documentation for the project!\nVisit https://docs.example.com\n"
+    additional_info: "\nTo get full documentation for the project!\nVisit https://docs.example.com\n"
 ```
 
 *Example Result:*
@@ -204,7 +207,8 @@ grumphp:
 The parallel section can be used to configure how parallel execution works inside GrumPHP.
 You can specify following options:
 
-```
+```yaml
+# grumphp.yml
 grumphp:
     parallel:
         enabled: true
@@ -232,7 +236,8 @@ GrumPHP provides a way of fixing your code.
 However, we won't automatically commit the changes, so that you have the chance to review what has been fixed!
 You can configure how fixers work with following config:
 
-```
+```yaml
+# grumphp.yml
 grumphp:
     fixer:
         enabled: true
@@ -258,9 +263,10 @@ Therefor, you can choose what the default answer will be.
 GrumPHP makes it possible to configure your environment from inside your config file. 
 It can load ini files, export bash variables and prepend paths to your `$PATH` variable.
 
-```
+```yaml
+# grumphp.yml
 grumphp:
-    environment
+    environment:
         files: []
         variables: {}
         paths: []
@@ -275,11 +281,12 @@ This parameter can be used to specify a list of ini or .env files that need to b
 Example:
 
 ```yaml
+# grumphp.yml
 grumphp:
-  environment:
-    files:
-        - .env
-        - .env.local
+    environment:
+        files:
+            - .env
+            - .env.local
 ```
 
 **environment.variables**
@@ -291,11 +298,12 @@ Beside loading variables from .env files, you can also specify them directly in 
 Example:
 
 ```yaml
+# grumphp.yml
 grumphp:
-  environment:
-    variables:
-        VAR1: "content"
-        VAR2: "content"
+    environment:
+        variables:
+            VAR1: "content"
+            VAR2: "content"
 ```
 
 **environment.paths**
@@ -308,8 +316,9 @@ This makes it possible to e.g. add the project's `phive` tools instead of adding
 Example:
 
 ```yaml
+# grumphp.yml
 grumphp:
-  environment:
-    paths:
-        - tools
+    environment:
+        paths:
+            - tools
 ```

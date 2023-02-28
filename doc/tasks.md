@@ -35,7 +35,7 @@ grumphp:
         npm_script: ~
         paratest: ~
         pest: ~
-        phan: ~        
+        phan: ~
         phing: ~
         php7cc: ~
         phpcpd: ~
@@ -51,7 +51,7 @@ grumphp:
         phpunitbridge: ~
         phpversion: ~
         progpilot: ~
-        psalm: ~   
+        psalm: ~
         rector: ~
         robo: ~
         securitychecker_enlightn: ~
@@ -221,9 +221,9 @@ grumphp:
 services:
     My\Custom\Task:
         arguments:
-          - '@some.required.dependency'
+            - '@some.required.dependency'
         tags:
-          - {name: grumphp.task, task: defaultTaskName, priority: 0}
+            - {name: grumphp.task, task: defaultTaskName, priority: 0}
 ```
 
 You now registered your custom task! Pretty cool right?!
@@ -249,13 +249,13 @@ Configuration of the additional task will look like this:
 # grumphp.yml
 grumphp:
     tasks:
-        phpcsfixer2:
+        phpcsfixer:
             allow_risky: true
             path_mode: intersection
-        phpcsfixer2_typo3:
+        phpcsfixer_typo3:
             allow_risky: true
-            config: .typo3.php_cs
-            path_mode: intersection       
+            config: .typo3.php-cs-fixer.php
+            path_mode: intersection
             metadata:
-                task: phpcsfixer2
+                task: phpcsfixer
 ```

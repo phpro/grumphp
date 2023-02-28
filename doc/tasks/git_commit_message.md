@@ -133,19 +133,19 @@ Specify a list of acceptable types. Default allows ***all*** types.
 Add one or multiple types like:
 ```yaml
 type_scope_conventions:
-  types:
-    - build
-    - ci
-    - chore
-    - docs
-    - feat
-    - fix
-    - perf
-    - refactor
-    - revert
-    - style
-    - test
-  scopes: []
+    types:
+        - build
+        - ci
+        - chore
+        - docs
+        - feat
+        - fix
+        - perf
+        - refactor
+        - revert
+        - style
+        - test
+    scopes: []
 ```
 
 **scopes**
@@ -159,14 +159,14 @@ Specify a list of acceptable scopes. Default allows ***all*** scopes.
 Add one or multiple scopes like:
 ```yaml
 type_scope_conventions:
-  types: []
-  scopes:
-    - api
-    - index
-    - user
-    - language
-    - browser
-    - environment
+    types: []
+    scopes:
+        - api
+        - index
+        - user
+        - language
+        - browser
+        - environment
 ```
 
 **subject_pattern**
@@ -180,8 +180,8 @@ Specify a subject pattern. Default allows [a-zA-Z0-9-_ #@'\/\"]+ pattern.
 Add pattern like:
 ```yaml
 type_scope_conventions:
-  types: []
-  scopes: ~
-  subject_pattern: >-
-      ([a-zA-Zа-яА-Я0-9-_ #@'\/\"]+)
+    types: []
+    scopes: ~
+    subject_pattern: >-
+        ([a-zA-Zа-яА-Я0-9-_ #@'\/\"]+)
 ```

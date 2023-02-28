@@ -29,8 +29,8 @@ grumphp:
     tasks:
         shell:
             scripts:
-               - script.sh
-               - ["-c", "./bin/command arg1 arg2"]
+                - script.sh
+                - ["-c", "./bin/command arg1 arg2"]
 ```
 
 *Note:* When using the `-c` option, the next argument should contain the full executable with all parameters. Be careful: quotes will be escaped!

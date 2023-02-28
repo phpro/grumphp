@@ -32,10 +32,10 @@ Please note that reserved regex characters require proper escaping i.e. `"_GET\\
 
 This is a list of regex patterns that will filter files to validate. With this option you can skip files like tests. This option is used in relation with the parameter `triggered_by`.
 For example: whitelist files in `src/FolderA/` and `src/FolderB/` you can use 
-```yml
+```yaml
 whitelist_patterns:
-  - /^src\/FolderA\/(.*)/
-  - /^src\/FolderB\/(.*)/
+    - /^src\/FolderA\/(.*)/
+    - /^src\/FolderB\/(.*)/
 ```
 
 **triggered_by**

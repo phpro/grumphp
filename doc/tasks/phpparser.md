@@ -92,7 +92,7 @@ grumphp:
     tasks:
         phpparser:
             visitors:
-                forbidden_class_method_calls: 
+                forbidden_class_method_calls:
                     blacklist:
                         - '$dumper->dump'
 ```
@@ -116,8 +116,8 @@ grumphp:
     tasks:
         phpparser:
             visitors:
-                forbidden_function_calls: 
-                    blacklist: 
+                forbidden_function_calls:
+                    blacklist:
                         - 'var_dump'
 ```
 
@@ -141,7 +141,7 @@ grumphp:
     tasks:
         phpparser:
             visitors:
-                forbidden_static_method_calls: 
+                forbidden_static_method_calls:
                     blacklist:
                         - 'Dumper::dump'
 ```
@@ -181,7 +181,7 @@ grumphp:
     tasks:
         phpparser:
             visitors:
-                never_use_else: ~ 
+                never_use_else: ~
 ```
 
 This visitor is not configurable!
@@ -198,7 +198,7 @@ grumphp:
     tasks:
         phpparser:
             visitors:
-                no_exit_statements: ~ 
+                no_exit_statements: ~
 ```
 
 This visitor is not configurable!
@@ -225,10 +225,10 @@ Once you've written your visitor, you'll have to register it to the service cont
 ```yaml
 services:
     grumphp.parser.php.visitor.your_visitor:
-      class: 'Your\Visitor\Class'
-      arguments: []
-      tags:
-        - {name: 'php_parser.visitor', alias: 'your_visitor'}
+        class: 'Your\Visitor\Class'
+        arguments: []
+        tags:
+            - {name: 'php_parser.visitor', alias: 'your_visitor'}
 
 ```
 
@@ -236,13 +236,13 @@ Since we use the service container, you are able to inject the dependencies you 
 The `php_parser.visitor` tag will make your class available in GrumPHP.
 Tha alias `your_visitor` can now be set as a visitor in the phpparser task:
 
-```yml
+```yaml
 # grumphp.yml
 grumphp:
     tasks:
         phpparser:
             visitors:
-                your_visitor: ~ 
+                your_visitor: ~
 ```
 
 ### Stateless visitors
