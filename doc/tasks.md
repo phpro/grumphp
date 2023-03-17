@@ -229,6 +229,9 @@ services:
 You now registered your custom task! Pretty cool right?!
 
 
+❗**Note:** Be careful with adding dependencies to your task. When GrumPHP runs in parallel mode, the task and all of its dependencies get serialized in order to run in a separate process. This could lead to a delay when e.g. serializing a depenency container or lead to errors on unserializable objects. [More info](https://github.com/phpro/grumphp/issues/815)
+
+
 ## Testing your custom task.
 
 We provided some base phpunit classes which you can use to test your tasks.
