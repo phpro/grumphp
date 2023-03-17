@@ -13,6 +13,7 @@ Following versions are supported and will receive security updates depending on 
 ## Reporting a Vulnerability
 
 DO NOT PUBLISH SECURITY REPORTS PUBLICLY.
+
 (Since no-one is waiting for a zero-day vulnerability!)
 
 If you found any issues that might have security implications,
