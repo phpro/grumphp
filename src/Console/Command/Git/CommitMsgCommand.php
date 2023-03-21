@@ -6,7 +6,8 @@ namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\TestSuiteCollection;
-use GrumPHP\IO\ConsoleIO;
+use GrumPHP\IO\IOFactory;
+use GrumPHP\IO\IOInterface;
 use GrumPHP\Locator\ChangedFiles;
 use GrumPHP\Locator\StdInFiles;
 use GrumPHP\Runner\TaskRunner;
@@ -60,13 +61,16 @@ class CommitMsgCommand extends Command
      */
     private $paths;
 
+    private IOFactory $IOFactory;
+
     public function __construct(
         TestSuiteCollection $testSuites,
         StdInFiles $stdInFilesLocator,
         ChangedFiles $changedFilesLocator,
         TaskRunner $taskRunner,
         Filesystem $filesystem,
-        Paths $paths
+        Paths $paths,
+        IOFactory $IOFactory
     ) {
         parent::__construct();
 
@@ -76,6 +80,7 @@ class CommitMsgCommand extends Command
         $this->filesystem = $filesystem;
         $this->paths = $paths;
         $this->stdInFilesLocator = $stdInFilesLocator;
+        $this->IOFactory = $IOFactory;
     }
 
     public static function getDefaultName(): string
@@ -93,7 +98,7 @@ class CommitMsgCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new ConsoleIO($input, $output);
+        $io = $this->IOFactory->create($input, $output);
         $files = $this->getCommittedFiles($io);
 
         /** @var string $gitUser */
@@ -124,7 +129,7 @@ class CommitMsgCommand extends Command
         return $results->isFailed() ? self::EXIT_CODE_NOK : self::EXIT_CODE_OK;
     }
 
-    protected function getCommittedFiles(ConsoleIO $io): FilesCollection
+    protected function getCommittedFiles(IOInterface $io): FilesCollection
     {
         if ($stdin = $io->readCommandInput(STDIN)) {
             return $this->stdInFilesLocator->locate($stdin);

@@ -35,11 +35,12 @@ class GroupByPriorityMiddleware implements RunnerMiddlewareInterface
            ->groupByPriority();
 
         foreach ($grouped as $priority => $tasks) {
-            $this->IO->style()->title('Running tasks with priority '.$priority.'!');
+            $this->IO->startGroup('Running tasks with priority '.$priority.'!');
             $results = new TaskResultCollection(array_merge(
                 $results->toArray(),
                 $next($context->withTasks($tasks))->toArray()
             ));
+            $this->IO->endGroup();
 
             // Stop on failure:
             if ($this->config->stopOnFailure() && $results->isFailed()) {

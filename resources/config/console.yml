@@ -28,6 +28,7 @@ services:
             - '@GrumPHP\Locator\StdInFiles'
             - '@GrumPHP\Locator\RegisteredFiles'
             - '@GrumPHP\Runner\TaskRunner'
+            - '@GrumPHP\IO\IOFactory'
         tags:
             - { name: 'console.command' }
     GrumPHP\Console\Command\Git\CommitMsgCommand:
@@ -38,6 +39,7 @@ services:
             - '@GrumPHP\Runner\TaskRunner'
             - '@grumphp.util.filesystem'
             - '@GrumPHP\Util\Paths'
+            - '@GrumPHP\IO\IOFactory'
         tags:
             - { name: 'console.command' }
     GrumPHP\Console\Command\Git\DeInitCommand:
@@ -60,6 +62,7 @@ services:
             - '@GrumPHP\Locator\StdInFiles'
             - '@GrumPHP\Locator\ChangedFiles'
             - '@GrumPHP\Runner\TaskRunner'
+            - '@GrumPHP\IO\IOFactory'
         tags:
             - { name: 'console.command' }
 

@@ -34,4 +34,8 @@ interface IOInterface
     public function section(): ConsoleSectionOutput;
 
     public function colorize(array $messages, string $color): array;
+
+    public function startGroup(string $title): void;
+
+    public function endGroup(): void;
 }

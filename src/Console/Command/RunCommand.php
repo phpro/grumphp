@@ -6,7 +6,8 @@ namespace GrumPHP\Console\Command;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\TestSuiteCollection;
-use GrumPHP\IO\ConsoleIO;
+use GrumPHP\IO\IOFactory;
+use GrumPHP\IO\IOInterface;
 use GrumPHP\Locator\RegisteredFiles;
 use GrumPHP\Locator\StdInFiles;
 use GrumPHP\Runner\TaskRunner;
@@ -44,11 +45,14 @@ class RunCommand extends Command
      */
     private $taskRunner;
 
+    private IOFactory $IOFactory;
+
     public function __construct(
         TestSuiteCollection $testSuites,
         StdInFiles $stdInFileLocator,
         RegisteredFiles $registeredFilesLocator,
-        TaskRunner $taskRunner
+        TaskRunner $taskRunner,
+        IOFactory $IOFactory
     ) {
         parent::__construct();
 
@@ -56,6 +60,7 @@ class RunCommand extends Command
         $this->stdInFileLocator = $stdInFileLocator;
         $this->registeredFilesLocator = $registeredFilesLocator;
         $this->taskRunner = $taskRunner;
+        $this->IOFactory = $IOFactory;
     }
 
     public static function getDefaultName(): string
@@ -83,7 +88,7 @@ class RunCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new ConsoleIO($input, $output);
+        $io = $this->IOFactory->create($input, $output);
 
         /** @var string $taskNames */
         $taskNames = $input->getOption('tasks') ?? '';
@@ -107,7 +112,7 @@ class RunCommand extends Command
         return $results->isFailed() ? self::EXIT_CODE_NOK : self::EXIT_CODE_OK;
     }
 
-    private function detectFiles(ConsoleIO $io): FilesCollection
+    private function detectFiles(IOInterface $io): FilesCollection
     {
         if ($stdin = $io->readCommandInput(STDIN)) {
             return $this->stdInFileLocator->locate($stdin);

@@ -139,6 +139,15 @@ class ConsoleIO implements IOInterface
         );
     }
 
+    public function startGroup(string $title): void
+    {
+        $this->style()->title($title);
+    }
+
+    public function endGroup(): void
+    {
+    }
+
     /**
      * Serializing this IO will result in an unwritable resource stream.
      * Therefor we serialize the data end build up a new stream instead.

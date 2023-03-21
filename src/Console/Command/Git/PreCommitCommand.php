@@ -6,7 +6,8 @@ namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\TestSuiteCollection;
-use GrumPHP\IO\ConsoleIO;
+use GrumPHP\IO\IOFactory;
+use GrumPHP\IO\IOInterface;
 use GrumPHP\Locator\ChangedFiles;
 use GrumPHP\Locator\StdInFiles;
 use GrumPHP\Runner\TaskRunner;
@@ -46,11 +47,14 @@ class PreCommitCommand extends Command
      */
     private $taskRunner;
 
+    private IOFactory $IOFactory;
+
     public function __construct(
         TestSuiteCollection $testSuites,
         StdInFiles $stdInFilesLocator,
         ChangedFiles $changedFilesLocator,
-        TaskRunner $taskRunner
+        TaskRunner $taskRunner,
+        IOFactory $IOFactory
     ) {
         parent::__construct();
 
@@ -58,6 +62,7 @@ class PreCommitCommand extends Command
         $this->stdInFilesLocator = $stdInFilesLocator;
         $this->changedFilesLocator = $changedFilesLocator;
         $this->taskRunner = $taskRunner;
+        $this->IOFactory = $IOFactory;
     }
 
     public static function getDefaultName(): string
@@ -78,7 +83,7 @@ class PreCommitCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new ConsoleIO($input, $output);
+        $io = $this->IOFactory->create($input, $output);
         $files = $this->getCommittedFiles($io);
 
         $context = (
@@ -95,7 +100,7 @@ class PreCommitCommand extends Command
         return $results->isFailed() ? self::EXIT_CODE_NOK : self::EXIT_CODE_OK;
     }
 
-    protected function getCommittedFiles(ConsoleIO $io): FilesCollection
+    protected function getCommittedFiles(IOInterface $io): FilesCollection
     {
         if ($stdin = $io->readCommandInput(STDIN)) {
             return $this->stdInFilesLocator->locate($stdin);
