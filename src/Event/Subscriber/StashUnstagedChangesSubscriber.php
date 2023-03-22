@@ -97,14 +97,32 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
      */
     private function doSaveStash(): void
     {
-        $pending = $this->repository->getWorkingCopy()->getDiffPending();
-        if (!\count($pending->getFiles())) {
+        $hasPending = \count($this->repository->getWorkingCopy()->getDiffPending()->getFiles()) > 0;
+        $hasUntracked = \count($this->repository->getWorkingCopy()->getUntrackedFiles()) > 0;
+
+        if (!$hasPending && !$hasUntracked) {
             return;
         }
 
         try {
-            $this->io->write(['<fg=yellow>Detected unstaged changes... Stashing them!</fg=yellow>']);
-            $this->repository->run('stash', ['save', '--keep-index', uniqid('grumphp')]);
+            if ($hasPending && !$hasUntracked) {
+                $this->io->write(['<fg=yellow>Detected unstaged changes... Stashing them!</fg=yellow>']);
+            }
+
+            if (!$hasPending && $hasUntracked) {
+                $this->io->write(['<fg=yellow>Detected untracked files... Stashing them!</fg=yellow>']);
+            }
+
+            if ($hasPending && $hasUntracked) {
+                $this->io->write([
+                    '<fg=yellow>Detected unstaged changes and untracked files... Stashing them!</fg=yellow>',
+                ]);
+            }
+
+            $this->repository->run(
+                'stash',
+                ['save', '--keep-index', '--include-untracked', uniqid('grumphp')]
+            );
         } catch (Exception $e) {
             // No worries ...
             $this->io->write([sprintf('<fg=red>Failed stashing changes: %s</fg=red>', $e->getMessage())]);
