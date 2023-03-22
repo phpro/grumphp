@@ -75,7 +75,10 @@ You can resolve this problem by adding the following (or similar) to the compose
 
 ## Why is the unstaged file state being used?
 
-GrumPHP can only work with the actual files on the filesystem. This means that your unstaged changes will be staged when GrumPHP checks your codebase. It is possible to use the staged files by stashing your changes with the `ignore_unstaged_changes` parameter. Do note that this parameter is risky and won't work with partial commits. [More information can be found here](https://github.com/phpro/grumphp/blob/master/doc/parameters.md).
+GrumPHP can only work with the actual files on the filesystem.  
+This means that your unstaged changes will be staged when GrumPHP checks your codebase.  
+It is possible to use the staged files by stashing your changes with the `ignore_unstaged_changes` parameter.  
+Do note that this parameter is risky and won't work with partial commits. [More information can be found here](https://github.com/phpro/grumphp/blob/master/doc/parameters.md).
 
 [up](#table-of-content)
 
