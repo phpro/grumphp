@@ -27,6 +27,7 @@ class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
         $repository->getWorkingCopy()->willReturn($workingCopy);
         $workingCopy->getDiffPending()->willReturn($unstaged);
         $unstaged->getFiles()->willReturn(['file1.php']);
+        $workingCopy->getUntrackedFiles()->willReturn(['untracked.php']);
 
         $this->beConstructedWith($config, $repository, $io);
     }
@@ -105,6 +106,24 @@ class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
         $event = new RunnerEvent(new TasksCollection(), new GitPreCommitContext(new FilesCollection()), new TaskResultCollection());
 
         $repository->run('stash', Argument::containing('save'))->shouldBeCalled();
+
+        $this->saveStash($event);
+    }
+
+    function it_should_stash_changes_without_indexed_changes(GitRepository $repository)
+    {
+        $event = new RunnerEvent(new TasksCollection(), new GitPreCommitContext(new FilesCollection()), new TaskResultCollection());
+
+        $repository->run('stash', Argument::containing('--keep-index'))->shouldBeCalled();
+
+        $this->saveStash($event);
+    }
+
+    function it_should_stash_changes_with_untracked_files(GitRepository $repository)
+    {
+        $event = new RunnerEvent(new TasksCollection(), new GitPreCommitContext(new FilesCollection()), new TaskResultCollection());
+
+        $repository->run('stash', Argument::containing('--include-untracked'))->shouldBeCalled();
 
         $this->saveStash($event);
     }
