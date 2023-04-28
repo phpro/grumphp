@@ -14,6 +14,9 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractExternalTask<ProcessFormatterInterface>
+ */
 class Blacklist extends AbstractExternalTask
 {
     /**

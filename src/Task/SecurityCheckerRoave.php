@@ -14,6 +14,9 @@ use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Util\Filesystem;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractExternalTask<ProcessFormatterInterface>
+ */
 class SecurityCheckerRoave extends AbstractExternalTask
 {
     /** @var Filesystem */

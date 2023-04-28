@@ -14,6 +14,9 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
+/**
+ * @extends AbstractExternalTask<PhpCsFixerFormatter>
+ */
 class PhpCsFixer extends AbstractExternalTask
 {
     /**

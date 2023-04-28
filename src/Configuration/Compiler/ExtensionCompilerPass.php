@@ -9,6 +9,9 @@ use GrumPHP\Extension\ExtensionInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * @psalm-suppress UndefinedDocblockClass - PHP 8.0 Doesnt know enums
+ */
 class ExtensionCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void

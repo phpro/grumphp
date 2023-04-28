@@ -6,6 +6,7 @@ namespace GrumPHP\Task;
 
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Fixer\Provider\FixableProcessResultProvider;
+use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
@@ -14,6 +15,9 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
+/**
+ * @extends AbstractExternalTask<ProcessFormatterInterface>
+ */
 class Stylelint extends AbstractExternalTask
 {
     public static function getConfigurableOptions(): OptionsResolver

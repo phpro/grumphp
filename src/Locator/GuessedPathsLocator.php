@@ -9,6 +9,9 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Util\ComposerFile;
 use GrumPHP\Util\Filesystem;
 
+/**
+ * @psalm-suppress RedundantCast - We don't want to blindly assume variables in $_SERVER are from the string type.
+ */
 class GuessedPathsLocator
 {
     /**
