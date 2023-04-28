@@ -23,6 +23,8 @@ final class Str
     /**
      * Split $value on ",", trim the individual parts and
      * de-deduplicate the remaining values
+     *
+     * @param non-empty-string $delimiter
      */
     public static function explodeWithCleanup(string $delimiter, string $value): array
     {

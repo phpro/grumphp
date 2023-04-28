@@ -260,7 +260,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
         // Loop on process until it exits normally.
         do {
             $status = proc_get_status($process);
-        } while ($status && $status['running']);
+        } while ($status['running']);
 
         $exitCode = $status['exitcode'] ?? -1;
         proc_close($process);

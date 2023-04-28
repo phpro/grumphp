@@ -15,6 +15,9 @@ use GrumPHP\Util\Filesystem;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use SplFileInfo;
 
+/**
+ * @extends AbstractExternalTask<ProcessFormatterInterface>
+ */
 class Composer extends AbstractExternalTask
 {
     /**

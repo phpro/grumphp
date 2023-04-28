@@ -19,6 +19,14 @@ use Traversable;
 class FilesCollection extends ArrayCollection
 {
     /**
+     * @param \Traversable<array-key, \SplFileInfo> $iterator
+     */
+    public static function fromTraversable(\Traversable $iterator): FilesCollection
+    {
+        return new self(array_values(iterator_to_array($iterator)));
+    }
+
+    /**
      * Adds a rule that files must match.
      *
      * You can use a pattern (delimited with / sign), a glob or a simple string.
@@ -47,7 +55,7 @@ class FilesCollection extends ArrayCollection
     {
         $filter = new Iterator\FilenameFilterIterator($this->getIterator(), $patterns, []);
 
-        return new self([...$filter]);
+        return self::fromTraversable($filter);
     }
 
     /**
@@ -63,7 +71,7 @@ class FilesCollection extends ArrayCollection
     {
         $filter = new Iterator\FilenameFilterIterator($this->getIterator(), [], [$pattern]);
 
-        return new self([...$filter]);
+        return self::fromTraversable($filter);
     }
 
     /**
@@ -80,12 +88,14 @@ class FilesCollection extends ArrayCollection
      * Filter by paths.
      *
      * $collection->paths(['/^spec\/','/^src\/'])
+     *
+     * @psalm-suppress ArgumentTypeCoercion - Works on int, \SplFileInfo as well
      */
     public function paths(array $patterns): self
     {
         $filter = new Iterator\PathFilterIterator($this->getIterator(), $patterns, []);
 
-        return new self([...$filter]);
+        return self::fromTraversable($filter);
     }
 
     /**
@@ -106,12 +116,14 @@ class FilesCollection extends ArrayCollection
      * You can use patterns (delimited with / sign) or simple strings.
      *
      * $collection->notPaths(['/^spec\/','/^src\/'])
+     *
+     * @psalm-suppress ArgumentTypeCoercion - Works on int, \SplFileInfo as well
      */
     public function notPaths(array $pattern): self
     {
         $filter = new Iterator\PathFilterIterator($this->getIterator(), [], $pattern);
 
-        return new self([...$filter]);
+        return self::fromTraversable($filter);
     }
 
     public function extensions(array $extensions): self
@@ -139,7 +151,7 @@ class FilesCollection extends ArrayCollection
         $comparator = new Comparator\NumberComparator($size);
         $filter = new Iterator\SizeRangeFilterIterator($this->getIterator(), [$comparator]);
 
-        return new self([...$filter]);
+        return self::fromTraversable($filter);
     }
 
     /**
@@ -161,7 +173,7 @@ class FilesCollection extends ArrayCollection
         $comparator = new Comparator\DateComparator($date);
         $filter = new Iterator\DateRangeFilterIterator($this->getIterator(), [$comparator]);
 
-        return new self([...$filter]);
+        return self::fromTraversable($filter);
     }
 
     /**
@@ -182,14 +194,17 @@ class FilesCollection extends ArrayCollection
     {
         $filter = new Iterator\CustomFilterIterator($this->getIterator(), [$p]);
 
-        return new self([...$filter]);
+        return self::fromTraversable($filter);
     }
 
+    /**
+     * @param Traversable<array-key, SplFileInfo> $fileList
+     */
     public function filterByFileList(Traversable $fileList): FilesCollection
     {
         $allowedFiles = array_map(function (SplFileInfo $file) {
             return $file->getPathname();
-        }, [...$fileList]);
+        }, iterator_to_array($fileList));
 
         return $this->filter(function (SplFileInfo $file) use ($allowedFiles) {
             return \in_array($file->getPathname(), $allowedFiles, true);

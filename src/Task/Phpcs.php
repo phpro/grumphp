@@ -8,6 +8,7 @@ use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Exception\ExecutableNotFoundException;
 use GrumPHP\Fixer\Provider\FixableProcessResultProvider;
 use GrumPHP\Formatter\PhpcsFormatter;
+use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\TmpFileUsingProcessRunner;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
@@ -18,6 +19,9 @@ use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
+/**
+ * @extends AbstractExternalTask<ProcessFormatterInterface>
+ */
 class Phpcs extends AbstractExternalTask
 {
     /**

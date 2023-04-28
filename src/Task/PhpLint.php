@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\InputWritingProcessRunner;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
@@ -13,6 +14,9 @@ use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
+/**
+ * @extends AbstractExternalTask<ProcessFormatterInterface>
+ */
 class PhpLint extends AbstractExternalTask
 {
     public static function getConfigurableOptions(): OptionsResolver

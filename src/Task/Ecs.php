@@ -7,6 +7,7 @@ namespace GrumPHP\Task;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Fixer\Provider\FixableProcessResultProvider;
+use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
@@ -16,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
 
 /**
- * Ecs task.
+ * @extends AbstractExternalTask<ProcessFormatterInterface>
  */
 class Ecs extends AbstractExternalTask
 {

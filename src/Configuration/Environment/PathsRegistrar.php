@@ -38,6 +38,8 @@ class PathsRegistrar
 
     /**
      * Detect which path variable name is being used
+     *
+     * @return non-empty-string
      */
     private static function pathVarName(): string
     {
@@ -54,6 +56,9 @@ class PathsRegistrar
         return $pathStr;
     }
 
+    /**
+     * @psalm-suppress PossiblyInvalidCast - Not sure what's going on, should be always OK.
+     */
     private static function pathContainsDir(string $dir): bool
     {
         return (bool) preg_match(
