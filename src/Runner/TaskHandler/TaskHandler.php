@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GrumPHP\Runner\TaskHandler;
 
 use Amp\Future;
+use GrumPHP\Runner\StopOnFailure;
 use GrumPHP\Runner\TaskHandler\Middleware\TaskHandlerMiddlewareInterface;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
@@ -14,7 +15,7 @@ use GrumPHP\Task\TaskInterface;
 class TaskHandler
 {
     /**
-     * @var callable(TaskInterface, TaskRunnerContext): Future<TaskResultInterface>
+     * @var callable(TaskInterface, TaskRunnerContext, StopOnFailure): Future<TaskResultInterface>
      * @var callable
      */
     private $stack;
@@ -38,14 +39,14 @@ class TaskHandler
     /**
      * @return Future<TaskResultInterface>
      */
-    public function handle(TaskInterface $task, TaskRunnerContext $runnerContext): Future
+    public function handle(TaskInterface $task, TaskRunnerContext $runnerContext, StopOnFailure $stopOnFailure): Future
     {
-        return ($this->stack)($task, $runnerContext);
+        return ($this->stack)($task, $runnerContext, $stopOnFailure);
     }
 
     /**
      * @param TaskHandlerMiddlewareInterface[] $handlers
-     * @return callable(TaskInterface, TaskRunnerContext): Future<TaskResultInterface>
+     * @return callable(TaskInterface, TaskRunnerContext, StopOnFailure): Future<TaskResultInterface>
      */
     private function createStack(array $handlers): callable
     {
@@ -54,12 +55,13 @@ class TaskHandler
         while ($handler = array_pop($handlers)) {
             $lastCallable = static function (
                 TaskInterface $task,
-                TaskRunnerContext $runnerContext
+                TaskRunnerContext $runnerContext,
+                StopOnFailure $stopOnFailure
             ) use (
                 $handler,
                 $lastCallable
             ) : Future {
-                return $handler->handle($task, $runnerContext, $lastCallable);
+                return $handler->handle($task, $runnerContext, $stopOnFailure, $lastCallable);
             };
         }
 
@@ -67,7 +69,7 @@ class TaskHandler
     }
 
     /**
-     * @return callable(TaskInterface, TaskRunnerContext): Future<TaskResultInterface>
+     * @return callable(TaskInterface, TaskRunnerContext, StopOnFailure): Future<TaskResultInterface>
      */
     private function fail(): callable
     {

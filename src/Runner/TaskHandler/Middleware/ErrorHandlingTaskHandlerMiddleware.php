@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Runner\TaskHandler\Middleware;
 
+use GrumPHP\Runner\StopOnFailure;
 use function Amp\async;
 use Amp\Future;
 use GrumPHP\Exception\PlatformException;
@@ -17,6 +18,7 @@ class ErrorHandlingTaskHandlerMiddleware implements TaskHandlerMiddlewareInterfa
     public function handle(
         TaskInterface $task,
         TaskRunnerContext $runnerContext,
+        StopOnFailure $stopOnFailure,
         callable $next
     ): Future {
         return async(

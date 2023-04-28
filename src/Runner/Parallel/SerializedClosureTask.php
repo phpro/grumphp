@@ -16,7 +16,7 @@ class SerializedClosureTask implements Task
     /**
      * @param (\Closure(): T) $closure
      */
-    public function __construct(
+    private function __construct(
         private string $serializedClosure
     ) {
     }
@@ -28,7 +28,7 @@ class SerializedClosureTask implements Task
      */
     public static function fromClosure(\Closure $closure): self
     {
-        return new self(serialize(SerializableClosure::unsigned($closure)));
+        return new self(serialize(new SerializableClosure($closure)));
     }
 
     /**
@@ -36,16 +36,22 @@ class SerializedClosureTask implements Task
      */
     public function run(Channel $channel, Cancellation $cancellation): mixed
     {
-        $callable = \unserialize($this->serializedClosure, ['allowed_classes' => true]);
+        $unserialized = \unserialize($this->serializedClosure, ['allowed_classes' => true]);
 
-        if ($callable instanceof \__PHP_Incomplete_Class) {
-            throw new \Error('When using a class instance as a callable, the class must be autoloadable');
+        if ($unserialized instanceof \__PHP_Incomplete_Class) {
+            throw new \Error(
+                'When using a class instance as a callable, the class must be autoloadable'
+            );
         }
 
-        if (!is_object($callable) || !is_callable($callable)) {
-            throw new \Error('This task can only deal with serialized Closures. You passed '.get_debug_type($callable));
+        if (!$unserialized instanceof SerializableClosure) {
+            throw new \Error(
+                'This task can only deal with serialized closures. You passed '.get_debug_type($unserialized)
+            );
         }
 
-        return $callable();
+        $closure = $unserialized->getClosure();
+
+        return $closure();
     }
 }

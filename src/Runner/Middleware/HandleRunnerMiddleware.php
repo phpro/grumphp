@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace GrumPHP\Runner\Middleware;
 
+use Amp\CancelledException;
 use Amp\Future;
 use GrumPHP\Configuration\Model\RunnerConfig;
-use function Amp\async;
+use GrumPHP\Runner\StopOnFailure;
 use function Amp\Future\await;
 use GrumPHP\Collection\TaskResultCollection;
-use GrumPHP\Runner\Promise\MultiPromise;
 use GrumPHP\Runner\TaskHandler\TaskHandler;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Runner\TaskRunnerContext;
@@ -35,16 +35,30 @@ class HandleRunnerMiddleware implements RunnerMiddlewareInterface
 
     public function handle(TaskRunnerContext $context, callable $next): TaskResultCollection
     {
-        // TODO : CANCELLATION based on return $this->config->stopOnFailure() && $result->isBlocking();
+        $stopOnFailure = StopOnFailure::createFromConfig($this->config);
 
-        return new TaskResultCollection(
-            await(
-                array_map(
-                    /** @return Future<TaskResultInterface> */
-                    fn (TaskInterface $task): Future => $this->taskHandler->handle($task, $context),
-                    $context->getTasks()->toArray()
-                )
-            )
+        $futures = array_map(
+            /** @return Future<TaskResultInterface> */
+            fn (TaskInterface $task): Future => $this->taskHandler->handle($task, $context, $stopOnFailure),
+            $context->getTasks()->toArray()
         );
+
+        try {
+            return new TaskResultCollection(
+                await($futures, $stopOnFailure->cancellation())
+            );
+        } catch (CancelledException $e) {
+            return array_reduce(
+                $futures,
+                static function (TaskResultCollection $result, Future $future): TaskResultCollection {
+                    if ($future->isComplete()) {
+                        $result->add($future->await());
+                    }
+
+                    return $result;
+                },
+                new TaskResultCollection()
+            );
+        }
     }
 }

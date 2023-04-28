@@ -58,6 +58,10 @@ services:
     #
     # Task handler middleware
     #
+    GrumPHP\Runner\TaskHandler\Middleware\StopOnFailureTaskHandlerMiddleware:
+        arguments: []
+        tags:
+            - { name: 'grumphp.task_handler', priority: 1250 }
     GrumPHP\Runner\TaskHandler\Middleware\EventDispatchingTaskHandlerMiddleware:
         arguments:
             - '@GrumPHP\Event\Dispatcher\Bridge\SymfonyEventDispatcher'
@@ -81,7 +85,6 @@ services:
         arguments:
             - '@GrumPHP\Configuration\Model\ParallelConfig'
             - '@GrumPHP\Runner\Parallel\PoolFactory'
-            - '@grumphp.io'
         tags:
             - { name: 'grumphp.task_handler', priority: 150 }
     GrumPHP\Runner\TaskHandler\Middleware\ErrorHandlingTaskHandlerMiddleware:

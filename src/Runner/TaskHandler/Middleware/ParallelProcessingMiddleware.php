@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace GrumPHP\Runner\TaskHandler\Middleware;
 
-use GrumPHP\IO\IOInterface;
 use GrumPHP\Runner\Parallel\SerializedClosureTask;
+use GrumPHP\Runner\StopOnFailure;
+use GrumPHP\Runner\TaskResultInterface;
 use function Amp\async;
 use Amp\Future;
 use GrumPHP\Configuration\Model\ParallelConfig;
@@ -25,41 +26,34 @@ class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
      */
     private $poolFactory;
 
-    /**
-     * @var IOInterface
-     */
-    private $IO;
-
-    public function __construct(ParallelConfig $config, PoolFactory $poolFactory, IOInterface $IO)
+    public function __construct(ParallelConfig $config, PoolFactory $poolFactory)
     {
         $this->poolFactory = $poolFactory;
         $this->config = $config;
-        $this->IO = $IO;
     }
 
-    public function handle(TaskInterface $task, TaskRunnerContext $runnerContext, callable $next): Future
-    {
+    public function handle(
+        TaskInterface $task,
+        TaskRunnerContext $runnerContext,
+        StopOnFailure $stopOnFailure,
+        callable $next
+    ): Future {
         if (!$this->config->isEnabled()) {
-            return async(static fn () => $next($task, $runnerContext)->await());
+            return async(static fn () => $next($task, $runnerContext, $stopOnFailure)->await());
         }
 
         $currentEnv = $_ENV;
-
         $worker = $this->poolFactory->createShared();
         $execution = $worker->submit(
             SerializedClosureTask::fromClosure(
-                static function () use ($task, $runnerContext, $next) {
-                    // TODO : pass down $_ENV = array_merge($parentEnv, $_ENV); ?
-                    $result = $next($task, $runnerContext)->await();
+                static function () use ($task, $runnerContext, $next, $currentEnv): TaskResultInterface {
+                    $_ENV = array_merge($currentEnv, $_ENV);
 
-                    return $result;
+                    return $next($task, $runnerContext, StopOnFailure::dummy())->await();
                 }
-            )
+            ),
+            $stopOnFailure->cancellation()
         );
-
-        // TODO : pass down cancellation?
-        // TODO : wrap error handling inside closure?
-        // TODO : wrap error handling outside closure?
 
         return $execution->getFuture();
     }
