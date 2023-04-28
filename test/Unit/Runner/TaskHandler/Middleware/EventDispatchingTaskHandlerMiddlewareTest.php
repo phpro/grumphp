@@ -9,6 +9,7 @@ use GrumPHP\Event\TaskEvent;
 use GrumPHP\Event\TaskEvents;
 use GrumPHP\Event\TaskFailedEvent;
 use GrumPHP\Exception\RuntimeException;
+use GrumPHP\Runner\StopOnFailure;
 use GrumPHP\Runner\TaskHandler\Middleware\EventDispatchingTaskHandlerMiddleware;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
@@ -48,7 +49,7 @@ class EventDispatchingTaskHandlerMiddlewareTest extends AbstractTaskHandlerMiddl
         $expectedResult = TaskResult::createPassed($task, $taskContext);
         $next = $this->createNextResultCallback($expectedResult);
 
-        $promise = $this->middleware->handle($task, $context, $next);
+        $promise = $this->middleware->handle($task, $context, StopOnFailure::dummy(), $next);
         $actualResult = $this->resolve($promise);
 
         self::assertSame($actualResult, $expectedResult);
@@ -78,7 +79,7 @@ class EventDispatchingTaskHandlerMiddlewareTest extends AbstractTaskHandlerMiddl
         $expectedResult = TaskResult::createSkipped($task, $taskContext);
         $next = $this->createNextResultCallback($expectedResult);
 
-        $promise = $this->middleware->handle($task, $context, $next);
+        $promise = $this->middleware->handle($task, $context, StopOnFailure::dummy(), $next);
         $actualResult = $this->resolve($promise);
 
         self::assertSame($actualResult, $expectedResult);
@@ -108,7 +109,7 @@ class EventDispatchingTaskHandlerMiddlewareTest extends AbstractTaskHandlerMiddl
         $expectedResult = TaskResult::createFailed($task, $taskContext, 'error');
         $next = $this->createNextResultCallback($expectedResult);
 
-        $promise = $this->middleware->handle($task, $context, $next);
+        $promise = $this->middleware->handle($task, $context, StopOnFailure::dummy(), $next);
         $actualResult = $this->resolve($promise);
 
         self::assertSame($actualResult, $expectedResult);

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace GrumPHPTest\Unit\Runner\Parallel;
 
-use Amp\Parallel\Worker\Pool;
+use Amp\Parallel\Worker\ContextWorkerPool;
+use Amp\Parallel\Worker\WorkerPool;
 use GrumPHP\Configuration\Model\ParallelConfig;
 use GrumPHP\Runner\Parallel\PoolFactory;
 use PHPUnit\Framework\TestCase;
@@ -15,9 +16,13 @@ class PoolFactoryTest extends TestCase
     public function it_can_create_pool(): void
     {
         $config = new ParallelConfig($enabled = true, $maxSize = 10);
-        $pool = (new PoolFactory($config))->create();
+        $factory = new PoolFactory($config);
+        $pool1 = $factory->createShared();
+        $pool2 = $factory->createShared();
 
-        self::assertInstanceOf(Pool::class, $pool);
-        self::assertSame($maxSize, $pool->getMaxSize());
+        self::assertInstanceOf(ContextWorkerPool::class, $pool1);
+        self::assertInstanceOf(ContextWorkerPool::class, $pool2);
+        self::assertSame($maxSize, $pool1->getLimit());
+        self::assertSame($pool1, $pool2);
     }
 }

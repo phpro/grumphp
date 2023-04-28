@@ -8,6 +8,7 @@ use GrumPHP\Event\TaskEvent;
 use GrumPHP\Event\TaskEvents;
 use GrumPHP\Event\TaskFailedEvent;
 use GrumPHP\Runner\Reporting\TaskResultsReporter;
+use GrumPHP\Runner\StopOnFailure;
 use GrumPHP\Runner\TaskHandler\Middleware\ReportingTaskHandlerMiddleware;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Test\Runner\AbstractTaskHandlerMiddlewareTestCase;
@@ -46,7 +47,7 @@ class ReportingTaskHandlerMiddlewareTest extends AbstractTaskHandlerMiddlewareTe
         $expectedResult = TaskResult::createPassed($task, $taskContext);
         $next = $this->createNextResultCallback($expectedResult);
 
-        $promise = $this->middleware->handle($task, $context, $next);
+        $promise = $this->middleware->handle($task, $context, StopOnFailure::dummy(), $next);
         $actualResult = $this->resolve($promise);
 
         self::assertSame($actualResult, $expectedResult);

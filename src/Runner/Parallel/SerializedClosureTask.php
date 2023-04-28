@@ -9,12 +9,16 @@ use Amp\Sync\Channel;
 use Laravel\SerializableClosure\SerializableClosure;
 
 /**
- * @template T
+ * @template-covariant TResult
+ * @template TReceive
+ * @template TSend
+ *
+ * @implements Task<TResult, TReceive, TSend>
  */
 class SerializedClosureTask implements Task
 {
     /**
-     * @param (\Closure(): T) $closure
+     * @param (\Closure(): TResult) $closure
      */
     private function __construct(
         private string $serializedClosure
@@ -22,9 +26,12 @@ class SerializedClosureTask implements Task
     }
 
     /**
-     * @template O
-     * @param \Closure(): O $closure
-     * @return self<O>
+     * @template CResult
+     * @template CReceive
+     * @template CSend
+     *
+     * @param (\Closure(): CResult) $closure
+     * @return self<CResult, CReceive, CSend>
      */
     public static function fromClosure(\Closure $closure): self
     {
@@ -32,7 +39,7 @@ class SerializedClosureTask implements Task
     }
 
     /**
-     * @return T
+     * @return TResult
      */
     public function run(Channel $channel, Cancellation $cancellation): mixed
     {

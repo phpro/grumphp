@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Test\Runner;
 
-use Amp\Failure;
-use Amp\Promise;
-use Amp\Success;
+use Amp\Future;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Config\Metadata;
 use GrumPHP\Task\Config\TaskConfig;
@@ -14,27 +12,26 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\TaskInterface;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
-use function Amp\Promise\wait;
 
 abstract class AbstractTaskHandlerMiddlewareTestCase extends AbstractMiddlewareTestCase
 {
     protected function createNextResultCallback(TaskResultInterface $taskResult): callable
     {
         return static function () use ($taskResult) {
-            return new Success($taskResult);
+            return Future::complete($taskResult);
         };
     }
 
     protected function createExceptionCallback(\Throwable $exception): callable
     {
         return static function () use ($exception) {
-            return new Failure($exception);
+            return Future::error($exception);
         };
     }
 
-    protected function resolve(Promise $promise): TaskResultInterface
+    protected function resolve(Future $promise): TaskResultInterface
     {
-        return wait($promise);
+        return $promise->await();
     }
 
     protected function mockTaskRun(string $name, callable $runWillDo): TaskInterface

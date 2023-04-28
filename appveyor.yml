@@ -11,13 +11,10 @@ platform:
 
 environment:
   matrix:
-# TODO : NOT AVAILABLE YET !
-#    - dependencies: highest
-#      php_version: 8.2
+    - dependencies: highest
+      php_version: 8.2
     - dependencies: highest
       php_version: 8.1
-    - dependencies: highest
-      php_version: 8.0
 
   project_directory: c:\projects\grumphp
   composer_directory: c:\tools\composer
