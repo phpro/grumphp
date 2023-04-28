@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace GrumPHP\Runner\TaskHandler\Middleware;
 
-use GrumPHP\Exception\ParallelException;
 use GrumPHP\IO\IOInterface;
-use function Amp\call;
-use function Amp\ParallelFunctions\parallel;
-use Amp\Promise;
-use function Amp\Promise\wait;
+use GrumPHP\Runner\Parallel\SerializedClosureTask;
+use function Amp\async;
+use Amp\Future;
 use GrumPHP\Configuration\Model\ParallelConfig;
 use GrumPHP\Runner\Parallel\PoolFactory;
-use GrumPHP\Runner\TaskResult;
-use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\TaskInterface;
 
@@ -41,61 +37,30 @@ class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
         $this->IO = $IO;
     }
 
-    public function handle(TaskInterface $task, TaskRunnerContext $runnerContext, callable $next): Promise
+    public function handle(TaskInterface $task, TaskRunnerContext $runnerContext, callable $next): Future
     {
         if (!$this->config->isEnabled()) {
-            return $next($task, $runnerContext);
+            return async(static fn () => $next($task, $runnerContext)->await());
         }
 
         $currentEnv = $_ENV;
 
-        /**
-         * This method creates a callable that can be used to enqueue to run the task in parallel.
-         * The result is wrapped in a serializable closure
-         * to make sure all information inside the task can be serialized.
-         * This implies that the result of the parallel command is another callable that will return the task result.
-         *
-         * The factory is wrapped in another close to make sure the error handling picks up the factory exceptions.
-         *
-         * @var callable(): Promise<TaskResultInterface> $enqueueParallelTask
-         */
-        $enqueueParallelTask = function () use ($task, $runnerContext, $next, $currentEnv): Promise {
-            return parallel(
-                static function (array $parentEnv) use ($task, $runnerContext, $next): TaskResultInterface {
-                    $_ENV = array_merge($parentEnv, $_ENV);
-                    /** @var TaskResultInterface $result */
-                    $result = wait($next($task, $runnerContext));
+        $worker = $this->poolFactory->createShared();
+        $execution = $worker->submit(
+            SerializedClosureTask::fromClosure(
+                static function () use ($task, $runnerContext, $next) {
+                    // TODO : pass down $_ENV = array_merge($parentEnv, $_ENV); ?
+                    $result = $next($task, $runnerContext)->await();
 
                     return $result;
-                },
-                $this->poolFactory->create()
-            )($currentEnv);
-        };
-
-        return call(
-            /**
-             * @return \Generator<mixed, Promise<TaskResultInterface>, mixed, TaskResultInterface>
-             */
-            function () use ($enqueueParallelTask, $task, $runnerContext): \Generator {
-                try {
-                    $result = yield $enqueueParallelTask();
-                } catch (\Throwable $error) {
-                    return TaskResult::createFailed(
-                        $task,
-                        $runnerContext->getTaskContext(),
-                        $this->wrapException($error)->getMessage()
-                    );
                 }
-
-                return $result;
-            }
+            )
         );
-    }
 
-    private function wrapException(\Throwable $error): ParallelException
-    {
-        return $this->IO->isVerbose()
-            ? ParallelException::fromVerboseThrowable($error)
-            : ParallelException::fromThrowable($error);
+        // TODO : pass down cancellation?
+        // TODO : wrap error handling inside closure?
+        // TODO : wrap error handling outside closure?
+
+        return $execution->getFuture();
     }
 }

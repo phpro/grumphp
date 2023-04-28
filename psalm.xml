@@ -18,8 +18,4 @@
             <file name="src/Parser/Php/Visitor/AbstractVisitor.php" />
         </ignoreFiles>
     </projectFiles>
-
-    <stubs>
-        <file name="stubs/Amp.php"/>
-    </stubs>
 </psalm>
