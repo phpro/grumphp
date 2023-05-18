@@ -12,5 +12,14 @@ DIFF=$(git -c diff.mnemonicprefix=false -c diff.noprefix=false --no-pager diff -
 $(ENV)
 export GRUMPHP_GIT_WORKING_DIR="$(git rev-parse --show-toplevel)"
 
-# Run GrumPHP
-(cd "${HOOK_EXEC_PATH}" && printf "%s\n" "${DIFF}" | $(EXEC_GRUMPHP_COMMAND) $(HOOK_COMMAND) '--skip-success-output')
+# Add path to devenv (if available)
+export PATH="$HOME/.nix-profile/bin:$PATH"
+
+# Check if devenv command is available
+if command -v devenv >/dev/null 2>&1; then
+  # Run GrumPHP inside devenv shell
+  (cd "${HOOK_EXEC_PATH}" && printf "%s\n" "${DIFF}" | devenv shell $(EXEC_GRUMPHP_COMMAND) $(HOOK_COMMAND) '--skip-success-output')
+else
+  # Run GrumPHP without devenv
+  (cd "${HOOK_EXEC_PATH}" && printf "%s\n" "${DIFF}" | $(EXEC_GRUMPHP_COMMAND) $(HOOK_COMMAND) '--skip-success-output')
+fi
