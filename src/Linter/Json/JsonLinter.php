@@ -62,6 +62,9 @@ class JsonLinter implements LinterInterface
         $this->detectKeyConflicts = $detectKeyConflicts;
     }
 
+    /**
+     * @return int-mask-of<JsonParser::*>
+     */
     private function calculateFlags(): int
     {
         $flags = 0;

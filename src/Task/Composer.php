@@ -8,6 +8,7 @@ use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
+use GrumPHP\Task\Config\ConfigOptionsResolver;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -34,7 +35,7 @@ class Composer extends AbstractExternalTask
         $this->filesystem = $filesystem;
     }
 
-    public static function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): ConfigOptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -55,7 +56,7 @@ class Composer extends AbstractExternalTask
         $resolver->addAllowedTypes('with_dependencies', ['bool']);
         $resolver->addAllowedTypes('strict', ['bool']);
 
-        return $resolver;
+        return ConfigOptionsResolver::fromOptionsResolver($resolver);
     }
 
     public function canRunInContext(ContextInterface $context): bool

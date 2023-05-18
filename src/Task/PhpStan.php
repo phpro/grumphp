@@ -7,6 +7,7 @@ namespace GrumPHP\Task;
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
+use GrumPHP\Task\Config\ConfigOptionsResolver;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -17,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PhpStan extends AbstractExternalTask
 {
-    public static function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): ConfigOptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -51,7 +52,7 @@ class PhpStan extends AbstractExternalTask
         $resolver->addAllowedTypes('triggered_by', ['array']);
         $resolver->addAllowedTypes('use_grumphp_paths', ['bool']);
 
-        return $resolver;
+        return ConfigOptionsResolver::fromOptionsResolver($resolver);
     }
 
     /**

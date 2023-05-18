@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace GrumPHP\Runner\TaskHandler\Middleware;
 
+use GrumPHP\Exception\ParallelException;
+use GrumPHP\IO\IOInterface;
 use GrumPHP\Runner\Parallel\SerializedClosureTask;
 use GrumPHP\Runner\StopOnFailure;
+use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use function Amp\async;
 use Amp\Future;
@@ -16,20 +19,18 @@ use GrumPHP\Task\TaskInterface;
 
 class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
 {
-    /**
-     * @var ParallelConfig
-     */
-    private $config;
+    private ParallelConfig $config;
+    private PoolFactory $poolFactory;
+    private IOInterface $IO;
 
-    /**
-     * @var PoolFactory
-     */
-    private $poolFactory;
-
-    public function __construct(ParallelConfig $config, PoolFactory $poolFactory)
-    {
+    public function __construct(
+        ParallelConfig $config,
+        PoolFactory $poolFactory,
+        IOInterface $IO
+    ) {
         $this->poolFactory = $poolFactory;
         $this->config = $config;
+        $this->IO = $IO;
     }
 
     public function handle(
@@ -55,6 +56,23 @@ class ParallelProcessingMiddleware implements TaskHandlerMiddlewareInterface
             $stopOnFailure->cancellation()
         );
 
-        return $execution->getFuture();
+        return async(function () use ($task, $runnerContext, $execution): TaskResultInterface {
+            try {
+                return $execution->getFuture()->await();
+            } catch (\Throwable $exception) {
+                return TaskResult::createFailed(
+                    $task,
+                    $runnerContext->getTaskContext(),
+                    $this->wrapException($exception)->getMessage()
+                );
+            }
+        });
+    }
+
+    private function wrapException(\Throwable $error): ParallelException
+    {
+        return $this->IO->isVerbose()
+            ? ParallelException::fromVerboseThrowable($error)
+            : ParallelException::fromThrowable($error);
     }
 }

@@ -207,11 +207,4 @@ class ESLintTest extends AbstractExternalTaskTestCase
             ]
         ];
     }
-
-    /**
-     * @test
-     */
-    public function it_triggers_deprecation_on_null() {
-        self::assertTrue(ESLint::getConfigurableOptions()->isDeprecated('whitelist_patterns'));
-    }
 }

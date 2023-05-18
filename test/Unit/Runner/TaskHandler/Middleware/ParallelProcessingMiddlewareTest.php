@@ -34,6 +34,7 @@ class ParallelProcessingMiddlewareTest extends AbstractTaskHandlerMiddlewareTest
         $this->middleware = new ParallelProcessingMiddleware(
             $config = new ParallelConfig($enabled = false, $maxSize = 10),
             new PoolFactory($config),
+            $this->mockIO()
         );
     }
 

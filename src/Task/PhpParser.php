@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Task\Config\ConfigOptionsResolver;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -24,17 +25,16 @@ class PhpParser extends AbstractParserTask
      */
     protected $parser;
 
-    public static function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): ConfigOptionsResolver
     {
-        $resolver = parent::getConfigurableOptions();
-
+        $resolver = self::sharedOptionsResolver();
         $resolver->setDefaults([
             'triggered_by' => ['php'],
             'kind' => self::KIND_PHP7,
             'visitors' => [],
         ]);
 
-        return $resolver;
+        return ConfigOptionsResolver::fromOptionsResolver($resolver);
     }
 
     public function canRunInContext(ContextInterface $context): bool

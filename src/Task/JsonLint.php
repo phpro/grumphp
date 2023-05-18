@@ -8,6 +8,7 @@ use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Linter\Json\JsonLinter;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
+use GrumPHP\Task\Config\ConfigOptionsResolver;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -23,16 +24,16 @@ class JsonLint extends AbstractLinterTask
      */
     protected $linter;
 
-    public static function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): ConfigOptionsResolver
     {
-        $resolver = parent::getConfigurableOptions();
+        $resolver = self::sharedOptionsResolver();
         $resolver->setDefaults([
             'detect_key_conflicts' => false,
         ]);
 
         $resolver->addAllowedTypes('detect_key_conflicts', ['bool']);
 
-        return $resolver;
+        return ConfigOptionsResolver::fromOptionsResolver($resolver);
     }
 
     /**
