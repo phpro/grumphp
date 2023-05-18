@@ -148,7 +148,6 @@ class XmlLinter implements LinterInterface
         }
 
         // Do not validate external DTDs if the loadFromNet option is disabled:
-        /** @psalm-suppress UndefinedPropertyFetch - Should bet here on PHP 8.0 as well. */
         $systemId = $document->doctype->systemId;
         if (filter_var($systemId, FILTER_VALIDATE_URL) && !$this->loadFromNet) {
             return true;

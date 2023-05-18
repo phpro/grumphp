@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace GrumPHPTest\Unit\Runner\TaskHandler;
 
-use Amp\Promise;
-use Amp\Success;
+use Amp\Future;
 use GrumPHP\Collection\FilesCollection;
-use GrumPHP\Collection\TaskResultCollection;
+use GrumPHP\Runner\StopOnFailure;
 use GrumPHP\Runner\TaskHandler\Middleware\TaskHandlerMiddlewareInterface;
 use GrumPHP\Runner\TaskHandler\TaskHandler;
 use GrumPHP\Runner\TaskResult;
@@ -18,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use function Amp\Promise\wait;
 
 class TaskHandlerTest extends TestCase
 {
@@ -28,7 +26,7 @@ class TaskHandlerTest extends TestCase
     public function it_has_a_default_fallback_middleware(): void
     {
         $stack = new TaskHandler();
-        $result = wait($stack->handle($task = $this->createTask(), $context = $this->createContext()));
+        $result = $stack->handle($task = $this->createTask(), $context = $this->createContext(), StopOnFailure::dummy())->await();
 
         self::assertEquals(
             TaskResult::createFailed($task, $context->getTaskContext(), 'Task could not be handled by a task handler!'),
@@ -44,20 +42,20 @@ class TaskHandlerTest extends TestCase
         $expectedResult = TaskResult::createPassed($task, $context->getTaskContext());
 
         $stack = new TaskHandler(
-            $this->createMiddleware(function (TaskInterface $task, TaskRunnerContext $context, callable $next): Promise {
-                return $next($task, $context);
+            $this->createMiddleware(function (TaskInterface $task, TaskRunnerContext $context, StopOnFailure $stopOnFailure, callable $next): Future {
+                return $next($task, $context, $stopOnFailure);
             }),
-            $this->createMiddleware(function (TaskInterface $task, TaskRunnerContext $context, callable $next) use (
+            $this->createMiddleware(function (TaskInterface $task, TaskRunnerContext $context, StopOnFailure $stopOnFailure, callable $next) use (
                 $expectedResult
-            ): Promise {
-                return new Success($expectedResult);
+            ): Future {
+                return Future::complete($expectedResult);
             }),
-            $this->createMiddleware(function (TaskInterface $task, TaskRunnerContext $context, callable $next): Promise {
-                return $next($task, $context);
+            $this->createMiddleware(function (TaskInterface $task, TaskRunnerContext $context, StopOnFailure $stopOnFailure, callable $next): Future {
+                return $next($task, $context, $stopOnFailure);
             })
         );
 
-        $result = wait($stack->handle($task, $context));
+        $result = $stack->handle($task, $context, StopOnFailure::dummy())->await();
 
 
         self::assertSame($expectedResult, $result);
@@ -68,7 +66,7 @@ class TaskHandlerTest extends TestCase
     {
         /** @var ObjectProphecy|TaskHandlerMiddlewareInterface $middleware */
         $middleware = $this->prophesize(TaskHandlerMiddlewareInterface::class);
-        $middleware->handle(Argument::cetera())->will(function ($arguments) use ($run): Promise {
+        $middleware->handle(Argument::cetera())->will(function ($arguments) use ($run): Future {
             return $run(...$arguments);
         });
 

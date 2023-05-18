@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GrumPHPTest\Unit\Runner\TaskHandler\Middleware;
 
 use GrumPHP\Exception\PlatformException;
+use GrumPHP\Runner\StopOnFailure;
 use GrumPHP\Runner\TaskHandler\Middleware\NonBlockingTaskHandlerMiddleware;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Test\Runner\AbstractTaskHandlerMiddlewareTestCase;
@@ -33,7 +34,7 @@ class NonBlockingTaskHandlerMiddlewareTest extends AbstractTaskHandlerMiddleware
         $expectedResult = TaskResult::createPassed($task, $taskContext);
         $next = $this->createNextResultCallback($expectedResult);
 
-        $promise = $this->middleware->handle($task, $context, $next);
+        $promise = $this->middleware->handle($task, $context, StopOnFailure::dummy(), $next);
         $actualResult = $this->resolve($promise);
 
         self::assertSame($expectedResult, $actualResult);
@@ -48,7 +49,7 @@ class NonBlockingTaskHandlerMiddlewareTest extends AbstractTaskHandlerMiddleware
         $expectedResult = TaskResult::createSkipped($task, $taskContext);
         $next = $this->createNextResultCallback($expectedResult);
 
-        $promise = $this->middleware->handle($task, $context, $next);
+        $promise = $this->middleware->handle($task, $context, StopOnFailure::dummy(), $next);
         $actualResult = $this->resolve($promise);
 
         self::assertSame($expectedResult, $actualResult);
@@ -63,7 +64,7 @@ class NonBlockingTaskHandlerMiddlewareTest extends AbstractTaskHandlerMiddleware
         $expectedResult = TaskResult::createFailed($task, $taskContext, 'error');
         $next = $this->createNextResultCallback($expectedResult);
 
-        $promise = $this->middleware->handle($task, $context, $next);
+        $promise = $this->middleware->handle($task, $context, StopOnFailure::dummy(), $next);
         $actualResult = $this->resolve($promise);
 
         self::assertSame($expectedResult, $actualResult);
@@ -78,7 +79,7 @@ class NonBlockingTaskHandlerMiddlewareTest extends AbstractTaskHandlerMiddleware
         $taskResult = TaskResult::createFailed($task, $taskContext, 'error');
         $next = $this->createNextResultCallback($taskResult);
 
-        $promise = $this->middleware->handle($task, $context, $next);
+        $promise = $this->middleware->handle($task, $context, StopOnFailure::dummy(), $next);
         $actualResult = $this->resolve($promise);
 
         self::assertNotSame($taskResult, $actualResult);

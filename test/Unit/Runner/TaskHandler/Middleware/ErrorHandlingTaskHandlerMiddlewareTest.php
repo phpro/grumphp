@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GrumPHPTest\Unit\Runner\TaskHandler\Middleware;
 
 use GrumPHP\Exception\PlatformException;
+use GrumPHP\Runner\StopOnFailure;
 use GrumPHP\Runner\TaskHandler\Middleware\ErrorHandlingTaskHandlerMiddleware;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Test\Runner\AbstractTaskHandlerMiddlewareTestCase;
@@ -33,7 +34,7 @@ class ErrorHandlingTaskHandlerMiddlewareTest extends AbstractTaskHandlerMiddlewa
         });
         $next = $this->createNextShouldNotBeCalledCallback();
 
-        $promise = $this->middleware->handle($task, $context, $next);
+        $promise = $this->middleware->handle($task, $context, StopOnFailure::dummy(), $next);
         $actualResult = $this->resolve($promise);
 
         self::assertSame($task, $actualResult->getTask());
@@ -50,7 +51,7 @@ class ErrorHandlingTaskHandlerMiddlewareTest extends AbstractTaskHandlerMiddlewa
         });
         $next = $this->createNextShouldNotBeCalledCallback();
 
-        $promise = $this->middleware->handle($task, $context, $next);
+        $promise = $this->middleware->handle($task, $context, StopOnFailure::dummy(), $next);
         $actualResult = $this->resolve($promise);
 
         self::assertSame($task, $actualResult->getTask());
@@ -68,7 +69,7 @@ class ErrorHandlingTaskHandlerMiddlewareTest extends AbstractTaskHandlerMiddlewa
         });
         $next = $this->createNextShouldNotBeCalledCallback();
 
-        $promise = $this->middleware->handle($task, $context, $next);
+        $promise = $this->middleware->handle($task, $context, StopOnFailure::dummy(), $next);
         $actualResult = $this->resolve($promise);
 
         self::assertSame($task, $actualResult->getTask());

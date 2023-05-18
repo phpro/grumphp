@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace GrumPHP\Runner\TaskHandler\Middleware;
 
-use function Amp\call;
-use Amp\Promise;
+use GrumPHP\Runner\StopOnFailure;
+use function Amp\async;
+use Amp\Future;
 use GrumPHP\Event\Dispatcher\EventDispatcherInterface;
 use GrumPHP\Event\TaskEvent;
 use GrumPHP\Event\TaskEvents;
@@ -27,18 +28,18 @@ class EventDispatchingTaskHandlerMiddleware implements TaskHandlerMiddlewareInte
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function handle(TaskInterface $task, TaskRunnerContext $runnerContext, callable $next): Promise
-    {
-        return call(
-            /**
-             * @return \Generator<mixed, Promise<TaskResultInterface>, mixed, TaskResultInterface>
-             */
-            function () use ($task, $runnerContext, $next): \Generator {
+    public function handle(
+        TaskInterface $task,
+        TaskRunnerContext $runnerContext,
+        StopOnFailure $stopOnFailure,
+        callable $next
+    ): Future {
+        return async(
+            function () use ($task, $runnerContext, $stopOnFailure, $next): TaskResultInterface {
                 $taskContext = $runnerContext->getTaskContext();
                 $this->eventDispatcher->dispatch(new TaskEvent($task, $taskContext), TaskEvents::TASK_RUN);
 
-                /** @var TaskResultInterface $result */
-                $result = yield $next($task, $runnerContext);
+                $result = $next($task, $runnerContext, $stopOnFailure)->await();
 
                 if ($result->isSkipped()) {
                     $this->eventDispatcher->dispatch(new TaskEvent($task, $taskContext), TaskEvents::TASK_SKIPPED);

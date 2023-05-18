@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GrumPHPTest\Unit\Runner\TaskHandler\Middleware;
 
 use GrumPHP\Runner\MemoizedTaskResultMap;
+use GrumPHP\Runner\StopOnFailure;
 use GrumPHP\Runner\TaskHandler\Middleware\MemoizedResultsTaskHandlerMiddleware;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Test\Runner\AbstractTaskHandlerMiddlewareTestCase;
@@ -40,7 +41,7 @@ class MemoizedResultsTaskHandlerMiddlewareTest extends AbstractTaskHandlerMiddle
         $task = $this->mockTask('task');
         $next = $this->createNextResultCallback($expectedResult = TaskResult::createPassed($task, $taskContext));
 
-        $promise = $this->middleware->handle($task, $context, $next);
+        $promise = $this->middleware->handle($task, $context, StopOnFailure::dummy(), $next);
         $actualResult = $this->resolve($promise);
 
         self::assertSame($expectedResult, $actualResult);
@@ -54,7 +55,7 @@ class MemoizedResultsTaskHandlerMiddlewareTest extends AbstractTaskHandlerMiddle
         $task = $this->mockTask('task');
         $next = $this->createExceptionCallback($excetion = new \Exception('error'));
 
-        $promise = $this->middleware->handle($task, $context, $next);
+        $promise = $this->middleware->handle($task, $context, StopOnFailure::dummy(), $next);
         $actualResult = $this->resolve($promise);
 
         self::assertSame($task, $actualResult->getTask());

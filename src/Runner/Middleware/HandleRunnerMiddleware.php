@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace GrumPHP\Runner\Middleware;
 
-use GrumPHP\Configuration\Model\RunnerConfig;
-use function Amp\call;
 use Amp\CancelledException;
-use Amp\LazyPromise;
-use Amp\MultiReasonException;
-use function Amp\Promise\wait;
+use Amp\Future;
+use GrumPHP\Configuration\Model\RunnerConfig;
+use GrumPHP\Runner\StopOnFailure;
+use function Amp\Future\await;
 use GrumPHP\Collection\TaskResultCollection;
-use GrumPHP\Runner\Promise\MultiPromise;
 use GrumPHP\Runner\TaskHandler\TaskHandler;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Runner\TaskRunnerContext;
@@ -37,55 +35,30 @@ class HandleRunnerMiddleware implements RunnerMiddlewareInterface
 
     public function handle(TaskRunnerContext $context, callable $next): TaskResultCollection
     {
-        return new TaskResultCollection(
-            wait(
-                /**
-                 * @return \Generator<mixed, mixed, mixed, TaskResultInterface[]>
-                 */
-                call(function () use ($context): \Generator {
-                    /**
-                     * @var \Throwable[] $errors
-                     * @var TaskResultInterface[] $results
-                     * @psalm-suppress InvalidArrayAccess
-                     * @psalm-suppress InvalidArrayOffset
-                     */
-                    [$errors, $results] = yield MultiPromise::cancelable(
-                        $this->handleTasks($context),
-                        function (TaskResultInterface $result) {
-                            return $this->config->stopOnFailure() && $result->isBlocking();
-                        }
-                    );
+        $stopOnFailure = StopOnFailure::createFromConfig($this->config);
 
-                    // Filter out canceled items:
-                    $errors = array_filter($errors, function (\Throwable $error): bool {
-                        return !$error instanceof CancelledException;
-                    });
-
-                    if ($errors) {
-                        throw new MultiReasonException($errors);
-                    }
-
-                    return $results;
-                })
-            )
-        );
-    }
-
-    /**
-     * @return array<int, LazyPromise<TaskResultInterface>>
-     */
-    private function handleTasks(TaskRunnerContext $context): array
-    {
-        return array_map(
-            /**
-             * @return LazyPromise<TaskResultInterface>
-             */
-            function (TaskInterface $task) use ($context) : LazyPromise {
-                return new LazyPromise(function () use ($task, $context) {
-                    return $this->taskHandler->handle($task, $context);
-                });
-            },
+        $futures = array_map(
+            /** @return Future<TaskResultInterface> */
+            fn (TaskInterface $task): Future => $this->taskHandler->handle($task, $context, $stopOnFailure),
             $context->getTasks()->toArray()
         );
+
+        try {
+            return new TaskResultCollection(
+                await($futures, $stopOnFailure->cancellation())
+            );
+        } catch (CancelledException $e) {
+            return array_reduce(
+                $futures,
+                static function (TaskResultCollection $result, Future $future): TaskResultCollection {
+                    if ($future->isComplete()) {
+                        $result->add($future->await());
+                    }
+
+                    return $result;
+                },
+                new TaskResultCollection()
+            );
+        }
     }
 }

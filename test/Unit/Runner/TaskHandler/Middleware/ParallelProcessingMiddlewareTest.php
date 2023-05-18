@@ -7,6 +7,7 @@ namespace GrumPHPTest\Unit\Runner\TaskHandler\Middleware;
 use GrumPHP\Configuration\Model\ParallelConfig;
 use GrumPHP\Runner\Parallel\PoolFactory;
 use GrumPHP\Runner\Reporting\TaskResultsReporter;
+use GrumPHP\Runner\StopOnFailure;
 use GrumPHP\Runner\TaskHandler\Middleware\ParallelProcessingMiddleware;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Test\Runner\AbstractTaskHandlerMiddlewareTestCase;
@@ -33,7 +34,6 @@ class ParallelProcessingMiddlewareTest extends AbstractTaskHandlerMiddlewareTest
         $this->middleware = new ParallelProcessingMiddleware(
             $config = new ParallelConfig($enabled = false, $maxSize = 10),
             new PoolFactory($config),
-            $this->mockIO()
         );
     }
 
@@ -46,7 +46,7 @@ class ParallelProcessingMiddlewareTest extends AbstractTaskHandlerMiddlewareTest
         $expectedResult = TaskResult::createPassed($task, $taskContext);
         $next = $this->createNextResultCallback($expectedResult);
 
-        $promise = $this->middleware->handle($task, $context, $next);
+        $promise = $this->middleware->handle($task, $context, StopOnFailure::dummy(), $next);
         $actualResult = $this->resolve($promise);
 
         self::assertSame($actualResult, $expectedResult);
