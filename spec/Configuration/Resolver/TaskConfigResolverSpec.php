@@ -2,6 +2,7 @@
 
 namespace spec\GrumPHP\Configuration\Resolver;
 
+use GrumPHP\Task\Config\ConfigOptionsResolver;
 use const GrumPHP\Exception\TaskConfigResolverException;
 use GrumPHP\Exception\TaskConfigResolverException;
 use GrumPHP\Runner\TaskResult;
@@ -25,8 +26,8 @@ class TaskConfigResolverSpec extends ObjectBehavior
     {
         $this->shouldHaveType(TaskConfigResolver::class);
     }
-    
-    public function it_can_last_task_names(): void
+
+    public function it_can_list_task_names(): void
     {
         $this->beConstructedWith([
             'task1' => get_class($this->mockTask()),
@@ -44,15 +45,12 @@ class TaskConfigResolverSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_fetches_resolver_for_task_only_once(): void
+    public function it_fetches_resolver_for_task(): void
     {
         $task1 = $this->mockTask();
         $this->beConstructedWith([$taskName = 'task1' => get_class($task1)]);
-        $result = $this->fetchByName($taskName);
-        $result->shouldBeLike($task1::getConfigurableOptions());
-
-        $result2 = $this->fetchByName($taskName);
-        $result2->shouldBe($result);
+        $result = $this->fetchByName($taskName)->resolve([]);
+        $result->shouldBeLike($task1::getConfigurableOptions()->resolve([]));
     }
 
     public function it_fails_when_task_is_unknown(): void
@@ -75,11 +73,11 @@ class TaskConfigResolverSpec extends ObjectBehavior
     {
         return new class implements TaskInterface
         {
-            public static function getConfigurableOptions(): OptionsResolver
+            public static function getConfigurableOptions(): ConfigOptionsResolver
             {
                 $options = new OptionsResolver();
                 $options->setDefault('class', static::class);
-                return $options;
+                return ConfigOptionsResolver::fromOptionsResolver($options);
             }
 
             public function canRunInContext(ContextInterface $context): bool

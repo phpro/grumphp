@@ -45,7 +45,7 @@ abstract class AbstractParserTask implements TaskInterface
         }
     }
 
-    public static function getConfigurableOptions(): OptionsResolver
+    protected static function sharedOptionsResolver(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([

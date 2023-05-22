@@ -12,6 +12,7 @@ use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Process\TmpFileUsingProcessRunner;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
+use GrumPHP\Task\Config\ConfigOptionsResolver;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -29,7 +30,7 @@ class Phpcs extends AbstractExternalTask
      */
     protected $formatter;
 
-    public static function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): ConfigOptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -64,7 +65,7 @@ class Phpcs extends AbstractExternalTask
         $resolver->addAllowedTypes('exclude', ['array']);
         $resolver->addAllowedTypes('show_sniffs_error_path', ['bool']);
 
-        return $resolver;
+        return ConfigOptionsResolver::fromOptionsResolver($resolver);
     }
 
     public function canRunInContext(ContextInterface $context): bool

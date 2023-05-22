@@ -8,6 +8,7 @@ use Gitonomy\Git\Exception\ProcessException;
 use GrumPHP\Git\GitRepository;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
+use GrumPHP\Task\Config\ConfigOptionsResolver;
 use GrumPHP\Task\Config\EmptyTaskConfig;
 use GrumPHP\Task\Config\TaskConfigInterface;
 use GrumPHP\Task\Context\ContextInterface;
@@ -48,7 +49,7 @@ class BranchName implements TaskInterface
         return $this->config;
     }
 
-    public static function getConfigurableOptions(): OptionsResolver
+    public static function getConfigurableOptions(): ConfigOptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -63,7 +64,7 @@ class BranchName implements TaskInterface
         $resolver->addAllowedTypes('additional_modifiers', ['string']);
         $resolver->addAllowedTypes('allow_detached_head', ['bool']);
 
-        return $resolver;
+        return ConfigOptionsResolver::fromOptionsResolver($resolver);
     }
 
     public function canRunInContext(ContextInterface $context): bool
@@ -104,14 +105,14 @@ class BranchName implements TaskInterface
 
             $additionalModifiersArray = array_filter(str_split($config['additional_modifiers']));
             array_map([$regex, 'addPatternModifier'], $additionalModifiersArray);
-            
+
             if (preg_match((string) $regex, $name)) {
                 if ($isBlacklisted) {
                     $errors[] = sprintf('Matched whitelist rule: %s (IGNORED due to presence in blacklist)', $rule);
-                    
+
                     continue;
                 }
-                
+
                 return TaskResult::createPassed($this, $context);
             }
 

@@ -197,7 +197,7 @@ When your task is written, you have to register it to the service manager and ad
 
 interface TaskInterface
 {
-    public static function getConfigurableOptions(): OptionsResolver;
+    public static function getConfigurableOptions(): ConfigOptionsResolver;
     public function canRunInContext(ContextInterface $context): bool;
     public function run(ContextInterface $context): TaskResultInterface;
     public function getConfig(): TaskConfigInterface;
@@ -205,7 +205,7 @@ interface TaskInterface
 }
 ```
 
-* `getConfigurableOptions`: This method has to return all configurable options for the task.
+* `getConfigurableOptions`: This method has to return all configurable options for the task. 
 * `canRunInContext`: Tells GrumPHP if it can run in `pre-commit`, `commit-msg` or `run` context.
 * `run`: Executes the task and returns a result
 * `getConfig`: Provides the resolved configuration for the task or an empty config for newly instantiated tasks.
@@ -230,6 +230,21 @@ You now registered your custom task! Pretty cool right?!
 
 
 ❗**Note:** Be careful with adding dependencies to your task. When GrumPHP runs in parallel mode, the task and all of its dependencies get serialized in order to run in a separate process. This could lead to a delay when e.g. serializing a depenency container or lead to errors on unserializable objects. [More info](https://github.com/phpro/grumphp/issues/815)
+
+❗**Note:** You can use Symfony's options-resolver to help configure the options for your task. However, if you want your task to work together with the `grumphp-shim` (phar) distribution, you will have to make sure to use `ConfigOptionsResolver::fromClosure()` This is because the Symfony's options-resolver gets scoped in the phar. Example:
+
+```php
+public static function getConfigurableOptions(): ConfigOptionsResolver
+{
+    $resolver = new OptionsResolver();
+
+    // ..... your config
+
+    return ConfigOptionsResolver::fromClosure(
+        static fn (array $options): array => $resolver->resolve($options)
+    );
+}
+```
 
 
 ## Testing your custom task.
