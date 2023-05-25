@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Configuration\Compiler;
 
+use GrumPHP\Configuration\LoaderFactory;
 use GrumPHP\Exception\RuntimeException;
 use GrumPHP\Extension\ExtensionInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -13,6 +14,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
+        $loader = LoaderFactory::createLoader($container);
         $extensions = $container->getParameter('extensions');
         $extensions = \is_array($extensions) ? $extensions : [];
         foreach ($extensions as $extensionClass) {
@@ -28,7 +30,9 @@ class ExtensionCompilerPass implements CompilerPassInterface
                 ));
             }
 
-            $extension->load($container);
+            foreach ($extension->imports() as $import) {
+                $loader->load($import);
+            }
         }
     }
 }

@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace GrumPHP\Configuration;
 
 use GrumPHP\Util\Filesystem;
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class ContainerBuilder
 {
@@ -30,7 +28,7 @@ final class ContainerBuilder
 
         // Load basic service file + custom user configuration
         $configDir = dirname(__DIR__, 2).$filesystem->ensureValidSlashes('/resources/config');
-        $loader = new YamlFileLoader($container, new FileLocator($configDir));
+        $loader = LoaderFactory::createLoader($container, [$configDir]);
         $loader->load('config.yml');
         $loader->load('console.yml');
         $loader->load('fixer.yml');

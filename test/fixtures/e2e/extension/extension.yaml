@@ -1,0 +1,6 @@
+services:
+  GrumPHPE2E\SuccessfulTask:
+    class: GrumPHPE2E\SuccessfulTask
+    arguments: []
+    tags:
+      - { name: grumphp.task, task: success }

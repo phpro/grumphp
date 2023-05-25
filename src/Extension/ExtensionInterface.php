@@ -4,13 +4,21 @@ declare(strict_types=1);
 
 namespace GrumPHP\Extension;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 /**
- * Interface ExtensionInterface is used for GrumPHP extensions to interface
- * with GrumPHP through the service container.
+ * Registers your own GrumPHP.
  */
 interface ExtensionInterface
 {
-    public function load(ContainerBuilder $container): void;
+    /**
+     * Return a list of additional symfony/conso:e service imports that
+     * GrumPHP needs to perform after loading all internal configurations.
+     *
+     * We support following loaders: YAML, XML, INI, GLOB, DIR
+     *
+     * More info
+     * @link https://symfony.com/doc/current/service_container.html
+     *
+     * @return iterable<string>
+     */
+    public function imports(): iterable;
 }

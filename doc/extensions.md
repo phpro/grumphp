@@ -1,8 +1,9 @@
 # Extensions
 
-You will probably have some custom tasks or event listeners that are not included in the default GrumPHP project.
+You might have [a custom tasks](tasks.md#creating-a-custom-task)
+ or [event listeners](runner.md#events) that is not included in the default GrumPHP project.
 It is possible to group this additional GrumPHP configuration in an extension. 
-This way you can easily create your own extension package and load it whenever you need it.
+This way you can centralize this custom logic in your own extension package and load it wherever you need it.
 
 The configuration looks like this:
 
@@ -13,9 +14,15 @@ grumphp:
         - My\Project\GrumPHPExtension
 ```
 
-The configured extension class needs to implement `ExtensionInterface`. 
-Now you can register the tasks and events from your own package in the service container of GrumPHP.
-For example:
+The configured extension class needs to implement `GrumPHP\Extension\ExtensionInterface`.
+Since GrumPHP is using the [symfony/dependency-injection](https://symfony.com/doc/current/service_container.html) internally to configure all resources,
+a GrumPHP extension can append multiple configuration files to the container configuration.
+
+We support following loaders: YAML, XML, INI, GLOB, DIR.
+*Note:* We don't support the PHP or CLOSURE loaders to make sure your extension is compatible with our grumphp-shim PHAR distribution.
+All dependencies get scoped with a random prefix in the PHAR, making these loaders not usable in there.
+
+Example extension:
 
 ```php
 <?php
@@ -24,13 +31,29 @@ namespace My\Project;
 use GrumPHP\Extension\ExtensionInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class GrumPHPExtension implements ExtensionInterface
+class MyAwesomeGrumPHPExtension implements ExtensionInterface
 {
-    public function load(ContainerBuilder $container)
+    public function imports(): iterable
     {
-        // Register your own stuff to the container!
+        $configDir = dirname(__DIR).'/config';
+    
+        yield $configDir.'/my-extension.yaml';
+        yield $configDir.'/my-extension.xml';
+        yield $configDir.'/my-extension.ini';
+        yield $configDir.'/my-extension/*';
     }
 }
+```
+
+Example config file in which you enable a custom task:
+
+```yaml
+# my-extension.yaml
+services:
+  My\CustomTask:
+    arguments: []
+    tags:
+      - {name: grumphp.task, task: myCustomTask}
 ```
 
 # Third Party Extensions
