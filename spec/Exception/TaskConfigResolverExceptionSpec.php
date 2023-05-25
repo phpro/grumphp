@@ -29,11 +29,4 @@ class TaskConfigResolverExceptionSpec extends ObjectBehavior
         $this->beConstructedThrough('unknownClass', [$class = 'SomeClass']);
         $this->getMessage()->shouldContain($class);
     }
-
-    public function it_handles_deprecated_task(): void
-    {
-        $this->beConstructedThrough('deprectatedTask', [$task = 'taskName']);
-        $this->getMessage()->shouldContain($task);
-        $this->getMessage()->shouldContain('https://github.com/phpro/grumphp/blob/master/doc/tasks.md#creating-a-custom-task');
-    }
 }

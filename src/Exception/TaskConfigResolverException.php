@@ -23,15 +23,4 @@ class TaskConfigResolverException extends RuntimeException
             )
         );
     }
-
-    public static function deprectatedTask(string $taskName): self
-    {
-        return new self(
-            'Your configuration contains an old task implementation for "'.$taskName.'".' . PHP_EOL
-            . 'This task cannot be used in current setup.' . PHP_EOL
-            . 'Please upgrade your extension(s) or fall back to a previous version of GrumPHP.' . PHP_EOL
-            . 'More information about the new task system: '. PHP_EOL
-            . 'https://github.com/phpro/grumphp/blob/master/doc/tasks.md#creating-a-custom-task' . PHP_EOL . PHP_EOL
-        );
-    }
 }
