@@ -162,7 +162,7 @@ abstract class AbstractE2ETestCase extends TestCase
             $version = trim($process->getOutput());
         }
 
-        return 'dev-'.$version;
+        return 'dev-'.$version.'@dev';
     }
 
     protected function mergeComposerConfig(string $composerFile, array $config, $recursive = true)
@@ -291,6 +291,34 @@ abstract class AbstractE2ETestCase extends TestCase
                         ],
                     ]
                 ]
+            ],
+        ]);
+    }
+
+    protected function enableCustomExtension(string $grumphpFile, string $projectDir)
+    {
+        $e2eDir = $this->ensureGrumphpE2eTasksDir($projectDir);
+        $this->dumpFile(
+            $e2eDir.'/SuccessfulTask.php',
+            file_get_contents(TEST_BASE_PATH.'/fixtures/e2e/tasks/SuccessfulTask.php')
+        );
+        $this->dumpFile(
+            $e2eDir.'/ValidateExtension.php',
+            file_get_contents(TEST_BASE_PATH.'/fixtures/e2e/extension/ValidateExtension.php')
+        );
+        $this->dumpFile(
+            $e2eDir.'/extension.yaml',
+            file_get_contents(TEST_BASE_PATH.'/fixtures/e2e/extension/extension.yaml')
+        );
+
+        $this->mergeGrumphpConfig($grumphpFile, [
+            'grumphp' => [
+                'extensions' => [
+                    \GrumPHPE2E\ValidateExtension::class,
+                ],
+                'tasks' => [
+                    'success' => [],
+                ],
             ],
         ]);
     }
