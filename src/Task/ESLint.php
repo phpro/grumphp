@@ -55,19 +55,6 @@ class ESLint extends AbstractExternalTask
         $resolver->addAllowedTypes('no_eslintrc', ['bool']);
         $resolver->addAllowedTypes('quiet', ['bool']);
 
-        $resolver->setDeprecated(
-            'whitelist_patterns',
-            'phpro/grumphp',
-            '1.14',
-            function (Options $options, mixed $value): string {
-                if (null === $value) {
-                    return 'Parsing "null" to option "whitelist_patterns" is deprecated, pass an array instead.';
-                }
-
-                return '';
-            }
-        );
-
         return ConfigOptionsResolver::fromOptionsResolver($resolver);
     }
 

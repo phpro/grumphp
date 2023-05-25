@@ -15,8 +15,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TaskCompilerPass implements CompilerPassInterface
@@ -92,29 +90,12 @@ class TaskCompilerPass implements CompilerPassInterface
         if (null === $taskTagResolver) {
             $taskTagResolver = new OptionsResolver();
 
-            // Instead of required task param : use this to enable the fallback for the deprecated tasks.
-            $taskTagResolver->setDefined(['task', 'aliasFor', 'priority']);
+            $taskTagResolver->setRequired(['task']);
+            $taskTagResolver->setDefined(['aliasFor', 'priority']);
             $taskTagResolver->setAllowedTypes('task', ['string']);
             $taskTagResolver->setAllowedTypes('aliasFor', ['string', 'null']);
             $taskTagResolver->setAllowedTypes('priority', ['int']);
-            $taskTagResolver->setDefault('task', '');
             $taskTagResolver->setDefault('priority', 0);
-            $taskTagResolver->setNormalizer('task', static function (Options $options, ?string $value) {
-                if (!$value && !$options->offsetExists('config')) {
-                    throw new MissingOptionsException('The required option "task" is missing.');
-                }
-
-                return $value;
-            });
-
-            // Clean fallback for installation with old tasks.
-            $taskTagResolver->setDefined('config');
-            $taskTagResolver->setNormalizer(
-                'config',
-                static function (Options $options, string $value) {
-                    throw TaskConfigResolverException::deprectatedTask($value);
-                }
-            );
         }
 
         return $taskTagResolver->resolve($tag);
