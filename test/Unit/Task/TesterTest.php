@@ -37,6 +37,8 @@ class TesterTest extends AbstractExternalTaskTestCase
                 'colors' => null,
                 'coverage' => null,
                 'coverage_src' => null,
+                'php_ini_configuration_path' => null,
+                'default_php_ini_configuration' => false,
             ]
         ];
     }
@@ -253,6 +255,29 @@ class TesterTest extends AbstractExternalTaskTestCase
                 '.',
                 '--coverage-src',
                 'coverageSrdFile',
+            ]
+        ];
+        yield 'php_ini_configuration_path' => [
+            [
+                'php_ini_configuration_path' => 'customPhpIniFile',
+            ],
+            $this->mockContext(RunContext::class, ['helloTest.php', 'hello2Test.php']),
+            'tester',
+            [
+                '.',
+                '-c',
+                'customPhpIniFile',
+            ]
+        ];
+        yield 'default_php_ini_configuration' => [
+            [
+                'default_php_ini_configuration' => true,
+            ],
+            $this->mockContext(RunContext::class, ['helloTest.php', 'hello2Test.php']),
+            'tester',
+            [
+                '.',
+                '-C',
             ]
         ];
     }
