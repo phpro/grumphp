@@ -50,7 +50,7 @@ class Tester extends AbstractExternalTask
         $resolver->addAllowedTypes('colors', ['null', 'int']);
         $resolver->addAllowedTypes('coverage', ['null', 'string']);
         $resolver->addAllowedTypes('coverage_src', ['null', 'string']);
-        $resolver->addAllowedTypes('php_ini_configuration_path',  ['null', 'string']);
+        $resolver->addAllowedTypes('php_ini_configuration_path', ['null', 'string']);
         $resolver->addAllowedTypes('default_php_ini_configuration', ['bool']);
 
         return ConfigOptionsResolver::fromOptionsResolver($resolver);
