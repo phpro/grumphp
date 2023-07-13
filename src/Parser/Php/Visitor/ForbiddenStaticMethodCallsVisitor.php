@@ -41,7 +41,10 @@ class ForbiddenStaticMethodCallsVisitor extends AbstractVisitor implements Confi
             return;
         }
 
-        $class = implode('\\', $node->class->getParts());
+        $class = implode(
+            '\\',
+            method_exists($node->class, 'getParts') ? $node->class->getParts() : $node->class->parts
+        );
         $method = $node->name;
         $normalized = sprintf('%s::%s', $class, $method);
 
