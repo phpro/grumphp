@@ -37,11 +37,16 @@ class ForbiddenStaticMethodCallsVisitor extends AbstractVisitor implements Confi
      */
     public function leaveNode(Node $node): void
     {
-        if (!$node instanceof Node\Expr\StaticCall) {
+        if (!$node instanceof Node\Expr\StaticCall || !$node->class instanceof Node\Name) {
             return;
         }
 
+        /**
+         * https://github.com/nikic/PHP-Parser/releases/tag/v4.16.0
+         * @psalm-suppress DeprecatedProperty
+         */
         $class = implode('\\', $node->class->parts);
+
         $method = $node->name;
         $normalized = sprintf('%s::%s', $class, $method);
 

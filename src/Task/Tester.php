@@ -34,6 +34,8 @@ class Tester extends AbstractExternalTask
             'colors' => null,
             'coverage' => null,
             'coverage_src' => null,
+            'php_ini_configuration_path' => null,
+            'default_php_ini_configuration' => false,
         ]);
 
         $resolver->addAllowedTypes('path', ['string']);
@@ -48,6 +50,8 @@ class Tester extends AbstractExternalTask
         $resolver->addAllowedTypes('colors', ['null', 'int']);
         $resolver->addAllowedTypes('coverage', ['null', 'string']);
         $resolver->addAllowedTypes('coverage_src', ['null', 'string']);
+        $resolver->addAllowedTypes('php_ini_configuration_path', ['null', 'string']);
+        $resolver->addAllowedTypes('default_php_ini_configuration', ['bool']);
 
         return ConfigOptionsResolver::fromOptionsResolver($resolver);
     }
@@ -80,6 +84,8 @@ class Tester extends AbstractExternalTask
         $arguments->addOptionalIntegerArgument('%s', $config['colors']);
         $arguments->addOptionalArgumentWithSeparatedValue('--coverage', $config['coverage']);
         $arguments->addOptionalArgumentWithSeparatedValue('--coverage-src', $config['coverage_src']);
+        $arguments->addOptionalArgumentWithSeparatedValue('-c', $config['php_ini_configuration_path']);
+        $arguments->addOptionalArgument('-C', $config['default_php_ini_configuration']);
 
         $process = $this->processBuilder->buildProcess($arguments);
         $process->run();

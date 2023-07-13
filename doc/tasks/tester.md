@@ -29,6 +29,8 @@ grumphp:
             colors: ~
             coverage: ~
             coverage_src: ~
+            php_ini_configuration_path: null
+            load_php_ini_configuration: false
 ```
 
 **path**
@@ -102,3 +104,15 @@ Example: `coverage.html` or `coverage.xml`
 *Default: null*
 
 This is issued with the `coverage` option. This is a path to the source code for which we generate the report.
+
+**php_ini_configuration_path**
+
+*Default: null*
+
+The Tester runs PHP processes from custom php.ini file.
+
+**default_php_ini_configuration**
+
+*Default: false*
+
+When this option is set to `true`, Tester runs PHP processes with system configuration .ini files.
