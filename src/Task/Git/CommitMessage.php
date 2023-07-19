@@ -19,6 +19,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CommitMessage implements TaskInterface
 {
+    const MERGE_COMMIT_REGEX =
+        '(Merge branch|tag \'.+\'(?:\s.+)?|Merge remote-tracking branch \'.+\'|Merge pull request #\d+\s.+)';
+
     /**
      * @var TaskConfigInterface
      */
@@ -135,6 +138,9 @@ class CommitMessage implements TaskInterface
             );
         }
 
+        if ($this->isMergeCommit($commitMessage)) {
+            return TaskResult::createSkipped($this, $context);
+        }
 
         if ($this->enforceTypeScopeConventions()) {
             try {
@@ -362,8 +368,7 @@ class CommitMessage implements TaskInterface
             ? $config['type_scope_conventions']['subject_pattern']
             : '([a-zA-Z0-9-_ #@\'\/\\"]+)';
 
-        $mergePattern =
-            '(Merge branch|tag \'.+\'(?:\s.+)?|Merge remote-tracking branch \'.+\'|Merge pull request #\d+\s.+)';
+        $mergePattern = self::MERGE_COMMIT_REGEX;
 
         if (count($types) > 0) {
             $types = implode('|', $types);
@@ -381,6 +386,11 @@ class CommitMessage implements TaskInterface
         } catch (RuntimeException $e) {
             throw $e;
         }
+    }
+
+    private function isMergeCommit($commitMessage): bool
+    {
+        return (bool) \preg_match(self::MERGE_COMMIT_REGEX, $commitMessage);
     }
 
     /**
