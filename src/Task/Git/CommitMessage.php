@@ -370,8 +370,6 @@ class CommitMessage implements TaskInterface
             ? $config['type_scope_conventions']['subject_pattern']
             : '([a-zA-Z0-9-_ #@\'\/\\"]+)';
 
-        $mergePattern = self::MERGE_COMMIT_REGEX;
-
         if (count($types) > 0) {
             $types = implode('|', $types);
             $typesPattern = '(' . $types . ')';
@@ -382,7 +380,7 @@ class CommitMessage implements TaskInterface
             $scopesPattern = '(:\s|(\((?:' . $scopes . ')\)?:\s))';
         }
 
-        $rule = '/^' . $specialPrefix . $typesPattern . $scopesPattern . $subjectPattern . '|' . $mergePattern . '/';
+        $rule = '/^' . $specialPrefix . $typesPattern . $scopesPattern . $subjectPattern . '/';
         try {
             $this->runMatcher($config, $subjectLine, $rule, 'Invalid Type/Scope Format');
         } catch (RuntimeException $e) {
