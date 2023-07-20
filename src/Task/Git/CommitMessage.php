@@ -389,7 +389,7 @@ class CommitMessage implements TaskInterface
         }
     }
 
-    private function isMergeCommit($commitMessage): bool
+    private function isMergeCommit(string $commitMessage): bool
     {
         return (bool) \preg_match(self::MERGE_COMMIT_REGEX, $commitMessage);
     }
