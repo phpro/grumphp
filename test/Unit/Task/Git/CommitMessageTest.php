@@ -51,6 +51,7 @@ class CommitMessageTest extends AbstractTaskTestCase
                 'case_insensitive' => true,
                 'multiline' => true,
                 'type_scope_conventions' => [],
+                'skip_on_merge_commit' => true,
                 'matchers' => [],
                 'additional_modifiers' => '',
             ]
@@ -670,6 +671,7 @@ class CommitMessageTest extends AbstractTaskTestCase
         yield 'skip_type_scope_conventions_on_merge' => [
             [
                 'enforce_capitalized_subject' => false,
+                'skip_on_merge_commit' => false,
                 'type_scope_conventions' => [
                     'types' => [
                         'fix'
@@ -683,6 +685,7 @@ class CommitMessageTest extends AbstractTaskTestCase
         yield 'skip_type_scope_conventions_on_merge_branch_gitflow' => [
             [
                 'enforce_capitalized_subject' => false,
+                'skip_on_merge_commit' => false,
                 'type_scope_conventions' => [
                     'types' => [
                         'fix'
@@ -696,6 +699,7 @@ class CommitMessageTest extends AbstractTaskTestCase
         yield 'skip_type_scope_conventions_on_merge_tag_gitflow' => [
             [
                 'enforce_capitalized_subject' => false,
+                'skip_on_merge_commit' => false,
                 'type_scope_conventions' => [
                     'types' => [
                         'fix'
@@ -709,6 +713,7 @@ class CommitMessageTest extends AbstractTaskTestCase
         yield 'skip_type_scope_conventions_on_merge_remote' => [
             [
                 'enforce_capitalized_subject' => false,
+                'skip_on_merge_commit' => false,
                 'type_scope_conventions' => [
                     'types' => [
                         'fix'
@@ -722,6 +727,7 @@ class CommitMessageTest extends AbstractTaskTestCase
         yield 'skip_type_scope_conventions_on_merge_PR' => [
             [
                 'enforce_capitalized_subject' => false,
+                'skip_on_merge_commit' => false,
                 'type_scope_conventions' => [
                     'types' => [
                         'fix'
@@ -735,6 +741,7 @@ class CommitMessageTest extends AbstractTaskTestCase
         yield 'fixup_skip_type_scope_conventions_on_merge' => [
             [
                 'enforce_capitalized_subject' => false,
+                'skip_on_merge_commit' => false,
                 'type_scope_conventions' => [
                     'types' => [
                         'fix'
@@ -827,11 +834,26 @@ class CommitMessageTest extends AbstractTaskTestCase
             function () {
             },
         ];
+        yield 'dont_skip_on_merge_commit' => [
+            [
+                'skip_on_merge_commit' => false,
+            ],
+            $this->mockCommitMsgContext($this->fixup('Merge branch \'x\' into')),
+            function () {
+            },
+        ];
     }
 
     public function provideSkipsOnStuff(): iterable
     {
-        return [];
+        yield 'skip_on_merge_commit' => [
+            [
+                'skip_on_merge_commit' => true,
+            ],
+            $this->mockCommitMsgContext($this->fixup('Merge branch \'x\' into')),
+            function () {
+            },
+        ];
     }
 
     private function mockCommitMsgContext(string $message): ContextInterface

@@ -20,6 +20,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CommitMessage implements TaskInterface
 {
+    const MERGE_COMMIT_REGEX =
+        '(Merge branch|tag \'.+\'(?:\s.+)?|Merge remote-tracking branch \'.+\'|Merge pull request #\d+\s.+)';
+
     /**
      * @var TaskConfigInterface
      */
@@ -44,6 +47,7 @@ class CommitMessage implements TaskInterface
             'case_insensitive' => true,
             'multiline' => true,
             'type_scope_conventions' => [],
+            'skip_on_merge_commit' => true,
             'matchers' => [],
             'additional_modifiers' => '',
         ]);
@@ -57,6 +61,7 @@ class CommitMessage implements TaskInterface
         $resolver->addAllowedTypes('max_body_width', ['int']);
         $resolver->addAllowedTypes('max_subject_width', ['int']);
         $resolver->addAllowedTypes('case_insensitive', ['bool']);
+        $resolver->addAllowedTypes('skip_on_merge_commit', ['bool']);
         $resolver->addAllowedTypes('multiline', ['bool']);
         $resolver->addAllowedTypes('matchers', ['array']);
         $resolver->addAllowedTypes('additional_modifiers', ['string']);
@@ -95,6 +100,11 @@ class CommitMessage implements TaskInterface
         $config = $this->getConfig()->getOptions();
         $commitMessage = $context->getCommitMessage();
         $exceptions = [];
+        $isMergeCommit = $this->isMergeCommit($commitMessage);
+
+        if ($isMergeCommit && $config['skip_on_merge_commit']) {
+            return TaskResult::createSkipped($this, $context);
+        }
 
         if (!(bool) $config['allow_empty_message'] && '' === trim($commitMessage)) {
             return TaskResult::createFailed(
@@ -136,8 +146,7 @@ class CommitMessage implements TaskInterface
             );
         }
 
-
-        if ($this->enforceTypeScopeConventions()) {
+        if (!$isMergeCommit && $this->enforceTypeScopeConventions()) {
             try {
                 $this->checkTypeScopeConventions($context);
             } catch (RuntimeException $e) {
@@ -363,9 +372,6 @@ class CommitMessage implements TaskInterface
             ? $config['type_scope_conventions']['subject_pattern']
             : '([a-zA-Z0-9-_ #@\'\/\\"]+)';
 
-        $mergePattern =
-            '(Merge branch|tag \'.+\'(?:\s.+)?|Merge remote-tracking branch \'.+\'|Merge pull request #\d+\s.+)';
-
         if (count($types) > 0) {
             $types = implode('|', $types);
             $typesPattern = '(' . $types . ')';
@@ -376,12 +382,17 @@ class CommitMessage implements TaskInterface
             $scopesPattern = '(:\s|(\((?:' . $scopes . ')\)?:\s))';
         }
 
-        $rule = '/^' . $specialPrefix . $typesPattern . $scopesPattern . $subjectPattern . '|' . $mergePattern . '/';
+        $rule = '/^' . $specialPrefix . $typesPattern . $scopesPattern . $subjectPattern . '/';
         try {
             $this->runMatcher($config, $subjectLine, $rule, 'Invalid Type/Scope Format');
         } catch (RuntimeException $e) {
             throw $e;
         }
+    }
+
+    private function isMergeCommit(string $commitMessage): bool
+    {
+        return (bool) \preg_match(self::MERGE_COMMIT_REGEX, $commitMessage);
     }
 
     /**
