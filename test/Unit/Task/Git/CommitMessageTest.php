@@ -834,11 +834,26 @@ class CommitMessageTest extends AbstractTaskTestCase
             function () {
             },
         ];
+        yield 'dont_skip_on_merge_commit' => [
+            [
+                'skip_on_merge_commit' => false,
+            ],
+            $this->mockCommitMsgContext($this->fixup('Merge branch \'x\' into')),
+            function () {
+            },
+        ];
     }
 
     public function provideSkipsOnStuff(): iterable
     {
-        return [];
+        yield 'skip_on_merge_commit' => [
+            [
+                'skip_on_merge_commit' => true,
+            ],
+            $this->mockCommitMsgContext($this->fixup('Merge branch \'x\' into')),
+            function () {
+            },
+        ];
     }
 
     private function mockCommitMsgContext(string $message): ContextInterface
