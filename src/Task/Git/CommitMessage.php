@@ -144,7 +144,7 @@ class CommitMessage implements TaskInterface
             );
         }
 
-        if (!$this->isMergeCommit() && $this->enforceTypeScopeConventions()) {
+        if (!$this->isMergeCommit($commitMessage) && $this->enforceTypeScopeConventions()) {
             try {
                 $this->checkTypeScopeConventions($context);
             } catch (RuntimeException $e) {

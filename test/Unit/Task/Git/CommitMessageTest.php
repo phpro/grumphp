@@ -51,6 +51,7 @@ class CommitMessageTest extends AbstractTaskTestCase
                 'case_insensitive' => true,
                 'multiline' => true,
                 'type_scope_conventions' => [],
+                'skip_on_merge_commit' => true,
                 'matchers' => [],
                 'additional_modifiers' => '',
             ]
