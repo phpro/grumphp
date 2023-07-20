@@ -41,11 +41,12 @@ class CommitMessage implements TaskInterface
             'enforce_no_subject_punctuations' => false,
             'enforce_no_subject_trailing_period' => true,
             'enforce_single_lined_subject' => true,
+            'type_scope_conventions' => [],
             'max_body_width' => 72,
             'max_subject_width' => 60,
             'case_insensitive' => true,
             'multiline' => true,
-            'type_scope_conventions' => [],
+            'skip_on_merge_commit' => true,
             'matchers' => [],
             'additional_modifiers' => '',
         ]);
@@ -59,6 +60,7 @@ class CommitMessage implements TaskInterface
         $resolver->addAllowedTypes('max_body_width', ['int']);
         $resolver->addAllowedTypes('max_subject_width', ['int']);
         $resolver->addAllowedTypes('case_insensitive', ['bool']);
+        $resolver->addAllowedTypes('skip_on_merge_commit', ['bool']);
         $resolver->addAllowedTypes('multiline', ['bool']);
         $resolver->addAllowedTypes('matchers', ['array']);
         $resolver->addAllowedTypes('additional_modifiers', ['string']);
@@ -98,6 +100,10 @@ class CommitMessage implements TaskInterface
         $commitMessage = $context->getCommitMessage();
         $exceptions = [];
 
+        if ($this->isMergeCommit($commitMessage) && $config['skip_on_merge_commit']) {
+            return TaskResult::createSkipped($this, $context);
+        }
+
         if (!(bool) $config['allow_empty_message'] && '' === trim($commitMessage)) {
             return TaskResult::createFailed(
                 $this,
@@ -136,10 +142,6 @@ class CommitMessage implements TaskInterface
                 $context,
                 'Please omit trailing period from commit message subject.'
             );
-        }
-
-        if ($this->isMergeCommit($commitMessage)) {
-            return TaskResult::createSkipped($this, $context);
         }
 
         if ($this->enforceTypeScopeConventions()) {
