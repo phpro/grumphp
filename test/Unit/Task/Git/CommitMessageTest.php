@@ -671,6 +671,7 @@ class CommitMessageTest extends AbstractTaskTestCase
         yield 'skip_type_scope_conventions_on_merge' => [
             [
                 'enforce_capitalized_subject' => false,
+                'skip_on_merge_commit' => false,
                 'type_scope_conventions' => [
                     'types' => [
                         'fix'
@@ -684,6 +685,7 @@ class CommitMessageTest extends AbstractTaskTestCase
         yield 'skip_type_scope_conventions_on_merge_branch_gitflow' => [
             [
                 'enforce_capitalized_subject' => false,
+                'skip_on_merge_commit' => false,
                 'type_scope_conventions' => [
                     'types' => [
                         'fix'
@@ -697,6 +699,7 @@ class CommitMessageTest extends AbstractTaskTestCase
         yield 'skip_type_scope_conventions_on_merge_tag_gitflow' => [
             [
                 'enforce_capitalized_subject' => false,
+                'skip_on_merge_commit' => false,
                 'type_scope_conventions' => [
                     'types' => [
                         'fix'
@@ -710,6 +713,7 @@ class CommitMessageTest extends AbstractTaskTestCase
         yield 'skip_type_scope_conventions_on_merge_remote' => [
             [
                 'enforce_capitalized_subject' => false,
+                'skip_on_merge_commit' => false,
                 'type_scope_conventions' => [
                     'types' => [
                         'fix'
@@ -723,6 +727,7 @@ class CommitMessageTest extends AbstractTaskTestCase
         yield 'skip_type_scope_conventions_on_merge_PR' => [
             [
                 'enforce_capitalized_subject' => false,
+                'skip_on_merge_commit' => false,
                 'type_scope_conventions' => [
                     'types' => [
                         'fix'
@@ -736,6 +741,7 @@ class CommitMessageTest extends AbstractTaskTestCase
         yield 'fixup_skip_type_scope_conventions_on_merge' => [
             [
                 'enforce_capitalized_subject' => false,
+                'skip_on_merge_commit' => false,
                 'type_scope_conventions' => [
                     'types' => [
                         'fix'
