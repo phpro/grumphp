@@ -99,8 +99,9 @@ class CommitMessage implements TaskInterface
         $config = $this->getConfig()->getOptions();
         $commitMessage = $context->getCommitMessage();
         $exceptions = [];
+        $isMergeCommit = $this->isMergeCommit($commitMessage);
 
-        if ($this->isMergeCommit($commitMessage) && $config['skip_on_merge_commit']) {
+        if ($isMergeCommit && $config['skip_on_merge_commit']) {
             return TaskResult::createSkipped($this, $context);
         }
 
@@ -144,7 +145,7 @@ class CommitMessage implements TaskInterface
             );
         }
 
-        if (!$this->isMergeCommit($commitMessage) && $this->enforceTypeScopeConventions()) {
+        if (!$isMergeCommit && $this->enforceTypeScopeConventions()) {
             try {
                 $this->checkTypeScopeConventions($context);
             } catch (RuntimeException $e) {
