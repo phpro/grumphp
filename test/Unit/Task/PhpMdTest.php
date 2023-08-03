@@ -114,6 +114,8 @@ class PhpMdTest extends AbstractExternalTaskTestCase
                 'hello.php,hello2.php',
                 'text',
                 'cleancode,codesize,naming',
+                '--suffixes',
+                'php',
             ]
         ];
 
@@ -129,6 +131,8 @@ class PhpMdTest extends AbstractExternalTaskTestCase
                 'cleancode,codesize,naming',
                 '--exclude',
                 'hello.php,hello2.php',
+                '--suffixes',
+                'php',
             ]
         ];
 
@@ -142,6 +146,8 @@ class PhpMdTest extends AbstractExternalTaskTestCase
                 'hello.php,hello2.php',
                 'text',
                 'cleancode',
+                '--suffixes',
+                'php',
             ]
         ];
 
@@ -155,6 +161,8 @@ class PhpMdTest extends AbstractExternalTaskTestCase
                 'hello.php,hello2.php',
                 'ansi',
                 'cleancode,codesize,naming',
+                '--suffixes',
+                'php',
             ]
         ];
     }
