@@ -20,6 +20,8 @@ grumphp:
             fail_fast: false
             suite: ~
             test: ~
+            xml: false
+            html: false
 ```
 
 
@@ -47,3 +49,15 @@ When this option is specified it will only run tests for the given suite. If lef
 
 When this option is specified it will only run the given test. If left `null` Codeception will run all tests within the suite.
 This option can only be used in combination with a suite.
+
+**xml**
+
+*Default: false*
+
+When this option is enabled, Codeception will output an XML report for the test run.
+
+**html**
+
+*Default: false*
+
+When this option is enabled, Codeception will output an HTML report for the test run.
