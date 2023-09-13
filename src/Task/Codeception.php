@@ -60,6 +60,8 @@ class Codeception extends AbstractExternalTask
         $arguments->add('run');
         $arguments->addOptionalArgument('--config=%s', $config['config_file']);
         $arguments->addOptionalArgument('--fail-fast', $config['fail_fast']);
+        $arguments->addOptionalArgument('--xml', $config['xml']);
+        $arguments->addOptionalArgument('--html', $config['html']);
         $arguments->addOptionalArgument('%s', $config['suite']);
         $arguments->addOptionalArgument('%s', $config['test']);
 
