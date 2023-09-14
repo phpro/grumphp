@@ -26,13 +26,17 @@ class Codeception extends AbstractExternalTask
             'suite' => null,
             'test' => null,
             'fail_fast' => false,
+            'xml' => false,
+            'html' => false,
         ]);
 
         $resolver->addAllowedTypes('config_file', ['null', 'string']);
         $resolver->addAllowedTypes('suite', ['null', 'string']);
         $resolver->addAllowedTypes('test', ['null', 'string']);
         $resolver->addAllowedTypes('fail_fast', ['bool']);
-
+        $resolver->addAllowedTypes('xml', ['bool']);
+        $resolver->addAllowedTypes('html', ['bool']);
+        
         return ConfigOptionsResolver::fromOptionsResolver($resolver);
     }
 
