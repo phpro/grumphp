@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CommitMessage implements TaskInterface
 {
-    const MERGE_COMMIT_REGEX =
+    public const MERGE_COMMIT_REGEX =
         '(Merge branch|tag \'.+\'(?:\s.+)?|Merge remote-tracking branch \'.+\'|Merge pull request #\d+\s.+)';
 
     /**
@@ -93,6 +93,18 @@ class CommitMessage implements TaskInterface
         return $context instanceof GitCommitMsgContext;
     }
 
+    private static function withCommitMessage(string $errorMessage, string $commitMessage): string
+    {
+        return sprintf(
+            "%s%sOriginal commit message: %s%s",
+            $errorMessage,
+            PHP_EOL,
+            PHP_EOL,
+            $commitMessage
+        );
+    }
+
+
     public function run(ContextInterface $context): TaskResultInterface
     {
         assert($context instanceof GitCommitMsgContext);
@@ -110,7 +122,7 @@ class CommitMessage implements TaskInterface
             return TaskResult::createFailed(
                 $this,
                 $context,
-                'Commit message should not be empty.'
+                self::withCommitMessage('Commit message should not be empty.', $commitMessage),
             );
         }
 
@@ -118,7 +130,7 @@ class CommitMessage implements TaskInterface
             return TaskResult::createFailed(
                 $this,
                 $context,
-                'Subject should start with a capital letter.'
+                self::withCommitMessage('Subject should start with a capital letter.', $commitMessage)
             );
         }
 
@@ -126,7 +138,7 @@ class CommitMessage implements TaskInterface
             return TaskResult::createFailed(
                 $this,
                 $context,
-                'Subject should be one line and followed by a blank line.'
+                self::withCommitMessage('Subject should be one line and followed by a blank line.', $commitMessage)
             );
         }
 
@@ -134,7 +146,7 @@ class CommitMessage implements TaskInterface
             return TaskResult::createFailed(
                 $this,
                 $context,
-                'Please omit all punctuations from commit message subject.'
+                self::withCommitMessage('Please omit all punctuations from commit message subject.', $commitMessage)
             );
         }
 
@@ -142,7 +154,7 @@ class CommitMessage implements TaskInterface
             return TaskResult::createFailed(
                 $this,
                 $context,
-                'Please omit trailing period from commit message subject.'
+                self::withCommitMessage('Please omit trailing period from commit message subject.', $commitMessage)
             );
         }
 
@@ -166,11 +178,7 @@ class CommitMessage implements TaskInterface
             return TaskResult::createFailed(
                 $this,
                 $context,
-                implode(PHP_EOL, $exceptions).PHP_EOL.sprintf(
-                    'Original commit message: %s%s',
-                    PHP_EOL,
-                    $commitMessage
-                )
+                self::withCommitMessage(implode(PHP_EOL, $exceptions), $commitMessage)
             );
         }
 
@@ -211,7 +219,11 @@ class CommitMessage implements TaskInterface
         }
 
         if (\count($errors)) {
-            return TaskResult::createFailed($this, $context, implode(PHP_EOL, $errors));
+            return TaskResult::createFailed(
+                $this,
+                $context,
+                self::withCommitMessage(implode(PHP_EOL, $errors), $commitMessage)
+            );
         }
 
         return TaskResult::createPassed($this, $context);
