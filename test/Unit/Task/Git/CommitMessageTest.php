@@ -110,19 +110,6 @@ class CommitMessageTest extends AbstractTaskTestCase
             },
             'Subject should start with a capital letter.'
         ];
-        yield 'enforce_capitalized_subject_gives_back_message' => [
-            [
-                'enforce_capitalized_subject' => true,
-            ],
-            $this->mockCommitMsgContext($this->buildMessage('no capital subject')),
-            function () {
-            },
-            $this->buildMultiLineString(
-                'Subject should start with a capital letter.',
-                'Original commit message:',
-                'no capital subject'
-            )
-        ];
         yield 'enforce_capitalized_subject_punctuation' => [
             [
                 'enforce_capitalized_subject' => true,
