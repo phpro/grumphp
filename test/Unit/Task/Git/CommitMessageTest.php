@@ -36,6 +36,22 @@ class CommitMessageTest extends AbstractTaskTestCase
         );
     }
 
+    private function buildFailureMessage(array|string $lines, GitCommitMsgContext $commitMsg)
+    {
+        $message = '';
+        // switch on type of $lines
+        if (is_array($lines)) {
+            foreach ($lines as $line) {
+                $message .= $line . PHP_EOL;
+            }
+        } else {
+            $message .= $lines . PHP_EOL;
+        }
+
+        $message .= 'Original commit message:'. PHP_EOL. $commitMsg->getCommitMessage();
+        return $message;
+    }
+
     public function provideConfigurableOptions(): iterable
     {
         yield 'defaults' => [
@@ -105,86 +121,86 @@ class CommitMessageTest extends AbstractTaskTestCase
             [
                 'enforce_capitalized_subject' => true,
             ],
-            $this->mockCommitMsgContext($this->buildMessage('no capital subject')),
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage('no capital subject')),
             function () {
             },
-            'Subject should start with a capital letter.'
+            $this->buildFailureMessage('Subject should start with a capital letter.', $commitMsg)
         ];
         yield 'enforce_capitalized_subject_punctuation' => [
             [
                 'enforce_capitalized_subject' => true,
             ],
-            $this->mockCommitMsgContext($this->buildMessage('"no" capital subject')),
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage('"no" capital subject')),
             function () {
             },
-            'Subject should start with a capital letter.'
+            $this->buildFailureMessage('Subject should start with a capital letter.', $commitMsg)
         ];
         yield 'enforce_capitalized_subject_utf8' => [
             [
                 'enforce_capitalized_subject' => true,
             ],
-            $this->mockCommitMsgContext($this->buildMessage('"ärsgäng" capital subject')),
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage('"ärsgäng" capital subject')),
             function () {
             },
-            'Subject should start with a capital letter.'
+            $this->buildFailureMessage('Subject should start with a capital letter.', $commitMsg)
         ];
         yield 'enforce_no_subject_punctuations' => [
             [
                 'enforce_no_subject_punctuations' => true,
             ],
-            $this->mockCommitMsgContext($this->buildMessage('Some . punctiation')),
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage('Some . punctiation')),
             function () {
             },
-            'Please omit all punctuations from commit message subject.'
+            $this->buildFailureMessage('Please omit all punctuations from commit message subject.', $commitMsg)
         ];
         yield 'enforce_no_subject_punctuations_comma' => [
             [
                 'enforce_no_subject_punctuations' => true,
             ],
-            $this->mockCommitMsgContext($this->buildMessage('Some , punctiation')),
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage('Some , punctiation')),
             function () {
             },
-            'Please omit all punctuations from commit message subject.'
+            $this->buildFailureMessage('Please omit all punctuations from commit message subject.', $commitMsg)
         ];
         yield 'enforce_no_subject_punctuations_exclamation' => [
             [
                 'enforce_no_subject_punctuations' => true,
             ],
-            $this->mockCommitMsgContext($this->buildMessage('Some ! punctiation')),
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage('Some ! punctiation')),
             function () {
             },
-            'Please omit all punctuations from commit message subject.'
+            $this->buildFailureMessage('Please omit all punctuations from commit message subject.', $commitMsg)
         ];
         yield 'enforce_no_subject_punctuations_question' => [
             [
                 'enforce_no_subject_punctuations' => true,
             ],
-            $this->mockCommitMsgContext($this->buildMessage('Some ? punctiation')),
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage('Some ? punctiation')),
             function () {
             },
-            'Please omit all punctuations from commit message subject.'
+            $this->buildFailureMessage('Please omit all punctuations from commit message subject.', $commitMsg)
         ];
         yield 'enforce_no_subject_trailing_period' => [
             [
                 'enforce_no_subject_trailing_period' => true,
             ],
-            $this->mockCommitMsgContext($this->buildMessage('Subject ending with.')),
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage('Subject ending with.')),
             function () {
             },
-            'Please omit trailing period from commit message subject.'
+            $this->buildFailureMessage('Please omit trailing period from commit message subject.', $commitMsg)
         ];
         yield 'enforce_single_lined_subject-with_body' => [
             [
                 'enforce_single_lined_subject' => true,
             ],
-            $this->mockCommitMsgContext($this->buildMessage(
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage(
                 $this->buildMultiLineString('Subject line', 'subject line 2'),
                 'comment line1',
                 'comment line2'
             )),
             function () {
             },
-            'Subject should be one line and followed by a blank line.'
+            $this->buildFailureMessage('Subject should be one line and followed by a blank line.', $commitMsg)
         ];
         yield 'enforce_text_with_regular' => [
             [
@@ -192,7 +208,7 @@ class CommitMessageTest extends AbstractTaskTestCase
                 'max_subject_width' => 10,
                 'max_body_width' => 10,
             ],
-            $this->mockCommitMsgContext($this->buildMessage(
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage(
                 'Subject 1234567891011',
                 'Body 1234567891011',
                 'Body ok',
@@ -200,11 +216,11 @@ class CommitMessageTest extends AbstractTaskTestCase
             )),
             function () {
             },
-            $this->buildMultiLineString(
+            $this->buildFailureMessage($this->buildMultiLineString(
                 'Please keep the subject <= 10 characters.',
                 'Line 3 of commit message has > 10 characters.',
                 'Line 5 of commit message has > 10 characters.'
-            )
+            ), $commitMsg)
         ];
         yield 'enforce_text_with_regular_gives_back_message' => [
             [
@@ -212,7 +228,7 @@ class CommitMessageTest extends AbstractTaskTestCase
                 'max_subject_width' => 10,
                 'max_body_width' => 10,
             ],
-            $this->mockCommitMsgContext($this->buildMessage(
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage(
                 'Subject 1234567891011',
                 'Body 1234567891011',
                 'Body ok',
@@ -220,17 +236,11 @@ class CommitMessageTest extends AbstractTaskTestCase
             )),
             function () {
             },
-            $this->buildMultiLineString(
+            $this->buildFailureMessage($this->buildMultiLineString(
                 'Please keep the subject <= 10 characters.',
                 'Line 3 of commit message has > 10 characters.',
                 'Line 5 of commit message has > 10 characters.',
-                'Original commit message:',
-                'Subject 1234567891011',
-                '',
-                'Body 1234567891011',
-                'Body ok',
-                'Body 1110987654321'
-            )
+            ), $commitMsg)
         ];
         yield 'enforce_text_with_long_comments' => [
             [
@@ -238,7 +248,7 @@ class CommitMessageTest extends AbstractTaskTestCase
                 'max_subject_width' => 10,
                 'max_body_width' => 10,
             ],
-            $this->mockCommitMsgContext($this->wrapComments(
+            $commitMsg = $this->mockCommitMsgContext($this->wrapComments(
                 $this->buildMessage(
                     'Subject',
                     'Body 1234567891011',
@@ -248,10 +258,10 @@ class CommitMessageTest extends AbstractTaskTestCase
             )),
             function () {
             },
-            $this->buildMultiLineString(
+            $this->buildFailureMessage($this->buildMultiLineString(
                 'Line 3 of commit message has > 10 characters.',
                 'Line 5 of commit message has > 10 characters.'
-            )
+            ), $commitMsg)
         ];
         yield 'enforce_text_with_ignore_below_comment' => [
             [
@@ -259,7 +269,7 @@ class CommitMessageTest extends AbstractTaskTestCase
                 'max_subject_width' => 10,
                 'max_body_width' => 10,
             ],
-            $this->mockCommitMsgContext($this->addIgnoreBelowComment(
+            $commitMsg = $this->mockCommitMsgContext($this->addIgnoreBelowComment(
                 $this->buildMessage(
                     'Subject',
                     'Body 1234567891011',
@@ -269,10 +279,10 @@ class CommitMessageTest extends AbstractTaskTestCase
             )),
             function () {
             },
-            $this->buildMultiLineString(
+            $this->buildFailureMessage($this->buildMultiLineString(
                 'Line 3 of commit message has > 10 characters.',
                 'Line 5 of commit message has > 10 characters.'
-            )
+            ), $commitMsg)
         ];
         yield 'type_scope_conventions_not_set_in_message' => [
             [
@@ -283,10 +293,10 @@ class CommitMessageTest extends AbstractTaskTestCase
                     ]
                 ],
             ],
-            $this->mockCommitMsgContext($this->buildMessage('doesnt match type scope convention')),
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage('doesnt match type scope convention')),
             function () {
             },
-            'Rule not matched: "Invalid Type/Scope Format"'
+            $this->buildFailureMessage('Rule not matched: "Invalid Type/Scope Format"', $commitMsg)
         ];
         yield 'type_scope_conventions_invalid_type' => [
             [
@@ -297,10 +307,10 @@ class CommitMessageTest extends AbstractTaskTestCase
                     ]
                 ],
             ],
-            $this->mockCommitMsgContext($this->buildMessage('bug: doesnt match type scope convention')),
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage('bug: doesnt match type scope convention')),
             function () {
             },
-            'Rule not matched: "Invalid Type/Scope Format"'
+            $this->buildFailureMessage('Rule not matched: "Invalid Type/Scope Format"', $commitMsg)
         ];
         yield 'type_scope_conventions_invalid_scope' => [
             [
@@ -314,20 +324,20 @@ class CommitMessageTest extends AbstractTaskTestCase
                     ]
                 ],
             ],
-            $this->mockCommitMsgContext($this->buildMessage('fix(api): doesnt match type scope convention')),
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage('fix(api): doesnt match type scope convention')),
             function () {
             },
-            'Rule not matched: "Invalid Type/Scope Format"'
+            $this->buildFailureMessage('Rule not matched: "Invalid Type/Scope Format"', $commitMsg)
         ];
         yield 'it_fails_on_matchers' => [
             [
                 'enforce_capitalized_subject' => false,
                 'matchers' => ['test', '*es*', 'te[s][t]', '/^te(.*)/', '/(.*)st$/', '/t(e|a)st/', 'TEST'],
             ],
-            $this->mockCommitMsgContext('invalid'),
+            $commitMsg = $this->mockCommitMsgContext('invalid'),
             function () {
             },
-            $this->buildMultiLineString(
+            $this->buildFailureMessage($this->buildMultiLineString(
                 'Rule not matched: "0" test',
                 'Rule not matched: "1" *es*',
                 'Rule not matched: "2" te[s][t]',
@@ -335,9 +345,7 @@ class CommitMessageTest extends AbstractTaskTestCase
                 'Rule not matched: "4" /(.*)st$/',
                 'Rule not matched: "5" /t(e|a)st/',
                 'Rule not matched: "6" TEST',
-                'Original commit message:',
-                'invalid'
-            )
+            ), $commitMsg)
         ];
         yield 'it_fails_on_names_matchers' => [
             [
@@ -347,15 +355,13 @@ class CommitMessageTest extends AbstractTaskTestCase
                     'partial' => '*es*'
                 ],
             ],
-            $this->mockCommitMsgContext('invalid'),
+            $commitMsg = $this->mockCommitMsgContext('invalid'),
             function () {
             },
-            $this->buildMultiLineString(
+            $this->buildFailureMessage($this->buildMultiLineString(
                 'Rule not matched: "full" test',
                 'Rule not matched: "partial" *es*',
-                'Original commit message:',
-                'invalid'
-            )
+            ), $commitMsg)
         ];
         yield 'it_applies_matchers_with_case_sensitive' => [
             [
@@ -363,14 +369,12 @@ class CommitMessageTest extends AbstractTaskTestCase
                 'matchers' => ['/TEST/'],
                 'case_insensitive' => false,
             ],
-            $this->mockCommitMsgContext($this->buildMessage('test')),
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage('test')),
             function () {
             },
-            $this->buildMultiLineString(
+            $this->buildFailureMessage($this->buildMultiLineString(
                 'Rule not matched: "0" /TEST/',
-                'Original commit message:',
-                'test'
-            )
+            ), $commitMsg)
         ];
         yield 'it_applies_matchers_with_multiline' => [
             [
@@ -378,10 +382,10 @@ class CommitMessageTest extends AbstractTaskTestCase
                 'matchers' => ['/^hello/'],
                 'multiline' => true,
             ],
-            $this->mockCommitMsgContext($this->buildMessage('you', 'me', 'there')),
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage('you', 'me', 'there')),
             function () {
             },
-            'Rule not matched: "0" /^hello/'
+            $this->buildFailureMessage('Rule not matched: "0" /^hello/', $commitMsg)
         ];
         yield 'it_applies_matchers_without_multiline' => [
             [
@@ -389,19 +393,19 @@ class CommitMessageTest extends AbstractTaskTestCase
                 'matchers' => ['/^hello((.|[\n])*)bye$/'],
                 'multiline' => false,
             ],
-            $this->mockCommitMsgContext($this->buildMessage('hello there bye', 'bye good hello')),
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage('hello there bye', 'bye good hello')),
             function () {
             },
-            'Rule not matched: "0" /^hello((.|[\n])*)bye$/'
+            $this->buildFailureMessage('Rule not matched: "0" /^hello((.|[\n])*)bye$/', $commitMsg)
         ];
         yield 'dont-enforce_capitalized_subject_fixup_without_subject' => [
             [
                 'enforce_capitalized_subject' => true,
             ],
-            $this->mockCommitMsgContext($this->buildMessage('', 'only body')),
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage('', 'only body')),
             function () {
             },
-            'Subject should start with a capital letter.'
+            $this->buildFailureMessage('Subject should start with a capital letter.', $commitMsg)
         ];
         yield 'it_fails_on_subject_pattern_default' => [
             [
@@ -410,10 +414,10 @@ class CommitMessageTest extends AbstractTaskTestCase
                     'scopes' => null,
                 ],
             ],
-            $this->mockCommitMsgContext($this->buildMessage('feat(feature): Это не сработает')),
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage('feat(feature): Это не сработает')),
             function () {
             },
-            'Rule not matched: "Invalid Type/Scope Format"'
+            $this->buildFailureMessage('Rule not matched: "Invalid Type/Scope Format"', $commitMsg)
         ];
         yield 'it_fails_on_subject_pattern' => [
             [
@@ -422,10 +426,10 @@ class CommitMessageTest extends AbstractTaskTestCase
                     'subject_pattern' => '([0-9]+)'
                 ],
             ],
-            $this->mockCommitMsgContext($this->buildMessage('It fails')),
+            $commitMsg = $this->mockCommitMsgContext($this->buildMessage('It fails')),
             function () {
             },
-            'Rule not matched: "Invalid Type/Scope Format"'
+            $this->buildFailureMessage('Rule not matched: "Invalid Type/Scope Format"', $commitMsg)
         ];
     }
 

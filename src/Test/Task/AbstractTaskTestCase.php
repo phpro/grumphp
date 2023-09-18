@@ -58,6 +58,8 @@ abstract class AbstractTaskTestCase extends TestCase
         );
     }
 
+
+
     /**
      * @test
      * @dataProvider provideRunContexts
@@ -140,8 +142,7 @@ abstract class AbstractTaskTestCase extends TestCase
         array $config,
         ContextInterface $context,
         callable $configurator
-    ): void
-    {
+    ): void {
         $task = $this->configureTask($config);
         \Closure::bind($configurator, $this)($task->getConfig()->getOptions());
 
