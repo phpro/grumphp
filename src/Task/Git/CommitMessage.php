@@ -122,7 +122,7 @@ class CommitMessage implements TaskInterface
             return TaskResult::createFailed(
                 $this,
                 $context,
-                self::withCommitMessage('Commit message should not be empty.', $commitMessage),
+                'Commit message should not be empty.',
             );
         }
 
