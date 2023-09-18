@@ -38,18 +38,17 @@ class CommitMessageTest extends AbstractTaskTestCase
 
     private function buildFailureMessage(array|string $lines, GitCommitMsgContext $commitMsg)
     {
-        $message = '';
         // switch on type of $lines
         if (is_array($lines)) {
+            $message = '';
             foreach ($lines as $line) {
                 $message .= $line . PHP_EOL;
             }
-        } else {
-            $message .= $lines . PHP_EOL;
+
+            return $message . 'Original commit message:' . PHP_EOL. $commitMsg->getCommitMessage();
         }
 
-        $message .= 'Original commit message:'. PHP_EOL. $commitMsg->getCommitMessage();
-        return $message;
+        return $lines . PHP_EOL . 'Original commit message:' . PHP_EOL . $commitMsg->getCommitMessage();
     }
 
     public function provideConfigurableOptions(): iterable
@@ -296,7 +295,7 @@ class CommitMessageTest extends AbstractTaskTestCase
             $commitMsg = $this->mockCommitMsgContext($this->buildMessage('doesnt match type scope convention')),
             function () {
             },
-            $this->buildFailureMessage('Rule not matched: "Invalid Type/Scope Format"', $commitMsg)
+            'Rule not matched: "Invalid Type/Scope Format"'
         ];
         yield 'type_scope_conventions_invalid_type' => [
             [
@@ -310,7 +309,7 @@ class CommitMessageTest extends AbstractTaskTestCase
             $commitMsg = $this->mockCommitMsgContext($this->buildMessage('bug: doesnt match type scope convention')),
             function () {
             },
-            $this->buildFailureMessage('Rule not matched: "Invalid Type/Scope Format"', $commitMsg)
+            'Rule not matched: "Invalid Type/Scope Format"'
         ];
         yield 'type_scope_conventions_invalid_scope' => [
             [
@@ -327,7 +326,7 @@ class CommitMessageTest extends AbstractTaskTestCase
             $commitMsg = $this->mockCommitMsgContext($this->buildMessage('fix(api): doesnt match type scope convention')),
             function () {
             },
-            $this->buildFailureMessage('Rule not matched: "Invalid Type/Scope Format"', $commitMsg)
+            'Rule not matched: "Invalid Type/Scope Format"'
         ];
         yield 'it_fails_on_matchers' => [
             [
@@ -417,7 +416,7 @@ class CommitMessageTest extends AbstractTaskTestCase
             $commitMsg = $this->mockCommitMsgContext($this->buildMessage('feat(feature): Это не сработает')),
             function () {
             },
-            $this->buildFailureMessage('Rule not matched: "Invalid Type/Scope Format"', $commitMsg)
+            'Rule not matched: "Invalid Type/Scope Format"'
         ];
         yield 'it_fails_on_subject_pattern' => [
             [
@@ -429,7 +428,7 @@ class CommitMessageTest extends AbstractTaskTestCase
             $commitMsg = $this->mockCommitMsgContext($this->buildMessage('It fails')),
             function () {
             },
-            $this->buildFailureMessage('Rule not matched: "Invalid Type/Scope Format"', $commitMsg)
+            'Rule not matched: "Invalid Type/Scope Format"'
         ];
     }
 
