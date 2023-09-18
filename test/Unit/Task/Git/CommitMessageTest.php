@@ -36,18 +36,8 @@ class CommitMessageTest extends AbstractTaskTestCase
         );
     }
 
-    private function buildFailureMessage(array|string $lines, GitCommitMsgContext $commitMsg)
+    private function buildFailureMessage(string $lines, GitCommitMsgContext $commitMsg)
     {
-        // switch on type of $lines
-        if (is_array($lines)) {
-            $message = '';
-            foreach ($lines as $line) {
-                $message .= $line . PHP_EOL;
-            }
-
-            return $message . 'Original commit message:' . PHP_EOL. $commitMsg->getCommitMessage();
-        }
-
         return $lines . PHP_EOL . 'Original commit message:' . PHP_EOL . $commitMsg->getCommitMessage();
     }
 
