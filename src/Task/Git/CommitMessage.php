@@ -96,7 +96,7 @@ class CommitMessage implements TaskInterface
     private static function withCommitMessage(string $errorMessage, string $commitMessage): string
     {
         return sprintf(
-            "%s%sOriginal commit message: %s%s",
+            "%s%sOriginal commit message:%s%s",
             $errorMessage,
             PHP_EOL,
             PHP_EOL,

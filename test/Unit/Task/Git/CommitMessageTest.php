@@ -309,7 +309,7 @@ class CommitMessageTest extends AbstractTaskTestCase
                 'Rule not matched: "4" /(.*)st$/',
                 'Rule not matched: "5" /t(e|a)st/',
                 'Rule not matched: "6" TEST',
-                'Original commit message: ',
+                'Original commit message:',
                 'invalid'
             )
         ];
@@ -327,7 +327,7 @@ class CommitMessageTest extends AbstractTaskTestCase
             $this->buildMultiLineString(
                 'Rule not matched: "full" test',
                 'Rule not matched: "partial" *es*',
-                'Original commit message: ',
+                'Original commit message:',
                 'invalid'
             )
         ];
@@ -342,7 +342,7 @@ class CommitMessageTest extends AbstractTaskTestCase
             },
             $this->buildMultiLineString(
                 'Rule not matched: "0" /TEST/',
-                'Original commit message: ',
+                'Original commit message:',
                 'test'
             )
         ];
