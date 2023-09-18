@@ -110,6 +110,19 @@ class CommitMessageTest extends AbstractTaskTestCase
             },
             'Subject should start with a capital letter.'
         ];
+        yield 'enforce_capitalized_subject_gives_back_message' => [
+            [
+                'enforce_capitalized_subject' => true,
+            ],
+            $this->mockCommitMsgContext($this->buildMessage('no capital subject')),
+            function () {
+            },
+            $this->buildMultiLineString(
+                'Subject should start with a capital letter.',
+                'Original commit message:',
+                'no capital subject'
+            )
+        ];
         yield 'enforce_capitalized_subject_punctuation' => [
             [
                 'enforce_capitalized_subject' => true,
@@ -204,6 +217,32 @@ class CommitMessageTest extends AbstractTaskTestCase
                 'Please keep the subject <= 10 characters.',
                 'Line 3 of commit message has > 10 characters.',
                 'Line 5 of commit message has > 10 characters.'
+            )
+        ];
+        yield 'enforce_text_with_regular_gives_back_message' => [
+            [
+                'enforce_single_lined_subject' => false,
+                'max_subject_width' => 10,
+                'max_body_width' => 10,
+            ],
+            $this->mockCommitMsgContext($this->buildMessage(
+                'Subject 1234567891011',
+                'Body 1234567891011',
+                'Body ok',
+                'Body 1110987654321'
+            )),
+            function () {
+            },
+            $this->buildMultiLineString(
+                'Please keep the subject <= 10 characters.',
+                'Line 3 of commit message has > 10 characters.',
+                'Line 5 of commit message has > 10 characters.',
+                'Original commit message:',
+                'Subject 1234567891011',
+                '',
+                'Body 1234567891011',
+                'Body ok',
+                'Body 1110987654321'
             )
         ];
         yield 'enforce_text_with_long_comments' => [
