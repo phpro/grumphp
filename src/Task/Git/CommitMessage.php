@@ -368,21 +368,15 @@ class CommitMessage implements TaskInterface
         $config = $this->getConfig()->getOptions();
         $subjectLine = $this->getSubjectLine($context);
 
-        $types = isset($config['type_scope_conventions']['types'])
-            ? $config['type_scope_conventions']['types']
-            : [];
+        $types = $config['type_scope_conventions']['types'] ?? [];
 
-        $scopes = isset($config['type_scope_conventions']['scopes'])
-            ? $config['type_scope_conventions']['scopes']
-            : [];
+        $scopes = $config['type_scope_conventions']['scopes'] ?? [];
 
         $specialPrefix = '(?:(?:fixup|squash)! )?';
         $typesPattern = '([a-zA-Z0-9]+)';
         $scopesPattern = '(:\s|(\(.+\)?:\s))';
 
-        $subjectPattern = isset($config['type_scope_conventions']['subject_pattern'])
-            ? $config['type_scope_conventions']['subject_pattern']
-            : '([a-zA-Z0-9-_ #@\'\/\\"]+)';
+        $subjectPattern = $config['type_scope_conventions']['subject_pattern'] ?? '([a-zA-Z0-9-_ #@\'\/\\"]+)';
 
         if (count($types) > 0) {
             $types = implode('|', $types);
