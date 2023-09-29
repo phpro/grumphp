@@ -39,5 +39,8 @@ interface IOInterface
 
     public function endGroup(): void;
 
+    /**
+     * @param resource $handle
+     */
     public function readCommandInput($handle): string;
 }
