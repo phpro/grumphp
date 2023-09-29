@@ -37,15 +37,18 @@ services:
                 logger: '@grumphp.logger'
                 inherit_environment_variables: true
 
-    grumphp.io:
-        alias: grumphp.io.console
-
-    grumphp.io.console:
-        class: GrumPHP\IO\ConsoleIO
+    GrumPHP\IO\IOFactory:
         arguments:
-          - '@console.input'
-          - '@console.output'
-        public: true
+            - '@OndraM\CiDetector\CiDetector'
+
+    grumphp.io:
+        alias: GrumPHP\IO\IOInterface
+
+    GrumPHP\IO\IOInterface:
+        factory: ['@GrumPHP\IO\IOFactory', 'create']
+        arguments:
+            - '@console.input'
+            - '@console.output'
 
     grumphp.logger:
         class: Monolog\Logger

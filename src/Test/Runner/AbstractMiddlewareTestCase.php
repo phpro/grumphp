@@ -38,7 +38,8 @@ class AbstractMiddlewareTestCase extends TestCase
         /** @var ObjectProphecy|IOInterface $IO */
         $IO = $this->prophesize(IOInterface::class);
         $IO->isVerbose()->willReturn(false);
-        $IO->style()->willReturn($this->prophesize(StyleInterface::class)->reveal());
+        $IO->startGroup(Argument::any());
+        $IO->endGroup();
 
         return $IO->reveal();
     }
