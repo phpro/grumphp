@@ -38,4 +38,6 @@ interface IOInterface
     public function startGroup(string $title): void;
 
     public function endGroup(): void;
+
+    public function readCommandInput($handle): string;
 }
