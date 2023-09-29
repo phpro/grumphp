@@ -47,14 +47,14 @@ class PreCommitCommand extends Command
      */
     private $taskRunner;
 
-    private IOFactory $IOFactory;
+    private IOInterface $io;
 
     public function __construct(
         TestSuiteCollection $testSuites,
         StdInFiles $stdInFilesLocator,
         ChangedFiles $changedFilesLocator,
         TaskRunner $taskRunner,
-        IOFactory $IOFactory
+        IOInterface $io
     ) {
         parent::__construct();
 
@@ -62,7 +62,7 @@ class PreCommitCommand extends Command
         $this->stdInFilesLocator = $stdInFilesLocator;
         $this->changedFilesLocator = $changedFilesLocator;
         $this->taskRunner = $taskRunner;
-        $this->IOFactory = $IOFactory;
+        $this->io = $io;
     }
 
     public static function getDefaultName(): string
@@ -83,8 +83,7 @@ class PreCommitCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = $this->IOFactory->create($input, $output);
-        $files = $this->getCommittedFiles($io);
+        $files = $this->getCommittedFiles();
 
         $context = (
             new TaskRunnerContext(
@@ -100,9 +99,9 @@ class PreCommitCommand extends Command
         return $results->isFailed() ? self::EXIT_CODE_NOK : self::EXIT_CODE_OK;
     }
 
-    protected function getCommittedFiles(IOInterface $io): FilesCollection
+    protected function getCommittedFiles(): FilesCollection
     {
-        if ($stdin = $io->readCommandInput(STDIN)) {
+        if ($stdin = $this->io->readCommandInput(STDIN)) {
             return $this->stdInFilesLocator->locate($stdin);
         }
 

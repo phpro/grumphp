@@ -61,7 +61,7 @@ class CommitMsgCommand extends Command
      */
     private $paths;
 
-    private IOFactory $IOFactory;
+    private IOInterface $io;
 
     public function __construct(
         TestSuiteCollection $testSuites,
@@ -70,7 +70,7 @@ class CommitMsgCommand extends Command
         TaskRunner $taskRunner,
         Filesystem $filesystem,
         Paths $paths,
-        IOFactory $IOFactory
+        IOInterface $io
     ) {
         parent::__construct();
 
@@ -80,7 +80,7 @@ class CommitMsgCommand extends Command
         $this->filesystem = $filesystem;
         $this->paths = $paths;
         $this->stdInFilesLocator = $stdInFilesLocator;
-        $this->IOFactory = $IOFactory;
+        $this->io = $io;
     }
 
     public static function getDefaultName(): string
@@ -98,8 +98,7 @@ class CommitMsgCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = $this->IOFactory->create($input, $output);
-        $files = $this->getCommittedFiles($io);
+        $files = $this->getCommittedFiles();
 
         /** @var string $gitUser */
         $gitUser = $input->getOption('git-user');
@@ -129,9 +128,9 @@ class CommitMsgCommand extends Command
         return $results->isFailed() ? self::EXIT_CODE_NOK : self::EXIT_CODE_OK;
     }
 
-    protected function getCommittedFiles(IOInterface $io): FilesCollection
+    protected function getCommittedFiles(): FilesCollection
     {
-        if ($stdin = $io->readCommandInput(STDIN)) {
+        if ($stdin = $this->io->readCommandInput(STDIN)) {
             return $this->stdInFilesLocator->locate($stdin);
         }
 

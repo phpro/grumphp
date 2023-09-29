@@ -45,14 +45,14 @@ class RunCommand extends Command
      */
     private $taskRunner;
 
-    private IOFactory $IOFactory;
+    private IOInterface $io;
 
     public function __construct(
         TestSuiteCollection $testSuites,
         StdInFiles $stdInFileLocator,
         RegisteredFiles $registeredFilesLocator,
         TaskRunner $taskRunner,
-        IOFactory $IOFactory
+        IOInterface $io
     ) {
         parent::__construct();
 
@@ -60,7 +60,7 @@ class RunCommand extends Command
         $this->stdInFileLocator = $stdInFileLocator;
         $this->registeredFilesLocator = $registeredFilesLocator;
         $this->taskRunner = $taskRunner;
-        $this->IOFactory = $IOFactory;
+        $this->io = $io;
     }
 
     public static function getDefaultName(): string
@@ -88,15 +88,13 @@ class RunCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = $this->IOFactory->create($input, $output);
-
         /** @var string $taskNames */
         $taskNames = $input->getOption('tasks') ?? '';
 
         /** @var string $testsSuite */
         $testsSuite = $input->getOption('testsuite') ?? '';
 
-        $files = $this->detectFiles($io);
+        $files = $this->detectFiles();
         $tasks = Str::explodeWithCleanup(',', $taskNames);
 
         $context = new TaskRunnerContext(
@@ -112,9 +110,9 @@ class RunCommand extends Command
         return $results->isFailed() ? self::EXIT_CODE_NOK : self::EXIT_CODE_OK;
     }
 
-    private function detectFiles(IOInterface $io): FilesCollection
+    private function detectFiles(): FilesCollection
     {
-        if ($stdin = $io->readCommandInput(STDIN)) {
+        if ($stdin = $this->io->readCommandInput(STDIN)) {
             return $this->stdInFileLocator->locate($stdin);
         }
 

@@ -42,7 +42,9 @@ services:
             - '@OndraM\CiDetector\CiDetector'
 
     grumphp.io:
-        class: GrumPHP\IO\IOInterface
+        alias: GrumPHP\IO\IOInterface
+
+    GrumPHP\IO\IOInterface:
         factory: ['@GrumPHP\IO\IOFactory', 'create']
         arguments:
             - '@console.input'
