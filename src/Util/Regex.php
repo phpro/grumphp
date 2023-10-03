@@ -58,7 +58,7 @@ class Regex
     public function addPatternModifier(string $modifier): void
     {
         /** @psalm-suppress InvalidLiteralArgument */
-        if ('' === $modifier || false === strpos(self::ALLOWED_MODIFIERS, $modifier)) {
+        if ('' === $modifier || !str_contains(self::ALLOWED_MODIFIERS, $modifier)) {
             throw new RuntimeException('Invalid regex modifier: '.$modifier);
         }
 
@@ -68,7 +68,7 @@ class Regex
         $modifiers = $matches[0];
 
         // Skip if the modifier is already available
-        if (false !== strpos($modifiers, $modifier)) {
+        if (str_contains($modifiers, $modifier)) {
             return;
         }
 
