@@ -322,3 +322,19 @@ grumphp:
         paths:
             - tools
 ```
+
+## Configuration
+
+**Environment variables:**
+
+```yaml
+# grumphp.yml
+parameters:
+  env(FIXER_ENABLED): 'true'
+
+grumphp:
+    fixer:
+      enabled: '%env(bool:FIXER_ENABLED)%'
+```
+
+More about [Environment Variable Processors](https://symfony.com/doc/current/configuration/env_var_processors.html)
