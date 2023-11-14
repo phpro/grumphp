@@ -51,7 +51,7 @@ final class ContainerBuilder
         $container->setParameter('config_file', $path);
 
         // Compile configuration to make sure that tasks are added to the taskrunner
-        $container->compile();
+        $container->compile(true);
 
         return $container;
     }

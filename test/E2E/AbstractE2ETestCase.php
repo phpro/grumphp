@@ -189,22 +189,27 @@ abstract class AbstractE2ETestCase extends TestCase
         }
     }
 
-    protected function initializeGrumphpConfig(string $path, string $fileName = 'grumphp.yml'): string
+    protected function initializeGrumphpConfig(string $path, string $fileName = 'grumphp.yml', array $customConfig = []): string
     {
         $grumphpFile = $this->useCorrectDirectorySeparator($path.'/'.$fileName);
+        $config = [
+            'grumphp' => [
+                // Don't run E2E tests in parallel.
+                // This causes a deep nesting of parallel running tasks - which is causing some CI issues.
+                'parallel' => [
+                    'enabled' => false,
+                ],
+                'tasks' => [],
+            ],
+        ];
+
+        if ($customConfig) {
+            $config = array_merge_recursive($config, $customConfig);
+        }
 
         $this->filesystem->dumpFile(
             $grumphpFile,
-            Yaml::dump([
-                'grumphp' => [
-                    // Don't run E2E tests in parallel.
-                    // This causes a deep nesting of parallel running tasks - which is causing some CI issues.
-                    'parallel' => [
-                        'enabled' => false,
-                    ],
-                    'tasks' => []
-                ]
-            ])
+            Yaml::dump($config),
         );
 
         return $grumphpFile;
@@ -373,15 +378,17 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->runCommand('add files to git', new Process([$git, 'add', '-A'], $path));
     }
 
-    protected function runGrumphp(string $projectPath, $vendorPath = './vendor', $environment = [])
+    protected function runGrumphp(string $projectPath, string $vendorPath = './vendor', array $environment = []): Process
     {
         $projectPath = $this->relativeRootPath($projectPath);
-        $this->runCommand('grumphp run', (
-            new Process(
-                [$vendorPath.'/bin/grumphp', 'run', '-vvv'],
-                $projectPath
-            )
-        )->setEnv($environment));
+        $process = new Process(
+            [$vendorPath.'/bin/grumphp', 'run', '-vvv'],
+            $projectPath
+        );
+
+        $this->runCommand('grumphp run', $process->setEnv($environment));
+
+        return $process;
     }
 
     protected function runGrumphpWithConfig(string $projectPath, string $grumphpFile, $vendorPath = './vendor')
