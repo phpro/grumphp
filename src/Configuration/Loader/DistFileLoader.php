@@ -18,9 +18,9 @@ final class DistFileLoader implements LoaderInterface
         $this->loader = $loader;
     }
 
-    public function load(mixed $resource, string $type = null): void
+    public function load(mixed $resource, string $type = null): mixed
     {
-        $this->loader->load($resource, $type);
+        return $this->loader->load($resource, $type);
     }
 
     public function supports(mixed $resource, string $type = null): bool
