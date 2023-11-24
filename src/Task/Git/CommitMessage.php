@@ -231,6 +231,7 @@ class CommitMessage implements TaskInterface
 
     private function runMatcher(array $config, string $commitMessage, string $rule, string $ruleName): void
     {
+        assert($rule !== '');
         $regex = new Regex($rule);
 
         if ((bool) $config['case_insensitive']) {

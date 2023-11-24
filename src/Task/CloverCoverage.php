@@ -97,8 +97,8 @@ class CloverCoverage implements TaskInterface
         }
 
         $xml = new SimpleXMLElement($this->filesystem->readFromFileInfo(new SplFileInfo($cloverFile)));
-        $totalElements = (int) current($xml->xpath('/coverage/project/metrics/@elements'));
-        $checkedElements = (int) current($xml->xpath('/coverage/project/metrics/@coveredelements'));
+        $totalElements = (int) current($xml->xpath('/coverage/project/metrics/@elements') ?? []);
+        $checkedElements = (int) current($xml->xpath('/coverage/project/metrics/@coveredelements') ?? []);
 
         if (0 === $totalElements) {
             return TaskResult::createSkipped($this, $context);

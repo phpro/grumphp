@@ -15,12 +15,13 @@ class Regex
     const ALLOWED_MODIFIERS = 'imsxuADU';
 
     /**
-     * @var string
+     * @var non-empty-string
      */
     protected $regex;
 
     /**
      * Regex constructor.
+     * @param non-empty-string $string
      */
     public function __construct(string $string)
     {
@@ -50,8 +51,13 @@ class Regex
         return false;
     }
 
+    /**
+     * @param non-empty-string $string
+     * @return non-empty-string
+     */
     private function toRegex(string $string): string
     {
+        /** @var non-empty-string */
         return $this->isRegex($string) ? $string : Glob::toRegex($string);
     }
 
@@ -77,6 +83,7 @@ class Regex
 
     /**
      * Returns the new regex.
+     * @return non-empty-string
      */
     public function __toString(): string
     {

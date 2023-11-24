@@ -16,7 +16,7 @@ class NoExitStatementsVisitor extends AbstractVisitor
         }
 
         $this->addError(
-            sprintf('Found a forbidden exit statement.'),
+            'Found a forbidden exit statement.',
             $node->getLine(),
             ParseError::TYPE_ERROR
         );

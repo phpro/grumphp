@@ -10,7 +10,7 @@ jobs:
         strategy:
             matrix:
                 operating-system: [ubuntu-latest, macos-latest] #windows-latest currently not working
-                php-versions: ['8.1', '8.2']
+                php-versions: ['8.1', '8.2', '8.3']
                 composer-options: ['', '--prefer-lowest']
                 composer-versions: ['composer:v2']
             fail-fast: false
@@ -39,10 +39,10 @@ jobs:
                   key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
                   restore-keys: ${{ runner.os }}-composer-
             - name: Install dependencies
-              if: matrix.php-versions != '8.2'
+              if: matrix.php-versions != '8.3'
               run: composer update --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }}
             - name: Install dependencies (Ignore platform)
-              if: matrix.php-versions == '8.2'
+              if: matrix.php-versions == '8.3'
               run: composer update --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }} --ignore-platform-req=php+
             - name: Set git variables
               run: |
