@@ -14,3 +14,10 @@ tag:
 	git add -A
 	git commit -m '$(TAG) release'
 	git tag -s 'v$(TAG)' -m'Version $(TAG)'
+
+lock:
+	$(if $(PHP),,$(error PHP is not defined. Pass via "make lock PHP=8.1"))
+	composer self-update
+	composer config platform.php '$(PHP)'
+	composer update --no-scripts --no-plugins --no-interaction --optimize-autoloader
+	composer validate

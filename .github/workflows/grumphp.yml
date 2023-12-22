@@ -11,10 +11,10 @@ jobs:
             matrix:
                 operating-system: [ubuntu-latest, macos-latest] #windows-latest currently not working
                 php-versions: ['8.1', '8.2', '8.3']
-                composer-options: ['', '--prefer-lowest']
+                composer-deps: ['highest', 'lowest', 'lock']
                 composer-versions: ['composer:v2']
             fail-fast: false
-        name: PHP ${{ matrix.php-versions }} @ ${{ matrix.operating-system }} with ${{ matrix.composer-versions }} ${{ matrix.composer-options }}
+        name: PHP ${{ matrix.php-versions }} @ ${{ matrix.operating-system }} with ${{ matrix.composer-versions }} ${{ matrix.composer-deps }}
         steps:
             - name: Checkout
               uses: actions/checkout@master
@@ -29,6 +29,10 @@ jobs:
                 php -v
                 php -m
                 composer --version
+            - name: Set env vars for latest PHP version
+              if: matrix.php-versions == '8.3'
+              run: |
+                export COMPOSER_IGNORE_PLATFORM_REQ=php+
             - name: Get composer cache directory
               id: composercache
               run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
@@ -38,12 +42,17 @@ jobs:
                   path: ${{ steps.composercache.outputs.dir }}
                   key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
                   restore-keys: ${{ runner.os }}-composer-
-            - name: Install dependencies
-              if: matrix.php-versions != '8.3'
-              run: composer update --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }}
-            - name: Install dependencies (Ignore platform)
-              if: matrix.php-versions == '8.3'
-              run: composer update --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }} --ignore-platform-req=php+
+            - name: Install dependencies (highest)
+              if: matrix.composer-deps == 'highest'
+              run: composer update --prefer-dist --no-progress --no-suggest
+            - name: Install dependencies (lowest)
+              if: matrix.composer-deps == 'lowest'
+              run: composer update --prefer-dist --no-progress --no-suggest --prefer-lowest
+            - name: Install dependencies (lock)
+              if: matrix.composer-deps == 'lock'
+              run: |
+                composer install --no-progress --no-suggest
+                composer validate
             - name: Set git variables
               run: |
                 git config --global user.email "you@example.com"
@@ -55,6 +64,6 @@ jobs:
             - name: Run the tests on unix
               if: runner.os != 'Windows'
               run: php vendor/bin/grumphp run --no-interaction --testsuite=ci
-              continue-on-error: ${{ matrix.php-versions == '8.1' && matrix.composer-options == '--prefer-lowest' }}
+              #continue-on-error: ${{ matrix.php-versions == '8.1' && matrix.composer-options == '--prefer-lowest' }}
             - name: Run paratest outside of grumphp
               run: php ./vendor/bin/paratest --testsuite=E2E -f --verbose
