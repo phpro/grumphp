@@ -26,14 +26,14 @@ class SecurityCheckerComposeraudit extends AbstractExternalTask
             'locked' => true,
             'no_dev' => false,
             'run_always' => false,
-            'working_dir' => './',
+            'working_dir' => null,
         ]);
 
         $resolver->addAllowedTypes('format', ['null', 'string']);
         $resolver->addAllowedTypes('locked', ['bool']);
         $resolver->addAllowedTypes('no_dev', ['bool']);
         $resolver->addAllowedTypes('run_always', ['bool']);
-        $resolver->addAllowedTypes('working_dir', ['string']);
+        $resolver->addAllowedTypes('working_dir', ['null', 'string']);
 
         return ConfigOptionsResolver::fromOptionsResolver($resolver);
     }
@@ -47,8 +47,8 @@ class SecurityCheckerComposeraudit extends AbstractExternalTask
     {
         $config = $this->getConfig()->getOptions();
         $files = $context->getFiles()
-            ->path(pathinfo($config['working_dir'] . "/composer.lock", PATHINFO_DIRNAME))
-            ->name(pathinfo($config['working_dir'] . "/composer.lock", PATHINFO_BASENAME));
+            ->path(pathinfo("composer.lock", PATHINFO_DIRNAME))
+            ->name(pathinfo("composer.lock", PATHINFO_BASENAME));
         if (0 === \count($files) && !$config['run_always']) {
             return TaskResult::createSkipped($this, $context);
         }
