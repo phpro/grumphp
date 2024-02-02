@@ -29,7 +29,7 @@ class SecurityCheckerComposerauditTest extends AbstractExternalTaskTestCase
                 'locked' => true,
                 'no_dev' => false,
                 'run_always' => false,
-                'working_dir' => './',
+                'working_dir' => null,
             ]
         ];
     }
@@ -108,7 +108,6 @@ class SecurityCheckerComposerauditTest extends AbstractExternalTaskTestCase
             [
                 'audit',
                 '--locked',
-                '--working-dir=./',
             ]
         ];
 
@@ -122,7 +121,6 @@ class SecurityCheckerComposerauditTest extends AbstractExternalTaskTestCase
                 'audit',
                 '--format=json',
                 '--locked',
-                '--working-dir=./',
             ]
         ];
 
@@ -134,7 +132,6 @@ class SecurityCheckerComposerauditTest extends AbstractExternalTaskTestCase
             'composer',
             [
                 'audit',
-                '--working-dir=./',
             ]
         ];
 
@@ -148,20 +145,19 @@ class SecurityCheckerComposerauditTest extends AbstractExternalTaskTestCase
                 'audit',
                 '--locked',
                 '--no-dev',
-                '--working-dir=./',
             ]
         ];
 
         yield 'working-dir' => [
             [
-                'working_dir' => './',
+                'working_dir' => 'dir',
             ],
             $this->mockContext(RunContext::class, ['composer.lock']),
             'composer',
             [
                 'audit',
                 '--locked',
-                '--working-dir=./',
+                '--working-dir=dir',
             ]
         ];
     }
