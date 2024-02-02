@@ -111,5 +111,58 @@ class SecurityCheckerComposerauditTest extends AbstractExternalTaskTestCase
                 '--working-dir=./',
             ]
         ];
+
+        yield 'format' => [
+            [
+                'format' => 'json',
+            ],
+            $this->mockContext(RunContext::class, ['composer.lock']),
+            'composer',
+            [
+                'audit',
+                '--format=json',
+                '--locked',
+                '--working-dir=./',
+            ]
+        ];
+
+        yield 'locked' => [
+            [
+                'locked' => false,
+            ],
+            $this->mockContext(RunContext::class, ['composer.lock']),
+            'composer',
+            [
+                'audit',
+                '--working-dir=./',
+            ]
+        ];
+
+        yield 'no-dev' => [
+            [
+                'no_dev' => true,
+            ],
+            $this->mockContext(RunContext::class, ['composer.lock']),
+            'composer',
+            [
+                'audit',
+                '--locked',
+                '--no-dev',
+                '--working-dir=./',
+            ]
+        ];
+
+        yield 'working-dir' => [
+            [
+                'working_dir' => './',
+            ],
+            $this->mockContext(RunContext::class, ['composer.lock']),
+            'composer',
+            [
+                'audit',
+                '--locked',
+                '--working-dir=./',
+            ]
+        ];
     }
 }
