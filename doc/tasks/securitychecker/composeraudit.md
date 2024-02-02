@@ -11,6 +11,7 @@ The task lives under the `securitychecker_composeraudit` namespace and has the f
 grumphp:
     tasks:
         securitychecker_composeraudit:
+            format: null
             locked: true
             no_dev: false
             run_always: false
