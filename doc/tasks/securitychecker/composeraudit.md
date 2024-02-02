@@ -15,7 +15,7 @@ grumphp:
             locked: true
             no_dev: false
             run_always: false
-            working_dir: ./
+            working_dir: null
 ```
 
 **format**
@@ -44,6 +44,6 @@ When this option is set to `false`, the task will only run when the `composer.lo
 
 **working_dir**
 
-*Default: ./*
+*Default: null
 
 If your `composer.lock` file is located in an exotic location, you can specify the location with this option. By default, the task will try to load a `composer.lock` file in the current directory.
