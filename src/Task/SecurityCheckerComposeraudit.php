@@ -29,8 +29,6 @@ class SecurityCheckerComposeraudit extends AbstractExternalTask
             'working_dir' => './',
         ]);
 
-        // $resolver->addAllowedTypes('lockfile', ['string']);
-
         $resolver->addAllowedTypes('format', ['null', 'string']);
         $resolver->addAllowedTypes('locked', ['bool']);
         $resolver->addAllowedTypes('no_dev', ['bool']);
