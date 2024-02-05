@@ -54,6 +54,7 @@ grumphp:
         psalm: ~
         rector: ~
         robo: ~
+        securitychecker_composeraudit: ~
         securitychecker_enlightn: ~
         securitychecker_local: ~
         securitychecker_roave: ~
@@ -119,6 +120,7 @@ Every task has its own default configuration. It is possible to overwrite the pa
 - [Rector](tasks/rector.md)
 - [Robo](tasks/robo.md)
 - [Security Checker](tasks/securitychecker.md)
+  - [Composer Audit](tasks/securitychecker/composeraudit.md)
   - [Enlightn](tasks/securitychecker/enlightn.md)
   - [Local](tasks/securitychecker/local.md)
   - [Roave](tasks/securitychecker/roave.md)
@@ -205,7 +207,7 @@ interface TaskInterface
 }
 ```
 
-* `getConfigurableOptions`: This method has to return all configurable options for the task. 
+* `getConfigurableOptions`: This method has to return all configurable options for the task.
 * `canRunInContext`: Tells GrumPHP if it can run in `pre-commit`, `commit-msg` or `run` context.
 * `run`: Executes the task and returns a result
 * `getConfig`: Provides the resolved configuration for the task or an empty config for newly instantiated tasks.
@@ -260,7 +262,7 @@ For a more detailed view on how to use these classes, you can scroll through our
 
 In some cases you might want to run the same task but with different configuration.
 Good news: This is perfectly possible!
-You can use any name you want for the task, as long as you configure an existing task in the metadata section. 
+You can use any name you want for the task, as long as you configure an existing task in the metadata section.
 Configuration of the additional task will look like this:
 
 ```yaml
