@@ -36,10 +36,11 @@ class PhpParserTest extends AbstractTaskTestCase
         yield 'defaults' => [
             [],
             [
-                'kind' => PhpParser::KIND_PHP7,
                 'visitors' => [],
                 'triggered_by' => ['php'],
                 'ignore_patterns' => [],
+                'php_version' => null,
+                'kind' => null,
             ]
         ];
     }

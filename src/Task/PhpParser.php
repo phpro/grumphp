@@ -10,16 +10,12 @@ use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @extends AbstractParserTask<PhpParser>
  */
 class PhpParser extends AbstractParserTask
 {
-    const KIND_PHP5 = 'php5';
-    const KIND_PHP7 = 'php7';
-
     /**
      * @var \GrumPHP\Parser\Php\PhpParser
      */
@@ -30,9 +26,18 @@ class PhpParser extends AbstractParserTask
         $resolver = self::sharedOptionsResolver();
         $resolver->setDefaults([
             'triggered_by' => ['php'],
-            'kind' => self::KIND_PHP7,
+            'php_version' => null,
+            'kind' => null,
             'visitors' => [],
         ]);
+
+        $resolver->setAllowedTypes('php_version', ['string', 'null']);
+        $resolver->setDeprecated(
+            'kind',
+            'phpro/grumphp',
+            '2.5',
+            'The option "%name%" is deprecated and replaced by the php_version option.'
+        );
 
         return ConfigOptionsResolver::fromOptionsResolver($resolver);
     }

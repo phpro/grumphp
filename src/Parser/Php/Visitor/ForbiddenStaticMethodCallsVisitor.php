@@ -41,12 +41,7 @@ class ForbiddenStaticMethodCallsVisitor extends AbstractVisitor implements Confi
             return;
         }
 
-        /**
-         * https://github.com/nikic/PHP-Parser/releases/tag/v4.16.0
-         * @psalm-suppress DeprecatedProperty
-         */
-        $class = implode('\\', $node->class->parts);
-
+        $class = implode('\\', $node->class->getParts());
         $method = $node->name;
         $normalized = sprintf('%s::%s', $class, $method);
 
