@@ -231,6 +231,13 @@ class FilesCollection extends ArrayCollection
         });
     }
 
+    public function ignoreDeleted(): FilesCollection
+    {
+        return $this->filter(function (\SplFileInfo $file) {
+            return $file->isFile();
+        });
+    }
+
     /**
      * SplFileInfo cannot be serialized. Therefor, we help PHP a bit.
      * This stuff is used for running tasks in parallel.
