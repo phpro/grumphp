@@ -27,6 +27,7 @@ class SecurityChecker extends AbstractExternalTask
             'end_point' => null,
             'timeout' => null,
             'run_always' => false,
+            'allow-list' => [],
         ]);
 
         $resolver->addAllowedTypes('lockfile', ['string']);
@@ -34,6 +35,7 @@ class SecurityChecker extends AbstractExternalTask
         $resolver->addAllowedTypes('end_point', ['null', 'string']);
         $resolver->addAllowedTypes('timeout', ['null', 'int']);
         $resolver->addAllowedTypes('run_always', ['bool']);
+        $resolver->addAllowedTypes('allow-list', ['array']);
 
         return ConfigOptionsResolver::fromOptionsResolver($resolver);
     }

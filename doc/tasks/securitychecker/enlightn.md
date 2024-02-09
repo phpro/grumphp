@@ -19,6 +19,7 @@ grumphp:
         securitychecker_enlightn:
             lockfile: ./composer.lock
             run_always: false
+            allow-list: []
 ```
 
 **lockfile**
@@ -32,3 +33,9 @@ If your `composer.lock` file is located in an exotic location, you can specify t
 *Default: false*
 
 When this option is set to `false`, the task will only run when the `composer.lock` file has changed. If it is set to `true`, the `composer.lock` file will be checked on every commit.
+
+**allow-list**
+
+*Default: empty array*
+
+When an array is set, these values (vulnerabilities) will be passed on to the security checker to ignore the given values. See [the enlightn/security-checker docs](https://github.com/enlightn/security-checker#allow-vulnerabilities) for more information.
