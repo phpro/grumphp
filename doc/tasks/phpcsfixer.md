@@ -20,6 +20,7 @@ grumphp:
             allow_risky: ~
             cache_file: ~
             config: ~
+            format: 'txt'
             rules: []
             using_cache: ~
             config_contains_finder: true
@@ -49,6 +50,13 @@ When no cache_file is set, the default file `.php-cs-fixer.cache` will be used.
 
 By default, the `.php-cs-fixer.php` (local) or `.php-cs-fixer.dist.php` (to be distributed) will be used.
 You can specify an alternate location for this file by changing this option.
+
+**format**
+
+*Default: txt*
+
+By default, the `txt` format wil be used.
+You can find more reporters on [PHPCSFixer repository](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/master/src/Console/Report/FixReport).
 
 **rules**
 
