@@ -46,7 +46,7 @@ abstract class AbstractVisitorTest extends TestCase
         $visitor = $this->getVisitor();
         $visitor->setContext($context);
 
-        $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory())->createForHostVersion();
         $traverser = new NodeTraverser();
         $traverser->addVisitor(new NameResolver());
         $traverser->addVisitor($visitor);
