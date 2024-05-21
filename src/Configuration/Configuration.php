@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Configuration;
 
+use GrumPHP\Console\Command\Git\InitCommand;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -69,6 +70,14 @@ class Configuration implements ConfigurationInterface
         ]);
         $ascii->children()->variableNode('failed')->defaultValue('grumphp-grumpy.txt');
         $ascii->children()->variableNode('succeeded')->defaultValue('grumphp-happy.txt');
+
+        $rootNode->children()->arrayNode('git_hooks')->defaultValue(InitCommand::$hooks)
+            ->prototype('scalar')
+                ->validate()
+                    ->ifNotInArray(InitCommand::$hooks)
+                    ->thenInvalid('Invalid item %s')
+                ->end()
+            ->end();
 
         // parallel
         $parallel = $rootNode->children()->arrayNode('parallel');

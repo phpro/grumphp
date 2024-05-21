@@ -20,6 +20,7 @@ services:
             - '%hooks_dir%'
             - '%hooks_preset%'
             - '%git_hook_variables%'
+            - '%git_hooks%'
     GrumPHP\Configuration\Model\ParallelConfig:
         factory: ['GrumPHP\Configuration\Model\ParallelConfig', 'fromArray']
         arguments:
