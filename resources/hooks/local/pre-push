@@ -1,0 +1,13 @@
+#!/bin/sh
+
+#
+# Run the hook command.
+# Note: this will be replaced by the real command during copy.
+#
+
+# Grumphp env vars
+$(ENV)
+export GRUMPHP_GIT_WORKING_DIR="$(git rev-parse --show-toplevel)"
+
+# Run GrumPHP
+cd "${HOOK_EXEC_PATH}" && $(EXEC_GRUMPHP_COMMAND) $(HOOK_COMMAND) --skip-success-output

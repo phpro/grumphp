@@ -65,6 +65,13 @@ services:
             - '@GrumPHP\IO\IOInterface'
         tags:
             - { name: 'console.command' }
+    GrumPHP\Console\Command\Git\PrePushCommand:
+        arguments:
+            - '@GrumPHP\Collection\TestSuiteCollection'
+            - '@GrumPHP\Runner\TaskRunner'
+            - '@GrumPHP\Git\GitRepository'
+        tags:
+            - { name: 'console.command' }
 
     # This one is loaded through the TestSuiteCompilerPass
     GrumPHP\Collection\TestSuiteCollection:
