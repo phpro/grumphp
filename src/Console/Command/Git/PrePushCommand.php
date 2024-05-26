@@ -7,6 +7,7 @@ namespace GrumPHP\Console\Command\Git;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\TestSuiteCollection;
 use GrumPHP\Git\GitRepository;
+use GrumPHP\Locator\RegisteredFiles;
 use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\Context\GitPrePushContext;
@@ -26,9 +27,10 @@ class PrePushCommand extends Command
     const SHA1_EMPTY = '0000000000000000000000000000000000000000';
 
     public function __construct(
-        private TestSuiteCollection $testSuites,
-        private TaskRunner $taskRunner,
-        private GitRepository $repository,
+        private readonly TestSuiteCollection $testSuites,
+        private readonly TaskRunner $taskRunner,
+        private readonly GitRepository $repository,
+        private readonly RegisteredFiles $registeredFilesLocator,
     ) {
         parent::__construct();
     }
@@ -52,6 +54,9 @@ class PrePushCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $files = $this->getChangedFiles();
+        if ($files === null) {
+            return self::EXIT_CODE_OK;
+        }
 
         $context = (
             new TaskRunnerContext(
@@ -67,46 +72,33 @@ class PrePushCommand extends Command
         return $results->isFailed() ? self::EXIT_CODE_NOK : self::EXIT_CODE_OK;
     }
 
-    protected function getChangedFiles(): FilesCollection
+    protected function getChangedFiles(): ?FilesCollection
     {
         $fileCollection = new FilesCollection([]);
-        $fullCheck = false;
 
         // Loop over the commits.
         while ($commit = trim((string) fgets(STDIN))) {
             [$localRef, $localSha, , $remoteSha] = explode(' ', $commit);
 
-            // Skip if we are deleting a branch or if there is no local branch.
             if ($localRef === '(delete)' || $localSha === self::SHA1_EMPTY) {
-                return $fileCollection;
+                // A branch has been deleted or there's no local branch.
+                return null;
             }
 
-            // Do a full check if this is a new branch.
             if ($remoteSha === self::SHA1_EMPTY) {
-                $fullCheck = true;
-                break;
+                // Do a full check if this is a new branch.
+                return $this->registeredFilesLocator->locate();
             }
 
-            $command = (string) $this->repository->run('diff-tree', [
-                '--no-commit-id',
-                '--name-only',
-                '-r',
-                $localSha,
-                $remoteSha,
-            ]);
+            $args = ['--no-commit-id', '--name-only', '-r', $localSha, $remoteSha];
+            $command = (string) $this->repository->run('diff-tree', $args);
 
-            // Filter out empty lines.
-            $files = array_filter(array_map('trim', explode("\n", $command)));
-            foreach ($files as $file) {
-                // Avoid missing files and duplicates.
-                if (file_exists($file) && !$fileCollection->containsKey($file)) {
+            foreach (explode("\n", $command) as $file) {
+                // Avoid empty lines, missing files, and duplicates.
+                if (!empty($file) && file_exists($file) && !$fileCollection->containsKey($file)) {
                       $fileCollection->set($file, new \SplFileInfo($file));
                 }
             }
-        }
-
-        if ($fileCollection->isEmpty() && !$fullCheck) {
-            return $fileCollection;
         }
 
         return $fileCollection;

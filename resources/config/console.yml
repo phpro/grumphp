@@ -70,6 +70,7 @@ services:
             - '@GrumPHP\Collection\TestSuiteCollection'
             - '@GrumPHP\Runner\TaskRunner'
             - '@GrumPHP\Git\GitRepository'
+            - '@GrumPHP\Locator\RegisteredFiles'
         tags:
             - { name: 'console.command' }
 
