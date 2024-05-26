@@ -29,6 +29,7 @@ class Metadata
                 'enabled' => true,
                 'task' => '',
                 'label' => '',
+                'git_stage' => ['pre-commit', 'pre-push'],
             ]);
         }
 
@@ -58,6 +59,11 @@ class Metadata
     public function label(): string
     {
         return (string) $this->metadata['label'];
+    }
+
+    public function gitStages(): array
+    {
+        return $this->metadata['git_stage'];
     }
 
     public function toArray(): array
