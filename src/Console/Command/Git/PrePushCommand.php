@@ -9,7 +9,7 @@ use GrumPHP\Collection\TestSuiteCollection;
 use GrumPHP\Git\GitRepository;
 use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Runner\TaskRunnerContext;
-use GrumPHP\Task\Context\GitPreCommitContext;
+use GrumPHP\Task\Context\GitPrePushContext;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -55,7 +55,7 @@ class PrePushCommand extends Command
 
         $context = (
             new TaskRunnerContext(
-                new GitPreCommitContext($files),
+                new GitPrePushContext($files),
                 $this->testSuites->getOptional('git_pre_push')
             )
         )->withSkippedSuccessOutput((bool) $input->getOption('skip-success-output'));
