@@ -39,6 +39,8 @@ grumphp:
   testsuites:
     git_pre_commit:
       tasks: [phpcs, phpspec, phpunit, composer, composer_normalize, yamllint, phplint, phpparser, psalm]
+    git_pre_push:
+      tasks: [phpcs, phpspec, phpunit, composer, composer_normalize, yamllint, phplint, phpparser, psalm]
     # On CI, we run paratest separately. For some reason this currently fails in GitHub actions.
     ci:
       tasks: [phpcs, phpspec, phpunit, composer, composer_normalize, yamllint, phplint, phpparser, psalm]
