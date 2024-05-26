@@ -14,6 +14,8 @@ use GrumPHP\Task\Config\TaskConfigInterface;
  */
 abstract class AbstractExternalTask implements TaskInterface
 {
+    use GitContextTrait;
+
     /**
      * @var TaskConfigInterface
      */

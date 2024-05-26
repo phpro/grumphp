@@ -14,7 +14,6 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Config\ConfigOptionsResolver;
 use GrumPHP\Task\Context\ContextInterface;
-use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -72,7 +71,7 @@ class Phpcs extends AbstractExternalTask
 
     public function canRunInContext(ContextInterface $context): bool
     {
-        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
+        return $this->isGitContextAllowed($context) || $context instanceof RunContext;
     }
 
     public function run(ContextInterface $context): TaskResultInterface

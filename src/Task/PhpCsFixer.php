@@ -10,7 +10,6 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Config\ConfigOptionsResolver;
 use GrumPHP\Task\Context\ContextInterface;
-use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
@@ -58,7 +57,7 @@ class PhpCsFixer extends AbstractExternalTask
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
+        return $this->isGitContextAllowed($context) || $context instanceof RunContext;
     }
 
     /**
@@ -97,7 +96,7 @@ class PhpCsFixer extends AbstractExternalTask
         $arguments->addOptionalArgument('--diff', $config['diff']);
         $arguments->add('fix');
 
-        if ($context instanceof GitPreCommitContext || !$config['config_contains_finder']) {
+        if ($this->isGitContextAllowed($context) || !$config['config_contains_finder']) {
             $arguments->addFiles($files);
         }
 

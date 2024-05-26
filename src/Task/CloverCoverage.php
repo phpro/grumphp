@@ -11,7 +11,6 @@ use GrumPHP\Task\Config\ConfigOptionsResolver;
 use GrumPHP\Task\Config\EmptyTaskConfig;
 use GrumPHP\Task\Config\TaskConfigInterface;
 use GrumPHP\Task\Context\ContextInterface;
-use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Util\Filesystem;
 use SimpleXMLElement;
@@ -22,6 +21,8 @@ use VeeWee\Xml\Dom\Document;
 
 class CloverCoverage implements TaskInterface
 {
+    use GitContextTrait;
+
     /**
      * @var Filesystem
      */
@@ -92,7 +93,7 @@ class CloverCoverage implements TaskInterface
      */
     public function canRunInContext(ContextInterface $context): bool
     {
-        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
+        return $this->isGitContextAllowed($context) || $context instanceof RunContext;
     }
 
     /**

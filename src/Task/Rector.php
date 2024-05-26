@@ -10,7 +10,6 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Config\ConfigOptionsResolver;
 use GrumPHP\Task\Context\ContextInterface;
-use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
@@ -42,7 +41,7 @@ class Rector extends AbstractExternalTask
 
     public function canRunInContext(ContextInterface $context): bool
     {
-        return $context instanceof RunContext || $context instanceof GitPreCommitContext;
+        return $context instanceof RunContext || $this->isGitContextAllowed($context);
     }
 
     public function run(ContextInterface $context): TaskResultInterface
@@ -68,7 +67,7 @@ class Rector extends AbstractExternalTask
         $arguments->addOptionalArgument('--clear-cache', $config['clear_cache']);
         $arguments->addOptionalArgument('--no-diffs', $config['no_diffs']);
 
-        if ($context instanceof GitPreCommitContext) {
+        if ($this->isGitContextAllowed($context)) {
             $arguments->addFiles($files);
         }
 

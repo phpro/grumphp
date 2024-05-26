@@ -10,12 +10,13 @@ use GrumPHP\Task\Config\ConfigOptionsResolver;
 use GrumPHP\Task\Config\EmptyTaskConfig;
 use GrumPHP\Task\Config\TaskConfigInterface;
 use GrumPHP\Task\Context\ContextInterface;
-use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FileSize implements TaskInterface
 {
+    use GitContextTrait;
+
     /**
      * @var TaskConfigInterface
      */
@@ -55,7 +56,7 @@ class FileSize implements TaskInterface
 
     public function canRunInContext(ContextInterface $context): bool
     {
-        return $context instanceof RunContext || $context instanceof GitPreCommitContext;
+        return $context instanceof RunContext || $this->isGitContextAllowed($context);
     }
 
     public function run(ContextInterface $context): TaskResultInterface

@@ -17,6 +17,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 abstract class AbstractParserTask implements TaskInterface
 {
+    use GitContextTrait;
+
     /**
      * @var TaskConfigInterface
      */

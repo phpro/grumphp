@@ -12,7 +12,6 @@ use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\AbstractExternalTask;
 use GrumPHP\Task\Config\ConfigOptionsResolver;
 use GrumPHP\Task\Context\ContextInterface;
-use GrumPHP\Task\Context\GitPreCommitContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -63,7 +62,7 @@ class Blacklist extends AbstractExternalTask
 
     public function canRunInContext(ContextInterface $context): bool
     {
-        return $context instanceof GitPreCommitContext;
+        return $this->isGitContextAllowed($context);
     }
 
     public function run(ContextInterface $context): TaskResultInterface

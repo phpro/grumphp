@@ -12,14 +12,16 @@ use GrumPHP\Task\Config\ConfigOptionsResolver;
 use GrumPHP\Task\Config\EmptyTaskConfig;
 use GrumPHP\Task\Config\TaskConfigInterface;
 use GrumPHP\Task\Context\ContextInterface;
-use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use GrumPHP\Task\GitContextTrait;
 use GrumPHP\Util\Regex;
 use GrumPHP\Task\TaskInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BranchName implements TaskInterface
 {
+    use GitContextTrait;
+
     /**
      * @var TaskConfigInterface
      */
@@ -69,7 +71,7 @@ class BranchName implements TaskInterface
 
     public function canRunInContext(ContextInterface $context): bool
     {
-        return $context instanceof RunContext || $context instanceof GitPreCommitContext;
+        return $context instanceof RunContext || $this->isGitContextAllowed($context);
     }
 
     public function run(ContextInterface $context): TaskResultInterface

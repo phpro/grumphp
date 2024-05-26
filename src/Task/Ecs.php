@@ -12,7 +12,6 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Config\ConfigOptionsResolver;
 use GrumPHP\Task\Context\ContextInterface;
-use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
@@ -48,7 +47,7 @@ class Ecs extends AbstractExternalTask
 
     public function canRunInContext(ContextInterface $context): bool
     {
-        return $context instanceof GitPreCommitContext || $context instanceof RunContext;
+        return $this->isGitContextAllowed($context) || $context instanceof RunContext;
     }
 
     public function run(ContextInterface $context): TaskResultInterface
@@ -102,7 +101,7 @@ class Ecs extends AbstractExternalTask
         FilesCollection $files,
         array $config
     ): void {
-        if ($context instanceof GitPreCommitContext && $config['files_on_pre_commit']) {
+        if ($this->isGitContextAllowed($context) && $config['files_on_pre_commit']) {
             $arguments->addFiles($files);
             return;
         }

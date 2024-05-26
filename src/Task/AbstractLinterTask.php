@@ -17,6 +17,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 abstract class AbstractLinterTask implements TaskInterface
 {
+    use GitContextTrait;
+
     /**
      * @var TaskConfigInterface
      */

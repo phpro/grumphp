@@ -9,7 +9,6 @@ use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Config\ConfigOptionsResolver;
 use GrumPHP\Task\Context\ContextInterface;
-use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -54,7 +53,7 @@ class Psalm extends AbstractExternalTask
 
     public function canRunInContext(ContextInterface $context): bool
     {
-        return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
+        return ($this->isGitContextAllowed($context) || $context instanceof RunContext);
     }
 
     public function run(ContextInterface $context): TaskResultInterface
@@ -78,7 +77,7 @@ class Psalm extends AbstractExternalTask
         $arguments->addOptionalArgument('--threads=%d', $config['threads']);
         $arguments->addOptionalBooleanArgument('--show-info=%s', $config['show_info'], 'true', 'false');
 
-        if ($context instanceof GitPreCommitContext) {
+        if ($this->isGitContextAllowed($context)) {
             $arguments->addFiles($files);
         }
 
