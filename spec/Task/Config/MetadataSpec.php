@@ -28,6 +28,7 @@ class MetadataSpec extends ObjectBehavior
             'enabled' => true,
             'task' => '',
             'label' => '',
+            'git_stage' => ['pre-commit', 'pre-push'],
         ]);
     }
 
