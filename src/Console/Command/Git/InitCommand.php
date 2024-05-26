@@ -27,6 +27,7 @@ class InitCommand extends Command
      */
     public static $hooks = [
         'pre-commit',
+        'pre-push',
         'commit-msg',
     ];
 
