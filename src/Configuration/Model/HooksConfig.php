@@ -27,8 +27,7 @@ class HooksConfig
     public function __construct(
         ?string $dir,
         string $preset,
-        array $variables,
-        private array $gitHooks,
+        array $variables
     ) {
         $this->dir = $dir;
         $this->preset = $preset;
@@ -48,10 +47,5 @@ class HooksConfig
     public function getVariables(): array
     {
         return $this->variables;
-    }
-
-    public function getGitHooks(): array
-    {
-        return $this->gitHooks;
     }
 }

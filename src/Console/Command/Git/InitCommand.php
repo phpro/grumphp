@@ -27,7 +27,6 @@ class InitCommand extends Command
      */
     public static $hooks = [
         'pre-commit',
-        'pre-push',
         'commit-msg',
     ];
 
@@ -101,9 +100,6 @@ class InitCommand extends Command
         }
 
         foreach (self::$hooks as $hook) {
-            if (!in_array($hook, $this->hooksConfig->getGitHooks(), true)) {
-                continue;
-            }
             $gitHook = $this->filesystem->buildPath($gitHooksPath, $hook);
             $hookTemplate = $this->filesystem->guessFile(
                 [
