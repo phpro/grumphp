@@ -8,6 +8,7 @@ use Composer\Script\Event;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Process\ProcessFactory;
 use GrumPHP\Util\Filesystem;
+use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
 
@@ -29,6 +30,10 @@ class DevelopmentIntegrator
         );
 
         $commandlineArgs = ProcessArgumentsCollection::forExecutable($composerExecutable);
+        if ($php = (new PhpExecutableFinder())->find(false)) {
+            $commandlineArgs = ProcessArgumentsCollection::forExecutable($php);
+            $commandlineArgs->add($composerExecutable);
+        }
         $commandlineArgs->add('git:init');
         $process = self::fixInternalComposerProcessVersion($commandlineArgs);
 

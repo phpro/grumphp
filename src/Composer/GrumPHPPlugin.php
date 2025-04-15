@@ -17,6 +17,7 @@ use Composer\Package\PackageInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
+use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * @psalm-suppress MissingConstructor
@@ -90,11 +91,29 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
+            /**
+             * @see GrumPHPPlugin::detectGrumphpAction()
+             */
             PackageEvents::PRE_PACKAGE_INSTALL => 'detectGrumphpAction',
+            /**
+             * @see GrumPHPPlugin::detectGrumphpAction()
+             */
             PackageEvents::POST_PACKAGE_INSTALL => 'detectGrumphpAction',
+            /**
+             * @see GrumPHPPlugin::detectGrumphpAction()
+             */
             PackageEvents::PRE_PACKAGE_UPDATE => 'detectGrumphpAction',
+            /**
+             * @see GrumPHPPlugin::detectGrumphpAction()
+             */
             PackageEvents::PRE_PACKAGE_UNINSTALL => 'detectGrumphpAction',
+            /**
+             * @see GrumPHPPlugin::runScheduledTasks()
+             */
             ScriptEvents::POST_INSTALL_CMD => 'runScheduledTasks',
+            /**
+             * @see GrumPHPPlugin::runScheduledTasks()
+             */
             ScriptEvents::POST_UPDATE_CMD => 'runScheduledTasks',
         ];
     }
@@ -204,13 +223,18 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
     {
         $extra = $this->composer->getPackage()->getExtra();
 
-        return !(bool) ($extra['grumphp']['disable-plugin'] ?? false);
+        return !($extra['grumphp']['disable-plugin'] ?? false);
     }
 
     private function runGrumPhpCommand(string $command): void
     {
         if (!$grumphp = $this->detectGrumphpExecutable()) {
             $this->pluginErrored('no-executable');
+            return;
+        }
+
+        if (!$php = (new PhpExecutableFinder())->find(false)) {
+            $this->pluginErrored('no-php-executable');
             return;
         }
 
@@ -236,7 +260,7 @@ class GrumPHPPlugin implements PluginInterface, EventSubscriberInterface
                 function (string $argument): string {
                     return escapeshellarg($argument);
                 },
-                array_filter([$grumphp, $command, $ansi, $silent, $interaction])
+                array_filter([$php, $grumphp, $command, $ansi, $silent, $interaction])
             ))),
             // Map process to current io
             $descriptorspec = array(

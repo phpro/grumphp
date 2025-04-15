@@ -108,9 +108,12 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "GrumPHP\\Composer\\DevelopmentIntegrator::integrate"
+            "@integrate"
         ],
         "post-update-cmd": [
+            "@integrate"
+        ],
+        "integrate": [
             "GrumPHP\\Composer\\DevelopmentIntegrator::integrate"
         ]
     }
