@@ -103,6 +103,7 @@ abstract class AbstractE2ETestCase extends TestCase
                 '--type=library',
                 '--require-dev=phpro/grumphp:'.$this->detectCurrentGrumphpGitBranchForComposerWithFallback(),
                 '--require-dev=phpunit/phpunit:*',
+                '--author=GrumPHP Testsuite',
                 '--repository='.json_encode([
                     'type' => 'path',
                     'url' => PROJECT_BASE_PATH,
