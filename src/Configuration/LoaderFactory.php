@@ -19,6 +19,8 @@ final class LoaderFactory
     private const ENV = 'grumphp';
 
     /**
+     * @psalm-suppress DeprecatedClass - XmlFileLoader is deprecated but still in use here for backwards compatibility.
+     *
      * @param list<string> $paths
      */
     public static function createLoader(ContainerBuilder $container, array $paths = []): DelegatingLoader

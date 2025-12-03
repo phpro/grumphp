@@ -8,12 +8,12 @@ services:
     GrumPHP\Runner\MiddlewareStack:
         factory: ['GrumPHP\Runner\MiddlewareStack', 'fromIterable']
         arguments:
-            - !tagged 'grumphp.runner_middleware'
+            - !tagged_iterator 'grumphp.runner_middleware'
 
     GrumPHP\Runner\TaskHandler\TaskHandler:
         factory: ['GrumPHP\Runner\TaskHandler\TaskHandler', 'fromIterable']
         arguments:
-            - !tagged 'grumphp.task_handler'
+            - !tagged_iterator 'grumphp.task_handler'
 
     #
     # Runner middleware
