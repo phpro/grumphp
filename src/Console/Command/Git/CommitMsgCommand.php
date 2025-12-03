@@ -6,7 +6,6 @@ namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\TestSuiteCollection;
-use GrumPHP\IO\IOFactory;
 use GrumPHP\IO\IOInterface;
 use GrumPHP\Locator\ChangedFiles;
 use GrumPHP\Locator\StdInFiles;
@@ -16,6 +15,7 @@ use GrumPHP\Task\Context\GitCommitMsgContext;
 use GrumPHP\Util\Filesystem;
 use GrumPHP\Util\Paths;
 use SplFileInfo;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,9 +25,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * This command runs the git commit-msg hook.
  */
+#[AsCommand(name: 'git:commit-msg', description: 'Executed by the commit-msg commit hook')]
 class CommitMsgCommand extends Command
 {
-    const COMMAND_NAME = 'git:commit-msg';
     const EXIT_CODE_OK = 0;
     const EXIT_CODE_NOK = 1;
 
@@ -83,14 +83,8 @@ class CommitMsgCommand extends Command
         $this->io = $io;
     }
 
-    public static function getDefaultName(): string
-    {
-        return self::COMMAND_NAME;
-    }
-
     protected function configure(): void
     {
-        $this->setDescription('Executed by the commit-msg commit hook');
         $this->addOption('git-user', null, InputOption::VALUE_REQUIRED, 'The configured git user name.', '');
         $this->addOption('git-email', null, InputOption::VALUE_REQUIRED, 'The configured git email.', '');
         $this->addArgument('commit-msg-file', InputArgument::REQUIRED, 'The configured commit message file.');

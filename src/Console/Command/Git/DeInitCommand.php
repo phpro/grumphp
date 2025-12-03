@@ -6,6 +6,7 @@ namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Util\Filesystem;
 use GrumPHP\Util\Paths;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -13,10 +14,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * This command is responsible for removing all the configured hooks.
  */
+#[AsCommand(name: 'git:deinit', description: 'Removes the commit hooks')]
 class DeInitCommand extends Command
 {
-    const COMMAND_NAME = 'git:deinit';
-
     /**
      * @var array
      */
@@ -35,11 +35,6 @@ class DeInitCommand extends Command
      */
     private $paths;
 
-    public static function getDefaultName(): string
-    {
-        return self::COMMAND_NAME;
-    }
-
     public function __construct(
         Filesystem $filesystem,
         Paths $paths
@@ -50,10 +45,6 @@ class DeInitCommand extends Command
         $this->paths = $paths;
     }
 
-    protected function configure(): void
-    {
-        $this->setDescription('Removes the commit hooks');
-    }
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {

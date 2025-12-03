@@ -8,6 +8,7 @@ use Exception;
 use GrumPHP\Configuration\Resolver\TaskConfigResolver;
 use GrumPHP\Util\Filesystem;
 use GrumPHP\Util\Paths;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,10 +18,9 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Yaml\Yaml;
 
+#[AsCommand(name: 'configure', description: 'Create a grumphp configuration file')]
 class ConfigureCommand extends Command
 {
-    const COMMAND_NAME = 'configure';
-
     /**
      * @var TaskConfigResolver
      */
@@ -49,11 +49,6 @@ class ConfigureCommand extends Command
         $this->taskConfigResolver = $taskConfigResolver;
         $this->filesystem = $filesystem;
         $this->paths = $paths;
-    }
-
-    public static function getDefaultName(): string
-    {
-        return self::COMMAND_NAME;
     }
 
     protected function configure(): void

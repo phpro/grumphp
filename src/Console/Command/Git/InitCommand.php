@@ -11,6 +11,7 @@ use GrumPHP\Process\ProcessFactory;
 use GrumPHP\Util\Filesystem;
 use GrumPHP\Util\Paths;
 use RuntimeException;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -18,10 +19,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * This command is responsible for enabling all the configured hooks.
  */
+#[AsCommand(name: 'git:init', description: 'Registers the Git hooks')]
 class InitCommand extends Command
 {
-    const COMMAND_NAME = 'git:init';
-
     /**
      * @var array
      */
@@ -68,16 +68,6 @@ class InitCommand extends Command
         $this->filesystem = $filesystem;
         $this->processBuilder = $processBuilder;
         $this->paths = $paths;
-    }
-
-    public static function getDefaultName(): string
-    {
-        return self::COMMAND_NAME;
-    }
-
-    protected function configure(): void
-    {
-        $this->setDescription('Registers the Git hooks');
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
