@@ -45,10 +45,14 @@ jobs:
                   restore-keys: ${{ runner.os }}-composer-
             - name: Install dependencies (highest)
               if: matrix.composer-deps == 'highest'
-              run: composer update --prefer-dist --no-progress --no-suggest
+              run: |
+                composer config platform.php ${{ matrix.php-versions }}
+                composer update --prefer-dist --no-progress --no-suggest --ignore-platform-req=php+
             - name: Install dependencies (lowest)
               if: matrix.composer-deps == 'lowest'
-              run: composer update --prefer-dist --no-progress --no-suggest --prefer-lowest
+              run: |
+                composer config platform.php ${{ matrix.php-versions }}
+                composer update --prefer-dist --no-progress --no-suggest --prefer-lowest --ignore-platform-req=php+
             - name: Install dependencies (lock)
               if: matrix.composer-deps == 'lock'
               run: |
