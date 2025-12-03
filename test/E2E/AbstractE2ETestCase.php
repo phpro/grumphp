@@ -101,6 +101,8 @@ abstract class AbstractE2ETestCase extends TestCase
                 'init',
                 '--name=grumphp/testsuite'.$this->hash,
                 '--type=library',
+                '--author=GrumPHP Test Suite',
+                '--require=php:*',
                 '--require-dev=phpro/grumphp:'.$this->detectCurrentGrumphpGitBranchForComposerWithFallback(),
                 '--require-dev=phpunit/phpunit:*',
                 '--repository='.json_encode([
@@ -115,9 +117,16 @@ abstract class AbstractE2ETestCase extends TestCase
             $path
         );
 
-        $this->runCommand('initialize composer', $process);
-
         $composerFile = $path.$this->useCorrectDirectorySeparator('/composer.json');
+
+        try {
+            $this->runCommand('initialize composer', $process);
+        } catch (\Exception $e) {
+            throw new Exception('Could not initialize composer in '.$composerFile.'!' . PHP_EOL . PHP_EOL . file_get_contents($composerFile), 0, $e);
+        }
+
+        //echo file_get_contents($composerFile);
+
 
         $this->mergeComposerConfig($composerFile, [
             'autoload' => [
@@ -131,6 +140,8 @@ abstract class AbstractE2ETestCase extends TestCase
                 ],
             ],
         ]);
+
+//        echo file_get_contents($composerFile);
 
         return $composerFile;
     }
@@ -172,7 +183,7 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->assertFileExists($composerFile);
         $source = json_decode(file_get_contents($composerFile), true);
         $newSource = $recursive ? array_merge_recursive($source, $config) : array_merge($source, $config);
-        $flags = JSON_FORCE_OBJECT+JSON_PRETTY_PRINT+JSON_UNESCAPED_SLASHES;
+        $flags = JSON_PRETTY_PRINT+JSON_UNESCAPED_SLASHES;
         $this->dumpFile($composerFile, json_encode($newSource,  $flags));
     }
 
@@ -373,7 +384,13 @@ abstract class AbstractE2ETestCase extends TestCase
             $path
         );
 
-        $this->runCommand('install composer', $process);
+        $composerFile = $path.$this->useCorrectDirectorySeparator('/composer.json');
+        try {
+            $this->runCommand('install composer', $process);
+        } catch (\Exception $e) {
+            throw new \Exception('Could not initialize composer in '.$composerFile.'!' . PHP_EOL . PHP_EOL . file_get_contents($composerFile), 0, $e);
+        }
+
     }
 
     protected function commitAll(?string $gitPath = null)

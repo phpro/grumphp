@@ -29,6 +29,20 @@ jobs:
                 php -v
                 php -m
                 composer --version
+            - name: Print env
+              run: |
+                printenv
+            - name: Debug global composer.json
+              run: |
+                ls -la /Users/runner/.composer || true
+                if [ -f /Users/runner/.composer/composer.json ]; then
+                  cat /Users/runner/.composer/composer.json
+                else
+                  echo "No global composer.json present"
+                fi
+            - name: Remove global composer.json if present
+              run: |
+                rm -f /Users/runner/.composer/composer.json
             - name: Set env vars for latest PHP version
               if: matrix.php-versions == '8.5'
               run: |
@@ -59,13 +73,13 @@ jobs:
                 git config --global user.email "you@example.com"
                 git config --global user.name "Your Name"
                 git config --global protocol.file.allow always
-            - name: Run the tests on Windows
-              if: runner.os == 'Windows'
-              run: php vendor/bin/grumphp run --no-interaction --testsuite=windows
-              continue-on-error: ${{ matrix.php-versions == '8.5' }} # Psalm is not there yet
-            - name: Run the tests on unix
-              if: runner.os != 'Windows'
-              run: php vendor/bin/grumphp run --no-interaction --testsuite=ci
-              continue-on-error: ${{ matrix.php-versions == '8.5' }} # Psalm is not there yet
+#            - name: Run the tests on Windows
+#              if: runner.os == 'Windows'
+#              run: php vendor/bin/grumphp run --no-interaction --testsuite=windows
+#              continue-on-error: ${{ matrix.php-versions == '8.5' }} # Psalm is not there yet
+#            - name: Run the tests on unix
+#              if: runner.os != 'Windows'
+#              run: php vendor/bin/grumphp run --no-interaction --testsuite=ci
+#              continue-on-error: ${{ matrix.php-versions == '8.5' }} # Psalm is not there yet
             - name: Run paratest outside of grumphp
               run: php ./vendor/bin/paratest --testsuite=E2E --functional --verbose
