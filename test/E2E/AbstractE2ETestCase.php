@@ -101,6 +101,7 @@ abstract class AbstractE2ETestCase extends TestCase
                 'init',
                 '--name=grumphp/testsuite'.$this->hash,
                 '--type=library',
+                '--require=php:*',
                 '--require-dev=phpro/grumphp:'.$this->detectCurrentGrumphpGitBranchForComposerWithFallback(),
                 '--require-dev=phpunit/phpunit:*',
                 '--author=GrumPHP Testsuite',
@@ -173,7 +174,7 @@ abstract class AbstractE2ETestCase extends TestCase
         $this->assertFileExists($composerFile);
         $source = json_decode(file_get_contents($composerFile), true);
         $newSource = $recursive ? array_merge_recursive($source, $config) : array_merge($source, $config);
-        $flags = JSON_FORCE_OBJECT+JSON_PRETTY_PRINT+JSON_UNESCAPED_SLASHES;
+        $flags = JSON_PRETTY_PRINT+JSON_UNESCAPED_SLASHES;
         $this->dumpFile($composerFile, json_encode($newSource,  $flags));
     }
 
