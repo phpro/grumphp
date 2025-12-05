@@ -26,16 +26,22 @@ final class LoaderFactory
     public static function createLoader(ContainerBuilder $container, array $paths = []): DelegatingLoader
     {
         $locator = new FileLocator($paths);
-        $resolver = new LoaderResolver([
-            $xmlLoader = new XmlFileLoader($container, $locator, self::ENV),
+
+        /** @Deprecated - Remove in a future version of PHP where SF > 7.4 */
+        $xmlLoader = class_exists(XmlFileLoader::class)
+            ? new XmlFileLoader($container, $locator, self::ENV)
+            : null;
+
+        $resolver = new LoaderResolver(array_filter([
+            $xmlLoader,
             $yamlLoader = new YamlFileLoader($container, $locator, self::ENV),
             $iniLoader = new IniFileLoader($container, $locator, self::ENV),
             new GlobFileLoader($container, $locator, self::ENV),
             new DirectoryLoader($container, $locator, self::ENV),
-            new DistFileLoader($xmlLoader),
+            $xmlLoader ? new DistFileLoader($xmlLoader) : null,
             new DistFileLoader($yamlLoader),
             new DistFileLoader($iniLoader),
-        ]);
+        ]));
 
         return new DelegatingLoader($resolver);
     }

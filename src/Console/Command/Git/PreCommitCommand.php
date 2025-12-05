@@ -6,13 +6,13 @@ namespace GrumPHP\Console\Command\Git;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\TestSuiteCollection;
-use GrumPHP\IO\IOFactory;
 use GrumPHP\IO\IOInterface;
 use GrumPHP\Locator\ChangedFiles;
 use GrumPHP\Locator\StdInFiles;
 use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\Context\GitPreCommitContext;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -21,9 +21,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * This command runs the git pre-commit hook.
  */
+#[AsCommand(name: 'git:pre-commit', description: 'Executed by the pre-commit hook')]
 class PreCommitCommand extends Command
 {
-    const COMMAND_NAME = 'git:pre-commit';
     const EXIT_CODE_OK = 0;
     const EXIT_CODE_NOK = 1;
 
@@ -65,14 +65,8 @@ class PreCommitCommand extends Command
         $this->io = $io;
     }
 
-    public static function getDefaultName(): string
-    {
-        return self::COMMAND_NAME;
-    }
-
     protected function configure(): void
     {
-        $this->setDescription('Executed by the pre-commit hook');
         $this->addOption(
             'skip-success-output',
             null,

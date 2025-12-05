@@ -6,7 +6,6 @@ namespace GrumPHP\Console\Command;
 
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\TestSuiteCollection;
-use GrumPHP\IO\IOFactory;
 use GrumPHP\IO\IOInterface;
 use GrumPHP\Locator\RegisteredFiles;
 use GrumPHP\Locator\StdInFiles;
@@ -14,14 +13,15 @@ use GrumPHP\Runner\TaskRunner;
 use GrumPHP\Runner\TaskRunnerContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Util\Str;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'run', description: 'Run configured tasks')]
 class RunCommand extends Command
 {
-    const COMMAND_NAME = 'run';
     const EXIT_CODE_OK = 0;
     const EXIT_CODE_NOK = 1;
 
@@ -61,11 +61,6 @@ class RunCommand extends Command
         $this->registeredFilesLocator = $registeredFilesLocator;
         $this->taskRunner = $taskRunner;
         $this->io = $io;
-    }
-
-    public static function getDefaultName(): string
-    {
-        return self::COMMAND_NAME;
     }
 
     protected function configure(): void
