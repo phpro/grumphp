@@ -226,7 +226,10 @@ grumphp:
                 - cfg/
                 - libraries/
             triggered_by:
-                - php
-                - module
                 - inc
+                - install
+                - module
+                - php
+                - profile
+                - theme
 ```
