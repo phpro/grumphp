@@ -35,8 +35,8 @@ If no stdin is provided, it will load the currently staged git diff.
 Example stdin usages:
 
 ```sh
-git diff | php ./vendor/bin/grumphp git:pre-commit
-git diff --staged | php ./vendor/bin/grumphp git:pre-commit
+git diff --raw | php ./vendor/bin/grumphp git:pre-commit
+git diff --staged --raw | php ./vendor/bin/grumphp git:pre-commit
 git ls-files src | php ./vendor/bin/grumphp git:pre-commit
 ```
 
@@ -70,10 +70,9 @@ If no stdin is provided, it will load all files known to git.
 Example stdin usages:
 
 ```sh
-git diff | php ./vendor/bin/grumphp run
-git diff --staged | php ./vendor/bin/grumphp run
+git diff --raw | php ./vendor/bin/grumphp run
+git diff --raw --staged | php ./vendor/bin/grumphp run
 git ls-files src | php ./vendor/bin/grumphp run
 ```
 
 :exclamation: *If you use the stdin, we won't be able to answer questions interactively.*
- 

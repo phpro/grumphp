@@ -28,7 +28,7 @@ class StdInFiles
 
     public function locate(string $stdIn): FilesCollection
     {
-        if (preg_match('/^diff --git/', $stdIn)) {
+        if (preg_match('/diff --git/', $stdIn)) {
             return $this->changedFilesLocator->locateFromRawDiffInput($stdIn);
         }
 

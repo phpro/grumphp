@@ -25,6 +25,8 @@ class StdInFilesSpec extends ObjectBehavior
     public function it_can_parse_git_diffs(ChangedFiles $changedFilesLocator): void
     {
         $diff = <<<EOD
+:100644 100644 c09a0d49 77e5a35c M      src/test.php
+
 diff --git a/src/test.php b/src/test.php
 index 372bf10b74013301cfb4bf0e8007d208bb813363..d95f50da4a02d3d203bda1f3cb94e29d4f0ef481 100644
 --- a/src/test.php
