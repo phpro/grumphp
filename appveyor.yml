@@ -43,6 +43,13 @@ init:
   - ps: $Env:AMP_DEBUG = '1'
 
 install:
+  # Install Visual C++ Redistributable (required for PHP 8.4+)
+  - ps: |
+      if ($Env:php_version -ge "8.4") {
+        Write-Host "Installing Visual C++ Redistributable for PHP 8.4+"
+        appveyor-retry choco install vcredist140 --yes --force --ignore-dependencies
+      }
+
   # Install PHP
   - ps: If ((Test-Path $Env:php_directory) -eq $False) { New-Item -Path $Env:php_directory -ItemType 'directory' }
   - ps: $php_install_parameters = '"/DontAddToPath /InstallDir:' + $Env:php_directory + '"'

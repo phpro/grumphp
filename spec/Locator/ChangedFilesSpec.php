@@ -79,7 +79,9 @@ class ChangedFilesSpec extends ObjectBehavior
 
     function it_will_list_all_diffed_files_from_raw_diff_input(GitRepository $repository, Filesystem $filesystem)
     {
-        $rawDiff = 'diff --git a/file.txt b/file.txt
+        $rawDiff = ':100644 100644 c09a0d49 77e5a35c M      file.txt
+
+diff --git a/file.txt b/file.txt
 new file mode 100644
 index 0000000000000000000000000000000000000000..9766475a4185a151dc9d56d614ffb9aaea3bfd42
 --- /dev/null
