@@ -32,6 +32,7 @@ grumphp:
         infection: ~
         jsonlint: ~
         kahlan: ~
+        mago: ~
         make: ~
         npm_script: ~
         paratest: ~
@@ -99,6 +100,7 @@ Every task has its own default configuration. It is possible to overwrite the pa
 - [Infection](tasks/infection.md)
 - [JsonLint](tasks/jsonlint.md)
 - [Kahlan](tasks/kahlan.md)
+- [Mago](tasks/mago.md)
 - [Make](tasks/make.md)
 - [NPM script](tasks/npm_script.md)
 - [Paratest](tasks/paratest.md)
