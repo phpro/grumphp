@@ -60,7 +60,10 @@ class Mago extends AbstractExternalTask
     {
         $config = $this->getConfig()->getOptions();
 
-        if ($config['formatter'] === false && $config['linter'] === false && $config['analyzer'] === false && $config['guard'] === false) {
+        if ($config['formatter'] === false
+            && $config['linter'] === false
+            && $config['analyzer'] === false
+            && $config['guard'] === false) {
             return TaskResult::createSkipped($this, $context);
         }
 
