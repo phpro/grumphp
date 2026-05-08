@@ -32,7 +32,10 @@ grumphp:
         infection: ~
         jsonlint: ~
         kahlan: ~
-        mago: ~
+        mago_analyze: ~
+        mago_format: ~
+        mago_guard: ~
+        mago_lint: ~
         make: ~
         npm_script: ~
         paratest: ~
@@ -101,6 +104,10 @@ Every task has its own default configuration. It is possible to overwrite the pa
 - [JsonLint](tasks/jsonlint.md)
 - [Kahlan](tasks/kahlan.md)
 - [Mago](tasks/mago.md)
+  - [Mago Analyzer](tasks/mago/analyzer.md)
+  - [Mago Formatter](tasks/mago/formatter.md)
+  - [Mago Guard](tasks/mago/guard.md)
+  - [Mago Linter](tasks/mago/linter.md)
 - [Make](tasks/make.md)
 - [NPM script](tasks/npm_script.md)
 - [Paratest](tasks/paratest.md)
