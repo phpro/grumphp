@@ -86,7 +86,7 @@ class TaskResultsReporter
 
         $formatter = $this->outputSection->getFormatter();
         $this->outputSection->overwrite(implode(PHP_EOL, array_map(
-            static fn(string $line): string => $formatter->format($line),
+            static fn(string $line): string => (string) $formatter->format($line),
             $message
         )));
     }
