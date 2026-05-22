@@ -3,5 +3,5 @@
   <phar name="psalm" version="^6.13.0" installed="6.13.1" location="./tools/psalm.phar" copy="true"/>
   <phar name="phpcs" version="^4.0.0" installed="4.0.0" location="./tools/phpcs.phar" copy="true"/>
   <phar name="phpcbf" version="^4.0.0" installed="4.0.0" location="./tools/phpcbf.phar" copy="true"/>
-  <phar name="composer-normalize" version="^2.48.0" installed="2.48.2" location="./tools/composer-normalize.phar" copy="true"/>
+  <phar name="composer-normalize" version="^2.52.0" installed="2.52.0" location="./tools/composer-normalize.phar" copy="true"/>
 </phive>
