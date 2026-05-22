@@ -84,7 +84,11 @@ class TaskResultsReporter
             return;
         }
 
-        $this->outputSection->overwrite(implode(PHP_EOL, $message));
+        $formatter = $this->outputSection->getFormatter();
+        $this->outputSection->overwrite(implode(PHP_EOL, array_map(
+            static fn(string $line): string => (string) $formatter->format($line),
+            $message
+        )));
     }
 
     private function parseTasksDisplayMap(TaskRunnerContext $context): array
