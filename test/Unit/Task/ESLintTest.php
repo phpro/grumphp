@@ -34,6 +34,8 @@ class ESLintTest extends AbstractExternalTaskTestCase
                 // ESLint native config options
                 'config' => null,
                 'ignore_path' => null,
+                'cache' => null,
+                'cache_location' => null,
                 'debug' => false,
                 'format' => null,
                 'max_warnings' => null,
@@ -142,6 +144,30 @@ class ESLintTest extends AbstractExternalTaskTestCase
             'eslint',
             [
                 '--ignore-path=.eslintignore',
+                'hello.js',
+                'hello2.js',
+            ]
+        ];
+        yield 'cache' => [
+            [
+                'cache' => true,
+            ],
+            self::mockContext(RunContext::class, ['hello.js', 'hello2.js']),
+            'stylelint',
+            [
+                '--cache',
+                'hello.js',
+                'hello2.js',
+            ]
+        ];
+        yield 'cache_location' => [
+            [
+                'cache_location' => 'path/to/cache',
+            ],
+            self::mockContext(RunContext::class, ['hello.js', 'hello2.js']),
+            'stylelint',
+            [
+                '--cache-location=path/to/cache',
                 'hello.js',
                 'hello2.js',
             ]
