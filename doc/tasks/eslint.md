@@ -34,6 +34,8 @@ grumphp:
                 - /^resources\/js\/(.*)/
             config: .eslintrc.json
             ignore_path: .eslintignore
+            cache: ~
+            cache_location: ~
             debug: false
             format: ~
             max_warnings: ~
@@ -78,6 +80,18 @@ The path to your eslint's configuration file. Not necessary if using a standard 
 *Default: null*
 
 The path to your eslint's ignore file ([eslint.org](https://eslint.org/docs/user-guide/configuring/ignoring-code#using-an-alternate-file)). Not necessary if using standard .eslintignore name.
+
+**cache**
+
+*Default: null*
+
+Store the results of processed files so that eslint only operates on the changed ones. By default, the cache is stored in `./.eslintcache ` in `process.cwd()`. ([eslint.org](https://eslint.org/docs/latest/use/command-line-interface#caching)).
+
+**cache_location**
+
+*Default: null*
+
+Path to a file or directory for the cache location. ([eslint.org](https://eslint.org/docs/latest/use/command-line-interface#--cache-location)).
 
 **debug**
 
