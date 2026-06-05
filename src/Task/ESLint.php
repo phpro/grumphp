@@ -34,6 +34,8 @@ class ESLint extends AbstractExternalTask
             // ESLint native config options
             'config' => null,
             'ignore_path' => null,
+            'cache' => null,
+            'cache_location' => null,
             'debug' => false,
             'format' => null,
             'max_warnings' => null,
@@ -49,6 +51,8 @@ class ESLint extends AbstractExternalTask
         // ESLint native config options
         $resolver->addAllowedTypes('config', ['null', 'string']);
         $resolver->addAllowedTypes('ignore_path', ['null', 'string']);
+        $resolver->addAllowedTypes('cache', ['null', 'bool']);
+        $resolver->addAllowedTypes('cache_location', ['null', 'string']);
         $resolver->addAllowedTypes('debug', ['bool']);
         $resolver->addAllowedTypes('format', ['null', 'string']);
         $resolver->addAllowedTypes('max_warnings', ['null', 'integer']);
@@ -82,6 +86,8 @@ class ESLint extends AbstractExternalTask
 
         $arguments->addOptionalArgument('--config=%s', $config['config']);
         $arguments->addOptionalArgument('--ignore-path=%s', $config['ignore_path']);
+        $arguments->addOptionalArgument('--cache', $config['cache']);
+        $arguments->addOptionalArgument('--cache-location=%s', $config['cache_location']);
         $arguments->addOptionalArgument('--debug', $config['debug']);
         $arguments->addOptionalArgument('--format=%s', $config['format']);
         $arguments->addOptionalArgument('--no-eslintrc', $config['no_eslintrc']);
