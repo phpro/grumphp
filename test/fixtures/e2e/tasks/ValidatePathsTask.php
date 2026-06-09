@@ -55,9 +55,7 @@ class ValidatePathsTask implements TaskInterface
 
     public function run(ContextInterface $context): TaskResultInterface
     {
-        $contextFiles = $context->getFiles()->map(function(\SplFileInfo $file) {
-            return $file->getPathname();
-        })->toArray();
+        $contextFiles = $context->getFiles()->toArray();
 
         try {
             Assert::assertEquals($this->availableFiles, $contextFiles);

@@ -102,9 +102,9 @@ class Composer extends AbstractExternalTask
         return TaskResult::createPassed($this, $context);
     }
 
-    private function hasLocalRepository(SplFileInfo $composerFile): bool
+    private function hasLocalRepository(string $composerFile): bool
     {
-        $json = $this->filesystem->readFromFileInfo($composerFile);
+        $json = $this->filesystem->readPath($composerFile);
         $package = json_decode($json, true);
 
         if (!array_key_exists('repositories', $package)) {

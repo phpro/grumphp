@@ -10,7 +10,6 @@ use GrumPHP\Task\Composer;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\Test\Task\AbstractExternalTaskTestCase;
 use GrumPHP\Util\Filesystem;
-use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class ComposerTest extends AbstractExternalTaskTestCase
@@ -83,7 +82,7 @@ class ComposerTest extends AbstractExternalTaskTestCase
             self::mockContext(RunContext::class, ['composer.json']),
             function () {
                 $this->mockProcessBuilder('composer', self::mockProcess(0));
-                $this->filesystem->readFromFileInfo(Argument::which('getBasename', 'composer.json'))->willReturn(
+                $this->filesystem->readPath('composer.json')->willReturn(
                     json_encode([
                         'repositories' => [
                             ['type' => 'path'],
@@ -100,7 +99,7 @@ class ComposerTest extends AbstractExternalTaskTestCase
             self::mockContext(RunContext::class, ['composer.json']),
             function () {
                 $this->mockProcessBuilder('composer', self::mockProcess(0));
-                $this->filesystem->readFromFileInfo(Argument::which('getBasename', 'composer.json'))->willReturn(
+                $this->filesystem->readPath('composer.json')->willReturn(
                     json_encode([
                         'repositories' => [
                             ['type' => 'path'],
@@ -129,7 +128,7 @@ class ComposerTest extends AbstractExternalTaskTestCase
             self::mockContext(RunContext::class, ['composer.json']),
             function () {
                 $this->mockProcessBuilder('composer', self::mockProcess(0));
-                $this->filesystem->readFromFileInfo(Argument::which('getBasename', 'composer.json'))->willReturn(
+                $this->filesystem->readPath('composer.json')->willReturn(
                     json_encode([
                         'name' => 'my/package',
                     ])
@@ -143,7 +142,7 @@ class ComposerTest extends AbstractExternalTaskTestCase
             self::mockContext(RunContext::class, ['composer.json']),
             function () {
                 $this->mockProcessBuilder('composer', self::mockProcess(0));
-                $this->filesystem->readFromFileInfo(Argument::which('getBasename', 'composer.json'))->willReturn(
+                $this->filesystem->readPath('composer.json')->willReturn(
                     json_encode([
                         'repositories' => [
                             ['type' => 'git'],
@@ -159,7 +158,7 @@ class ComposerTest extends AbstractExternalTaskTestCase
             self::mockContext(RunContext::class, ['composer.json']),
             function () {
                 $this->mockProcessBuilder('composer', self::mockProcess(0));
-                $this->filesystem->readFromFileInfo(Argument::which('getBasename', 'composer.json'))->willReturn(
+                $this->filesystem->readPath('composer.json')->willReturn(
                     json_encode([
                         'repositories' => [
                             ['packagist.org' => false],

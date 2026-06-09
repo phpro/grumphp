@@ -10,11 +10,12 @@ use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\FileSize;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\Test\Task\AbstractTaskTestCase;
-use Prophecy\Prophet;
-use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Filesystem\Filesystem;
 
 class FileSizeTest extends AbstractTaskTestCase
 {
+    protected static ?Filesystem $filesystem;
+
     protected function provideTask(): TaskInterface
     {
         return new FileSize();
@@ -58,42 +59,41 @@ class FileSizeTest extends AbstractTaskTestCase
 
     public static function provideFailsOnStuff(): iterable
     {
+        $singleFile1 = self::fixture('single-invalid/file1.php', 6);
+        $singleFile2 = self::fixture('single-invalid/file2.php', 12);
         yield 'single-invalid-filesizes' => [
             [],
-            self::mockContext(RunContext::class, [
-                self::mockFile('file1.php', 6),
-                self::mockFile('file2.php', 12),
-            ]),
+            self::mockContext(RunContext::class, [$singleFile1, $singleFile2]),
             function (array $options, ContextInterface $context) {
             },
             'Large files detected:'.PHP_EOL.
-            '- file2.php exceeded the maximum size of 10M.'.PHP_EOL,
+            '- '. $singleFile2 .' exceeded the maximum size of 10M.'.PHP_EOL,
         ];
+
+        $invalidFile1 = self::fixture('invalid/file1.php', 12);
+        $invalidFile2 = self::fixture('invalid/file2.php', 12);
         yield 'invalid-filesizes' => [
             [],
-            self::mockContext(RunContext::class, [
-                self::mockFile('file1.php', 12),
-                self::mockFile('file2.php', 12),
-            ]),
+            self::mockContext(RunContext::class, [$invalidFile1, $invalidFile2]),
             function (array $options, ContextInterface $context) {
             },
             'Large files detected:'.PHP_EOL.
-            '- file1.php exceeded the maximum size of 10M.'.PHP_EOL.
-            '- file2.php exceeded the maximum size of 10M.'.PHP_EOL,
+            '- '.$invalidFile1.' exceeded the maximum size of 10M.'.PHP_EOL.
+            '- '.$invalidFile2.' exceeded the maximum size of 10M.'.PHP_EOL,
         ];
+
+        $customFile1 = self::fixture('invalid-custom/file1.php', 12);
+        $customFile2 = self::fixture('invalid-custom/file2.php', 12);
         yield 'invalid-filesizes-custom-size' => [
             [
                 'max_size' => '5M'
             ],
-            self::mockContext(RunContext::class, [
-                self::mockFile('file1.php', 12),
-                self::mockFile('file2.php', 12),
-            ]),
+            self::mockContext(RunContext::class, [$customFile1, $customFile2]),
             function (array $options, ContextInterface $context) {
             },
             'Large files detected:'.PHP_EOL.
-            '- file1.php exceeded the maximum size of 5M.'.PHP_EOL.
-            '- file2.php exceeded the maximum size of 5M.'.PHP_EOL,
+            '- '.$customFile1.' exceeded the maximum size of 5M.'.PHP_EOL.
+            '- '.$customFile2.' exceeded the maximum size of 5M.'.PHP_EOL,
         ];
     }
 
@@ -102,8 +102,8 @@ class FileSizeTest extends AbstractTaskTestCase
         yield 'valid-filesizes' => [
             [],
             self::mockContext(RunContext::class, [
-                self::mockFile('file1.php', 6),
-                self::mockFile('file2.php', 6),
+                self::fixture('valid/file1.php', 6),
+                self::fixture('valid/file2.php', 6),
             ]),
             function () {
             }
@@ -113,14 +113,14 @@ class FileSizeTest extends AbstractTaskTestCase
                 'ignore_patterns' => ['test/'],
             ],
             self::mockContext(RunContext::class, [
-                self::mockFile('test/file.php', 2323, true),
+                self::fixture('ignored/test/file.php', 12),
             ]),
             function () {}
         ];
         yield 'dont-validate-symlinks' => [
             [],
             self::mockContext(RunContext::class, [
-                self::mockFile('file.php', 2323, true),
+                self::fixtureSymlink('symlinks/file.php', 12),
             ]),
             function () {}
         ];
@@ -136,16 +136,51 @@ class FileSizeTest extends AbstractTaskTestCase
         ];
     }
 
-    private static function mockFile(string $file, int $megaBytes, $isSymlink = false): SplFileInfo
+    public static function tearDownAfterClass(): void
     {
-        /** @var SplFileInfo $mock */
-        $mock = (new Prophet())->prophesize(SplFileInfo::class);
-        $mock->getFilename()->willReturn($file);
-        $mock->getRelativePathname()->willReturn($file);
-        $mock->isLink()->willReturn($isSymlink);
-        $mock->isFile()->willReturn(true);
-        $mock->getSize()->willReturn($megaBytes * 1024 * 1024);
+        self::filesystem()->remove(self::fixtureRoot());
+    }
 
-        return $mock->reveal();
+    private static function fixture(string $relative, int $sizeMB): string
+    {
+        $path = self::fixtureRoot() . '/' . $relative;
+
+        self::filesystem()->mkdir(\dirname($path));
+        self::createFileWithContent($path, $sizeMB);
+
+        return $path;
+    }
+
+    private static function fixtureSymlink(string $relative, int $sizeMB): string
+    {
+        $linkPath = self::fixtureRoot() . '/' . $relative;
+        self::filesystem()->mkdir(\dirname($linkPath));
+
+        $targetPath = \dirname($linkPath) . '/_target_' . \basename($linkPath);
+        self::createFileWithContent($targetPath, $sizeMB);
+
+        self::filesystem()->remove($linkPath);
+        self::filesystem()->symlink($targetPath, $linkPath);
+
+        return $linkPath;
+    }
+
+    private static function createFileWithContent(string $path, int $sizeMB): void
+    {
+        $fh = \fopen($path, 'w');
+        \ftruncate($fh, $sizeMB * 1024 * 1024);
+        \fclose($fh);
+    }
+
+    private static function fixtureRoot(): string
+    {
+        return \sys_get_temp_dir() . '/grumphp-filesize-test';
+    }
+
+    private static function filesystem(): Filesystem
+    {
+        self::$filesystem ??= new Filesystem();
+
+        return self::$filesystem;
     }
 }
