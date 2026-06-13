@@ -8,25 +8,19 @@ Automatically format PHP code to match the configured style preferences.
 composer require --dev carthage-software/mago
 ```
 
+## Behavior
+
+The task always runs in `--dry-run` mode: it previews formatting changes without modifying any files, and fails if any file would be changed.
+
+If the task fails, GrumPHP will offer to re-run without `--dry-run` to apply the formatting in-place.
+
 ## Config
 
-The task lives under the `mago_format` namespace and has following configurable parameters:
+The task lives under the `mago_format` namespace and has no configurable parameters:
 
 ```yaml
 # grumphp.yml
 grumphp:
     tasks:
-        mago_format:
-            type: default
+        mago_format: ~
 ```
-
-**type**
-
-*Default: default — Possible values: `default`, `dry-run`, `check`, `staged`*
-
-Controls how the formatter runs:
-
-- `default` — apply formatting changes in-place
-- `dry-run` — print a diff of changes without modifying any files
-- `check` — exit with failure if any file would be changed, without modifying files. Ideal for CI environments
-- `staged` — format files currently staged in git. Designed for git pre-commit hooks. Fails if not in a git repository

@@ -169,13 +169,6 @@ services:
         tags:
             - {name: grumphp.task, task: kahlan}
 
-    GrumPHP\Task\Mago:
-      arguments:
-        - '@process_builder'
-        - '@formatter.raw_process'
-      tags:
-        - {name: grumphp.task, task: mago}
-
     GrumPHP\Task\MagoAnalyzer:
       arguments:
         - '@process_builder'

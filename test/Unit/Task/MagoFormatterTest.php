@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHPTest\Unit\Task;
 
+use GrumPHP\Runner\FixableTaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -25,33 +26,8 @@ class MagoFormatterTest extends AbstractExternalTaskTestCase
 
     public static function provideConfigurableOptions(): iterable
     {
-        yield 'defaults' => [
-            [],
-            ['type' => 'default']
-        ];
-
-        yield 'type-default' => [
-            ['type' => 'default'],
-            ['type' => 'default']
-        ];
-
-        yield 'type-dry-run' => [
-            ['type' => 'dry-run'],
-            ['type' => 'dry-run']
-        ];
-
-        yield 'type-check' => [
-            ['type' => 'check'],
-            ['type' => 'check']
-        ];
-
-        yield 'type-staged' => [
-            ['type' => 'staged'],
-            ['type' => 'staged']
-        ];
-
-        yield 'invalid-type' => [
-            ['type' => 'invalid'],
+        yield 'unknown-option' => [
+            ['unknown' => true],
             null
         ];
     }
@@ -76,7 +52,7 @@ class MagoFormatterTest extends AbstractExternalTaskTestCase
 
     public static function provideFailsOnStuff(): iterable
     {
-        yield 'exitCode1' => [
+        yield 'exitCode1-run' => [
             [],
             self::mockContext(RunContext::class),
             function () {
@@ -84,6 +60,18 @@ class MagoFormatterTest extends AbstractExternalTaskTestCase
                 $this->formatter->format($process)->willReturn('nope');
             },
             'nope',
+            FixableTaskResult::class,
+        ];
+
+        yield 'exitCode1-pre-commit' => [
+            [],
+            self::mockContext(GitPreCommitContext::class),
+            function () {
+                $this->mockProcessBuilder('mago', $process = self::mockProcess(1));
+                $this->formatter->format($process)->willReturn('nope');
+            },
+            'nope',
+            FixableTaskResult::class,
         ];
     }
 
@@ -124,35 +112,14 @@ class MagoFormatterTest extends AbstractExternalTaskTestCase
             [],
             self::mockContext(RunContext::class),
             'mago',
-            ['format']
-        ];
-
-        yield 'type-default' => [
-            ['type' => 'default'],
-            self::mockContext(RunContext::class),
-            'mago',
-            ['format']
-        ];
-
-        yield 'type-dry-run' => [
-            ['type' => 'dry-run'],
-            self::mockContext(RunContext::class),
-            'mago',
             ['format', '--dry-run']
         ];
 
-        yield 'type-check' => [
-            ['type' => 'check'],
-            self::mockContext(RunContext::class),
+        yield 'pre-commit' => [
+            [],
+            self::mockContext(GitPreCommitContext::class),
             'mago',
-            ['format', '--check']
-        ];
-
-        yield 'type-staged' => [
-            ['type' => 'staged'],
-            self::mockContext(RunContext::class),
-            'mago',
-            ['format', '--staged']
+            ['format', '--dry-run']
         ];
     }
 }

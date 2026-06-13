@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHPTest\Unit\Task;
 
+use GrumPHP\Runner\FixableTaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -31,26 +32,16 @@ class MagoLinterTest extends AbstractExternalTaskTestCase
                 'semantics' => null,
                 'pedantic' => null,
                 'only' => [],
-                'staged' => null,
                 'retain-codes' => [],
                 'ignore-baseline' => null,
-                'fix' => null,
-                'fail-on-remaining' => null,
                 'sort' => null,
-                'fixable-only' => null,
-                'reporting-format' => null,
-                'reporting-target' => null,
+                'fix-mode' => 'safe',
                 'minimum-report-level' => null,
-                'minimum-fail-level' => null,
-                'dry-run' => null,
             ]
         ];
 
-        yield 'invalid-fix' => [['fix' => 'invalid'], null];
-        yield 'invalid-reporting-format' => [['reporting-format' => 'invalid'], null];
-        yield 'invalid-reporting-target' => [['reporting-target' => 'invalid'], null];
+        yield 'invalid-fix-mode' => [['fix-mode' => 'invalid'], null];
         yield 'invalid-minimum-report-level' => [['minimum-report-level' => 'invalid'], null];
-        yield 'invalid-minimum-fail-level' => [['minimum-fail-level' => 'invalid'], null];
     }
 
     public static function provideRunContexts(): iterable
@@ -81,41 +72,7 @@ class MagoLinterTest extends AbstractExternalTaskTestCase
                 $this->formatter->format($process)->willReturn('nope');
             },
             'nope',
-        ];
-
-        yield 'fail-on-remaining-without-fix' => [
-            ['fail-on-remaining' => true],
-            self::mockContext(RunContext::class),
-            function () {},
-            'Fail on remaining option is only supported with fix option.',
-        ];
-
-        yield 'dry-run-without-fix' => [
-            ['dry-run' => true],
-            self::mockContext(RunContext::class),
-            function () {},
-            'Dry run option is only supported with fix option.',
-        ];
-
-        yield 'fixable-only-with-fix' => [
-            ['fix' => 'safe', 'fixable-only' => true],
-            self::mockContext(RunContext::class),
-            function () {},
-            'Fixable-only option is not supported with fix option.',
-        ];
-
-        yield 'reporting-format-with-fix' => [
-            ['fix' => 'safe', 'reporting-format' => 'json'],
-            self::mockContext(RunContext::class),
-            function () {},
-            'Reporting format option is not supported with fix option.',
-        ];
-
-        yield 'reporting-target-with-fix' => [
-            ['fix' => 'safe', 'reporting-target' => 'stderr'],
-            self::mockContext(RunContext::class),
-            function () {},
-            'Reporting target option is not supported with fix option.',
+            FixableTaskResult::class,
         ];
     }
 
@@ -146,8 +103,7 @@ class MagoLinterTest extends AbstractExternalTaskTestCase
         yield 'no-skip-scenarios' => [
             [],
             self::mockContext(RunContext::class),
-            function () {
-            }
+            function () {}
         ];
     }
 
@@ -157,126 +113,64 @@ class MagoLinterTest extends AbstractExternalTaskTestCase
             [],
             self::mockContext(RunContext::class),
             'mago',
-            ['lint']
+            ['lint', '--fix', '--dry-run', '--fail-on-remaining']
         ];
 
-        yield 'fix-safe' => [
-            ['fix' => 'safe'],
-            self::mockContext(RunContext::class),
+        yield 'pre-commit-staged' => [
+            [],
+            self::mockContext(GitPreCommitContext::class),
             'mago',
-            ['lint', '--fix']
-        ];
-
-        yield 'fix-potentially-unsafe' => [
-            ['fix' => 'potentially-unsafe'],
-            self::mockContext(RunContext::class),
-            'mago',
-            ['lint', '--fix', '--potentially-unsafe']
-        ];
-
-        yield 'fix-unsafe' => [
-            ['fix' => 'unsafe'],
-            self::mockContext(RunContext::class),
-            'mago',
-            ['lint', '--fix', '--unsafe']
-        ];
-
-        yield 'fix-with-fail-on-remaining' => [
-            ['fix' => 'safe', 'fail-on-remaining' => true],
-            self::mockContext(RunContext::class),
-            'mago',
-            ['lint', '--fix', '--fail-on-remaining']
-        ];
-
-        yield 'fix-with-dry-run' => [
-            ['fix' => 'safe', 'dry-run' => true],
-            self::mockContext(RunContext::class),
-            'mago',
-            ['lint', '--fix', '--dry-run']
-        ];
-
-        yield 'fixable-only' => [
-            ['fixable-only' => true],
-            self::mockContext(RunContext::class),
-            'mago',
-            ['lint', '--fixable-only']
-        ];
-
-        yield 'reporting-format' => [
-            ['reporting-format' => 'json'],
-            self::mockContext(RunContext::class),
-            'mago',
-            ['lint', '--reporting-format', 'json']
-        ];
-
-        yield 'reporting-target' => [
-            ['reporting-target' => 'stderr'],
-            self::mockContext(RunContext::class),
-            'mago',
-            ['lint', '--reporting-target', 'stderr']
-        ];
-
-        yield 'only' => [
-            ['only' => ['invalid-argument', 'semantics']],
-            self::mockContext(RunContext::class),
-            'mago',
-            ['lint', '--only=invalid-argument,semantics']
-        ];
-
-        yield 'retain-codes' => [
-            ['retain-codes' => ['invalid-argument', 'semantics']],
-            self::mockContext(RunContext::class),
-            'mago',
-            ['lint', '--retain-code', 'invalid-argument', '--retain-code', 'semantics']
-        ];
-
-        yield 'minimum-report-level' => [
-            ['minimum-report-level' => 'warning'],
-            self::mockContext(RunContext::class),
-            'mago',
-            ['lint', '--minimum-report-level', 'warning']
-        ];
-
-        yield 'minimum-fail-level' => [
-            ['minimum-fail-level' => 'error'],
-            self::mockContext(RunContext::class),
-            'mago',
-            ['lint', '--minimum-fail-level', 'error']
+            ['lint', '--fix', '--dry-run', '--fail-on-remaining', '--staged']
         ];
 
         yield 'semantics' => [
             ['semantics' => true],
             self::mockContext(RunContext::class),
             'mago',
-            ['lint', '--semantics']
+            ['lint', '--fix', '--dry-run', '--fail-on-remaining', '--semantics']
         ];
 
         yield 'pedantic' => [
             ['pedantic' => true],
             self::mockContext(RunContext::class),
             'mago',
-            ['lint', '--pedantic']
+            ['lint', '--fix', '--dry-run', '--fail-on-remaining', '--pedantic']
+        ];
+
+        yield 'only' => [
+            ['only' => ['invalid-argument', 'semantics']],
+            self::mockContext(RunContext::class),
+            'mago',
+            ['lint', '--fix', '--dry-run', '--fail-on-remaining', '--only=invalid-argument,semantics']
+        ];
+
+        yield 'retain-codes' => [
+            ['retain-codes' => ['invalid-argument', 'semantics']],
+            self::mockContext(RunContext::class),
+            'mago',
+            ['lint', '--fix', '--dry-run', '--fail-on-remaining', '--retain-code', 'invalid-argument', '--retain-code', 'semantics']
         ];
 
         yield 'ignore-baseline' => [
             ['ignore-baseline' => true],
             self::mockContext(RunContext::class),
             'mago',
-            ['lint', '--ignore-baseline']
+            ['lint', '--fix', '--dry-run', '--fail-on-remaining', '--ignore-baseline']
         ];
 
         yield 'sort' => [
             ['sort' => true],
             self::mockContext(RunContext::class),
             'mago',
-            ['lint', '--sort']
+            ['lint', '--fix', '--dry-run', '--fail-on-remaining', '--sort']
         ];
 
-        yield 'staged' => [
-            ['staged' => true],
+        yield 'minimum-report-level' => [
+            ['minimum-report-level' => 'warning'],
             self::mockContext(RunContext::class),
             'mago',
-            ['lint', '--staged']
+            ['lint', '--fix', '--dry-run', '--fail-on-remaining', '--minimum-report-level', 'warning']
         ];
+
     }
 }

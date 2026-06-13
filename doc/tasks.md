@@ -103,7 +103,7 @@ Every task has its own default configuration. It is possible to overwrite the pa
 - [Infection](tasks/infection.md)
 - [JsonLint](tasks/jsonlint.md)
 - [Kahlan](tasks/kahlan.md)
-- [Mago](tasks/mago.md)
+- Mago
   - [Mago Analyzer](tasks/mago/analyzer.md)
   - [Mago Formatter](tasks/mago/formatter.md)
   - [Mago Guard](tasks/mago/guard.md)
