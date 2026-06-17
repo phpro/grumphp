@@ -153,7 +153,7 @@ class ESLintTest extends AbstractExternalTaskTestCase
                 'cache' => true,
             ],
             self::mockContext(RunContext::class, ['hello.js', 'hello2.js']),
-            'stylelint',
+            'eslint',
             [
                 '--cache',
                 'hello.js',
@@ -165,7 +165,7 @@ class ESLintTest extends AbstractExternalTaskTestCase
                 'cache_location' => 'path/to/cache',
             ],
             self::mockContext(RunContext::class, ['hello.js', 'hello2.js']),
-            'stylelint',
+            'eslint',
             [
                 '--cache-location=path/to/cache',
                 'hello.js',
