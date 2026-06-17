@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHPTest\Unit\Task;
 
+use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Runner\FixableTaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -155,5 +156,33 @@ class MagoAnalyzerTest extends AbstractExternalTaskTestCase
             'mago',
             ['analyze', '--minimum-report-level', 'warning']
         ];
+    }
+
+    /**
+     * On failure GrumPHP offers a fix command: --fix is added together with the configured fix-mode,
+     * while the (context-driven) --staged flag is retained. The harness only asserts the detection
+     * command, so the fix command is verified here by inspecting the mutated arguments collection.
+     */
+    #[Test]
+    #[DataProvider('provideFixCommands')]
+    public function it_builds_the_fix_command(string $fixMode, string $contextClass, array $expectedFixCommand): void
+    {
+        $this->processBuilder->createArgumentsForCommand('mago')->willReturn(
+            $arguments = new ProcessArgumentsCollection()
+        );
+        $this->processBuilder->buildProcess($arguments)->willReturn($process = self::mockProcess(1));
+        $this->formatter->format($process)->willReturn('failed');
+
+        $this->configureTask(['fix-mode' => $fixMode])->run(self::mockContext($contextClass));
+
+        self::assertSame($expectedFixCommand, $arguments->getValues());
+    }
+
+    public static function provideFixCommands(): iterable
+    {
+        yield 'safe' => ['safe', RunContext::class, ['analyze', '--fix']];
+        yield 'potentially-unsafe' => ['potentially-unsafe', RunContext::class, ['analyze', '--fix', '--potentially-unsafe']];
+        yield 'unsafe' => ['unsafe', RunContext::class, ['analyze', '--fix', '--unsafe']];
+        yield 'pre-commit-retains-staged' => ['safe', GitPreCommitContext::class, ['analyze', '--staged', '--fix']];
     }
 }

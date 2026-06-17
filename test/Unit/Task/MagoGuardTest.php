@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GrumPHPTest\Unit\Task;
 
-use GrumPHP\Runner\FixableTaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -29,46 +28,40 @@ class MagoGuardTest extends AbstractExternalTaskTestCase
         yield 'defaults' => [
             [],
             [
+                'mode' => null,
                 'no-stubs' => null,
-                'structural' => null,
-                'perimeter' => null,
                 'retain-codes' => [],
                 'ignore-baseline' => null,
                 'sort' => null,
-                'fix-mode' => 'safe',
                 'minimum-report-level' => null,
             ]
         ];
 
-        yield 'structural' => [
-            ['structural' => true],
+        yield 'mode-structural' => [
+            ['mode' => 'structural'],
             [
+                'mode' => 'structural',
                 'no-stubs' => null,
-                'structural' => true,
-                'perimeter' => null,
                 'retain-codes' => [],
                 'ignore-baseline' => null,
                 'sort' => null,
-                'fix-mode' => 'safe',
                 'minimum-report-level' => null,
             ]
         ];
 
-        yield 'perimeter' => [
-            ['perimeter' => true],
+        yield 'mode-perimeter' => [
+            ['mode' => 'perimeter'],
             [
+                'mode' => 'perimeter',
                 'no-stubs' => null,
-                'structural' => null,
-                'perimeter' => true,
                 'retain-codes' => [],
                 'ignore-baseline' => null,
                 'sort' => null,
-                'fix-mode' => 'safe',
                 'minimum-report-level' => null,
             ]
         ];
 
-        yield 'invalid-fix-mode' => [['fix-mode' => 'invalid'], null];
+        yield 'invalid-mode' => [['mode' => 'invalid'], null];
         yield 'invalid-minimum-report-level' => [['minimum-report-level' => 'invalid'], null];
     }
 
@@ -100,7 +93,6 @@ class MagoGuardTest extends AbstractExternalTaskTestCase
                 $this->formatter->format($process)->willReturn('nope');
             },
             'nope',
-            FixableTaskResult::class,
         ];
     }
 
@@ -141,64 +133,63 @@ class MagoGuardTest extends AbstractExternalTaskTestCase
             [],
             self::mockContext(RunContext::class),
             'mago',
-            ['guard', '--fix', '--dry-run', '--fail-on-remaining']
+            ['guard']
+        ];
+
+        yield 'defaults-pre-commit' => [
+            [],
+            self::mockContext(GitPreCommitContext::class),
+            'mago',
+            ['guard']
+        ];
+
+        yield 'mode-structural' => [
+            ['mode' => 'structural'],
+            self::mockContext(RunContext::class),
+            'mago',
+            ['guard', '--structural']
+        ];
+
+        yield 'mode-perimeter' => [
+            ['mode' => 'perimeter'],
+            self::mockContext(RunContext::class),
+            'mago',
+            ['guard', '--perimeter']
         ];
 
         yield 'no-stubs' => [
             ['no-stubs' => true],
             self::mockContext(RunContext::class),
             'mago',
-            ['guard', '--fix', '--dry-run', '--fail-on-remaining', '--no-stubs']
-        ];
-
-        yield 'structural' => [
-            ['structural' => true],
-            self::mockContext(RunContext::class),
-            'mago',
-            ['guard', '--fix', '--dry-run', '--fail-on-remaining', '--structural']
-        ];
-
-        yield 'perimeter' => [
-            ['perimeter' => true],
-            self::mockContext(RunContext::class),
-            'mago',
-            ['guard', '--fix', '--dry-run', '--fail-on-remaining', '--perimeter']
-        ];
-
-        yield 'structural-and-perimeter' => [
-            ['structural' => true, 'perimeter' => true],
-            self::mockContext(RunContext::class),
-            'mago',
-            ['guard', '--fix', '--dry-run', '--fail-on-remaining', '--structural', '--perimeter']
+            ['guard', '--no-stubs']
         ];
 
         yield 'retain-codes' => [
             ['retain-codes' => ['invalid-argument', 'semantics']],
             self::mockContext(RunContext::class),
             'mago',
-            ['guard', '--fix', '--dry-run', '--fail-on-remaining', '--retain-code', 'invalid-argument', '--retain-code', 'semantics']
+            ['guard', '--retain-code', 'invalid-argument', '--retain-code', 'semantics']
         ];
 
         yield 'ignore-baseline' => [
             ['ignore-baseline' => true],
             self::mockContext(RunContext::class),
             'mago',
-            ['guard', '--fix', '--dry-run', '--fail-on-remaining', '--ignore-baseline']
+            ['guard', '--ignore-baseline']
         ];
 
         yield 'sort' => [
             ['sort' => true],
             self::mockContext(RunContext::class),
             'mago',
-            ['guard', '--fix', '--dry-run', '--fail-on-remaining', '--sort']
+            ['guard', '--sort']
         ];
 
         yield 'minimum-report-level' => [
             ['minimum-report-level' => 'warning'],
             self::mockContext(RunContext::class),
             'mago',
-            ['guard', '--fix', '--dry-run', '--fail-on-remaining', '--minimum-report-level', 'warning']
+            ['guard', '--minimum-report-level', 'warning']
         ];
-
     }
 }

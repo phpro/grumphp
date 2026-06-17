@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHPTest\Unit\Task;
 
+use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Runner\FixableTaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -65,7 +66,7 @@ class MagoFormatterTest extends AbstractExternalTaskTestCase
 
         yield 'exitCode1-pre-commit' => [
             [],
-            self::mockContext(GitPreCommitContext::class),
+            self::mockContext(GitPreCommitContext::class, ['hello.php']),
             function () {
                 $this->mockProcessBuilder('mago', $process = self::mockProcess(1));
                 $this->formatter->format($process)->willReturn('nope');
@@ -86,22 +87,11 @@ class MagoFormatterTest extends AbstractExternalTaskTestCase
         ];
     }
 
-    #[Test]
-    #[DataProvider('provideSkipsOnStuff')]
-    public function it_skips_on_stuff(
-        array            $config,
-        ContextInterface $context,
-        callable         $configurator
-    ): void
-    {
-        self::markTestSkipped('No skip scenarios defined yet');
-    }
-
     public static function provideSkipsOnStuff(): iterable
     {
-        yield 'no-skip-scenarios' => [
+        yield 'pre-commit-without-php-files' => [
             [],
-            self::mockContext(RunContext::class),
+            self::mockContext(GitPreCommitContext::class, ['notes.txt']),
             function () {}
         ];
     }
@@ -115,11 +105,44 @@ class MagoFormatterTest extends AbstractExternalTaskTestCase
             ['format', '--dry-run']
         ];
 
-        yield 'pre-commit' => [
+        yield 'pre-commit-staged-files' => [
             [],
-            self::mockContext(GitPreCommitContext::class),
+            self::mockContext(GitPreCommitContext::class, ['hello.php', 'hello2.php']),
             'mago',
-            ['format', '--dry-run']
+            ['format', '--dry-run', 'hello.php', 'hello2.php']
+        ];
+    }
+
+    /**
+     * On failure GrumPHP offers a fix command that re-runs without --dry-run (applying the
+     * formatting in-place). The harness only asserts the detection command, so the fix command is
+     * verified here by inspecting the mutated arguments collection after the run.
+     */
+    #[Test]
+    #[DataProvider('provideFixCommands')]
+    public function it_builds_the_fix_command(ContextInterface $context, array $expectedFixCommand): void
+    {
+        $this->processBuilder->createArgumentsForCommand('mago')->willReturn(
+            $arguments = new ProcessArgumentsCollection()
+        );
+        $this->processBuilder->buildProcess($arguments)->willReturn($process = self::mockProcess(1));
+        $this->formatter->format($process)->willReturn('failed');
+
+        $this->configureTask([])->run($context);
+
+        self::assertSame($expectedFixCommand, $arguments->getValues());
+    }
+
+    public static function provideFixCommands(): iterable
+    {
+        yield 'run' => [
+            self::mockContext(RunContext::class),
+            ['format']
+        ];
+
+        yield 'pre-commit' => [
+            self::mockContext(GitPreCommitContext::class, ['hello.php', 'hello2.php']),
+            ['format', 'hello.php', 'hello2.php']
         ];
     }
 }

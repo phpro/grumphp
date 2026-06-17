@@ -10,9 +10,9 @@ composer require --dev carthage-software/mago
 
 ## Behavior
 
-The task always runs in `--fix --dry-run` mode: it previews what automatic fixes would be applied without modifying any files, and fails if issues are found. The task runs on all files in both `git pre-commit` and `run` contexts.
+The task runs `mago guard` and fails when an architectural violation is found. It runs on all files in both `git pre-commit` and `run` contexts (guard has no `--staged` mode, and architectural rules are evaluated against the whole project). Because every pre-commit run scans the full project, consider whether `mago_guard` is fast enough for your codebase before enabling it as a pre-commit task.
 
-If the task fails, GrumPHP will offer to re-run with `--fix` applied. The fix mode can be configured via `fix-mode`.
+Guard does not offer an auto-fix: architectural violations cannot be fixed automatically, so the task only reports them.
 
 ## Config
 
@@ -23,33 +23,29 @@ The task lives under the `mago_guard` namespace and has following configurable p
 grumphp:
     tasks:
         mago_guard:
+            mode: ~
             no-stubs: ~
-            structural: ~
-            perimeter: ~
             retain-codes: []
             ignore-baseline: ~
             sort: ~
-            fix-mode: safe
             minimum-report-level: ~
 ```
+
+**mode**
+
+*Default: null — Possible values: `structural`, `perimeter`*
+
+Selects which guard checks run. These are mutually exclusive in Mago, so a single option is used instead of separate flags:
+
+- `~` (not set) — run both structural and perimeter checks (Mago's default)
+- `structural` — run only structural checks (naming conventions, modifiers, inheritance constraints)
+- `perimeter` — run only perimeter checks (dependency boundaries, layer restrictions)
 
 **no-stubs**
 
 *Type: bool*
 
 Disable built-in PHP and library stubs. By default, guard uses stubs for built-in PHP functions and popular libraries to provide accurate symbol information. Disabling this may result in more warnings when external symbols can't be resolved.
-
-**structural**
-
-*Type: bool*
-
-Run only structural checks (naming conventions, modifiers, inheritance constraints). Can be combined with `perimeter`. When neither is set, both check types run.
-
-**perimeter**
-
-*Type: bool*
-
-Run only perimeter checks (dependency boundaries, layer restrictions). Can be combined with `structural`. When neither is set, both check types run.
 
 **retain-codes**
 
@@ -69,19 +65,8 @@ Ignore the baseline file and report all issues, including those currently suppre
 
 Sort reported issues by severity level, rule code, and file location. By default, issues are reported in the order they appear in files.
 
-**fix-mode**
-
-*Default: safe — Possible values: `safe`, `potentially-unsafe`, `unsafe`*
-
-Controls which fixes are applied when GrumPHP offers to auto-fix:
-
-- `safe` — apply only safe fixes (default)
-- `potentially-unsafe` — also apply fixes that may require manual review
-- `unsafe` — also apply fixes that might change code behavior
-
 **minimum-report-level**
 
 *Default: null (mago default: all levels)*
 
 Minimum severity level to display in the report. Issues below this level are not shown. Possible values: `note`, `help`, `warning`, `error`
-

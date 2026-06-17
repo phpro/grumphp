@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHPTest\Unit\Task;
 
+use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Runner\FixableTaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
@@ -172,5 +173,32 @@ class MagoLinterTest extends AbstractExternalTaskTestCase
             ['lint', '--fix', '--dry-run', '--fail-on-remaining', '--minimum-report-level', 'warning']
         ];
 
+    }
+
+    /**
+     * When the task fails, GrumPHP offers a fix command: the dry-run flags are dropped and the
+     * configured fix-mode is applied. The harness only asserts the detection command, so the fix
+     * command is verified here by inspecting the (mutated) arguments collection after the run.
+     */
+    #[Test]
+    #[DataProvider('provideFixCommands')]
+    public function it_builds_the_fix_command(string $fixMode, array $expectedFixCommand): void
+    {
+        $this->processBuilder->createArgumentsForCommand('mago')->willReturn(
+            $arguments = new ProcessArgumentsCollection()
+        );
+        $this->processBuilder->buildProcess($arguments)->willReturn($process = self::mockProcess(1));
+        $this->formatter->format($process)->willReturn('failed');
+
+        $this->configureTask(['fix-mode' => $fixMode])->run(self::mockContext(RunContext::class));
+
+        self::assertSame($expectedFixCommand, $arguments->getValues());
+    }
+
+    public static function provideFixCommands(): iterable
+    {
+        yield 'safe' => ['safe', ['lint', '--fix']];
+        yield 'potentially-unsafe' => ['potentially-unsafe', ['lint', '--fix', '--potentially-unsafe']];
+        yield 'unsafe' => ['unsafe', ['lint', '--fix', '--unsafe']];
     }
 }
