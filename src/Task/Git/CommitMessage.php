@@ -24,6 +24,12 @@ class CommitMessage implements TaskInterface
         '(Merge branch|tag \'.+\'(?:\s.+)?|Merge remote-tracking branch \'.+\'|Merge pull request #\d+\s.+)';
 
     /**
+     * Subject prefixes added by git's autosquash helpers
+     * (`git commit --fixup`, `--squash`, `--fixup=amend:` and `--fixup=reword:`).
+     */
+    private const AUTOSQUASH_PREFIXES = 'fixup|squash|amend';
+
+    /**
      * @var TaskConfigInterface
      */
     private $config;
@@ -252,7 +258,7 @@ class CommitMessage implements TaskInterface
 
     private function getSpecialPrefixLength(string $string): int
     {
-        if (1 !== preg_match('/^(fixup|squash)! /', $string, $match)) {
+        if (1 !== preg_match('/^(' . self::AUTOSQUASH_PREFIXES . ')! /', $string, $match)) {
             return 0;
         }
 
@@ -312,7 +318,11 @@ class CommitMessage implements TaskInterface
 
         $firstLetter = $match[1] ?? '';
 
-        return !(1 !== preg_match('/^(fixup|squash)!/u', $subject) && 1 !== preg_match('/[[:upper:]]/u', $firstLetter));
+        if (1 === preg_match('/^(' . self::AUTOSQUASH_PREFIXES . ')!/u', $subject)) {
+            return true;
+        }
+
+        return 1 === preg_match('/[[:upper:]]/u', $firstLetter);
     }
 
     private function subjectIsSingleLined(GitCommitMsgContext $context): bool
@@ -375,7 +385,7 @@ class CommitMessage implements TaskInterface
 
         $scopes = $config['type_scope_conventions']['scopes'] ?? [];
 
-        $specialPrefix = '(?:(?:fixup|squash)! )?';
+        $specialPrefix = '(?:(?:' . self::AUTOSQUASH_PREFIXES . ')! )?';
         $typesPattern = '([a-zA-Z0-9]+)';
         $scopesPattern = '(:\s|(\(.+\)?:\s))';
 

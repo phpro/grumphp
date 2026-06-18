@@ -488,6 +488,14 @@ class CommitMessageTest extends AbstractTaskTestCase
             function () {
             }
         ];
+        yield 'dont-enforce_capitalized_subject_amend' => [
+            [
+                'enforce_capitalized_subject' => true,
+            ],
+            self::mockCommitMsgContext(self::amend('no capital subject')),
+            function () {
+            }
+        ];
         yield 'enforce_capitalized_subject_special_utf8_char' => [
             [
                 'enforce_capitalized_subject' => true,
@@ -557,6 +565,14 @@ class CommitMessageTest extends AbstractTaskTestCase
                 'max_subject_width' => 10,
             ],
             self::mockCommitMsgContext(self::squash('123456789')),
+            function () {
+            }
+        ];
+        yield 'enforce_text_with_special_prefix_amend' => [
+            [
+                'max_subject_width' => 10,
+            ],
+            self::mockCommitMsgContext(self::amend('123456789')),
             function () {
             }
         ];
@@ -685,6 +701,38 @@ class CommitMessageTest extends AbstractTaskTestCase
                 ],
             ],
             self::mockCommitMsgContext(self::squash('fix(app): match type scope convention')),
+            function () {
+            },
+        ];
+        yield 'amend_type_scope_conventions_match_type_without_scope' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'types' => [
+                        'fix'
+                    ],
+                    'scopes' => [
+                        'app'
+                    ]
+                ],
+            ],
+            self::mockCommitMsgContext(self::amend('fix: match type scope convention')),
+            function () {
+            },
+        ];
+        yield 'amend_type_scope_conventions_match_type_with_scope' => [
+            [
+                'enforce_capitalized_subject' => false,
+                'type_scope_conventions' => [
+                    'types' => [
+                        'fix'
+                    ],
+                    'scopes' => [
+                        'app'
+                    ]
+                ],
+            ],
+            self::mockCommitMsgContext(self::amend('fix(app): match type scope convention')),
             function () {
             },
         ];
@@ -944,6 +992,17 @@ class CommitMessageTest extends AbstractTaskTestCase
         return self::buildMessage(
             'squash! '.$subject,
             '# This was created by running git commit --squash=...',
+            ...$messages
+        );
+    }
+
+    private static function amend(string ... $messages): string
+    {
+        $subject = array_shift($messages);
+
+        return self::buildMessage(
+            'amend! '.$subject,
+            '# This was created by running git commit --fixup=amend:...',
             ...$messages
         );
     }
