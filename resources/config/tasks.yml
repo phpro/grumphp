@@ -169,6 +169,34 @@ services:
         tags:
             - {name: grumphp.task, task: kahlan}
 
+    GrumPHP\Task\MagoAnalyzer:
+        arguments:
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, task: mago_analyze}
+
+    GrumPHP\Task\MagoFormatter:
+        arguments:
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, task: mago_format}
+
+    GrumPHP\Task\MagoGuard:
+        arguments:
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, task: mago_guard}
+
+    GrumPHP\Task\MagoLinter:
+        arguments:
+            - '@process_builder'
+            - '@formatter.raw_process'
+        tags:
+            - {name: grumphp.task, task: mago_lint}
+
     GrumPHP\Task\Make:
         arguments:
             - '@process_builder'

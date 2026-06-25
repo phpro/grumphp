@@ -53,6 +53,7 @@
         "atoum/atoum": "Lets GrumPHP run your unit tests.",
         "behat/behat": "Lets GrumPHP validate your project features.",
         "brianium/paratest": "Lets GrumPHP run PHPUnit in parallel.",
+        "carthage-software/mago": "Lets GrumPHP help you write better PHP code.",
         "codeception/codeception": "Lets GrumPHP run your project's full stack tests",
         "consolidation/robo": "Lets GrumPHP run your automated PHP tasks.",
         "designsecurity/progpilot": "Lets GrumPHP be sure that there are no vulnerabilities in your code.",
