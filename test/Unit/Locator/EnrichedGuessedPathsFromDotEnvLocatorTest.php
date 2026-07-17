@@ -83,6 +83,26 @@ class EnrichedGuessedPathsFromDotEnvLocatorTest extends FilesystemTestCase
         ];
 
 
+        yield 'keep-distinct-worktree-dir' => [
+            function (Filesystem $filesystem, string $workspace) use ($configure) {
+                \Closure::bind($configure, $this)($workspace);
+            },
+            $inputWithWorktree = function (string $workspace) {
+                return new GuessedPaths(
+                    $workspace,
+                    $this->path('.git'),
+                    $workspace,
+                    $workspace,
+                    $this->path('vendor/bin'),
+                    new ComposerFile($this->path('composer.json'), []),
+                    $this->path('grumphp.yml'),
+                    $this->path('.git/worktrees/wt1')
+                );
+            },
+            $inputWithWorktree
+        ];
+
+
         yield 'overwritten-config' => [
             function (Filesystem $filesystem, string $workspace) use ($configure) {
                 \Closure::bind($configure, $this)($workspace);

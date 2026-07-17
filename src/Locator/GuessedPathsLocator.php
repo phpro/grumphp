@@ -56,6 +56,12 @@ class GuessedPathsLocator
             )),
             $workingDir
         );
+        $gitWorktreeDir = $this->filesystem->makePathAbsolute(
+            (string) ($_SERVER['GRUMPHP_GIT_REPOSITORY_DIR'] ?? $this->gitRepositoryDirLocator->locateWorktreeGitDir(
+                $this->filesystem->buildPath($gitWorkingDir, '.git')
+            )),
+            $workingDir
+        );
 
         $composerFilePathname = $this->filesystem->guessFile(
             [
@@ -125,7 +131,8 @@ class GuessedPathsLocator
             $projectDir,
             $binDir,
             $composerFile,
-            $defaultConfigFile
+            $defaultConfigFile,
+            $gitWorktreeDir
         );
     }
 

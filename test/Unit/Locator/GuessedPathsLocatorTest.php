@@ -60,6 +60,9 @@ namespace GrumPHPTest\Unit\Locator {
             $this->gitRepositoryDirLocator->locate(Argument::any())->will(function (array $arguments) {
                 return $arguments[0];
             });
+            $this->gitRepositoryDirLocator->locateWorktreeGitDir(Argument::any())->will(function (array $arguments) {
+                return $arguments[0];
+            });
 
             $this->guesser = new GuessedPathsLocator(
                 $this->filesystem,

@@ -87,6 +87,25 @@ abstract class AbstractE2ETestCase extends TestCase
         return $this->filesystem->buildPath($gitPath, basename($submodulePath));
     }
 
+    protected function addGitWorktree(string $fromGitPath, string $worktreeName, string $branch): string
+    {
+        $this->changeGitPermissions();
+        $worktreePath = $this->relativeRootPath($worktreeName);
+        $this->runCommand('add git worktree', new Process(
+            [$this->executableFinder->find('git'), 'worktree', 'add', '-b', $branch, $worktreePath],
+            $fromGitPath
+        ));
+
+        return $worktreePath;
+    }
+
+    protected function commitAllWithoutHook(string $gitPath)
+    {
+        $git = $this->executableFinder->find('git');
+        $this->gitAddPath($gitPath);
+        $this->runCommand('commit without hook', new Process([$git, 'commit', '--no-verify', '-mtest'], $gitPath));
+    }
+
     protected function appendToGitignore(string $gitPath, array $paths = ['vendor'])
     {
         $gitignore = $this->filesystem->buildPath($gitPath, '.gitignore');
