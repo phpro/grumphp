@@ -94,6 +94,8 @@ The path to the root directory of your git project.
 The path to the directory in which git stores it objects etc.
 Most of the time this is the .git folder.
 When using GIT submodules, this is the location of the submodule .git folder.
+Inside a linked git worktree, this points at the shared repository root, since worktrees run the hooks
+of the main repository. File listing and diffs still use the worktree's own branch.
 
 **GRUMPHP_COMPOSER_DIR**
 

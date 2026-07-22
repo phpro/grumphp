@@ -37,6 +37,10 @@ class EnrichedGuessedPathsFromDotEnvLocator
             (string) ($_SERVER['GRUMPHP_GIT_REPOSITORY_DIR'] ?? $guessedPaths->getGitRepositoryDir()),
             $workingDir
         );
+        $gitWorktreeDir = $this->filesystem->makePathAbsolute(
+            (string) ($_SERVER['GRUMPHP_GIT_REPOSITORY_DIR'] ?? $guessedPaths->getGitWorktreeDir()),
+            $workingDir
+        );
         $binDir = $this->filesystem->makePathAbsolute(
             (string) ($_SERVER['GRUMPHP_BIN_DIR'] ?? $guessedPaths->getBinDir()),
             $workingDir
@@ -49,7 +53,8 @@ class EnrichedGuessedPathsFromDotEnvLocator
             $projectDir,
             $binDir,
             $guessedPaths->getComposerFile(),
-            $guessedPaths->getConfigFile()
+            $guessedPaths->getConfigFile(),
+            $gitWorktreeDir
         );
     }
 }

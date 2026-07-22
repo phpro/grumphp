@@ -43,6 +43,11 @@ class GuessedPaths
      */
     private $configFile;
 
+    /**
+     * @var string
+     */
+    private $gitWorktreeDir;
+
     public function __construct(
         string $gitWorkingDir,
         string $gitRepositoryDir,
@@ -50,7 +55,8 @@ class GuessedPaths
         string $projectDir,
         string $binDir,
         ComposerFile $composerFile,
-        string $configFile
+        string $configFile,
+        ?string $gitWorktreeDir = null
     ) {
         $this->gitWorkingDir = $gitWorkingDir;
         $this->gitRepositoryDir = $gitRepositoryDir;
@@ -59,6 +65,7 @@ class GuessedPaths
         $this->binDir = $binDir;
         $this->composerFile = $composerFile;
         $this->configFile = $configFile;
+        $this->gitWorktreeDir = $gitWorktreeDir ?? $gitRepositoryDir;
     }
 
     public function getGitWorkingDir(): string
@@ -69,6 +76,11 @@ class GuessedPaths
     public function getGitRepositoryDir(): string
     {
         return $this->gitRepositoryDir;
+    }
+
+    public function getGitWorktreeDir(): string
+    {
+        return $this->gitWorktreeDir;
     }
 
     public function getWorkingDir(): string

@@ -69,6 +69,15 @@ class Paths
         return $this->guessedPaths->getGitRepositoryDir();
     }
 
+    /**
+     * The git dir to read files and diffs from. Inside a linked worktree this is the worktree's own
+     * git dir; for normal checkouts and submodules it equals getGitRepositoryDir().
+     */
+    public function getGitWorktreeDir(): string
+    {
+        return $this->guessedPaths->getGitWorktreeDir();
+    }
+
     public function getBinDir(): string
     {
         return $this->guessedPaths->getBinDir();

@@ -120,6 +120,35 @@ class PathsTest extends FilesystemTestCase
     }
 
     #[Test]
+    public function it_knows_the_git_worktree_directory(): void
+    {
+        $this->assertSame(
+            $this->guessedPaths->getGitWorktreeDir(),
+            $this->paths->getGitWorktreeDir()
+        );
+    }
+
+    #[Test]
+    public function it_separates_the_worktree_dir_from_the_hooks_dir_inside_a_worktree(): void
+    {
+        $guessedPaths = new GuessedPaths(
+            $this->workspace,
+            $common = $this->buildPath($this->workspace, '.git'),
+            $this->workspace,
+            $this->workspace,
+            $this->buildPath($this->workspace, 'vendor/bin'),
+            new ComposerFile($this->buildPath($this->workspace, 'composer.json'), []),
+            $this->buildPath($this->workspace, 'grumphp.json'),
+            $worktree = $this->buildPath($this->workspace, '.git/worktrees/wt1')
+        );
+        $paths = new Paths($this->filesystem, $guessedPaths);
+
+        $this->assertSame($worktree, $paths->getGitWorktreeDir());
+        $this->assertSame($common, $paths->getGitRepositoryDir());
+        $this->assertSame($this->buildPath($common, 'hooks'), $paths->getGitHooksDir());
+    }
+
+    #[Test]
     public function it_knows_the_project_directory(): void
     {
         $this->assertSame(

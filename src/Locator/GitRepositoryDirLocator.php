@@ -20,9 +20,27 @@ class GitRepositoryDirLocator
 
     /**
      * Resolves the path to the git repository directory (aka as .git).
-     * For submodules, it parses the .git file and resolves to the .git/modules/[submodules] directory
+     * For submodules, it parses the .git file and resolves to the .git/modules/[submodules] directory.
+     * For worktrees, it resolves to the common repository root, since worktrees share the main
+     * repository's hooks. Use locateWorktreeGitDir() when the worktree's own git dir is required.
      */
     public function locate(string $gitDir): string
+    {
+        return $this->resolveGitDir($gitDir, true);
+    }
+
+    /**
+     * Resolves the git directory used to read files and diffs.
+     * For worktrees this returns the worktree's own git dir (.git/worktrees/[id]) instead of collapsing
+     * to the common repository root, so file listing and diffs reflect the worktree's branch.
+     * For submodules and normal checkouts this is identical to locate().
+     */
+    public function locateWorktreeGitDir(string $gitDir): string
+    {
+        return $this->resolveGitDir($gitDir, false);
+    }
+
+    private function resolveGitDir(string $gitDir, bool $collapseWorktreeToRoot): string
     {
         if (!$this->filesystem->isFile($gitDir)) {
             return $gitDir;
@@ -36,7 +54,9 @@ class GitRepositoryDirLocator
         $gitRepositoryDir = $matches[1];
 
         if ($this->isWorktree($gitRepositoryDir)) {
-            return $this->locateWorktreeRoot($gitRepositoryDir);
+            return $collapseWorktreeToRoot
+                ? $this->locateWorktreeRoot($gitRepositoryDir)
+                : $gitRepositoryDir;
         }
 
         return $this->filesystem->buildPath(
