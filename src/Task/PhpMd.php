@@ -32,7 +32,7 @@ class PhpMd extends AbstractExternalTask
         $resolver->addAllowedTypes('whitelist_patterns', ['array']);
         $resolver->addAllowedTypes('exclude', ['array']);
         $resolver->addAllowedTypes('report_format', ['string']);
-        $resolver->addAllowedValues('report_format', ['text', 'ansi']);
+        $resolver->addAllowedValues('report_format', ['text', 'ansi', 'xml', 'html', 'json', 'gitlab', 'github']);
         $resolver->addAllowedTypes('ruleset', ['array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
 

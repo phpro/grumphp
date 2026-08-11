@@ -47,7 +47,7 @@ This is a list of patterns that will be ignored by phpmd. With this option you c
 *Default: text*
 
 This sets the output [renderer](https://phpmd.org/documentation/#renderers) of phpmd.
-Available formats: ansi, text.
+Available formats: text, ansi, xml, html, json, gitlab, github.
 
 **ruleset**
 
