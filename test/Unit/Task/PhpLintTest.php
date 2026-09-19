@@ -25,6 +25,7 @@ class PhpLintTest extends AbstractExternalTaskTestCase
         yield 'defaults' => [
             [],
             [
+                'php_executable' => null,
                 'jobs' => null,
                 'short_open_tag' => false,
                 'exclude' => [],
@@ -105,6 +106,32 @@ class PhpLintTest extends AbstractExternalTaskTestCase
             'parallel-lint',
             [
                 '--no-colors',
+                '--stdin',
+            ],
+            self::mockProcessWithStdIn(0)
+        ];
+        yield 'php_executable_null' => [
+            [
+                'php_executable' => null,
+            ],
+            self::mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'parallel-lint',
+            [
+                '--no-colors',
+                '--stdin',
+            ],
+            self::mockProcessWithStdIn(0)
+        ];
+        yield 'php_executable' => [
+            [
+                'php_executable' => '/usr/bin/php',
+            ],
+            self::mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'parallel-lint',
+            [
+                '--no-colors',
+                '-p',
+                '/usr/bin/php',
                 '--stdin',
             ],
             self::mockProcessWithStdIn(0)
