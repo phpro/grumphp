@@ -15,12 +15,19 @@ composer require --dev php-parallel-lint/php-parallel-lint
 grumphp:
     tasks:
         phplint:
+            php_executable: null
             exclude: []
             jobs: ~
             short_open_tag: false
             ignore_patterns: []
             triggered_by: ['php', 'phtml', 'php3', 'php4', 'php5']
 ```
+**php_executable**
+
+*Default: null*
+
+Specifies the PHP executable passed to parallel-lint via the -p option.
+
 **exclude**
 
 *Default: []*
