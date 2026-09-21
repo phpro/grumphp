@@ -289,6 +289,13 @@ services:
         tags:
           - {name: grumphp.task, task: phpmd}
 
+    GrumPHP\Task\PhpMd3:
+        arguments:
+          - '@process_builder'
+          - '@formatter.raw_process'
+        tags:
+          - {name: grumphp.task, task: phpmd3}
+
     GrumPHP\Task\PhpMnd:
         arguments:
           - '@process_builder'
