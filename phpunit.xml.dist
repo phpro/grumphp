@@ -9,6 +9,13 @@
 >
     <php>
         <ini name="error_reporting" value="-1" />
+        <!--
+            Since git 2.47, commits spawn a detached auto maintenance process that keeps writing
+            .git/objects/maintenance.lock after the commit returns, racing the E2E cleanup of the test repos.
+        -->
+        <env name="GIT_CONFIG_COUNT" value="1" />
+        <env name="GIT_CONFIG_KEY_0" value="maintenance.auto" />
+        <env name="GIT_CONFIG_VALUE_0" value="false" />
     </php>
     <testsuites>
         <testsuite name="Unit">
