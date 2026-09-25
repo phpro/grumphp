@@ -121,7 +121,7 @@ abstract class AbstractE2ETestCase extends TestCase
                 '--name=grumphp/testsuite'.$this->hash,
                 '--type=library',
                 '--require=php:*',
-                '--require-dev=phpro/grumphp:'.$this->detectCurrentGrumphpGitBranchForComposerWithFallback(),
+                '--require-dev=phpro/grumphp:*@dev',
                 '--require-dev=phpunit/phpunit:*',
                 '--author=GrumPHP Testsuite',
                 '--repository='.json_encode([
@@ -154,38 +154,6 @@ abstract class AbstractE2ETestCase extends TestCase
         ]);
 
         return $composerFile;
-    }
-
-    private function detectCurrentGrumphpGitBranchForComposerWithFallback(): string
-    {
-        $gitExecutable = $this->executableFinder->find('git');
-        $process = new Process([$gitExecutable, 'rev-parse', '--abbrev-ref', 'HEAD']);
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            return '*';
-        }
-
-        // Detached HEAD (for CI)
-        $version = trim($process->getOutput());
-        if ('HEAD' === $version) {
-            // Check if current commit matches a tag:
-            $process = new Process([$gitExecutable, 'describe', '--exact-match']);
-            $process->run();
-            if ($process->isSuccessful()) {
-                return trim($process->getOutput());
-            }
-
-            // Load the sha hash instead
-            $process = new Process([$gitExecutable, 'rev-parse', '--verify', 'HEAD']);
-            $process->run();
-            if (!$process->isSuccessful()) {
-                return '*';
-            }
-            $version = trim($process->getOutput());
-        }
-
-        return 'dev-'.$version.'@dev';
     }
 
     protected function mergeComposerConfig(string $composerFile, array $config, $recursive = true)
