@@ -1,4 +1,5 @@
 build: false
+image: Visual Studio 2022
 clone_folder: c:\projects\grumphp
 clone_depth: 1
 shallow_clone: false
