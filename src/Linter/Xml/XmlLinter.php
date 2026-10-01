@@ -33,7 +33,7 @@ class XmlLinter implements LinterInterface
      */
     private $schemeValidation = false;
 
-    public function lint(SplFileInfo $file): LintErrorsCollection
+    public function lint(string $file): LintErrorsCollection
     {
         $errors = new LintErrorsCollection();
         $useInternalErrors = $this->useInternalXmlLoggin(true);
@@ -96,7 +96,7 @@ class XmlLinter implements LinterInterface
         return libxml_use_internal_errors($useInternalErrors);
     }
 
-    private function loadDocument(SplFileInfo $file): ?DOMDocument
+    private function loadDocument(string $file): ?DOMDocument
     {
         $this->registerXmlStreamContext();
 
@@ -104,7 +104,7 @@ class XmlLinter implements LinterInterface
         $document->resolveExternals = $this->loadFromNet;
         $document->preserveWhiteSpace = false;
         $document->formatOutput = false;
-        $loaded = $document->load($file->getPathname());
+        $loaded = $document->load($file);
 
         return $loaded ? $document : null;
     }
@@ -156,7 +156,7 @@ class XmlLinter implements LinterInterface
         return $document->validate();
     }
 
-    private function validateInternalSchemes(SplFileInfo $file, DOMDocument $document): bool
+    private function validateInternalSchemes(string $file, DOMDocument $document): bool
     {
         $schemas = [];
         $attributes = $document->documentElement->attributes;
@@ -187,13 +187,13 @@ class XmlLinter implements LinterInterface
     /**
      * @return null|string
      */
-    private function locateScheme(SplFileInfo $xmlFile, string $scheme)
+    private function locateScheme(string $xmlFile, string $scheme)
     {
         if (filter_var($scheme, FILTER_VALIDATE_URL)) {
             return $this->loadFromNet ? $scheme : null;
         }
 
-        $xmlFilePath = $xmlFile->getPath();
+        $xmlFilePath = \dirname($xmlFile);
         $schemePath = empty($xmlFilePath) ? $scheme : rtrim($xmlFilePath, '/').DIRECTORY_SEPARATOR.$scheme;
 
         $schemeFile = new SplFileInfo($schemePath);

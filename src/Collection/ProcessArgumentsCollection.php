@@ -93,35 +93,18 @@ class ProcessArgumentsCollection extends ArrayCollection
     public function addFiles(FilesCollection $files): void
     {
         foreach ($files as $file) {
-            $this->addFile($file);
+            $this->add($file);
         }
-    }
-
-    public function addFile(\SplFileInfo $file): void
-    {
-        $this->add($file->getPathname());
     }
 
     public function addCommaSeparatedFiles(FilesCollection $files): void
     {
-        $paths = [];
-
-        foreach ($files as $file) {
-            $paths[] = $file->getPathname();
-        }
-
-        $this->add(implode(',', $paths));
+        $this->add(implode(',', $files->toArray()));
     }
 
     public function addArgumentWithCommaSeparatedFiles(string $argument, FilesCollection $files): void
     {
-        $paths = [];
-
-        foreach ($files as $file) {
-            $paths[] = $file->getPathname();
-        }
-
-        $this->add(sprintf($argument, implode(',', $paths)));
+        $this->add(sprintf($argument, implode(',', $files->toArray())));
     }
 
     public function addOptionalBooleanArgument(

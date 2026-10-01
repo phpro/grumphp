@@ -37,13 +37,13 @@ class JsonLinter implements LinterInterface
     /**
      * @throws ParsingException
      */
-    public function lint(SplFileInfo $file): LintErrorsCollection
+    public function lint(string $file): LintErrorsCollection
     {
         $errors = new LintErrorsCollection();
         $flags = $this->calculateFlags();
 
         try {
-            $json = $this->filesystem->readFromFileInfo($file);
+            $json = $this->filesystem->readPath($file);
             $this->jsonParser->parse($json, $flags);
         } catch (ParsingException $exception) {
             $errors->add(JsonLintError::fromParsingException($file, $exception));

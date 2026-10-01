@@ -9,7 +9,7 @@ use SplFileInfo;
 
 interface ParserInterface
 {
-    public function parse(SplFileInfo $file): ParseErrorsCollection;
+    public function parse(string $file): ParseErrorsCollection;
 
     public function isInstalled(): bool;
 }

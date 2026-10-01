@@ -26,8 +26,7 @@ class ListedFiles
 
         $files = [];
         foreach (array_filter($filePaths) as $file) {
-            $relativeFile = $this->paths->makePathRelativeToProjectDir($file);
-            $files[] = new SplFileInfo($relativeFile, dirname($relativeFile), $relativeFile);
+            $files[] = $this->paths->makePathRelativeToProjectDir($file);
         }
 
         return new FilesCollection($files);

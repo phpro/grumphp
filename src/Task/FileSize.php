@@ -78,7 +78,7 @@ class FileSize implements TaskInterface
             foreach ($files as $file) {
                 $errorMessage .= sprintf(
                     '- %s exceeded the maximum size of %s.'.PHP_EOL,
-                    $file->getFilename(),
+                    $file,
                     $maxSize
                 );
             }

@@ -32,5 +32,10 @@
                 <directory name="src/" />
             </errorLevel>
         </ClassMustBeFinal>
+        <DeprecatedMethod>
+            <errorLevel type="suppress">
+                <directory name="src/" />
+            </errorLevel>
+        </DeprecatedMethod>
     </issueHandlers>
 </psalm>

@@ -9,7 +9,7 @@ use SplFileInfo;
 
 interface LinterInterface
 {
-    public function lint(SplFileInfo $file): LintErrorsCollection;
+    public function lint(string $file): LintErrorsCollection;
 
     public function isInstalled(): bool;
 }

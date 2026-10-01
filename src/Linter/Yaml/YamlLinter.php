@@ -56,15 +56,15 @@ class YamlLinter implements LinterInterface
         $this->filesystem = $filesystem;
     }
 
-    public function lint(SplFileInfo $file): LintErrorsCollection
+    public function lint(string $file): LintErrorsCollection
     {
         $errors = new LintErrorsCollection();
 
         try {
-            $content = $this->filesystem->readFromFileInfo($file);
+            $content = $this->filesystem->readPath($file);
             $this->parseYaml($content);
         } catch (ParseException $exception) {
-            $exception->setParsedFile($file->getPathname());
+            $exception->setParsedFile($file);
             $errors[] = YamlLintError::fromParseException($exception);
         }
 

@@ -168,14 +168,7 @@ abstract class AbstractTaskTestCase extends TestCase
         /** @var ContextInterface|ObjectProphecy $context */
         $context = (new Prophet())->prophesize($class);
         $context->getFiles()->willReturn(
-            new FilesCollection(
-                array_map(
-                    static function ($file): SplFileInfo {
-                        return $file instanceof SplFileInfo ? $file : new SplFileInfo($file, $file, $file);
-                    },
-                    $files
-                )
-            )
+            new FilesCollection($files)
         );
 
         return $context->reveal();

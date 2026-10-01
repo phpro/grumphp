@@ -90,6 +90,16 @@ class PreCommitCommand extends Command
 
         $results = $this->taskRunner->run($context);
 
+        if ($this->io->isVerbose()) {
+            $this->io->write([
+                PHP_EOL,
+                sprintf(
+                    '<comment>Peak memory usage: %.1f MB</comment>',
+                    (float) memory_get_peak_usage(true) / 1024.0 / 1024.0
+                )
+            ]);
+        }
+
         return $results->isFailed() ? self::EXIT_CODE_NOK : self::EXIT_CODE_OK;
     }
 

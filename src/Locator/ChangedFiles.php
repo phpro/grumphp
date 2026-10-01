@@ -63,7 +63,7 @@ class ChangedFiles
                 continue;
             }
 
-            $files[] = $fileObject;
+            $files[] = $fileObject->getPathname();
         }
 
         return new FilesCollection($files);

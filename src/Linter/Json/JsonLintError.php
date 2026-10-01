@@ -10,9 +10,9 @@ use SplFileInfo;
 
 class JsonLintError extends LintError
 {
-    public static function fromParsingException(SplFileInfo $file, ParsingException $exception): self
+    public static function fromParsingException(string $file, ParsingException $exception): self
     {
-        return new self(LintError::TYPE_ERROR, $exception->getMessage(), $file->getPathname(), 0);
+        return new self(LintError::TYPE_ERROR, $exception->getMessage(), $file, 0);
     }
 
     public function __toString(): string

@@ -54,19 +54,20 @@ class PhpParser implements ParserInterface
         $this->parserOptions = $options;
     }
 
-    public function parse(SplFileInfo $file): ParseErrorsCollection
+    public function parse(string $file): ParseErrorsCollection
     {
+        $fileObject = new SplFileInfo($file);
         $errors = new ParseErrorsCollection();
-        $context = new ParserContext($file, $errors);
+        $context = new ParserContext($fileObject, $errors);
         $parser = $this->parserFactory->createFromOptions($this->parserOptions);
         $traverser = $this->traverserFactory->createForTaskContext($this->parserOptions, $context);
 
         try {
-            $code = $this->filesystem->readFromFileInfo($file);
+            $code = $this->filesystem->readFromFileInfo($fileObject);
             $stmts = $parser->parse($code);
             $traverser->traverse((array) $stmts);
         } catch (Error $e) {
-            $errors->add(PhpParserError::fromParseException($e, $file->getRealPath()));
+            $errors->add(PhpParserError::fromParseException($e, $fileObject->getRealPath()));
         }
 
         return $errors;

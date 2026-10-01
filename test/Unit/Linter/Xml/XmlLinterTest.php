@@ -26,7 +26,7 @@ class XmlLinterTest extends TestCase
     /**
      * @param string $fixture
      *
-     * @return SplFileInfo
+     * @return string
      */
     private function getFixture($fixture)
     {
@@ -35,7 +35,7 @@ class XmlLinterTest extends TestCase
             throw new RuntimeException(sprintf('The fixture %s could not be loaded!', $fixture));
         }
 
-        return $file;
+        return $file->getPathname();
     }
 
     /**
