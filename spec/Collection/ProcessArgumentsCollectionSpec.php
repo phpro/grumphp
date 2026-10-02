@@ -111,6 +111,35 @@ class ProcessArgumentsCollectionSpec extends ObjectBehavior
         ]);
     }
 
+    function it_should_prevent_files_from_being_parsed_as_options()
+    {
+        $files = new FilesCollection([
+            new SplFileInfo('--config=file1.php'),
+            new SplFileInfo('-c.php'),
+            new SplFileInfo('-dir/file2.php'),
+            new SplFileInfo('dir/-file3.php'),
+        ]);
+        $this->addFiles($files);
+
+        $this->getValues()->shouldBe([
+            './--config=file1.php',
+            './-c.php',
+            './-dir/file2.php',
+            'dir/-file3.php',
+        ]);
+    }
+
+    function it_should_prevent_comma_separated_files_from_being_parsed_as_options()
+    {
+        $files = new FilesCollection([
+            new SplFileInfo('--config=file1.php'),
+            new SplFileInfo('file2.php')
+        ]);
+        $this->addCommaSeparatedFiles($files);
+
+        $this->getValues()->shouldBe(['./--config=file1.php,file2.php']);
+    }
+
     function it_should_be_able_to_add_comma_separated_files()
     {
         $files = new FilesCollection([

@@ -99,7 +99,7 @@ class ProcessArgumentsCollection extends ArrayCollection
 
     public function addFile(\SplFileInfo $file): void
     {
-        $this->add($file->getPathname());
+        $this->add(self::escapeFilePath($file));
     }
 
     public function addCommaSeparatedFiles(FilesCollection $files): void
@@ -107,10 +107,21 @@ class ProcessArgumentsCollection extends ArrayCollection
         $paths = [];
 
         foreach ($files as $file) {
-            $paths[] = $file->getPathname();
+            $paths[] = self::escapeFilePath($file);
         }
 
         $this->add(implode(',', $paths));
+    }
+
+    /**
+     * A repository file named like "--config=evil.php" would otherwise be parsed as an option by the tool.
+     * Prefixing it with "./" keeps it a path, without relying on every tool supporting the "--" separator.
+     */
+    private static function escapeFilePath(\SplFileInfo $file): string
+    {
+        $path = $file->getPathname();
+
+        return str_starts_with($path, '-') ? './'.$path : $path;
     }
 
     public function addArgumentWithCommaSeparatedFiles(string $argument, FilesCollection $files): void
