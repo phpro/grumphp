@@ -83,6 +83,8 @@ class Blacklist extends AbstractExternalTask
         }
 
         $arguments = $this->processBuilder->createArgumentsForCommand('git');
+        // Without this, a committed file named like ":!other.php" is read as pathspec magic and excludes files.
+        $arguments->add('--literal-pathspecs');
         $arguments->add('grep');
         $arguments->add('--cached');
         $arguments->add('-n');

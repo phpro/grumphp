@@ -48,4 +48,61 @@ class TasksTest extends AbstractE2ETestCase
         $this->commitAll();
         $this->runGrumphp($this->rootDir);
     }
+
+    #[Test]
+    function it_passes_option_like_file_names_to_external_commands_as_paths()
+    {
+        $this->initializeGitInRootDir();
+        $this->initializeComposer($this->rootDir);
+        $grumphpFile = $this->initializeGrumphpConfig($this->rootDir);
+        $this->installComposer($this->rootDir);
+        $this->ensureHooksExist();
+
+        $this->enableValidateArgvPathsTask($grumphpFile, $this->rootDir);
+        $this->dumpOptionLikeFiles();
+
+        $this->commitAll();
+        $this->runGrumphp($this->rootDir);
+    }
+
+    #[Test]
+    function it_finds_blacklisted_keywords_in_option_like_file_names()
+    {
+        $this->initializeGitInRootDir();
+        $this->initializeComposer($this->rootDir);
+        $grumphpFile = $this->initializeGrumphpConfig($this->rootDir);
+        $this->installComposer($this->rootDir);
+        $this->ensureHooksExist();
+
+        $this->mergeGrumphpConfig($grumphpFile, [
+            'grumphp' => [
+                'tasks' => [
+                    'git_blacklist' => [
+                        'keywords' => ['blacklisted_keyword'],
+                    ],
+                ],
+            ],
+        ]);
+        $this->dumpOptionLikeFiles();
+        $this->dumpFile($this->rootDir.'/-dash.php', '<?php // blacklisted_keyword'.PHP_EOL);
+
+        try {
+            $this->commitAll();
+        } catch (\RuntimeException $e) {
+            $this->assertStringContainsString('You have blacklisted keywords in your commit', $e->getMessage());
+            $this->assertStringContainsString('-dash.php', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail('Expected git_blacklist to find the keyword in -dash.php.');
+    }
+
+    private function dumpOptionLikeFiles(): void
+    {
+        $this->dumpFile($this->rootDir.'/--option-like=value.php', '<?php'.PHP_EOL);
+        $this->dumpFile($this->rootDir.'/-dash.php', '<?php'.PHP_EOL);
+        $this->mkdir($this->rootDir.'/-dir');
+        $this->dumpFile($this->rootDir.'/-dir/file.php', '<?php'.PHP_EOL);
+    }
 }

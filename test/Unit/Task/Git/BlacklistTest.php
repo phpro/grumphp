@@ -151,6 +151,7 @@ class BlacklistTest extends AbstractExternalTaskTestCase
             self::mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'git',
             [
+                '--literal-pathspecs',
                 'grep',
                 '--cached',
                 '-n',
@@ -175,6 +176,7 @@ class BlacklistTest extends AbstractExternalTaskTestCase
             self::mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'git',
             [
+                '--literal-pathspecs',
                 'grep',
                 '--cached',
                 '-n',
@@ -198,6 +200,7 @@ class BlacklistTest extends AbstractExternalTaskTestCase
             self::mockContext(RunContext::class, ['hello.php', 'hello2.php']),
             'git',
             [
+                '--literal-pathspecs',
                 'grep',
                 '--cached',
                 '-n',

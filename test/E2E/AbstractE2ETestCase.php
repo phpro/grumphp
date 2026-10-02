@@ -347,6 +347,38 @@ abstract class AbstractE2ETestCase extends TestCase
         ]);
     }
 
+    protected function enableValidateArgvPathsTask(string $grumphpFile, string $projectDir)
+    {
+        $e2eDir = $this->ensureGrumphpE2eTasksDir($projectDir);
+        $this->dumpFile(
+            $e2eDir.'/ValidateArgvPathsTask.php',
+            file_get_contents(TEST_BASE_PATH.'/fixtures/e2e/tasks/ValidateArgvPathsTask.php')
+        );
+        $this->dumpFile(
+            $e2eDir.'/validate-argv-paths.php',
+            file_get_contents(TEST_BASE_PATH.'/fixtures/e2e/tasks/validate-argv-paths.php')
+        );
+
+        $this->mergeGrumphpConfig($grumphpFile, [
+            'grumphp' => [
+                'tasks' => [
+                    'validateArgvPaths' => [],
+                ],
+            ],
+            'services' => [
+                'GrumPHPE2E\\ValidateArgvPathsTask' => [
+                    'arguments' => ['@process_builder'],
+                    'tags' => [
+                        [
+                            'name' => 'grumphp.task',
+                            'task' => 'validateArgvPaths'
+                        ],
+                    ]
+                ]
+            ],
+        ]);
+    }
+
     protected function installComposer(string $path, array $arguments = [])
     {
         $process = new Process(
