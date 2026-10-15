@@ -3,21 +3,27 @@
 namespace spec\GrumPHP\Locator;
 
 use Gitonomy\Git\Diff\Diff;
-use Gitonomy\Git\Diff\File;
-use Gitonomy\Git\WorkingCopy;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Git\GitRepository;
 use GrumPHP\Locator\ChangedFiles;
 use GrumPHP\Util\Filesystem;
 use GrumPHP\Util\Paths;
+use GrumPHPTest\Helpers\TemporaryGitRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Prophecy\Prophet;
 
 class ChangedFilesSpec extends ObjectBehavior
 {
+    /**
+     * @var TemporaryGitRepository
+     */
+    private $gitRepository;
+
     function let(GitRepository $repository, Filesystem $filesystem, Paths $paths)
     {
+        $this->gitRepository = TemporaryGitRepository::create();
+        $repository->getWorkingCopy()->willReturn($this->gitRepository->getRepository()->getWorkingCopy());
+
         $this->beConstructedWith($repository, $filesystem, $paths);
         $paths->makePathRelativeToProjectDir(Argument::type('string'))->will(
             function (array $arguments): string {
@@ -26,35 +32,31 @@ class ChangedFilesSpec extends ObjectBehavior
         );
     }
 
+    function letGo()
+    {
+        $this->gitRepository->remove();
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(ChangedFiles::class);
     }
 
-    protected function mockFile($name, $isRename = false, $isDelete = false)
+    function it_will_list_all_diffed_files(Filesystem $filesystem)
     {
-        $prophet = new Prophet();
-        $file = $prophet->prophesize(File::class);
-        $file->getName()->willReturn($name);
-        $file->getNewName()->willReturn($name);
-        $file->isRename()->willReturn($isRename);
-        $file->isDeletion()->willReturn($isDelete);
-        return $file->reveal();
-    }
-
-    function it_will_list_all_diffed_files(GitRepository $repository, Filesystem $filesystem, Diff $diff, WorkingCopy $workingCopy)
-    {
-        $changedFile = $this->mockFile('file1.txt');
-        $movedFile = $this->mockFile('file2.txt', true);
-        $deletedFile = $this->mockFile('file3.txt', false, true);
+        $this->gitRepository->dumpFile('file1.txt', 'changed');
+        $this->gitRepository->dumpFile('moved.txt', 'moved');
+        $this->gitRepository->dumpFile('file3.txt', 'deleted');
+        $this->gitRepository->git('add', '--all');
+        $this->gitRepository->git('commit', '--quiet', '--message=Initial commit');
+        $this->gitRepository->dumpFile('file1.txt', 'changed again');
+        $this->gitRepository->git('mv', 'moved.txt', 'file2.txt');
+        $this->gitRepository->git('rm', '--quiet', 'file3.txt');
+        $this->gitRepository->git('add', '--all');
 
         $filesystem->exists('file1.txt')->willReturn(true);
         $filesystem->exists('file2.txt')->willReturn(true);
         $filesystem->exists('file3.txt')->willReturn(false);
-
-        $repository->getWorkingCopy()->willReturn($workingCopy);
-        $workingCopy->getDiffStaged()->willReturn($diff);
-        $diff->getFiles()->willReturn([$changedFile, $movedFile, $deletedFile]);
 
         $result = $this->locateFromGitRepository();
         $result->shouldBeAnInstanceOf(FilesCollection::class);
@@ -63,14 +65,12 @@ class ChangedFilesSpec extends ObjectBehavior
         $result->getIterator()->count()->shouldBe(2);
     }
 
-    function it_will_not_list_non_existing_files(GitRepository $repository, Filesystem $filesystem, Diff $diff, WorkingCopy $workingCopy)
+    function it_will_not_list_non_existing_files(Filesystem $filesystem)
     {
-        $changedFile = $this->mockFile('file1.txt');
-        $filesystem->exists('file1.txt')->willReturn(false);
+        $this->gitRepository->dumpFile('file1.txt', 'changed');
+        $this->gitRepository->git('add', '--all');
 
-        $repository->getWorkingCopy()->willReturn($workingCopy);
-        $workingCopy->getDiffStaged()->willReturn($diff);
-        $diff->getFiles()->willReturn([$changedFile]);
+        $filesystem->exists('file1.txt')->willReturn(false);
 
         $result = $this->locateFromGitRepository();
         $result->shouldBeAnInstanceOf(FilesCollection::class);
@@ -79,16 +79,16 @@ class ChangedFilesSpec extends ObjectBehavior
 
     function it_will_list_all_diffed_files_from_raw_diff_input(GitRepository $repository, Filesystem $filesystem)
     {
-        $rawDiff = ':100644 100644 c09a0d49 77e5a35c M      file.txt
+        $rawDiff = ":000000 100644 0000000 d95f3ad A\tfile.txt
 
 diff --git a/file.txt b/file.txt
 new file mode 100644
-index 0000000000000000000000000000000000000000..9766475a4185a151dc9d56d614ffb9aaea3bfd42
+index 0000000000000000000000000000000000000000..d95f3ad14dee633a758d2e331151e950dd13e4ed
 --- /dev/null
 +++ b/file.txt
 @@ -0,0 +1 @@
 +content
-';
+";
 
         $repository->createRawDiff($rawDiff)->willReturn(Diff::parse($rawDiff));
         $filesystem->exists('file.txt')->willReturn(true);

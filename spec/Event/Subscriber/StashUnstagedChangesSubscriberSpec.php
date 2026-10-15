@@ -2,8 +2,6 @@
 
 namespace spec\GrumPHP\Event\Subscriber;
 
-use Gitonomy\Git\Diff\Diff;
-use Gitonomy\Git\WorkingCopy;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\TaskResultCollection;
 use GrumPHP\Collection\TasksCollection;
@@ -15,21 +13,36 @@ use GrumPHP\Git\GitRepository;
 use GrumPHP\IO\IOInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
+use GrumPHPTest\Helpers\TemporaryGitRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
 {
-    function let(GitStashConfig $config, GitRepository $repository, IOInterface $io, WorkingCopy $workingCopy, Diff $unstaged)
+    /**
+     * @var TemporaryGitRepository
+     */
+    private $gitRepository;
+
+    function let(GitStashConfig $config, GitRepository $repository, IOInterface $io)
     {
+        $this->gitRepository = TemporaryGitRepository::create();
+        $this->gitRepository->dumpFile('file1.php', 'committed');
+        $this->gitRepository->git('add', '--all');
+        $this->gitRepository->git('commit', '--quiet', '--message=Initial commit');
+        $this->gitRepository->dumpFile('file1.php', 'unstaged');
+        $this->gitRepository->dumpFile('untracked.php');
+
         $config->ignoreUnstagedChanges()->willReturn(true);
-        $repository->getWorkingCopy()->willReturn($workingCopy);
-        $workingCopy->getDiffPending()->willReturn($unstaged);
-        $unstaged->getFiles()->willReturn(['file1.php']);
-        $workingCopy->getUntrackedFiles()->willReturn(['untracked.php']);
+        $repository->getWorkingCopy()->willReturn($this->gitRepository->getRepository()->getWorkingCopy());
 
         $this->beConstructedWith($config, $repository, $io);
+    }
+
+    function letGo()
+    {
+        $this->gitRepository->remove();
     }
 
     function it_is_initializable()
@@ -68,10 +81,10 @@ class StashUnstagedChangesSubscriberSpec extends ObjectBehavior
         $repository->run(Argument::cetera())->shouldNotBeCalled();
     }
 
-    function it_should_not_run_when_there_are_no_unstaged_changes(GitRepository $repository, Diff $unstaged)
+    function it_should_not_run_when_there_are_no_unstaged_changes(GitRepository $repository)
     {
         $event = new RunnerEvent(new TasksCollection(), new RunContext(new FilesCollection()), new TaskResultCollection());
-        $unstaged->getFiles()->willReturn([]);
+        $this->gitRepository->git('checkout', '--', 'file1.php');
 
         $this->saveStash($event);
         $this->popStash($event);

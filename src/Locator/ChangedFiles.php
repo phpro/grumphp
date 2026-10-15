@@ -71,9 +71,7 @@ class ChangedFiles
 
     private function makeFileRelativeToProjectDir(File $file): SplFileInfo
     {
-        $filePath = $this->paths->makePathRelativeToProjectDir(
-            $file->isRename() ? $file->getNewName() : $file->getName()
-        );
+        $filePath = $this->paths->makePathRelativeToProjectDir($file->getName());
 
         return new SplFileInfo($filePath, dirname($filePath), $filePath);
     }
