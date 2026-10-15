@@ -6,9 +6,9 @@ use Gitonomy\Git\Diff\Diff;
 use Gitonomy\Git\Diff\File;
 use Gitonomy\Git\Driver\Cli\CliDriver;
 use Gitonomy\Git\Exception\ProcessException;
-use Gitonomy\Git\Repository;
 use Gitonomy\Git\WorkingCopy;
 use GrumPHP\Locator\GitRepositoryLocator;
+use GrumPHPTest\Helpers\TemporaryGitRepository;
 use PhpSpec\ObjectBehavior;
 use GrumPHP\Git\GitRepository;
 use Prophecy\Argument;
@@ -16,11 +16,22 @@ use Symfony\Component\Process\Process;
 
 class GitRepositorySpec extends ObjectBehavior
 {
-    public function let(GitRepositoryLocator $locator, Repository $repository): void
+    /**
+     * @var TemporaryGitRepository
+     */
+    private $gitRepository;
+
+    public function let(GitRepositoryLocator $locator): void
     {
         $driver = new CliDriver();
+        $this->gitRepository = TemporaryGitRepository::create();
         $this->beConstructedWith($locator, $driver);
-        $locator->locate($driver)->willReturn($repository);
+        $locator->locate($driver)->willReturn($this->gitRepository->getRepository());
+    }
+
+    public function letGo(): void
+    {
+        $this->gitRepository->remove();
     }
 
     function it_is_initializable()
@@ -28,25 +39,24 @@ class GitRepositorySpec extends ObjectBehavior
         $this->shouldHaveType(GitRepository::class);
     }
 
-    public function it_is_lazy(GitRepositoryLocator $locator, Repository $repository): void
+    public function it_is_lazy(GitRepositoryLocator $locator): void
     {
-        $repository->run(Argument::cetera())->willReturn('ok');
-        $this->run('command', []);
-        $this->run('command', []);
+        $this->run('rev-parse', ['--git-dir']);
+        $this->run('rev-parse', ['--git-dir']);
 
         $locator->locate(Argument::type(CliDriver::class))->shouldBeCalledTimes(1);
     }
 
-    public function it_can_run_commands(Repository $repository): void
+    public function it_can_run_commands(): void
     {
-        $repository->run('command', [])->willReturn('ok');
-        $this->run('command', [])->shouldBe('ok');
+        $this->run('rev-parse', ['--is-bare-repository'])->shouldBe("false\n");
     }
 
     public function it_can_deal_with_errornous_throwing_runs(Process $process): void
     {
         $process->getCommandLine()->willReturn('');
         $process->getErrorOutput()->willReturn('');
+        $process->getExitCode()->willReturn(1);
         $process->getOutput()->willReturn('');
 
         $this->tryToRunWithFallback(
@@ -77,31 +87,30 @@ class GitRepositorySpec extends ObjectBehavior
         )->shouldBe('ok');
     }
 
-    public function it_can_fetch_working_copy(Repository $repository, WorkingCopy $workingCopy): void
+    public function it_can_fetch_working_copy(): void
     {
-        $repository->getWorkingCopy()->willReturn($workingCopy);
-        $this->getWorkingCopy()->shouldBe($workingCopy);
+        $this->getWorkingCopy()->shouldBeAnInstanceOf(WorkingCopy::class);
     }
 
-    public function it_can_parse_raw_diff(Repository $repository): void
+    public function it_can_parse_raw_diff(): void
     {
-        $rawDiff = ':100644 100644 c09a0d49 77e5a35c M      file.txt
+        $rawDiff = ":000000 100644 0000000 d95f3ad A\tfile.txt
 
 diff --git a/file.txt b/file.txt
 new file mode 100644
-index 0000000000000000000000000000000000000000..9766475a4185a151dc9d56d614ffb9aaea3bfd42
+index 0000000000000000000000000000000000000000..d95f3ad14dee633a758d2e331151e950dd13e4ed
 --- /dev/null
 +++ b/file.txt
 @@ -0,0 +1 @@
 +content
-';
+";
         $diff = $this->createRawDiff($rawDiff);
         $diff->shouldBeAnInstanceOf(Diff::class);
         /** @var File $file */
         $file = $diff->getFiles()[0];
         $file->isCreation()->shouldBe(true);
         $file->getName()->shouldBe('file.txt');
-        $file->getRepository()->shouldBe($repository);
+        $file->getRepository()->shouldBe($this->gitRepository->getRepository());
 
     }
 }
