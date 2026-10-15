@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "65cdb516cf7985eaf6d89dc3432f4d52",
+    "content-hash": "0b6ae6429cc25f9a4615666a8c0171de",
     "packages": [
         {
             "name": "amphp/amp",
@@ -1003,29 +1003,31 @@
         },
         {
             "name": "gitonomy/gitlib",
-            "version": "v1.6.0",
+            "version": "v1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gitonomy/gitlib.git",
-                "reference": "c1476cb0fd317fc512971e926b40ebcdb666e263"
+                "reference": "02f796eedb1e436429afa1b2730638703480ffa3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gitonomy/gitlib/zipball/c1476cb0fd317fc512971e926b40ebcdb666e263",
-                "reference": "c1476cb0fd317fc512971e926b40ebcdb666e263",
+                "url": "https://api.github.com/repos/gitonomy/gitlib/zipball/02f796eedb1e436429afa1b2730638703480ffa3",
+                "reference": "02f796eedb1e436429afa1b2730638703480ffa3",
                 "shasum": ""
             },
             "require": {
                 "ext-pcre": "*",
-                "php": "^8.0",
+                "php": "^8.1",
+                "symfony/deprecation-contracts": "^2.5 || ^3",
                 "symfony/polyfill-mbstring": "^1.7",
                 "symfony/process": "^5.4 || ^6.0 || ^7.0 || ^8.0"
             },
             "require-dev": {
                 "ext-fileinfo": "*",
-                "phpspec/prophecy-phpunit": "^2.0",
+                "phpspec/prophecy-phpunit": "^2.1",
                 "phpunit/phpunit": "^7.5.20 || ^8.5.20 || ^9.5.9",
-                "psr/log": "^1.0"
+                "psr/log": "^1.0",
+                "symfony/phpunit-bridge": "^6.4 || ^7.0"
             },
             "type": "library",
             "autoload": {
@@ -1062,7 +1064,7 @@
             "description": "Library for accessing git",
             "support": {
                 "issues": "https://github.com/gitonomy/gitlib/issues",
-                "source": "https://github.com/gitonomy/gitlib/tree/v1.6.0"
+                "source": "https://github.com/gitonomy/gitlib/tree/v1.7.0"
             },
             "funding": [
                 {
@@ -1070,7 +1072,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-09T20:06:56+00:00"
+            "time": "2026-10-15T13:42:18+00:00"
         },
         {
             "name": "kelunik/certificate",
