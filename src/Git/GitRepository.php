@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace GrumPHP\Git;
 
 use Gitonomy\Git\Diff\Diff;
+use Gitonomy\Git\Driver\Cli\CliDriver;
 use Gitonomy\Git\Exception\ProcessException;
 use Gitonomy\Git\Repository;
 use Gitonomy\Git\WorkingCopy;
 use GrumPHP\Locator\GitRepositoryLocator;
+use Psr\Log\LoggerInterface;
 
 /**
  *
@@ -23,19 +25,19 @@ class GitRepository
     private $repositoryLocator;
 
     /**
-     * @var array
+     * @var LoggerInterface
      */
-    private $repositoryOptions;
+    private $logger;
 
     /**
      * @var ?Repository
      */
     private $repository;
 
-    public function __construct(GitRepositoryLocator $repositoryLocator, array $repositoryOptions)
+    public function __construct(GitRepositoryLocator $repositoryLocator, LoggerInterface $logger)
     {
         $this->repositoryLocator = $repositoryLocator;
-        $this->repositoryOptions = $repositoryOptions;
+        $this->logger = $logger;
     }
 
     public function getWorkingCopy(): WorkingCopy
@@ -66,10 +68,17 @@ class GitRepository
 
     public function createRawDiff(string $rawDiff): Diff
     {
-        $diff = Diff::parse($rawDiff);
-        $diff->setRepository($this->getRepository());
+        // gitlib 1 has no drivers, and takes the repository of a diff once parsed.
+        if (!class_exists(CliDriver::class)) {
+            $diff = Diff::parse($rawDiff);
+            /** @psalm-suppress DeprecatedMethod - Only deprecated in gitlib 2, which doesn't run this. */
+            $diff->setRepository($this->getRepository());
 
-        return $diff;
+            return $diff;
+        }
+
+        /** @psalm-suppress TooManyArguments - Only too many for gitlib 1, which doesn't run this. */
+        return Diff::parse($rawDiff, $this->getRepository());
     }
 
     /**
@@ -80,7 +89,7 @@ class GitRepository
     private function getRepository(): Repository
     {
         if (!$this->repository) {
-            $this->repository = $this->repositoryLocator->locate($this->repositoryOptions);
+            $this->repository = $this->repositoryLocator->locate($this->logger);
         }
 
         return $this->repository;
