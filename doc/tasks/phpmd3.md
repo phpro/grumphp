@@ -1,14 +1,14 @@
-# PhpMd
+# PhpMd3
 
 The PhpMd3 task will sniff your code for bad coding standards.
 
-It is the same as the `phpmd` task, but provides compatibility with the `3.x-dev` branch.
-It will be merged into the `phpmd` task when the 3.x becomes stable.
+It is the same as the `phpmd` task, but uses the `analyze` command of PHPMD 3.
+Use the [`phpmd`](phpmd.md) task for PHPMD 2.
 
 ***Composer***
 
 ```
-composer require --dev phpmd/phpmd:3.x-dev
+composer require --dev phpmd/phpmd:^3.0
 ```
 
 ***Config***

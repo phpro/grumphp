@@ -154,6 +154,55 @@ class PhpMdTest3 extends AbstractExternalTaskTestCase
             ]
         ];
 
+        yield 'multiple-rulesets' => [
+            [
+                'ruleset' => ['cleancode', 'naming'],
+            ],
+            self::mockContext(RunContext::class, ['hello.php', 'hello2.php']),
+            'phpmd',
+            [
+                'analyze',
+                '--format=text',
+                '--ruleset=cleancode',
+                '--ruleset=naming',
+                '--suffixes=php',
+                'hello.php',
+                'hello2.php',
+            ]
+        ];
+
+        yield 'triggered_by' => [
+            [
+                'triggered_by' => ['php', 'phtml'],
+            ],
+            self::mockContext(RunContext::class, ['hello.php', 'hello.phtml', 'hello.txt']),
+            'phpmd',
+            [
+                'analyze',
+                '--format=text',
+                '--ruleset=phpmd.xml.dist',
+                '--suffixes=php',
+                '--suffixes=phtml',
+                'hello.php',
+                'hello.phtml',
+            ]
+        ];
+
+        yield 'whitelist_patterns' => [
+            [
+                'whitelist_patterns' => ['/^src\\/(.*)/'],
+            ],
+            self::mockContext(RunContext::class, ['src/hello.php', 'test/hello.php']),
+            'phpmd',
+            [
+                'analyze',
+                '--format=text',
+                '--ruleset=phpmd.xml.dist',
+                '--suffixes=php',
+                'src/hello.php',
+            ]
+        ];
+
         yield 'report_formats' => [
             [
                 'report_format' => 'ansi',

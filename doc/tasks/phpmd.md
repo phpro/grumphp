@@ -5,7 +5,7 @@ The PhpMd task will sniff your code for bad coding standards.
 ***Composer***
 
 ```
-composer require --dev phpmd/phpmd
+composer require --dev phpmd/phpmd:^2.0
 ```
 
 ***Config***

@@ -54,14 +54,9 @@ class PhpMd3 extends AbstractExternalTask
     {
         $config = $this->getConfig()->getOptions();
 
-        $whitelistPatterns = $config['whitelist_patterns'];
-        $extensions = $config['triggered_by'];
-
-        $files = $context->getFiles();
-        if (\count($whitelistPatterns)) {
-            $files = $files->paths($whitelistPatterns);
-        }
-        $files = $files->extensions($extensions);
+        $files = $context->getFiles()
+            ->extensions($config['triggered_by'])
+            ->paths($config['whitelist_patterns']);
 
         if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
@@ -71,17 +66,9 @@ class PhpMd3 extends AbstractExternalTask
         $arguments->add('analyze');
         $arguments->addOptionalArgument('--format=%s', $config['report_format']);
 
-        foreach ($config['ruleset'] as $ruleset) {
-            $arguments->addOptionalArgument('--ruleset=%s', $ruleset);
-        }
-
-        foreach ($config['exclude'] as $exclude) {
-            $arguments->addOptionalArgument('--exclude=%s', $exclude);
-        }
-
-        foreach ($extensions as $extension) {
-            $arguments->addOptionalArgument('--suffixes=%s', $extension);
-        }
+        $arguments->addArgumentArray('--ruleset=%s', $config['ruleset']);
+        $arguments->addArgumentArray('--exclude=%s', $config['exclude']);
+        $arguments->addArgumentArray('--suffixes=%s', $config['triggered_by']);
 
         $arguments->addFiles($files);
 
