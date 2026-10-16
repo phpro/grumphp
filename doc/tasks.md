@@ -48,6 +48,7 @@ grumphp:
         phpcsfixer: ~
         phplint: ~
         phpmd: ~
+        phpmd3: ~
         phpmnd: ~
         phpparser: ~
         phpspec: ~
@@ -121,6 +122,7 @@ Every task has its own default configuration. It is possible to overwrite the pa
 - [PHP-CS-Fixer](tasks/phpcsfixer.md)
 - [PHPLint](tasks/phplint.md)
 - [PhpMd](tasks/phpmd.md)
+- [PhpMd3](tasks/phpmd3.md)
 - [PhpMnd](tasks/phpmnd.md)
 - [PhpParser](tasks/phpparser.md)
 - [Phpspec](tasks/phpspec.md)
