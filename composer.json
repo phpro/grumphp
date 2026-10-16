@@ -20,7 +20,7 @@
         "amphp/amp": "^3.0",
         "amphp/parallel": "^2.1",
         "doctrine/collections": "^1.6.8 || ^2.0 || ^3.0",
-        "gitonomy/gitlib": "^1.6",
+        "gitonomy/gitlib": "^1.7",
         "laravel/serializable-closure": "^2.0",
         "monolog/monolog": "^2.0 || ^3.0",
         "ondram/ci-detector": "^4.0",

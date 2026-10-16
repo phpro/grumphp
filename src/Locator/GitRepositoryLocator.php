@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Locator;
 
+use Gitonomy\Git\Driver\Cli\CliDriver;
 use Gitonomy\Git\Repository;
 use GrumPHP\Util\Paths;
 
@@ -19,16 +20,12 @@ class GitRepositoryLocator
         $this->paths = $paths;
     }
 
-    public function locate(array $options): Repository
+    public function locate(CliDriver $driver): Repository
     {
         return new Repository(
             $this->paths->getGitWorktreeDir(),
-            array_merge(
-                [
-                    'working_dir' => $this->paths->getGitWorkingDir(),
-                ],
-                $options
-            )
+            $this->paths->getGitWorkingDir(),
+            $driver
         );
     }
 }

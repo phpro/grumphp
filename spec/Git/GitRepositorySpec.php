@@ -4,6 +4,7 @@ namespace spec\GrumPHP\Git;
 
 use Gitonomy\Git\Diff\Diff;
 use Gitonomy\Git\Diff\File;
+use Gitonomy\Git\Driver\Cli\CliDriver;
 use Gitonomy\Git\Exception\ProcessException;
 use Gitonomy\Git\Repository;
 use Gitonomy\Git\WorkingCopy;
@@ -17,8 +18,9 @@ class GitRepositorySpec extends ObjectBehavior
 {
     public function let(GitRepositoryLocator $locator, Repository $repository): void
     {
-        $this->beConstructedWith($locator, []);
-        $locator->locate([])->willReturn($repository);
+        $driver = new CliDriver();
+        $this->beConstructedWith($locator, $driver);
+        $locator->locate($driver)->willReturn($repository);
     }
 
     function it_is_initializable()
@@ -32,7 +34,7 @@ class GitRepositorySpec extends ObjectBehavior
         $this->run('command', []);
         $this->run('command', []);
 
-        $locator->locate([])->shouldBeCalledTimes(1);
+        $locator->locate(Argument::type(CliDriver::class))->shouldBeCalledTimes(1);
     }
 
     public function it_can_run_commands(Repository $repository): void

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GrumPHP\Git;
 
 use Gitonomy\Git\Diff\Diff;
+use Gitonomy\Git\Driver\Cli\CliDriver;
 use Gitonomy\Git\Exception\ProcessException;
 use Gitonomy\Git\Repository;
 use Gitonomy\Git\WorkingCopy;
@@ -23,19 +24,19 @@ class GitRepository
     private $repositoryLocator;
 
     /**
-     * @var array
+     * @var CliDriver
      */
-    private $repositoryOptions;
+    private $driver;
 
     /**
      * @var ?Repository
      */
     private $repository;
 
-    public function __construct(GitRepositoryLocator $repositoryLocator, array $repositoryOptions)
+    public function __construct(GitRepositoryLocator $repositoryLocator, CliDriver $driver)
     {
         $this->repositoryLocator = $repositoryLocator;
-        $this->repositoryOptions = $repositoryOptions;
+        $this->driver = $driver;
     }
 
     public function getWorkingCopy(): WorkingCopy
@@ -49,7 +50,7 @@ class GitRepository
     }
 
     /**
-     * The gitonomy run method handles errors differently based on debug (throw) or non-debug (return null) mode.
+     * The gitonomy run method throws a ProcessException when the git command fails.
      * This method makes it possible to run a git command but fallback to a default string if the command fails.
      * It can be used to e.g. fetch git configurations.
      */
@@ -66,10 +67,7 @@ class GitRepository
 
     public function createRawDiff(string $rawDiff): Diff
     {
-        $diff = Diff::parse($rawDiff);
-        $diff->setRepository($this->getRepository());
-
-        return $diff;
+        return Diff::parse($rawDiff, $this->getRepository());
     }
 
     /**
@@ -80,7 +78,7 @@ class GitRepository
     private function getRepository(): Repository
     {
         if (!$this->repository) {
-            $this->repository = $this->repositoryLocator->locate($this->repositoryOptions);
+            $this->repository = $this->repositoryLocator->locate($this->driver);
         }
 
         return $this->repository;
