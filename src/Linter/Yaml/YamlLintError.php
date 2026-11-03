@@ -20,14 +20,20 @@ class YamlLintError extends LintError
         $this->snippet = $snippet;
     }
 
+    /**
+     * Since symfony/yaml 7.4.22 and 8.1.10, the snippet and the parsed file can be null.
+     *
+     * @psalm-suppress RedundantCondition - Older symfony/yaml versions declare these getters as non-nullable.
+     * @psalm-suppress TypeDoesNotContainNull - Older symfony/yaml versions declare these getters as non-nullable.
+     */
     public static function fromParseException(ParseException $exception): self
     {
         return new self(
             LintError::TYPE_ERROR,
             $exception->getMessage(),
-            $exception->getParsedFile(),
+            $exception->getParsedFile() ?? '',
             $exception->getParsedLine(),
-            $exception->getSnippet()
+            $exception->getSnippet() ?? ''
         );
     }
 
