@@ -3779,16 +3779,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v7.4.12",
+            "version": "v7.4.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "8b6952b56ca6417f25f7a65758cadd0ce02edc51"
+                "reference": "4cef939e55b8a21c5780418de0d98ab00d0736e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/8b6952b56ca6417f25f7a65758cadd0ce02edc51",
-                "reference": "8b6952b56ca6417f25f7a65758cadd0ce02edc51",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/4cef939e55b8a21c5780418de0d98ab00d0736e1",
+                "reference": "4cef939e55b8a21c5780418de0d98ab00d0736e1",
                 "shasum": ""
             },
             "require": {
@@ -3831,7 +3831,7 @@
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/yaml/tree/v7.4.12"
+                "source": "https://github.com/symfony/yaml/tree/v7.4.18"
             },
             "funding": [
                 {
@@ -3851,7 +3851,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-20T07:20:23+00:00"
+            "time": "2026-08-30T00:47:26+00:00"
         }
     ],
     "packages-dev": [
