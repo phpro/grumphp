@@ -65,7 +65,7 @@ class YamlLinter implements LinterInterface
             $this->parseYaml($content);
         } catch (ParseException $exception) {
             $exception->setParsedFile($file->getPathname());
-            $errors[] = YamlLintError::fromParseException($exception);
+            $errors[] = YamlLintError::fromParseException($exception, $file->getPathname());
         }
 
         return $errors;
