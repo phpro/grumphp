@@ -120,6 +120,7 @@ class YamlLinterTest extends TestCase
         return [
             ['fixture' => 'valid.yml', 'errors' => 0],
             ['fixture' => 'invalid.yml', 'errors' => 1],
+            ['fixture' => 'not-utf8.yml', 'errors' => 1],
         ];
     }
 }

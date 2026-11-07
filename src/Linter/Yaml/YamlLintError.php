@@ -22,12 +22,13 @@ class YamlLintError extends LintError
 
     public static function fromParseException(ParseException $exception): self
     {
+        /** @psalm-suppress PossiblyNullArgument - The YAML linter always sets the parsed file. */
         return new self(
             LintError::TYPE_ERROR,
             $exception->getMessage(),
             $exception->getParsedFile(),
             $exception->getParsedLine(),
-            $exception->getSnippet()
+            $exception->getSnippet() ?? ''
         );
     }
 
