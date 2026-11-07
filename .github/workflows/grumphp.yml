@@ -43,6 +43,13 @@ jobs:
                   path: ${{ steps.composercache.outputs.dir }}
                   key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
                   restore-keys: ${{ runner.os }}-composer-
+            # TODO: remove once gitlib 2.0 is released.
+            # The main branch of gitlib is installed as 2.0.0, here and in the projects of the E2E tests.
+            - name: Use the main branch of gitlib as 2.0.0
+              if: matrix.composer-deps == 'highest' && (matrix.php-versions == '8.4' || matrix.php-versions == '8.5')
+              run: |
+                git clone --depth=1 https://github.com/gitonomy/gitlib.git "$RUNNER_TEMP/gitlib"
+                composer config --global repositories.gitlib '{"type": "path", "url": "'"$RUNNER_TEMP/gitlib"'", "options": {"symlink": false, "versions": {"gitonomy/gitlib": "2.0.0"}}}'
             - name: Install dependencies (highest)
               if: matrix.composer-deps == 'highest'
               run: |

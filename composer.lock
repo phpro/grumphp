@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0b6ae6429cc25f9a4615666a8c0171de",
+    "content-hash": "6492d6ede6ac49cbd52e0b590b430666",
     "packages": [
         {
             "name": "amphp/amp",
@@ -1003,16 +1003,16 @@
         },
         {
             "name": "gitonomy/gitlib",
-            "version": "v1.7.0",
+            "version": "v1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gitonomy/gitlib.git",
-                "reference": "02f796eedb1e436429afa1b2730638703480ffa3"
+                "reference": "6da07267e07b240616ec8a016e1614eeb3a1016c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gitonomy/gitlib/zipball/02f796eedb1e436429afa1b2730638703480ffa3",
-                "reference": "02f796eedb1e436429afa1b2730638703480ffa3",
+                "url": "https://api.github.com/repos/gitonomy/gitlib/zipball/6da07267e07b240616ec8a016e1614eeb3a1016c",
+                "reference": "6da07267e07b240616ec8a016e1614eeb3a1016c",
                 "shasum": ""
             },
             "require": {
@@ -1020,7 +1020,7 @@
                 "php": "^8.1",
                 "symfony/deprecation-contracts": "^2.5 || ^3",
                 "symfony/polyfill-mbstring": "^1.7",
-                "symfony/process": "^5.4 || ^6.0 || ^7.0 || ^8.0"
+                "symfony/process": "^5.4.51 || ^6.4.33 || ~7.3.11 || ^7.4.5 || ^8.0.5"
             },
             "require-dev": {
                 "ext-fileinfo": "*",
@@ -1064,7 +1064,7 @@
             "description": "Library for accessing git",
             "support": {
                 "issues": "https://github.com/gitonomy/gitlib/issues",
-                "source": "https://github.com/gitonomy/gitlib/tree/v1.7.0"
+                "source": "https://github.com/gitonomy/gitlib/tree/v1.7.1"
             },
             "funding": [
                 {
@@ -1072,7 +1072,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-15T13:42:18+00:00"
+            "time": "2026-11-07T20:55:23+00:00",
+            "published-time": "2026-11-07T20:55:28+00:00"
         },
         {
             "name": "kelunik/certificate",
@@ -7774,5 +7775,5 @@
     "platform-overrides": {
         "php": "8.2"
     },
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.11.0"
 }
