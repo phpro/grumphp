@@ -20,14 +20,14 @@ class YamlLintError extends LintError
         $this->snippet = $snippet;
     }
 
-    public static function fromParseException(ParseException $exception): self
+    public static function fromParseException(ParseException $exception, string $filename): self
     {
         return new self(
             LintError::TYPE_ERROR,
             $exception->getMessage(),
-            $exception->getParsedFile(),
+            $filename,
             $exception->getParsedLine(),
-            $exception->getSnippet()
+            $exception->getSnippet() ?? ''
         );
     }
 
