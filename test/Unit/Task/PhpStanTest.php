@@ -4,14 +4,30 @@ declare(strict_types=1);
 
 namespace GrumPHPTest\Unit\Task;
 
+use GrumPHP\Collection\ProcessArgumentsCollection;
+use GrumPHP\Runner\FixableTaskResult;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\PhpStan;
 use GrumPHP\Task\TaskInterface;
 use GrumPHP\Test\Task\AbstractExternalTaskTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class PhpStanTest extends AbstractExternalTaskTestCase
 {
+    private const FIXABLE_OUTPUT = <<<'TXT'
+ [ERROR] Found 2 errors
+
+🔧 1 error can be fixed automatically. Run PHPStan again with --fix.
+TXT;
+
+    private const FIXABLE_IGNORED_OUTPUT = <<<'TXT'
+ [ERROR] Found 1 error
+
+🔧 1 ignored error can be fixed automatically. Run PHPStan again with --fix-ignored.
+TXT;
+
     protected function provideTask(): TaskInterface
     {
         return new PhpStan(
@@ -62,6 +78,25 @@ class PhpStanTest extends AbstractExternalTaskTestCase
             self::mockContext(RunContext::class, ['hello.php']),
             function () {
                 $this->mockProcessBuilder('phpstan', $process = self::mockProcess(1));
+                $this->formatter->format($process)->willReturn('nope');
+            },
+            'nope'
+        ];
+        yield 'exitCode1-with-fixable-errors' => [
+            [],
+            self::mockContext(RunContext::class, ['hello.php']),
+            function () {
+                $this->mockProcessBuilder('phpstan', $process = self::mockProcess(1, self::FIXABLE_OUTPUT));
+                $this->formatter->format($process)->willReturn('nope');
+            },
+            'nope',
+            FixableTaskResult::class
+        ];
+        yield 'exitCode1-with-only-fixable-ignored-errors' => [
+            [],
+            self::mockContext(RunContext::class, ['hello.php']),
+            function () {
+                $this->mockProcessBuilder('phpstan', $process = self::mockProcess(1, self::FIXABLE_IGNORED_OUTPUT));
                 $this->formatter->format($process)->willReturn('nope');
             },
             'nope'
@@ -208,6 +243,81 @@ class PhpStanTest extends AbstractExternalTaskTestCase
                 '--no-interaction',
                 '--no-progress',
             ]
+        ];
+    }
+
+    /**
+     * When PHPStan reports auto-fixable errors, GrumPHP offers the same command with --fix added.
+     * The harness only asserts the analyse command, so the fix command is verified here
+     * by inspecting the mutated arguments collection.
+     */
+    #[Test]
+    #[DataProvider('provideFixCommands')]
+    public function it_builds_the_fix_command(
+        array $config,
+        string $output,
+        string $errorOutput,
+        array $expectedCommand
+    ): void {
+        $this->processBuilder->createArgumentsForCommand('phpstan')->willReturn(
+            $arguments = new ProcessArgumentsCollection()
+        );
+        $this->processBuilder->buildProcess($arguments)->willReturn(
+            $process = self::mockProcess(1, $output, $errorOutput)
+        );
+        $this->formatter->format($process)->willReturn('failed');
+
+        $this->configureTask($config)->run(self::mockContext(RunContext::class, ['hello.php']));
+
+        self::assertSame($expectedCommand, $arguments->getValues());
+    }
+
+    public static function provideFixCommands(): iterable
+    {
+        yield 'fixable' => [
+            [],
+            self::FIXABLE_OUTPUT,
+            '',
+            ['analyse', '--no-ansi', '--no-interaction', '--no-progress', 'hello.php', '--fix'],
+        ];
+        yield 'fixable-keeps-options' => [
+            ['configuration' => 'phpstan.neon', 'level' => 'max'],
+            self::FIXABLE_OUTPUT,
+            '',
+            [
+                'analyse',
+                '--configuration=phpstan.neon',
+                '--level=max',
+                '--no-ansi',
+                '--no-interaction',
+                '--no-progress',
+                'hello.php',
+                '--fix',
+            ],
+        ];
+        yield 'fixable-without-grumphp-paths' => [
+            ['use_grumphp_paths' => false],
+            self::FIXABLE_OUTPUT,
+            '',
+            ['analyse', '--no-ansi', '--no-interaction', '--no-progress', '--fix'],
+        ];
+        yield 'fixable-hint-on-error-output' => [
+            [],
+            '',
+            '1 of the errors can be fixed automatically. Run PHPStan again with --fix to fix them first, then fix the rest.',
+            ['analyse', '--no-ansi', '--no-interaction', '--no-progress', 'hello.php', '--fix'],
+        ];
+        yield 'not-fixable' => [
+            [],
+            ' [ERROR] Found 1 error',
+            '',
+            ['analyse', '--no-ansi', '--no-interaction', '--no-progress', 'hello.php'],
+        ];
+        yield 'only-fixable-ignored-errors' => [
+            [],
+            self::FIXABLE_IGNORED_OUTPUT,
+            '',
+            ['analyse', '--no-ansi', '--no-interaction', '--no-progress', 'hello.php'],
         ];
     }
 }
