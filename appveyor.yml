@@ -8,10 +8,12 @@ platform:
 
 matrix:
   allow_failures:
-    - php_version: 8.5
+    - php_version: 8.6
 
 environment:
   matrix:
+    - dependencies: lock
+      php_version: 8.6
     - dependencies: lock
       php_version: 8.5
     - dependencies: lock
