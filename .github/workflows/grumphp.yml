@@ -10,7 +10,7 @@ jobs:
         strategy:
             matrix:
                 operating-system: [ubuntu-latest, macos-latest] #windows-latest currently not working
-                php-versions: ['8.2', '8.3', '8.4', '8.5']
+                php-versions: ['8.2', '8.3', '8.4', '8.5', '8.6']
                 composer-deps: ['highest', 'lowest', 'lock']
                 composer-versions: ['composer:v2']
             fail-fast: false
@@ -30,7 +30,7 @@ jobs:
                 php -m
                 composer --version
             - name: Set env vars for latest PHP version
-              if: matrix.php-versions == '8.5'
+              if: matrix.php-versions == '8.6'
               run: |
                 export COMPOSER_IGNORE_PLATFORM_REQ=php+
                 export BOX_REQUIREMENT_CHECKER=0
@@ -69,10 +69,10 @@ jobs:
             - name: Run the tests on Windows
               if: runner.os == 'Windows'
               run: php vendor/bin/grumphp run --no-interaction --testsuite=windows
-              continue-on-error: ${{ matrix.php-versions == '8.5' }} # Psalm is not there yet
+              continue-on-error: ${{ matrix.php-versions == '8.6' }} # Psalm is not there yet
             - name: Run the tests on unix
               if: runner.os != 'Windows'
               run: php vendor/bin/grumphp run --no-interaction --testsuite=ci
-              continue-on-error: ${{ matrix.php-versions == '8.5' }} # Psalm is not there yet
+              continue-on-error: ${{ matrix.php-versions == '8.6' }} # Psalm is not there yet
             - name: Run paratest outside of grumphp
               run: php ./vendor/bin/paratest --testsuite=E2E --functional --verbose
