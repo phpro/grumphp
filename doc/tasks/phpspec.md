@@ -36,7 +36,7 @@ If your phpspec.yml file is located at an exotic location, you can specify your 
 
 You can overwrite the default `progress` format or the one specified in the `phpspec.yml` config file by configuring this option.
 
-[A list of all formatters](http://www.phpspec.net/en/stable/cookbook/configuration.html#formatter)
+[A list of all formatters](https://phpspec.net/8.x/cookbook/configuration.html#formatter)
 
 
 **stop_on_failure**
