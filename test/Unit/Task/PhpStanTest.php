@@ -48,7 +48,7 @@ TXT;
                 'force_patterns' => [],
                 'triggered_by' => ['php'],
                 'memory_limit' => null,
-                'use_grumphp_paths' => true,
+                'use_grumphp_paths' => false,
             ],
         ];
     }
@@ -150,6 +150,20 @@ TXT;
             self::mockContext(RunContext::class),
             function () {}
         ];
+        yield 'no-files-without-use-grumphp-paths' => [
+            [
+                'use_grumphp_paths' => false,
+            ],
+            self::mockContext(RunContext::class),
+            function () {}
+        ];
+        yield 'no-files-after-triggered-by-without-use-grumphp-paths' => [
+            [
+                'use_grumphp_paths' => false,
+            ],
+            self::mockContext(GitPreCommitContext::class, ['notaphpfile.txt']),
+            function () {}
+        ];
     }
 
     public static function provideExternalTaskRuns(): iterable
@@ -163,8 +177,6 @@ TXT;
                 '--no-ansi',
                 '--no-interaction',
                 '--no-progress',
-                'hello.php',
-                'hello2.php',
             ]
         ];
         yield 'autoload' => [
@@ -179,8 +191,6 @@ TXT;
                 '--no-ansi',
                 '--no-interaction',
                 '--no-progress',
-                'hello.php',
-                'hello2.php',
             ]
         ];
         yield 'configuration' => [
@@ -195,8 +205,6 @@ TXT;
                 '--no-ansi',
                 '--no-interaction',
                 '--no-progress',
-                'hello.php',
-                'hello2.php',
             ]
         ];
         yield 'memory-limit' => [
@@ -211,8 +219,6 @@ TXT;
                 '--no-ansi',
                 '--no-interaction',
                 '--no-progress',
-                'hello.php',
-                'hello2.php',
             ]
         ];
         yield 'level' => [
@@ -227,21 +233,21 @@ TXT;
                 '--no-ansi',
                 '--no-interaction',
                 '--no-progress',
-                'hello.php',
-                'hello2.php',
             ]
         ];
-        yield 'no_files' => [
+        yield 'use-grumphp-paths' => [
             [
-                'use_grumphp_paths' => false,
+                'use_grumphp_paths' => true,
             ],
-            self::mockContext(RunContext::class, []),
+            self::mockContext(GitPreCommitContext::class, ['hello.php', 'hello2.php']),
             'phpstan',
             [
                 'analyse',
                 '--no-ansi',
                 '--no-interaction',
                 '--no-progress',
+                'hello.php',
+                'hello2.php',
             ]
         ];
     }
@@ -278,7 +284,7 @@ TXT;
             [],
             self::FIXABLE_OUTPUT,
             '',
-            ['analyse', '--no-ansi', '--no-interaction', '--no-progress', 'hello.php', '--fix'],
+            ['analyse', '--no-ansi', '--no-interaction', '--no-progress', '--fix'],
         ];
         yield 'fixable-keeps-options' => [
             ['configuration' => 'phpstan.neon', 'level' => 'max'],
@@ -291,33 +297,32 @@ TXT;
                 '--no-ansi',
                 '--no-interaction',
                 '--no-progress',
-                'hello.php',
                 '--fix',
             ],
         ];
-        yield 'fixable-without-grumphp-paths' => [
-            ['use_grumphp_paths' => false],
+        yield 'fixable-with-grumphp-paths' => [
+            ['use_grumphp_paths' => true],
             self::FIXABLE_OUTPUT,
             '',
-            ['analyse', '--no-ansi', '--no-interaction', '--no-progress', '--fix'],
+            ['analyse', '--no-ansi', '--no-interaction', '--no-progress', 'hello.php', '--fix'],
         ];
         yield 'fixable-hint-on-error-output' => [
             [],
             '',
             '1 of the errors can be fixed automatically. Run PHPStan again with --fix to fix them first, then fix the rest.',
-            ['analyse', '--no-ansi', '--no-interaction', '--no-progress', 'hello.php', '--fix'],
+            ['analyse', '--no-ansi', '--no-interaction', '--no-progress', '--fix'],
         ];
         yield 'not-fixable' => [
             [],
             ' [ERROR] Found 1 error',
             '',
-            ['analyse', '--no-ansi', '--no-interaction', '--no-progress', 'hello.php'],
+            ['analyse', '--no-ansi', '--no-interaction', '--no-progress'],
         ];
         yield 'only-fixable-ignored-errors' => [
             [],
             self::FIXABLE_IGNORED_OUTPUT,
             '',
-            ['analyse', '--no-ansi', '--no-interaction', '--no-progress', 'hello.php'],
+            ['analyse', '--no-ansi', '--no-interaction', '--no-progress'],
         ];
     }
 }
