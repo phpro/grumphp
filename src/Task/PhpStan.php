@@ -31,7 +31,7 @@ class PhpStan extends AbstractExternalTask
             'force_patterns' => [],
             'triggered_by' => ['php'],
             'memory_limit' => null,
-            'use_grumphp_paths' => true,
+            'use_grumphp_paths' => false,
         ]);
 
         $resolver->addAllowedTypes('autoload_file', ['null', 'string']);
@@ -82,7 +82,9 @@ class PhpStan extends AbstractExternalTask
             $files = $files->ensureFiles($forcedFiles);
         }
 
-        if (0 === \count($files) && $config['use_grumphp_paths']) {
+        // Without use_grumphp_paths, PHPStan analyses the whole project as configured in its own configuration,
+        // but only when one of the files GrumPHP received triggers this task.
+        if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
         }
 
