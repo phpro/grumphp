@@ -32,5 +32,16 @@
                 <directory name="src/" />
             </errorLevel>
         </ClassMustBeFinal>
+        <!-- Paths come from the local project the developer runs GrumPHP in, not from an untrusted user. -->
+        <TaintedFile>
+            <errorLevel type="suppress">
+                <file name="src/Util/Filesystem.php" />
+            </errorLevel>
+        </TaintedFile>
+        <TaintedSSRF>
+            <errorLevel type="suppress">
+                <file name="src/Util/Filesystem.php" />
+            </errorLevel>
+        </TaintedSSRF>
     </issueHandlers>
 </psalm>
