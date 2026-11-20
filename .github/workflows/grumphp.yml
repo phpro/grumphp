@@ -58,8 +58,8 @@ jobs:
               run: |
                 composer install --no-progress --no-suggest
                 composer validate
-            - name: Fix dev-deps issue on lowest 8.4
-              if: matrix.php-versions == '8.4' && matrix.composer-deps == 'lowest'
+            - name: Fix dev-deps issue on lowest 8.4+
+              if: contains(fromJSON('["8.4", "8.5", "8.6"]'), matrix.php-versions) && matrix.composer-deps == 'lowest'
               run: cd vendor/composer/composer && composer install
             - name: Set git variables
               run: |
