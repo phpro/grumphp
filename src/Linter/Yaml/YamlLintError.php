@@ -25,9 +25,9 @@ class YamlLintError extends LintError
         return new self(
             LintError::TYPE_ERROR,
             $exception->getMessage(),
-            $exception->getParsedFile(),
+            $exception->getParsedFile() ?? '',
             $exception->getParsedLine(),
-            $exception->getSnippet()
+            $exception->getSnippet() ?? ''
         );
     }
 
