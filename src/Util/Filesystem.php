@@ -159,7 +159,9 @@ class Filesystem extends SymfonyFilesystem
             return;
         }
 
-        if (!$hash = md5_file($fileName)) {
+        /** @psalm-suppress WeakHash md5 only fingerprints content to name the backup file. */
+        $hash = md5_file($fileName);
+        if (!$hash) {
             return;
         }
 

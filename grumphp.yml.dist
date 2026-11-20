@@ -36,6 +36,9 @@ grumphp:
       functional: true
     psalm:
       no_cache: true
+      # psalm.phar 7.12.0 prefixes PHP 8.6's native Io\Poll classes, so its event loop crashes on 8.6.
+      # A single thread never starts that loop. Remove once psalm ships a fixed phar.
+      threads: 1
   testsuites:
     git_pre_commit:
       tasks: [phpcs, phpspec, phpunit, composer, composer_normalize, yamllint, phplint, phpparser, psalm]

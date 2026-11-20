@@ -106,6 +106,7 @@ class InitCommand extends Command
             }
 
             $content = $this->parseHookBody($hook, $hookTemplate);
+            /** @psalm-suppress WeakHash md5 only fingerprints content to name backup files. */
             $this->filesystem->backupFile($gitHook, md5($content));
             $this->filesystem->dumpFile($gitHook, $content);
             $this->filesystem->chmod($gitHook, 0775);
@@ -141,6 +142,7 @@ class InitCommand extends Command
             case 'EXEC_GRUMPHP_COMMAND':
                 return ProcessFactory::fromScalar($value)->getCommandLine();
             case 'ENV':
+                /** @var array<string, string> $value */
                 return DotEnvSerializer::serialize($value);
             default:
                 /**
