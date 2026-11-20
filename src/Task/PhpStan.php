@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GrumPHP\Task;
 
+use GrumPHP\Fixer\Provider\FixableProcessResultProvider;
 use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Runner\TaskResultInterface;
@@ -12,6 +13,7 @@ use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Process\Process;
 
 /**
  * @extends AbstractExternalTask<ProcessFormatterInterface>
@@ -104,9 +106,36 @@ class PhpStan extends AbstractExternalTask
         $process->run();
 
         if (!$process->isSuccessful()) {
-            return TaskResult::createFailed($this, $context, $this->formatter->format($process));
+            $failedResult = TaskResult::createFailed($this, $context, $this->formatter->format($process));
+
+            if (!$this->hasFixableErrors($process)) {
+                return $failedResult;
+            }
+
+            return FixableProcessResultProvider::provide(
+                $failedResult,
+                function () use ($arguments): Process {
+                    $arguments->add('--fix');
+
+                    return $this->processBuilder->buildProcess($arguments);
+                }
+            );
         }
 
         return TaskResult::createPassed($this, $context);
+    }
+
+    /**
+     * PHPStan (2.3.5+) ends its report with "Run PHPStan again with --fix" when at least one
+     * reported error can be fixed automatically. Without fixable errors, "phpstan analyse --fix"
+     * fails with "No fixable errors found", so the fixer is only offered when PHPStan suggests it.
+     * The hint for ignored errors ("--fix-ignored") is not taken into account.
+     */
+    private function hasFixableErrors(Process $process): bool
+    {
+        return 1 === preg_match(
+            '/Run PHPStan again with --fix(?![\w-])/',
+            $process->getOutput().PHP_EOL.$process->getErrorOutput()
+        );
     }
 }

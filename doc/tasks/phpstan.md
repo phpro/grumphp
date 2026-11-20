@@ -75,3 +75,15 @@ With this parameter you can specify the memory limit.
 Since there is no `--changed-files` flag [in PhpStan yet](https://github.com/phpstan/phpstan/issues/934#issuecomment-383002766),
 this flags allows you to change what files will be validated.
 You can choose to use the paths detected by GrumPHP, or you can choose to fall back on the PhpStan configuration.
+
+## Auto-fixing
+
+Starting with PHPStan 2.3.5, PHPStan marks errors it can fix automatically (🔧) and suggests to run it again with `--fix`.
+When PHPStan reports such errors, GrumPHP offers to fix them by running the same `phpstan analyse` command with the `--fix` option.
+The fix is applied to the same files that were analysed.
+Errors that cannot be fixed automatically are left untouched and still need to be fixed by hand.
+
+Keep in mind that the `--fix` option is experimental in PHPStan.
+Besides fixing code, it also removes unmatched `ignoreErrors` entries from your configuration file and baseline, and unmatched `@phpstan-ignore` comments.
+
+Whether GrumPHP asks to fix the errors or fixes them by default can be configured with the [`fixer`](../parameters.md) parameters.
